@@ -22,7 +22,7 @@ DCS corpus , converted by Vishvas Vasuki
 
 Stack of parsing tools
 
-### Level 0) 
+### Level 0
 Sandhi splitting subroutine 
        Input: Phoneme sequence and Phoneme number to split at 
        Action: Perform a sandhi split at given input phoneme number
