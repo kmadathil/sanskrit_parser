@@ -8,7 +8,7 @@ class MaheshvaraSutras(object):
     """ Singleton MaheshvaraSutras class
     
         Attributes:
-           MS(SanskritObject): Internal representation of Maheshvara Sutras
+           MS(SanskritObject): Internal representation of mAheshvara sutras
           MSS(str)           : Transcoded(SLP1) string representation
     """
     def __init__(self):

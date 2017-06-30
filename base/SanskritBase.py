@@ -81,13 +81,25 @@ if __name__ == "__main__":
         # Parser Setup
         parser = argparse.ArgumentParser(description='SanskritObject')
         # String to encode
-        parser.add_argument('data',type=str,default="idam adbhutam")
+        parser.add_argument('data',nargs="?",type=str,default="idam adbhutam")
+        # Input Encoding (autodetect by default)
+        parser.add_argument('--input-encoding',type=str,default=None)
+        # Ouptut Encoding (Devanagari by default)
+        parser.add_argument('--output-encoding',type=str,default="DEVANAGARI")
+        
         return parser.parse_args()
 
     def main():
         args=getArgs()
         print args.data
-        s=SanskritObject(args.data)
-        print s.transcoded(DEVANAGARI)
+        if args.input_encoding is None:
+            ie=None
+        else:
+            ie=SCHEMES[args.input_encoding]
+        
+        oe=SCHEMES[args.output_encoding]
+
+        s=SanskritObject(args.data,ie)
+        print s.transcoded(oe)
     main()
     
