@@ -9,15 +9,19 @@ class MaheshvaraSutras(object):
     
         Attributes:
            MS(SanskritObject): Internal representation of Maheshvara Sutras
-          MSS(str)           : Transcoded(HK) string representation
+          MSS(str)           : Transcoded(SLP1) string representation
     """
     def __init__(self):
         """ Initialize Maheshvara Sutras object
         """
+        # Note that a space is deliberately left after each it to help in
+        # demarcating them.
         self.MS=SanskritBase.SanskritObject(
             u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
-        self.MSS=self.MS.transcoded(SanskritBase.HK)
+        # SLP1 version for internal operations
+        self.MSS=self.MS.transcoded(SanskritBase.SLP1)
     def __str__(self):
+        # Use SLP1 for default string output
         return self.MSS
 
     def getPratyahara(self,p):
@@ -25,19 +29,19 @@ class MaheshvaraSutras(object):
 
             Args:
               p(:class:SanskritObject): Pratyahara
-              encoding(:optional:): encoding of p (SanskritBase.HK by default)
             Returns
               (SanskritObject): List of varnas to the same encoding as p
         """
-        # HK encoded pratyahara string
-        ps=p.transcoded(SanskritBase.HK)
+        # SLP1 encoded pratyahara string
+        ps=p.transcoded(SanskritBase.SLP1)
         # it - halantyam
         pit=ps[-1]
         # Non it - all except it
         pnit=ps[:-1]
         # Non it position
         pnpos=self.MSS.find(pnit)
-        # It position
+        # It position - space added to match it marker in internal
+        #representation
         pitpos=self.MSS.find(pit+' ',pnpos)
         # Substring. This includes intermediate its and spaces
         ts = self.MSS[pnpos:pitpos]
@@ -54,16 +58,12 @@ class MaheshvaraSutras(object):
               boolean: Is v in p?
         """
         # Convert Pratyahara into String
-        pos = self.getPratyahara(p).transcoded(SanskritBase.DEVANAGARI)
+        pos = self.getPratyahara(p).transcoded(SanskritBase.SLP1)
         # Check if varna String is in Pratyahara String
-        vs  = v.transcoded(SanskritBase.DEVANAGARI)
-        #print unicode(pos),unicode(vs)
+        vs  = v.transcoded(SanskritBase.SLP1)
+        # Replace long vowels with short ones (note SLP1 encoding)
+        vs=re.sub('[AIUFX]+', lambda m: m.group(0).lower(), vs)
         return (pos.find(vs)!=-1)
-        # FIXME
-        #  bug: jha is in hal, but jh is not
-        #  fix: check whether v is a terminated (or terminated by another svara)
-        #       or not. Modify behavior appropriately
-
         # FIXME
         #  limitation: Need a "long" / "short" pratyahara option
         #  eg: aN pratyahara has two possibilities
@@ -87,11 +87,11 @@ if __name__ == "__main__":
         args = getArgs()
         m=MaheshvaraSutras()
         print m
-        p=SanskritBase.SanskritObject(args.pratyahara,SanskritBase.HK)
-        print p
-        print m.getPratyahara(p)
+        p=SanskritBase.SanskritObject(args.pratyahara)
+        print unicode(p.transcoded(SanskritBase.DEVANAGARI))
+        print unicode(m.getPratyahara(p).transcoded(SanskritBase.DEVANAGARI))
         if args.varna is not None:
-            v=SanskritBase.SanskritObject(args.varna,SanskritBase.HK)
+            v=SanskritBase.SanskritObject(args.varna)
             print u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
                                         p.transcoded(SanskritBase.DEVANAGARI))
             print m.isInPratyahara(p,v)

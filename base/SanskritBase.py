@@ -69,7 +69,7 @@ class SanskritObject(object):
         """
         return sanscript.transliterate(self.thing,self.encoding,encoding)
     def __str__(self):
-        return self.transcoded(HK)
+        return self.transcoded(SLP1)
 
 if __name__ == "__main__":
     import argparse
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     def main():
         args=getArgs()
         print args.data
-        s=SanskritObject(args.data,HK)
+        s=SanskritObject(args.data)
         print s.transcoded(DEVANAGARI)
     main()
     
