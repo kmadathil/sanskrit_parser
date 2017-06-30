@@ -1,0 +1,3 @@
+# Sourceme file
+pwd=$(pwd)
+export PYTHONPATH=${PYTHONPATH}:${pwd}
