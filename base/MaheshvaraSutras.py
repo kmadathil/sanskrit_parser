@@ -63,7 +63,10 @@ class MaheshvaraSutras(object):
         #  bug: jha is in hal, but jh is not
         #  fix: check whether v is a terminated (or terminated by another svara)
         #       or not. Modify behavior appropriately
-        
+
+        # FIXME
+        #  limitation: Need a "long" / "short" pratyahara option
+        #  eg: aN pratyahara has two possibilities
     
 if __name__ == "__main__":
     import argparse
