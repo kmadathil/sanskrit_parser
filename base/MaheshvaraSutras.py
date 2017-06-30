@@ -15,7 +15,7 @@ class MaheshvaraSutras(object):
         """ Initialize Maheshvara Sutras object
         """
         self.MS=SanskritBase.SanskritObject(
-            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खछठथचटतव् कपय् शषसर् हल्',SanskritBase.DEVANAGARI)
+            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
         self.MSS=self.MS.transcoded(SanskritBase.HK)
     def __str__(self):
         return self.MSS
@@ -38,7 +38,7 @@ class MaheshvaraSutras(object):
         # Non it position
         pnpos=self.MSS.find(pnit)
         # It position
-        pitpos=self.MSS.find(pit,pnpos)
+        pitpos=self.MSS.find(pit+' ',pnpos)
         # Substring. This includes intermediate its and spaces
         ts = self.MSS[pnpos:pitpos]
         # Replace its and spaces
@@ -54,23 +54,42 @@ class MaheshvaraSutras(object):
               boolean: Is v in p?
         """
         # Convert Pratyahara into String
-        pos = self.getPratyahara(p).transcoded(SanskritBase.HK)
+        pos = self.getPratyahara(p).transcoded(SanskritBase.DEVANAGARI)
         # Check if varna String is in Pratyahara String
-        return (pos.find(v.transcoded(SanskritBase.HK))!=-1)
+        vs  = v.transcoded(SanskritBase.DEVANAGARI)
+        #print unicode(pos),unicode(vs)
+        return (pos.find(vs)!=-1)
+        # FIXME
+        #  bug: jha is in hal, but jh is not
+        #  fix: check whether v is a terminated (or terminated by another svara)
+        #       or not. Modify behavior appropriately
+        
     
 if __name__ == "__main__":
-    import sys
+    import argparse
+    def getArgs():
+        """
+          Argparse routine. 
+          Returns args variable
+        """
+        # Parser Setup
+        parser = argparse.ArgumentParser(description='SanskritObject')
+        # Pratyahara - print out the list of varnas in this
+        parser.add_argument('--pratyahara',type=str,default="ik")
+        # Varna. Optional. Check if this varna is in pratyahara above
+        parser.add_argument('--varna',type=str,default=None)
+
+        return parser.parse_args()
     def main():
+        args = getArgs()
         m=MaheshvaraSutras()
         print m
-        if len(sys.argv)>1:
-            p=sys.argv[1]
-        else:
-            p="ik"
-        p=SanskritBase.SanskritObject(p,SanskritBase.HK)
+        p=SanskritBase.SanskritObject(args.pratyahara,SanskritBase.HK)
         print p
         print m.getPratyahara(p)
-        if len(sys.argv)>2:
-            v=sys.argv[2]
-            print m.isInPratyahara(p,SanskritBase.SanskritObject(v,SanskritBase.HK))
+        if args.varna is not None:
+            v=SanskritBase.SanskritObject(args.varna,SanskritBase.HK)
+            print u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
+                                        p.transcoded(SanskritBase.DEVANAGARI))
+            print m.isInPratyahara(p,v)
     main()

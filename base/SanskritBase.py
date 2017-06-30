@@ -73,18 +73,15 @@ class SanskritObject(object):
 
 if __name__ == "__main__":
     import argparse
-    from gooey import GooeyParser, Gooey
-     #@Gooey
     def getArgs():
         """
           Argparse routine. 
           Returns args variable
         """
         # Parser Setup
-        parser = GooeyParser(description='SanskritObject')
-        # Babylon ti~Nanta data
+        parser = argparse.ArgumentParser(description='SanskritObject')
+        # String to encode
         parser.add_argument('data',type=str,default="idam adbhutam")
-
         return parser.parse_args()
 
     def main():
