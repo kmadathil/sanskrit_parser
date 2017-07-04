@@ -14,10 +14,12 @@ import sanskritmark
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanksrit lexical analysis. 
     
-        This class mostly reuses Dr. Dhaval Patel's work in wrapping 
+        This class mostly reuses Dr. Dhaval Patel's work in wrapping
+        Inria XML data 
     """
     def __init__(self):
-        pass
+        self.tagmap = {}
+       
     def getInriaLexicalTags(self,obj):
         """ Get Inria-style lexical tags for a word
 
@@ -37,6 +39,7 @@ class SanskritLexicalAnalyzer(object):
             # Convert into name, tagset pairs
             l=[(li[0],set(li[1:])) for li in l]
             return l
+        
     def hasInriaTag(self,obj,name,tagset):
         """ Check if word matches Inria-style lexical tags
 
@@ -49,6 +52,8 @@ class SanskritLexicalAnalyzer(object):
                       match (name,tagset), or None
         """
         l = self.getInriaLexicalTags(obj)
+        if l is None:
+            return None
         assert (name is not None) or (tagset is not None)
         r = []
         for li in l:
@@ -77,6 +82,10 @@ if __name__ == "__main__":
         parser.add_argument('data',nargs="?",type=str,default="adhi")
         # Input Encoding (autodetect by default)
         parser.add_argument('--input-encoding',type=str,default=None)
+        # Filter by base name
+        parser.add_argument('--base',type=str,default=None)
+        # Filter by tag set
+        parser.add_argument('--tag-set',type=str,default=None,nargs="+")
         return parser.parse_args()
 
     def main():
@@ -87,6 +96,6 @@ if __name__ == "__main__":
         i=SanskritBase.SanskritObject(args.data,encoding=args.input_encoding)
         ts=s.getInriaLexicalTags(i)
         print ts
-        g=set(['upsrg'])
-        print s.hasInriaTag(i,SanskritBase.SanskritObject('adhi'),g)
+        g=set(args.tag_set)
+        print s.hasInriaTag(i,SanskritBase.SanskritObject(args.base),g)
     main()
