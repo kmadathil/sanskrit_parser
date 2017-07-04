@@ -38,16 +38,31 @@ class SanskritLexicalAnalyzer(object):
             l=[(li[0],set(li[1:])) for li in l]
             return l
     def hasInriaTag(self,obj,name,tagset):
+        """ Check if word matches Inria-style lexical tags
+
+            Params:
+                obj(SanskritObject): word
+                name(str): name in Inria tag
+                tagset(set): set of Inria tag elements
+            Returns
+                list: List of (base, tagset) pairs for obj that 
+                      match (name,tagset), or None
+        """
         l = self.getInriaLexicalTags(obj)
         assert (name is not None) or (tagset is not None)
         r = []
         for li in l:
+            # Name is none, or name matches
+            # Tagset is None, or all its elements are found in Inria tagset
             if ((name is None) or\
                 name.transcoded(SanskritBase.SLP1)==li[0]) and \
                ((tagset is None) or\
                 reduce(lambda x,y: x and y,[s in li[1] for s in tagset])):
                r.append(li)
-        return r
+        if r==[]:
+            return None
+        else:
+            return r
             
 if __name__ == "__main__":
     import argparse
