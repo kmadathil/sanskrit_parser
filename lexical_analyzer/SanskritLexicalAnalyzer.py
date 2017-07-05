@@ -23,18 +23,18 @@ class SanskritLexicalAnalyzer(object):
 
         # Borrowed from https://github.com/drdhaval2785/samasasplitter/split.py
         # Thank you, Dr. Dhaval Patel!
-        self.sandhi_map = dict( [
-            ('A',('A_','a_a','a_a','A_A','A_A','A_A')),
-            ('I',('I_','i_i','i_i','I_I','I_I')),
-            ('U',('U_','u_u','u_u','U_U','U_U')),
-            ('F',('F_','f_f','f_f','x_x','F_F','x_x','F_F')),
-            ('e',('e_','e_e','a_a','a_a','A_A','A_A')),
-            ('o',('o_','o_o','a_a','a_a','A_A','A_A','aH_','aH_a','a_a')),
-            ('E',('E_','a_a','A_A','a_a','A_A')),
-            ('O',('O_','a_a','A_A','a_a','A_A')),
-            ('ar',('af','ar')),  # Why this?
-            ('d',('t_','d_'),),
-            ('H',('H_','s_'),),
+        self.sandhi_map = dict([
+            ('A',('A_','a_a','a_A','A_a','A_A','As_')),
+            ('I',('I_','i_i','i_I','I_i','I_I')),
+            ('U',('U_','u_u','u_U','U_u','U_U')),
+            ('F',('F_','f_f','f_x','x_f','F_x','x_F','F_F')),
+            ('e',('e_','e_a','a_i','a_I','A_i','A_I')),
+            ('o',('o_','o_a','a_u','a_U','A_u','A_U','aH_','aH_a','a_s')),
+            ('E',('E_','a_e','A_e','a_E','A_E')),
+            ('O',('O_','a_o','A_o','a_O','A_O')),
+            ('ar',('af','ar')),# FIXME Why is this
+            ('d',('t_','d_')),
+            ('H',('H_','s_')),
             ('S',('S_','s_','H_')),
             ('M',('m_','M_')),
             ('y',('y_','i_','I_')),
@@ -44,13 +44,13 @@ class SanskritLexicalAnalyzer(object):
             ('n',('n_','M_')),
             ('m',('m_','M_')),
             ('v',('v_','u_','U_')),
-            ('r',('r_','s_','H_')),] )
+            ('r',('r_','s_','H_'))])
         # FIXME : check if this covers all combos and annotate with sutras
         # Can't see the rAmAH + iha = rAmA iha / rAmAy iha options
         # Ditto for rAme iha = rama iha / ramayiha etc.
         # But this is a start.
         # FIXME: Lack of right context in this map worries me.
-        # Can't put a finger to it right now.
+        # Can't put a finger on it right now.
         
         self.tagmap = {
              'प्राथमिकः':'v-cj-prim',
@@ -220,10 +220,10 @@ class SanskritLexicalAnalyzer(object):
         if debug:
             print "Splitting ", s
         def _is_valid_word(ss):
-            r = sanskritmark.analyser(ss,split=False)
-            if r=="????":
-                r=False
-            self.tag_cache[ss]=r
+            # r = sanskritmark.analyser(ss,split=False)
+            # if r=="????":
+            #     r=False
+            r = sanskritmark.quicksearch(ss)
             return r
         splits = []
         
@@ -246,10 +246,12 @@ class SanskritLexicalAnalyzer(object):
             if c in self.sandhi_map: 
                 for cm in self.sandhi_map[c]:
                     cml,cmr=cm.split("_")
-                    # FIXME check added to prevent infinite loops like A-A_A etc.
-                    # Check if this causes real problems
-                    if rsstr: # Non-null, no problem
-                        s_c_list.append([lsstr[0:-1]+cml, cmr+rsstr])
+                    if rsstr:
+                        crsstr = cmr + rsstr
+                        # FIXME check added to prevent infinite loops like A-A_A etc.
+                        # Check if this causes real problems
+                        if crsstr != s:
+                            s_c_list.append([lsstr[0:-1]+cml, crsstr])
                     else:   #Null, do not prepend to rsstr
                         # Insert only if necessary to avoid dupes
                         if [lsstr[0:-1]+cml, None] not in s_c_list: 
@@ -309,7 +311,12 @@ if __name__ == "__main__":
         print args.data
  
         s=SanskritLexicalAnalyzer()
-        i=SanskritBase.SanskritObject(args.data,encoding=args.input_encoding)
+        if args.input_encoding is None:
+            ie = None
+        else:
+            ie = SanskritBase.SCHEMES[args.input_encoding]
+        i=SanskritBase.SanskritObject(args.data,encoding=ie)
+        print i.transcoded(SanskritBase.SLP1)
         if not args.split:
             ts=s.getInriaLexicalTags(i)
             print ts
@@ -319,9 +326,9 @@ if __name__ == "__main__":
                 print s.hasInriaTag(i,SanskritBase.SanskritObject(args.base),g)
         else:
             from time import strftime
-            print "Start split:", strftime("%a, %d %b %Y %H:%M:%S")
+            print "Start split:", strftime("%a, %d %b %Y %H:%M:%S.%f")
             splits=s.getSandhiSplits(i,debug=args.debug)
-            print "End split:", strftime("%a, %d %b %Y %H:%M:%S")
+            print "End split:", strftime("%a, %d %b %Y %H:%M:%S.%f")
             print splits
 
     main()
