@@ -196,7 +196,7 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,debug=False):
+    def getSandhiSplits(self,o,flatten=True,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
@@ -204,10 +204,38 @@ class SanskritLexicalAnalyzer(object):
             Returns:
               list : Hierarchical list of all possible splits
         '''
+        def _flatten(ls):
+            ''' Flatten a hierachical set of sandhi splits '''
+            #print "Flattening:",ls
+            r = []
+            # First element is not a list
+            if not isinstance(ls[0],list):
+                if ls[1] is None:
+                    r = [ls[0:1]]
+                else:
+                    #print "LS[0]",ls[0]
+                    rtmp = _flatten(ls[1])
+                    #print "RTMP:",rtmp
+                    for rte in rtmp:
+                        re = []
+                        #print "RTE:",rte
+                        re.append(ls[0])
+                        re.extend(rte)
+                        #print "RE:",re
+                        r.append(re)
+            else:
+                for i in ls:
+                    r.extend(_flatten(i))
+            #print "R:",r
+            return r
         # Transform to internal canonical form
         s = o.transcoded(SanskritBase.SLP1)
-        return self._possible_splits(s,debug)
-    
+        ps = self._possible_splits(s,debug)
+        if flatten:
+            return _flatten(ps)
+        else:
+            return ps
+        
     def _possible_splits(self,s,debug=False):
         ''' private method to dynamically compute all sandhi splits
 
@@ -308,7 +336,7 @@ if __name__ == "__main__":
 
     def main():
         args=getArgs()
-        print args.data
+        print "Input String:", args.data
  
         s=SanskritLexicalAnalyzer()
         if args.input_encoding is None:
@@ -316,7 +344,7 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print i.transcoded(SanskritBase.SLP1)
+        print "Input String in SLP1:",i.transcoded(SanskritBase.SLP1)
         if not args.split:
             ts=s.getInriaLexicalTags(i)
             print ts
@@ -325,10 +353,10 @@ if __name__ == "__main__":
                     g=set(args.tag_set)
                 print s.hasInriaTag(i,SanskritBase.SanskritObject(args.base),g)
         else:
-            from time import strftime
-            print "Start split:", strftime("%a, %d %b %Y %H:%M:%S.%f")
+            import datetime
+            print "Start split:", datetime.datetime.now()
             splits=s.getSandhiSplits(i,debug=args.debug)
-            print "End split:", strftime("%a, %d %b %Y %H:%M:%S.%f")
+            print "End split:", datetime.datetime.now()
             print splits
 
     main()
