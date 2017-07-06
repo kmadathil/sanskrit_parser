@@ -196,7 +196,7 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,flatten=True,debug=False):
+    def getSandhiSplits(self,o,flatten=True,sort=True,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
@@ -232,9 +232,12 @@ class SanskritLexicalAnalyzer(object):
         s = o.transcoded(SanskritBase.SLP1)
         ps = self._possible_splits(s,debug)
         if flatten:
-            return _flatten(ps)
-        else:
-            return ps
+            ps=_flatten(ps)
+            if sort:
+                # Sort by descending order longest string in split 
+                ps.sort(key=lambda x:max(map(len,x)))
+                ps.reverse()
+        return ps
         
     def _possible_splits(self,s,debug=False):
         ''' private method to dynamically compute all sandhi splits
@@ -331,6 +334,7 @@ if __name__ == "__main__":
         # Filter by tag set
         parser.add_argument('--tag-set',type=str,default=None,nargs="+")
         parser.add_argument('--split',action='store_true')
+        parser.add_argument('--no-sort',action='store_true')
         parser.add_argument('--debug',action='store_true')
         return parser.parse_args()
 
@@ -355,7 +359,7 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start split:", datetime.datetime.now()
-            splits=s.getSandhiSplits(i,debug=args.debug)
+            splits=s.getSandhiSplits(i,sort=not args.no_sort,debug=args.debug)
             print "End split:", datetime.datetime.now()
             print splits
 
