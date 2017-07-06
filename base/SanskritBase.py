@@ -22,21 +22,21 @@ WX = sanscript.WX
 
 # Dict defined so autodetect can work
 SCHEMES={
-    'BENGALI':BENGALI,
-    'DEVANAGARI':DEVANAGARI,
-    'GUJARATI':GUJARATI,
-    'GURMUKHI':GURMUKHI,
-    'KANNADA':KANNADA,
-    'MALAYALAM':MALAYALAM,
-    'ORIYA':ORIYA,
-    'TAMIL':TAMIL,
-    'TELUGU':TELUGU,
+    'Bengali':BENGALI,
+    'Devanagari':DEVANAGARI,
+    'Gujarati':GUJARATI,
+    'Gurmukhi':GURMUKHI,
+    'Kannada':KANNADA,
+    'Malayalam':MALAYALAM,
+    'Oriya':ORIYA,
+    'Tamil':TAMIL,
+    'Telugu':TELUGU,
     'HK':HK,
     'IAST':IAST,
     'ITRANS':ITRANS,
-    'KOLKATA':KOLKATA,
+    'Kolkata':KOLKATA,
     'SLP1':SLP1,
-    'VELTHUIS':VELTHUIS,
+    'Velthuis':VELTHUIS,
     'WX':WX
 }
 
