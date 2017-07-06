@@ -30,9 +30,9 @@ class SanskritLexicalAnalyzer(object):
             ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
             ((None,'A','[^kKcCtTwWSzs]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
             ((None,'a','[^akKcCtTwWSzs]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
-            ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')),
-            ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')),
-            ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')),
+            ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')), # akaH savarNe dIrghaH 
+            ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')), # akaH savarNe dIrghaH
+            ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')), # akaH savarNe dIrghaH
             ((None,'e','[^ieouEOfFxX]'),('e_a','a_i','a_I','A_i','A_I')), # AdguNaH
             ((None,'o','[^ieouEOfFxX]'),('o_o','a_u','a_U','A_u','A_U')), # AdguNaH
             ((None,'o','[^ieouEOfFxXkKpP]'),('as_','as_a')), # sasajusho ruH, ato rorapludAdaplute, hashi cha
@@ -43,19 +43,20 @@ class SanskritLexicalAnalyzer(object):
             (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
             ('d',('t_','d_')), # Partial jhalAM jhasho'nte
             ('g',('k_','g_')), # Partial jhalAM jhasho'nte
-            ((None,'H','[kKpPtTwW]'),('s_','r_')),
-            ((None,'s','[tTkKpP]'),('s_','r_')),
-            ((None,'z','[wWkKpP]'),('s_','r_')), # Does this overdo things?
-            ((None,'S','[cC]'),('s_','r_')), 
-            (('[iIuUfFxX]','S',None),('s_',)),
-            ('M',('m_','M_')),
+            ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp va
+            ((None,'s','[tTkKpP]'),('s_','r_')), # visarjanIyasya sa
+            # Does this overdo things?
+            ((None,'z','[wWkKpP]'),('s_','r_')), # visarjanIyasya sa, ShTuNa Shtu
+            ((None,'S','[cC]'),('s_','r_')), # visarjanIyasya sa, schuna schu
+            (('[iIuUfFxX]','S',None),('s_',)), # apadAntasya mUrdhanyaH, iNkoH
+            ('M',('m_','M_')), # mo'nusvAraH
             ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
             ((None,'v','[aAuUeEoO]'),('u_','U_')),  # iko yaNachi
-            ('N',('N_','M_')),
-            ('Y',('Y_','M_')),
-            ('R',('R_','M_')),
-            ('n',('n_','M_')),
-            ('m',('m_','M_')),
+            ('N',('N_','M_')), # anusvArasya yayi pararavarNaH
+            ('Y',('Y_','M_')), # do
+            ('R',('R_','M_')), # do
+            ('n',('n_','M_')), # do
+            ('m',('m_','M_')), # do
             ((None,'H','$'),('s_','r_')), # Visarga at the end
             ('s',None), # Forbidden to split at an s except for cases already matched
             ('S',None), # Forbidden to split at an S except for cases already matched
