@@ -7,10 +7,14 @@
 
     Heavily uses https://github.com/drdhaval2785/inriaxmlwrapper/sanskritmark
     Thank you, Dr. Dhaval Patel!
+
+    Based on Linguistic data released by Gerard Huet (Thank you!)
+    http://sanskrit.rocq.inria.fr/DATA/XML
 """
 
 import base.SanskritBase as SanskritBase
 import sanskritmark
+import re
 
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanksrit lexical analysis. 
@@ -21,36 +25,44 @@ class SanskritLexicalAnalyzer(object):
     def __init__(self):
         self.dynamic_scoreboard = {}
 
-        # Borrowed from https://github.com/drdhaval2785/samasasplitter/split.py
-        # Thank you, Dr. Dhaval Patel!
-        self.sandhi_map = dict([
-            ('A',('A_','a_a','a_A','A_a','A_A','As_')),
-            ('I',('I_','i_i','i_I','I_i','I_I')),
-            ('U',('U_','u_u','u_U','U_u','U_U')),
-            ('F',('F_','f_f','f_x','x_f','F_x','x_F','F_F')),
-            ('e',('e_','e_a','a_i','a_I','A_i','A_I')),
-            ('o',('o_','o_a','a_u','a_U','A_u','A_U','aH_','aH_a','a_s')),
-            ('E',('E_','a_e','A_e','a_E','A_E')),
-            ('O',('O_','a_o','A_o','a_O','A_O')),
-            ('ar',('af','ar')),# FIXME Why is this
-            ('d',('t_','d_')),
-            ('H',('H_','s_')),
-            ('S',('S_','s_','H_')),
+        # Context Aware Sandhi Split map
+        self.sandhi_context_map = dict([
+            ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
+            ((None,'A','[^kKcCtTwWSzs]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
+            ((None,'a','[^akKcCtTwWSzs]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
+            ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')),
+            ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')),
+            ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')),
+            ((None,'e','[^ieouEOfFxX]'),('e_a','a_i','a_I','A_i','A_I')), # AdguNaH
+            ((None,'o','[^ieouEOfFxX]'),('o_o','a_u','a_U','A_u','A_U')), # AdguNaH
+            ((None,'o','[^ieouEOfFxXkKpP]'),('as_','as_a')), # sasajusho ruH, ato rorapludAdaplute, hashi cha
+            ((None,'E','[^ieouEOfFxX]'),('E_E','a_e','A_e','a_E','A_E')), # vRddhirechi
+            ((None,'O','[^ieouEOfFxX]'),('O_O','a_o','A_o','a_O','A_O')), # vRddhirechi
+            (('a','r','[^ieouEOfFxX]'),('f_',)), # uraN raparaH
+            (('a','l','[^ieouEOfFxX]'),('x_',)), # uraN raparaH
+            (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
+            ('d',('t_','d_')), # Partial jhalAM jhasho'nte
+            ('g',('k_','g_')), # Partial jhalAM jhasho'nte
+            ((None,'H','[kKpPtTwW]'),('s_','r_')),
+            ((None,'s','[tTkKpP]'),('s_','r_')),
+            ((None,'z','[wWkKpP]'),('s_','r_')), # Does this overdo things?
+            ((None,'S','[cC]'),('s_','r_')), 
+            (('[iIuUfFxX]','S',None),('s_',)),
             ('M',('m_','M_')),
-            ('y',('y_','i_','I_')),
+            ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
+            ((None,'v','[aAuUeEoO]'),('u_','U_')),  # iko yaNachi
             ('N',('N_','M_')),
             ('Y',('Y_','M_')),
             ('R',('R_','M_')),
             ('n',('n_','M_')),
             ('m',('m_','M_')),
-            ('v',('v_','u_','U_')),
-            ('r',('r_','s_','H_'))])
-        # FIXME : check if this covers all combos and annotate with sutras
-        # Can't see the rAmAH + iha = rAmA iha / rAmAy iha options
-        # Ditto for rAme iha = rama iha / ramayiha etc.
-        # But this is a start.
-        # FIXME: Lack of right context in this map worries me.
-        # Can't put a finger on it right now.
+            ((None,'H','$'),('s_','r_')), # Visarga at the end
+            ('s',None), # Forbidden to split at an s except for cases already matched
+            ('S',None), # Forbidden to split at an S except for cases already matched
+            ('z',None), # Forbidden to split at an z except for cases already matched
+       ])
+        # FIXME: Missing eco ayavAyAvaH , more jhalAM jhasho, lopashshAkalyasya
+        # FIXME: Lots more hal sandhi missing
         
         self.tagmap = {
              'प्राथमिकः':'v-cj-prim',
@@ -273,22 +285,49 @@ class SanskritLexicalAnalyzer(object):
                 print "Left, Right substrings = {} {}".format(lsstr,rsstr)
             #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
             s_c_list = []
-            
-            if c in self.sandhi_map: 
-                for cm in self.sandhi_map[c]:
-                    cml,cmr=cm.split("_")
-                    if rsstr:
-                        crsstr = cmr + rsstr
-                        # FIXME check added to prevent infinite loops like A-A_A etc.
-                        # Check if this causes real problems
-                        if crsstr != s:
-                            s_c_list.append([lsstr[0:-1]+cml, crsstr])
-                    else:   #Null, do not prepend to rsstr
-                        # Insert only if necessary to avoid dupes
-                        if [lsstr[0:-1]+cml, None] not in s_c_list: 
-                            s_c_list.append([lsstr[0:-1]+cml, None])
+
+            # Unconditional Sandhi reversal
+            if c in self.sandhi_context_map:
+                if self.sandhi_context_map[c] is not None: # Not a forbidden split
+                    for cm in self.sandhi_context_map[c]:
+                        cml,cmr=cm.split("_")
+                        if rsstr:
+                            crsstr = cmr + rsstr
+                            # FIXME check added to prevent infinite loops like A-A_A etc.
+                            # Check if this causes real problems
+                            if crsstr != s:
+                                s_c_list.append([lsstr[0:-1]+cml, crsstr])
+                        else:   #Null, do not prepend to rsstr
+                            # Insert only if necessary to avoid dupes
+                            if [lsstr[0:-1]+cml, None] not in s_c_list: 
+                                s_c_list.append([lsstr[0:-1]+cml, None])
             else:
                 s_c_list.append([lsstr,rsstr])
+                
+
+            # Conditional (context sensitive sandhi reversal)
+            for csm in self.sandhi_context_map:
+                if isinstance(csm,tuple):
+                    assert len(csm)==3
+                    cmatch=re.match(csm[1],lsstr[-1])
+                    if cmatch:
+                        lmatch=(csm[0] is None) or ((len(lsstr)>1) and re.match(csm[0],lsstr[-2]))
+                        rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
+                                                    (not len(rsstr)) and (csm[2]=='$'))
+                        if rmatch and lmatch:
+                            if debug:
+                                print "Context Sandhi match:",csm,lsstr,rsstr
+                            for cm in self.sandhi_context_map[csm]:
+                                if debug:
+                                    print "Trying:",cm
+                                cml,cmr=cm.split("_")
+                                crsstr = cmr + rsstr
+                                # FIXME check added to prevent infinite loops like A-A_A etc.
+                                # Check if this causes real problems
+                                if crsstr != s:
+                                    s_c_list.append([lsstr[0:-1]+cml, crsstr])
+
+                                        
             if debug:
                 print "s_c_list:", s_c_list
             for (s_c_left,s_c_right) in s_c_list:
@@ -364,3 +403,36 @@ if __name__ == "__main__":
             print splits
 
     main()
+
+
+        # # Borrowed from https://github.com/drdhaval2785/samasasplitter/split.py
+        # # Thank you, Dr. Dhaval Patel!
+        # self.sandhi_map = dict([
+        #     ('A',('A_','a_a','a_A','A_a','A_A','As_')),
+        #     ('I',('I_','i_i','i_I','I_i','I_I')),
+        #     ('U',('U_','u_u','u_U','U_u','U_U')),
+        #     ('F',('F_','f_f','f_x','x_f','F_x','x_F','F_F')),
+        #     ('e',('e_','e_a','a_i','a_I','A_i','A_I')),
+        #     ('o',('o_','o_a','a_u','a_U','A_u','A_U','aH_','aH_a','a_s')),
+        #     ('E',('E_','a_e','A_e','a_E','A_E')),
+        #     ('O',('O_','a_o','A_o','a_O','A_O')),
+        #     ('ar',('af','ar')),
+        #     ('d',('t_','d_')),
+        #     ('H',('H_','s_')),
+        #     ('S',('S_','s_','H_')),
+        #     ('M',('m_','M_')),
+        #     ('y',('y_','i_','I_')),
+        #     ('N',('N_','M_')),
+        #     ('Y',('Y_','M_')),
+        #     ('R',('R_','M_')),
+        #     ('n',('n_','M_')),
+        #     ('m',('m_','M_')),
+        #     ('v',('v_','u_','U_')),
+        #     ('r',('r_','s_','H_'))])
+        # # FIXME : check if this covers all combos and annotate with sutras
+        # # Can't see the rAmAH + iha = rAmA iha / rAmAy iha options
+        # # Ditto for rAme iha = rama iha / ramayiha etc.
+        # # But this is a start.
+        # # FIXME: Lack of right context in this map worries me.
+        # # Can't put a finger on it right now.
+        
