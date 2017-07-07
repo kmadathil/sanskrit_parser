@@ -64,8 +64,12 @@ class SanskritLexicalAnalyzer(object):
             ((None,'Ay','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH
             ((None,'av','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH
             ((None,'Av','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH
+            ((None,'a','[aAiIuUEoO]'),('e_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'a','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
        ])
-        # FIXME: Missing eco ayavAyAvaH , more jhalAM jhasho, lopashshAkalyasya
+        # FIXME: more jhalAM jhasho, lopashshAkalyasya
         # FIXME: Lots more hal sandhi missing
         
     tagmap = {
