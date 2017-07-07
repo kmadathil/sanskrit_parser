@@ -61,14 +61,14 @@ class SanskritLexicalAnalyzer(object):
             ('s',None), # Forbidden to split at an s except for cases already matched
             ('S',None), # Forbidden to split at an S except for cases already matched
             ('z',None), # Forbidden to split at an z except for cases already matched
-            ((None,'ay','[aAiIuUEoO]'),('e_',)), # echo ayavAyAvaH
-            ((None,'Ay','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH
-            ((None,'av','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH
-            ((None,'Av','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH
-            ((None,'a','[aAiIuUEoO]'),('e_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'A','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'a','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'A','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'ay','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH
+            ((None,'Ay','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH
+            ((None,'av','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH
+            ((None,'Av','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH
+            ((None,'a','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'a','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
             ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm
             # FIXME: Check if these will happen
             #((None,'kK',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
