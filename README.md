@@ -30,6 +30,9 @@ Sandhi splitting subroutine
        Action: Perform a sandhi split at given input phoneme number
        Ouptut:  left and right sequences (multiple options will be output). 
        No semantic validation will be performed (up to higher levels)
+       
+#### Current Status
+basic version working. Needs to be improved and sandhi generation needs to be added for completeness
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -38,6 +41,10 @@ Sandhi splitting subroutine
 * nAmadhAtu forms
 * Krt forms  - forwards and backwards
 * Taddhita forms  - forwards and backwards
+
+#### Current Status
+To be done.
+However, we have a usable solution with inriaxmlwrapper + Prof. Gerard Huet's forms database to act as queriable form database. That gives us the bare minimum we need from Level 1, so Level 2 can work.  
 
 ### Level 2
 
@@ -60,6 +67,10 @@ Sanskrit Sentence
 #### Output
 All semantically valid sandhi split sequences
 
+#### Current Status
+Working - see SanksritLexicalAnalyzer.py
+Caveat - uses inriaxmlwrapper as a level 1 solution, so we're limited to what Prof. Huet's database has.
+
 ###    Level 3
 #### Input
 Semantically valid sequence of tagged padas (output of Level 1)
@@ -76,6 +87,8 @@ Semantically valid sequence of tagged padas (output of Level 1)
 1.  Is the input sequence a morphologically valid sentence?
 1.  Enhanced sequence of tagged padas, with karakas tagged, and a dependency graph associated
 
+#### Current Status
+Not begun
 
 ## Seq2Seq based Sanskrit Parser
 
@@ -91,4 +104,7 @@ Sanskrit sentence
 Sentence split into padas with tags
 ### Train/Test data
 DCS corpus , converted by Vishvas Vasuki
+
+#### Current Status
+Not begun
 
