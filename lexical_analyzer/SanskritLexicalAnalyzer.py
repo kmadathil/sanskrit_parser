@@ -50,7 +50,7 @@ class SanskritLexicalAnalyzer(object):
             (('[iIuUfFxX]','S',None),('s_',)), # apadAntasya mUrdhanyaH, iNkoH
             ('M',('m_','M_')), # mo'nusvAraH
             ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
-            ((None,'v','[aAuUeEoO]'),('u_','U_')),  # iko yaNachi
+            ((None,'v','[aAiIeEoO]'),('u_','U_')),  # iko yaNachi
             ('N',('N_','M_')), # anusvArasya yayi pararavarNaH
             ('Y',('Y_','M_')), # do
             ('R',('R_','M_')), # do
@@ -60,6 +60,10 @@ class SanskritLexicalAnalyzer(object):
             ('s',None), # Forbidden to split at an s except for cases already matched
             ('S',None), # Forbidden to split at an S except for cases already matched
             ('z',None), # Forbidden to split at an z except for cases already matched
+            ((None,'ay','[aAiIuUEoO]'),('e_',)), # echo ayavAyAvaH
+            ((None,'Ay','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH
+            ((None,'av','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH
+            ((None,'Av','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH
        ])
         # FIXME: Missing eco ayavAyAvaH , more jhalAM jhasho, lopashshAkalyasya
         # FIXME: Lots more hal sandhi missing
@@ -245,7 +249,9 @@ class SanskritLexicalAnalyzer(object):
         # Transform to internal canonical form
         s = o.transcoded(SanskritBase.SLP1)
         ps = self._possible_splits(s,debug)
-        if flatten:
+        if not ps:
+            ps = None
+        elif flatten:
             ps=_flatten(ps)
             if sort:
                 # Sort by ascending order of split length
@@ -289,44 +295,61 @@ class SanskritLexicalAnalyzer(object):
 
             # Unconditional Sandhi reversal
             if c in self.sandhi_context_map:
+                # Unconditional/Forbidden splits are marked by direct keys
                 if self.sandhi_context_map[c] is not None: # Not a forbidden split
                     for cm in self.sandhi_context_map[c]:
+                        # Split into left/right context additions
                         cml,cmr=cm.split("_")
-                        if rsstr:
+                        if rsstr: # Right context is non-empty
+                            # Addition to right context
                             crsstr = cmr + rsstr
-                            # FIXME check added to prevent infinite loops like A-A_A etc.
+                            # Addition to left context
+                            clsstr = lsstr[0:-1]+cml
+                            # FIXME check added to prevent loops like A-A_A etc.
                             # Check if this causes real problems
                             if crsstr != s:
-                                s_c_list.append([lsstr[0:-1]+cml, crsstr])
-                        else:   #Null, do not prepend to rsstr
-                            # Insert only if necessary to avoid dupes
+                                # Addition to left context
+                                s_c_list.append([clsstr, crsstr])
+                        else:   #Null right context, do not prepend to rsstr
+                            # Insert only if necessary to avoid duplicates
                             if [lsstr[0:-1]+cml, None] not in s_c_list: 
                                 s_c_list.append([lsstr[0:-1]+cml, None])
             else:
+                # No direct key, split is not forbidden
                 s_c_list.append([lsstr,rsstr])
                 
 
             # Conditional (context sensitive sandhi reversal)
             for csm in self.sandhi_context_map:
+                # Tuple indicates a context-sensitive split
                 if isinstance(csm,tuple):
-                    assert len(csm)==3
-                    cmatch=re.match(csm[1],lsstr[-1])
+                    assert len(csm)==3 
+                    # Match end varnas of left string to key.
+                    # How many varnas to match depends on key size
+                    cmatch=(csm[1]==lsstr[-len(csm[1]):])
                     if cmatch:
+                        # If left key is not None, check if left context matches
                         lmatch=(csm[0] is None) or ((len(lsstr)>1) and re.match(csm[0],lsstr[-2]))
+                        # If right key is not None, check if right context matches or is None
+                        # Special match for empty right context = $
                         rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
                                                     (not len(rsstr)) and (csm[2]=='$'))
-                        if rmatch and lmatch:
+                        if rmatch and lmatch: # Both match
                             if debug:
                                 print "Context Sandhi match:",csm,lsstr,rsstr
+                            # Apply each replacement
                             for cm in self.sandhi_context_map[csm]:
                                 if debug:
                                     print "Trying:",cm
+                                # Split into left and right additions
                                 cml,cmr=cm.split("_")
+                                # Add to right context
                                 crsstr = cmr + rsstr
-                                # FIXME check added to prevent infinite loops like A-A_A etc.
+                                clsstr = lsstr[0:-len(csm[1])] + cml
+                                # FIXME check added to prevent loops like A-A_A etc.
                                 # Check if this causes real problems
                                 if crsstr != s:
-                                    s_c_list.append([lsstr[0:-1]+cml, crsstr])
+                                    s_c_list.append([clsstr, crsstr])
 
                                         
             if debug:
