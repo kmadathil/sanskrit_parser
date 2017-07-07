@@ -32,7 +32,7 @@ Sandhi splitting subroutine
        No semantic validation will be performed (up to higher levels)
        
 #### Current Status
-basic version working. Needs to be improved and sandhi generation needs to be added for completeness
+Basic version working. Needs to be improved and sandhi generation needs to be added for completeness
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -44,6 +44,7 @@ basic version working. Needs to be improved and sandhi generation needs to be ad
 
 #### Current Status
 To be done.
+
 However, we have a usable solution with inriaxmlwrapper + Prof. Gerard Huet's forms database to act as queriable form database. That gives us the bare minimum we need from Level 1, so Level 2 can work.  
 
 ### Level 2
@@ -69,6 +70,7 @@ All semantically valid sandhi split sequences
 
 #### Current Status
 Working - see SanksritLexicalAnalyzer.py
+
 Caveat - uses inriaxmlwrapper as a level 1 solution, so we're limited to what Prof. Huet's database has.
 
 ###    Level 3
