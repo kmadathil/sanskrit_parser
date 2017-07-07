@@ -1,0 +1,42 @@
+#------------------------------
+# How to write the sandhi rules
+#------------------------------
+# Lines beginning with a # or empty lines are skipped
+# Each line should contain one rule written in devanagari 
+# (easier to read/check for a human)
+# Each rule is typically left_1 + left_2 = right_1 / right_2 / ...
+# left_1 and left_2 can specify lists. These will be 
+# expanded by the parser to generate a product of all possible combinations
+# E.g. [अ, इ, उ, ऋ][ ङ्, ञ्, न्] + [अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ए, ऐ, ओ, औ]
+# right uses Python's format string specification to refer to
+# elements from the left expression. 
+# Note that even a single character on the left is treated as a list, so be 
+# careful with indexing in the right expression.
+# E.g. एचोऽयवायावः / यान्तवान्तादेशः would be specified as 
+# ए + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अय्{1} (the ए would be considered as list 0)
+# Multiple right expressions can be specified by separating them with "/"
+# Spaces at the beginning and end of expressions are stripped,
+# but if they appear inside an expression, they will be preserved
+# E.g. the space in अ {1}  for एचोऽयवायावः + लोपः शाकल्यस्य will be retained
+
+
+# सवर्णदीर्घः
+# अकः सवर्णे दीर्घः
+[अ, आ] + [अ, आ] = आ
+[इ, ई] + [इ, ई] = ई
+[उ, ऊ] + [उ, ऊ] = ऊ
+[ऋ, ॠ, ऌ] + [ऋ, ॠ, ऌ] = ॠ
+
+# यान्तवान्तादेशः
+# एचोऽयवायावः + लोपः शाकल्यस्य
+ए + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अय्{1} / अ {1} / अ{1}
+ऐ + [अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = आय्{1} / आ {1} / आ{1}
+ओ + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अव्{1} / अ {1} / अ{1}
+औ + [अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = आव्{1} / आ {1} / आ{1}
+
+# वार्तिकम्
+# अक्षादूहिन्याम् उपसंख्यानम्
+अक्ष + ऊहिन् = अक्षौहिण्
+
+# ऋते च त्रीतीयासमासे
+अ + ऋत् = आर्त्
