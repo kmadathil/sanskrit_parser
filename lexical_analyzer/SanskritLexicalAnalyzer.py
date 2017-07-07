@@ -22,11 +22,10 @@ class SanskritLexicalAnalyzer(object):
         This class mostly reuses Dr. Dhaval Patel's work in wrapping
         Inria XML data 
     """
-    def __init__(self):
-        self.dynamic_scoreboard = {}
-
-        # Context Aware Sandhi Split map
-        self.sandhi_context_map = dict([
+    dynamic_scoreboard = {}
+    
+    # Context Aware Sandhi Split map
+    sandhi_context_map = dict([
             ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
             ((None,'A','[^kKcCtTwWSzs]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
             ((None,'a','[^akKcCtTwWSzs]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
@@ -65,7 +64,7 @@ class SanskritLexicalAnalyzer(object):
         # FIXME: Missing eco ayavAyAvaH , more jhalAM jhasho, lopashshAkalyasya
         # FIXME: Lots more hal sandhi missing
         
-        self.tagmap = {
+    tagmap = {
              'प्राथमिकः':'v-cj-prim',
              'णिजन्तः':'v-cj-ca',
              'यङन्तः':'v-cj-int',
@@ -152,8 +151,10 @@ class SanskritLexicalAnalyzer(object):
 	     'उपसर्गः':'upsrg'
             
         }
-        self.tag_cache = {}
-        
+    tag_cache = {}
+
+    def __init__(self):
+        pass
     def getInriaLexicalTags(self,obj):
         """ Get Inria-style lexical tags for a word
 
@@ -374,6 +375,7 @@ if __name__ == "__main__":
         parser.add_argument('--tag-set',type=str,default=None,nargs="+")
         parser.add_argument('--split',action='store_true')
         parser.add_argument('--no-sort',action='store_true')
+        parser.add_argument('--no-flatten',action='store_true')
         parser.add_argument('--debug',action='store_true')
         return parser.parse_args()
 
@@ -398,7 +400,7 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start split:", datetime.datetime.now()
-            splits=s.getSandhiSplits(i,sort=not args.no_sort,debug=args.debug)
+            splits=s.getSandhiSplits(i,flatten=not args.no_flatten,sort=not args.no_sort,debug=args.debug)
             print "End split:", datetime.datetime.now()
             print splits
 
