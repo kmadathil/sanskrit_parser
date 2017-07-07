@@ -69,8 +69,11 @@ class SanskritLexicalAnalyzer(object):
             ((None,'A','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
             ((None,'a','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
             ((None,'A','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            (('[kKgG]','G',None),('_h',)), # partial jhayo ho'nyatarasyAm 
-            ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
+            ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm
+            # FIXME: Check if these will happen
+            #((None,'kK',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
+            #((None,'wW',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
+            ((None,'qQ',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
        ])
         # FIXME: more jhalAM jhasho
         # FIXME: Lots more hal sandhi missing
