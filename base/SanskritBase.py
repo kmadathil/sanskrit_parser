@@ -51,8 +51,15 @@ class SanskritObject(object):
            encoding(str): As above
     
     """
-    def __init__(self,thing=None,encoding=None):
-        self.thing=thing
+    def __init__(self,thing=None,encoding=None,unicode_encoding='utf-8'):
+        assert isinstance(thing,basestring)
+        # Encode early, unicode everywhere, decode late is the philosophy
+        # However, we need to accept both unicode and non unicode strings
+        # We are udAramatiH 
+        if isinstance(thing,unicode):
+            self.thing=thing
+        else:
+            self.thing=unicode(thing,unicode_encoding)
         self.encoding=encoding
         if self.encoding is None:
             if thing is not None:
