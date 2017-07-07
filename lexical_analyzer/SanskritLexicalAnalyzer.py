@@ -42,6 +42,7 @@ class SanskritLexicalAnalyzer(object):
             (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
             ('d',('t_','d_')), # Partial jhalAM jhasho'nte
             ('g',('k_','g_')), # Partial jhalAM jhasho'nte
+            ('q',('w_','q_')), # Partial jhalAM jhasho'nte
             ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp vA
             ((None,'s','[tTkKpP]'),('s_','r_')), # visarjanIyasya sa
             # Does this overdo things?
@@ -51,11 +52,11 @@ class SanskritLexicalAnalyzer(object):
             ('M',('m_','M_')), # mo'nusvAraH
             ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
             ((None,'v','[aAiIeEoO]'),('u_','U_')),  # iko yaNachi
-            ('N',('N_','M_')), # anusvArasya yayi pararavarNaH
-            ('Y',('Y_','M_')), # do
-            ('R',('R_','M_')), # do
-            ('n',('n_','M_')), # do
-            ('m',('m_','M_')), # do
+            ('N',('N_','M_','m_')), # anusvArasya yayi pararavarNaH
+            ('Y',('Y_','M_','m_')), # do
+            ('R',('R_','M_','m_')), # do
+            ('n',('n_','M_','m_')), # do
+            ('m',('m_','M_','m_')), # do
             ((None,'H','$'),('s_','r_')), # Visarga at the end
             ('s',None), # Forbidden to split at an s except for cases already matched
             ('S',None), # Forbidden to split at an S except for cases already matched
@@ -68,8 +69,10 @@ class SanskritLexicalAnalyzer(object):
             ((None,'A','[aAiIuUeoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
             ((None,'a','[aAiIuUeEO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
             ((None,'A','[aAiIuUeEo]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            (('[kKgG]','G',None),('_h',)), # partial jhayo ho'nyatarasyAm 
+            ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
        ])
-        # FIXME: more jhalAM jhasho, lopashshAkalyasya
+        # FIXME: more jhalAM jhasho
         # FIXME: Lots more hal sandhi missing
         
     tagmap = {
