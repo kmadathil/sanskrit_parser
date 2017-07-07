@@ -43,7 +43,7 @@ class SanskritLexicalAnalyzer(object):
             (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
             ('d',('t_','d_')), # Partial jhalAM jhasho'nte
             ('g',('k_','g_')), # Partial jhalAM jhasho'nte
-            ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp va
+            ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp vA
             ((None,'s','[tTkKpP]'),('s_','r_')), # visarjanIyasya sa
             # Does this overdo things?
             ((None,'z','[wWkKpP]'),('s_','r_')), # visarjanIyasya sa, ShTuNa Shtu
@@ -335,7 +335,7 @@ class SanskritLexicalAnalyzer(object):
                 # Is the left side a valid word?
                 if _is_valid_word(s_c_left):
                     if debug:
-                        print "Valid left split: ", s_c_left, self.tag_cache[s_c_left]
+                        print "Valid left word: ", s_c_left
                     # For each split with a valid left part, check it there are valid splits of the right part
                     if s_c_right:
                         if debug:
@@ -357,14 +357,14 @@ class SanskritLexicalAnalyzer(object):
         return splits   
 
 if __name__ == "__main__":
-    import argparse
+    from argparse import ArgumentParser
     def getArgs():
         """
           Argparse routine. 
           Returns args variable
         """
         # Parser Setup
-        parser = argparse.ArgumentParser(description='Lexical Analyzer')
+        parser = ArgumentParser(description='Lexical Analyzer')
         # String to encode
         parser.add_argument('data',nargs="?",type=str,default="adhi")
         # Input Encoding (autodetect by default)
