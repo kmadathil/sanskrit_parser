@@ -247,9 +247,8 @@ class SanskritLexicalAnalyzer(object):
         if flatten:
             ps=_flatten(ps)
             if sort:
-                # Sort by descending order longest string in split 
-                ps.sort(key=lambda x:max(map(len,x)))
-                ps.reverse()
+                # Sort by ascending order of split length
+                ps.sort(key=lambda x:len(x))
         return ps
         
     def _possible_splits(self,s,debug=False):
