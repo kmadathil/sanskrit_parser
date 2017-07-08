@@ -4,3 +4,4 @@
 .settings
 .pydevproject
 .project
+*.log
