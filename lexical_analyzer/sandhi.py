@@ -30,7 +30,7 @@ import re
 import inspect
 import logging
 import datetime
-from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
+from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1, SCHEMES
 
 class Sandhi(object):
     """
@@ -69,19 +69,22 @@ class Sandhi(object):
         self.lc_len_max = max(self.lc_len_max, len(before[0]))
         self.rc_len_max = max(self.rc_len_max, len(before[1]))
     
-    def join(self, first, second):
+    def join(self, first_in, second_in):
         """
         Performs sandhi.
         **Warning**: May generate forms that are not lexically valid.
         
-        :param first: SLP1 encoded first word of the sandhi
-        :param second: SLP1 encoded first word of the sandhi
+        :param first_in: SanskritObject first word of the sandhi
+        :param second_in: SanskritObject word of the sandhi
         :return: list of strings of possible sandhi forms, or None if no sandhi can be performed 
         
         """
+        first = first_in.transcoded(SLP1)
+        second = second_in.transcoded(SLP1)
         self.logger.debug("Join: %s, %s", first, second)
         if first is None or len(first) == 0:
             return second
+        # FIXME Will we need to change this to handle mo'nusvAraH and similar forms?
         if second is None or len(second) == 0:
             return first
         left_chars = [first[i:] for i in range(max(0, len(first)-self.lc_len_max), len(first))]
@@ -101,16 +104,17 @@ class Sandhi(object):
         else:
             return joins
             
-    def split_at(self, word, idx):
+    def split_at(self, word_in, idx):
         """
         Split sandhi at the given index of word.
         **Warning**: Will generate splits that are not lexically valid.
         
-        :param word: SLP1 encoded word to split
+        :param word_in: SanskritObject word to split
         :param idx: position within word at which to try the split
         :return: list of list of strings of possible split forms, or None if no split can be performed 
         
         """
+        word = word_in.transcoded(SLP1)
         self.logger.debug("Split: %s, %d", word, idx)
         left_chars = [word[i:idx+1] for i in range(max(0, idx-self.lc_len_max), idx+1)]
         right_chars = [word[idx+1:idx+i] for i in range(1, min(self.rc_len_max, len(word)-idx)+1)]
@@ -122,7 +126,7 @@ class Sandhi(object):
             befores = self.backward[key]
             if befores:
                 for before in befores:
-                    self.logger.debug("Found split %s -> %s", before, key)
+                    self.logger.debug("Found split %s -> %s", key, before)
                     splits.append([ word[:idx+1-len(after[0])] + before[0], before[1] + word[idx+1+len(after[1]):] ])
         if len(splits) == 0:
             self.logger.debug("No split found")
@@ -144,6 +148,9 @@ class Sandhi(object):
         left_classes = re.split('\[(.*?)\]', before[0])
         self.logger.debug("Left classes = %s", left_classes)
         
+        # Split after forms into individual forms
+        afters = map(unicode.strip, afters.split("/"))
+        
         # Could have used list comprehension, but this is easier to read
         before_left = []
         for c in left_classes:
@@ -159,21 +166,17 @@ class Sandhi(object):
         else:
             before_right = [before[1].strip()]
         self.logger.debug("before_right iterator = %s", before_right)
-        for after in map(unicode.strip, afters.split("/")):
-            self.logger.debug("found after form %s", after)
-            for before_l in itertools.product(*before_left):
-                left = ''.join(before_l)
-                for right in before_right:
-                    left_right = (left, right)        
-                    a = after.format(*(list(before_l) + [right]))
-                    self.logger.debug("Final rule = %s -> %s", left_right, a)
-                    yield (left_right, a)
+        
+        for after, before_l, right in itertools.product(afters, itertools.product(*before_left), before_right):
+            left = ''.join(before_l)
+            left_right = (left, right)        
+            a = after.format(*(list(before_l) + [right]))
+            self.logger.debug("Final rule = %s -> %s", left_right, a)
+            yield (left_right, a)
 
     def add_rules_from_file(self, path):
         """
         Add sandhi rules from file.
-        Rules in the sandhi file are written in devanagari (for who would 
-        honestly WANT to read and write SLP1)
         Each line of the input file should contain one rule. E.g. अ + अ = आ
         Lines starting with a # are treated as comments and skipped. 
         Empty lines are ignored as well.        
@@ -210,65 +213,62 @@ class Sandhi(object):
                 continue
 
 if __name__ == "__main__":
-    # ---------------------------------------------------------------
-    # some sample test cases to show usage
-    # TODO move to pytest framwork with more extensive testing
-    # ---------------------------------------------------------------
-    def print_list(li):
-        if li:
-            for l in li:
-                if type(l) == list:
-                    l = ' '.join(l)
-                e = SanskritObject(l).transcoded(DEVANAGARI)
-                print "\t", e, "(SLP1:", l, ")"
-        else:
-            print "\t None"
-            
-    def test_join(first, second):
-        first_e = SanskritObject(first).transcoded(SLP1)
-        second_e = SanskritObject(second).transcoded(SLP1)
-        print first, u"+", second, u"= (SLP1:", first_e, "+", second_e, ")"
-        joins = sandhi.join(first_e, second_e)
-        print_list(joins)
-        
-    def test_split(word, pos):
-        print "split %s @ %d" % (word, pos)
-        splits = sandhi.split_at(SanskritObject(word).transcoded(SLP1), pos)
-        print_list(splits)
-            
-    def test():
-        print "-----------"
-        print "Test joins:"
-        print "-----------"
-        test_join(u"ते", u"एव")
-        test_join(u"तस्मिन्", u"इति")
-        test_join(u"अक्ष", u"ऊहिन्याम्")
-        test_join(u"सुख", u"ऋतेभ्यः")
-        
-        print "------------"
-        print "Test splits:"
-        print "------------"
-        test_split(u"तस्मिन्निति", 5)
-        test_split(u"दीर्घायुः", 4)
-        test_split(u"त एव", 2)
-        test_split(u"अक्षौहिण्यः", 3)
-        test_split(u"सुखार्तैः", 3)
+    from argparse import ArgumentParser
+    def getArgs():
+        """
+          Argparse routine. 
+          Returns args variable
+        """
+        # Parser Setup
+        parser = ArgumentParser(description='Sandhi Utility')
+        # Input Encoding (autodetect by default)
+        parser.add_argument('--input-encoding', type=str, default=None)
+        # Filter by tag set
+        parser.add_argument('--split', action='store_true')
+        parser.add_argument('--pos', type=int, default=5)
+        parser.add_argument('--join', action='store_true')
+        parser.add_argument('--loglevel', type=str, default="INFO")
+        # String to encode
+        parser.add_argument('word1', nargs="?", type=str, default="tasminniti")
+        parser.add_argument('word2', nargs="?", type=str, default="eva")
 
-    if 'PYTHONIOENCODING' not in os.environ or os.environ['PYTHONIOENCODING'] != 'UTF-8':
-        print "*******"
-        print "WARNING: PYTHONIOENCODING environment variable not detected or not 'UTF-8'"
-        print "If you see an error about not being able to decode a unicode character"
-        print "please set the PYTHONIOENCODING environment variable to 'UTF-8'"
-        print "*******"
-    logging.basicConfig(filename="sandhi.log", filemode = "wb", level=logging.DEBUG)
-    logging.info("---------------------------------------------------")
-    logging.info("Started processing at %s", datetime.datetime.now())
-    
-    sandhi = Sandhi()
-    test()
-      
-    logging.info("Finished processing at %s", datetime.datetime.now())
-    logging.info("---------------------------------------------------")
-    logging.shutdown()
-    
-    
+        return parser.parse_args()
+
+    def main():
+        args=getArgs()
+        if args.input_encoding is None:
+            ie = None
+        else:
+            ie = SCHEMES[args.input_encoding]
+        
+        # Setup logging
+        numeric_level = getattr(logging, args.loglevel.upper(), None)
+        if not isinstance(numeric_level, int):
+            raise ValueError('Invalid log level: %s' % args.loglevel)
+        logging.basicConfig(filename="sandhi.log", filemode = "wb", level = numeric_level)
+        logging.info("---------------------------------------------------")
+        logging.info("Started processing at %s", datetime.datetime.now())
+        
+        sandhi = Sandhi()
+        # if neither split nor join is chosen, just demo both
+        if not args.split and not args.join:
+            print "Neither split nor join option chosen. Here's a demo of both"
+            args.split = True
+            args.join = True
+        if args.split:
+            print "Splitting %s at %d" % (args.word1, args.pos)
+            word_in = SanskritObject(args.word1, encoding=ie)
+            splits = sandhi.split_at(word_in, args.pos)
+            print splits
+        if args.join:
+            print "Joining", args.word1, args.word2
+            first_in = SanskritObject(args.word1, encoding=ie)
+            second_in = SanskritObject(args.word2, encoding=ie)
+            joins = sandhi.join(first_in, second_in)
+            print joins
+        
+        logging.info("Finished processing at %s", datetime.datetime.now())
+        logging.info("---------------------------------------------------")
+        logging.shutdown()
+
+    main()

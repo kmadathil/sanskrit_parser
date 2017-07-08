@@ -18,13 +18,15 @@ def sandhiobj():
     return Sandhi()
 
 def test_sandhi_join(sandhiobj, sandhi_reference):
-    joins = sandhiobj.join(*(sandhi_reference[0]))
+    objs = map(lambda x:SanskritObject(x, encoding = SLP1), (sandhi_reference[0]))
+    joins = sandhiobj.join(*objs)
     assert sandhi_reference[1] in joins
 
 def test_sandhi_split(sandhiobj, sandhi_reference):
-    splits = sandhiobj.split_at(sandhi_reference[1], len(sandhi_reference[0][0]))
+    obj = SanskritObject(sandhi_reference[1], encoding=SLP1)
+    splits = sandhiobj.split_at(obj, len(sandhi_reference[0][0]))
     # In some cases the split may need to happen at len -1
-    splits1 = sandhiobj.split_at(sandhi_reference[1], len(sandhi_reference[0][0])-1)
+    splits1 = sandhiobj.split_at(obj, len(sandhi_reference[0][0])-1)
     if splits:
         splits.extend(splits1)
     else:
@@ -37,6 +39,9 @@ def load_reference_data():
     filename = os.path.join(base_dir, "sandhi_test_data/refs.txt")
     with codecs.open(filename, "rb", 'utf-8') as f:
         for line in f:
+            line = line.strip()
+            if line.startswith('#') or line == '':
+                continue
             ref = SanskritObject(line).transcoded(SLP1)
             if "=>" in line:
                 after, b = map(unicode.strip, ref.split("=>"))
