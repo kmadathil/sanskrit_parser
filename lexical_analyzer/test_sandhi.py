@@ -8,7 +8,7 @@ import codecs
 import os
 import inspect
 from sandhi import Sandhi
-from indic_transliteration import sanscript
+from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
 import logging
 
 # logging.basicConfig(filename="sandhi.log", filemode = "wb", level=logging.DEBUG)
@@ -37,16 +37,15 @@ def load_reference_data():
     filename = os.path.join(base_dir, "sandhi_test_data/refs.txt")
     with codecs.open(filename, "rb", 'utf-8') as f:
         for line in f:
+            ref = SanskritObject(line).transcoded(SLP1)
             if "=>" in line:
-                ref = sanscript.transliterate(line, sanscript.DEVANAGARI, sanscript.SLP1)
                 after, b = map(unicode.strip, ref.split("=>"))
-                before = map(unicode.strip, b.split('+'))
-                sandhi_references.append((before, after))
             elif "=" in line:
-                ref = sanscript.transliterate(line, sanscript.DEVANAGARI, sanscript.SLP1)
                 b, after = map(unicode.strip, ref.split("="))
-                before = map(unicode.strip, b.split('+'))
-                sandhi_references.append((before, after))
+            else:
+                continue
+            before = map(unicode.strip, b.split('+'))
+            sandhi_references.append((before, after))
 #     print sandhi_references
     return sandhi_references
 

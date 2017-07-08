@@ -30,10 +30,7 @@ import re
 import inspect
 import logging
 import datetime
-from indic_transliteration import sanscript
-
-# TODO Integrate with the SanskritObject class
-
+from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
 
 class Sandhi(object):
     """
@@ -191,7 +188,7 @@ class Sandhi(object):
                 if line.startswith('#') or line == '':
                     continue
                 self.logger.debug("Processing rule %s", line)
-                rule = sanscript.transliterate(line, sanscript.DEVANAGARI, sanscript.SLP1)
+                rule = SanskritObject(line).transcoded(SLP1)
                 for r in self.expand_rule(rule):
                     self.add_rule(*r)
                 
@@ -222,21 +219,21 @@ if __name__ == "__main__":
             for l in li:
                 if type(l) == list:
                     l = ' '.join(l)
-                e = sanscript.transliterate(l, sanscript.SLP1, sanscript.DEVANAGARI)
+                e = SanskritObject(l).transcoded(DEVANAGARI)
                 print "\t", e, "(SLP1:", l, ")"
         else:
             print "\t None"
             
     def test_join(first, second):
-        first_e = sanscript.transliterate(first, sanscript.DEVANAGARI, sanscript.SLP1)
-        second_e = sanscript.transliterate(second, sanscript.DEVANAGARI, sanscript.SLP1)
+        first_e = SanskritObject(first).transcoded(SLP1)
+        second_e = SanskritObject(second).transcoded(SLP1)
         print first, u"+", second, u"= (SLP1:", first_e, "+", second_e, ")"
         joins = sandhi.join(first_e, second_e)
         print_list(joins)
         
     def test_split(word, pos):
         print "split %s @ %d" % (word, pos)
-        splits = sandhi.split_at(sanscript.transliterate(word, sanscript.DEVANAGARI, sanscript.SLP1), pos)
+        splits = sandhi.split_at(SanskritObject(word).transcoded(SLP1), pos)
         print_list(splits)
             
     def test():
