@@ -5,6 +5,8 @@ Created on Jul 7, 2017
 '''
 import pytest
 import codecs
+import os
+import inspect
 from sandhi import Sandhi
 from indic_transliteration import sanscript
 import logging
@@ -31,7 +33,9 @@ def test_sandhi_split(sandhiobj, sandhi_reference):
 
 def load_reference_data():
     sandhi_references = []
-    with codecs.open("sandhi_test_data/refs.txt", "rb", 'utf-8') as f:
+    base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    filename = os.path.join(base_dir, "sandhi_test_data/refs.txt")
+    with codecs.open(filename, "rb", 'utf-8') as f:
         for line in f:
             if "=>" in line:
                 ref = sanscript.transliterate(line, sanscript.DEVANAGARI, sanscript.SLP1)
