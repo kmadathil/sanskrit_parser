@@ -57,11 +57,15 @@ class SanskritLexicalGraph(object):
         def _find_all_paths(graph, start, end, path=[]):
             if debug:
                 print "Finding path from:",start,end
-            if (start,end) in _cache:
-                if debug:
-                    print "Find all paths: Cache Hit:",start,end
-                return _cache[(start,end)]
-            path = path + [start]
+            # FIXME: this is somehow broken
+            #if (start,end) in _cache:
+            #    if debug:
+            #        print "Find all paths: Cache Hit:",start,end
+            #    return _cache[(start,end)]
+            if start is not None:
+                path = path + [start.transcoded(SanskritBase.SLP1)]
+            else:
+                path = path + [start]
             if start == end:
                 return [path]
             if not graph.has_key(start):
@@ -80,9 +84,9 @@ class SanskritLexicalGraph(object):
             tp = []
             for r in self.roots:
                 tp.extend(_find_all_paths(self.adjacency_list,r,None))
-            print len(tp)
-            for p in tp:
-                self.paths.append(map(lambda x: x.transcoded(SanskritBase.SLP1),p[:-1]))
+            #for p in tp:
+            #    self.paths.append(p[:-1])
+            self.paths = tp
             # Sort to show shorter splits first
             self.paths.sort(key=lambda x: len(x))
         if debug:
