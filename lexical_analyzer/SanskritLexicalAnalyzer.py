@@ -22,32 +22,45 @@ class SanskritLexicalGraph(object):
         Represents the results of lexical analysis as a DAG
         Nodes are SanskritObjects
     """
-    def __init__(self,elem=None):
+    def __init__(self,elem=None,end=False):
         self.adjacency_list={}
         self.roots = []
         self.paths = []
         if elem is not None:
-            self.endElement(elem)
+            self.rootElement(elem,end)
     # FIXME Improve docstrings below
-    def prepend(self,s):
-        """ Prepend string to dag """
-        obj = SanskritBase.SanskritObject(s)
-        self.adjacency_list.update({obj: self.roots})
-        self.roots=[obj]
-    def extend(self,rdag):
-        """ Extend dag with new dag at root """
-        self.roots.extend(rdag.roots)
+    def append_single_root(self,rdag):
+        """ append dag to self, assuming a single root element """
+        # Single root
+        assert len(self.roots) == 1 
+        self.adjacency_list[self.roots[0]] = rdag.roots
         self.adjacency_list.update(rdag.adjacency_list)
-    def endElement(self,s):
+    def extend_root(self,rdag):
+        """ Extend dag with new dag at root """
+        self.roots.extend(list(set(rdag.roots)-set(self.roots)))
+        for k in rdag.adjacency_list:
+            if k in self.adjacency_list:
+                self.adjacency_list[k].extend(list(set(rdag.adjacency_list[k])-set(self.adjacency_list[k])))
+            else:
+                self.adjacency_list[k] = rdag.adjacency_list[k]
+    def rootElement(self,s,end):
         """ Create root element pointing to End """
-        obj = SanskritBase.SanskritObject(s)
+        obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
         self.roots.append(obj)
-        self.adjacency_list[obj]=[None]
+        if end:
+            self.adjacency_list[obj]=[None]
+        else:
+            self.adjacency_list[obj]=[]
     def findAllPaths(self,debug=False):
         """ Find all paths through DAG to End """
+        _cache = {}
         def _find_all_paths(graph, start, end, path=[]):
             if debug:
                 print "Finding path from:",start,end
+            if (start,end) in _cache:
+                if debug:
+                    print "Find all paths: Cache Hit:",start,end
+                return _cache[(start,end)]
             path = path + [start]
             if start == end:
                 return [path]
@@ -61,13 +74,17 @@ class SanskritLexicalGraph(object):
                         paths.append(newpath)
             if debug:
                 print "Returning Paths:",paths
+            _cache[(start,end)] = paths
             return paths
         if not self.paths:
             tp = []
             for r in self.roots:
                 tp.extend(_find_all_paths(self.adjacency_list,r,None))
+            print len(tp)
             for p in tp:
-                self.paths.append(map(str,p[:-1]))
+                self.paths.append(map(lambda x: x.transcoded(SanskritBase.SLP1),p[:-1]))
+            # Sort to show shorter splits first
+            self.paths.sort(key=lambda x: len(x))
         if debug:
             print "All Paths:",self.paths
         return self.paths
@@ -417,14 +434,15 @@ class SanskritLexicalAnalyzer(object):
                             # Make sure we got a graph back
                             assert isinstance(rdag,SanskritLexicalGraph)
                             # if there are valid splits of the right side
-                            # Extend splits list with s_c_left prepended to possible splits of s_c_right
-                            rdag.prepend(s_c_left)
+                            # Extend splits list with s_c_left appended with possible splits of s_c_right
+                            t = SanskritLexicalGraph(s_c_left,end=False)
+                            t.append_single_root(rdag)
                             if not splits:
                                 splits = SanskritLexicalGraph()
-                            splits.extend(rdag)
+                            splits.extend_root(t)
                     else: # Null right part
                         # Splits is initialized with s_c_left -> None
-                        splits = SanskritLexicalGraph(s_c_left)
+                        splits = SanskritLexicalGraph(s_c_left,end=True)
                 else:
                     if debug:
                         print "Invalid left word: ", s_c_left
@@ -480,9 +498,6 @@ if __name__ == "__main__":
             print "Start split:", datetime.datetime.now()
             splits=s.getSandhiSplits(i,debug=args.debug)
             print "End split:", datetime.datetime.now()
-            print splits
-            print splits.findAllPaths()
-
-
+            print splits.findAllPaths(debug=args.debug)
     main()
 
