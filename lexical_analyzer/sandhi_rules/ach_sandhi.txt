@@ -2,8 +2,8 @@
 # How to write the sandhi rules
 #------------------------------
 # Lines beginning with a # or empty lines are skipped
-# Each line should contain one rule written in devanagari 
-# (easier to read/check for a human)
+# Each line should contain one rule
+# (Can be written in devanagari easier to read/check for a human)
 # Each rule is typically left_1 + left_2 = right_1 / right_2 / ...
 # left_1 and left_2 can specify lists. These will be 
 # expanded by the parser to generate a product of all possible combinations
@@ -18,22 +18,27 @@
 # Spaces at the beginning and end of expressions are stripped,
 # but if they appear inside an expression, they will be preserved
 # E.g. the space in अ {1}  for एचोऽयवायावः + लोपः शाकल्यस्य will be retained
+# mAheswara-sutra pratyAhAras can be included in the rules by preceding them with a *
+# To exclude certain varnas from a pratyAhAra, you can use set notation
+# E.g. [*अच् - इई] 
+# Note that pratyAhAras with vowels will be expanded to include dIrghas as well
 
 # यण्-सन्धिः
 # इको यणचि (६.१.७७)
-[इ, ई] + [अ, आ, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = य्{1}
-[उ, ऊ] + [अ, आ, इ, ई, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = व्{1}
-[ऋ, ॠ] + [अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ] = र्{1}
-[ऌ]+ [अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ] = ल्{1}
+[इ, ई] + [*अच् - इई] = य्{1}
+[उ, ऊ] + [*अच् - उऊ] = व्{1}
+[ऋ, ॠ] + [*अच् -ऋॠऌ] = र्{1}
+[ऌ]+ [*अच् -ऋॠऌ] = ल्{1}
 
 # Do we want वान्तो यि प्रत्यये (६.१.७१) for गो + यम् = गव्यम्, नौ + यम् = नाव्यम् etc. ?
+# No, because we will not split pratyayas
 
 # यान्तवान्तादेशः
 # एचोऽयवायावः  (६.१.७८) + लोपः शाकल्यस्य (८.३.१९)
-ए + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अय्{1} / अ {1} / अ{1}
-ऐ + [अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = आय्{1} / आ {1} / आ{1}
-ओ + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अव्{1} / अ {1} / अ{1}
-औ + [अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = आव्{1} / आ {1} / आ{1}
+ए + [*अच् - अ] = अय्{1} / अ {1} / अ{1}
+ऐ + [*अच्] = आय्{1} / आ {1} / आ{1}
+ओ + [*अच् - अ] = अव्{1} / अ {1} / अ{1}
+औ + [*अच्] = आव्{1} / आ {1} / आ{1}
 
 # गुण-सन्धिः
 # आद्गुणः (६.१.८७)
