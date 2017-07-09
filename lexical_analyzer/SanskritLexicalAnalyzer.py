@@ -16,6 +16,68 @@ import base.SanskritBase as SanskritBase
 import sanskritmark
 import re
 
+class SanskritLexicalGraph(object):
+    """ DAG class to hold Lexical Analysis Results
+
+        Represents the results of lexical analysis as a DAG
+        Nodes are SanskritObjects
+    """
+    def __init__(self,elem=None):
+        self.adjacency_list={}
+        self.roots = []
+        self.paths = []
+        if elem is not None:
+            self.endElement(elem)
+    # FIXME Improve docstrings below
+    def prepend(self,s):
+        """ Prepend string to dag """
+        obj = SanskritBase.SanskritObject(s)
+        self.adjacency_list.update({obj: self.roots})
+        self.roots=[obj]
+    def extend(self,rdag):
+        """ Extend dag with new dag at root """
+        self.roots.extend(rdag.roots)
+        self.adjacency_list.update(rdag.adjacency_list)
+    def endElement(self,s):
+        """ Create root element pointing to End """
+        obj = SanskritBase.SanskritObject(s)
+        self.roots.append(obj)
+        self.adjacency_list[obj]=[None]
+    def findAllPaths(self,debug=False):
+        """ Find all paths through DAG to End """
+        def _find_all_paths(graph, start, end, path=[]):
+            if debug:
+                print "Finding path from:",start,end
+            path = path + [start]
+            if start == end:
+                return [path]
+            if not graph.has_key(start):
+                return []
+            paths = []
+            for node in graph[start]:
+                if node not in path:
+                    newpaths = _find_all_paths(graph, node, end, path)
+                    for newpath in newpaths:
+                        paths.append(newpath)
+            if debug:
+                print "Returning Paths:",paths
+            return paths
+        if not self.paths:
+            tp = []
+            for r in self.roots:
+                tp.extend(_find_all_paths(self.adjacency_list,r,None))
+            for p in tp:
+                self.paths.append(map(str,p[:-1]))
+        if debug:
+            print "All Paths:",self.paths
+        return self.paths
+    def __str__(self):
+        """ Print representation of DAG """
+        return "Roots: " + str([str(x) for x in self.roots]) +\
+            "\nMatrix: " + str([str(x) + ":" +\
+                                str([str(y) for y in self.adjacency_list[x]]) \
+                                for x in self.adjacency_list])
+    
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanksrit lexical analysis. 
     
@@ -224,49 +286,21 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,flatten=True,sort=True,debug=False):
+    def getSandhiSplits(self,o,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
               o(SanskritObject): Input object
             Returns:
-              list : Hierarchical list of all possible splits
+              SanskritLexicalGraph : DAG all possible splits
         '''
-        def _flatten(ls):
-            ''' Flatten a hierachical set of sandhi splits '''
-            #print "Flattening:",ls
-            r = []
-            # First element is not a list
-            if not isinstance(ls[0],list):
-                if ls[1] is None:
-                    r = [ls[0:1]]
-                else:
-                    #print "LS[0]",ls[0]
-                    rtmp = _flatten(ls[1])
-                    #print "RTMP:",rtmp
-                    for rte in rtmp:
-                        re = []
-                        #print "RTE:",rte
-                        re.append(ls[0])
-                        re.extend(rte)
-                        #print "RE:",re
-                        r.append(re)
-            else:
-                for i in ls:
-                    r.extend(_flatten(i))
-            #print "R:",r
-            return r
         # Transform to internal canonical form
         s = o.transcoded(SanskritBase.SLP1)
-        ps = self._possible_splits(s,debug)
-        if not ps:
-            ps = None
-        elif flatten:
-            ps=_flatten(ps)
-            if sort:
-                # Sort by ascending order of split length
-                ps.sort(key=lambda x:len(x))
-        return ps
+        dag = self._possible_splits(s,debug)
+        if not dag:
+            return None
+        else:
+            return dag
         
     def _possible_splits(self,s,debug=False):
         ''' private method to dynamically compute all sandhi splits
@@ -275,7 +309,7 @@ class SanskritLexicalAnalyzer(object):
            Params: 
               s(string): Input SLP1 encoded string
             Returns:
-              list : Hierarchical list of all possible splits
+              SanskritLexicalGraph : DAG of possible splits
         '''
         if debug:
             print "Splitting ", s
@@ -349,7 +383,7 @@ class SanskritLexicalAnalyzer(object):
                                     s_c_list.append([clsstr, crsstr])
             return s_c_list                 
             
-        splits = []
+        splits = False
         
         # Memoization for dynamic programming - remember substrings that've been seen before
         if s in self.dynamic_scoreboard:
@@ -377,13 +411,20 @@ class SanskritLexicalAnalyzer(object):
                     if s_c_right:
                         if debug:
                             print "Trying to split:",s_c_right
-                        ps = self._possible_splits(s_c_right,debug)
+                        rdag = self._possible_splits(s_c_right,debug)
                         # if there are valid splits of the right side
-                        if ps:
-                            # Extend splits list with (s_c_left, (possible splits of s_c_right))
-                            splits.append([s_c_left,ps])
+                        if rdag:
+                            # Make sure we got a graph back
+                            assert isinstance(rdag,SanskritLexicalGraph)
+                            # if there are valid splits of the right side
+                            # Extend splits list with s_c_left prepended to possible splits of s_c_right
+                            rdag.prepend(s_c_left)
+                            if not splits:
+                                splits = SanskritLexicalGraph()
+                            splits.extend(rdag)
                     else: # Null right part
-                        splits.append([s_c_left,None])
+                        # Splits is initialized with s_c_left -> None
+                        splits = SanskritLexicalGraph(s_c_left)
                 else:
                     if debug:
                         print "Invalid left word: ", s_c_left
@@ -437,41 +478,11 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start split:", datetime.datetime.now()
-            splits=s.getSandhiSplits(i,flatten=not args.no_flatten,sort=not args.no_sort,debug=args.debug)
+            splits=s.getSandhiSplits(i,debug=args.debug)
             print "End split:", datetime.datetime.now()
             print splits
+            print splits.findAllPaths()
+
 
     main()
 
-
-        # # Borrowed from https://github.com/drdhaval2785/samasasplitter/split.py
-        # # Thank you, Dr. Dhaval Patel!
-        # self.sandhi_map = dict([
-        #     ('A',('A_','a_a','a_A','A_a','A_A','As_')),
-        #     ('I',('I_','i_i','i_I','I_i','I_I')),
-        #     ('U',('U_','u_u','u_U','U_u','U_U')),
-        #     ('F',('F_','f_f','f_x','x_f','F_x','x_F','F_F')),
-        #     ('e',('e_','e_a','a_i','a_I','A_i','A_I')),
-        #     ('o',('o_','o_a','a_u','a_U','A_u','A_U','aH_','aH_a','a_s')),
-        #     ('E',('E_','a_e','A_e','a_E','A_E')),
-        #     ('O',('O_','a_o','A_o','a_O','A_O')),
-        #     ('ar',('af','ar')),
-        #     ('d',('t_','d_')),
-        #     ('H',('H_','s_')),
-        #     ('S',('S_','s_','H_')),
-        #     ('M',('m_','M_')),
-        #     ('y',('y_','i_','I_')),
-        #     ('N',('N_','M_')),
-        #     ('Y',('Y_','M_')),
-        #     ('R',('R_','M_')),
-        #     ('n',('n_','M_')),
-        #     ('m',('m_','M_')),
-        #     ('v',('v_','u_','U_')),
-        #     ('r',('r_','s_','H_'))])
-        # # FIXME : check if this covers all combos and annotate with sutras
-        # # Can't see the rAmAH + iha = rAmA iha / rAmAy iha options
-        # # Ditto for rAme iha = rama iha / ramayiha etc.
-        # # But this is a start.
-        # # FIXME: Lack of right context in this map worries me.
-        # # Can't put a finger on it right now.
-        
