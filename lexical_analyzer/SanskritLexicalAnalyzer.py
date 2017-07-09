@@ -56,7 +56,7 @@ class SanskritLexicalAnalyzer(object):
             ('Y',('Y_','M_','m_')), # do
             ('R',('R_','M_','m_')), # do
             ('n',('n_','M_','m_')), # do
-            ('m',('m_','M_','m_')), # do
+            ('m',('m_','M_')), # do
             ((None,'H','$'),('s_','r_')), # Visarga at the end
             ('s',None), # Forbidden to split at an s except for cases already matched
             ('S',None), # Forbidden to split at an S except for cases already matched
@@ -285,24 +285,11 @@ class SanskritLexicalAnalyzer(object):
             #     r=False
             r = sanskritmark.quicksearch(ss)
             return r
-        splits = []
-        
-        # Dynamic programming - remember substrings that've been seen before
-        if s in self.dynamic_scoreboard:
-            if debug:
-                print "Found {} in scoreboard".format(s)
-            return self.dynamic_scoreboard[s]
 
-        # Iterate over the string, looking for valid left splits
-        for (ix,c) in enumerate(s):
-            # Left and right substrings
-            lsstr = s[0:ix+1] 
-            rsstr = s[ix+1:]
-            if debug:
-                print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+
+        def _sandhi_splits(lsstr,rsstr):
             #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
             s_c_list = []
-
             # Unconditional Sandhi reversal
             if c in self.sandhi_context_map:
                 # Unconditional/Forbidden splits are marked by direct keys
@@ -360,8 +347,24 @@ class SanskritLexicalAnalyzer(object):
                                 # Check if this causes real problems
                                 if crsstr != s:
                                     s_c_list.append([clsstr, crsstr])
+            return s_c_list                 
+            
+        splits = []
+        
+        # Dynamic programming - remember substrings that've been seen before
+        if s in self.dynamic_scoreboard:
+            if debug:
+                print "Found {} in scoreboard".format(s)
+            return self.dynamic_scoreboard[s]
 
-                                        
+        # Iterate over the string, looking for valid left splits
+        for (ix,c) in enumerate(s):
+            # Left and right substrings
+            lsstr = s[0:ix+1] 
+            rsstr = s[ix+1:]
+            if debug:
+                print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+            s_c_list = _sandhi_splits(lsstr,rsstr)
             if debug:
                 print "s_c_list:", s_c_list
             for (s_c_left,s_c_right) in s_c_list:
