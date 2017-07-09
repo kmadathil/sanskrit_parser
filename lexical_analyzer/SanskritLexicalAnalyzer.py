@@ -351,7 +351,7 @@ class SanskritLexicalAnalyzer(object):
             
         splits = []
         
-        # Dynamic programming - remember substrings that've been seen before
+        # Memoization for dynamic programming - remember substrings that've been seen before
         if s in self.dynamic_scoreboard:
             if debug:
                 print "Found {} in scoreboard".format(s)
@@ -364,6 +364,7 @@ class SanskritLexicalAnalyzer(object):
             rsstr = s[ix+1:]
             if debug:
                 print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+            # Get all possible splits as a list of lists 
             s_c_list = _sandhi_splits(lsstr,rsstr)
             if debug:
                 print "s_c_list:", s_c_list
