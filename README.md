@@ -32,7 +32,10 @@ Sandhi splitting subroutine
        No semantic validation will be performed (up to higher levels)
        
 #### Current Status
-Basic version working. Needs to be improved and sandhi generation needs to be added for completeness
+In progress. 
+Advanced version with sandhi split/join and convenient rule definition is nearly ready.
+
+Basic version working. 
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
