@@ -487,9 +487,10 @@ if __name__ == "__main__":
         # Filter by tag set
         parser.add_argument('--tag-set',type=str,default=None,nargs="+")
         parser.add_argument('--split',action='store_true')
-        parser.add_argument('--no-sort',action='store_true')
-        parser.add_argument('--no-flatten',action='store_true')
+#        parser.add_argument('--no-sort',action='store_true')
+#        parser.add_argument('--no-flatten',action='store_true')
         parser.add_argument('--debug',action='store_true')
+        parser.add_argument('--print-max',type=int,default=10)
         return parser.parse_args()
 
     def main():
@@ -517,6 +518,6 @@ if __name__ == "__main__":
             print "End split:", datetime.datetime.now()
             p=splits.findAllPaths(debug=args.debug)
             print "End pathfinding:", datetime.datetime.now()
-            print p[:10]
+            print p[:args.print_max]
     main()
 
