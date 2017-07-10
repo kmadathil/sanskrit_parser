@@ -17,7 +17,7 @@ class MaheshvaraSutras(object):
         # Note that a space is deliberately left after each it to help in
         # demarcating them.
         self.MS=SanskritBase.SanskritObject(
-            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
+            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
         # SLP1 version for internal operations
         self.MSS=self.MS.transcoded(SanskritBase.SLP1)
     def __str__(self):
