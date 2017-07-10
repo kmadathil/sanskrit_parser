@@ -513,11 +513,14 @@ if __name__ == "__main__":
                 print s.hasInriaTag(i,SanskritBase.SanskritObject(args.base),g)
         else:
             import datetime
-            print "Start split:", datetime.datetime.now()
-            splits=s.getSandhiSplits(i,debug=args.debug)
-            print "End split:", datetime.datetime.now()
-            p=splits.findAllPaths(debug=args.debug)
-            print "End pathfinding:", datetime.datetime.now()
-            print p[:args.print_max]
+            print "Start Split:", datetime.datetime.now()
+            graph=s.getSandhiSplits(i,debug=args.debug)
+            print "End DAG generation:", datetime.datetime.now()
+            if graph:
+                splits=graph.findAllPaths(debug=args.debug)
+                print "End pathfinding:", datetime.datetime.now()
+                print splits[:args.print_max]
+            else:
+                print "No Valid Splits Found"
     main()
 
