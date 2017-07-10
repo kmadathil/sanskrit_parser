@@ -24,7 +24,7 @@ class MaheshvaraSutras(object):
         # Use SLP1 for default string output
         return self.MSS
 
-    def getPratyahara(self,p,longp=True,remove_a=False):
+    def getPratyahara(self,p,longp=True,remove_a=False,dirghas=False):
         """ Return list of varnas covered by a pratyahara
 
             Args:
@@ -56,6 +56,9 @@ class MaheshvaraSutras(object):
         # Remove अकारः मुखसुखार्थः 
         if remove_a:
             ts = ts[0]+ts[1:].replace('a','')
+        # Add dIrgha vowels if requested
+        if dirghas:
+            ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF')
         return SanskritBase.SanskritObject(ts,SanskritBase.SLP1)
     
     def isInPratyahara(self,p,v,longp=True):
@@ -104,6 +107,8 @@ if __name__ == "__main__":
         parser.add_argument('--short',action='store_true')
         # Remove intermediate as
         parser.add_argument('--remove-a',action='store_true')
+        # Include dIrghas when returning the pratyAhAra
+        parser.add_argument('--dirghas',action='store_true', default=False)
 
         return parser.parse_args()
     def main():
@@ -117,7 +122,7 @@ if __name__ == "__main__":
         p=SanskritBase.SanskritObject(args.pratyahara,e)
         l = not args.short
         print unicode(p.transcoded(SanskritBase.DEVANAGARI))
-        print unicode(m.getPratyahara(p,l,args.remove_a).transcoded(SanskritBase.DEVANAGARI))
+        print unicode(m.getPratyahara(p,l,args.remove_a,args.dirghas).transcoded(SanskritBase.DEVANAGARI))
         if args.varna is not None:
             v=SanskritBase.SanskritObject(args.varna,e)
             print u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
