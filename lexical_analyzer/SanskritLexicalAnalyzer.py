@@ -30,13 +30,13 @@ class SanskritLexicalGraph(object):
             self.rootElement(elem,end)
     # FIXME Improve docstrings below
     def append_single_root(self,rdag):
-        """ append dag to self, assuming a single root element """
+        """ append rdag to self, assuming a single root element """
         # Single root
         assert len(self.roots) == 1 
         self.adjacency_list[self.roots[0]] = rdag.roots
         self.adjacency_list.update(rdag.adjacency_list)
     def extend_root(self,rdag):
-        """ Extend dag with new dag at root """
+        """ Extend dag with rdag inserted at root """
         self.roots.extend(list(set(rdag.roots)-set(self.roots)))
         for k in rdag.adjacency_list:
             if k in self.adjacency_list:
@@ -44,7 +44,7 @@ class SanskritLexicalGraph(object):
             else:
                 self.adjacency_list[k] = rdag.adjacency_list[k]
     def rootElement(self,s,end):
-        """ Create root element pointing to End """
+        """ Create root element optionally pointing to End """
         obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
         self.roots.append(obj)
         if end:
@@ -53,39 +53,52 @@ class SanskritLexicalGraph(object):
             self.adjacency_list[obj]=[]
     def findAllPaths(self,debug=False):
         """ Find all paths through DAG to End """
-        _cache = {}
-        def _find_all_paths(graph, start, end, path=[]):
+        # Memo
+        _paths = {}
+        def _find_all_paths(start, end):
             if debug:
                 print "Finding path from:",start,end
-            # FIXME: this is somehow broken
-            #if (start,end) in _cache:
-            #    if debug:
-            #        print "Find all paths: Cache Hit:",start,end
-            #    return _cache[(start,end)]
+            #Search in memo to see if we've seen this node
+            if start in _paths:
+                if debug:
+                    print "Find all paths: Memo Hit:",start
+                return _paths[start]
+            # Initialize
             if start is not None:
-                path = path + [start.transcoded(SanskritBase.SLP1)]
+                path = [start.transcoded(SanskritBase.SLP1)]
             else:
-                path = path + [start]
+                path = [start]
+            # Break recursion if end node is reached
             if start == end:
                 return [path]
-            if not graph.has_key(start):
+            # Shouldn't see this ever
+            if not self.adjacency_list.has_key(start):
                 return []
             paths = []
-            for node in graph[start]:
+            # All nodes connected to start
+            for node in self.adjacency_list[start]:
+                # Avoid cycles
                 if node not in path:
-                    newpaths = _find_all_paths(graph, node, end, path)
+                    # Explore paths from each connected node to end
+                    newpaths = _find_all_paths(node, end)
+                    if debug:
+                        print "Connected node paths:",newpaths
                     for newpath in newpaths:
-                        paths.append(newpath)
+                        if newpath == [None]: # Reached end
+                            paths.append(path)
+                        else: # Append right hand paths
+                            paths.append(path + newpath)
             if debug:
                 print "Returning Paths:",paths
-            _cache[(start,end)] = paths
+            # Memoize
+            if debug:
+                print "Memoizing:",start.transcoded(SanskritBase.SLP1)
+            _paths[start] = paths
             return paths
         if not self.paths:
             tp = []
             for r in self.roots:
-                tp.extend(_find_all_paths(self.adjacency_list,r,None))
-            #for p in tp:
-            #    self.paths.append(p[:-1])
+                tp.extend(_find_all_paths(r,None))
             self.paths = tp
             # Sort to show shorter splits first
             self.paths.sort(key=lambda x: len(x))
@@ -502,6 +515,8 @@ if __name__ == "__main__":
             print "Start split:", datetime.datetime.now()
             splits=s.getSandhiSplits(i,debug=args.debug)
             print "End split:", datetime.datetime.now()
-            print splits.findAllPaths(debug=args.debug)
+            p=splits.findAllPaths(debug=args.debug)
+            print "End pathfinding:", datetime.datetime.now()
+            print p[:10]
     main()
 
