@@ -10,8 +10,10 @@ import inspect
 from sandhi import Sandhi
 from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
 import logging
+import re
 
 # logging.basicConfig(filename="sandhi.log", filemode = "wb", level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="module")
 def sandhiobj():
@@ -36,9 +38,18 @@ def test_sandhi_split(sandhiobj, sandhi_reference):
 def load_reference_data():
     sandhi_references = []
     base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    filename = os.path.join(base_dir, "sandhi_test_data/refs.txt")
+    directory = os.path.join(base_dir, "sandhi_test_data")
+    for filename in os.listdir(directory):
+        if filename.endswith(".txt"):
+            sandhi_references.extend(load_reference_data_from_file(os.path.join(directory, filename)))
+    return sandhi_references
+
+def load_reference_data_from_file(filename):
+    sandhi_references = []
+    basename = os.path.basename(filename)
+    logger.debug("Processing tests from file %s", basename)
     with codecs.open(filename, "rb", 'utf-8') as f:
-        for line in f:
+        for linenum, line in enumerate(f):
             line = line.strip()
             if line.startswith('#') or line == '':
                 continue
@@ -50,7 +61,12 @@ def load_reference_data():
             else:
                 continue
             before = map(unicode.strip, b.split('+'))
-            sandhi_references.append((before, after))
+            #before = map(lambda x: re.sub("\W+", "", x), b.split('+'))
+            if len(before) == 2:
+                before[0] = re.sub("\W+", "", before[0])
+                before[1] = re.sub("\W+", "", before[1])
+                after = re.sub("\W+", "", after)
+                sandhi_references.append((before, after, basename, linenum+1))
 #     print sandhi_references
     return sandhi_references
 
