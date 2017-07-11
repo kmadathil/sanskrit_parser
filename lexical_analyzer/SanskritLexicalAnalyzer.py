@@ -379,7 +379,6 @@ class SanskritLexicalAnalyzer(object):
                 print "Found {} in scoreboard".format(s)
             return self.dynamic_scoreboard[s]
 
-        currs = []
         # Iterate over the string, looking for valid left splits
         for (ix,c) in enumerate(s):
             # Left and right substrings
@@ -396,7 +395,6 @@ class SanskritLexicalAnalyzer(object):
                 if _is_valid_word(s_c_left):
                     if debug:
                         print "Valid left word: ", s_c_left
-                        print "Adding edge", parent, curr
                     # For each split with a valid left part, check it there are valid splits of the right part
                     if s_c_right:
                         if debug:
@@ -446,7 +444,7 @@ if __name__ == "__main__":
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
         parser.add_argument('--debug',action='store_true')
-        parser.add_argument('--print-max',type=int,default=10)
+        parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
 
     def main():
@@ -473,7 +471,7 @@ if __name__ == "__main__":
             graph=s.getSandhiSplits(i,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
-                splits=graph.findAllPaths(max_paths=args.print_max,debug=args.debug)
+                splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
                 print "End pathfinding:", datetime.datetime.now()
                 print splits
             else:
