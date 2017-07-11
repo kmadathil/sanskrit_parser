@@ -17,7 +17,7 @@ class MaheshvaraSutras(object):
         # Note that a space is deliberately left after each it to help in
         # demarcating them.
         self.MS=SanskritBase.SanskritObject(
-            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
+            u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् ',SanskritBase.DEVANAGARI)
         # SLP1 version for internal operations
         self.MSS=self.MS.transcoded(SanskritBase.SLP1)
     def __str__(self):
@@ -51,9 +51,11 @@ class MaheshvaraSutras(object):
         ts = self.MSS[pnpos:pitpos]
         # Replace its and spaces
         ts = re.sub('. ','',ts)
+        # Remove extra a
+        ts =  ('a' if ts[0] == 'a' else '') + ts.replace('a','')
         # Add dIrgha vowels if requested
         if dirghas:
-            ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF')
+            ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF').replace('x','xX')
         return SanskritBase.SanskritObject(ts,SanskritBase.SLP1)
     def isInPratyahara(self,p,v,longp=True):
         """ Checks whether a given varna is in a pratyahara

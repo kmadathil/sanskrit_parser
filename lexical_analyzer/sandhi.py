@@ -161,7 +161,7 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = map(unicode.strip, c.split('-'))
-                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:]), longp=False, dirghas=True).transcoded(SLP1))
+                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, dirghas=True).transcoded(SLP1))
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
@@ -171,7 +171,7 @@ class Sandhi(object):
         self.logger.debug("before_left iterator = %s", before_left)
         
         
-        right_classes = re.split('\[(.*)\]', before[1])
+        right_classes = re.split('\[(.*?)\]', before[1])
         # Could have used list comprehension, but this is easier to read
         if right_classes:
             before_right = []
@@ -180,10 +180,10 @@ class Sandhi(object):
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
                         splits = map(unicode.strip, c.split('-'))
-                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:]), longp=False, dirghas=True).transcoded(SLP1))
+                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, dirghas=True).transcoded(SLP1))
                         if len(splits) == 2:
                             varnas -= set(splits[1])
-                        self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
+                        self.logger.debug("Found pratyAhAra %s (%s) = %s", c, splits[0][1:], varnas)
                         before_right.append(varnas)
                     else:
                         before_right.append(map(unicode.strip, c.split(",")))
@@ -197,8 +197,9 @@ class Sandhi(object):
                                                         itertools.product(*before_right)):
             left = ''.join(before_l)
             right = ''.join(before_r)
-            left_right = (left, right)        
-            a = after.format(*(list(before_l) + [right]))
+            list_before_r = list(before_r)
+            left_right = (left, right)
+            a = after.format(*(list(before_l) + list_before_r))
             self.logger.debug("Final rule = %s -> %s", left_right, a)
             yield (left_right, a)
 

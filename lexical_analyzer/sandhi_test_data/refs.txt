@@ -1,3 +1,5 @@
+# Lines starting with #, empty lines, and lines without "=" or "=>" are ignored
+# The next line is to test that we are correctly ignoring lines without "=" or "=>"
 Foo
 त एव => ते + एव
 तस्मिन्निति => तस्मिन् + इति
