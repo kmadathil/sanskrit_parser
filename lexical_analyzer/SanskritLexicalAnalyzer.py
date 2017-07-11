@@ -72,8 +72,6 @@ class SanskritLexicalAnalyzer(object):
         This class mostly reuses Dr. Dhaval Patel's work in wrapping
         Inria XML data 
     """
-    dynamic_scoreboard = {}
-    
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
             ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
@@ -283,6 +281,7 @@ class SanskritLexicalAnalyzer(object):
               SanskritLexicalGraph : DAG all possible splits
         '''
         # Transform to internal canonical form
+        self.dynamic_scoreboard = {}
         s = o.transcoded(SanskritBase.SLP1)
         dag = self._possible_splits(s,debug)
         if not dag:
