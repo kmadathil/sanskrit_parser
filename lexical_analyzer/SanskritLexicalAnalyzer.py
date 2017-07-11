@@ -15,6 +15,16 @@
 import base.SanskritBase as SanskritBase
 import sanskritmark
 import re
+import networkx as nx
+from itertools import islice
+
+class Node(object):
+    def __init__(self, name):
+        self.name = name
+    def __str__(self):
+        return self.name
+    def __repr__(self):
+        return self.name
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -119,6 +129,8 @@ class SanskritLexicalAnalyzer(object):
         Inria XML data 
     """
     dynamic_scoreboard = {}
+    root = Node('')
+    end = Node('')
     
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
@@ -314,7 +326,7 @@ class SanskritLexicalAnalyzer(object):
                 name.transcoded(SanskritBase.SLP1)==li[0]) and \
                ((tagset is None) or\
                 tagset.issubset(li[1])):
-               r.append(li)
+                r.append(li)
         if r==[]:
             return None
         else:
@@ -330,13 +342,15 @@ class SanskritLexicalAnalyzer(object):
         '''
         # Transform to internal canonical form
         s = o.transcoded(SanskritBase.SLP1)
+        self.G = nx.DiGraph()
+        self.G.add_node(self.root)
         dag = self._possible_splits(s,debug)
         if not dag:
             return None
         else:
             return dag
         
-    def _possible_splits(self,s,debug=False):
+    def _possible_splits(self,s,debug=False, parent=None):
         ''' private method to dynamically compute all sandhi splits
 
         Used by getSandhiSplits
@@ -418,13 +432,19 @@ class SanskritLexicalAnalyzer(object):
             return s_c_list                 
             
         splits = False
+        parent = parent or self.root
         
         # Memoization for dynamic programming - remember substrings that've been seen before
         if s in self.dynamic_scoreboard:
+            for node in self.dynamic_scoreboard[s][1]:
+                self.G.add_edge(parent, node)
+                if debug:
+                    print "Adding edge", parent, node
             if debug:
                 print "Found {} in scoreboard".format(s)
-            return self.dynamic_scoreboard[s]
+            return self.dynamic_scoreboard[s][0]
 
+        currs = []
         # Iterate over the string, looking for valid left splits
         for (ix,c) in enumerate(s):
             # Left and right substrings
@@ -439,13 +459,18 @@ class SanskritLexicalAnalyzer(object):
             for (s_c_left,s_c_right) in s_c_list:
                 # Is the left side a valid word?
                 if _is_valid_word(s_c_left):
+                    curr = Node(s_c_left)
+                    currs.append(curr)
+                    self.G.add_node(curr)
+                    self.G.add_edge(parent, curr)
                     if debug:
                         print "Valid left word: ", s_c_left
+                        print "Adding edge", parent, curr
                     # For each split with a valid left part, check it there are valid splits of the right part
                     if s_c_right:
                         if debug:
                             print "Trying to split:",s_c_right
-                        rdag = self._possible_splits(s_c_right,debug)
+                        rdag = self._possible_splits(s_c_right,debug, parent=curr)
                         # if there are valid splits of the right side
                         if rdag:
                             # Make sure we got a graph back
@@ -457,17 +482,26 @@ class SanskritLexicalAnalyzer(object):
                             if not splits:
                                 splits = SanskritLexicalGraph()
                             splits.extend_root(t)
+#                             for r in rdag.roots:
+#                                 rNode = Node()
+#                                 G.add_node()
+#                                 G.add_edge(curr, r)
                     else: # Null right part
                         # Splits is initialized with s_c_left -> None
                         splits = SanskritLexicalGraph(s_c_left,end=True)
+                        self.G.add_edge(curr, self.end)
+#                         print "Adding edge", parent, curr
                 else:
                     if debug:
                         print "Invalid left word: ", s_c_left
         # Update scoreboard for this substring, so we don't have to split again  
-        self.dynamic_scoreboard[s]=splits
+        self.dynamic_scoreboard[s]=(splits, currs)
         if debug:
             print "Returning: ",splits
-        return splits   
+        return splits
+    
+    def k_shortest_paths(self, k):
+        return list(islice(nx.shortest_simple_paths(self.G, self.root, self.end), k))
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
@@ -522,5 +556,9 @@ if __name__ == "__main__":
                 print splits[:args.print_max]
             else:
                 print "No Valid Splits Found"
+            print "Finding k shortest paths using networkx:", datetime.datetime.now()
+            paths = s.k_shortest_paths(args.print_max)
+            print "End pathfinding:", datetime.datetime.now()
+            print paths
     main()
 
