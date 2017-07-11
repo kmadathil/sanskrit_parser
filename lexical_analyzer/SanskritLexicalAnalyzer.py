@@ -51,57 +51,36 @@ class SanskritLexicalGraph(object):
             self.adjacency_list[obj]=[None]
         else:
             self.adjacency_list[obj]=[]
-    def findAllPaths(self,debug=False):
+    def findAllPaths(self,n_paths=1000,debug=False):
         """ Find all paths through DAG to End """
         # Memo
-        _paths = {}
-        def _find_all_paths(start, end):
-            if debug:
-                print "Finding path from:",start,end
-            #Search in memo to see if we've seen this node
-            if start in _paths:
+        seen = {}
+        def _find_paths():
+            # BFS find_all_paths, to get shortest paths first
+            # Initialize queue
+            q = [(x,[x.transcoded(SanskritBase.SLP1)]) for x in self.roots]
+            while q:
+                # pop a vertex
+                (v,path) = q.pop(0)
                 if debug:
-                    print "Find all paths: Memo Hit:",start
-                return _paths[start]
-            # Initialize
-            if start is not None:
-                path = [start.transcoded(SanskritBase.SLP1)]
-            else:
-                path = [start]
-            # Break recursion if end node is reached
-            if start == end:
-                return [path]
-            # Shouldn't see this ever
-            if not self.adjacency_list.has_key(start):
-                return []
-            paths = []
-            # All nodes connected to start
-            for node in self.adjacency_list[start]:
-                # Avoid cycles
-                if node not in path:
-                    # Explore paths from each connected node to end
-                    newpaths = _find_all_paths(node, end)
-                    if debug:
-                        print "Connected node paths:",newpaths
-                    for newpath in newpaths:
-                        if newpath == [None]: # Reached end
-                            paths.append(path)
-                        else: # Append right hand paths
-                            paths.append(path + newpath)
-            if debug:
-                print "Returning Paths:",paths
-            # Memoize
-            if debug:
-                print "Memoizing:",start.transcoded(SanskritBase.SLP1)
-            _paths[start] = paths
-            return paths
+                    print "Tentative Path:", path
+                for nv in self.adjacency_list[v]:
+                    if nv is None:
+                        if debug:
+                            print "Found Path:",path
+                        yield path
+                    else:
+                        nvs = nv.transcoded(SanskritBase.SLP1)
+                        if debug:
+                            print "Extending: ", path,nvs
+                        q.append((nv, path + [nvs]))
+        tp = []
         if not self.paths:
-            tp = []
-            for r in self.roots:
-                tp.extend(_find_all_paths(r,None))
-            self.paths = tp
-            # Sort to show shorter splits first
-            self.paths.sort(key=lambda x: len(x))
+            for ix,p in enumerate(_find_paths()):
+                tp.append(p)
+                if ix==(n_paths-1):
+                    break
+        self.paths = tp
         if debug:
             print "All Paths:",self.paths
         return self.paths
@@ -490,7 +469,7 @@ if __name__ == "__main__":
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
         parser.add_argument('--debug',action='store_true')
-        parser.add_argument('--print-max',type=int,default=10)
+        parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
 
     def main():
@@ -517,9 +496,9 @@ if __name__ == "__main__":
             graph=s.getSandhiSplits(i,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
-                splits=graph.findAllPaths(debug=args.debug)
+                splits=graph.findAllPaths(debug=args.debug,n_paths=args.max_paths)
                 print "End pathfinding:", datetime.datetime.now()
-                print splits[:args.print_max]
+                print splits
             else:
                 print "No Valid Splits Found"
     main()

@@ -3,3 +3,4 @@
 astyuttarasyAMdiSidevatAtmA = asti uttarasyAm diSi devatA AtmA
 himAlayonAmanagADirAjaH     = hima Alayas nAma naga aDirAjas
 vAgarTAvivasampfktO         = vAk arTO iva sam pfktO
+astyuttarasyAMdiSidevatAtmAhimAlayonAmanagADirAjaH = asti uttarasyAm diSi devatA AtmA hima Alayas nAma naga aDirAjas

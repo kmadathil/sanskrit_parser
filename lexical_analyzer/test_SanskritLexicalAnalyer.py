@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 import pytest
 import SanskritLexicalAnalyzer
@@ -49,6 +49,6 @@ def test_file_splits(lexan,filetests):
         i=SanskritObject(f,encoding=SLP1)
         graph=lexan.getSandhiSplits(i)
         assert graph is not None
-        splits=graph.findAllPaths()
+        splits=graph.findAllPaths(n_paths=1000)
         assert s in splits
        
