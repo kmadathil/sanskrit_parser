@@ -49,6 +49,6 @@ def test_file_splits(lexan,filetests):
         i=SanskritObject(f,encoding=SLP1)
         graph=lexan.getSandhiSplits(i)
         assert graph is not None
-        splits=graph.findAllPaths(max_paths=10000)
+        splits=graph.findAllPaths(max_paths=1000)
         assert s in splits
        
