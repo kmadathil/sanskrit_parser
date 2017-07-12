@@ -4,5 +4,6 @@
 .settings
 .pydevproject
 .project
+<<<<<<< HEAD
 *.log
 *.tmp
