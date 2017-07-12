@@ -17,6 +17,7 @@ import sanskritmark
 import re
 import networkx as nx
 from itertools import islice,imap
+from  sandhi import Sandhi
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -67,7 +68,7 @@ class SanskritLexicalGraph(object):
 
     def __str__(self):
         """ Print representation of DAG """
-        return self.G
+        return str(self.G)
     
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanksrit lexical analysis. 
@@ -75,6 +76,9 @@ class SanskritLexicalAnalyzer(object):
         This class mostly reuses Dr. Dhaval Patel's work in wrapping
         Inria XML data 
     """
+    
+    sandhi = Sandhi() # Singleton!
+    
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
             ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
@@ -275,7 +279,7 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,debug=False):
+    def getSandhiSplits(self,o,use_internal_sandhi_splitter=True,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
@@ -286,13 +290,13 @@ class SanskritLexicalAnalyzer(object):
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
         s = o.transcoded(SanskritBase.SLP1)
-        dag = self._possible_splits(s,debug)
+        dag = self._possible_splits(s,use_internal_sandhi_splitter,debug)
         if not dag:
             return None
         else:
             return dag
         
-    def _possible_splits(self,s,debug=False):
+    def _possible_splits(self,s,use_internal_sandhi_splitter=True,debug=False):
         ''' private method to dynamically compute all sandhi splits
 
         Used by getSandhiSplits
@@ -381,15 +385,22 @@ class SanskritLexicalAnalyzer(object):
                 print "Found {} in scoreboard".format(s)
             return self.dynamic_scoreboard[s]
 
+        # For Sandhi Splitter
+        obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
         # Iterate over the string, looking for valid left splits
         for (ix,c) in enumerate(s):
-            # Left and right substrings
-            lsstr = s[0:ix+1] 
-            rsstr = s[ix+1:]
-            if debug:
-                print "Left, Right substrings = {} {}".format(lsstr,rsstr)
-            # Get all possible splits as a list of lists 
-            s_c_list = _sandhi_splits(lsstr,rsstr)
+            if use_internal_sandhi_splitter:
+                # Left and right substrings
+                lsstr = s[0:ix+1] 
+                rsstr = s[ix+1:]
+                if debug:
+                    print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+                # Get all possible splits as a list of lists 
+                s_c_list = _sandhi_splits(lsstr,rsstr)
+            else:
+                if debug:
+                    print "Sandhi: splitting: {} at {} ({})".format(s,s[ix],ix)
+                s_c_list = self.sandhi.split_at(obj,ix)
             node_cache = {}
             if debug:
                 print "s_c_list:", s_c_list
@@ -402,7 +413,7 @@ class SanskritLexicalAnalyzer(object):
                     if s_c_right:
                         if debug:
                             print "Trying to split:",s_c_right
-                        rdag = self._possible_splits(s_c_right,debug)
+                        rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
                         # if there are valid splits of the right side
                         if rdag:
                             # Make sure we got a graph back
@@ -449,6 +460,7 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
+        parser.add_argument('--use-sandhi-module',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
@@ -474,7 +486,7 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start Split:", datetime.datetime.now()
-            graph=s.getSandhiSplits(i,debug=args.debug)
+            graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=not args.use_sandhi_module,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
