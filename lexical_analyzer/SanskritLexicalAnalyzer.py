@@ -32,22 +32,25 @@ class SanskritLexicalGraph(object):
         if elem is not None:
             self.rootElement(elem,end)
     # FIXME Improve docstrings below
-    def append_single_root(self,rdag):
-        """ append rdag to self, assuming a single root element """
-        # Single root
-        assert len(self.roots) == 1 
+    def hasNode(self,t):
+        return t in self.G
+    def appendToNode(self,t,rdag):
+        """ append rdag to self, adding edges from a given node to rdag's roots """
+        # t is in our graph
+        assert t in self.G
         self.G = nx.compose(self.G,rdag.G)
         for r in rdag.roots:
-            self.G.add_edge(self.roots[0],r)
-    def extend_root(self,rdag):
-        """ Extend dag with rdag inserted at root """
-        self.roots.extend(list(set(rdag.roots)-set(self.roots)))
-        self.G = nx.compose(self.G,rdag.G)
-    def rootElement(self,s,end):
+            self.G.add_edge(t,r)
+    def addNode(self,node,root=False):
+        """ Extend dag with node inserted at root """
+        assert node not in self.G
+        self.G.add_node(node)
+        if root:
+            self.roots.append(node)
+    def rootElement(self,s,end=False):
         """ Create root element optionally pointing to End """
         obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
-        self.roots.append(obj)
-        self.G.add_node(obj)
+        self.addNode(obj,root=True)
         if end:
             self.G.add_edge(obj,self.end)
     def lockStart(self):
@@ -387,6 +390,7 @@ class SanskritLexicalAnalyzer(object):
                 print "Left, Right substrings = {} {}".format(lsstr,rsstr)
             # Get all possible splits as a list of lists 
             s_c_list = _sandhi_splits(lsstr,rsstr)
+            node_cache = {}
             if debug:
                 print "s_c_list:", s_c_list
             for (s_c_left,s_c_right) in s_c_list:
@@ -404,12 +408,15 @@ class SanskritLexicalAnalyzer(object):
                             # Make sure we got a graph back
                             assert isinstance(rdag,SanskritLexicalGraph)
                             # if there are valid splits of the right side
-                            # Extend splits list with s_c_left appended with possible splits of s_c_right
-                            t = SanskritLexicalGraph(s_c_left,end=False)
-                            t.append_single_root(rdag)
+                            if s_c_left not in node_cache:
+                                # Extend splits list with s_c_left appended with possible splits of s_c_right
+                                t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                                node_cache[s_c_left] = t
                             if not splits:
                                 splits = SanskritLexicalGraph()
-                            splits.extend_root(t)
+                            if not splits.hasNode(t):
+                                splits.addNode(t,root=True)
+                            splits.appendToNode(t,rdag)
                     else: # Null right part
                         # Splits is initialized with s_c_left -> None
                         splits = SanskritLexicalGraph(s_c_left,end=True)
