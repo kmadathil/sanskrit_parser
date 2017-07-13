@@ -433,7 +433,7 @@ if __name__ == "__main__":
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
                 print "End pathfinding:", datetime.datetime.now()
                 print "Found", len(splits), "splits"
-#                 print splits
+                print splits[:args.max_paths]
             else:
                 print "No Valid Splits Found"
     main()

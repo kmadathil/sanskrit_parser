@@ -26,13 +26,13 @@ def test_sandhi_join(sandhiobj, sandhi_reference):
 
 def test_sandhi_split(sandhiobj, sandhi_reference):
     obj = SanskritObject(sandhi_reference[1], encoding=SLP1)
-    splits = sandhiobj.split_at(obj, len(sandhi_reference[0][0]))
-    # In some cases the split may need to happen at len -1
-    splits1 = sandhiobj.split_at(obj, len(sandhi_reference[0][0])-1)
-    if splits:
-        splits.extend(splits1)
-    else:
-        splits = splits1
+    splits = []
+    start = len(sandhi_reference[0][0]) - 2
+    stop = min(len(sandhi_reference[0][0])+1, len(sandhi_reference[1]))
+    for i in range(start, stop):
+        split = sandhiobj.split_at(obj, i)
+        if split:
+            splits.extend(split)
     assert sandhi_reference[0] in splits
 
 def load_reference_data():

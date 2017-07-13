@@ -12,12 +12,8 @@ Example usage:
     sandhi = Sandhi()
     joins = sandhi.join('tasmin', 'iti')
     splits = sandhi.split_at('tasminniti', 5)
-
-If running script directly from console, please ensure that your console
-supports unicode display. See for example
-https://stackoverflow.com/questions/10651975/unicode-utf-8-with-git-bash
     
-Draws inspiration from by https://github.com/sanskrit/sanskrit
+Draws inspiration from https://github.com/sanskrit/sanskrit
 
 @author: Avinash Varna (github: @avinashvarna)
 """
@@ -67,6 +63,10 @@ class Sandhi(object):
         """
         self.forward[before].add((after, annotation))
         self.backward[after].add((before, annotation))
+        if len(before[0]) > self.lc_len_max:
+            self.logger.debug("Setting lc_len_max to %d", len(before[0]))
+        if len(before[1]) > self.rc_len_max:
+            self.logger.debug("Setting rc_len_max to %d", len(before[1]))
         self.lc_len_max = max(self.lc_len_max, len(before[0]))
         self.rc_len_max = max(self.rc_len_max, len(before[1]))
     
@@ -117,7 +117,7 @@ class Sandhi(object):
         word = word_in.transcoded(SLP1)
         self.logger.debug("Split: %s, %d", word, idx)
         left_chars = [word[i:idx+1] for i in range(max(0, idx-self.lc_len_max), idx+1)]
-        right_chars = [word[idx+1:idx+i] for i in range(1, min(self.rc_len_max, len(word)-idx)+1)]
+        right_chars = [word[idx+1:idx+i] for i in range(2, min(self.rc_len_max, len(word)-idx)+1)]
         if right_chars == []:
             right_chars = ['']
         self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
@@ -130,6 +130,15 @@ class Sandhi(object):
                 for before, annotation in befores:
                     self.logger.debug("Found split %s -> %s (%s)", key, before, annotation)
                     splits.append([ word[:idx+1-len(after[0])] + before[0], before[1] + word[idx+1+len(after[1]):] ])
+                    
+        # Handle the case of splitting at current char separately
+        key = word[idx]
+        befores = self.backward[key]
+        if befores:
+            for before, annotation in befores:
+                self.logger.debug("Found split %s -> %s (%s)", key, before, annotation)
+                splits.append([ word[:idx] + before[0], before[1] + word[idx+1+len(after[1]):] ])
+                
         if len(splits) == 0:
             self.logger.debug("No split found")
             return None
@@ -161,7 +170,7 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = map(unicode.strip, c.split('-'))
-                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, dirghas=True).transcoded(SLP1))
+                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
@@ -180,7 +189,7 @@ class Sandhi(object):
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
                         splits = map(unicode.strip, c.split('-'))
-                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, dirghas=True).transcoded(SLP1))
+                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
                         if len(splits) == 2:
                             varnas -= set(splits[1])
                         self.logger.debug("Found pratyAhAra %s (%s) = %s", c, splits[0][1:], varnas)
