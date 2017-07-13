@@ -17,7 +17,7 @@ import sanskritmark
 import re
 import networkx as nx
 from itertools import islice,imap
-from lexical_analyzer import sandhi
+from  sandhi import Sandhi
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -33,22 +33,25 @@ class SanskritLexicalGraph(object):
         if elem is not None:
             self.rootElement(elem,end)
     # FIXME Improve docstrings below
-    def append_single_root(self,rdag):
-        """ append rdag to self, assuming a single root element """
-        # Single root
-        assert len(self.roots) == 1 
+    def hasNode(self,t):
+        return t in self.G
+    def appendToNode(self,t,rdag):
+        """ append rdag to self, adding edges from a given node to rdag's roots """
+        # t is in our graph
+        assert t in self.G
         self.G = nx.compose(self.G,rdag.G)
         for r in rdag.roots:
-            self.G.add_edge(self.roots[0],r)
-    def extend_root(self,rdag):
-        """ Extend dag with rdag inserted at root """
-        self.roots.extend(list(set(rdag.roots)-set(self.roots)))
-        self.G = nx.compose(self.G,rdag.G)
-    def rootElement(self,s,end):
+            self.G.add_edge(t,r)
+    def addNode(self,node,root=False):
+        """ Extend dag with node inserted at root """
+        assert node not in self.G
+        self.G.add_node(node)
+        if root:
+            self.roots.append(node)
+    def rootElement(self,s,end=False):
         """ Create root element optionally pointing to End """
         obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
-        self.roots.append(obj)
-        self.G.add_node(obj)
+        self.addNode(obj,root=True)
         if end:
             self.G.add_edge(obj,self.end)
     def lockStart(self):
@@ -73,6 +76,62 @@ class SanskritLexicalAnalyzer(object):
         This class mostly reuses Dr. Dhaval Patel's work in wrapping
         Inria XML data 
     """
+    
+    sandhi = Sandhi() # Singleton!
+    
+    # Context Aware Sandhi Split map
+    sandhi_context_map = dict([
+            ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
+            ((None,'A','[^kKcCtTwWSzs]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
+            ((None,'a','[^akKcCtTwWSzs]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
+            ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')), # akaH savarNe dIrghaH 
+            ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')), # akaH savarNe dIrghaH
+            ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')), # akaH savarNe dIrghaH
+            ((None,'e','[^ieouEOfFxX]'),('e_a','a_i','a_I','A_i','A_I')), # AdguNaH
+            ((None,'o','[^ieouEOfFxX]'),('o_o','a_u','a_U','A_u','A_U')), # AdguNaH
+            ((None,'o','[^ieouEOfFxXkKpP]'),('as_','as_a')), # sasajusho ruH, ato rorapludAdaplute, hashi cha
+            ((None,'E','[^ieouEOfFxX]'),('E_E','a_e','A_e','a_E','A_E')), # vRddhirechi
+            ((None,'O','[^ieouEOfFxX]'),('O_O','a_o','A_o','a_O','A_O')), # vRddhirechi
+            (('a','r','[^ieouEOfFxX]'),('f_',)), # uraN raparaH
+            (('a','l','[^ieouEOfFxX]'),('x_',)), # uraN raparaH
+            (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
+            ('d',('t_','d_')), # Partial jhalAM jhasho'nte
+            ('g',('k_','g_')), # Partial jhalAM jhasho'nte
+            ('q',('w_','q_')), # Partial jhalAM jhasho'nte
+            ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp vA
+            ((None,'s','[tTkKpP]'),('s_','r_')), # visarjanIyasya sa
+            # Does this overdo things?
+            ((None,'z','[wWkKpP]'),('s_','r_')), # visarjanIyasya sa, ShTuNa Shtu
+            ((None,'S','[cC]'),('s_','r_')), # visarjanIyasya sa, schuna schu
+            (('[iIuUfFxX]','S',None),('s_',)), # apadAntasya mUrdhanyaH, iNkoH
+            ('M',('m_','M_')), # mo'nusvAraH
+            ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
+            ((None,'v','[aAiIeEoO]'),('u_','U_')),  # iko yaNachi
+            ('N',('N_','M_','m_')), # anusvArasya yayi pararavarNaH
+            ('Y',('Y_','M_','m_')), # do
+            ('R',('R_','M_','m_')), # do
+            ('n',('n_','M_','m_')), # do
+            ('m',('m_','M_')), # do
+            ((None,'H','$'),('s_','r_')), # Visarga at the end
+            ('s',None), # Forbidden to split at an s except for cases already matched
+            ('S',None), # Forbidden to split at an S except for cases already matched
+            ('z',None), # Forbidden to split at an z except for cases already matched
+            ((None,'ay','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH
+            ((None,'Ay','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH
+            ((None,'av','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH
+            ((None,'Av','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH
+            ((None,'a','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'a','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'A','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
+            ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm
+            # FIXME: Check if these will happen
+            #((None,'kK',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
+            #((None,'wW',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
+            ((None,'qQ',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
+       ])
+        # FIXME: more jhalAM jhasho
+        # FIXME: Lots more hal sandhi missing
         
     tagmap = {
              'प्राथमिकः':'v-cj-prim',
@@ -164,7 +223,6 @@ class SanskritLexicalAnalyzer(object):
     tag_cache = {}
 
     def __init__(self):
-        self.sandhi = sandhi.Sandhi()
         pass
     
     def getInriaLexicalTags(self,obj):
@@ -222,7 +280,7 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,debug=False):
+    def getSandhiSplits(self,o,use_internal_sandhi_splitter=True,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
@@ -233,13 +291,13 @@ class SanskritLexicalAnalyzer(object):
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
         s = o.transcoded(SanskritBase.SLP1)
-        dag = self._possible_splits(s,debug)
+        dag = self._possible_splits(s,use_internal_sandhi_splitter,debug)
         if not dag:
             return None
         else:
             return dag
         
-    def _possible_splits(self,s,debug=False):
+    def _possible_splits(self,s,use_internal_sandhi_splitter=True,debug=False):
         ''' private method to dynamically compute all sandhi splits
 
         Used by getSandhiSplits
@@ -258,67 +316,67 @@ class SanskritLexicalAnalyzer(object):
             return r
 
 
-#         def _sandhi_splits(lsstr,rsstr):
-#             #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
-#             s_c_list = []
-#             # Unconditional Sandhi reversal
-#             if c in self.sandhi_context_map:
-#                 # Unconditional/Forbidden splits are marked by direct keys
-#                 if self.sandhi_context_map[c] is not None: # Not a forbidden split
-#                     for cm in self.sandhi_context_map[c]:
-#                         # Split into left/right context additions
-#                         cml,cmr=cm.split("_")
-#                         if rsstr: # Right context is non-empty
-#                             # Addition to right context
-#                             crsstr = cmr + rsstr
-#                             # Addition to left context
-#                             clsstr = lsstr[0:-1]+cml
-#                             # FIXME check added to prevent loops like A-A_A etc.
-#                             # Check if this causes real problems
-#                             if crsstr != s:
-#                                 # Addition to left context
-#                                 s_c_list.append([clsstr, crsstr])
-#                         else:   #Null right context, do not prepend to rsstr
-#                             # Insert only if necessary to avoid duplicates
-#                             if [lsstr[0:-1]+cml, None] not in s_c_list: 
-#                                 s_c_list.append([lsstr[0:-1]+cml, None])
-#             else:
-#                 # No direct key, split is not forbidden
-#                 s_c_list.append([lsstr,rsstr])
-#                 
-# 
-#             # Conditional (context sensitive sandhi reversal)
-#             for csm in self.sandhi_context_map:
-#                 # Tuple indicates a context-sensitive split
-#                 if isinstance(csm,tuple):
-#                     assert len(csm)==3 
-#                     # Match end varnas of left string to key.
-#                     # How many varnas to match depends on key size
-#                     cmatch=(csm[1]==lsstr[-len(csm[1]):])
-#                     if cmatch:
-#                         # If left key is not None, check if left context matches
-#                         lmatch=(csm[0] is None) or ((len(lsstr)>1) and re.match(csm[0],lsstr[-2]))
-#                         # If right key is not None, check if right context matches or is None
-#                         # Special match for empty right context = $
-#                         rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
-#                                                     (not len(rsstr)) and (csm[2]=='$'))
-#                         if rmatch and lmatch: # Both match
-#                             if debug:
-#                                 print "Context Sandhi match:",csm,lsstr,rsstr
-#                             # Apply each replacement
-#                             for cm in self.sandhi_context_map[csm]:
-#                                 if debug:
-#                                     print "Trying:",cm
-#                                 # Split into left and right additions
-#                                 cml,cmr=cm.split("_")
-#                                 # Add to right context
-#                                 crsstr = cmr + rsstr
-#                                 clsstr = lsstr[0:-len(csm[1])] + cml
-#                                 # FIXME check added to prevent loops like A-A_A etc.
-#                                 # Check if this causes real problems
-#                                 if crsstr != s:
-#                                     s_c_list.append([clsstr, crsstr])
-#             return s_c_list                 
+        def _sandhi_splits(lsstr,rsstr):
+            #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
+            s_c_list = []
+            # Unconditional Sandhi reversal
+            if c in self.sandhi_context_map:
+                # Unconditional/Forbidden splits are marked by direct keys
+                if self.sandhi_context_map[c] is not None: # Not a forbidden split
+                    for cm in self.sandhi_context_map[c]:
+                        # Split into left/right context additions
+                        cml,cmr=cm.split("_")
+                        if rsstr: # Right context is non-empty
+                            # Addition to right context
+                            crsstr = cmr + rsstr
+                            # Addition to left context
+                            clsstr = lsstr[0:-1]+cml
+                            # FIXME check added to prevent loops like A-A_A etc.
+                            # Check if this causes real problems
+                            if crsstr != s:
+                                # Addition to left context
+                                s_c_list.append([clsstr, crsstr])
+                        else:   #Null right context, do not prepend to rsstr
+                            # Insert only if necessary to avoid duplicates
+                            if [lsstr[0:-1]+cml, None] not in s_c_list: 
+                                s_c_list.append([lsstr[0:-1]+cml, None])
+            else:
+                # No direct key, split is not forbidden
+                s_c_list.append([lsstr,rsstr])
+                 
+ 
+            # Conditional (context sensitive sandhi reversal)
+            for csm in self.sandhi_context_map:
+                # Tuple indicates a context-sensitive split
+                if isinstance(csm,tuple):
+                    assert len(csm)==3 
+                    # Match end varnas of left string to key.
+                    # How many varnas to match depends on key size
+                    cmatch=(csm[1]==lsstr[-len(csm[1]):])
+                    if cmatch:
+                        # If left key is not None, check if left context matches
+                        lmatch=(csm[0] is None) or ((len(lsstr)>1) and re.match(csm[0],lsstr[-2]))
+                        # If right key is not None, check if right context matches or is None
+                        # Special match for empty right context = $
+                        rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
+                                                    (not len(rsstr)) and (csm[2]=='$'))
+                        if rmatch and lmatch: # Both match
+                            if debug:
+                                print "Context Sandhi match:",csm,lsstr,rsstr
+                            # Apply each replacement
+                            for cm in self.sandhi_context_map[csm]:
+                                if debug:
+                                    print "Trying:",cm
+                                # Split into left and right additions
+                                cml,cmr=cm.split("_")
+                                # Add to right context
+                                crsstr = cmr + rsstr
+                                clsstr = lsstr[0:-len(csm[1])] + cml
+                                # FIXME check added to prevent loops like A-A_A etc.
+                                # Check if this causes real problems
+                                if crsstr != s:
+                                    s_c_list.append([clsstr, crsstr])
+            return s_c_list                 
             
         splits = False
 
@@ -328,18 +386,23 @@ class SanskritLexicalAnalyzer(object):
                 print "Found {} in scoreboard".format(s)
             return self.dynamic_scoreboard[s]
 
-        obj = SanskritBase.SanskritObject(s, encoding=SanskritBase.SLP1)
+        # For Sandhi Splitter
+        obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
         # Iterate over the string, looking for valid left splits
-        for ix in range(len(s)):
-            # Left and right substrings
-#             lsstr = s[0:ix+1] 
-#             rsstr = s[ix+1:]
-            if debug:
-                print "Splitting %s at pos %d" % (s, ix)
-#                 print "Left, Right substrings = {} {}".format(lsstr,rsstr)
-            # Get all possible splits as a list of lists 
-#             s_c_list = _sandhi_splits(lsstr,rsstr)
-            s_c_list = self.sandhi.split_at(obj, ix)
+        for (ix,c) in enumerate(s):
+            if use_internal_sandhi_splitter:
+                # Left and right substrings
+                lsstr = s[0:ix+1] 
+                rsstr = s[ix+1:]
+                if debug:
+                    print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+                # Get all possible splits as a list of lists 
+                s_c_list = _sandhi_splits(lsstr,rsstr)
+            else:
+                if debug:
+                    print "Sandhi: splitting: {} at {} ({})".format(s,s[ix],ix)
+                s_c_list = self.sandhi.split_at(obj,ix)
+            node_cache = {}
             if debug:
                 print "s_c_list:", s_c_list
             if s_c_list == None:
@@ -353,18 +416,21 @@ class SanskritLexicalAnalyzer(object):
                     if s_c_right:
                         if debug:
                             print "Trying to split:",s_c_right
-                        rdag = self._possible_splits(s_c_right,debug)
+                        rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
                         # if there are valid splits of the right side
                         if rdag:
                             # Make sure we got a graph back
                             assert isinstance(rdag,SanskritLexicalGraph)
                             # if there are valid splits of the right side
-                            # Extend splits list with s_c_left appended with possible splits of s_c_right
-                            t = SanskritLexicalGraph(s_c_left,end=False)
-                            t.append_single_root(rdag)
+                            if s_c_left not in node_cache:
+                                # Extend splits list with s_c_left appended with possible splits of s_c_right
+                                t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                                node_cache[s_c_left] = t
                             if not splits:
                                 splits = SanskritLexicalGraph()
-                            splits.extend_root(t)
+                            if not splits.hasNode(t):
+                                splits.addNode(t,root=True)
+                            splits.appendToNode(t,rdag)
                     else: # Null right part
                         # Splits is initialized with s_c_left -> None
                         splits = SanskritLexicalGraph(s_c_left,end=True)
@@ -397,6 +463,7 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
+        parser.add_argument('--use-sandhi-module',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
@@ -425,7 +492,7 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start Split:", datetime.datetime.now()
-            graph=s.getSandhiSplits(i,debug=args.debug)
+            graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=not args.use_sandhi_module,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
                 from networkx.drawing.nx_pydot import write_dot

@@ -118,6 +118,7 @@ class Sandhi(object):
         self.logger.debug("Split: %s, %d", word, idx)
         left_chars = [word[i:idx+1] for i in range(max(0, idx-self.lc_len_max), idx+1)]
         right_chars = [word[idx+1:idx+i] for i in range(2, min(self.rc_len_max, len(word)-idx)+1)]
+
         if right_chars == []:
             right_chars = ['']
         self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
