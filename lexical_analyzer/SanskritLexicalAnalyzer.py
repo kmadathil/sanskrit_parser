@@ -440,15 +440,23 @@ class SanskritLexicalAnalyzer(object):
                                 splits.addNode(t,root=True)
                             splits.appendToNode(t,rdag)
                     else: # Null right part
-                        # Splits is initialized with s_c_left -> None
-                        splits = SanskritLexicalGraph(s_c_left,end=True)
+                        if not splits:
+                            # Splits is initialized with s_c_left -> None
+                            splits = SanskritLexicalGraph(s_c_left,end=True)
+                        else:
+                            # No need to cache this
+                            splits.rootElement(s,end=True)
                 else:
                     if debug:
                         print "Invalid left word: ", s_c_left
         # Update scoreboard for this substring, so we don't have to split again  
         self.dynamic_scoreboard[s]=splits
         if debug:
-            print "Returning: ",splits
+            if not splits:
+                print "Returning:", splits
+            else:
+                print "Returning: ", map(str,splits.G.nodes())
+
         return splits
 
 if __name__ == "__main__":
