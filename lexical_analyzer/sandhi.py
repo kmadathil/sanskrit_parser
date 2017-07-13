@@ -47,6 +47,7 @@ class Sandhi(object):
         self.backward = defaultdict(set)
         self.lc_len_max = 0
         self.rc_len_max = 0
+        self.after_len_max = 0
         self.logger = logger or logging.getLogger(__name__)
         if rules_dir:
             self.add_rules_from_dir(rules_dir)
@@ -67,8 +68,11 @@ class Sandhi(object):
             self.logger.debug("Setting lc_len_max to %d", len(before[0]))
         if len(before[1]) > self.rc_len_max:
             self.logger.debug("Setting rc_len_max to %d", len(before[1]))
+        if len(after) > self.after_len_max:
+            self.logger.debug("Setting after_len_max to %d", len(after))
         self.lc_len_max = max(self.lc_len_max, len(before[0]))
         self.rc_len_max = max(self.rc_len_max, len(before[1]))
+        self.after_len_max = max(self.after_len_max, len(after))
     
     def join(self, first_in, second_in):
         """
@@ -116,29 +120,19 @@ class Sandhi(object):
         """
         word = word_in.transcoded(SLP1)
         self.logger.debug("Split: %s, %d", word, idx)
-        left_chars = [word[i:idx+1] for i in range(max(0, idx-self.lc_len_max), idx+1)]
-        right_chars = [word[idx+1:idx+i] for i in range(2, min(self.rc_len_max, len(word)-idx)+1)]
-
-        if right_chars == []:
-            right_chars = ['']
-        self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
-        splits = []
-        for after in itertools.product(left_chars, right_chars):
-            key = ''.join(after)
-            self.logger.debug("Trying key %s", key)
-            befores = self.backward[key]
+        splits = set()
+        # Figure out how may chars we can extract for the afters
+        stop = min(idx+self.after_len_max, len(word))
+        afters = [word[idx:i] for i in range(idx+1, stop+1)]
+        for after in afters:
+            self.logger.debug("Trying after %s", after)
+            befores = self.backward[after]
             if befores:
                 for before, annotation in befores:
-                    self.logger.debug("Found split %s -> %s (%s)", key, before, annotation)
-                    splits.append([ word[:idx+1-len(after[0])] + before[0], before[1] + word[idx+1+len(after[1]):] ])
-                    
-        # Handle the case of splitting at current char separately
-        key = word[idx]
-        befores = self.backward[key]
-        if befores:
-            for before, annotation in befores:
-                self.logger.debug("Found split %s -> %s (%s)", key, before, annotation)
-                splits.append([ word[:idx] + before[0], before[1] + word[idx+1+len(after[1]):] ])
+                    self.logger.debug("Found split %s -> %s (%s)", after, before, annotation)
+                    left = word[:idx] + before[0]
+                    right = before[1] + word[idx+len(after):]
+                    splits.add( ( left, right ) )
                 
         if len(splits) == 0:
             self.logger.debug("No split found")

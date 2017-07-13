@@ -63,6 +63,15 @@ class SanskritLexicalGraph(object):
         """ Find all paths through DAG to End """
         if self.roots:
             self.lockStart()
+        from networkx.drawing.nx_pydot import write_dot
+        write_dot(self.G, "graph.dot")
+        print "Number of nodes = ", len(self.G.nodes())
+        print "Number of edges = ", len(self.G.edges())
+#         paths = list(nx.all_simple_paths(self.G, self.start, self.end))
+#         paths.sort(key=lambda x: len(x))
+#         print "Number of paths = ", len(paths)
+#         return list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
+#                          paths[:max_paths]))
         return list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
                          islice(nx.shortest_simple_paths(self.G, self.start, self.end), max_paths)))
 
@@ -413,7 +422,7 @@ class SanskritLexicalAnalyzer(object):
                     if debug:
                         print "Valid left word: ", s_c_left
                     # For each split with a valid left part, check it there are valid splits of the right part
-                    if s_c_right:
+                    if s_c_right and s_c_right != '':
                         if debug:
                             print "Trying to split:",s_c_right
                         rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
@@ -426,6 +435,7 @@ class SanskritLexicalAnalyzer(object):
                                 # Extend splits list with s_c_left appended with possible splits of s_c_right
                                 t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
                                 node_cache[s_c_left] = t
+                            t = node_cache[s_c_left]
                             if not splits:
                                 splits = SanskritLexicalGraph()
                             if not splits.hasNode(t):
@@ -472,9 +482,10 @@ if __name__ == "__main__":
         args=getArgs()
         print "Input String:", args.data
  
-        import logging
-        if args.debug:
-            logging.basicConfig(filename="sandhi.log", filemode = "wb", level = logging.DEBUG)
+#         if args.debug:
+#             import logging
+#             logging.basicConfig(filename="sandhi.log", filemode = "wb", level = logging.DEBUG)
+
         s=SanskritLexicalAnalyzer()
         if args.input_encoding is None:
             ie = None
@@ -495,12 +506,14 @@ if __name__ == "__main__":
             graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=not args.use_sandhi_module,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
-                from networkx.drawing.nx_pydot import write_dot
-                write_dot(graph.G, "graph.dot")
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
                 print "End pathfinding:", datetime.datetime.now()
-                print "Found", len(splits), "splits"
-                print splits[:args.max_paths]
+                print "Splits:"
+                if splits:
+                    for split in splits:
+                        print split
+                else:
+                    print "None"                
             else:
                 print "No Valid Splits Found"
     main()

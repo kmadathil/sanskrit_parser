@@ -66,7 +66,7 @@ def load_reference_data_from_file(filename):
                 before[0] = re.sub("\W+", "", before[0])
                 before[1] = re.sub("\W+", "", before[1])
                 after = re.sub("\W+", "", after)
-                sandhi_references.append((before, after, basename, linenum+1))
+                sandhi_references.append((tuple(before), after, basename, linenum+1))
 #     print sandhi_references
     return sandhi_references
 
