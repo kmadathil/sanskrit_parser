@@ -387,8 +387,19 @@ class SanskritLexicalAnalyzer(object):
 
         # For Sandhi Splitter
         obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
+
+        # If a space is found in a string, stop at that space
+        spos = s.find(' ')
+        if spos!=-1:
+            # Replace the first space only
+            s=s.replace(' ','',1)
+        
         # Iterate over the string, looking for valid left splits
         for (ix,c) in enumerate(s):
+            
+            # If there was a space here, we cannot go further
+            if spos!=-1 and ix==spos:
+                break
             if use_internal_sandhi_splitter:
                 # Left and right substrings
                 lsstr = s[0:ix+1] 

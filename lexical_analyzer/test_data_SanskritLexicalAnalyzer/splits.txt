@@ -1,6 +1,7 @@
 # Test data in SLP1 for SanskritLexicalAnalyzer
 
-astyuttarasyAMdiSidevatAtmA = asti uttarasyAm diSi devatA AtmA
-himAlayonAmanagADirAjaH     = hima Alayas nAma naga aDirAjas
-vAgarTAvivasampfktO         = vAk arTO iva sam pfktO
-astyuttarasyAMdiSidevatAtmAhimAlayonAmanagADirAjaH = asti uttarasyAm diSi devatA AtmA hima Alayas nAma naga aDirAjas
+agajAnanapadmArkaNgajAnanamaharniSaM anekadamtamBaktAnAmekadantaMyajAmahe = aga jA Anana padma arkam gaja Ananam ahar niSam aneka dam tam BaktAnAm eka dantam yajAmahe
+astyuttarasyAMdiSidevatAtmA himAlayonAmanagADirAjaH = asti uttarasyAm diSi devatA AtmA hima Alayas nAma naga aDirAjas
+vAgarTAvivasampfktOvAgarTapratipattaye jagataH pitarO vandepArvatIparameSvarO  = vAk arTO iva sam pfktO vAk arTa pratipattaye jagatas pitarO vande pArvatI parama ISvarO
+
+
