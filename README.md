@@ -1,6 +1,6 @@
 # UNDER CONSTRUCTION (Please ping me if you wish to collaborate on this)
 # sanskrit_parser
-Parsers for Sanskrit / सम्स्कृतम् 
+Parsers for Sanskrit / संस्कृतम्
 
 ## Current status: 
 Things that can be run
