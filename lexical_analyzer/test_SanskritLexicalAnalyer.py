@@ -76,8 +76,10 @@ def test_file_splits(lexan,splittext_refs):
     i=SanskritObject(f,encoding=SLP1)
     graph=lexan.getSandhiSplits(i)
     assert graph is not None
-    # Currently, this triggers a fallback to all_simple_paths
-    splits=graph.findAllPaths(max_paths=10000,sort=False)
+    splits=graph.findAllPaths(max_paths=1000,sort=False)
+    if s not in splits:
+        # Currently, this triggers a fallback to all_simple_paths
+        splits=graph.findAllPaths(max_paths=10000,sort=False)
     assert s in splits
     
 # def test_uohd_file_splits(lexan,uohd_refs):
