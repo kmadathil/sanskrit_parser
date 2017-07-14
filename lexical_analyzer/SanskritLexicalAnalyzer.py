@@ -28,43 +28,87 @@ class SanskritLexicalGraph(object):
     start = "__start__"
     end = "__end__"
     def __init__(self,elem=None,end=False):
+        ''' DAG Class Init
+        
+        Params:
+            elem (SanskritObject :optional:): Optional initial element
+            end  (bool :optional:): Add end edge to initial element
+        '''
         self.roots = []
         self.G     = nx.DiGraph()
         if elem is not None:
-            self.rootElement(elem,end)
-    # FIXME Improve docstrings below
+            self.addNode(node,root=True,end=end)
     def hasNode(self,t):
+        ''' Does a given node exist in the graph?
+
+            Params:
+               t (SanskritObject): Node
+            Returns:
+               boolean
+        '''
         return t in self.G
     def appendToNode(self,t,rdag):
-        """ append rdag to self, adding edges from a given node to rdag's roots """
+        """ append rdag to self, adding edges from a given node to rdag's roots 
+
+            Params:
+                t (SanskritObject)      : Node to append to
+             rdag (SanskritLexicalGraph): Graph to append to node
+        """
         # t is in our graph
         assert t in self.G
         self.G = nx.compose(self.G,rdag.G)
         for r in rdag.roots:
             self.G.add_edge(t,r)
-    def addNode(self,node,root=False):
-        """ Extend dag with node inserted at root """
+    def addNode(self,node,root=False,end=False):
+        """ Extend dag with node inserted at root             
+
+            Params:
+                Node (SanskritObject)      : Node to add
+                root (Boolean)             : Make a root node
+                end  (Boolean)             : Add an edge to end
+        """
         assert node not in self.G
         self.G.add_node(node)
         if root:
             self.roots.append(node)
-    def rootElement(self,s,end=False):
-        """ Create root element optionally pointing to End """
-        obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
-        self.addNode(obj,root=True)
         if end:
-            self.G.add_edge(obj,self.end)
+            self.G.add_edge(node,self.end)
+    def addEndEdge(self,node):
+        ''' Add an edge from node to end '''
+        assert node in self.G
+        self.G.add_edge(node,self.end)
     def lockStart(self):
+        ''' Make the graph ready for search by adding a start node
+
+        Add a start node, add arcs to all current root nodes, and clear
+        self.roots
+        '''
         self.G.add_node(self.start)
         for r in self.roots:
             self.G.add_edge(self.start,r)
         self.roots=[]
-    def findAllPaths(self,max_paths=10,debug=False):
-        """ Find all paths through DAG to End """
+    def findAllPaths(self,max_paths=10,sort=True,debug=False):
+        """ Find all paths through DAG to End 
+
+            Params:
+               max_paths (int :default:=10): Number of paths to find
+                          If this is > 1000, all paths will be found   
+               sort (bool)                 : If True (default), sort paths 
+                                             in ascending order of length
+        """
         if self.roots:
             self.lockStart()
-        return list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
-                         islice(nx.shortest_simple_paths(self.G, self.start, self.end), max_paths)))
+        # shortest_simple_paths is slow for >1000 paths
+        if max_paths <=1000:
+            return list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
+                             islice(nx.shortest_simple_paths(self.G, self.start, self.end), max_paths)))
+        else: # Fall back to all_simple_paths
+            ps = list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
+                             nx.all_simple_paths(self.G, self.start, self.end)))
+            # If we do not intend to display paths, no need to sort them
+            if sort:
+                ps.sort(key=lambda x: len(x))
+            return ps
 
     def __str__(self):
         """ Print representation of DAG """
@@ -82,8 +126,8 @@ class SanskritLexicalAnalyzer(object):
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
             ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
-            ((None,'A','[^kKcCtTwWSzs]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
-            ((None,'a','[^akKcCtTwWSzs]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
+            ((None,'A','[^kKcCtTwWSzsH]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
+            ((None,'a','[^akKcCtTwWSzsH]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
             ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')), # akaH savarNe dIrghaH 
             ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')), # akaH savarNe dIrghaH
             ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')), # akaH savarNe dIrghaH
@@ -434,18 +478,29 @@ class SanskritLexicalAnalyzer(object):
                                 # Extend splits list with s_c_left appended with possible splits of s_c_right
                                 t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
                                 node_cache[s_c_left] = t
+                            else:
+                                t = node_cache[s_c_left]
                             if not splits:
                                 splits = SanskritLexicalGraph()
                             if not splits.hasNode(t):
                                 splits.addNode(t,root=True)
                             splits.appendToNode(t,rdag)
                     else: # Null right part
-                        if not splits:
-                            # Splits is initialized with s_c_left -> None
-                            splits = SanskritLexicalGraph(s_c_left,end=True)
+                        # Why cache s_c_left here? To handle the case
+                        # where the same s_c_left appears with a null and non-null
+                        # right side.
+                        if s_c_left not in node_cache:
+                            # Extend splits list with s_c_left appended with possible splits of s_c_right
+                            t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                            node_cache[s_c_left] = t
                         else:
-                            # No need to cache this
-                            splits.rootElement(s,end=True)
+                            t = node_cache[s_c_left]
+                        if not splits:
+                            splits = SanskritLexicalGraph()
+                        if not splits.hasNode(t):
+                            splits.addNode(t,root=True,end=True)
+                        else:
+                            splits.addEndEdge(t)
                 else:
                     if debug:
                         print "Invalid left word: ", s_c_left
