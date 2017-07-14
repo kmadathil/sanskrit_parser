@@ -2,9 +2,12 @@
 
 agajAnanapadmArkaNgajAnanamaharniSam = aga jA Anana padma arkam gaja Ananam ahar niSam
 anekadantamBaktAnAmekadantaMyajAmahe =  aneka dam tam BaktAnAm eka dantam yajAmahe
-astyuttarasyAMdiSidevatAtmA = asti uttarasyAm diSi devatA AtmA
-himAlayonAmanagADirAjaH =  hima Alayas nAma naga aDirAjas
+
+# Kalidasa
 vAgarTAvivasampfktOvAgarTapratipattaye jagataH pitarO vandepArvatIparameSvarO  = vAk arTO iva sam pfktO vAk arTa pratipattaye jagatas pitarO vande pArvatI parama ISvarO
 
+astyuttarasyAMdiSidevatAtmA himAlayonAmanagADirAjaH = asti uttarasyAm diSi devatA AtmA hima Alayas nAma naga aDirAjas
 
+#Panini
+jIvikopanizadAvOpamye = jIvikA upanizadO Opamye
 
