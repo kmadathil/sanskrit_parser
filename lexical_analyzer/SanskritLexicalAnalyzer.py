@@ -133,7 +133,9 @@ class SanskritLexicalAnalyzer(object):
             ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')), # akaH savarNe dIrghaH
             ((None,'e','[^ieouEOfFxX]'),('e_a','a_i','a_I','A_i','A_I')), # AdguNaH
             ((None,'o','[^ieouEOfFxX]'),('o_o','a_u','a_U','A_u','A_U')), # AdguNaH
-            ((None,'o','[^ieouEOfFxXkKpP]'),('as_','as_a')), # sasajusho ruH, ato rorapludAdaplute, hashi cha
+            ((None,'o','[^ieouEOfFxX]'),('as_a',)), # sasajusho ruH, ato rorapludAdaplute, hashi cha
+            ((None,'o','[^ieouEOfFxXkKpP]'),('as_',)), # sasajusho ruH, ato rorapludAdaplute, hashi cha
+
             ((None,'E','[^ieouEOfFxX]'),('E_E','a_e','A_e','a_E','A_E')), # vRddhirechi
             ((None,'O','[^ieouEOfFxX]'),('O_O','a_o','A_o','a_O','A_O')), # vRddhirechi
             (('a','r','[^ieouEOfFxX]'),('f_',)), # uraN raparaH

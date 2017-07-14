@@ -5,6 +5,7 @@ import SanskritLexicalAnalyzer
 import sanskritmark
 from base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
 import logging
+import re
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(filename='uohd.log', filemode='w', level=logging.DEBUG)
@@ -13,10 +14,11 @@ logging.basicConfig(filename='uohd.log', filemode='w', level=logging.DEBUG)
 def lexan():
     return SanskritLexicalAnalyzer.SanskritLexicalAnalyzer()
 
-def get_uohd_refs(maxrefs=1000):
+def get_uohd_refs(maxrefs=100):
     def _dumpchars(str):
         s = str
-        for c in ",'-;()":
+        # Random characters in UOHD files
+        for c in ",'-;().?":
             s=s.replace(c,'')
         return s
     fs = []
@@ -79,19 +81,26 @@ def test_uohd_file_splits(lexan,uohd_refs):
         # Rakarantas
         sss=ss.replace('punaH','punar')
         # Sakarantas
-        sss=ss.replace('H','s')
+        sss=re.sub('H$','s',sss)
+        if sss.find('punas')!=-1:
+            logger.error("ERROR: found {}".format(sss))
         if sanskritmark.quicksearch(sss):
             s.append(sss)
         else:
             # If not, treat it as a word to be split
             graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
             if graph is None:
-                logger.warning("Skipping: {} is not in db".format(ss))
+                # Catch stray unicode symbols with the encode
+                logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
                 return
             # First split
             ssp=graph.findAllPaths(max_paths=1)[0]
             # Add it to split list
             s.extend(ssp)
+            
+    # UOHD stores sandhied final words!
+    # This is not a full fix
+    re.sub("o$","aH",f)
     i=SanskritObject(f,encoding=SLP1)
     graph=lexan.getSandhiSplits(i)
     assert graph is not None
@@ -99,6 +108,8 @@ def test_uohd_file_splits(lexan,uohd_refs):
     if s not in splits:
         # Currently, this triggers a fallback to all_simple_paths
         splits=graph.findAllPaths(max_paths=10000,sort=False)
+    if s not in splits:
+        logger.debug("FAIL: {} not in {}".format(s,splits))
     assert s in splits
        
 def pytest_generate_tests(metafunc):
