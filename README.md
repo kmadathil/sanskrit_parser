@@ -1,10 +1,11 @@
 # UNDER CONSTRUCTION (Please ping me if you wish to collaborate on this)
 # sanskrit_parser
-Parsers for Sanskrit / सम्स्कृतम् 
+Parsers for Sanskrit / संस्कृतम्
 
 ## Current status: 
 Things that can be run
   1. MaheshvaraSutras.py
+  2. sandhi.py
   2. SanskritLexicalAnalyzer.py
   
 Prerequisites:
@@ -16,6 +17,8 @@ To run:
   
 Example commands
   1. `cd base && python MaheshvaraSutras.py --pratyahara jhal --varna h`
+  2. `cd lexical_analyzer && python sandhi.py --join tasmin iti`
+  2. `cd lexical_analyzer && python sandhi.py --split tasminniti 5`
   2. `cd lexical_analyzer && python SanskritLexicalAnalyzer.py astyuttarasyAMdishi --split`
   
 Both `MaheshvaraSutras.py` and `SanskritLexicalAnalyzer.py` have `--help` options that provide more information about what they do. 
@@ -32,7 +35,10 @@ Sandhi splitting subroutine
        No semantic validation will be performed (up to higher levels)
        
 #### Current Status
-Basic version working. Needs to be improved and sandhi generation needs to be added for completeness
+In progress. 
+Advanced version with sandhi split/join and convenient rule definition is at sandhi.py.
+
+Basic version is embedded in SanksritLexicalAnalyzer.py. 
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -69,7 +75,7 @@ Sanskrit Sentence
 All semantically valid sandhi split sequences
 
 #### Current Status
-Working - see SanksritLexicalAnalyzer.py
+See SanksritLexicalAnalyzer.py
 
 Caveat - uses inriaxmlwrapper as a level 1 solution, so we're limited to what Prof. Huet's database has.
 

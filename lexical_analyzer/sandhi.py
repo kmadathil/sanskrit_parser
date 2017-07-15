@@ -140,7 +140,7 @@ class Sandhi(object):
         else:
             return splits
         
-    def split_all(self, word_in):
+    def split_all(self, word_in, start=None, stop=None):
         """
         Split word at all possible locations and return splits.
         **Warning**: Will generate splits that are not lexically valid.
@@ -151,7 +151,9 @@ class Sandhi(object):
         """
         splits = set()
         word = word_in.transcoded(SLP1)
-        for idx in xrange(len(word)):
+        start = start or 0
+        stop = stop or len(word)
+        for idx in xrange(start, stop):
             split = self.split_at(word_in, idx)
             if split:
                 splits |= split
