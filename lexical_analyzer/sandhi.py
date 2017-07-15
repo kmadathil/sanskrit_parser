@@ -115,7 +115,7 @@ class Sandhi(object):
         
         :param word_in: SanskritObject word to split
         :param idx: position within word at which to try the split
-        :return: list of list of strings of possible split forms, or None if no split can be performed 
+        :return: set of tuple of strings of possible split forms, or None if no split can be performed 
         
         """
         word = word_in.transcoded(SLP1)
@@ -134,6 +134,27 @@ class Sandhi(object):
                     right = before[1] + word[idx+len(after):]
                     splits.add( ( left, right ) )
                 
+        if len(splits) == 0:
+            self.logger.debug("No split found")
+            return None
+        else:
+            return splits
+        
+    def split_all(self, word_in):
+        """
+        Split word at all possible locations and return splits.
+        **Warning**: Will generate splits that are not lexically valid.
+        
+        :param word_in: SanskritObject word to split
+        :return: set of tuple of strings of possible split forms, or None if no split can be performed 
+        
+        """
+        splits = set()
+        word = word_in.transcoded(SLP1)
+        for idx in xrange(len(word)):
+            split = self.split_at(word_in, idx)
+            if split:
+                splits |= split
         if len(splits) == 0:
             self.logger.debug("No split found")
             return None
