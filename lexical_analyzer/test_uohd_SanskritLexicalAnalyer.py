@@ -88,7 +88,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
             s.append(sss)
         else:
             # If not, treat it as a word to be split
-            graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
+            graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1),use_internal_sandhi_splitter=False)
             if graph is None:
                 # Catch stray unicode symbols with the encode
                 logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
@@ -102,7 +102,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
     # This is not a full fix
     f=re.sub("o$","aH",f)
     i=SanskritObject(f,encoding=SLP1)
-    graph=lexan.getSandhiSplits(i)
+    graph=lexan.getSandhiSplits(i,use_internal_sandhi_splitter=False)
     assert graph is not None
     splits=graph.findAllPaths(max_paths=1000,sort=False)
     if s not in splits:

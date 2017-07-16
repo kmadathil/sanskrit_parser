@@ -539,7 +539,7 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
-        parser.add_argument('--use-sandhi-module',action='store_true')
+        parser.add_argument('--use-internal-sandhi-splitter',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
@@ -569,7 +569,7 @@ if __name__ == "__main__":
         else:
             import datetime
             print "Start Split:", datetime.datetime.now()
-            graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=not args.use_sandhi_module,debug=args.debug)
+            graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=args.use_internal_sandhi_splitter,debug=args.debug)
             print "End DAG generation:", datetime.datetime.now()
             if graph:
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
