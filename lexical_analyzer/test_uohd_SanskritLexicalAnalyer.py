@@ -14,12 +14,14 @@ logging.basicConfig(filename='uohd.log', filemode='w', level=logging.DEBUG)
 def lexan():
     return SanskritLexicalAnalyzer.SanskritLexicalAnalyzer()
 
-def get_uohd_refs(maxrefs=100):
+def get_uohd_refs(maxrefs=200):
     def _dumpchars(str):
         s = str
         # Random characters in UOHD files
-        for c in ",'-;().?":
+        for c in ",'-;().?!":
             s=s.replace(c,'')
+        # Some bad visargas
+        s=s.replace(':','H')
         return s
     fs = []
     m = maxrefs
@@ -68,7 +70,7 @@ def get_uohd_refs(maxrefs=100):
                     fs.append((full,splits))
                     m=m-1
                     if m<=0:
-                        break
+                        return fs
     return fs
 
     
