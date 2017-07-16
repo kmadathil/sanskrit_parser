@@ -100,7 +100,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
             
     # UOHD stores sandhied final words!
     # This is not a full fix
-    re.sub("o$","aH",f)
+    f=re.sub("o$","aH",f)
     i=SanskritObject(f,encoding=SLP1)
     graph=lexan.getSandhiSplits(i)
     assert graph is not None
