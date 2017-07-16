@@ -26,13 +26,16 @@ def test_sandhi_join(sandhiobj, sandhi_reference):
 
 def test_sandhi_split(sandhiobj, sandhi_reference):
     obj = SanskritObject(sandhi_reference[1], encoding=SLP1)
-    splits = sandhiobj.split_at(obj, len(sandhi_reference[0][0]))
-    # In some cases the split may need to happen at len -1
-    splits1 = sandhiobj.split_at(obj, len(sandhi_reference[0][0])-1)
-    if splits:
-        splits.extend(splits1)
-    else:
-        splits = splits1
+#     splits = set()
+#     start = len(sandhi_reference[0][0]) - 2
+#     stop = min(len(sandhi_reference[0][0])+1, len(sandhi_reference[1]))
+#     for i in range(start, stop):
+#     for i in range(len(sandhi_reference[1])):
+#         split = sandhiobj.split_at(obj, i)
+#         if split:
+#             assert splits.isdisjoint(split)
+#             splits |= split
+    splits = sandhiobj.split_all(obj)
     assert sandhi_reference[0] in splits
 
 def load_reference_data():
@@ -66,7 +69,7 @@ def load_reference_data_from_file(filename):
                 before[0] = re.sub("\W+", "", before[0])
                 before[1] = re.sub("\W+", "", before[1])
                 after = re.sub("\W+", "", after)
-                sandhi_references.append((before, after, basename, linenum+1))
+                sandhi_references.append((tuple(before), after, basename, linenum+1))
 #     print sandhi_references
     return sandhi_references
 

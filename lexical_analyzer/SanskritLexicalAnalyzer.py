@@ -37,7 +37,7 @@ class SanskritLexicalGraph(object):
         self.roots = []
         self.G     = nx.DiGraph()
         if elem is not None:
-            self.addNode(node,root=True,end=end)
+            self.addNode(elem,root=True,end=end)
     def hasNode(self,t):
         ''' Does a given node exist in the graph?
 
@@ -270,6 +270,7 @@ class SanskritLexicalAnalyzer(object):
 
     def __init__(self):
         pass
+    
     def getInriaLexicalTags(self,obj):
         """ Get Inria-style lexical tags for a word
 
@@ -363,7 +364,8 @@ class SanskritLexicalAnalyzer(object):
 
         def _sandhi_splits(lsstr,rsstr):
             #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
-            s_c_list = []
+            s_c_list = set()
+            c = lsstr[-1]
             # Unconditional Sandhi reversal
             if c in self.sandhi_context_map:
                 # Unconditional/Forbidden splits are marked by direct keys
@@ -380,16 +382,15 @@ class SanskritLexicalAnalyzer(object):
                             # Check if this causes real problems
                             if crsstr != s:
                                 # Addition to left context
-                                s_c_list.append([clsstr, crsstr])
+                                s_c_list.add((clsstr, crsstr))
                         else:   #Null right context, do not prepend to rsstr
                             # Insert only if necessary to avoid duplicates
-                            if [lsstr[0:-1]+cml, None] not in s_c_list: 
-                                s_c_list.append([lsstr[0:-1]+cml, None])
+                            s_c_list.add((lsstr[0:-1]+cml, None)) 
             else:
                 # No direct key, split is not forbidden
-                s_c_list.append([lsstr,rsstr])
-                
-
+                s_c_list.add((lsstr, rsstr))
+                 
+ 
             # Conditional (context sensitive sandhi reversal)
             for csm in self.sandhi_context_map:
                 # Tuple indicates a context-sensitive split
@@ -420,9 +421,30 @@ class SanskritLexicalAnalyzer(object):
                                 # FIXME check added to prevent loops like A-A_A etc.
                                 # Check if this causes real problems
                                 if crsstr != s:
-                                    s_c_list.append([clsstr, crsstr])
+                                    s_c_list.add((clsstr, crsstr))
             return s_c_list                 
-            
+         
+        def _sandhi_splits_all(s, use_internal_sandhi_splitter, start=None, stop=None):
+            if use_internal_sandhi_splitter:
+                splits = set()
+                start = start or 0
+                stop = stop or len(s)
+                for ix in xrange(start, stop):
+                    # Left and right substrings
+                    lsstr = s[start:ix+1] 
+                    rsstr = s[ix+1:]
+                    if debug:
+                        print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+                    # Get all possible splits as a list of lists 
+                    s_c_list = _sandhi_splits(lsstr,rsstr)
+                    if s_c_list:
+                        splits |= s_c_list
+            else:
+                # For Sandhi Splitter
+                obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
+                splits = self.sandhi.split_all(obj, start, stop)
+            return splits
+                
         splits = False
 
         # Memoization for dynamic programming - remember substrings that've been seen before
@@ -431,66 +453,33 @@ class SanskritLexicalAnalyzer(object):
                 print "Found {} in scoreboard".format(s)
             return self.dynamic_scoreboard[s]
 
-        # For Sandhi Splitter
-        obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
-
         # If a space is found in a string, stop at that space
         spos = s.find(' ')
         if spos!=-1:
             # Replace the first space only
             s=s.replace(' ','',1)
-        
-        # Iterate over the string, looking for valid left splits
-        for (ix,c) in enumerate(s):
             
-            # If there was a space here, we cannot go further
-            if spos!=-1 and ix==spos:
-                break
-            if use_internal_sandhi_splitter:
-                # Left and right substrings
-                lsstr = s[0:ix+1] 
-                rsstr = s[ix+1:]
+        s_c_list = _sandhi_splits_all(s, use_internal_sandhi_splitter, start=0, stop=spos+1)
+        if debug:
+            print "s_c_list:", s_c_list
+
+        node_cache = {}
+
+        for (s_c_left,s_c_right) in s_c_list:
+            # Is the left side a valid word?
+            if _is_valid_word(s_c_left):
                 if debug:
-                    print "Left, Right substrings = {} {}".format(lsstr,rsstr)
-                # Get all possible splits as a list of lists 
-                s_c_list = _sandhi_splits(lsstr,rsstr)
-            else:
-                if debug:
-                    print "Sandhi: splitting: {} at {} ({})".format(s,s[ix],ix)
-                s_c_list = self.sandhi.split_at(obj,ix)
-            node_cache = {}
-            if debug:
-                print "s_c_list:", s_c_list
-            for (s_c_left,s_c_right) in s_c_list:
-                # Is the left side a valid word?
-                if _is_valid_word(s_c_left):
+                    print "Valid left word: ", s_c_left
+                # For each split with a valid left part, check it there are valid splits of the right part
+                if s_c_right and s_c_right != '':
                     if debug:
-                        print "Valid left word: ", s_c_left
-                    # For each split with a valid left part, check it there are valid splits of the right part
-                    if s_c_right:
-                        if debug:
-                            print "Trying to split:",s_c_right
-                        rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
+                        print "Trying to split:",s_c_right
+                    rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
+                    # if there are valid splits of the right side
+                    if rdag:
+                        # Make sure we got a graph back
+                        assert isinstance(rdag,SanskritLexicalGraph)
                         # if there are valid splits of the right side
-                        if rdag:
-                            # Make sure we got a graph back
-                            assert isinstance(rdag,SanskritLexicalGraph)
-                            # if there are valid splits of the right side
-                            if s_c_left not in node_cache:
-                                # Extend splits list with s_c_left appended with possible splits of s_c_right
-                                t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
-                                node_cache[s_c_left] = t
-                            else:
-                                t = node_cache[s_c_left]
-                            if not splits:
-                                splits = SanskritLexicalGraph()
-                            if not splits.hasNode(t):
-                                splits.addNode(t,root=True)
-                            splits.appendToNode(t,rdag)
-                    else: # Null right part
-                        # Why cache s_c_left here? To handle the case
-                        # where the same s_c_left appears with a null and non-null
-                        # right side.
                         if s_c_left not in node_cache:
                             # Extend splits list with s_c_left appended with possible splits of s_c_right
                             t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
@@ -500,12 +489,27 @@ class SanskritLexicalAnalyzer(object):
                         if not splits:
                             splits = SanskritLexicalGraph()
                         if not splits.hasNode(t):
-                            splits.addNode(t,root=True,end=True)
-                        else:
-                            splits.addEndEdge(t)
-                else:
-                    if debug:
-                        print "Invalid left word: ", s_c_left
+                            splits.addNode(t,root=True)
+                        splits.appendToNode(t,rdag)
+                else: # Null right part
+                    # Why cache s_c_left here? To handle the case
+                    # where the same s_c_left appears with a null and non-null
+                    # right side.
+                    if s_c_left not in node_cache:
+                        # Extend splits list with s_c_left appended with possible splits of s_c_right
+                        t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                        node_cache[s_c_left] = t
+                    else:
+                        t = node_cache[s_c_left]
+                    if not splits:
+                        splits = SanskritLexicalGraph()
+                    if not splits.hasNode(t):
+                        splits.addNode(t,root=True,end=True)
+                    else:
+                        splits.addEndEdge(t)
+            else:
+                if debug:
+                    print "Invalid left word: ", s_c_left
         # Update scoreboard for this substring, so we don't have to split again  
         self.dynamic_scoreboard[s]=splits
         if debug:
@@ -545,6 +549,10 @@ if __name__ == "__main__":
         args=getArgs()
         print "Input String:", args.data
  
+#         if args.debug:
+#             import logging
+#             logging.basicConfig(filename="sandhi.log", filemode = "wb", level = logging.DEBUG)
+
         s=SanskritLexicalAnalyzer()
         if args.input_encoding is None:
             ie = None
@@ -567,7 +575,12 @@ if __name__ == "__main__":
             if graph:
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
                 print "End pathfinding:", datetime.datetime.now()
-                print splits
+                print "Splits:"
+                if splits:
+                    for split in splits:
+                        print split
+                else:
+                    print "None"                
             else:
                 print "No Valid Splits Found"
     main()

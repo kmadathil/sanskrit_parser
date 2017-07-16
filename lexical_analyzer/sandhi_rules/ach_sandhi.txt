@@ -13,7 +13,7 @@
 # Note that even a single character on the left is treated as a list, so be 
 # careful with indexing in the right expression.
 # E.g. एचोऽयवायावः / यान्तवान्तादेशः would be specified as 
-# ए + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अय्{1} (the ए would be considered as list 0)
+#  ए + [आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ए, ऐ, ओ, औ] = अय्{1} (the ए would be considered as list 0)
 # Multiple right expressions can be specified by separating them with "/"
 # Spaces at the beginning and end of expressions are stripped,
 # but if they appear inside an expression, they will be preserved

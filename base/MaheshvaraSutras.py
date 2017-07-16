@@ -32,6 +32,8 @@ class MaheshvaraSutras(object):
               longp(boolean :optional:): When True (default), uses long pratyaharas 
               remove_a(boolean :optional:): When True, removes intermediate 'a'. 
                    This is better for computational use
+              dirghas(boolean :optional:) When True (default=False) adds dirgha vowels
+                    to the returned varnas
             Returns
               (SanskritObject): List of varnas to the same encoding as p
         """
@@ -58,7 +60,7 @@ class MaheshvaraSutras(object):
             ts = ts[0]+ts[1:].replace('a','')
         # Add dIrgha vowels if requested
         if dirghas:
-            ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF')
+            ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF').replace('x','xX')
         return SanskritBase.SanskritObject(ts,SanskritBase.SLP1)
     
     def isInPratyahara(self,p,v,longp=True):
