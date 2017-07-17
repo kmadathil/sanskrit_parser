@@ -18,10 +18,12 @@ def get_uohd_refs(maxrefs=200):
     def _dumpchars(str):
         s = str
         # Random characters in UOHD files
-        for c in ",'-;().?!":
+        for c in ",'-;().?!\"":
             s=s.replace(c,'')
         # Some bad visargas
         s=s.replace(':','H')
+        # UOHD RHS has word-ending anusvaras
+        s=re.sub('M$','m',s)
         return s
     fs = []
     m = maxrefs
@@ -110,7 +112,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
     if s not in splits:
         # Currently, this triggers a fallback to all_simple_paths
         splits=graph.findAllPaths(max_paths=10000,sort=False)
-    if s not in splits:
+    if splits is None or s not in splits:
         logger.debug("FAIL: {} not in {}".format(s,splits))
     assert s in splits
        
