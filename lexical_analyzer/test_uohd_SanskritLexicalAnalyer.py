@@ -69,9 +69,17 @@ def get_uohd_refs(maxrefs=200):
                     splits=map(lambda x:_dumpchars(SanskritObject(x).transcoded(SLP1).strip()),split.split('+'))
                     if splits[-1]=='':
                         splits.pop()
+                        
                     # UOHD errors, final visarga is sometimes missing
-                    if splits[-1][-2:-1]=="AH" and full[-1]=="A":
+                    if splits[-1][-2:]=="AH" and full[-1]=="A":
                         full=full+"H"
+                    if splits[-1][-2:]=="aH" and full[-1]=="a":
+                        full=full+"H"
+                    if splits[-1][-1]=="A" and full[-2:]=="AH":
+                        splits[-1]=splits[-1]+"H"
+                    if splits[-1][-1]=="a" and full[-2:]=="aH":
+                        splits[-1]=splits[-1]+"H"
+                        
                     fs.append((full,splits))
                     logger.info(u"{} : {} => {}".format(unicode(l,"utf-8"),
                                                        full,
