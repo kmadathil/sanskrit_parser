@@ -8,7 +8,7 @@ import logging
 import re
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename='uohd.log', filemode='w', level=logging.DEBUG)
+logging.basicConfig(filename='uohd.log', filemode='w', level=logging.INFO)
 
 @pytest.fixture(scope="module")
 def lexan():
@@ -52,7 +52,7 @@ def get_uohd_refs(maxrefs=200):
              "sandhi_test_data/Rajkathakunj_ext.txt",
              "sandhi_test_data/vyutpattivada-ext.txt"]
     for fn in flist:
-        logger.debug("Processing tests from file %s", fn)
+        logger.info("Processing tests from file %s", fn)
 
         with open(fn) as f:
             for l in f:
@@ -70,6 +70,9 @@ def get_uohd_refs(maxrefs=200):
                     if splits[-1]=='':
                         splits.pop()
                     fs.append((full,splits))
+                    logger.info(u"{} : {} => {}".format(unicode(l,"utf-8"),
+                                                       full,
+                                                       " ".join(splits)))
                     m=m-1
                     if m<=0:
                         return fs
@@ -113,11 +116,11 @@ def test_uohd_file_splits(lexan,uohd_refs):
         # Currently, this triggers a fallback to all_simple_paths
         splits=graph.findAllPaths(max_paths=10000,sort=False)
     if splits is None or s not in splits:
-        logger.debug("FAIL: {} not in {}".format(s,splits))
+        logger.error("FAIL: {} not in {}".format(s,splits))
     assert s in splits
        
 def pytest_generate_tests(metafunc):
 
     if 'uohd_refs' in metafunc.fixturenames:
-        uohd_refs = get_uohd_refs()
+        uohd_refs = get_uohd_refs(maxrefs=1000)
         metafunc.parametrize("uohd_refs", uohd_refs)
