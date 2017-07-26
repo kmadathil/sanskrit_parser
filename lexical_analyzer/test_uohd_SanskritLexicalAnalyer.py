@@ -69,13 +69,18 @@ def get_uohd_refs(maxrefs=200):
                     splits=map(lambda x:_dumpchars(SanskritObject(x).transcoded(SLP1).strip()),split.split('+'))
                     if splits[-1]=='':
                         splits.pop()
+                    # UOHD errors, final visarga is sometimes missing
+                    if splits[-1][-2:-1]=="AH" and full[-1]=="A":
+                        full=full+"H"
                     fs.append((full,splits))
                     logger.info(u"{} : {} => {}".format(unicode(l,"utf-8"),
                                                        full,
                                                        " ".join(splits)))
-                    m=m-1
-                    if m<=0:
-                        return fs
+                    # -1 = run all tests
+                    if maxrefs > 0:
+                        m=m-1
+                        if m<=0:
+                            return fs
     return fs
 
     
@@ -122,5 +127,5 @@ def test_uohd_file_splits(lexan,uohd_refs):
 def pytest_generate_tests(metafunc):
 
     if 'uohd_refs' in metafunc.fixturenames:
-        uohd_refs = get_uohd_refs(maxrefs=1000)
+        uohd_refs = get_uohd_refs(maxrefs=-1)
         metafunc.parametrize("uohd_refs", uohd_refs)
