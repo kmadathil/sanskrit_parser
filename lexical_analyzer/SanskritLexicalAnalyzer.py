@@ -18,6 +18,8 @@ import re
 import networkx as nx
 from itertools import islice,imap
 from  sandhi import Sandhi
+import logging
+logger = logging.getLogger(__name__)
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -351,8 +353,7 @@ class SanskritLexicalAnalyzer(object):
             Returns:
               SanskritLexicalGraph : DAG of possible splits
         '''
-        if debug:
-            print "Splitting ", s
+        logger.debug("Splitting "+s)
         def _is_valid_word(ss):
             # r = sanskritmark.analyser(ss,split=False)
             # if r=="????":
@@ -406,12 +407,10 @@ class SanskritLexicalAnalyzer(object):
                         rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
                                                     (not len(rsstr)) and (csm[2]=='$'))
                         if rmatch and lmatch: # Both match
-                            if debug:
-                                print "Context Sandhi match:",csm,lsstr,rsstr
+                            logger.debug("Context Sandhi match: {} {} {}".format(csm,lsstr,rsstr))
                             # Apply each replacement
                             for cm in self.sandhi_context_map[csm]:
-                                if debug:
-                                    print "Trying:",cm
+                                logger.debug("Trying: "+cm)
                                 # Split into left and right additions
                                 cml,cmr=cm.split("_")
                                 # Add to right context
@@ -432,8 +431,7 @@ class SanskritLexicalAnalyzer(object):
                     # Left and right substrings
                     lsstr = s[start:ix+1] 
                     rsstr = s[ix+1:]
-                    if debug:
-                        print "Left, Right substrings = {} {}".format(lsstr,rsstr)
+                    logger.debug("Left, Right substrings = {} {}".format(lsstr,rsstr))
                     # Get all possible splits as a list of lists 
                     s_c_list = _sandhi_splits(lsstr,rsstr)
                     if s_c_list:
@@ -448,8 +446,7 @@ class SanskritLexicalAnalyzer(object):
 
         # Memoization for dynamic programming - remember substrings that've been seen before
         if s in self.dynamic_scoreboard:
-            if debug:
-                print "Found {} in scoreboard".format(s)
+            logger.debug("Found {} in scoreboard".format(s))
             return self.dynamic_scoreboard[s]
 
         # If a space is found in a string, stop at that space
@@ -459,20 +456,17 @@ class SanskritLexicalAnalyzer(object):
             s=s.replace(' ','',1)
             
         s_c_list = _sandhi_splits_all(s, use_internal_sandhi_splitter, start=0, stop=spos+1)
-        if debug:
-            print "s_c_list:", s_c_list
+        logger.debug("s_c_list: "+str(s_c_list))
 
         node_cache = {}
 
         for (s_c_left,s_c_right) in s_c_list:
             # Is the left side a valid word?
             if _is_valid_word(s_c_left):
-                if debug:
-                    print "Valid left word: ", s_c_left
+                logger.debug("Valid left word: "+s_c_left)
                 # For each split with a valid left part, check it there are valid splits of the right part
                 if s_c_right and s_c_right != '':
-                    if debug:
-                        print "Trying to split:",s_c_right
+                    logger.debug("Trying to split:"+s_c_right)
                     rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
                     # if there are valid splits of the right side
                     if rdag:
@@ -507,16 +501,13 @@ class SanskritLexicalAnalyzer(object):
                     else:
                         splits.addEndEdge(t)
             else:
-                if debug:
-                    print "Invalid left word: ", s_c_left
+                logger.debug("Invalid left word: "+s_c_left)
         # Update scoreboard for this substring, so we don't have to split again  
         self.dynamic_scoreboard[s]=splits
-        if debug:
-            if not splits:
-                print "Returning:", splits
-            else:
-                print "Returning: ", map(str,splits.G.nodes())
-
+        if not splits:
+            logger.debug("Returning:"+str(splits))
+        else:
+            logger.debug("Returning: "+" ".join(map(str,splits.G.nodes())))
         return splits
 
 if __name__ == "__main__":
@@ -547,10 +538,11 @@ if __name__ == "__main__":
     def main():
         args=getArgs()
         print "Input String:", args.data
- 
-#         if args.debug:
-#             import logging
-#             logging.basicConfig(filename="sandhi.log", filemode = "wb", level = logging.DEBUG)
+
+        if args.debug:
+            logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.DEBUG)
+        else:
+            logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.INFO)
 
         s=SanskritLexicalAnalyzer()
         if args.input_encoding is None:
