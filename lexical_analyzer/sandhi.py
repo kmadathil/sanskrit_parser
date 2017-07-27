@@ -95,13 +95,13 @@ class Sandhi(object):
         right_chars = [second[0:i] for i in range(min(self.rc_len_max, len(second))+1)]
         self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
         
-        joins = []
+        joins = set()
         for key in itertools.product(left_chars, right_chars):
             afters = self.forward.get(key)
             if afters:
                 for after, annotation in afters:
                     self.logger.debug("Found sandhi %s = %s (%s)", key, after, annotation)
-                    joins.append(first[:-len(key[0])] + after+ second[len(key[1]):])
+                    joins.add(first[:-len(key[0])] + after+ second[len(key[1]):])
         if len(joins) == 0:
             self.logger.debug("No joins found")
             return None
