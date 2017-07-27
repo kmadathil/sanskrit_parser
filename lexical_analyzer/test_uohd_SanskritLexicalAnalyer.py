@@ -60,6 +60,7 @@ def get_uohd_refs(maxrefs=200):
                 if l and l[0] != '#':
                     if l.find('=>') == -1:
                         continue
+                    logger.info(u"{}".format(unicode(l,"utf-8")))
                     full,split=l.split('=>')
                     full=unicode(full.strip(),'utf-8')
                     full=full.replace(u'|','')
@@ -69,21 +70,23 @@ def get_uohd_refs(maxrefs=200):
                     splits=map(lambda x:_dumpchars(SanskritObject(x).transcoded(SLP1).strip()),split.split('+'))
                     if splits[-1]=='':
                         splits.pop()
-                        
+
+                    # Empty full string
+                    if len(full)==0:
+                        logger.info("Skipping")
+                    
                     # UOHD errors, final visarga is sometimes missing
-                    if splits[-1][-2:]=="AH" and full[-1]=="A":
+                    if len(splits[-1])>1 and splits[-1][-2:]=="AH" and full[-1]=="A":
                         full=full+"H"
-                    if splits[-1][-2:]=="aH" and full[-1]=="a":
+                    if len(splits[-1])>1 and splits[-1][-2:]=="aH" and full[-1]=="a":
                         full=full+"H"
-                    if splits[-1][-1]=="A" and full[-2:]=="AH":
+                    if splits[-1][-1]=="A" and len(full)>1 and full[-2:]=="AH":
                         splits[-1]=splits[-1]+"H"
-                    if splits[-1][-1]=="a" and full[-2:]=="aH":
+                    if splits[-1][-1]=="a" and len(full)>1 and full[-2:]=="aH":
                         splits[-1]=splits[-1]+"H"
                         
                     fs.append((full,splits))
-                    logger.info(u"{} : {} => {}".format(unicode(l,"utf-8"),
-                                                       full,
-                                                       " ".join(splits)))
+                    logger.info(u"{} => {}".format(full," ".join(splits)))
                     # -1 = run all tests
                     if maxrefs > 0:
                         m=m-1
@@ -135,5 +138,5 @@ def test_uohd_file_splits(lexan,uohd_refs):
 def pytest_generate_tests(metafunc):
 
     if 'uohd_refs' in metafunc.fixturenames:
-        uohd_refs = get_uohd_refs(maxrefs=-1)
+        uohd_refs = get_uohd_refs(maxrefs=10000)
         metafunc.parametrize("uohd_refs", uohd_refs)
