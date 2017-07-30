@@ -12,7 +12,7 @@
     http://sanskrit.rocq.inria.fr/DATA/XML
 """
 
-import base.SanskritBase as SanskritBase
+import sanskrit_parser.base.SanskritBase as SanskritBase
 import sanskritmark
 import re
 import networkx as nx

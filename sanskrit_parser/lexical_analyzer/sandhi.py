@@ -26,8 +26,8 @@ import re
 import inspect
 import logging
 import datetime
-from base.SanskritBase import SanskritObject, SLP1, SCHEMES
-from base.MaheshvaraSutras import MaheshvaraSutras
+from  sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
+from  sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
 
 class Sandhi(object):
     """

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import base.SanskritBase as SanskritBase
+import SanskritBase as SanskritBase
 import re
 
 class MaheshvaraSutras(object):
