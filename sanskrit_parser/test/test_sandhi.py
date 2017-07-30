@@ -7,8 +7,8 @@ import pytest
 import codecs
 import os
 import inspect
-from sandhi import Sandhi
-from base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
+from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
+from sanskrit_parser.base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
 import logging
 import re
 

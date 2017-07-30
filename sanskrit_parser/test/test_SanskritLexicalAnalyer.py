@@ -2,12 +2,12 @@
 # -*- encoding: utf-8 -*-
 
 import pytest
-import SanskritLexicalAnalyzer
-from base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
+from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
+from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
 
 @pytest.fixture(scope="module")
 def lexan():
-    return SanskritLexicalAnalyzer.SanskritLexicalAnalyzer()
+    return SanskritLexicalAnalyzer()
 
 @pytest.fixture(params=[True, False], ids=["Internal Sandhi splitter", "Sandhi module"])
 def use_internal_sandhi_splitter(request):

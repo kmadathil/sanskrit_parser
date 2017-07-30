@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import pytest
-import SanskritLexicalAnalyzer
+from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 import sanskritmark
-from base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
+from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
 import logging
 import re
 logger = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ logging.basicConfig(filename='uohd.log', filemode='w', level=logging.INFO)
 
 @pytest.fixture(scope="module")
 def lexan():
-    return SanskritLexicalAnalyzer.SanskritLexicalAnalyzer()
+    return SanskritLexicalAnalyzer()
 
 def get_uohd_refs(maxrefs=200):
     def _dumpchars(str):
