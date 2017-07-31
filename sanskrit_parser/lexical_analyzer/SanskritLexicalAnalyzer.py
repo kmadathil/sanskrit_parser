@@ -333,9 +333,6 @@ class SanskritLexicalAnalyzer(object):
         '''
         logger.debug("Splitting "+s)
         def _is_valid_word(ss):
-            # r = sanskritmark.analyser(ss,split=False)
-            # if r=="????":
-            #     r=False
             r = self.forms.valid(ss)
             return r
 
