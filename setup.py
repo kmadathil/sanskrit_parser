@@ -37,8 +37,8 @@ setup(
   url='https://github.com/kmadathil/sanskrit_parser',
 
   # Author details
-  author='Karthikeyan Madathil',
-  author_email='kmadathil@gmail.com',
+  author='Sanskrit programmers',
+  author_email='sanskrit-programmers@googlegroups.com',
 
   # Choose your license
   license='MIT',
@@ -55,7 +55,8 @@ setup(
     'Intended Audience :: Education',
     'Intended Audience :: Science/Research',
     'Intended Audience :: Developers',
-    'Natural Language :: Sanskrit',
+    # Left commented as this category doesn't exist
+    #'Natural Language :: Sanskrit',
     'Topic :: Text Processing :: Linguistic',
 
     # Pick your license as you wish (should match "license" above)
@@ -76,7 +77,7 @@ setup(
 
   # You can just specify the packages manually here if your project is
   # simple. Or you can use find_packages().
-  packages=find_packages(exclude=['contrib', 'docs', 'tests', 'test']),
+  packages=find_packages(exclude=['contrib', 'docs', 'tests']),
 
   # Alternatively, if you want to distribute just a my_module.py, uncomment
   # this:
