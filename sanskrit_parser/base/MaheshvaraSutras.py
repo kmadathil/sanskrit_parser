@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import SanskritBase as SanskritBase
 import re
 
@@ -116,18 +117,18 @@ if __name__ == "__main__":
     def main():
         args = getArgs()
         m=MaheshvaraSutras()
-        print m
+        print(m)
         if args.encoding is not None:
             e=SanskritBase.SCHEMES[args.encoding]
         else:
             e=None
         p=SanskritBase.SanskritObject(args.pratyahara,e)
         l = not args.short
-        print unicode(p.transcoded(SanskritBase.DEVANAGARI))
-        print unicode(m.getPratyahara(p,l,args.remove_a,args.dirghas).transcoded(SanskritBase.DEVANAGARI))
+        print(unicode(p.transcoded(SanskritBase.DEVANAGARI)))
+        print(unicode(m.getPratyahara(p,l,args.remove_a,args.dirghas).transcoded(SanskritBase.DEVANAGARI)))
         if args.varna is not None:
             v=SanskritBase.SanskritObject(args.varna,e)
-            print u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
-                                        p.transcoded(SanskritBase.DEVANAGARI))
-            print m.isInPratyahara(p,v,l)
+            print(u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
+                                        p.transcoded(SanskritBase.DEVANAGARI)))
+            print(m.isInPratyahara(p,v,l))
     main()
