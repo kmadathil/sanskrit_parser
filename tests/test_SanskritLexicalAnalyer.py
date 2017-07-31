@@ -31,7 +31,7 @@ def get_splitstxt():
 def test_simple_tag(lexan):
     # gaNeshaH
     i=SanskritObject("gaReSas",encoding=SLP1)
-    ts=lexan.getInriaLexicalTags(i)
+    ts=lexan.getLexicalTags(i)
     assert ts == [('gaReSa', set(['na', 'mas', 'sg', 'nom']))]
 
 def test_simple_split(lexan,use_internal_sandhi_splitter):
