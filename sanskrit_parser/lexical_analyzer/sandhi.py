@@ -175,7 +175,7 @@ class Sandhi(object):
         ms = MaheshvaraSutras()
         
         b, afters = map(unicode.strip, rule.split("="))
-        before = map(unicode.strip, b.split("+"))
+        before = map(unicode.strip, b.split("+", 1))
         left_classes = re.split('\[(.*?)\]', before[0])
         self.logger.debug("Left classes = %s", left_classes)
         
@@ -200,21 +200,24 @@ class Sandhi(object):
         
         right_classes = re.split('\[(.*?)\]', before[1])
         # Could have used list comprehension, but this is easier to read
+        self.logger.debug("right_classes = %s", right_classes)
         if right_classes:
             before_right = []
             for c in right_classes:
                 if c != '':
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
-                        splits = map(unicode.strip, c.split('-'))
+                        splits = map(unicode.strip, re.split('([+-])', c))
                         varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
-                        if len(splits) == 2:
-                            varnas -= set(splits[1])
+                        if len(splits) == 3:
+                            if splits[1] == '-':
+                                varnas -= set(splits[2])
+                            elif splits[1] == '+':
+                                varnas |= set(splits[2])
                         self.logger.debug("Found pratyAhAra %s (%s) = %s", c, splits[0][1:], varnas)
                         before_right.append(varnas)
                     else:
                         before_right.append(map(unicode.strip, c.split(",")))
-            self.logger.debug("right_classes = %s", right_classes)
         else:
             before_right = [before[1].strip()]
         self.logger.debug("before_right iterator = %s", before_right)
@@ -281,8 +284,9 @@ if __name__ == "__main__":
         # Input Encoding (autodetect by default)
         parser.add_argument('--input-encoding', type=str, default=None)
         parser.add_argument('--loglevel', type=str, help="logging level. Can be any level supported by logging module")
-        parser.add_argument('--split', action='store_true')
-        parser.add_argument('--join', action='store_true')
+        parser.add_argument('--split', action='store_true', help="Split the given word using sandhi rules")
+        parser.add_argument('--join', action='store_true', help="Join the given words using sandhi rules")
+        parser.add_argument('--all', action='store_true', help="Return splits at all possible locations")
         
         # String to encode
         parser.add_argument('word', nargs = '?', type=str, 
@@ -317,10 +321,14 @@ if __name__ == "__main__":
             print "Neither split nor join option chosen. Here's a demo of joining"
             args.join = True
         if args.split:
-            pos = int(args.word_or_pos)
-            print "Splitting %s at %d" % (args.word, pos)
             word_in = SanskritObject(args.word, encoding=ie)
-            splits = sandhi.split_at(word_in, pos)
+            if args.all:
+                print "All possible splits for", args.word
+                splits = sandhi.split_all(word_in)
+            else:
+                pos = int(args.word_or_pos)
+                print "Splitting %s at %d" % (args.word, pos)          
+                splits = sandhi.split_at(word_in, pos)
             print splits
         if args.join:
             print "Joining", args.word, args.word_or_pos
