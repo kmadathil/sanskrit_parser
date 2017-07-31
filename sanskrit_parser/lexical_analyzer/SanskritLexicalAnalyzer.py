@@ -4,16 +4,11 @@
 """ Lexical Analyzer for Sanskrit words
 
     Author: Karthik Madathil <kmadathil@gmail.com>
-
-    Heavily uses https://github.com/drdhaval2785/inriaxmlwrapper/sanskritmark
-    Thank you, Dr. Dhaval Patel!
-
-    Based on Linguistic data released by Gerard Huet (Thank you!)
-    http://sanskrit.rocq.inria.fr/DATA/XML
 """
 
+from __future__ import print_function
 import sanskrit_parser.base.SanskritBase as SanskritBase
-import sanskritmark
+import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
 import re
 import networkx as nx
 from itertools import islice,imap
@@ -119,11 +114,10 @@ class SanskritLexicalGraph(object):
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanksrit lexical analysis. 
     
-        This class mostly reuses Dr. Dhaval Patel's work in wrapping
-        Inria XML data 
     """
     
     sandhi = Sandhi() # Singleton!
+    forms  = inriaxmlwrapper.InriaXMLWrapper()
     
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
@@ -267,13 +261,12 @@ class SanskritLexicalAnalyzer(object):
 	     'उपसर्गः':'upsrg'
             
         }
-    tag_cache = {}
 
     def __init__(self):
         pass
     
-    def getInriaLexicalTags(self,obj):
-        """ Get Inria-style lexical tags for a word
+    def getLexicalTags(self,obj):
+        """ Get Lexical tags for a word
 
             Params:
                 obj(SanskritObject): word
@@ -281,35 +274,20 @@ class SanskritLexicalAnalyzer(object):
                 list: List of (base, tagset) pairs
         """
         ot = obj.transcoded(SanskritBase.SLP1)
-        # Check in cache first
-        if ot in self.tag_cache:
-            return self.tag_cache[ot]
-        s = sanskritmark.analyser(ot,split=False)
-        if s=="????":  # Not found
-            return None
-        else:
-            # Split into list of tags
-            l=s.split("|")
-            # Further split each tag into a list
-            l=[li.split("-") for li in l]
-            # Convert into name, tagset pairs
-            l=[(li[0],set(li[1:])) for li in l]
-            # Insert into cache
-            self.tag_cache[ot] = l
-            return l
+        return self.forms.get_tags(ot)
         
-    def hasInriaTag(self,obj,name,tagset):
-        """ Check if word matches Inria-style lexical tags
+    def hasTag(self,obj,name,tagset):
+        """ Check if word matches lexical tags
 
             Params:
                 obj(SanskritObject): word
-                name(str): name in Inria tag
-                tagset(set): set of Inria tag elements
+                name(str): name in tag
+                tagset(set): set of tag elements
             Returns
                 list: List of (base, tagset) pairs for obj that 
                       match (name,tagset), or None
         """
-        l = self.getInriaLexicalTags(obj)
+        l = self.getLexicalTags(obj)
         if l is None:
             return None
         assert (name is not None) or (tagset is not None)
@@ -358,7 +336,7 @@ class SanskritLexicalAnalyzer(object):
             # r = sanskritmark.analyser(ss,split=False)
             # if r=="????":
             #     r=False
-            r = sanskritmark.quicksearch(ss)
+            r = self.forms.valid(ss)
             return r
 
 
@@ -537,7 +515,7 @@ if __name__ == "__main__":
 
     def main():
         args=getArgs()
-        print "Input String:", args.data
+        print("Input String:", args.data)
 
         if args.debug:
             logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.DEBUG)
@@ -550,29 +528,29 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print "Input String in SLP1:",i.transcoded(SanskritBase.SLP1)
+        print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
         if not args.split:
-            ts=s.getInriaLexicalTags(i)
-            print ts
+            ts=s.getLexicalTags(i)
+            print(ts)
             if args.tag_set or args.base:
                 if args.tag_set:
                     g=set(args.tag_set)
-                print s.hasInriaTag(i,SanskritBase.SanskritObject(args.base),g)
+                print(s.hasTag(i,SanskritBase.SanskritObject(args.base),g))
         else:
             import datetime
-            print "Start Split:", datetime.datetime.now()
+            print("Start Split:", datetime.datetime.now())
             graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=args.use_internal_sandhi_splitter,debug=args.debug)
-            print "End DAG generation:", datetime.datetime.now()
+            print("End DAG generation:", datetime.datetime.now())
             if graph:
                 splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
-                print "End pathfinding:", datetime.datetime.now()
-                print "Splits:"
+                print("End pathfinding:", datetime.datetime.now())
+                print("Splits:")
                 if splits:
                     for split in splits:
-                        print split
+                        print(split)
                 else:
-                    print "None"                
+                    print("None")
             else:
-                print "No Valid Splits Found"
+                print("No Valid Splits Found")
     main()
 
