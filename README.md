@@ -239,10 +239,9 @@ Sandhi splitting subroutine
        No semantic validation will be performed (up to higher levels)
        
 #### Current Status
-In progress. 
-Advanced version with sandhi split/join and convenient rule definition is at sandhi.py.
+Module that performs sandhi split/join and convenient rule definition is at `lexical_analyzer/sandhi.py`.
 
-Basic version is embedded in SanksritLexicalAnalyzer.py. 
+Rule definitions (human readable!) are at `lexical_analyzer/sandhi_rules/*.txt`
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -279,9 +278,8 @@ Sanskrit Sentence
 All semantically valid sandhi split sequences
 
 #### Current Status
-See SanksritLexicalAnalyzer.py
+Module that performs sentence split is at `lexical_analyzer/SanksritLexicalAnalyzer.py`
 
-Caveat - uses inriaxmlwrapper as a level 1 solution, so we're limited to what Prof. Huet's database has.
 
 ###    Level 3
 #### Input
