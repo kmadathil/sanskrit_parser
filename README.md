@@ -14,34 +14,6 @@ pip install git+https://github.com/kmadathil/sanskrit_parser/
 
 ## Usage
 
-### SanskritObject
-`SanskritObject` is a base class used in all modules. It supports automatic detection of input encoding and transcoding to any encoding supported by the `indic_transliteration` package.
-```python
->>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
->>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
->>> print sentence.transcoded(SLP1)
-astyuttarasyAMdiSidevatAtmA
-```
-
-### MaheshvaraSutras
-Get varnas in a pratyahara:
-```python
->>> from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
->>> MS = MaheshvaraSutras()
->>> jaS = SanskritObject('jaS', encoding=SLP1)
->>> print MS.getPratyahara(jaS)
-jabagaqada
-```
-Check if a varna is in a pratyahara:
-```python
->>> g = SanskritObject('g')
->>> print MS.isInPratyahara(jaS, g)
-True
->>> k = SanskritObject('k')
->>> print MS.isInPratyahara(jaS, k)
-False
-```
-
 ### Lexical Analyzer
 Use the `SanskritLexicalAnalyzer` to split a sentence and retrieve the top 10 splits:
 ```python
@@ -144,30 +116,38 @@ To split at all possible locations, use the `Sandhi.split_all()` method:
 
 **Note**: As mentioned previously, both over-generation and under-generation are possible with the `Sandhi` class.
 
+### MaheshvaraSutras
+Get varnas in a pratyahara:
+```python
+>>> from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
+>>> MS = MaheshvaraSutras()
+>>> jaS = SanskritObject('jaS', encoding=SLP1)
+>>> print MS.getPratyahara(jaS)
+jabagaqada
+```
+Check if a varna is in a pratyahara:
+```python
+>>> g = SanskritObject('g')
+>>> print MS.isInPratyahara(jaS, g)
+True
+>>> k = SanskritObject('k')
+>>> print MS.isInPratyahara(jaS, k)
+False
+```
+
+### SanskritObject
+`SanskritObject` is a base class used in all modules. It supports automatic detection of input encoding and transcoding to any encoding supported by the `indic_transliteration` package.
+```python
+>>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
+>>> print sentence.transcoded(SLP1)
+astyuttarasyAMdiSidevatAtmA
+```
+
+
 ### Command Line Usage
 All the classes described above can also be used from the command line. The corresponding examples are below. Please run the tools with `--help/-h` to get help on the options
 
-#### MaheshvaraSutras
-```
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS
-aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
-जश्
-जबगडद
-
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna k
-aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
-जश्
-जबगडद
-Is क् in जश्?
-False
-
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna g
-aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
-जश्
-जबगडद
-Is ग् in जश्?
-True
-```
 
 #### SanskritLexicalAnalyzer
 ```
@@ -209,6 +189,7 @@ Getting tags for hares
 ```
 
 #### Sandhi
+
 ```
 $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
 Joining te eva
@@ -221,6 +202,29 @@ set([(u'tar', u'eva'), (u'tas', u'eva'), (u'taH', u'eva'), (u'ta', u'eva')])
 $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
 All possible splits for taeva
 set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'), (u'ta', u'eva'), (u'te', u'eva'), (u'taH', u'eva'), (u'tae', u'va'), (u'taeva', u''), (u'tas', u'eva')])
+```
+
+#### MaheshvaraSutras
+
+```
+$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS
+aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
+जश्
+जबगडद
+
+$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna k
+aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
+जश्
+जबगडद
+Is क् in जश्?
+False
+
+$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna g
+aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
+जश्
+जबगडद
+Is ग् in जश्?
+True
 ```
 
 ## Sanskrit Parser Stack
