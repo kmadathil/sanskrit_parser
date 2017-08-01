@@ -1,4 +1,4 @@
 # Sourceme file
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export PYTHONPATH=${PYTHONPATH}:${DIR}/sanskrit_parser:${DIR}/../inriaxmlwrapper
+export PYTHONPATH=${PYTHONPATH}:${DIR}
