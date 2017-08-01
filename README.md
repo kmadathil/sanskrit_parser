@@ -15,9 +15,11 @@ pip install git+https://github.com/kmadathil/sanskrit_parser/
 ## Usage
 
 ### Lexical Analyzer
-Use the `SanskritLexicalAnalyzer` to split a sentence and retrieve the top 10 splits:
+Use the `SanskritLexicalAnalyzer` to split a sentence (wrapped in a `SanskritObject`) and retrieve the top 10 splits:
 ```python
 >>> from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
+>>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
 >>> analyzer = SanskritLexicalAnalyzer()
 >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
 >>> for split in splits:
