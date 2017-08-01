@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+"""
+Provide interface with the INRIA XML database released
+by Prof. Gerard Huet
+https://gitlab.inria.fr/huet/Heritage_Resources
+(Thanks Prof. Huet for making the data available!)
+
+Inspired by https://github.com/drdhaval2785/inriaxmlwrapper
+(Thanks @drdhaval2785!)
+
+@author: Avinash Varna (@avinashvarna)
+"""
+
 from __future__ import print_function
 import requests
 import os
