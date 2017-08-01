@@ -9,7 +9,7 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 This project has been tested and developed using Python 2.7. (Python 3 support is in progress)
 ```
-pip install git+https://github.com/kmadathil/sanskrit_parser/
+pip install sanskrit_parser
 ```
 
 ## Usage
