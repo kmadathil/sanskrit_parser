@@ -111,13 +111,13 @@ def test_uohd_file_splits(lexan,uohd_refs):
             s.append(sss)
         else:
             # If not, treat it as a word to be split
-            graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1),use_internal_sandhi_splitter=False)
+            graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
             if graph is None:
                 # Catch stray unicode symbols with the encode
                 logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
                 return
             # First split
-            ssp=graph.findAllPaths(max_paths=1)[0]
+            ssp=map(str,graph.findAllPaths(max_paths=1)[0])
             # Add it to split list
             s.extend(ssp)
             
@@ -125,7 +125,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
     # This is not a full fix
     f=re.sub("o$","aH",f)
     i=SanskritObject(f,encoding=SLP1)
-    graph=lexan.getSandhiSplits(i,use_internal_sandhi_splitter=False)
+    graph=lexan.getSandhiSplits(i)
     assert graph is not None
     splits=graph.findAllPaths(max_paths=1000,sort=False)
     if s not in splits:
@@ -133,7 +133,7 @@ def test_uohd_file_splits(lexan,uohd_refs):
         splits=graph.findAllPaths(max_paths=10000,sort=False)
     if splits is None or s not in splits:
         logger.error("FAIL: {} not in {}".format(s,splits))
-    assert s in splits
+    assert s in [map(str,ss) for ss in splits]
        
 def pytest_generate_tests(metafunc):
 

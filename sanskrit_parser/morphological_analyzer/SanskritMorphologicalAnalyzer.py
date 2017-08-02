@@ -14,10 +14,24 @@ logger = logging.getLogger(__name__)
 print(__name__)
 print(logger)
 
-# Constraint
+# Rules for morphological analyzer
+# Only one lakara
+# padas in prathamA must match vacana of lakara
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
-    return True
+    l=0
+    for n in nodes:
+        if 'v' in n[1] and 'prim' in n[1]:
+            l=l+1
+    return l<=1
+
+
+# all padas in same case must match in linga, purusha and vacana
+
+# samAsa constituents must be followed by another samasa constiuent or subanta
+# upasarga rules
+# karmapravcanIya rules
+
 
 class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnalyzer):
     """ Singleton class to hold methods for Sanksrit morphological analysis. 
@@ -26,13 +40,6 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
     def __init__(self):
         super(SanskritMorphologicalAnalyzer,self).__init__()
 
-    # Rules for morphological analyzer
-    # Only one lakara
-    # all padas in same case must match in linga, purusha and vacana
-    # padas in prathamA must match vacana of lakara
-    # samAsa constituents must be followed by another samasa constiuent or subanta
-    # upasarga rules
-    # karmapravcanIya rules
     def constrainPath(self,path):
         ''' Apply Morphological Constraints on path
 
@@ -106,8 +113,8 @@ if __name__ == "__main__":
             print("Splits:")
             for sp in splits:
                 print(sp)
-            p=map(s.constrainPath,splits[1:])
-            print(p)
+            p=map(s.constrainPath,splits)
+            map(lambda x: map(print,x),p)
         else:
             print("No Valid Splits Found")
             return

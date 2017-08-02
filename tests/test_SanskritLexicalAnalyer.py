@@ -9,11 +9,6 @@ from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
 def lexan():
     return SanskritLexicalAnalyzer()
 
-@pytest.fixture(params=[True, False], ids=["Internal Sandhi splitter", "Sandhi module"])
-def use_internal_sandhi_splitter(request):
-    return request.param
-
-
 def get_splitstxt():
     fs = []
     with open("test_data_SanskritLexicalAnalyzer/splits.txt") as f:
@@ -34,30 +29,30 @@ def test_simple_tag(lexan):
     ts=lexan.getLexicalTags(i)
     assert ts == [('gaReSa', set(['na', 'mas', 'sg', 'nom']))]
 
-def test_simple_split(lexan,use_internal_sandhi_splitter):
+def test_simple_split(lexan):
     # gaNeshannamAmi
     i=SanskritObject("gaReSannamAmi",encoding=SLP1)
-    graph=lexan.getSandhiSplits(i,use_internal_sandhi_splitter)
+    graph=lexan.getSandhiSplits(i)
     splits=graph.findAllPaths()
-    assert [u'gaReSam', u'namAmi'] in splits
+    assert [u'gaReSam', u'namAmi'] in [map(str,ss) for ss in splits]
 
-def test_medium_split(lexan,use_internal_sandhi_splitter):
+def test_medium_split(lexan):
     i=SanskritObject("budDaMSaraRaNgacCAmi",encoding=SLP1)
-    graph=lexan.getSandhiSplits(i,use_internal_sandhi_splitter)
+    graph=lexan.getSandhiSplits(i)
     splits=graph.findAllPaths()
-    assert [u'budDam', u'SaraRam', u'gacCAmi'] in splits
+    assert [u'budDam', u'SaraRam', u'gacCAmi'] in [map(str,ss) for ss in splits]
 
-def test_file_splits(lexan,use_internal_sandhi_splitter, splittext_refs):
+def test_file_splits(lexan, splittext_refs):
     f = splittext_refs[0]
     s = splittext_refs[1]
     i=SanskritObject(f,encoding=SLP1)
-    graph=lexan.getSandhiSplits(i, use_internal_sandhi_splitter)
+    graph=lexan.getSandhiSplits(i)
     assert graph is not None
     splits=graph.findAllPaths(max_paths=1000,sort=False)
     if s not in splits:
         # Currently, this triggers a fallback to all_simple_paths
         splits=graph.findAllPaths(max_paths=10000,sort=False)
-    assert s in splits
+    assert s in [map(str,ss) for ss in splits]
     
 def pytest_generate_tests(metafunc):
     if 'splittext_refs' in metafunc.fixturenames:
