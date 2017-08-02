@@ -35,6 +35,9 @@ class SanskritLexicalGraph(object):
         self.G     = nx.DiGraph()
         if elem is not None:
             self.addNode(elem,root=True,end=end)
+    def __iter__(self):
+        ''' Iterate over nodes '''
+        return self.G.__iter__()
     def hasNode(self,t):
         ''' Does a given node exist in the graph?
 
@@ -97,10 +100,13 @@ class SanskritLexicalGraph(object):
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <=1000:
-            return list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
-                             islice(nx.shortest_simple_paths(self.G, self.start, self.end), max_paths)))
+            return list(imap(lambda x: x[1:-1],\
+                             islice(nx.shortest_simple_paths(self.G,
+                                                             self.start,
+                                                             self.end),
+                                    max_paths)))
         else: # Fall back to all_simple_paths
-            ps = list(imap(lambda x: [y.transcoded(SanskritBase.SLP1) for y in x[1:-1]],\
+            ps = list(imap(lambda x: x[1:-1],\
                              nx.all_simple_paths(self.G, self.start, self.end)))
             # If we do not intend to display paths, no need to sort them
             if sort:
@@ -305,24 +311,40 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def getSandhiSplits(self,o,use_internal_sandhi_splitter=True,debug=False):
+    def tagLexicalGraph(self,g):
+        ''' Tag a Lexical Graph with lexical tags
+
+         Params:
+            g (SanskritLexicalGraph) : input lexical graph
+        '''
+        for n in g:
+            # Avoid start and end
+            if isinstance(n,SanskritBase.SanskritObject):
+                t=self.getLexicalTags(n)
+                n.setLexicalTags(t)
+        
+    def getSandhiSplits(self,o,tag=False,debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
               o(SanskritObject): Input object
+              tag(Boolean)     : When True (def=False), return a 
+                                 lexically tagged graph
             Returns:
               SanskritLexicalGraph : DAG all possible splits
         '''
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
         s = o.transcoded(SanskritBase.SLP1)
-        dag = self._possible_splits(s,use_internal_sandhi_splitter,debug)
+        dag = self._possible_splits(s,debug)
+        if tag:
+            self.tagLexicalGraph(dag)
         if not dag:
             return None
         else:
             return dag
         
-    def _possible_splits(self,s,use_internal_sandhi_splitter=True,debug=False):
+    def _possible_splits(self,s,debug=False):
         ''' private method to dynamically compute all sandhi splits
 
         Used by getSandhiSplits
@@ -335,86 +357,11 @@ class SanskritLexicalAnalyzer(object):
         def _is_valid_word(ss):
             r = self.forms.valid(ss)
             return r
-
-
-        def _sandhi_splits(lsstr,rsstr):
-            #do all possible sandhi replacements of c, get s_c_list= [(s_c_left0, s_c_right0), ...]
-            s_c_list = set()
-            c = lsstr[-1]
-            # Unconditional Sandhi reversal
-            if c in self.sandhi_context_map:
-                # Unconditional/Forbidden splits are marked by direct keys
-                if self.sandhi_context_map[c] is not None: # Not a forbidden split
-                    for cm in self.sandhi_context_map[c]:
-                        # Split into left/right context additions
-                        cml,cmr=cm.split("_")
-                        if rsstr: # Right context is non-empty
-                            # Addition to right context
-                            crsstr = cmr + rsstr
-                            # Addition to left context
-                            clsstr = lsstr[0:-1]+cml
-                            # FIXME check added to prevent loops like A-A_A etc.
-                            # Check if this causes real problems
-                            if crsstr != s:
-                                # Addition to left context
-                                s_c_list.add((clsstr, crsstr))
-                        else:   #Null right context, do not prepend to rsstr
-                            # Insert only if necessary to avoid duplicates
-                            s_c_list.add((lsstr[0:-1]+cml, None)) 
-            else:
-                # No direct key, split is not forbidden
-                s_c_list.add((lsstr, rsstr))
-                 
- 
-            # Conditional (context sensitive sandhi reversal)
-            for csm in self.sandhi_context_map:
-                # Tuple indicates a context-sensitive split
-                if isinstance(csm,tuple):
-                    assert len(csm)==3 
-                    # Match end varnas of left string to key.
-                    # How many varnas to match depends on key size
-                    cmatch=(csm[1]==lsstr[-len(csm[1]):])
-                    if cmatch:
-                        # If left key is not None, check if left context matches
-                        lmatch=(csm[0] is None) or ((len(lsstr)>1) and re.match(csm[0],lsstr[-2]))
-                        # If right key is not None, check if right context matches or is None
-                        # Special match for empty right context = $
-                        rmatch=(csm[2] is None) or ((len(rsstr) and re.match(csm[2],rsstr[0])) or
-                                                    (not len(rsstr)) and (csm[2]=='$'))
-                        if rmatch and lmatch: # Both match
-                            logger.debug("Context Sandhi match: {} {} {}".format(csm,lsstr,rsstr))
-                            # Apply each replacement
-                            for cm in self.sandhi_context_map[csm]:
-                                logger.debug("Trying: "+cm)
-                                # Split into left and right additions
-                                cml,cmr=cm.split("_")
-                                # Add to right context
-                                crsstr = cmr + rsstr
-                                clsstr = lsstr[0:-len(csm[1])] + cml
-                                # FIXME check added to prevent loops like A-A_A etc.
-                                # Check if this causes real problems
-                                if crsstr != s:
-                                    s_c_list.add((clsstr, crsstr))
-            return s_c_list                 
          
-        def _sandhi_splits_all(s, use_internal_sandhi_splitter, start=None, stop=None):
-            if use_internal_sandhi_splitter:
-                splits = set()
-                start = start or 0
-                stop = stop or len(s)
-                for ix in xrange(start, stop):
-                    # Left and right substrings
-                    lsstr = s[start:ix+1] 
-                    rsstr = s[ix+1:]
-                    logger.debug("Left, Right substrings = {} {}".format(lsstr,rsstr))
-                    # Get all possible splits as a list of lists 
-                    s_c_list = _sandhi_splits(lsstr,rsstr)
-                    if s_c_list:
-                        splits |= s_c_list
-            else:
-                # For Sandhi Splitter
-                obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
-                splits = self.sandhi.split_all(obj, start, stop)
+        def _sandhi_splits_all(s, start=None,
+                               stop=None):
+            obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
+            splits = self.sandhi.split_all(obj, start, stop)
             return splits
                 
         splits = False
@@ -430,7 +377,7 @@ class SanskritLexicalAnalyzer(object):
             # Replace the first space only
             s=s.replace(' ','',1)
             
-        s_c_list = _sandhi_splits_all(s, use_internal_sandhi_splitter, start=0, stop=spos+1)
+        s_c_list = _sandhi_splits_all(s, start=0, stop=spos+1)
         logger.debug("s_c_list: "+str(s_c_list))
 
         node_cache = {}
@@ -442,7 +389,7 @@ class SanskritLexicalAnalyzer(object):
                 # For each split with a valid left part, check it there are valid splits of the right part
                 if s_c_right and s_c_right != '':
                     logger.debug("Trying to split:"+s_c_right)
-                    rdag = self._possible_splits(s_c_right,use_internal_sandhi_splitter,debug)
+                    rdag = self._possible_splits(s_c_right,debug)
                     # if there are valid splits of the right side
                     if rdag:
                         # Make sure we got a graph back
@@ -505,7 +452,7 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
 #        parser.add_argument('--no-sort',action='store_true')
 #        parser.add_argument('--no-flatten',action='store_true')
-        parser.add_argument('--use-internal-sandhi-splitter',action='store_true')
+#        parser.add_argument('--use-internal-sandhi-splitter',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
@@ -536,10 +483,11 @@ if __name__ == "__main__":
         else:
             import datetime
             print("Start Split:", datetime.datetime.now())
-            graph=s.getSandhiSplits(i,use_internal_sandhi_splitter=args.use_internal_sandhi_splitter,debug=args.debug)
+            graph=s.getSandhiSplits(i,debug=args.debug)
             print("End DAG generation:", datetime.datetime.now())
             if graph:
-                splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
+                splits=graph.findAllPaths(max_paths=args.max_paths,
+                                          debug=args.debug)
                 print("End pathfinding:", datetime.datetime.now())
                 print("Splits:")
                 if splits:

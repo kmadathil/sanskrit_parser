@@ -66,6 +66,9 @@ class SanskritObject(object):
             if thing is not None:
                 # Autodetect Encoding
                 self.encoding=SCHEMES[detect.detect(self.thing)]
+        # Tags will go here as
+        # { lexical_tag : [possible morphologies] }
+        self.tags=[]
 
     def transcoded(self,encoding=None):
         """ Return a transcoded version of self
@@ -76,9 +79,28 @@ class SanskritObject(object):
               str: transcoded version
         """
         return sanscript.transliterate(self.thing,self.encoding,encoding)
+
+    def setLexicalTags(self,t):
+        """ Set Lexical Tags on Sanskrit Object 
+
+            Params:
+               t (list): List of lexical tags
+        """
+        for tt in t:
+            # of the form (dhatu_or_prAtipadikam : set([tags]))
+            # FIXME: Incorporate morphological associations
+            self.tags.append(tt)
+        return self.tags
+    
+    def getTags(self):
+        """ Tags on object """
+        return self.tags
+    
     def __str__(self):
         return self.transcoded(SLP1)
-
+    def __repr__(self):
+        return str(self)
+    
 if __name__ == "__main__":
     import argparse
     def getArgs():
