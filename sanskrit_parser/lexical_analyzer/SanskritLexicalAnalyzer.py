@@ -124,149 +124,6 @@ class SanskritLexicalAnalyzer(object):
     
     sandhi = Sandhi() # Singleton!
     forms  = inriaxmlwrapper.InriaXMLWrapper()
-    
-    # Context Aware Sandhi Split map
-    sandhi_context_map = dict([
-            ((None,'A','[^ieouEOfFxX]'),('a_a','a_A','A_a','A_A')), # akaH savarNe dIrghaH
-            ((None,'A','[^kKcCtTwWSzsH]'),('As_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya
-            ((None,'a','[^akKcCtTwWSzsH]'),('as_',)), # bhobhago'dho'pUrvasya yo'shi, lopashshAkalyasya - ato rorapludadaplute
-            ((None,'I','[^ieouEOfFxX]'),('i_i','i_I','I_i','I_I')), # akaH savarNe dIrghaH 
-            ((None,'U','[^ieouEOfFxX]'),('u_u','u_U','U_u','U_U')), # akaH savarNe dIrghaH
-            ((None,'F','[^ieouEOfFxX]'),('f_f','f_x','x_f','F_x','x_F','F_F')), # akaH savarNe dIrghaH
-            ((None,'e','[^ieouEOfFxX]'),('e_a','a_i','a_I','A_i','A_I')), # AdguNaH
-            # AdguNaH / sasajusho ruH, ato rorapludAdaplute, hashi cha
-            ((None,'o','[^ieouEOfFxX]'),('o_o','a_u','a_U','A_u','A_U','as_a')), 
-            ((None,'o','[^ieouEOfFxXkKpP]'),('as_',)), # sasajusho ruH, ato rorapludAdaplute, hashi cha
-            ((None,'E','[^ieouEOfFxX]'),('E_E','a_e','A_e','a_E','A_E')), # vRddhirechi
-            ((None,'O','[^ieouEOfFxX]'),('O_O','a_o','A_o','a_O','A_O')), # vRddhirechi
-            (('a','r','[^ieouEOfFxX]'),('f_',)), # uraN raparaH
-            (('a','l','[^ieouEOfFxX]'),('x_',)), # uraN raparaH
-            (('[iIuUeEoO]','r',None),('s_',)), # sasjusho ruH
-            ('d',('t_','d_')), # Partial jhalAM jhasho'nte
-            ('g',('k_','g_')), # Partial jhalAM jhasho'nte
-            ('q',('w_','q_')), # Partial jhalAM jhasho'nte
-            ((None,'H','[kKpPtTwW]'),('s_','r_')), # kupvoH xk xp vA
-            ((None,'s','[tTkKpP]'),('s_','r_')), # visarjanIyasya sa
-            # Does this overdo things?
-            ((None,'z','[wWkKpP]'),('s_','r_')), # visarjanIyasya sa, ShTuNa Shtu
-            ((None,'S','[cC]'),('s_','r_')), # visarjanIyasya sa, schuna schu
-            (('[iIuUfFxX]','S',None),('s_',)), # apadAntasya mUrdhanyaH, iNkoH
-            ('M',('m_','M_')), # mo'nusvAraH
-            ((None,'y','[aAuUeEoO]'),('i_','I_')), # iko yaNachi
-            ((None,'v','[aAiIeEoO]'),('u_','U_')),  # iko yaNachi
-            ('N',('N_','M_','m_')), # anusvArasya yayi pararavarNaH
-            ('Y',('Y_','M_','m_')), # do
-            ('R',('R_','M_','m_')), # do
-            ('n',('n_','M_','m_')), # do
-            ('m',('m_','M_')), # do
-            ((None,'H','$'),('s_','r_')), # Visarga at the end
-            ('s',None), # Forbidden to split at an s except for cases already matched
-            ('S',None), # Forbidden to split at an S except for cases already matched
-            ('z',None), # Forbidden to split at an z except for cases already matched
-            ((None,'ay','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH
-            ((None,'Ay','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH
-            ((None,'av','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH
-            ((None,'Av','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH
-            ((None,'a','[aAiIuUeEoO]'),('e_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'A','[aAiIuUeEoO]'),('o_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'a','[aAiIuUeEoO]'),('E_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'A','[aAiIuUeEoO]'),('O_',)), # echo ayavAyAvaH, lopashshAkalyasya
-            ((None,'gG',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm
-            # FIXME: Check if these will happen
-            #((None,'kK',None),('k_h','K_h','g_h','G_h')), # partial jhayo ho'nyatarasyAm 
-            #((None,'wW',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
-            ((None,'qQ',None),('w_h','W_h','q_h','Q_h')), # partial jhayo ho'nyatarasyAm 
-       ])
-        # FIXME: more jhalAM jhasho
-        # FIXME: Lots more hal sandhi missing
-        
-    tagmap = {
-             'प्राथमिकः':'v-cj-prim',
-             'णिजन्तः':'v-cj-ca',
-             'यङन्तः':'v-cj-int',
-             'सन्नन्तः':'v-cj-des',
-             'लट्':'sys-prs-md-pr',
-             'लोट्':'sys-prs-md-ip',
-             'विधिलिङ्':'sys-prs-md-op',
-             'लङ्':'sys-prs-md-im',
-             'लट्-कर्मणि':'sys-pas-md-pr',
-             'लोट्-कर्मणि':'sys-pas-md-ip',
-             'विधिलिङ्-कर्मणि':'sys-pas-md-op',
-             'लङ्-कर्मणि':'sys-pas-md-im',
-             'लृट्':'sys-tp-fut',
-             'लिट्':'sys-tp-prf',
-             'लुङ्':'sys-tp-aor',
-             'आगमाभावयुक्तलुङ्':'sys-tp-inj',
-             'लृङ्':'sys-tp-cnd',
-             'आशीर्लिङ्':'sys-tp-ben',
-             'लुट्':'sys-pef',
-             'एकवचनम्':'np-sg',
-             'द्विवचनम्':'np-du',
-             'बहुवचनम्':'np-pl',
-             'उत्तमपुरुषः':'fst',
-             'मध्यमपुरुषः':'snd',
-             'प्रथमपुरुषः':'trd',
-             'प्रथमाविभक्तिः':'na-nom',
-             'संबोधनविभक्तिः':'na-voc',
-             'द्वितीयाविभक्तिः':'na-acc',
-             'तृतीयाविभक्तिः':'na-ins',
-             'चतुर्थीविभक्तिः':'na-dat',
-             'पञ्चमीविभक्तिः':'na-abl',
-             'षष्ठीविभक्तिः':'na-gen',
-             'सप्तमीविभक्तिः':'na-loc',
-             'एकवचनम्':'sg',
-             'द्विवचनम्':'du',
-             'बहुवचनम्':'pl',
-             'पुंल्लिङ्गम्':'mas',
-             'स्त्रीलिङ्गम्':'fem',
-             'नपुंसकलिङ्गम्':'neu',
-             'सङ्ख्या':'dei',
-             'अव्ययम्':'uf',
-             'क्रियाविशेषणम्':'ind',
-             'उद्गारः':'interj',
-             'निपातम्':'parti',
-             'चादिः':'prep',
-             'संयोजकः':'conj',
-             'तसिल्':'tasil',
-             'अव्ययधातुरूप-प्राथमिकः':'vu-cj-prim',
-             'अव्ययधातुरूप-णिजन्तः':'vu-cj-ca',
-             'अव्ययधातुरूप-यङन्तः':'vu-cj-int',
-             'अव्ययधातुरूप-सन्नन्तः':'vu-cj-des',
-            'तुमुन्':'iv-inf',
-            'क्त्वा':'iv-abs',
-            'per':'iv-per',
-             'क्त्वा-प्राथमिकः':'ab-cj-prim',
-             'क्त्वा-णिजन्तः':'ab-cj-ca',
-             'क्त्वा-यङन्तः':'ab-cj-int',
-             'क्त्वा-सन्नन्तः':'ab-cj-des',
-             'प्राथमिकः':'kr-cj-prim-no',
-             'णिजन्तः':'kr-cj-ca-no',
-             'यङन्तः':'kr-cj-int-no',
-             'सन्नन्तः':'kr-cj-des-no',
-             '':'kr-vb-no',
-             'कर्मणिभूतकृदन्तः':'ppp',
-             'कर्तरिभूतकृदन्तः':'ppa',
-             'कर्मणिवर्तमानकृदन्तः':'pprp',
-             'कर्तरिवर्तमानकृदन्त-परस्मैपदी':'ppr-para',
-             'कर्तरिवर्तमानकृदन्त-आत्मनेपदी':'ppr-atma',
-             'पूर्णभूतकृदन्त-परस्मैपदी':'ppft-para',
-             'पूर्णभूतकृदन्त-आत्मनेपदी':'ppft-atma',
-             'कर्मणिभविष्यत्कृदन्तः':'pfutp',
-             'कर्तरिभविष्यत्कृदन्त-परस्मैपदी':'pfut-para',
-             'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी':'pfut-atma',
-             'य':'gya',
-             'ईय':'iya',
-             'तव्य':'tav',
-             'कर्तरि':'para',
-             'कर्तरि':'atma',
-             'कर्मणि':'pass',
-             'कृदन्तः':'pa',
-	     'समासपूर्वपदनामपदम्':'iic',
-	     'समासपूर्वपदकृदन्तः':'iip',
-	     'समासपूर्वपदधातुः':'iiv',
-	     'उपसर्गः':'upsrg'
-            
-        }
 
     def __init__(self):
         pass
@@ -366,7 +223,8 @@ class SanskritLexicalAnalyzer(object):
                 
         splits = False
 
-        # Memoization for dynamic programming - remember substrings that've been seen before
+        # Memoization for dynamic programming - remember substrings that've
+        # been seen before
         if s in self.dynamic_scoreboard:
             logger.debug("Found {} in scoreboard".format(s))
             return self.dynamic_scoreboard[s]
@@ -386,7 +244,8 @@ class SanskritLexicalAnalyzer(object):
             # Is the left side a valid word?
             if _is_valid_word(s_c_left):
                 logger.debug("Valid left word: "+s_c_left)
-                # For each split with a valid left part, check it there are valid splits of the right part
+                # For each split with a valid left part, check it there are
+                # valid splits of the right part
                 if s_c_right and s_c_right != '':
                     logger.debug("Trying to split:"+s_c_right)
                     rdag = self._possible_splits(s_c_right,debug)
@@ -396,7 +255,8 @@ class SanskritLexicalAnalyzer(object):
                         assert isinstance(rdag,SanskritLexicalGraph)
                         # if there are valid splits of the right side
                         if s_c_left not in node_cache:
-                            # Extend splits list with s_c_left appended with possible splits of s_c_right
+                            # Extend splits list with s_c_left appended with
+                            # possible splits of s_c_right
                             t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
                             node_cache[s_c_left] = t
                         else:
@@ -411,7 +271,8 @@ class SanskritLexicalAnalyzer(object):
                     # where the same s_c_left appears with a null and non-null
                     # right side.
                     if s_c_left not in node_cache:
-                        # Extend splits list with s_c_left appended with possible splits of s_c_right
+                        # Extend splits list with s_c_left appended with
+                        # possible splits of s_c_right
                         t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
                         node_cache[s_c_left] = t
                     else:
@@ -424,7 +285,8 @@ class SanskritLexicalAnalyzer(object):
                         splits.addEndEdge(t)
             else:
                 logger.debug("Invalid left word: "+s_c_left)
-        # Update scoreboard for this substring, so we don't have to split again  
+        # Update scoreboard for this substring, so we don't have to split
+        # again  
         self.dynamic_scoreboard[s]=splits
         if not splits:
             logger.debug("Returning:"+str(splits))
@@ -450,9 +312,6 @@ if __name__ == "__main__":
         # Filter by tag set
         parser.add_argument('--tag-set',type=str,default=None,nargs="+")
         parser.add_argument('--split',action='store_true')
-#        parser.add_argument('--no-sort',action='store_true')
-#        parser.add_argument('--no-flatten',action='store_true')
-#        parser.add_argument('--use-internal-sandhi-splitter',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
@@ -462,9 +321,11 @@ if __name__ == "__main__":
         print("Input String:", args.data)
 
         if args.debug:
-            logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.DEBUG)
+            logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
+                                filemode='w', level=logging.DEBUG)
         else:
-            logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.INFO)
+            logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
+                                filemode='w', level=logging.INFO)
 
         s=SanskritLexicalAnalyzer()
         if args.input_encoding is None:
