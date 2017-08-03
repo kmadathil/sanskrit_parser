@@ -150,9 +150,10 @@ if __name__ == "__main__":
             print("End pathfinding:", datetime.datetime.now())
             print("Splits:")
             for sp in splits:
-                print(sp)
-            p=[s.constrainPath(sp) for sp in splits]
-            map(lambda x: map(print,x),p)
+                print("Split:",sp)
+                p=s.constrainPath(sp)
+                for pp in p:
+                    print([(spp,pp[str(spp)]) for spp in sp])
         else:
             print("No Valid Splits Found")
             return
