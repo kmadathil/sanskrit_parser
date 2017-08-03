@@ -106,7 +106,7 @@ def _inriaTagsToDb(tag):
     
 inriatagdb = map(_inriaTagsToDb,inriatags)
 
-def inriatagmapper(tag):
+def inriaMapTag(tag):
     ''' Map an INRIA tag to our format
 
     Params:
@@ -122,9 +122,19 @@ def inriatagmapper(tag):
             olist.append(s[1])
     return (stem,set(olist))
 
+def inriaTagMapper(tags):
+    ''' Map an INRIA tag to our format
+
+    Params:
+       tags: List of INRIA format tags
+    Returns
+       list[(<stem>,set([our tags])) ...]
+    '''
+    return map(inriaMapTag,tags)
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv)>=2:
-        print(map(lambda x: inriatagmapper(eval(x)),sys.argv[1:]))
+        print(map(lambda x: inriaMapTag(eval(x)),sys.argv[1:]))
     else:
         print("Need at least one argument to convert")

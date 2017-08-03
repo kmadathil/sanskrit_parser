@@ -9,14 +9,13 @@ from __future__ import print_function
 import sanskrit_parser.base.SanskritBase as SanskritBase
 import sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer as SanskritLexicalAnalyzer
 import constraint
+
 import logging
 logger = logging.getLogger(__name__)
-print(__name__)
-print(logger)
+
 
 # Rules for morphological analyzer
 # Only one lakara
-# padas in prathamA must match vacana of lakara
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
     l=0
@@ -24,6 +23,11 @@ def oneLakara(*nodes):
         if 'v' in n[1] and 'prim' in n[1]:
             l=l+1
     return l<=1
+
+# padas in prathamA must match vacana of lakara
+def prathamA(*nodes):
+    ''' Only one Lakara is allowed '''
+    return True
 
 
 # all padas in same case must match in linga, purusha and vacana

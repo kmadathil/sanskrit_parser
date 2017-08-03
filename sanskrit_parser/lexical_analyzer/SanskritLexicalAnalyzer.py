@@ -9,6 +9,8 @@
 from __future__ import print_function
 import sanskrit_parser.base.SanskritBase as SanskritBase
 import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
+import sanskrit_parser.util.inriatagmapper as inriatagmapper
+
 import re
 import networkx as nx
 from itertools import islice,imap
@@ -128,16 +130,21 @@ class SanskritLexicalAnalyzer(object):
     def __init__(self):
         pass
     
-    def getLexicalTags(self,obj):
+    def getLexicalTags(self,obj,tmap=True):
         """ Get Lexical tags for a word
 
             Params:
                 obj(SanskritObject): word
+                tmap(Boolean=True): If True, maps
+                    tags to our format
             Returns
                 list: List of (base, tagset) pairs
         """
         ot = obj.transcoded(SanskritBase.SLP1)
-        return self.forms.get_tags(ot)
+        tags=self.forms.get_tags(ot)
+        if tmap:
+            tags=inriatagmapper.inriaTagMapper(tags)
+        return tags
         
     def hasTag(self,obj,name,tagset):
         """ Check if word matches lexical tags
@@ -194,7 +201,7 @@ class SanskritLexicalAnalyzer(object):
         self.dynamic_scoreboard = {}
         s = o.transcoded(SanskritBase.SLP1)
         dag = self._possible_splits(s,debug)
-        if tag:
+        if tag and dag:
             self.tagLexicalGraph(dag)
         if not dag:
             return None
