@@ -16,11 +16,14 @@ logger = logging.getLogger(__name__)
 
 # Rules for morphological analyzer
 # Only one lakara
+_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN'])
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
+    # lakaras in SLP1
     l=0
     for n in nodes:
-        if 'v' in n[1] and 'prim' in n[1]:
+        nset=set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
+        if not(_lakaras.isdisjoint(nset)):
             l=l+1
     return l<=1
 
@@ -57,8 +60,8 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
                 _ncache[s]=0
                 return s
             else:
-                _ncache[s]=ncache[s]+1
-                return s+"_"+str(ncache[s])
+                _ncache[s]=_ncache[s]+1
+                return s+"_"+str(_ncache[s])
         # Ensure we have tags
         for p in path:
             assert p.tags, "No tags for {}".format(p)
