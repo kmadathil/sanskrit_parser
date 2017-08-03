@@ -13,6 +13,10 @@ import constraint
 import logging
 logger = logging.getLogger(__name__)
 
+need_lakara=False
+
+def getSLP1Tagset(n):
+    return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
 
 # Rules for morphological analyzer
 # Only one lakara
@@ -20,13 +24,36 @@ _lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN'])
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
     # lakaras in SLP1
+    global need_lakara
     l=0
     for n in nodes:
-        nset=set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
+        nset=getSLP1Tagset(n)
         if not(_lakaras.isdisjoint(nset)):
             l=l+1
-    return l<=1
+    # Variable to enforce a lakara
+    if need_lakara:
+        return l==1
+    else:
+        return l<=1 
 
+# Last pada cannot be an upasarga or samasapurvapada
+_ldis = set(['samAsapUrvapadanAmapadam','upasargaH'])
+def lastWord(*nodes):
+    n = nodes[-1]
+    nset=getSLP1Tagset(n)
+    r = _ldis.isdisjoint(nset)
+    logger.debug(nset)
+    return r
+
+# Upasarga must be before a verb
+def upasarga(*nodes):
+    r = True 
+    for ix,n in enumerate(nodes):
+        nset=getSLP1Tagset(n)
+        if set(['upasargaH']) <= nset:
+            r = r and (not _lakaras.isdisjoint(getSLP1Tagset(nodes[ix+1])))
+    return r
+    
 # padas in prathamA must match vacana of lakara
 def prathamA(*nodes):
     ''' Only one Lakara is allowed '''
@@ -73,6 +100,8 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
             logger.debug("Added Variable {} {}".format(v,p.tags))
             problem.addVariable(v,p.tags)
         problem.addConstraint(oneLakara)
+        problem.addConstraint(lastWord,vlist)
+        problem.addConstraint(upasarga,vlist)
         s=problem.getSolutions()
         return s
     
@@ -89,15 +118,18 @@ if __name__ == "__main__":
         parser.add_argument('data',nargs="?",type=str,default="astyuttarasyAMdishidevatAtmA")
         # Input Encoding (autodetect by default)
         parser.add_argument('--input-encoding',type=str,default=None)
-        # Filter by base name
+        # Need a lakara
+        parser.add_argument('--need-lakara',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         return parser.parse_args()
 
     def main():
+        global need_lakara
         args=getArgs()
         print("Input String:", args.data)
-
+        need_lakara = args.need_lakara
+        
         if args.debug:
             logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.DEBUG)
         else:
@@ -119,7 +151,7 @@ if __name__ == "__main__":
             print("Splits:")
             for sp in splits:
                 print(sp)
-            p=map(s.constrainPath,splits)
+            p=[s.constrainPath(sp) for sp in splits]
             map(lambda x: map(print,x),p)
         else:
             print("No Valid Splits Found")
