@@ -99,10 +99,9 @@ if __name__ == "__main__":
         print("Input String:", args.data)
 
         if args.debug:
-            logging.basicConfig(filename='MorphologicalAnalyzer.log', filemode='w', level=logging.DEBUG)
+            logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.DEBUG)
         else:
-            logging.basicConfig(filename='MorphologicalAnalyzer.log', filemode='w', level=logging.INFO)
-        logger.info("Begun Logging")
+            logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.INFO)
         s=SanskritMorphologicalAnalyzer()
         if args.input_encoding is None:
             ie = None
