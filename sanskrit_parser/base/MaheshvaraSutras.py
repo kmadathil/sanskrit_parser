@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import base.SanskritBase as SanskritBase
+from __future__ import print_function
+import SanskritBase as SanskritBase
 import re
 
 class MaheshvaraSutras(object):
@@ -32,7 +33,7 @@ class MaheshvaraSutras(object):
               longp(boolean :optional:): When True (default), uses long pratyaharas 
               remove_a(boolean :optional:): When True, removes intermediate 'a'. 
                    This is better for computational use
-              dirgas(boolean :optional:) When True (default=False) adds dirgha vowels
+              dirghas(boolean :optional:) When True (default=False) adds dirgha vowels
                     to the returned varnas
             Returns
               (SanskritObject): List of varnas to the same encoding as p
@@ -116,18 +117,18 @@ if __name__ == "__main__":
     def main():
         args = getArgs()
         m=MaheshvaraSutras()
-        print m
+        print(m)
         if args.encoding is not None:
             e=SanskritBase.SCHEMES[args.encoding]
         else:
             e=None
         p=SanskritBase.SanskritObject(args.pratyahara,e)
         l = not args.short
-        print unicode(p.transcoded(SanskritBase.DEVANAGARI))
-        print unicode(m.getPratyahara(p,l,args.remove_a,args.dirghas).transcoded(SanskritBase.DEVANAGARI))
+        print(unicode(p.transcoded(SanskritBase.DEVANAGARI)))
+        print(unicode(m.getPratyahara(p,l,args.remove_a,args.dirghas).transcoded(SanskritBase.DEVANAGARI)))
         if args.varna is not None:
             v=SanskritBase.SanskritObject(args.varna,e)
-            print u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
-                                        p.transcoded(SanskritBase.DEVANAGARI))
-            print m.isInPratyahara(p,v,l)
+            print(u"Is {} in {}?".format(v.transcoded(SanskritBase.DEVANAGARI),
+                                        p.transcoded(SanskritBase.DEVANAGARI)))
+            print(m.isInPratyahara(p,v,l))
     main()

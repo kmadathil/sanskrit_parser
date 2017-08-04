@@ -4,6 +4,10 @@
 .settings
 .pydevproject
 .project
-<<<<<<< HEAD
 *.log
 *.tmp
+\#*
+build
+dist
+*.egg-info
+sanskrit_parser/util/data

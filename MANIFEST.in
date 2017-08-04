@@ -1,0 +1,6 @@
+# Include the license file
+include LICENSE
+include sanskrit_parser/lexical_analyzer/sandhi_rules/*.txt
+
+# Include the data files
+# recursive-include data *

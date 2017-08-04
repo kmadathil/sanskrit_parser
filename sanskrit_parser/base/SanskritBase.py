@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 from indic_transliteration import sanscript
 from indic_transliteration import detect
 
@@ -92,13 +93,13 @@ if __name__ == "__main__":
         # Input Encoding (autodetect by default)
         parser.add_argument('--input-encoding',type=str,default=None)
         # Ouptut Encoding (Devanagari by default)
-        parser.add_argument('--output-encoding',type=str,default="DEVANAGARI")
+        parser.add_argument('--output-encoding',type=str,default="Devanagari")
         
         return parser.parse_args()
 
     def main():
         args=getArgs()
-        print args.data
+        print(args.data)
         if args.input_encoding is None:
             ie=None
         else:
@@ -107,6 +108,6 @@ if __name__ == "__main__":
         oe=SCHEMES[args.output_encoding]
 
         s=SanskritObject(args.data,ie)
-        print s.transcoded(oe)
+        print(s.transcoded(oe))
     main()
     
