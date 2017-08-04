@@ -56,12 +56,12 @@ class InriaXMLWrapper(object):
     def _get_files(self):
         """ Download files if not present in cache """
         if not os.path.exists(self.data_cache):
-            logging.debug("Data cache not found. Creating.")
+            self.logger.debug("Data cache not found. Creating.")
             os.mkdir(self.data_cache)
         for f in self.files:
             filename = "SL_" + f + ".xml"
             if not os.path.exists(os.path.join(self.data_cache, filename)):
-                logging.debug("%s not found. Downloading it", filename)
+                self.logger.debug("%s not found. Downloading it", filename)
                 r = requests.get(self.base_url + filename, stream=True)
                 with open(os.path.join(self.data_cache, filename), "wb") as fd:
                     for chunk in r.iter_content(chunk_size=128):
@@ -73,16 +73,16 @@ class InriaXMLWrapper(object):
             and pickle it
         """
         self._get_files()
-        logging.debug("Parsing files into dict for faster lookup")
+        self.logger.debug("Parsing files into dict for faster lookup")
         self.forms = defaultdict(list)
         for f in self.files:
             filename = "SL_" + f + ".xml"
-            logging.debug("Parsing %s", filename)
+            self.logger.debug("Parsing %s", filename)
             tree = etree.parse(os.path.join(self.data_cache, filename))
             for elem in tree.iterfind('f'):
                 form = elem.get('form')
                 self.forms[form].append(etree.tostring(elem).strip())
-        logging.debug("Pickling forms database for faster loads")
+        self.logger.debug("Pickling forms database for faster loads")
         with open(os.path.join(self.data_cache, self.pickle_file), "wb") as fd:
             pickle.dump(self.forms, fd, pickle.HIGHEST_PROTOCOL)
             
@@ -90,18 +90,18 @@ class InriaXMLWrapper(object):
         """ Load/create dict of tags for forms """
         pickle_path = os.path.join(self.data_cache, self.pickle_file)
         if os.path.exists(pickle_path):
-            logging.info("Pickle file found, loading at %s", datetime.datetime.now())
+            self.logger.info("Pickle file found, loading at %s", datetime.datetime.now())
             start = time.time()
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
-            logging.info("Loading finished at %s, took %f s", 
+            self.logger.info("Loading finished at %s, took %f s", 
                           datetime.datetime.now(),
                           time.time() - start
                           )
         else:
-            logging.debug("Pickle file not found, creating ...")
+            self.logger.debug("Pickle file not found, creating ...")
             self._generate_dict()
-        logging.info("Cached %d forms for fast lookup", len(self.forms))
+        self.logger.info("Cached %d forms for fast lookup", len(self.forms))
             
     def _xml_to_tags(self, word):
         # FIXME - This is currently from sanskritmark. Check if this can be simplified
