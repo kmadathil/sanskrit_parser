@@ -141,4 +141,4 @@
 
 # Catch all, to catch the default split
 # since our input does not have any spaces
-[*अल्] +  = {0}
+[*अल्+ं] +  = {0}
