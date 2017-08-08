@@ -20,7 +20,7 @@ def getSLP1Tagset(n):
 
 # Rules for morphological analyzer
 # Only one lakara
-_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN'])
+_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
     # lakaras in SLP1
@@ -54,10 +54,29 @@ def upasarga(*nodes):
             r = r and (not _lakaras.isdisjoint(getSLP1Tagset(nodes[ix+1])))
     return r
     
-# padas in prathamA must match vacana of lakara
+# padas in prathamA must match purusha / vacana of lakara
+_vacanas=['ekavacanam','dvivacanam','bahuvacanam']
+prathama='praTamAviBaktiH'
 def prathamA(*nodes):
-    ''' Only one Lakara is allowed '''
-    return True
+    ''' padas in prathamA ('kartr'/karman) must match the purusha / vacana of lakara'''
+    r=True
+    for n in nodes:
+        nset=getSLP1Tagset(n)
+        # Pick the first lakara
+        if not(_lakaras.isdisjoint(nset)):
+            vacana=nset.intersection(_vacanas)
+            logger.debug("Found Lakara vacana:{}".format(vacana))
+            assert len(vacana)==1, "Only one vacana allowed: {}".format(list(vacana))
+            vacana=list(vacana)[0]
+    for n in nodes:
+        nset=getSLP1Tagset(n)
+        if prathama in nset:
+            mvacana=nset.intersection(_vacanas)
+            logger.debug("Found PrathamA vacana:{}".format(vacana))
+            assert len(mvacana)==1, "Only one mvacana allowed: {}".format(list(mvacana))
+            mvacana=list(mvacana)[0]
+            r = r and (mvacana==vacana)
+    return r
 
 
 # all padas in same case must match in linga, purusha and vacana
@@ -102,6 +121,7 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         problem.addConstraint(oneLakara)
         problem.addConstraint(lastWord,vlist)
         problem.addConstraint(upasarga,vlist)
+        problem.addConstraint(prathamA,vlist)
         s=problem.getSolutions()
         return s
     
