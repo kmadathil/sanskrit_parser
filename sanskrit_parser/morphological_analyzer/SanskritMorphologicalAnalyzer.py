@@ -18,9 +18,26 @@ need_lakara=False
 def getSLP1Tagset(n):
     return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
 
+# Lakaras
+_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
+# Disallowed last padas
+_ldis = set(['samAsapUrvapadanAmapadam','upasargaH'])
+# Vacanas
+_vacanas=set(['ekavacanam','dvivacanam','bahuvacanam'])
+# Puruzas
+_puruzas=['praTamapuruzaH','maDyamapuruzaH','uttamapuruzaH']
+prathama='praTamAviBaktiH'
+# Lingas
+_lingas=set(['puMlliNgam','napuMsakaliNgam','strIliNgam'])
+# Samastapada former parts
+_samastas=set(['samAsapUrvapadanAmapadam'])
+# tiGanta vibhaktis
+_vibhaktis=set(['praTamAviBaktiH','dvitIyAviBaktiH','tritIyAviBaktiH',
+                'caturTIviBaktiH','paNcamIviBaktiH','zazWIviBaktiH',
+                'saptamIviBaktiH','saMboDanaviBaktiH'])
+
 # Rules for morphological analyzer
 # Only one lakara
-_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
     # lakaras in SLP1
@@ -37,7 +54,6 @@ def oneLakara(*nodes):
         return l<=1 
 
 # Last pada cannot be an upasarga or samasapurvapada
-_ldis = set(['samAsapUrvapadanAmapadam','upasargaH'])
 def lastWord(*nodes):
     n = nodes[-1]
     nset=getSLP1Tagset(n)
@@ -55,9 +71,6 @@ def upasarga(*nodes):
     return r
     
 # padas in prathamA must match purusha / vacana of lakara
-_vacanas=['ekavacanam','dvivacanam','bahuvacanam']
-_puruzas=['praTamapuruzaH','maDyamapuruzaH','uttamapuruzaH']
-prathama='praTamAviBaktiH'
 def prathamA(*nodes):
     ''' padas in prathamA ('kartr'/karman) must match the purusha / vacana of lakara'''
     r=True
@@ -94,9 +107,56 @@ def prathamA(*nodes):
     return r
 
 
-# all padas in same case must match in linga, purusha and vacana
-
+# all padas in same case must match in linga and vacana
+def vibhaktiAgreement(*nodes):
+    ''' All padas in same vibhakti must agree in linga and vacana '''
+    maps={}
+    for n in nodes:
+        nset=getSLP1Tagset(n)
+        vibhakti = _vibhaktis.intersection(nset) 
+        if vibhakti:
+            assert len(vibhakti)==1, "Only one vibhakti allowed: {}".format(list(vibhakti))
+            logger.debug("Found vibhakti:{}".format(vibhakti))
+            vibhakti=list(vibhakti)[0]
+            vacana=nset.intersection(_vacanas)
+            logger.debug("Found vacana:{}".format(vacana))
+            assert len(vacana)==1, "Only one vacana allowed: {}".format(list(vacana))
+            vacana=list(vacana)[0]
+            linga=nset.intersection(_lingas)
+            logger.debug("Found linga:{}".format(linga))
+            assert len(linga)==1, "Only one linga allowed: {}".format(list(linga))
+            linga=list(linga)[0]
+            slv = set([linga,vacana])
+            if vibhakti in maps:
+                if maps[vibhakti] != slv:
+                    logger.debug("Unequal:{} {}".format(maps[vibhakti],slv))
+                    return False
+                else:
+                    logger.debug("Equal:{} {}".format(maps[vibhakti],slv))
+            else:
+                maps[vibhakti]=slv
+                logger.debug("Map: {} : {}".format(vibhakti,slv))
+    return True
+                             
 # samAsa constituents must be followed by another samasa constiuent or subanta
+def samasarules(*nodes):
+    ''' samasa constituents must be followed by tiGantas 
+        (or other samasa constituents)
+    '''
+    r=True
+    l=len(nodes)-1
+    for ix,n in enumerate(nodes):
+        nset=getSLP1Tagset(n)
+        if not _samastas.isdisjoint(nset):
+            if ix==l:
+                return False
+            else:
+                nset1=getSLP1Tagset(nodes[ix+1])
+                if _samastas.isdisjoint(nset1):
+                    r = r and (not _vibhaktis.isdisjoint(nset1))
+    return r
+
+
 # upasarga rules
 # karmapravcanIya rules
 
@@ -137,6 +197,8 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         problem.addConstraint(lastWord,vlist)
         problem.addConstraint(upasarga,vlist)
         problem.addConstraint(prathamA,vlist)
+        problem.addConstraint(samasarules,vlist)
+        problem.addConstraint(vibhaktiAgreement,vlist)
         s=problem.getSolutions()
         return s
     
