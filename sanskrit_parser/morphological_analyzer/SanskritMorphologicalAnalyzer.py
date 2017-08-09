@@ -74,8 +74,9 @@ def prathamA(*nodes):
             logger.debug("Found Lakara puruza:{}".format(puruza))
             assert len(puruza)==1, "Only one puruza allowed: {}".format(list(puruza))
             puruza=list(puruza)[0]
+    # No lakara found
     if vacana is None:
-        return False
+        return not need_lakara
     for n in nodes:
         nset=getSLP1Tagset(n)
         if prathama in nset:
