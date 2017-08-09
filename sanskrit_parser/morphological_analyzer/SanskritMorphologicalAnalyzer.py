@@ -247,10 +247,14 @@ if __name__ == "__main__":
             print("End pathfinding:", datetime.datetime.now())
             print("Splits:")
             for sp in splits:
-                print("Split:",sp)
+                print("Lexical Split:",sp)
                 p=s.constrainPath(sp)
-                for pp in p:
-                    print([(spp,pp[str(spp)]) for spp in sp])
+                if p:
+                    print("Valid Morphologies")
+                    for pp in p:
+                        print([(spp,pp[str(spp)]) for spp in sp])
+                else:
+                    print("No valid morphologies for this split")
         else:
             print("No Valid Splits Found")
             return
