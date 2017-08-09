@@ -14,7 +14,7 @@ Inspired by https://github.com/drdhaval2785/inriaxmlwrapper
 
 from __future__ import print_function
 import requests
-import os
+import os, shutil
 import inspect
 from lxml import etree
 from collections import defaultdict
@@ -36,9 +36,11 @@ class InriaXMLWrapper(object):
     """
     base_url = "https://github.com/drdhaval2785/inriaxmlwrapper/raw/master/"
     xml_files = ["roots", "nouns", "adverbs", "final", "parts", "pronouns", "upasargas", "all"]
-    base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     folder = "data"
-    data_cache = os.path.join(base_dir, folder)
+    old_dir = os.path.join(old_base_dir, folder)
+    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
+    
     
     def __init__(self, files_list=['all'], logger=None):
         for f in files_list:
@@ -51,19 +53,25 @@ class InriaXMLWrapper(object):
             self.files = self.xml_files[:-1]
             self.pickle_file = "_all.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._load_forms()
+        self._relocate_data()
+        self._load_forms()        
+    
+    @staticmethod
+    def _relocate_data():
+        if os.path.exists(InriaXMLWrapper.old_dir):
+            shutil.move(InriaXMLWrapper.old_dir, InriaXMLWrapper.base_dir)
             
     def _get_files(self):
         """ Download files if not present in cache """
-        if not os.path.exists(self.data_cache):
+        if not os.path.exists(self.base_dir):
             self.logger.debug("Data cache not found. Creating.")
-            os.mkdir(self.data_cache)
+            os.makedirs(self.base_dir)
         for f in self.files:
             filename = "SL_" + f + ".xml"
-            if not os.path.exists(os.path.join(self.data_cache, filename)):
+            if not os.path.exists(os.path.join(self.base_dir, filename)):
                 self.logger.debug("%s not found. Downloading it", filename)
                 r = requests.get(self.base_url + filename, stream=True)
-                with open(os.path.join(self.data_cache, filename), "wb") as fd:
+                with open(os.path.join(self.base_dir, filename), "wb") as fd:
                     for chunk in r.iter_content(chunk_size=128):
                         fd.write(chunk)
                         
@@ -78,17 +86,17 @@ class InriaXMLWrapper(object):
         for f in self.files:
             filename = "SL_" + f + ".xml"
             self.logger.debug("Parsing %s", filename)
-            tree = etree.parse(os.path.join(self.data_cache, filename))
+            tree = etree.parse(os.path.join(self.base_dir, filename))
             for elem in tree.iterfind('f'):
                 form = elem.get('form')
                 self.forms[form].append(etree.tostring(elem).strip())
         self.logger.debug("Pickling forms database for faster loads")
-        with open(os.path.join(self.data_cache, self.pickle_file), "wb") as fd:
+        with open(os.path.join(self.base_dir, self.pickle_file), "wb") as fd:
             pickle.dump(self.forms, fd, pickle.HIGHEST_PROTOCOL)
             
     def _load_forms(self):
         """ Load/create dict of tags for forms """
-        pickle_path = os.path.join(self.data_cache, self.pickle_file)
+        pickle_path = os.path.join(self.base_dir, self.pickle_file)
         if os.path.exists(pickle_path):
             self.logger.info("Pickle file found, loading at %s", datetime.datetime.now())
             start = time.time()
