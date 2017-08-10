@@ -27,7 +27,8 @@ def test_simple_tag(lexan):
     # gaNeshaH
     i=SanskritObject("gaReSas",encoding=SLP1)
     ts=lexan.getLexicalTags(i)
-    assert ts == [('gaReSa', set(['na', 'mas', 'sg', 'nom']))]
+    assert [(ts[0][0],set(map(str,ts[0][1])))] == [('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))]
+
 
 def test_simple_split(lexan):
     # gaNeshannamAmi
