@@ -24,10 +24,12 @@ def get_splitstxt():
 
 
 def test_simple_tag(lexan):
+    def _mapt(t):
+        return (t[0],set(map(str,t[1])))
     # gaNeshaH
     i=SanskritObject("gaReSas",encoding=SLP1)
     ts=lexan.getLexicalTags(i)
-    assert [(ts[0][0],set(map(str,ts[0][1])))] == [('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))]
+    assert [_mapt(tss) for tss in ts] == [('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))]
 
 
 def test_simple_split(lexan):
