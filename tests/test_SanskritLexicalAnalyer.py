@@ -50,7 +50,7 @@ def test_file_splits(lexan, splittext_refs):
     graph=lexan.getSandhiSplits(i)
     assert graph is not None
     splits=graph.findAllPaths(max_paths=1000,sort=False)
-    if s not in splits:
+    if s not in [map(str,ss) for ss in splits]:
         # Currently, this triggers a fallback to all_simple_paths
         splits=graph.findAllPaths(max_paths=10000,sort=False)
     assert s in [map(str,ss) for ss in splits]
