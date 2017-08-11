@@ -142,7 +142,7 @@ class SanskritLexicalAnalyzer(object):
         """
         ot = obj.transcoded(SanskritBase.SLP1)
         tags=self.forms.get_tags(ot)
-        if tmap:
+        if tmap and (tags is not None):
             tags=inriatagmapper.inriaTagMapper(tags)
         return tags
         
