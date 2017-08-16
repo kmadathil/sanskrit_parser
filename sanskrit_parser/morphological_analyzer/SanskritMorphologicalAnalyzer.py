@@ -29,6 +29,7 @@ _puruzas=['praTamapuruzaH','maDyamapuruzaH','uttamapuruzaH']
 prathama='praTamAviBaktiH'
 # Lingas
 _lingas=set(['puMlliNgam','napuMsakaliNgam','strIliNgam'])
+_sankhya=set(['saNKyA'])
 # Samastapada former parts
 _samastas=set(['samAsapUrvapadanAmapadam'])
 # tiGanta vibhaktis
@@ -124,6 +125,10 @@ def vibhaktiAgreement(*nodes):
             vacana=list(vacana)[0]
             linga=nset.intersection(_lingas)
             logger.debug("Found linga:{}".format(linga))
+            if len(linga)==0:
+                sankhya=nset.intersection(_sankhya)
+                if sankhya: # Is "Sankhya" type (kati etc.)
+                    continue
             assert len(linga)==1, "Only one linga allowed: {}".format(list(linga))
             linga=list(linga)[0]
             slv = set([linga,vacana])
