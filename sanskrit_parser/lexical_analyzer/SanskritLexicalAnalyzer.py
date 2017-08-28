@@ -8,7 +8,8 @@
 
 from __future__ import print_function
 import sanskrit_parser.base.SanskritBase as SanskritBase
-import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
+# import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
+from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
 import re
 import networkx as nx
 from itertools import islice,imap
@@ -117,7 +118,7 @@ class SanskritLexicalAnalyzer(object):
     """
     
     sandhi = Sandhi() # Singleton!
-    forms  = inriaxmlwrapper.InriaXMLWrapper()
+#     forms  = inriaxmlwrapper.InriaXMLWrapper()
     
     # Context Aware Sandhi Split map
     sandhi_context_map = dict([
@@ -262,7 +263,8 @@ class SanskritLexicalAnalyzer(object):
             
         }
 
-    def __init__(self):
+    def __init__(self, forms):
+        self.forms = forms
         pass
     
     def getLexicalTags(self,obj):
@@ -508,6 +510,7 @@ if __name__ == "__main__":
         parser.add_argument('--use-internal-sandhi-splitter',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
+        parser.add_argument('--lexical-lookup', type=str, default="inria")
         return parser.parse_args()
 
     def main():
@@ -519,7 +522,8 @@ if __name__ == "__main__":
         else:
             logging.basicConfig(filename='SanskritLexicalAnalyzer.log', filemode='w', level=logging.INFO)
 
-        s=SanskritLexicalAnalyzer()
+        forms = LexicalLookupFactory.create(args.lexical_lookup)
+        s=SanskritLexicalAnalyzer(forms)
         if args.input_encoding is None:
             ie = None
         else:
