@@ -183,6 +183,7 @@ class SanskritLexicalAnalyzer(object):
             # Avoid start and end
             if isinstance(n,SanskritBase.SanskritObject):
                 t=self.getLexicalTags(n)
+                logger.debug("Tags for %s = %s", n, t)
                 n.setLexicalTags(t)
         
     def getSandhiSplits(self,o,tag=False,debug=False):

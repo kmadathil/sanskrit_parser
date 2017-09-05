@@ -50,6 +50,7 @@ class SanskritDataWrapper(LexicalLookup):
         if word in self.tag_cache:
             self.logger.debug("Cache hit")
             tags = self.tag_cache[word]
+            self.logger.debug("Found tags %s", tags)
         else:
             tags = self.analyzer.analyze(word)
             if tags != []:
@@ -57,6 +58,7 @@ class SanskritDataWrapper(LexicalLookup):
                 self.tag_cache[word] = tags
         if tmap:
             tags = self.map_tags(tags)
+            self.logger.debug("Found tags %s", tags)
         if tags != []:
             return tags
         else:
@@ -70,17 +72,23 @@ class SanskritDataWrapper(LexicalLookup):
                     fd.write(chunk)
             
     vacanam = ['एकवचनम्', 'द्विवचनम्', 'बहुवचनम्']
-    lingam = ['पुंल्लिङ्गम्', 'स्त्रीलिङ्गम्', 'नपुंसकलिङ्गम्']
+    lingam = ['पुंल्लिङ्गम्', 'स्त्रीलिङ्गम्', 'नपुंसकलिङ्गम्', 'त्रिलिङ्गम्']
     vibhakti = ['प्रथमाविभक्तिः', 'द्वितीयाविभक्तिः', 'तृतीयाविभक्तिः', 'चतुर्थीविभक्तिः', 'पञ्चमीविभक्तिः', 'षष्ठीविभक्तिः', 'सप्तमीविभक्तिः', 'संबोधनविभक्तिः']
-    lakAra = ['लट्', 'लुङ्', 'लङ्', 'लिट्', 'लृट्', 'लुट्', 'लृङ्', 'विधिलिङ्', 'लोट्', 'आशीर्लिङ्']
+    lakAra = ['लट्', 'लुङ्', 'लङ्', 'लिट्', 'लृट्', 'लुट्', 'लृङ्', 'विधिलिङ्', 'लोट्', 'आशीर्लिङ्', 'आगमाभावयुक्तलुङ्']
     pada_prayoga = ['परस्मैपदम्', 'आत्मनेपदम्', 'उभयपदम्', 'कर्तरि', 'कर्मणि']
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     
     def refresh(self, obj):
-        return self.analyzer.session.query(type(obj)).populate_existing().get(obj.id)
+        if hasattr(obj, "id") and obj.id != None:
+            return self.analyzer.session.query(type(obj)).populate_existing().get(obj.id)
+        else:
+            return obj
               
     def map_nominal(self, obj):
+        self.logger.debug("map_nominal %s", obj)
         tagset = set()
+        obj = self.refresh(obj)
+#         self.logger.debug("%s, gender_id = %d", obj, obj.gender_id)
         tagset.add(SanskritObject(self.lingam[obj.gender_id-1], DEVANAGARI))
         if obj.compounded:
             tagset.add(SanskritObject("समासपूर्वपदनामपदम्", DEVANAGARI))
