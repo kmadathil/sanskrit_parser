@@ -144,7 +144,8 @@
 
 # Catch all, to catch the default split
 # since our input does not have any spaces
-[*अल्] +  = {0}
+[*अय्] +  = {0}
+# [*अल्] +  = {0}
 [ं] +  = {0}
 
 # Some combined rules

@@ -14,7 +14,7 @@ Inspired by https://github.com/drdhaval2785/inriaxmlwrapper
 
 from __future__ import print_function
 import requests
-import os
+import os, shutil
 import inspect
 from lxml import etree
 from collections import defaultdict
@@ -22,13 +22,15 @@ from  sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
 import logging
 import time, datetime
 import StringIO
+from sanskrit_parser.util import inriatagmapper
+from sanskrit_parser.util.lexical_lookup import LexicalLookup
 
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
-class InriaXMLWrapper(object):
+class InriaXMLWrapper(LexicalLookup):
     """
     Class to interface with the INRIA XML database released
     by Prof. Gerard Huet
@@ -36,9 +38,9 @@ class InriaXMLWrapper(object):
     """
     base_url = "https://github.com/drdhaval2785/inriaxmlwrapper/raw/master/"
     xml_files = ["roots", "nouns", "adverbs", "final", "parts", "pronouns", "upasargas", "all"]
-    base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     folder = "data"
-    base_dir = os.path.join(base_dir, folder)
+    old_dir = os.path.join(old_base_dir, folder)
     
     def __init__(self, files_list=['all'], logger=None):
         for f in files_list:
@@ -51,13 +53,19 @@ class InriaXMLWrapper(object):
             self.files = self.xml_files[:-1]
             self.pickle_file = "_all.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._load_forms()
+        self._relocate_data()
+        self._load_forms()        
+    
+    @staticmethod
+    def _relocate_data():
+        if os.path.exists(InriaXMLWrapper.old_dir):
+            shutil.move(InriaXMLWrapper.old_dir, InriaXMLWrapper.base_dir)
             
     def _get_files(self):
         """ Download files if not present in cache """
         if not os.path.exists(self.base_dir):
             self.logger.debug("Data cache not found. Creating.")
-            os.mkdir(self.base_dir)
+            os.makedirs(self.base_dir)
         for f in self.files:
             filename = "SL_" + f + ".xml"
             if not os.path.exists(os.path.join(self.base_dir, filename)):
@@ -128,10 +136,11 @@ class InriaXMLWrapper(object):
     def valid(self, word):
         return word in self.forms
     
-    def get_tags(self, word):
-            return self._xml_to_tags(word)
-        
-        
+    def get_tags(self, word, tmap=True):
+            tags = self._xml_to_tags(word)
+            if tmap and (tags is not None):
+                tags=inriatagmapper.inriaTagMapper(tags)
+            return tags        
         
 if __name__ == "__main__":
     from argparse import ArgumentParser

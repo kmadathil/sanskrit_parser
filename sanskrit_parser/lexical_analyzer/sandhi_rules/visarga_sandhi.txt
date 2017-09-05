@@ -49,7 +49,7 @@
 # Even though this only happens for some forms, we need to be able to split पुनारमते etc.
 अ[स्, र्, ः] + र् = आर् / आ र्
 # This only applies to certain forms, but we need to split them as well
-अ[ः, स्, र्] + [*अल्] = अर्{2}
+#अ[ः, स्, र्] + [*अल्] = अर्{2}
 
 # उत्वम्
 # ससजुषो रुः, खरवसानयोर्विसर्जनीयः, अतो रोरप्लुतादप्लुते etc.

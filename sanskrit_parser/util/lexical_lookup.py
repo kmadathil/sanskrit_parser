@@ -16,16 +16,14 @@ class LexicalLookup(object):
     
     __metaclass__  = abc.ABCMeta
     
-    base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    folder = "data"
-    base_dir = os.path.join(base_dir, folder)
+    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
     
     @abc.abstractmethod
     def valid(self, word):
         """ Return True if word is a valid pada """
         
     @abc.abstractmethod
-    def get_tags(self, word):
+    def get_tags(self, word, tmap=True):
         """ Return lexical tags of word """
 
     @staticmethod

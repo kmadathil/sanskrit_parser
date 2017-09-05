@@ -13,18 +13,19 @@ import sanskrit.context
 from sanskrit.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
-
-from sqlalchemy import inspect
-
-#class SanskritDataTagMapper(object):
-    
-    
+import inspect
+import requests
 
 class SanskritDataWrapper(LexicalLookup):
     
+    #TODO - Install the data in a different way
+    file_url = "https://github.com/kmadathil/sanskrit_parser/blob/cc6e8060e4e3ec0e6f1a4cd04e914f04ee05d78d/sanskrit_parser/util/data/data.db?raw=true"
+    db_file = os.path.join(LexicalLookup.base_dir, 'data.db')
+    
     def __init__(self, logger=None):
+        self._get_file()
         config = {
-            "DATABASE_URI":'sqlite:///' + os.path.join(self.base_dir, 'data.db'), 
+            "DATABASE_URI":'sqlite:///' + self.db_file, 
             "DATA_PATH":""}
         ctx = sanskrit.context.Context(config)
         self.analyzer = sanskrit.analyze.SimpleAnalyzer(ctx)
@@ -37,33 +38,42 @@ class SanskritDataWrapper(LexicalLookup):
             self.logger.debug("Cache hit")
             return True
         else:
-            tags = self.get_tags(word)
+            tags = self.get_tags(word, tmap=False)
             if tags != None:
                 self.logger.debug("Found tags")
                 return True
         self.logger.debug("Returning False")
         return False
     
-    def get_tags(self, word):
+    def get_tags(self, word, tmap=True):
         self.logger.debug("Looking up tags for %s", word)
         if word in self.tag_cache:
             self.logger.debug("Cache hit")
-            return self.tag_cache[word]
+            tags = self.tag_cache[word]
         else:
             tags = self.analyzer.analyze(word)
             if tags != []:
                 self.logger.debug("Found tags %s", tags)
                 self.tag_cache[word] = tags
-                return self.map_tags(tags)
-            else:
-                return None
+        if tmap:
+            tags = self.map_tags(tags)
+        if tags != []:
+            return tags
+        else:
+            return None
+        
+    def _get_file(self):
+        if not os.path.exists(self.db_file):
+            r = requests.get(self.file_url, stream=True)
+            with open(os.path.join(self.db_file), "wb") as fd:
+                for chunk in r.iter_content(chunk_size=128):
+                    fd.write(chunk)
             
     vacanam = ['एकवचनम्', 'द्विवचनम्', 'बहुवचनम्']
     lingam = ['पुंल्लिङ्गम्', 'स्त्रीलिङ्गम्', 'नपुंसकलिङ्गम्']
     vibhakti = ['प्रथमाविभक्तिः', 'द्वितीयाविभक्तिः', 'तृतीयाविभक्तिः', 'चतुर्थीविभक्तिः', 'पञ्चमीविभक्तिः', 'षष्ठीविभक्तिः', 'सप्तमीविभक्तिः', 'संबोधनविभक्तिः']
     lakAra = ['लट्', 'लुङ्', 'लङ्', 'लिट्', 'लृट्', 'लुट्', 'लृङ्', 'विधिलिङ्', 'लोट्', 'आशीर्लिङ्']
     pada_prayoga = ['परस्मैपदम्', 'आत्मनेपदम्', 'उभयपदम्', 'कर्तरि', 'कर्मणि']
-                #'लट्-कर्मणि', 'लोट्-कर्मणि', 'विधिलिङ्-कर्मणि', 'लङ्-कर्मणि', 'आगमाभावयुक्तलुङ्']
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     
     def refresh(self, obj):
@@ -71,21 +81,21 @@ class SanskritDataWrapper(LexicalLookup):
               
     def map_nominal(self, obj):
         tagset = set()
-        tagset.add(SanskritObject(self.lingam[obj.gender_id-1], DEVANAGARI).transcoded(SLP1))
+        tagset.add(SanskritObject(self.lingam[obj.gender_id-1], DEVANAGARI))
         if obj.compounded:
-            tagset.add(SanskritObject("समासपूर्वपदनामपदम्", DEVANAGARI).transcoded(SLP1))
+            tagset.add(SanskritObject("समासपूर्वपदनामपदम्", DEVANAGARI))
         else:
-            tagset.add(SanskritObject(self.vacanam[obj.number_id-1], DEVANAGARI).transcoded(SLP1))
-            tagset.add(SanskritObject(self.vibhakti[obj.case_id-1], DEVANAGARI).transcoded(SLP1))
+            tagset.add(SanskritObject(self.vacanam[obj.number_id-1], DEVANAGARI))
+            tagset.add(SanskritObject(self.vibhakti[obj.case_id-1], DEVANAGARI))
         return (obj.stem.name, tagset)
     
     def map_verb(self, obj):   
         tagset = set()
         newobj = self.refresh(obj)
-        tagset.add(SanskritObject(self.lakAra[newobj.mode.id-1], DEVANAGARI).transcoded(SLP1))
-        tagset.add(SanskritObject(self.pada_prayoga[newobj.voice.id-1], DEVANAGARI).transcoded(SLP1))
-        tagset.add(SanskritObject(self.puruSha[newobj.person.id-1], DEVANAGARI).transcoded(SLP1))
-        tagset.add(SanskritObject(self.vacanam[newobj.number.id-1], DEVANAGARI).transcoded(SLP1))
+        tagset.add(SanskritObject(self.lakAra[newobj.mode.id-1], DEVANAGARI))
+        tagset.add(SanskritObject(self.pada_prayoga[newobj.voice.id-1], DEVANAGARI))
+        tagset.add(SanskritObject(self.puruSha[newobj.person.id-1], DEVANAGARI))
+        tagset.add(SanskritObject(self.vacanam[newobj.number.id-1], DEVANAGARI))
         return (newobj.root.name, tagset)
     
     def map_tags(self, tags):
@@ -98,13 +108,13 @@ class SanskritDataWrapper(LexicalLookup):
             elif type(t) == Verb:
                 out.append(self.map_verb(t))
             elif type(t) == Indeclinable:
-                out.append((t.name, set(['avyayam'])))
+                out.append((t.name, set([SanskritObject('avyayam', SLP1)])))
             elif type(t) == Gerund:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set(['ktvA'])))
+                out.append((newobj.root.name, set([SanskritObject('ktvA', SLP1)])))
             elif type(t) == Infinitive:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set(['tumun'])))
+                out.append((newobj.root.name, set([SanskritObject('tumun', SLP1)])))
             else:
                 out.append(t)
         return out
