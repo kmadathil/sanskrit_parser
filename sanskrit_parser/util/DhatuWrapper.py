@@ -78,9 +78,6 @@ class DhatuWrapper(object):
                     headers=[SanskritObject(x).transcoded(SLP1) for x in row[0:8]] 
                     self.logger.debug("Found dhatu tsv headers: {}".format(str(headers)))
                 else:
-                    # FIXME: Skip 4 troublesome lines
-                    if 1064<=irx<=1066 or irx==1245:
-                        continue
                     for i,x in enumerate(row):
                         if  i==0:
                             #First Column, dhatu
