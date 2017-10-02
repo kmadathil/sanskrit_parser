@@ -71,22 +71,24 @@ class DhatuWrapper(object):
         self.dhatus=defaultdict(None)
         with open(os.path.join(self.base_dir, self.local_filename),"r") as csvfile:
             reader = csv.reader(csvfile, delimiter='\t', quotechar='"')
-            seen_headers=False
-            for row in reader:
+            for irx,row in enumerate(reader):
                 # Get Keys
-                if not seen_headers:
+                if irx==0:
                     # Only the first 9 columns are useful
                     headers=[SanskritObject(x).transcoded(SLP1) for x in row[0:8]] 
                     self.logger.debug("Found dhatu tsv headers: {}".format(str(headers)))
-                    seen_headers=True
                 else:
+                    # FIXME: Skip 4 troublesome lines
+                    if 1064<=irx<=1066 or irx==1245:
+                        continue
                     for i,x in enumerate(row):
                         if  i==0:
-                            #First Column, dhatu 
+                            #First Column, dhatu
                             d=SanskritObject(x).transcoded(SLP1)
                             self.dhatus[d]={}
                             self.logger.debug("Found dhatu:{}".format(str(d)))
                         else:
+                            
                             if i < len(headers):
                                 t=SanskritObject(x).transcoded(SLP1)
                                 self.dhatus[d][headers[i]]=t
