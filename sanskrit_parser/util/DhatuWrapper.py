@@ -66,15 +66,22 @@ class DhatuWrapper(object):
 
  
     def _get_dhatus(self,d):
+        " Get all tags for a dhatu d "
         if d is None:
             return None
         else:
             return self.db.search(self.q.DAtuH==d)
+        
     def is_sakarmaka(self,d):
+        " Is d sakarmaka? "
         # Tags
         tl=self._get_dhatus(d)
-        r=reduce(lambda x,y: x or y,['sakarmaka' in t['karmakatvaM'] for t in tl])
-        return r
+        if len(tl)!=0:
+            r=reduce(lambda x,y: x or y,['sakarmaka' in t['karmakatvaM'] for t in tl])
+            return r
+        else:
+            self.logger.debug("Couldn't find dhatu {} in database".format(d))
+            return False
         
 if __name__ == "__main__":
     from argparse import ArgumentParser

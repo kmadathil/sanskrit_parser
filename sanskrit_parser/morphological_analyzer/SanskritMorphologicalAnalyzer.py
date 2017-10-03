@@ -8,12 +8,16 @@
 from __future__ import print_function
 import sanskrit_parser.base.SanskritBase as SanskritBase
 import sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer as SanskritLexicalAnalyzer
+from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
+
 import constraint
 
 import logging
 logger = logging.getLogger(__name__)
 
 need_lakara=False
+
+dw=DhatuWrapper()
 
 def getSLP1Tagset(n):
     return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
@@ -36,6 +40,7 @@ _samastas=set(['samAsapUrvapadanAmapadam'])
 _vibhaktis=set(['praTamAviBaktiH','dvitIyAviBaktiH','tritIyAviBaktiH',
                 'caturTIviBaktiH','paNcamIviBaktiH','zazWIviBaktiH',
                 'saptamIviBaktiH','saMboDanaviBaktiH'])
+_dvitiya = 'dvitIyAviBaktiH'
 
 # Rules for morphological analyzer
 # Only one lakara
@@ -142,7 +147,29 @@ def vibhaktiAgreement(*nodes):
                 maps[vibhakti]=slv
                 logger.debug("Map: {} : {}".format(vibhakti,slv))
     return True
-                             
+
+# Only sakarmaka dhatus are allowed karma
+def sakarmakarule(*nodes):
+    global dw # DhatuWrapper
+    dvitiya = False
+    sakarmaka = False
+    for n in nodes:
+        nset=getSLP1Tagset(n)
+        if _dvitiya in nset:
+            # Found a dvitiya
+            dvitiya=True
+            logger.debug("Dvitiya: {}".format(list(nset)))
+        if not(_lakaras.isdisjoint(nset)):
+            # Found a lakara, can get the dhatu
+            dh=n[0]
+            hpos=dh.find('#')
+            if hpos != -1:
+                dh = dh[:hpos]
+            logger.debug("Lakara: {} {}".format(dh,list(nset)))
+            sakarmaka = dw.is_sakarmaka(dh)
+            logger.debug("Sakarmakatva: {}".format(sakarmaka))
+    return sakarmaka or (not dvitiya)
+
 # samAsa constituents must be followed by another samasa constiuent or subanta
 def samasarules(*nodes):
     ''' samasa constituents must be followed by tiGantas 
@@ -204,6 +231,7 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         problem.addConstraint(prathamA,vlist)
         problem.addConstraint(samasarules,vlist)
         problem.addConstraint(vibhaktiAgreement,vlist)
+        problem.addConstraint(sakarmakarule,vlist)
         s=problem.getSolutions()
         return s
     
