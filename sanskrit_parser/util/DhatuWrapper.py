@@ -8,14 +8,9 @@ from  sanskrit_parser.base.SanskritBase import SanskritObject,SCHEMES,SLP1
 import logging
 import time, datetime
 import csv
-from collections import defaultdict
 import os
 import requests
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+from tinydb import TinyDB, Query
 
 class DhatuWrapper(object):
     """
@@ -25,28 +20,15 @@ class DhatuWrapper(object):
     git_url='https://raw.githubusercontent.com/sanskrit-coders/stardict-sanskrit/master/sa-vyAkaraNa/dhAtu-pATha-kRShNamAchArya/mUlam/Dhatu%20Patha%20%E0%A4%95%E0%A5%83%E0%A4%B7%E0%A5%8D%E0%A4%A3%E0%A4%BE%E0%A4%9A%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF%E0%A4%B8%E0%A5%8D%E0%A4%AF%20%E0%A4%95%E0%A5%83%E0%A4%A4%E0%A5%87%E0%A4%83%20-%20Sheet1.tsv'
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
     local_filename="dhAtu-pATha-kRShNamAchArya.tsv"
-    
+    db_file = "dhAtu-pATha-kRShNamAchArya.json"
+    q = Query()
     def __init__(self, logger=None):
-        self.pickle_file = "_dhAtu-pATha-kRShNamAchArya.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._load_dhatus()        
-    
-    def _load_dhatus(self):
-        """ Load/create dict of tags for dhatus """
-        pickle_path = os.path.join(self.base_dir, self.pickle_file)
-        if os.path.exists(pickle_path):
-            self.logger.info("Pickle file found, loading at %s", datetime.datetime.now())
-            start = time.time()
-            with open(pickle_path, "rb") as fd:
-                self.dhatus = pickle.load(fd)
-            self.logger.info("Loading finished at %s, took %f s", 
-                          datetime.datetime.now(),
-                          time.time() - start
-                          )
-        else:
-            self.logger.debug("Pickle file not found, creating ...")
-            self._generate_dict()
-        self.logger.info("Cached %d dhatus for fast lookup", len(self.dhatus))
+        self._get_file()
+        self.db = TinyDB(os.path.join(self.base_dir, self.db_file))
+        # Check if db is empty
+        if len(self.db.all())==0:
+            self._generate_db()
 
     def _get_file(self):
         """ Download file if not present in cache """
@@ -61,16 +43,12 @@ class DhatuWrapper(object):
                 for chunk in r.iter_content(chunk_size=128):
                     fd.write(chunk)
         
-    def _generate_dict(self):
-        """ Create dict with mapping 
-            {dhatu: {mUladhAtu: <>, karmakatvaM: <> ...}}
-            and pickle it
-        """
-        self._get_file()
+    def _generate_db(self):
+        """ Create db from tsv file """
         self.logger.debug("Parsing files into dict for faster lookup")
-        self.dhatus=defaultdict(None)
         with open(os.path.join(self.base_dir, self.local_filename),"r") as csvfile:
             reader = csv.reader(csvfile, delimiter='\t', quotechar='"')
+            # FIXME - Rewrite from here
             for irx,row in enumerate(reader):
                 # Get Keys
                 if irx==0:
@@ -78,31 +56,26 @@ class DhatuWrapper(object):
                     headers=[SanskritObject(x).transcoded(SLP1) for x in row[0:8]] 
                     self.logger.debug("Found dhatu tsv headers: {}".format(str(headers)))
                 else:
+                    j = {}
                     for i,x in enumerate(row):
-                        if  i==0:
-                            #First Column, dhatu
-                            d=SanskritObject(x).transcoded(SLP1)
-                            self.dhatus[d]={}
-                            self.logger.debug("Found dhatu:{}".format(str(d)))
-                        else:
-                            
-                            if i < len(headers):
-                                t=SanskritObject(x).transcoded(SLP1)
-                                self.dhatus[d][headers[i]]=t
-        self.logger.debug("Pickling dhatus database for faster loads")
-        with open(os.path.join(self.base_dir, self.pickle_file), "wb") as fd:
-            pickle.dump(self.dhatus, fd, pickle.HIGHEST_PROTOCOL)
+                        if i <len(headers):
+                            t=SanskritObject(x).transcoded(SLP1)
+                            j[headers[i]]=t
+                    self.db.insert(j)
+        self.logger.debug("Saved dhatus database")
+
  
-    def _get_dhatus(self,d=None):
+    def _get_dhatus(self,d):
         if d is None:
-            return self.dhatus
+            return None
         else:
-            return self.dhatus[d]
+            return self.db.search(self.q.DAtuH==d)
     def is_sakarmaka(self,d):
         # Tags
-        t=self.dhatus[d]
-        return 'sakarmaka' in t['karmakatvaM']
-    
+        tl=self._get_dhatus(d)
+        r=reduce(lambda x,y: x or y,['sakarmaka' in t['karmakatvaM'] for t in tl])
+        return r
+        
 if __name__ == "__main__":
     from argparse import ArgumentParser
     def getArgs():
@@ -141,11 +114,10 @@ if __name__ == "__main__":
         print("Input String in SLP1:",it)
         logger.info("Input String in SLP1: {}".format(it))
         w=DhatuWrapper(logger=logger)
-        dct=w._get_dhatus()
         if args.tags == "all":
-            res=dct[it]
+            res=w._get_dhatus(it)
         else:
-            res=dct[it][args.tags]
+            res=map(lambda x: x[args.tags],w._get_dhatus(it))
         print(res)
         print("Is {} sakarmaka?: {}".format(it,w.is_sakarmaka(it)))
         logger.info("Reported {}".format(res))
