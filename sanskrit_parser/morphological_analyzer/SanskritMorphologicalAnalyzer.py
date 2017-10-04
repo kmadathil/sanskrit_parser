@@ -43,6 +43,15 @@ _vibhaktis=set(['praTamAviBaktiH','dvitIyAviBaktiH','tritIyAviBaktiH',
 _dvitiya = 'dvitIyAviBaktiH'
 
 # Rules for morphological analyzer
+
+# Disallow empty tagsets
+def nonempty(*nodes):
+    ''' No empty tagsets allowed '''
+    for n in nodes:
+        if list(n[1])==[]:
+            return False
+    return True
+
 # Only one lakara
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
@@ -232,6 +241,7 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         problem.addConstraint(samasarules,vlist)
         problem.addConstraint(vibhaktiAgreement,vlist)
         problem.addConstraint(sakarmakarule,vlist)
+        problem.addConstraint(nonempty,vlist)
         s=problem.getSolutions()
         return s
     
