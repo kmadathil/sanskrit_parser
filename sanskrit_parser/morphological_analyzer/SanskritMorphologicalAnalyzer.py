@@ -23,7 +23,7 @@ def getSLP1Tagset(n):
     return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
 
 # Lakaras
-_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
+_lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','viDiliN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
 # Disallowed last padas
 _ldis = set(['samAsapUrvapadanAmapadam','upasargaH'])
 # Vacanas
@@ -113,43 +113,50 @@ def prathamA(*nodes):
     if vacana is None:
         return not need_lakara
     pstem=None
+    dstem=None
     dvacana=None
     yuzmad=False
     for n in nodes:
         nset=getSLP1Tagset(n)
         if prathama in nset:
             mvacana=nset.intersection(_vacanas)
-            logger.debug("Found PrathamA vacana:{}".format(mvacana))
+            logger.debug("Found PrathamA {} vacana:{}".format(n[0],mvacana))
             assert len(mvacana)==1, "Only one mvacana allowed: {}".format(list(mvacana))
             mvacana=list(mvacana)[0]
+            logger.debug('Pre Prathama result:'.format(r))
             r = r and (mvacana==vacana)
-            if puruza==_puruzas[2]:
-                logger.debug('PrathamA stem:{}'.format(n[0]))
-                r = r and n[0]=='asmad'
-            elif puruza==_puruzas[1]:
-                logger.debug('PrathamA stem:{}'.format(n[0]))
-                r = r and n[0]=='yuzmad'
+            if puruza==_puruzas[1]:
+                # Can't have asmad with madhyama
+                r = r and (n[0]!='asmad')
+            elif puruza==_puruzas[2]:
+                # Can't have yuzmad with uttama
+                r = r and (n[0]!='yuzmad')
             else:
+                # Can't have either with prathama
                 r = r and ((n[0]!='yuzmad') and  (n[0]!='asmad'))
             pstem=n[0]
             yuzmad=yuzmad or (pstem=='yuzmad')
-        if _dvitiya in nset:
+            logger.debug('Temp Prathama result:'.format(r))
+        if _sambodhana in nset:
+            logger.debug('Pre Sambodhana result:'.format(r))
             dvacana=nset.intersection(_vacanas)
-            logger.debug("Found Dvitiya vacana:{}".format(dvacana))
+            logger.debug("Found Sambodhana {} vacana:{}".format(n[0],dvacana))
             assert len(dvacana)==1, "Only one dvacana allowed: {}".format(list(dvacana))
             dvacana=list(dvacana)[0]
-            logger.debug('Dvitiya stem:{}'.format(n[0]))
             # Lakara must be in madhyamapurusha
             if puruza is not None: 
-                r = r and puruza==_puruzas[1]
+                r = r and (puruza==_puruzas[1])
+                logger.debug('Temp Sambodhana result:'.format(r))
+            dstem=n[0]
     if dvacana is not None:
         # All nodes has been seen, we have found a dvitiya
         if pstem is not None:
-            # Must match dvitiya vacana
-            logger.debug('Dvitiya check: Yushmad {} mvacana {} dvacana {}'.format(yuzmad,mvacana,dvacana))
+            # Must match Sambodhana vacana
+            logger.debug('Sambodhana check: {} {}  Yushmad {} mvacana {} dvacana {}'.format(pstem,dstem,yuzmad,mvacana,dvacana))
             ## Prathama stem must be yuzmad
             #r = r and yuzmad
             r = r and (mvacana == dvacana)
+    logger.debug('Returning:'.format(r))
     return r
 
 
@@ -200,7 +207,7 @@ def sakarmakarule(*nodes):
         if _dvitiya in nset:
             # Found a dvitiya
             dvitiya=True
-            logger.debug("Dvitiya: {}".format(list(nset)))
+            logger.debug("Dvitiya: {} {}".format(n[0],list(nset)))
         if not(_lakaras.isdisjoint(nset)):
             # Found a lakara, can get the dhatu
             dh=n[0]
