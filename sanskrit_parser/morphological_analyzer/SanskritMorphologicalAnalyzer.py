@@ -41,6 +41,7 @@ _vibhaktis=set(['praTamAviBaktiH','dvitIyAviBaktiH','tritIyAviBaktiH',
                 'caturTIviBaktiH','paNcamIviBaktiH','zazWIviBaktiH',
                 'saptamIviBaktiH','saMboDanaviBaktiH'])
 _dvitiya = 'dvitIyAviBaktiH'
+_sambodhana = 'saMboDanaviBaktiH'
 
 # Rules for morphological analyzer
 
@@ -85,11 +86,17 @@ def upasarga(*nodes):
             r = r and (not _lakaras.isdisjoint(getSLP1Tagset(nodes[ix+1])))
     return r
     
-# padas in prathamA must match purusha / vacana of lakara
+# Rules for prathamA/sambodhanA
 def prathamA(*nodes):
-    ''' padas in prathamA ('kartr'/karman) must match the purusha / vacana of lakara'''
+    ''' Rules for prathamA, sambodhanA vibhaktis 
+
+        padas in prathamA ('kartr'/karman) must match the purusha / vacana of lakara
+        sambodhana vibhakti rules: Lakara must be in madhyamapurusha
+
+    '''
     r=True
     vacana=None
+    puruza=None
     for n in nodes:
         nset=getSLP1Tagset(n)
         # Pick the first lakara
@@ -105,6 +112,9 @@ def prathamA(*nodes):
     # No lakara found
     if vacana is None:
         return not need_lakara
+    pstem=None
+    dvacana=None
+    yuzmad=False
     for n in nodes:
         nset=getSLP1Tagset(n)
         if prathama in nset:
@@ -119,8 +129,31 @@ def prathamA(*nodes):
             elif puruza==_puruzas[1]:
                 logger.debug('PrathamA stem:{}'.format(n[0]))
                 r = r and n[0]=='yuzmad'
+            else:
+                r = r and ((n[0]!='yuzmad') and  (n[0]!='asmad'))
+            pstem=n[0]
+            yuzmad=yuzmad or (pstem=='yuzmad')
+        if _dvitiya in nset:
+            dvacana=nset.intersection(_vacanas)
+            logger.debug("Found Dvitiya vacana:{}".format(dvacana))
+            assert len(dvacana)==1, "Only one dvacana allowed: {}".format(list(dvacana))
+            dvacana=list(dvacana)[0]
+            logger.debug('Dvitiya stem:{}'.format(n[0]))
+            # Lakara must be in madhyamapurusha
+            if puruza is not None: 
+                r = r and puruza==_puruzas[1]
+    if dvacana is not None:
+        # All nodes has been seen, we have found a dvitiya
+        if pstem is not None:
+            # Must match dvitiya vacana
+            logger.debug('Dvitiya check: Yushmad {} mvacana {} dvacana {}'.format(yuzmad,mvacana,dvacana))
+            ## Prathama stem must be yuzmad
+            #r = r and yuzmad
+            r = r and (mvacana == dvacana)
     return r
 
+
+   
 
 # all padas in same case must match in linga and vacana
 def vibhaktiAgreement(*nodes):
