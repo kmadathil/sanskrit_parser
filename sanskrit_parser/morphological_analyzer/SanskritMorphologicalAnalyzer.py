@@ -338,6 +338,7 @@ if __name__ == "__main__":
                         print([(spp,pp[str(spp)]) for spp in sp])
                 else:
                     print("No valid morphologies for this split")
+            print("End Morphological Analysis:", datetime.datetime.now())
         else:
             print("No Valid Splits Found")
             return
