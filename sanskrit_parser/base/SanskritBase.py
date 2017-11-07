@@ -80,6 +80,12 @@ class SanskritObject(object):
         """
         return sanscript.transliterate(self.thing,self.encoding,encoding)
 
+    def canonical(self):
+        """ Return canonical transcoding (SLP1) of self
+        """
+        return self.transcoded(SLP1)
+
+    
     def setLexicalTags(self,t):
         """ Set Lexical Tags on Sanskrit Object 
 
