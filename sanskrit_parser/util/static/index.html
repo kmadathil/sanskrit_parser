@@ -58,7 +58,7 @@
           var option = "tags/";
           var url = urlbase+option+txt
           $.getJSON(url, function(result){
-                $("#resbox").text(result);
+                $("#resbox").text(JSON.stringify(result));
           });
       });
       });
