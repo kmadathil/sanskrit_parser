@@ -52,9 +52,9 @@ class Morpho(Resource):
         return r
 
     
-api.add_resource(Tags, '/tags/<p>')
-api.add_resource(Splits, '/split/<v>')
-api.add_resource(Morpho, '/analyze/<v>')
+api.add_resource(Tags, '/api/tags/<p>')
+api.add_resource(Splits, '/api/split/<v>')
+api.add_resource(Morpho, '/api/analyze/<v>')
 
 if __name__ == '__main__':
     app.run(debug=True)
