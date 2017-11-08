@@ -10,17 +10,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   </head>
   <body>
-    <h1>Sanskrit Parser UI</h1>
-
-
     <div class="container">
+      <div class="row">
+	    <h2>Sanskrit Parser UI</h2>
+      </div>
       <div class="form">
 	<div class="form-group form-row">
 	  <label for="analysisType">Analysis</label>
 	  <select id="analysisType" class="form-control">
-            <option selected>Lexical Analysis</option>
-            <option>Morphological Analysis</option>
-	    <option>Tags Only</option>
+            <option selected>Split</option>
+            <option>Analyze</option>
+	    <option>Tags</option>
 	  </select>
 	</div>
 	<div class="form-group form-row">
@@ -55,8 +55,11 @@
       $("#goButton").click(function(){
           var txt = $("#inputText").val();
           var urlbase = "http://localhost:5000/api/";
-          var option = "tags/";
-          var url = urlbase+option+txt
+          var option = {};
+          option["Tags"]="tags/"
+          option["Split"]="split/"
+          option["Analyze"]="analyze/"
+          var url = urlbase+option[$("#analysisType").val()]+txt
           $.getJSON(url, function(result){
                 $("#resbox").text(JSON.stringify(result));
           });

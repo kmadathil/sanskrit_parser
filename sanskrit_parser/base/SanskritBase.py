@@ -85,6 +85,10 @@ class SanskritObject(object):
         """
         return self.transcoded(SLP1)
 
+    def devanagari(self):
+        """ Return devanagari transcoding of self
+        """
+        return self.transcoded(DEVANAGARI)
     
     def setLexicalTags(self,t):
         """ Set Lexical Tags on Sanskrit Object 

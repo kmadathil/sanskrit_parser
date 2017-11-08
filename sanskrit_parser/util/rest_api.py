@@ -12,7 +12,7 @@ analyzer = SanskritMorphologicalAnalyzer()
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (tag[0],[str(t) for t in list(tag[1])])
+    return (SanskritObject(tag[0]).devanagari(),[t.devanagari() for t in list(tag[1])])
 
 def jtags(tags):
     """ Helper to translate tags to serializable format"""
@@ -23,16 +23,20 @@ class Tags(Resource):
         """ Get lexical tags for p """
         pobj = SanskritObject(p)
         tags = analyzer.getLexicalTags(pobj)
-        r = {"input": p, "canonical": pobj.canonical(),"tags": jtags(tags)}
+        r = {"input": p, "devanagari": pobj.devanagari(),"tags": jtags(tags)}
         return r
         
 class Splits(Resource):
     def get(self,v):
         """ Get lexical tags for v """
         vobj = SanskritObject(v)
-        splits = analyzer.getSandhiSplits(vobj).findAllPaths(10)
-        jsplits = [str(s) for s in splits]
-        r = {"input": v, "canonical": vobj.canonical(),"tags": jsplits}
+        g = analyzer.getSandhiSplits(vobj)
+        if g:
+            splits = g.findAllPaths(10)
+            jsplits = [[ss.devanagari() for ss in s] for s in splits]
+        else:
+            jsplits = []
+        r = {"input": v, "devanagari": vobj.devanagari(),"splits": jsplits}
         return r
 
 class Morpho(Resource):
@@ -44,11 +48,11 @@ class Morpho(Resource):
         for sp in splits:
             p=analyzer.constrainPath(sp)
             if p:
-                sl="_".join([str(spp) for spp in sp])
+                sl="_".join([spp.devanagari() for spp in sp])
                 mres[sl]=[]
                 for pp in p:
-                    mres[sl].append([(str(spp),jtag(pp[str(spp)])) for spp in sp])
-        r = {"input": v, "canonical": vobj.canonical(),"tags": mres}
+                    mres[sl].append([(spp.devanagari(),jtag(pp[spp.canonical()])) for spp in sp])
+        r = {"input": v, "devanagari": vobj.devanagari(),"analysis": mres}
         return r
 
     
