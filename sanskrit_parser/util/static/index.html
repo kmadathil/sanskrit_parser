@@ -18,9 +18,9 @@
 	<div class="form-group form-row">
 	  <label for="analysisType">Analysis</label>
 	  <select id="analysisType" class="form-control">
-            <option selected>Split</option>
+            <option>Split</option>
             <option>Analyze</option>
-	    <option>Tags</option>
+	    <option selected>Tags</option>
 	  </select>
 	</div>
 	<div class="form-group form-row">
@@ -31,12 +31,26 @@
 	  <button type="submit" class="btn btn-primary" id="goButton">Go</button>
 	</div>
       </div>
-      <div class="row"></div>
+      <div class="row"><h3>Results</h3></div>
       
       <div class="card row">
+	<div class="card-header"> Devanagari</div>
 	<div class="card-body">
-	  <h4 class="card-title">Results</h4>
-	  <p class="card-text" id="resbox">Analysis Results will appear here</p>
+	  <div class="card-text" id="devinp">input</div>
+	 </div>
+      </div>
+      <div class="card row hidden" id="rescard">
+	<div class="card-header" id="reshead">Results</div>
+	<div class="card-body">
+	  <ul class="list-group list-group-flush" id="resoutp">
+	  </ul>
+	 </div>
+      </div>
+      
+      <div class="card row">
+	<div class="card-header">JSON</div>
+	<div class="card-body">
+	  <div class="card-text" id="resbox">Json</div>
 	</div>
       </div>
     </div>
@@ -50,22 +64,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-    <script>
-      $(document).ready(function(){
-      $("#goButton").click(function(){
-          var txt = $("#inputText").val();
-          var urlbase = "http://localhost:5000/api/";
-          var option = {};
-          option["Tags"]="tags/"
-          option["Split"]="split/"
-          option["Analyze"]="analyze/"
-          var url = urlbase+option[$("#analysisType").val()]+txt
-          $.getJSON(url, function(result){
-                $("#resbox").text(JSON.stringify(result));
-          });
-      });
-      });
-    </script>
+    <script src="sanskrit_parser.js"></script>
 
     
   </body>
