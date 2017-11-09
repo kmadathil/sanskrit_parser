@@ -23,7 +23,11 @@ class Tags(Resource):
         """ Get lexical tags for p """
         pobj = SanskritObject(p)
         tags = analyzer.getLexicalTags(pobj)
-        r = {"input": p, "devanagari": pobj.devanagari(),"tags": jtags(tags)}
+        if tags is not None:
+            ptags = jtags(tags)
+        else:
+            ptags = []
+        r = {"input": p, "devanagari": pobj.devanagari(),"tags": ptags}
         return r
         
 class Splits(Resource):
@@ -43,7 +47,11 @@ class Morpho(Resource):
     def get(self,v):
         """ Get morphological tags for v """
         vobj = SanskritObject(v)
-        splits = analyzer.getSandhiSplits(vobj,tag=True).findAllPaths(10)
+        g = analyzer.getSandhiSplits(vobj,tag=True)
+        if g:
+            splits = g.findAllPaths(10)
+        else:
+            splits = []
         mres   = {}
         for sp in splits:
             p=analyzer.constrainPath(sp)
