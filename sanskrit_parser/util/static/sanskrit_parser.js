@@ -4,6 +4,10 @@ $(document).ready(function(){
         var urlbase = "http://localhost:5000/api/";
         var option = {};
         var tsel = $("#analysisType").val()
+	if (!txt) {
+	    alert("Please enter input text");
+	    return;
+	}
         option["Tags"]="tags/"
         option["Split"]="split/"
         option["Analyze"]="analyze/"
@@ -34,7 +38,7 @@ $(document).ready(function(){
                 $("#reshead").text("Sandhi Splits")
                 for(var i =0;i < result.splits.length;i++)
 		{
-                    var item = result.splits[i];
+                    var item = result.splits[i].join(" ");
                     $("#resoutp").append("<li class=\"list-group-item\">"+item+"</li>");
                 }
 		break;
@@ -43,7 +47,7 @@ $(document).ready(function(){
                 $("#reshead").text("Morphological Analysis")
                 for(var key in result.analysis)
 		{
-                    var item = key;
+                    var item = key.split("_").join(" ");
                     $("#resoutp").append("<li class=\"list-group-item\">"+item+"<ul class=\"list-group\">");
 		    for (var i=0; i<result.analysis[key].length;i++) {
 			var sitem = result.analysis[key][i];
