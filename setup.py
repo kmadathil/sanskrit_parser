@@ -88,7 +88,7 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
-                    'python-constraint', 'requests'],
+                    'python-constraint', 'requests', 'six'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,
