@@ -17,7 +17,7 @@ def get_uohd_refs(maxrefs=200):
     def _dumpchars(str):
         s = str
         # Random characters in UOHD files
-        for c in ",'-;().?!\"":
+        for c in ",'-;().?!\"0123456789":
             s=s.replace(c,'')
         # Some bad visargas
         s=s.replace(':','H')
@@ -107,6 +107,8 @@ def test_uohd_file_splits(lexan,uohd_refs):
         # Check if this word is in our db
         # Rakarantas
         sss=ss.replace('punaH','punar')
+        sss=ss.replace('antaH','antar')
+        sss=ss.replace('bahiH','bahir')
         # Sakarantas
         sss=re.sub('H$','s',sss)
         if sss.find('punas')!=-1:
