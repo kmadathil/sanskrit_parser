@@ -8,6 +8,7 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sanskrit_parser.css">
   </head>
   <body>
     <div class="container">
@@ -30,9 +31,9 @@
 	<button type="submit" class="btn btn-primary form-group" id="goButton">Go</button>
       </div>
 
-      <div class="row"><h3>Results</h3></div>
+      <!--div class="row"><h3>Results</h3></div-->
       
-      <div class="card row">
+      <!--div class="card row">
 	<div class="card-header"> Devanagari</div>
 	<div class="card-body">
 	  <div class="card-text" id="devinp">input</div>
@@ -41,8 +42,9 @@
       <div class="card row hidden" id="rescard">
 	<div class="card-header" id="reshead">Results</div>
 	<div class="card-body">
-	  <ul class="list-group list-group-flush" id="resoutp">
-	  </ul>
+	  <ol class="list-group list-group-flush"
+	      style="list-style: decimal inside;" id="resoutp">
+	  </ol>
 	 </div>
       </div>
       
@@ -52,7 +54,34 @@
 	  <div class="card-text" id="resbox">Json</div>
 	</div>
       </div>
-    </div>
+    </div-->
+      <div class="row">
+	<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#restab">
+	    Results</a></li>
+	<li><a data-toggle="tab" href="#devtab">Input</a></li>
+	<li><a data-toggle="tab" href="#jsontab">JSON</a></li>
+	</ul>
+      </div>
+
+      <div class="row tab-content">
+	<div id="restab" class="tab-pane fade in active">
+	  <h3 id="reshead">Results</h3>
+	  <p>
+	    <ol id="resbox">
+	    </ol>
+	  </p>
+	</div>
+	<div id="devtab" class="tab-pane fade">
+	  <h3>Input</h3>
+	  <p id="devinp">input</p>
+	</div>
+	<div id="jsontab" class="tab-pane fade">
+	  <h3>JSON</h3>
+	  <p id="jsonbox"></p>
+	</div>
+      </div>
+      
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script -->

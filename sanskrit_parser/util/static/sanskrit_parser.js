@@ -16,8 +16,8 @@ $(document).ready(function(){
         $.getJSON(url, function(result){
             var s = JSON.stringify(result)
             $("#devinp").text(result.devanagari)
-            $("#resbox").text(s);
-            $("#resoutp").html("")
+            $("#jsonbox").text(s);
+            $("#resbox").html("")
 	    switch (tsel) {
             case "Tags":
                 $("#rescard").removeClass('hidden')
@@ -30,7 +30,7 @@ $(document).ready(function(){
 		{
                     var item = result.tags[i][0];
 		    var itags = result.tags[i][1];
-                    $("#resoutp").append("<li class=\"list-group-item\"><b>"+item+"</b><div>"+itags+"</div></li>");
+                    $("#resbox").append("<li class=\"list-group-item\"><b>"+item+"</b><div>"+itags+"</div></li>");
                 }
 		break;
 	    case "Split":
@@ -39,7 +39,7 @@ $(document).ready(function(){
                 for(var i =0;i < result.splits.length;i++)
 		{
                     var item = result.splits[i].join(" ");
-                    $("#resoutp").append("<li class=\"list-group-item\">"+item+"</li>");
+                    $("#resbox").append("<li class=\"list-group-item\">"+item+"</li>");
                 }
 		break;
 	    case "Analyze":
@@ -48,12 +48,12 @@ $(document).ready(function(){
                 for(var key in result.analysis)
 		{
                     var item = key.split("_").join(" ");
-                    $("#resoutp").append("<li class=\"list-group-item\">"+item+"<ul class=\"list-group\">");
-		    for (var i=0; i<result.analysis[key].length;i++) {
-			var sitem = result.analysis[key][i];
-			$("#resoutp").append("<li class=\"list-group-item\">"+sitem+"<ul>");
-		    }
-		    $("#resoutp").append("</ul></li>");
+                    $("#resbox").append("<li class=\"list-group-item\">"+item+"<ul>");
+		     for (var i=0; i<result.analysis[key].length;i++) {
+		     	var sitem = result.analysis[key][i];
+		     	$("#resbox").append("<li class=\"list-group-item\">"+sitem+"</li>");
+		     }
+		    $("#resbox").append("</ul></li>");
                 }
 		break;
 		
