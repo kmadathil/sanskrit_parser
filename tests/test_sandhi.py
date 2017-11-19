@@ -11,6 +11,7 @@ from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
 from sanskrit_parser.base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
 import logging
 import re
+import six
 
 # logging.basicConfig(filename="sandhi.log", filemode = "wb", level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -39,11 +40,37 @@ def test_sandhi_split(sandhiobj, sandhi_reference):
     assert sandhi_reference[0] in splits
 
 def load_reference_data():
+    files = ['refs.txt',
+             # '2.karnabhara-ext.txt',
+             # '130-short-stories-extracted.txt',
+             # 'vetalkatha_ext.txt',
+             # '4.dutaghatotgajam-ext.txt',
+             # '3.dutavakyam-ext.txt',
+             # 'madyama_ext.txt',
+             # 'vrubhangam_ext.txt',
+             # 'balaramayanam_ext.txt',
+             # '5.balacharitham-ext.txt',
+             # '1.abhishakanatakam-ext.txt',
+             # '7.charudattam-ext.txt',
+             # 'vinodini-ext.txt',
+             # 'astanga-hridayam-sandhi-extract1-27.txt',
+             # 'madhavi-ext.txt',
+             # 'manjusa-ext.txt',
+             # 'tarkabhasha-ext.txt',
+             # 'Rajkathakunj_ext.txt',
+             # 'Aakhyanvallari_ext.txt',
+             # 'sanskritkathashatkam1_ext.txt',
+             # 'nyayasara-ext.txt',
+             # 'tarkchudamani-ext.txt',
+             # 'Sanskritkathakunj_ext.txt',
+             # 'agnipuran-1-111-sandhi_ext.txt',
+             # 'vyutpattivada-ext.txt'
+             ]
     sandhi_references = []
     base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     directory = os.path.join(base_dir, "sandhi_test_data")
     for filename in os.listdir(directory):
-        if filename.endswith(".txt"):
+        if filename.endswith(".txt") and filename in files:
             sandhi_references.extend(load_reference_data_from_file(os.path.join(directory, filename)))
     return sandhi_references
 
@@ -58,12 +85,12 @@ def load_reference_data_from_file(filename):
                 continue
             ref = SanskritObject(line).transcoded(SLP1)
             if "=>" in line:
-                after, b = map(unicode.strip, ref.split("=>"))
+                after, b = map(six.text_type.strip, ref.split("=>"))
             elif "=" in line:
-                b, after = map(unicode.strip, ref.split("="))
+                b, after = map(six.text_type.strip, ref.split("="))
             else:
                 continue
-            before = map(unicode.strip, b.split('+'))
+            before = list(map(six.text_type.strip, b.split('+')))
             #before = map(lambda x: re.sub("\W+", "", x), b.split('+'))
             if len(before) == 2:
                 before[0] = re.sub("\W+", "", before[0])
