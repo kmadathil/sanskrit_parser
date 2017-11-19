@@ -13,10 +13,13 @@ import sanskrit_parser.util.inriatagmapper as inriatagmapper
 
 import re
 import networkx as nx
-from itertools import islice,imap
-from  sandhi import Sandhi
+from itertools import islice
+from .sandhi import Sandhi
 import logging
+import six
+
 logger = logging.getLogger(__name__)
+
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -102,13 +105,13 @@ class SanskritLexicalGraph(object):
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <=1000:
-            return list(imap(lambda x: x[1:-1],\
+            return list(six.moves.map(lambda x: x[1:-1],\
                              islice(nx.shortest_simple_paths(self.G,
                                                              self.start,
                                                              self.end),
                                     max_paths)))
         else: # Fall back to all_simple_paths
-            ps = list(imap(lambda x: x[1:-1],\
+            ps = list(six.moves.map(lambda x: x[1:-1],\
                              nx.all_simple_paths(self.G, self.start, self.end)))
             # If we do not intend to display paths, no need to sort them
             if sort:
