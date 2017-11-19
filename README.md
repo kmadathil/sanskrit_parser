@@ -7,7 +7,7 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 ## Installation
 
-This project has been tested and developed using Python 2.7. (Python 3 support is in progress)
+This project has been tested and developed using Python 2.7. A port to Python 3 has been completed, and everything *should* now work in both versions of Python. 
 ```
 pip install sanskrit_parser
 ```
