@@ -1,17 +1,22 @@
 #!/usr/bin/env python
 
-import pytest
+from __future__ import print_function
+
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
 import logging
 import re
+import six
+import json
+import os
+import codecs
+import inspect
+
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename='uohd.log', filemode='w', level=logging.INFO)
+logging.basicConfig(filename='gen_uohd_lexan_passfail.log', filemode='w',
+                    level=logging.INFO)
 
-@pytest.fixture(scope="module")
-def lexan():
-    return SanskritLexicalAnalyzer()
 
 def get_uohd_refs(maxrefs=200):
     def _dumpchars(str):
@@ -52,20 +57,22 @@ def get_uohd_refs(maxrefs=200):
              "sandhi_test_data/vyutpattivada-ext.txt"]
     for fn in flist:
         logger.info("Processing tests from file %s", fn)
-
-        with open(fn) as f:
-            for l in f:
+        basename = os.path.basename(fn) # Save
+        with codecs.open(fn,"rb", 'utf-8') as f:
+            for lnum,l in enumerate(f):
                 l = l.strip()
                 if l and l[0] != '#':
                     if l.find('=>') == -1:
                         continue
-                    logger.info(u"{}".format(unicode(l,"utf-8")))
+                    logger.info(u"{}".format(l))
                     full,split=l.split('=>')
-                    full=unicode(full.strip(),'utf-8')
+                    full=full.strip()
                     full=full.replace(u'|','')
+                    ofull=full # Save
                     full=_dumpchars(SanskritObject(full).transcoded(SLP1))
-                    split=unicode(split.strip(),'utf-8')
+                    split=split.strip()
                     split=split.replace(u'|','')
+                    osplit=split # Save 
                     splits=map(lambda x:_dumpchars(SanskritObject(x).transcoded(SLP1).strip()),split.split('+'))
                     if splits[-1]=='':
                         splits.pop()
@@ -86,7 +93,7 @@ def get_uohd_refs(maxrefs=200):
                     if splits[-1][-1]=="a" and len(full)>1 and full[-2:]=="aH":
                         splits[-1]=splits[-1]+"H"
                         
-                    fs.append((full,splits))
+                    fs.append((full,splits,ofull,osplit,basename,lnum))
                     logger.info(u"{} => {}".format(full," ".join(splits)))
                     # -1 = run all tests
                     if maxrefs > 0:
@@ -96,7 +103,7 @@ def get_uohd_refs(maxrefs=200):
     return fs
 
     
-def test_uohd_file_splits(lexan,uohd_refs):
+def test_splits(lexan,uohd_refs):
     # Check if s is in splits
     def _in_splits(s,splits):
         return s in [map(str,ss) for ss in splits]
@@ -118,11 +125,15 @@ def test_uohd_file_splits(lexan,uohd_refs):
             s.append(sss)
         else:
             # If not, treat it as a word to be split
-            graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
-            if graph is None:
-                # Catch stray unicode symbols with the encode
-                logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
-                return
+            try:
+                graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
+                if graph is None:
+                    # Catch stray unicode symbols with the encode
+                    logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
+                    return False
+            except:
+                logger.warning("Split Error: {}".format(ss.encode('utf-8')))
+                return False
             # First split
             ssp=map(str,graph.findAllPaths(max_paths=1)[0])
             # Add it to split list
@@ -132,18 +143,39 @@ def test_uohd_file_splits(lexan,uohd_refs):
     # This is not a full fix
     f=re.sub("o$","aH",f)
     i=SanskritObject(f,encoding=SLP1)
-    graph=lexan.getSandhiSplits(i)
-    assert graph is not None
-    splits=graph.findAllPaths(max_paths=1000,sort=False)
-    if not _in_splits(s,splits):
-        # Currently, this triggers a fallback to all_simple_paths
-        splits=graph.findAllPaths(max_paths=10000,sort=False)
-    if splits is None or not _in_splits(s,splits):
-        logger.error("FAIL: {} not in {}".format(s,splits))
-    assert _in_splits(s,splits)
-       
-def pytest_generate_tests(metafunc):
+    try:
+        graph=lexan.getSandhiSplits(i)
+        if graph is None:
+            return False
+        splits=graph.findAllPaths(max_paths=1000,sort=False)
+        if not _in_splits(s,splits):
+            # Currently, this triggers a fallback to all_simple_paths
+            splits=graph.findAllPaths(max_paths=10000,sort=False)
+        if splits is None or not _in_splits(s,splits):
+            logger.error("FAIL: {} not in {}".format(s,splits))
+        return _in_splits(s,splits)
+    except:
+        logger.warning("Split Exception: {}".format(i.canonical().encode('utf-8')))
+        return False
+        
 
-    if 'uohd_refs' in metafunc.fixturenames:
-        uohd_refs = get_uohd_refs(maxrefs=10000)
-        metafunc.parametrize("uohd_refs", uohd_refs)
+if __name__ == "__main__":
+    base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    directory = os.path.join(base_dir, "test_data_SanskritLexicalAnalyzer")
+    passing = codecs.open(os.path.join(directory, "uohd_passing.txt"), "w", encoding='utf-8')
+    failing = codecs.open(os.path.join(directory, "uohd_failing.txt"), "w", encoding='utf-8')
+    lexan = SanskritLexicalAnalyzer()
+    for full, split, ofull, osplit, filename, linenum in \
+        get_uohd_refs(maxrefs=10000):
+        test = json.dumps({"full":full,
+                           "split":split,
+                           "filename": filename,
+                           "linenum":linenum}) + "\n"
+        if test_splits(lexan,(full,split)):
+            passing.write(test)
+        else:
+            failing.write(test)
+
+    passing.close()
+    failing.close()
+
