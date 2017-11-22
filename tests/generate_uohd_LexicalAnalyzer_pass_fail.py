@@ -102,7 +102,8 @@ def get_uohd_refs(maxrefs=200):
                             return fs
     return fs
 
-    
+
+# FIXME - need to store the modified f,s instead of input references
 def test_splits(lexan,uohd_refs):
     # Check if s is in splits
     def _in_splits(s,splits):
@@ -130,10 +131,10 @@ def test_splits(lexan,uohd_refs):
                 if graph is None:
                     # Catch stray unicode symbols with the encode
                     logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
-                    return False
+                    return "Skip"
             except:
                 logger.warning("Split Error: {}".format(ss.encode('utf-8')))
-                return False
+                return "Error"
             # First split
             ssp=map(str,graph.findAllPaths(max_paths=1)[0])
             # Add it to split list
@@ -156,7 +157,7 @@ def test_splits(lexan,uohd_refs):
         return _in_splits(s,splits)
     except:
         logger.warning("Split Exception: {}".format(i.canonical().encode('utf-8')))
-        return False
+        return "Error"
         
 
 if __name__ == "__main__":
@@ -164,18 +165,25 @@ if __name__ == "__main__":
     directory = os.path.join(base_dir, "test_data_SanskritLexicalAnalyzer")
     passing = codecs.open(os.path.join(directory, "uohd_passing.txt"), "w", encoding='utf-8')
     failing = codecs.open(os.path.join(directory, "uohd_failing.txt"), "w", encoding='utf-8')
-    lexan = SanskritLexicalAnalyzer()
+    skip    = codecs.open(os.path.join(directory, "uohd_skip.txt"), "w", encoding='utf-8')
+    error   = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
+    lexan   = SanskritLexicalAnalyzer()
     for full, split, ofull, osplit, filename, linenum in \
         get_uohd_refs(maxrefs=10000):
         test = json.dumps({"full":full,
                            "split":split,
                            "filename": filename,
                            "linenum":linenum}) + "\n"
-        if test_splits(lexan,(full,split)):
+        if test_splits(lexan,(full,split))=="Error":
+            error.write(test)
+        elif test_splits(lexan,(full,split))=="Skip":
+            skip.write(test)
+        elif test_splits(lexan,(full,split)):
             passing.write(test)
         else:
             failing.write(test)
 
     passing.close()
     failing.close()
-
+    error.close()
+    skip.close()

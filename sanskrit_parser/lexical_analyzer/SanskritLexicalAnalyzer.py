@@ -202,7 +202,7 @@ class SanskritLexicalAnalyzer(object):
         '''
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
-        s = o.transcoded(SanskritBase.SLP1)
+        s = o.canonical()
         dag = self._possible_splits(s,debug)
         if tag and dag:
             self.tagLexicalGraph(dag)
@@ -343,7 +343,7 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
+        print("Input String in SLP1:",i.canonical())
         if not args.split:
             ts=s.getLexicalTags(i)
             print(ts)
