@@ -18,7 +18,7 @@ logging.basicConfig(filename='gen_uohd_lexan_passfail.log', filemode='w',
                     level=logging.INFO)
 
 
-def get_uohd_refs(maxrefs=200):
+def get_uohd_refs(lexan,maxrefs=200):
     def _dumpchars(str):
         s = str
         # Random characters in UOHD files
@@ -92,9 +92,45 @@ def get_uohd_refs(maxrefs=200):
                         splits[-1]=splits[-1]+"H"
                     if splits[-1][-1]=="a" and len(full)>1 and full[-2:]=="aH":
                         splits[-1]=splits[-1]+"H"
-                        
-                    fs.append((full,splits,ofull,osplit,basename,lnum))
-                    logger.info(u"{} => {}".format(full," ".join(splits)))
+
+                    # UOHD stores sandhied final words!
+                    # This is not a full fix
+                    full=re.sub("o$","aH",full)
+                    # Modified splits
+                    s = []
+    
+                    for ss in splits:
+                        # Check if this word is in our db
+                        # Rakarantas
+                        sss=ss.replace('punaH','punar')
+                        sss=ss.replace('antaH','antar')
+                        sss=ss.replace('bahiH','bahir')
+                        # Sakarantas
+                        sss=re.sub('H$','s',sss)
+                        if sss.find('punas')!=-1:
+                            logger.error("ERROR: found {}".format(sss))
+                        # Is in our database
+                        if lexan.forms.valid(sss):
+                            s.append(sss)
+                        else:
+                            # If not, treat it as a word to be split
+                            try:
+                                graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
+                                if graph is None:
+                                    # Catch stray unicode symbols with the encode
+                                    logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
+                                    s.append(sss)
+                                    continue
+                            except:
+                                logger.warning("Split Error: {}".format(ss.encode('utf-8')))
+                                s.append(sss)
+                                continue
+                            # First split
+                            ssp=map(str,graph.findAllPaths(max_paths=1)[0])
+                            # Add it to split list
+                            s.extend(map(str,ssp))
+                    fs.append((full,s,ofull,osplit,basename,lnum))
+                    logger.info(u"{} => {}".format(full," ".join(s)))
                     # -1 = run all tests
                     if maxrefs > 0:
                         m=m-1
@@ -109,42 +145,12 @@ def test_splits(lexan,uohd_refs):
     def _in_splits(s,splits):
         return s in [map(str,ss) for ss in splits]
     f = uohd_refs[0]
-    su = uohd_refs[1]
-    s = []
-    for ss in su:
-        # Check if this word is in our db
-        # Rakarantas
-        sss=ss.replace('punaH','punar')
-        sss=ss.replace('antaH','antar')
-        sss=ss.replace('bahiH','bahir')
-        # Sakarantas
-        sss=re.sub('H$','s',sss)
-        if sss.find('punas')!=-1:
-            logger.error("ERROR: found {}".format(sss))
-        # Is in our database
-        if lexan.forms.valid(sss):
-            s.append(sss)
-        else:
-            # If not, treat it as a word to be split
-            try:
-                graph=lexan.getSandhiSplits(SanskritObject(ss,encoding=SLP1))
-                if graph is None:
-                    # Catch stray unicode symbols with the encode
-                    logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
-                    return "Skip"
-            except:
-                logger.warning("Split Error: {}".format(ss.encode('utf-8')))
-                return "Error"
-            # First split
-            ssp=map(str,graph.findAllPaths(max_paths=1)[0])
-            # Add it to split list
-            s.extend(map(str,ssp))
-            
-    # UOHD stores sandhied final words!
-    # This is not a full fix
-    f=re.sub("o$","aH",f)
+    s = uohd_refs[1]
     i=SanskritObject(f,encoding=SLP1)
     try:
+        for sss in s:
+            if not lexan.forms.valid(sss):
+                return "Skip"
         graph=lexan.getSandhiSplits(i)
         if graph is None:
             return False
@@ -169,9 +175,11 @@ if __name__ == "__main__":
     error   = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan   = SanskritLexicalAnalyzer()
     for full, split, ofull, osplit, filename, linenum in \
-        get_uohd_refs(maxrefs=10000):
+        get_uohd_refs(lexan=lexan,maxrefs=10000):
         test = json.dumps({"full":full,
                            "split":split,
+                           "orig_full":ofull,
+                           "orig_split":osplit,
                            "filename": filename,
                            "linenum":linenum}) + "\n"
         if test_splits(lexan,(full,split))=="Error":
