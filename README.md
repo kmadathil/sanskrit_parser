@@ -351,7 +351,7 @@ Semantically valid sequence of tagged padas (output of Level 1)
 1.  Enhanced sequence of tagged padas, with karakas tagged, and a dependency graph associated
 
 #### Current Status
-Not begun
+Early experimental version (simple sentences only) is at `morphological_analyzer/SanskritMorphologicalAnalyzer.py`
 
 ## Seq2Seq based Sanskrit Parser
 
