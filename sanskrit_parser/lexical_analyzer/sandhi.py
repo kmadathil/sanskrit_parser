@@ -325,15 +325,15 @@ if __name__ == "__main__":
         if args.split:
             word_in = SanskritObject(args.word, encoding=ie)
             if args.all:
-                print("All possible splits for {}", args.word)
+                print("All possible splits for {}".format(args.word))
                 splits = sandhi.split_all(word_in)
             else:
                 pos = int(args.word_or_pos)
-                print("Splitting {0} at {1}", args.word, pos)
+                print("Splitting {0} at {1}".format(args.word, pos))
                 splits = sandhi.split_at(word_in, pos)
             print(splits)
         if args.join:
-            print("Joining {0} {1}", args.word, args.word_or_pos)
+            print("Joining {0} {1}".format(args.word, args.word_or_pos))
             first_in = SanskritObject(args.word, encoding=ie)
             second_in = SanskritObject(args.word_or_pos, encoding=ie)
             joins = sandhi.join(first_in, second_in)
