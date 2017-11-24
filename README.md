@@ -17,13 +17,14 @@ pip install sanskrit_parser
 ### Lexical Analyzer
 Use the `SanskritLexicalAnalyzer` to split a sentence (wrapped in a `SanskritObject`) and retrieve the top 10 splits:
 ```python
+>>> from __future__ import print_function
 >>> from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
 >>> analyzer = SanskritLexicalAnalyzer()
 >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
 >>> for split in splits:
-...    print split
+...    print(split)
 ...
 [u'asti', u'uttarasyAm', u'diSi', u'devatA', u'AtmA']
 [u'asti', u'uttarasyAm', u'diSi', u'devat', u'AtmA']
@@ -43,7 +44,7 @@ The lexical_analyzer can also be used to look up the tags for a given word form 
 >>> word = SanskritObject('hares')
 >>> tags = analyzer.getLexicalTags(word)
 >>> for tag in tags:
-...    print tag
+...    print(tag)
 ...
 ('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op']))
 ('hari#1', set(['na', 'mas', 'sg', 'gen']))
@@ -107,7 +108,7 @@ The `Sandhi` class can be used to join/split words:
 >>> word2 = SanskritObject('eva')
 >>> joins = sandhi.join(word1, word2)
 >>> for join in joins:
-...    print join
+...    print(join)
 ...
 teeva
 taeva
@@ -120,7 +121,7 @@ To split at a specific position, use the `Sandhi.split_at()` method:
 >>> w = SanskritObject('taeva')
 >>> splits = sandhi.split_at(w, 1)
 >>> for split in splits:
-...    print split
+...    print(split)
 ...
 (u'tar', u'eva')
 (u'tas', u'eva')
@@ -132,7 +133,7 @@ To split at all possible locations, use the `Sandhi.split_all()` method:
 ```python
 >>> splits_all = sandhi.split_all(w)
 >>> for split in splits_all:
-...    print split
+...    print(split)
 ...
 (u't', u'aeva')
 (u'tar', u'eva')
@@ -154,16 +155,16 @@ Get varnas in a pratyahara:
 >>> from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
 >>> MS = MaheshvaraSutras()
 >>> jaS = SanskritObject('jaS', encoding=SLP1)
->>> print MS.getPratyahara(jaS)
+>>> print(MS.getPratyahara(jaS))
 jabagaqada
 ```
 Check if a varna is in a pratyahara:
 ```python
 >>> g = SanskritObject('g')
->>> print MS.isInPratyahara(jaS, g)
+>>> print(MS.isInPratyahara(jaS, g))
 True
 >>> k = SanskritObject('k')
->>> print MS.isInPratyahara(jaS, k)
+>>> print(MS.isInPratyahara(jaS, k))
 False
 ```
 
@@ -172,7 +173,7 @@ False
 ```python
 >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
->>> print sentence.transcoded(SLP1)
+>>> print(sentence.transcoded(SLP1))
 astyuttarasyAMdiSidevatAtmA
 ```
 
