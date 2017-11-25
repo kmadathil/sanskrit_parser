@@ -243,8 +243,8 @@ class Sandhi(object):
         Empty lines are ignored as well.        
                 
         :param path: file to read rules from
+
         See also add_rules_from_dir
-        
         """
         filename = os.path.basename(path)
         with codecs.open(path, "rb", 'utf-8') as f:
@@ -263,8 +263,8 @@ class Sandhi(object):
         Reads all .txt files from the given directory and adds rules from them        
                 
         :param directory: path to directory with rules files
+
         See also add_rules_from_file
-                
         """
         self.logger.debug("Adding rules from directory %s", directory)
         for filename in os.listdir(directory):
