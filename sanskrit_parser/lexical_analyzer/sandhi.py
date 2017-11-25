@@ -12,12 +12,13 @@ Example usage:
     sandhi = Sandhi()
     joins = sandhi.join('tasmin', 'iti')
     splits = sandhi.split_at('tasminniti', 5)
-    
+
 Draws inspiration from https://github.com/sanskrit/sanskrit
 
 @author: Avinash Varna (github: @avinashvarna)
 """
 
+from __future__ import print_function
 from collections import defaultdict
 import itertools
 import codecs
@@ -26,8 +27,9 @@ import re
 import inspect
 import logging
 import datetime
-from  sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
-from  sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
+import six
+from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
 
 class Sandhi(object):
     """
@@ -153,7 +155,7 @@ class Sandhi(object):
         word = word_in.transcoded(SLP1)
         start = start or 0
         stop = stop or len(word)
-        for idx in xrange(start, stop):
+        for idx in six.moves.range(start, stop):
             split = self.split_at(word_in, idx)
             if split:
                 splits |= split
@@ -174,27 +176,27 @@ class Sandhi(object):
         
         ms = MaheshvaraSutras()
         
-        b, afters = map(unicode.strip, rule.split("="))
-        before = map(unicode.strip, b.split("+", 1))
+        b, afters = map(six.text_type.strip, rule.split("="))
+        before = list(map(six.text_type.strip, b.split("+", 1)))
         left_classes = re.split('\[(.*?)\]', before[0])
         self.logger.debug("Left classes = %s", left_classes)
         
         # Split after forms into individual forms
-        afters = map(unicode.strip, afters.split("/"))
+        afters = map(six.text_type.strip, afters.split("/"))
         
         before_left = []
         for c in left_classes:
             if c != '':
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
-                    splits = map(unicode.strip, c.split('-'))
+                    splits = list(map(six.text_type.strip, c.split('-')))
                     varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
                     before_left.append(varnas)
                 else:
-                    before_left.append(map(unicode.strip, c.split(",")))
+                    before_left.append(map(six.text_type.strip, c.split(",")))
         self.logger.debug("before_left iterator = %s", before_left)
         
         
@@ -207,7 +209,7 @@ class Sandhi(object):
                 if c != '':
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
-                        splits = map(unicode.strip, re.split('([+-])', c))
+                        splits = list(map(six.text_type.strip, re.split('([+-])', c)))
                         varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
                         if len(splits) == 3:
                             if splits[1] == '-':
@@ -217,7 +219,7 @@ class Sandhi(object):
                         self.logger.debug("Found pratyAhAra %s (%s) = %s", c, splits[0][1:], varnas)
                         before_right.append(varnas)
                     else:
-                        before_right.append(map(unicode.strip, c.split(",")))
+                        before_right.append(map(six.text_type.strip, c.split(",")))
         else:
             before_right = [before[1].strip()]
         self.logger.debug("before_right iterator = %s", before_right)
@@ -310,7 +312,7 @@ if __name__ == "__main__":
             numeric_level = getattr(logging, args.loglevel.upper(), None)
             if not isinstance(numeric_level, int):
                 raise ValueError('Invalid log level: %s' % args.loglevel)
-            logging.basicConfig(filename="sandhi.log", filemode = "wb", level = numeric_level)
+            logging.basicConfig(filename="sandhi.log", filemode="wb", level=numeric_level)
             
         logging.info("---------------------------------------------------")
         logging.info("Started processing at %s", datetime.datetime.now())
@@ -318,25 +320,25 @@ if __name__ == "__main__":
         sandhi = Sandhi()
         # if neither split nor join is chosen, just demo both
         if not args.split and not args.join:
-            print "Neither split nor join option chosen. Here's a demo of joining"
+            print("Neither split nor join option chosen. Here's a demo of joining")
             args.join = True
         if args.split:
             word_in = SanskritObject(args.word, encoding=ie)
             if args.all:
-                print "All possible splits for", args.word
+                print("All possible splits for {}".format(args.word))
                 splits = sandhi.split_all(word_in)
             else:
                 pos = int(args.word_or_pos)
-                print "Splitting %s at %d" % (args.word, pos)          
+                print("Splitting {0} at {1}".format(args.word, pos))
                 splits = sandhi.split_at(word_in, pos)
-            print splits
+            print(splits)
         if args.join:
-            print "Joining", args.word, args.word_or_pos
+            print("Joining {0} {1}".format(args.word, args.word_or_pos))
             first_in = SanskritObject(args.word, encoding=ie)
             second_in = SanskritObject(args.word_or_pos, encoding=ie)
             joins = sandhi.join(first_in, second_in)
-            print joins
-        
+            print(joins)
+
         logging.info("Finished processing at %s", datetime.datetime.now())
         logging.info("---------------------------------------------------")
         logging.shutdown()

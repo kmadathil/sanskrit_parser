@@ -7,7 +7,7 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 ## Installation
 
-This project has been tested and developed using Python 2.7. (Python 3 support is in progress)
+This project has been tested and developed using Python 2.7. A port to Python 3 has been completed, and everything *should* now work in both versions of Python. 
 ```
 pip install sanskrit_parser
 ```
@@ -17,13 +17,14 @@ pip install sanskrit_parser
 ### Lexical Analyzer
 Use the `SanskritLexicalAnalyzer` to split a sentence (wrapped in a `SanskritObject`) and retrieve the top 10 splits:
 ```python
+>>> from __future__ import print_function
 >>> from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
 >>> analyzer = SanskritLexicalAnalyzer()
 >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
 >>> for split in splits:
-...    print split
+...    print(split)
 ...
 [u'asti', u'uttarasyAm', u'diSi', u'devatA', u'AtmA']
 [u'asti', u'uttarasyAm', u'diSi', u'devat', u'AtmA']
@@ -43,7 +44,7 @@ The lexical_analyzer can also be used to look up the tags for a given word form 
 >>> word = SanskritObject('hares')
 >>> tags = analyzer.getLexicalTags(word)
 >>> for tag in tags:
-...    print tag
+...    print(tag)
 ...
 ('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op']))
 ('hari#1', set(['na', 'mas', 'sg', 'gen']))
@@ -54,6 +55,36 @@ The lexical_analyzer can also be used to look up the tags for a given word form 
 ('hari#2', set(['na', 'mas', 'abl', 'sg']))
 ('hari#2', set(['na', 'fem', 'sg', 'gen']))
 ('hari#2', set(['na', 'fem', 'abl', 'sg']))
+```
+
+### Morphological Analyzer
+
+The `SanskritMorphologicalAnalyzer` class has a similar interface to `SanskritLexicalAnalyzer`, and has a `constrainPath()` method which can find whether a particular split has a valid morphology, and output all such valid morphologies.
+```python
+>>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
+>>> sentence = SanskritObject("astyuttarasyAm")
+>>> analyzer = SanskritMorphologicalAnalyzer()
+>>> graph=analyzer.getSandhiSplits(sentence,tag=True)
+>>> splits=graph.findAllPaths()
+>>> for sp in splits:
+>>>     print("Lexical Split:",sp)
+>>>     p=analyzer.constrainPath(sp)
+>>>     if p:
+>>>         print("Valid Morphologies")
+>>>         for pp in p:
+>>>             print([(spp,pp[str(spp)]) for spp in sp])
+>>>     else:
+>>>         print("No valid morphologies for this split")
+...
+('Lexical Split:', [asti, uttarasyAm])
+Valid Morphologies
+[(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+[(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+('Lexical Split:', [asti, uttara, syAm])
+No valid morphologies for this split
+('Lexical Split:', [asti, ut, tara, syAm])
+No valid morphologies for this split
 ```
 
 ### InriaXMLWrapper
@@ -77,7 +108,7 @@ The `Sandhi` class can be used to join/split words:
 >>> word2 = SanskritObject('eva')
 >>> joins = sandhi.join(word1, word2)
 >>> for join in joins:
-...    print join
+...    print(join)
 ...
 teeva
 taeva
@@ -90,7 +121,7 @@ To split at a specific position, use the `Sandhi.split_at()` method:
 >>> w = SanskritObject('taeva')
 >>> splits = sandhi.split_at(w, 1)
 >>> for split in splits:
-...    print split
+...    print(split)
 ...
 (u'tar', u'eva')
 (u'tas', u'eva')
@@ -102,7 +133,7 @@ To split at all possible locations, use the `Sandhi.split_all()` method:
 ```python
 >>> splits_all = sandhi.split_all(w)
 >>> for split in splits_all:
-...    print split
+...    print(split)
 ...
 (u't', u'aeva')
 (u'tar', u'eva')
@@ -124,16 +155,16 @@ Get varnas in a pratyahara:
 >>> from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
 >>> MS = MaheshvaraSutras()
 >>> jaS = SanskritObject('jaS', encoding=SLP1)
->>> print MS.getPratyahara(jaS)
+>>> print(MS.getPratyahara(jaS))
 jabagaqada
 ```
 Check if a varna is in a pratyahara:
 ```python
 >>> g = SanskritObject('g')
->>> print MS.isInPratyahara(jaS, g)
+>>> print(MS.isInPratyahara(jaS, g))
 True
 >>> k = SanskritObject('k')
->>> print MS.isInPratyahara(jaS, k)
+>>> print(MS.isInPratyahara(jaS, k))
 False
 ```
 
@@ -142,7 +173,7 @@ False
 ```python
 >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
->>> print sentence.transcoded(SLP1)
+>>> print(sentence.transcoded(SLP1))
 astyuttarasyAMdiSidevatAtmA
 ```
 
@@ -150,6 +181,25 @@ astyuttarasyAMdiSidevatAtmA
 ### Command Line Usage
 All the classes described above can also be used from the command line. The corresponding examples are below. Please run the tools with `--help/-h` to get help on the options
 
+
+#### SanskritMorphologicalAnalyzer
+```
+$ python -m sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer astyuttarasyAm --input-encoding SLP1 --need-lakara
+Input String: astyuttarasyAm
+Input String in SLP1: astyuttarasyAm
+Start Split: 2017-10-01 11:16:10.489660
+End DAG generation: 2017-10-01 11:16:10.496199
+End pathfinding: 2017-10-01 11:16:10.497342
+Splits:
+Lexical Split: [asti, uttarasyAm]
+Valid Morphologies
+[(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+[(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+Lexical Split: [asti, uttara, syAm]
+No valid morphologies for this split
+Lexical Split: [asti, ut, tara, syAm]
+No valid morphologies for this split
+```
 
 #### SanskritLexicalAnalyzer
 ```
@@ -171,6 +221,8 @@ Input String: hares
 Input String in SLP1: hares
 [('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op'])), ('hari#1', set(['na', 'mas', 'sg', 'gen'])), ('hari#1', set(['na', 'mas', 'abl', 'sg'])), ('hari#1', set(['na', 'fem', 'sg', 'gen'])), ('hari#1', set(['na', 'fem', 'abl', 'sg'])), ('hari#2', set(['na', 'mas', 'sg', 'gen'])), ('hari#2', set(['na', 'mas', 'abl', 'sg'])), ('hari#2', set(['na', 'fem', 'sg', 'gen'])), ('hari#2', set(['na', 'fem', 'abl', 'sg']))]
 ```
+
+
 
 #### InriaXMLWrapper
 ```

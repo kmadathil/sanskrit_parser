@@ -3,6 +3,8 @@ from __future__ import print_function
 from indic_transliteration import sanscript
 from indic_transliteration import detect
 
+import six
+
 # Wrap scheme names defined in sanscript
 BENGALI = sanscript.BENGALI
 DEVANAGARI = sanscript.DEVANAGARI
@@ -41,26 +43,27 @@ SCHEMES={
     'WX':WX
 }
 
+
 class SanskritObject(object):
-    """ Sanskrit Object Class: Base of the class hierarcy
-        
+    """ Sanskrit Object Class: Base of the class hierarchy
+
         Attributes:
            thing(str)   : thing to be represented
            encoding(str): SanskritBase encoding of thing as passed (eg: SanskritBase.HK, SanskritBase.DEVANAGARI)
         Args:
            thing(str):    As above
            encoding(str): As above
-    
+
     """
     def __init__(self,thing=None,encoding=None,unicode_encoding='utf-8'):
-        assert isinstance(thing,basestring)
+        assert isinstance(thing,six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
-        # We are udAramatiH 
-        if isinstance(thing,unicode):
+        # We are udAramatiH
+        if isinstance(thing,six.text_type):
             self.thing=thing
         else:
-            self.thing=unicode(thing,unicode_encoding)
+            self.thing=six.text_type(thing,unicode_encoding)
         self.encoding=encoding
         if self.encoding is None:
             if thing is not None:
@@ -80,8 +83,18 @@ class SanskritObject(object):
         """
         return sanscript.transliterate(self.thing,self.encoding,encoding)
 
+    def canonical(self):
+        """ Return canonical transcoding (SLP1) of self
+        """
+        return self.transcoded(SLP1)
+
+    def devanagari(self):
+        """ Return devanagari transcoding of self
+        """
+        return self.transcoded(DEVANAGARI)
+    
     def setLexicalTags(self,t):
-        """ Set Lexical Tags on Sanskrit Object 
+        """ Set Lexical Tags on Sanskrit Object
 
             Params:
                t (list): List of lexical tags
@@ -91,32 +104,35 @@ class SanskritObject(object):
             # FIXME: Incorporate morphological associations
             self.tags.append(tt)
         return self.tags
-    
+
     def getTags(self):
         """ Tags on object """
         return self.tags
-    
+
     def __str__(self):
         return self.transcoded(SLP1)
+
     def __repr__(self):
         return str(self)
-    
+
+
 if __name__ == "__main__":
     import argparse
+
     def getArgs():
         """
-          Argparse routine. 
+          Argparse routine.
           Returns args variable
         """
         # Parser Setup
-        parser = argparse.ArgumentParser(description='SanskritObject')
+        parser=argparse.ArgumentParser(description='SanskritObject')
         # String to encode
         parser.add_argument('data',nargs="?",type=str,default="idam adbhutam")
         # Input Encoding (autodetect by default)
         parser.add_argument('--input-encoding',type=str,default=None)
         # Ouptut Encoding (Devanagari by default)
         parser.add_argument('--output-encoding',type=str,default="Devanagari")
-        
+
         return parser.parse_args()
 
     def main():
@@ -126,10 +142,9 @@ if __name__ == "__main__":
             ie=None
         else:
             ie=SCHEMES[args.input_encoding]
-        
+
         oe=SCHEMES[args.output_encoding]
 
         s=SanskritObject(args.data,ie)
         print(s.transcoded(oe))
     main()
-    

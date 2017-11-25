@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Sanskrit Parser UI</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sanskrit_parser.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+	    <h2>Sanskrit Parser UI</h2>
+      </div>
+      <div class="form">
+	<div class="form-group">
+	  <label for="analysisType">Analysis</label>
+	  <select id="analysisType" class="form-control">
+            <option>Split</option>
+            <option>Analyze</option>
+	    <option selected>Tags</option>
+	  </select>
+	</div>
+	<div class="form-group">
+	  <label for="inputText">Input Text</label>
+	  <input type="text" class="form-control" id="inputText" placeholder="pada or vakya for analysis">
+	</div> 
+	<button type="submit" class="btn btn-primary form-group" id="goButton">Go</button>
+      </div>
+
+      <!--div class="row"><h3>Results</h3></div-->
+      
+      <!--div class="card row">
+	<div class="card-header"> Devanagari</div>
+	<div class="card-body">
+	  <div class="card-text" id="devinp">input</div>
+	 </div>
+      </div>
+      <div class="card row hidden" id="rescard">
+	<div class="card-header" id="reshead">Results</div>
+	<div class="card-body">
+	  <ol class="list-group list-group-flush"
+	      style="list-style: decimal inside;" id="resoutp">
+	  </ol>
+	 </div>
+      </div>
+      
+      <div class="card row">
+	<div class="card-header">JSON</div>
+	<div class="card-body">
+	  <div class="card-text" id="resbox">Json</div>
+	</div>
+      </div>
+    </div-->
+      <div class="row">
+	<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#restab">
+	    Results</a></li>
+	<li><a data-toggle="tab" href="#devtab">Input</a></li>
+	<li><a data-toggle="tab" href="#jsontab">JSON</a></li>
+	</ul>
+      </div>
+
+      <div class="row tab-content">
+	<div id="restab" class="tab-pane fade in active">
+	  <h3 id="reshead">Results</h3>
+	  <p>
+	    <ol id="resbox">
+	    </ol>
+	  </p>
+	</div>
+	<div id="devtab" class="tab-pane fade">
+	  <h3>Input</h3>
+	  <p id="devinp">input</p>
+	</div>
+	<div id="jsontab" class="tab-pane fade">
+	  <h3>JSON</h3>
+	  <p id="jsonbox"></p>
+	</div>
+      </div>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script -->
+    <script
+       src="https://code.jquery.com/jquery-3.2.1.min.js"
+       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+       crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <script src="sanskrit_parser.js"></script>
+
+    
+  </body>
+</html>

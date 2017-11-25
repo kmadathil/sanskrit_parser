@@ -18,10 +18,10 @@ import os, shutil
 import inspect
 from lxml import etree
 from collections import defaultdict
-from  sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
+from io import BytesIO
+from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
 import logging
 import time, datetime
-import StringIO
 from sanskrit_parser.util import inriatagmapper
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 
@@ -117,7 +117,7 @@ class InriaXMLWrapper(LexicalLookup):
             tags = self.forms[word]
             results = []
             for tag in tags:
-                root = etree.parse(StringIO.StringIO(tag)).getroot()
+                root = etree.parse(BytesIO(tag)).getroot()
                 # The next two steps require explanation. In Gerard's XML files, All possible attributes are given as children of 'f'. The last child is always 's' which stores the stem. All other children are the various possible word attributes. Given as 'na' or 'v' etc. Gio
                 children = root.getchildren()[:-1] # attributes
                 baseword = root.getchildren()[-1].get('stem').strip() # 's' stem

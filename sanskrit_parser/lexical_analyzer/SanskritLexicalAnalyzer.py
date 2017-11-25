@@ -12,10 +12,13 @@ from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
 
 import re
 import networkx as nx
-from itertools import islice,imap
-from  sandhi import Sandhi
+from itertools import islice
+from .sandhi import Sandhi
 import logging
+import six
+
 logger = logging.getLogger(__name__)
+
 
 class SanskritLexicalGraph(object):
     """ DAG class to hold Lexical Analysis Results
@@ -101,13 +104,13 @@ class SanskritLexicalGraph(object):
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <=1000:
-            return list(imap(lambda x: x[1:-1],\
+            return list(six.moves.map(lambda x: x[1:-1],\
                              islice(nx.shortest_simple_paths(self.G,
                                                              self.start,
                                                              self.end),
                                     max_paths)))
         else: # Fall back to all_simple_paths
-            ps = list(imap(lambda x: x[1:-1],\
+            ps = list(six.moves.map(lambda x: x[1:-1],\
                              nx.all_simple_paths(self.G, self.start, self.end)))
             # If we do not intend to display paths, no need to sort them
             if sort:
@@ -198,7 +201,7 @@ class SanskritLexicalAnalyzer(object):
         '''
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
-        s = o.transcoded(SanskritBase.SLP1)
+        s = o.canonical()
         dag = self._possible_splits(s,debug)
         if tag and dag:
             self.tagLexicalGraph(dag)
@@ -340,7 +343,7 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
+        print("Input String in SLP1:",i.canonical())
         if not args.split:
             ts=s.getLexicalTags(i)
             print(ts)
