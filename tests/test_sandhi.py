@@ -8,7 +8,7 @@ import codecs
 import os
 import inspect
 from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, DEVANAGARI
 import logging
 import json
 
@@ -19,33 +19,35 @@ def sandhiobj():
     return Sandhi()
 
 def test_sandhi_join(sandhiobj, join_reference):
-    objs = map(lambda x:SanskritObject(x, encoding = SLP1), (join_reference[0]))
+    objs = map(lambda x:SanskritObject(x, encoding=DEVANAGARI), (join_reference[0]))
     joins = sandhiobj.join(*objs)
-    assert join_reference[1] in joins, u"Join, {}, {}, {}, {}".format(*join_reference)
+    expected = SanskritObject(join_reference[1], encoding=DEVANAGARI).canonical()
+    assert expected in joins, u"Join, {}, {}, {}, {}".format(*join_reference)
 
 def test_sandhi_split(sandhiobj, split_reference):
-    obj = SanskritObject(split_reference[1], encoding=SLP1)
+    obj = SanskritObject(split_reference[0], encoding=DEVANAGARI)
     splits = sandhiobj.split_all(obj)
-    assert split_reference[0] in splits, u"Split, {}, {}, {}, {}".format(*split_reference)
+    expected = tuple(map(lambda x:SanskritObject(x, encoding=DEVANAGARI).canonical(), split_reference[1]))
+    assert expected in splits, u"Split, {}, {}, {}, {}".format(*split_reference)
+
+def load_file(filename, xfail=False):
+    references = []
+    with codecs.open(filename, "rb", encoding="utf-8") as f:
+        for line in f:
+            test = json.loads(line)
+            if isinstance(test["input"], list): test["input"] = tuple(test["input"])
+            if isinstance(test["expected"], list): test["expected"] = tuple(test["expected"])
+            ref = (test["input"], test["expected"], test["file"], test["line"])
+            if xfail: ref = pytest.mark.xfail(ref)
+            references.append(ref)
+    return references
 
 def load_reference_data(passing, failing):
-    references = []
     base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     directory = os.path.join(base_dir, "sandhi_test_data")
     
-    with codecs.open(os.path.join(directory, passing), encoding="utf-8") as f:
-        for line in f:
-            test = json.loads(line)
-            references.append((tuple(test["before"]), test["after"], test["filename"], test["linenum"]))
-    
-    with codecs.open(os.path.join(directory, failing), encoding="utf-8") as f:
-        for line in f:
-            test = json.loads(line)
-            references.append(
-                pytest.mark.xfail(
-                    (tuple(test["before"]), test["after"], test["filename"], test["linenum"])
-                    )
-                )
+    references = load_file(os.path.join(directory, passing))
+    references.extend(load_file(os.path.join(directory, failing), xfail=True))
     return references
 
 def pytest_generate_tests(metafunc):
