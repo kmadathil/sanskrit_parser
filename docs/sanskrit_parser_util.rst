@@ -1,7 +1,7 @@
-sanskrit_parser's documentation
+util
 =========================================
 
-.. automodule:: sanskrit_parser
+.. automodule:: sanskrit_parser.util
   :members:
   :undoc-members:
   :show-inheritance:
@@ -12,10 +12,7 @@ Submodules
 .. toctree::
   :maxdepth: 5
 
-  sanskrit_parser_lexical_analyzer
-  sanskrit_parser_morphological_analyzer
-  sanskrit_parser_base
-  sanskrit_parser_util
+  sanskrit_parser_util_inriaxmlwrapper
 
 Indices and tables
 ====================
