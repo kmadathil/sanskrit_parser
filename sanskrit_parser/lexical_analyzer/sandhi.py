@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+Intro
+=====
 Sandhi splitter for Samskrit.
 Builds up a database of sandhi rules and utilizes them for both
 performing sandhi and splitting words.
@@ -16,6 +18,62 @@ Example usage:
 Draws inspiration from https://github.com/sanskrit/sanskrit
 
 @author: Avinash Varna (github: @avinashvarna)
+
+Usage
+=====
+The ``Sandhi`` class can be used to join/split words:
+
+.. code:: python
+
+    >>> from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
+    >>> sandhi = Sandhi()
+    >>> word1 = SanskritObject('te')
+    >>> word2 = SanskritObject('eva')
+    >>> joins = sandhi.join(word1, word2)
+    >>> for join in joins:
+    ...    print(join)
+    ...
+    teeva
+    taeva
+    ta eva
+    tayeva
+
+To split at a specific position, use the ``Sandhi.split_at()`` method:
+
+.. code:: python
+
+    >>> w = SanskritObject('taeva')
+    >>> splits = sandhi.split_at(w, 1)
+    >>> for split in splits:
+    ...    print(split)
+    ...
+    (u'tar', u'eva')
+    (u'tas', u'eva')
+    (u'taH', u'eva')
+    (u'ta', u'eva')
+
+To split at all possible locations, use the ``Sandhi.split_all()``
+method:
+
+.. code:: python
+
+    >>> splits_all = sandhi.split_all(w)
+    >>> for split in splits_all:
+    ...    print(split)
+    ...
+    (u't', u'aeva')
+    (u'tar', u'eva')
+    (u'taev', u'a')
+    (u'to', u'eva')
+    (u'ta', u'eva')
+    (u'te', u'eva')
+    (u'taH', u'eva')
+    (u'tae', u'va')
+    (u'taeva', u'')
+    (u'tas', u'eva')
+
+**Note**: As mentioned previously, both over-generation and
+under-generation are possible with the ``Sandhi`` class.
 """
 
 from __future__ import print_function
@@ -243,8 +301,8 @@ class Sandhi(object):
         Empty lines are ignored as well.        
                 
         :param path: file to read rules from
+
         See also add_rules_from_dir
-        
         """
         filename = os.path.basename(path)
         with codecs.open(path, "rb", 'utf-8') as f:
@@ -263,8 +321,8 @@ class Sandhi(object):
         Reads all .txt files from the given directory and adds rules from them        
                 
         :param directory: path to directory with rules files
+
         See also add_rules_from_file
-                
         """
         self.logger.debug("Adding rules from directory %s", directory)
         for filename in os.listdir(directory):
@@ -325,15 +383,15 @@ if __name__ == "__main__":
         if args.split:
             word_in = SanskritObject(args.word, encoding=ie)
             if args.all:
-                print("All possible splits for {}", args.word)
+                print("All possible splits for {}".format(args.word))
                 splits = sandhi.split_all(word_in)
             else:
                 pos = int(args.word_or_pos)
-                print("Splitting {0} at {1}", args.word, pos)
+                print("Splitting {0} at {1}".format(args.word, pos))
                 splits = sandhi.split_at(word_in, pos)
             print(splits)
         if args.join:
-            print("Joining {0} {1}", args.word, args.word_or_pos)
+            print("Joining {0} {1}".format(args.word, args.word_or_pos))
             first_in = SanskritObject(args.word, encoding=ie)
             second_in = SanskritObject(args.word_or_pos, encoding=ie)
             joins = sandhi.join(first_in, second_in)

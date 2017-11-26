@@ -120,3 +120,6 @@ dist
 *.egg-info
 sanskrit_parser/util/data
 README.pip
+
+# intellij stuff
+/*.iml
