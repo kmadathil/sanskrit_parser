@@ -5,7 +5,7 @@ from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLex
 from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
 from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 api = Api(app)
 
 analyzer = SanskritMorphologicalAnalyzer()
@@ -67,6 +67,10 @@ class Morpho(Resource):
 api.add_resource(Tags, '/api/tags/<p>')
 api.add_resource(Splits, '/api/split/<v>')
 api.add_resource(Morpho, '/api/analyze/<v>')
+
+@app.route('/')
+def root():
+    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
