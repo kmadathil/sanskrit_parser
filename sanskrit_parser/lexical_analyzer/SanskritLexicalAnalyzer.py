@@ -247,6 +247,7 @@ class SanskritLexicalAnalyzer(object):
             
         s_c_list = _sandhi_splits_all(s, start=0, stop=spos+1)
         logger.debug("s_c_list: "+str(s_c_list))
+        if s_c_list == None: s_c_list = []
 
         node_cache = {}
 
