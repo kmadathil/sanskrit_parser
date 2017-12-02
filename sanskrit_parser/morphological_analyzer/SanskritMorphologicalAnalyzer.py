@@ -11,6 +11,7 @@ import sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer as SanskritLexic
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
 import constraint
+import pprint
 
 import logging
 logger = logging.getLogger(__name__)
@@ -302,7 +303,7 @@ if __name__ == "__main__":
         parser.add_argument('--need-lakara',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
-        parser.add_argument('--lexical-lookup', type=str, default="inria")
+        parser.add_argument('--lexical-lookup', type=str, default="combined")
         return parser.parse_args()
 
     def main():
@@ -336,7 +337,7 @@ if __name__ == "__main__":
                 if p:
                     print("Valid Morphologies")
                     for pp in p:
-                        print([(spp,pp[str(spp)]) for spp in sp])
+                        pprint.pprint([(spp,pp[str(spp)]) for spp in sp])
                 else:
                     print("No valid morphologies for this split")
             print("End Morphological Analysis:", datetime.datetime.now())

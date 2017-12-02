@@ -8,12 +8,11 @@ Wrapper around data from Sanskrit data project
 from __future__ import print_function
 import logging
 import os
-import sanskrit.analyze
-import sanskrit.context
-from sanskrit.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive
+import sanskrit_util.analyze
+import sanskrit_util.context
+from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
-import inspect
 import requests
 
 class SanskritDataWrapper(LexicalLookup):
@@ -27,8 +26,8 @@ class SanskritDataWrapper(LexicalLookup):
         config = {
             "DATABASE_URI":'sqlite:///' + self.db_file, 
             "DATA_PATH":""}
-        ctx = sanskrit.context.Context(config)
-        self.analyzer = sanskrit.analyze.SimpleAnalyzer(ctx)
+        ctx = sanskrit_util.context.Context(config)
+        self.analyzer = sanskrit_util.analyze.SimpleAnalyzer(ctx)
         self.tag_cache = {}
         self.logger = logger or logging.getLogger(__name__)
         
