@@ -24,23 +24,23 @@ VELTHUIS = sanscript.VELTHUIS
 WX = sanscript.WX
 
 # Dict defined so autodetect can work
-SCHEMES={
-    'Bengali':BENGALI,
-    'Devanagari':DEVANAGARI,
-    'Gujarati':GUJARATI,
-    'Gurmukhi':GURMUKHI,
-    'Kannada':KANNADA,
-    'Malayalam':MALAYALAM,
-    'Oriya':ORIYA,
-    'Tamil':TAMIL,
-    'Telugu':TELUGU,
-    'HK':HK,
-    'IAST':IAST,
-    'ITRANS':ITRANS,
-    'Kolkata':KOLKATA,
-    'SLP1':SLP1,
-    'Velthuis':VELTHUIS,
-    'WX':WX
+SCHEMES = {
+    'Bengali': BENGALI,
+    'Devanagari': DEVANAGARI,
+    'Gujarati': GUJARATI,
+    'Gurmukhi': GURMUKHI,
+    'Kannada': KANNADA,
+    'Malayalam': MALAYALAM,
+    'Oriya': ORIYA,
+    'Tamil': TAMIL,
+    'Telugu': TELUGU,
+    'HK': HK,
+    'IAST': IAST,
+    'ITRANS': ITRANS,
+    'Kolkata': KOLKATA,
+    'SLP1': SLP1,
+    'Velthuis': VELTHUIS,
+    'WX': WX
 }
 
 
@@ -55,33 +55,34 @@ class SanskritObject(object):
            encoding(str): As above
 
     """
-    def __init__(self,thing=None,encoding=None,unicode_encoding='utf-8'):
-        assert isinstance(thing,six.string_types)
+
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
+        assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
         # We are udAramatiH
-        if isinstance(thing,six.text_type):
-            self.thing=thing
+        if isinstance(thing, six.text_type):
+            self.thing = thing
         else:
-            self.thing=six.text_type(thing,unicode_encoding)
-        self.encoding=encoding
+            self.thing = six.text_type(thing, unicode_encoding)
+        self.encoding = encoding
         if self.encoding is None:
             if thing is not None:
                 # Autodetect Encoding
-                self.encoding=SCHEMES[detect.detect(self.thing)]
+                self.encoding = SCHEMES[detect.detect(self.thing)]
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }
-        self.tags=[]
+        self.tags = []
 
-    def transcoded(self,encoding=None):
+    def transcoded(self, encoding=None):
         """ Return a transcoded version of self
 
             Args:
-              encoding(SanskritObject.Scheme): 
+              encoding(SanskritObject.Scheme):
             Returns:
               str: transcoded version
         """
-        return sanscript.transliterate(self.thing,self.encoding,encoding)
+        return sanscript.transliterate(self.thing, self.encoding, encoding)
 
     def canonical(self):
         """ Return canonical transcoding (SLP1) of self
@@ -92,8 +93,8 @@ class SanskritObject(object):
         """ Return devanagari transcoding of self
         """
         return self.transcoded(DEVANAGARI)
-    
-    def setLexicalTags(self,t):
+
+    def setLexicalTags(self, t):
         """ Set Lexical Tags on Sanskrit Object
 
             Params:
@@ -125,26 +126,27 @@ if __name__ == "__main__":
           Returns args variable
         """
         # Parser Setup
-        parser=argparse.ArgumentParser(description='SanskritObject')
+        parser = argparse.ArgumentParser(description='SanskritObject')
         # String to encode
-        parser.add_argument('data',nargs="?",type=str,default="idam adbhutam")
+        parser.add_argument('data', nargs="?", type=str, default="idam adbhutam")
         # Input Encoding (autodetect by default)
-        parser.add_argument('--input-encoding',type=str,default=None)
-        # Ouptut Encoding (Devanagari by default)
-        parser.add_argument('--output-encoding',type=str,default="Devanagari")
+        parser.add_argument('--input-encoding', type=str, default=None)
+        # Output Encoding (Devanagari by default)
+        parser.add_argument('--output-encoding', type=str, default="Devanagari")
 
         return parser.parse_args()
 
     def main():
-        args=getArgs()
+        args = getArgs()
         print(args.data)
         if args.input_encoding is None:
-            ie=None
+            ie = None
         else:
-            ie=SCHEMES[args.input_encoding]
+            ie = SCHEMES[args.input_encoding]
 
-        oe=SCHEMES[args.output_encoding]
+        oe = SCHEMES[args.output_encoding]
 
-        s=SanskritObject(args.data,ie)
+        s = SanskritObject(args.data, ie)
         print(s.transcoded(oe))
+
     main()

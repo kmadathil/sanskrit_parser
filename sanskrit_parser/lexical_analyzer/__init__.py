@@ -9,7 +9,7 @@ Use the ``SanskritLexicalAnalyzer`` to split a sentence (wrapped in a
 
     >>> from __future__ import print_function
     >>> from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
-    >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
     >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
     >>> analyzer = SanskritLexicalAnalyzer()
     >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)

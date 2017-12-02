@@ -7,7 +7,7 @@
 """
 
 from __future__ import print_function
-import sanskrit_parser.base.SanskritBase as SanskritBase
+import sanskrit_parser.base.sanskrit_base as SanskritBase
 import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
 import sanskrit_parser.util.inriatagmapper as inriatagmapper
 
