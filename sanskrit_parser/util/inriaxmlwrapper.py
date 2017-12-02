@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
+Intro
+=====
 Provide interface with the INRIA XML database released
 by Prof. Gerard Huet
 https://gitlab.inria.fr/huet/Heritage_Resources
@@ -10,6 +12,18 @@ Inspired by https://github.com/drdhaval2785/inriaxmlwrapper
 (Thanks @drdhaval2785!)
 
 @author: Avinash Varna (@avinashvarna)
+
+Usage
+=====
+The InriaXMLWrapper utility class can also be used to lookup tags:
+
+.. code:: python
+
+    >>> from sanskrit_parser.util.inriaxmlwrapper import InriaXMLWrapper
+    >>> db = InriaXMLWrapper()
+    >>> db_tags = db.get_tags('hares')
+    >>> tags == db_tags
+    True
 """
 
 from __future__ import print_function

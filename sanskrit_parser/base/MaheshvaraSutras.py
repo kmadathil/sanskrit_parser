@@ -1,5 +1,29 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Intro
+======
+Get varnas in a pratyahara:
+
+.. code:: python
+
+    >>> from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
+    >>> MS = MaheshvaraSutras()
+    >>> jaS = SanskritObject('jaS', encoding=SLP1)
+    >>> print(MS.getPratyahara(jaS))
+    jabagaqada
+
+Check if a varna is in a pratyahara:
+
+.. code:: python
+
+    >>> g = SanskritObject('g')
+    >>> print(MS.isInPratyahara(jaS, g))
+    True
+    >>> k = SanskritObject('k')
+    >>> print(MS.isInPratyahara(jaS, k))
+    False
+"""
 
 from __future__ import print_function
 from . import SanskritBase
