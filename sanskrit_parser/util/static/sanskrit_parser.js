@@ -1,8 +1,8 @@
 function createPanel(heading, row, id) {
-    var cardClass = id % 2 ? "bg-white" : "bg-light";
+    var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
     var expanded = id == 0 ? "show" : "";
     var h = '<div class="card ' + cardClass + ' "><div class="card-header ' + cardClass + '">'
-    h += '<a class="" data-toggle="collapse" href="#collapse' + id +'" aria-expanded="false" aria-controls="collapse' + id +'">'
+    h += '<a class="text-white" data-toggle="collapse" href="#collapse' + id +'" aria-expanded="false" aria-controls="collapse' + id +'">'
     h += heading + '</a></div>'
     h += '<div id="collapse' + id +'" class="collapse '+expanded+'"><div class="card-block">'
     h += '<ol class="list-group">'

@@ -2,17 +2,18 @@ from flask import Flask
 from flask_restful import Resource, Api
 
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
-from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
+from sanskrit_parser.morphological_analyzer import SanskritMorphologicalAnalyzer
 from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 api = Api(app)
 
-analyzer = SanskritMorphologicalAnalyzer(lexical_lookup="combined")
+analyzer = SanskritMorphologicalAnalyzer.SanskritMorphologicalAnalyzer(lexical_lookup="combined")
+SanskritMorphologicalAnalyzer.need_lakara = True
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (SanskritObject(tag[0]).devanagari(),[t.devanagari() for t in list(tag[1])])
+    return (SanskritObject(tag[0]).devanagari(), [t.devanagari() for t in list(tag[1])])
 
 def jtags(tags):
     """ Helper to translate tags to serializable format"""
@@ -27,7 +28,7 @@ class Tags(Resource):
             ptags = jtags(tags)
         else:
             ptags = []
-        r = {"input": p, "devanagari": pobj.devanagari(),"tags": ptags}
+        r = {"input": p, "devanagari": pobj.devanagari(), "tags": ptags}
         return r
         
 class Splits(Resource):
@@ -40,7 +41,7 @@ class Splits(Resource):
             jsplits = [[ss.devanagari() for ss in s] for s in splits]
         else:
             jsplits = []
-        r = {"input": v, "devanagari": vobj.devanagari(),"splits": jsplits}
+        r = {"input": v, "devanagari": vobj.devanagari(), "splits": jsplits}
         return r
 
 class Morpho(Resource):
@@ -60,7 +61,7 @@ class Morpho(Resource):
                 mres[sl]=[]
                 for pp in p:
                     mres[sl].append([(spp.devanagari(),jtag(pp[spp.canonical()])) for spp in sp])
-        r = {"input": v, "devanagari": vobj.devanagari(),"analysis": mres}
+        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
         return r
 
     
