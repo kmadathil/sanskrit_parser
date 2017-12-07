@@ -8,7 +8,7 @@ import codecs
 import os
 import inspect
 from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, DEVANAGARI
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, DEVANAGARI
 import logging
 import re
 import six

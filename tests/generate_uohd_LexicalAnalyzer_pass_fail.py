@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
-from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
+from sanskrit_parser.base.sanskrit_base import SanskritObject,SLP1,DEVANAGARI
 import logging
 import re
 import six

@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 api = Api(app)

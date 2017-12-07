@@ -6,7 +6,7 @@
 
 '''
 from __future__ import print_function
-import sanskrit_parser.base.SanskritBase as SanskritBase
+import sanskrit_parser.base.sanskrit_base as SanskritBase
 import sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer as SanskritLexicalAnalyzer
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 

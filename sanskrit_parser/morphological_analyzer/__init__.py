@@ -9,7 +9,7 @@ all such valid morphologies.
 
 .. code:: python
 
-    >>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
     >>> from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
     >>> sentence = SanskritObject("astyuttarasyAm")
     >>> analyzer = SanskritMorphologicalAnalyzer()

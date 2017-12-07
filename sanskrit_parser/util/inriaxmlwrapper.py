@@ -33,7 +33,7 @@ import inspect
 from lxml import etree
 from collections import defaultdict
 from io import BytesIO
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
 import logging
 import time, datetime
 

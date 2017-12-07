@@ -4,7 +4,7 @@ Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 @author: Karthikeyan Madathil (@kmadathil)
 """
 from __future__ import print_function
-from  sanskrit_parser.base.SanskritBase import SanskritObject,SCHEMES,SLP1
+from  sanskrit_parser.base.sanskrit_base import SanskritObject,SCHEMES,SLP1
 import logging
 import time, datetime
 import csv
