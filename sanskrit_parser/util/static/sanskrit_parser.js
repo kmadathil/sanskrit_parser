@@ -26,63 +26,71 @@ $(document).ready(function(){
         var txt = $("#inputText").val();
         var urlbase = "http://localhost:5000/api/";
         var option = {};
-        var tsel = $("#analysisType").val()
+        var tsel = $("#analysisType").val();
         if (!txt) {
             alert("Please enter input text");
             return;
         }
-        option["Tags"]="tags/"
-        option["Split"]="split/"
-        option["Analyze"]="analyze/"
-	
-        var url = urlbase+option[tsel]+txt
+        option["Tags"]="tags/";
+        option["Split"]="split/";
+        option["Analyze"]="analyze/";
+	var $btn = $("#goButton").button('loading');
+        var url = urlbase+option[tsel]+txt;
         $.getJSON(url, function(result){
-            var s = JSON.stringify(result)
-            $("#devinp").text(result.devanagari)
+            var s = JSON.stringify(result);
+            $("#devinp").text(result.devanagari);
             $("#jsonbox").text(s);
-            $("#restable").html("")
-            var restable = ""
+            $("#restable").html("");
+            var restable = "";
             switch (tsel) {
-                case "Tags":
-                    if (result.tags.length > 0) {
-                        $("#reshead").text("Tags")
-                    } else {
-                        $("#reshead").text("No Tags Found")
-                    }
-                    restable += "<table class='table table-striped'>"
-                    for(var i =0;i < result.tags.length;i++)
-                    {
-                        var item = result.tags[i][0];
-                        var itags = result.tags[i][1];
-                        restable += "<tr><th scope='row'>"+item+"</th><td>"+itags+"</td></tr>";
-                    }
-                    restable += "</table>"
-                    break;
-                case "Split":
-                    $("#reshead").text("Sandhi Splits")
-                    restable += "<table class='table table-striped'>"
-                    for(var i =0;i < result.splits.length;i++)
-                    {
-                        var item = result.splits[i].join(" ");
-                        restable += "<tr><td>"+item+"</td></tr>";
-                    }
-                    restable += "</table>"
-                    break;
-                case "Analyze":
-                    $("#reshead").text("Morphological Analysis")
-                    var panelID = 0
-                    for(var key in result.analysis)
-                    {
-                        var item = key.split("_").join(" ");
-                        restable += createPanel(item, result.analysis[key], panelID);
-                        panelID += 1;
-                    }
-                    break;
+            case "Tags":
+                if (result.tags.length > 0) {
+                    $("#reshead").text("Tags");
+                } else {
+                    $("#reshead").text("No Tags Found");
+                };
+                restable += "<table class='table table-striped'>";
+                for(var i =0;i < result.tags.length;i++)
+                {
+                    var item = result.tags[i][0];
+                    var itags = result.tags[i][1];
+                    restable += "<tr><th scope='row'>"+item+"</th><td>"+itags+"</td></tr>";
+                }
+                restable += "</table>"
+                break;
+            case "Split":
+                $("#reshead").text("Sandhi Splits")
+                restable += "<table class='table table-striped'>"
+                for(var i =0;i < result.splits.length;i++)
+                {
+                    var item = result.splits[i].join(" ");
+                    restable += "<tr><td>"+item+"</td></tr>";
+                }
+                restable += "</table>"
+                break;
+            case "Analyze":
+                $("#reshead").text("Morphological Analysis");
+                var panelID = 0;
+		keys = Object.keys(result.analysis)
+		// Shorter splits should come first
+		keys.sort(function (a,b) {
+		    return a.split("_").length > b.split("_").length;
+		});
+                for(var i = 0; i < keys.length; i++  )
+                {
+		    var key  = keys[i];
+                    var item = key.split("_").join(" ");
+		    console.log(key)
+                    restable += createPanel(item, result.analysis[key], panelID);
+                    panelID += 1;
+                }
+                break;
             }
             $("#restable").append(restable);
-            $("#jsonButton").removeClass("d-none")
-            $("#devtab").removeClass("d-none")
-            $("#restab").removeClass("d-none")
+            $("#jsonButton").removeClass("d-none");
+            $("#devtab").removeClass("d-none");
+            $("#restab").removeClass("d-none");
+	    $btn.button('reset');
         });
     });
 });
