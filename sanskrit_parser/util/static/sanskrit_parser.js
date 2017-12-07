@@ -34,7 +34,10 @@ $(document).ready(function(){
         option["Tags"]="tags/";
         option["Split"]="split/";
         option["Analyze"]="analyze/";
-	var $btn = $(this).button('loading');
+	var btn = $(this)
+	var btxt = btn.text()
+	btn.removeClass('btn-primary').addClass('btn-secondary');
+	btn.text("Loading ...")
         var url = urlbase+option[tsel]+txt;
         $.getJSON(url, function(result){
             var s = JSON.stringify(result);
@@ -90,7 +93,8 @@ $(document).ready(function(){
             $("#jsonButton").removeClass("d-none");
             $("#devtab").removeClass("d-none");
             $("#restab").removeClass("d-none");
-	    $btn.button('reset');
+	    btn.removeClass('btn-secondary').addClass('btn-primary')
+	    btn.text(btxt)
         });
     });
 });
