@@ -7,7 +7,7 @@ import pytest
 import six
 import json
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
-from sanskrit_parser.base.SanskritBase import SanskritObject,SLP1,DEVANAGARI
+from sanskrit_parser.base.sanskrit_base import SanskritObject,SLP1,DEVANAGARI
 
 @pytest.fixture(scope="module")
 def lexan():

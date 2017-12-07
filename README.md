@@ -21,7 +21,7 @@ Use the `SanskritLexicalAnalyzer` to split a sentence (wrapped in a `SanskritObj
 ```python
 >>> from __future__ import print_function
 >>> from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
->>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
 >>> analyzer = SanskritLexicalAnalyzer()
 >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
@@ -63,7 +63,7 @@ The lexical_analyzer can also be used to look up the tags for a given word form 
 
 The `SanskritMorphologicalAnalyzer` class has a similar interface to `SanskritLexicalAnalyzer`, and has a `constrainPath()` method which can find whether a particular split has a valid morphology, and output all such valid morphologies.
 ```python
->>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 >>> from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
 >>> sentence = SanskritObject("astyuttarasyAm")
 >>> analyzer = SanskritMorphologicalAnalyzer()
@@ -173,7 +173,7 @@ False
 ### SanskritObject
 `SanskritObject` is a base class used in all modules. It supports automatic detection of input encoding and transcoding to any encoding supported by the `indic_transliteration` package.
 ```python
->>> from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1
+>>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
 >>> print(sentence.transcoded(SLP1))
 astyuttarasyAMdiSidevatAtmA
@@ -263,19 +263,19 @@ set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'), (u'ta'
 #### MaheshvaraSutras
 
 ```
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS
+$ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS
 aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
 जश्
 जबगडद
 
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna k
+$ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS --varna k
 aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
 जश्
 जबगडद
 Is क् in जश्?
 False
 
-$ python -m sanskrit_parser.base.MaheshvaraSutras --encoding SLP1 --pratyahara jaS --varna g
+$ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS --varna g
 aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
 जश्
 जबगडद
