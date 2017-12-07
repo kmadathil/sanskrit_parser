@@ -22,7 +22,7 @@ function createPanel(heading, row, id) {
 }
 
 $(document).ready(function(){
-    $("#goButton").click(function(){
+    $("#goButton").on('click',function(){
         var txt = $("#inputText").val();
         var urlbase = "http://localhost:5000/api/";
         var option = {};
@@ -34,7 +34,7 @@ $(document).ready(function(){
         option["Tags"]="tags/";
         option["Split"]="split/";
         option["Analyze"]="analyze/";
-	var $btn = $("#goButton").button('loading');
+	var $btn = $(this).button('loading');
         var url = urlbase+option[tsel]+txt;
         $.getJSON(url, function(result){
             var s = JSON.stringify(result);
