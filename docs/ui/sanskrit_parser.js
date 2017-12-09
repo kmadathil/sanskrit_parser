@@ -24,16 +24,16 @@ function createPanel(heading, row, id) {
 $(document).ready(function(){
     $("#goButton").on('click',function(){
         var txt = $("#inputText").val();
-        var urlbase = "http://localhost:5000/api/";
+        var urlbase = $.query.get('api_url_base') !== ""? $.query.get('api_url_base') : "https://api.vedavaapi.org/py_skt_parser_api/";
         var option = {};
         var tsel = $("#analysisType").val();
         if (!txt) {
             alert("Please enter input text");
             return;
         }
-        option["Tags"]="tags/";
-        option["Split"]="split/";
-        option["Analyze"]="analyze/";
+        option["Tags"]="sanskrit_parser/v1/tags/";
+        option["Split"]="sanskrit_parser/v1/splits/";
+        option["Analyze"]="sanskrit_parser/v1/analyses/";
 	var btn = $(this)
 	var btxt = btn.text()
 	btn.removeClass('btn-primary').addClass('btn-secondary');
