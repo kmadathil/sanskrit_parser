@@ -1,11 +1,11 @@
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restplus import Resource, Api
 
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
 from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 
-app = Flask(__name__, static_folder='static', static_url_path='')
+app = Flask(__name__)
 api = Api(app)
 
 analyzer = SanskritMorphologicalAnalyzer()
@@ -68,9 +68,10 @@ api.add_resource(Tags, '/api/tags/<p>')
 api.add_resource(Splits, '/api/split/<v>')
 api.add_resource(Morpho, '/api/analyze/<v>')
 
-@app.route('/')
-def root():
-    return app.send_static_file('index.html')
+#Commenting for flask-restful
+#@app.route('/static')
+#def root():
+#    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
