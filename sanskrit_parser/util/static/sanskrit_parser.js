@@ -38,6 +38,7 @@ $(document).ready(function(){
 	var btxt = btn.text()
 	btn.removeClass('btn-primary').addClass('btn-secondary');
 	btn.text("Loading ...")
+	$("#issueButton").addClass("d-none")
         var url = urlbase+option[tsel]+txt;
         $.getJSON(url, function(result){
             var s = JSON.stringify(result);
@@ -93,9 +94,24 @@ $(document).ready(function(){
             $("#jsonButton").removeClass("d-none");
             $("#devtab").removeClass("d-none");
             $("#restab").removeClass("d-none");
+            $("#issueButton").removeClass("d-none");
 	    btn.removeClass('btn-secondary').addClass('btn-primary')
 	    btn.text(btxt)
         });
     });
+    $("#issueButtonButton").on('click',function(){
+        var txt = $("#inputText").val();
+        var tsel = $("#analysisType").val();
+	var str  = "mailto:kmadathil@gmail.com?subject=Sanskrit Parser Issue&body="+txt+"_"+tsel;
+	str = str + "%0D%0A--- Please enter your issue below ---%0D%0A + ";
+	window.open(str);
+	$("#gmailLink").removeClass("d-none");
+    });
+    $("#gmailLink").on('click',function(){
+	window.open("https://blog.hubspot.com/marketing/set-gmail-as-browser-default-email-client-ht")
+	$(this).addClass("d-none");
+    });
+
+
 });
 
