@@ -15,7 +15,7 @@ Submodules
   sanskrit_parser_util_inriaxmlwrapper
 
 Indices and tables
-====================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

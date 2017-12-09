@@ -116,6 +116,27 @@
 
 <span class="sd">**Note**: As mentioned previously, both over-generation and</span>
 <span class="sd">under-generation are possible with the ``Sandhi`` class.</span>
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva</span>
+<span class="sd">    Joining te eva</span>
+<span class="sd">    set([u&#39;teeva&#39;, u&#39;taeva&#39;, u&#39;ta eva&#39;, u&#39;tayeva&#39;])</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1</span>
+<span class="sd">    Splitting taeva at 1</span>
+<span class="sd">    set([(u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;tas&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;)])</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all</span>
+<span class="sd">    All possible splits for taeva</span>
+<span class="sd">    set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;taev&#39;, u&#39;a&#39;), (u&#39;to&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;), (u&#39;te&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;tae&#39;, u&#39;va&#39;), (u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])</span>
+
+
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
@@ -128,8 +149,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.SanskritBase</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.MaheshvaraSutras</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
 
 <div class="viewcode-block" id="Sandhi"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi">[docs]</a><span class="k">class</span> <span class="nc">Sandhi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -463,13 +484,9 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 
 <div class="relations">

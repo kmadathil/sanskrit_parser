@@ -18,7 +18,7 @@ Submodules
   sanskrit_parser_util
 
 Indices and tables
-====================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

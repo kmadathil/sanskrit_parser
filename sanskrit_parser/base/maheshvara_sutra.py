@@ -23,6 +23,19 @@ Check if a varna is in a pratyahara:
     >>> k = SanskritObject('k')
     >>> print(MS.isInPratyahara(jaS, k))
     False
+
+
+
+Command line usage
+==================
+
+::
+
+    $ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS
+    aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
+    जश्
+    जबगडद
+
 """
 
 from __future__ import print_function

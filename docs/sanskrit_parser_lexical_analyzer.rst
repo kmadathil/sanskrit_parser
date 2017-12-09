@@ -15,7 +15,7 @@ Submodules
   sanskrit_parser_lexical_analyzer_sandhi
 
 Indices and tables
-====================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

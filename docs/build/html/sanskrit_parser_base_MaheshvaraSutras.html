@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>base.MaheshvaraSutras &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <title>base.maheshvara_sutra &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,6 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="util" href="sanskrit_parser_util.html" />
+    <link rel="prev" title="base" href="sanskrit_parser_base.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -39,61 +41,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-sanskrit_parser.base.MaheshvaraSutras">
-<span id="base-maheshvarasutras"></span><h1>base.MaheshvaraSutras<a class="headerlink" href="#module-sanskrit_parser.base.MaheshvaraSutras" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="intro">
-<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
-<p>Get varnas in a pratyahara:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.MaheshvaraSutras</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">MS</span> <span class="o">=</span> <span class="n">MaheshvaraSutras</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">jaS</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;jaS&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">getPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">))</span>
-<span class="go">jabagaqada</span>
-</pre></div>
-</div>
-<p>Check if a varna is in a pratyahara:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">isInPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">,</span> <span class="n">g</span><span class="p">))</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">isInPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">members:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">undoc-members:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">show-inheritance:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
+  <div class="section" id="base-maheshvara-sutra">
+<h1>base.maheshvara_sutra<a class="headerlink" href="#base-maheshvara-sutra" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">maxdepth:</th><td class="field-body"><p class="first">5</p>
-<p class="last">sanskrit_parser_base_MaheshvaraSutras</p>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -121,17 +74,34 @@
 
 
 <h3>Navigation</h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#indices-and-tables">Indices and tables</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_base.html">base</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_base.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">base.maheshvara_sutra</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_base.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="sanskrit_parser_base.html">base</a><ul>
+      <li>Previous: <a href="sanskrit_parser_base.html" title="previous chapter">base</a></li>
+      <li>Next: <a href="sanskrit_parser_util.html" title="next chapter">util</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

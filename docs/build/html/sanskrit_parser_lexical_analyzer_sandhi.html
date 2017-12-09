@@ -109,6 +109,22 @@ method:</p>
 </div>
 <p><strong>Note</strong>: As mentioned previously, both over-generation and
 under-generation are possible with the <code class="docutils literal"><span class="pre">Sandhi</span></code> class.</p>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
+Joining te eva
+set([u&#39;teeva&#39;, u&#39;taeva&#39;, u&#39;ta eva&#39;, u&#39;tayeva&#39;])
+
+$ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1
+Splitting taeva at 1
+set([(u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;tas&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;)])
+
+$ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
+All possible splits for taeva
+set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;taev&#39;, u&#39;a&#39;), (u&#39;to&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;), (u&#39;te&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;tae&#39;, u&#39;va&#39;), (u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])
+</pre></div>
+</div>
 <dl class="class">
 <dt id="sanskrit_parser.lexical_analyzer.sandhi.Sandhi">
 <em class="property">class </em><code class="descclassname">sanskrit_parser.lexical_analyzer.sandhi.</code><code class="descname">Sandhi</code><span class="sig-paren">(</span><em>rules_dir=None</em>, <em>use_default_rules=True</em>, <em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/lexical_analyzer/sandhi.html#Sandhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.lexical_analyzer.sandhi.Sandhi" title="Permalink to this definition">¶</a></dt>
@@ -252,14 +268,14 @@ Empty lines are ignored as well.</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>
-</div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
 <li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
 <li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
+</div>
 </div>
 
 
@@ -281,27 +297,26 @@ Empty lines are ignored as well.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#command-line-usage">Command line usage</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">lexical_analyzer.sandhi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#intro">Intro</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command line usage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul class="simple">
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 
 <div class="relations">

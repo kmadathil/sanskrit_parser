@@ -48,4 +48,28 @@ ending in visarga with an 's' at the end)
     ('hari#2', set(['na', 'fem', 'sg', 'gen']))
     ('hari#2', set(['na', 'fem', 'abl', 'sg']))
 
+
+Command line usage
+==================
+
+::
+
+    $ python -m sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer astyuttarasyAMdishidevatAtmA --split
+    Splits:
+    [u'asti', u'uttarasyAm', u'diSi', u'devat', u'AtmA']
+    [u'asti', u'uttarasyAm', u'diSi', u'devata', u'AtmA']
+    [u'asti', u'uttarasyAm', u'diSi', u'devatA', u'AtmA']
+    [u'asti', u'uttara', u'syAm', u'diSi', u'devat', u'AtmA']
+    [u'asti', u'uttarasyAm', u'diSi', u'devata', u'at', u'mA']
+    [u'asti', u'uttarasyAm', u'diSi', u'de', u'vatAt', u'mA']
+    [u'asti', u'uttarasyAm', u'diSi', u'devatA', u'at', u'mA']
+    [u'asti', u'uttas', u'asyAm', u'diSi', u'devat', u'AtmA']
+    [u'asti', u'uttara', u'syAm', u'diSi', u'devata', u'AtmA']
+    [u'asti', u'uttarasyAm', u'diSi', u'de', u'vatA', u'AtmA']
+
+    $ python -m sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer hares
+    Input String: hares
+    Input String in SLP1: hares
+    [('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op'])), ('hari#1', set(['na', 'mas', 'sg', 'gen'])), ('hari#1', set(['na', 'mas', 'abl', 'sg'])), ('hari#1', set(['na', 'fem', 'sg', 'gen'])), ('hari#1', set(['na', 'fem', 'abl', 'sg'])), ('hari#2', set(['na', 'mas', 'sg', 'gen'])), ('hari#2', set(['na', 'mas', 'abl', 'sg'])), ('hari#2', set(['na', 'fem', 'sg', 'gen'])), ('hari#2', set(['na', 'fem', 'abl', 'sg']))]
+
 """

@@ -66,6 +66,28 @@
 <span class="sd">    &gt;&gt;&gt; db_tags = db.get_tags(&#39;hares&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; tags == db_tags</span>
 <span class="sd">    True</span>
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    $ python -m sanskrit_parser.util.inriaxmlwrapper hares</span>
+<span class="sd">    INFO:root:Pickle file found, loading at 2017-07-31 14:35:56.093000</span>
+<span class="sd">    INFO:root:Loading finished at 2017-07-31 14:35:59.159000, took 3.066000 s</span>
+<span class="sd">    INFO:root:Cached 666994 forms for fast lookup</span>
+<span class="sd">    Getting tags for hares</span>
+<span class="sd">    (&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
@@ -75,7 +97,7 @@
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.SanskritBase</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
 
@@ -98,7 +120,9 @@
     <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~/.sanskrit_parser/data&quot;</span><span class="p">)</span>
     
     
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">],</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">files_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">files_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_files</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s2">&quot;is not a valid file name&quot;</span><span class="p">)</span>
@@ -258,13 +282,9 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 
 <div class="relations">

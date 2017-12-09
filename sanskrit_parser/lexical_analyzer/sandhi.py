@@ -74,6 +74,27 @@ method:
 
 **Note**: As mentioned previously, both over-generation and
 under-generation are possible with the ``Sandhi`` class.
+
+
+Command line usage
+==================
+
+::
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
+    Joining te eva
+    set([u'teeva', u'taeva', u'ta eva', u'tayeva'])
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1
+    Splitting taeva at 1
+    set([(u'tar', u'eva'), (u'tas', u'eva'), (u'taH', u'eva'), (u'ta', u'eva')])
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
+    All possible splits for taeva
+    set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'), (u'ta', u'eva'), (u'te', u'eva'), (u'taH', u'eva'), (u'tae', u'va'), (u'taeva', u''), (u'tas', u'eva')])
+
+
+
 """
 
 from __future__ import print_function

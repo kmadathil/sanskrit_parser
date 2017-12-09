@@ -24,6 +24,28 @@ The InriaXMLWrapper utility class can also be used to lookup tags:
     >>> db_tags = db.get_tags('hares')
     >>> tags == db_tags
     True
+
+
+Command line usage
+==================
+
+::
+
+    $ python -m sanskrit_parser.util.inriaxmlwrapper hares
+    INFO:root:Pickle file found, loading at 2017-07-31 14:35:56.093000
+    INFO:root:Loading finished at 2017-07-31 14:35:59.159000, took 3.066000 s
+    INFO:root:Cached 666994 forms for fast lookup
+    Getting tags for hares
+    ('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op']))
+    ('hari#1', set(['na', 'mas', 'sg', 'gen']))
+    ('hari#1', set(['na', 'mas', 'abl', 'sg']))
+    ('hari#1', set(['na', 'fem', 'sg', 'gen']))
+    ('hari#1', set(['na', 'fem', 'abl', 'sg']))
+    ('hari#2', set(['na', 'mas', 'sg', 'gen']))
+    ('hari#2', set(['na', 'mas', 'abl', 'sg']))
+    ('hari#2', set(['na', 'fem', 'sg', 'gen']))
+    ('hari#2', set(['na', 'fem', 'abl', 'sg']))
+
 """
 
 from __future__ import print_function
@@ -56,7 +78,9 @@ class InriaXMLWrapper(object):
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
     
     
-    def __init__(self, files_list=['all'], logger=None):
+    def __init__(self, files_list=None, logger=None):
+        if files_list is None:
+            files_list = ['all']
         for f in files_list:
             if f not in self.xml_files:
                 raise Exception(f + "is not a valid file name")
