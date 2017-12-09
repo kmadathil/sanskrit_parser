@@ -311,7 +311,8 @@ class Sandhi(object):
             list_before_r = list(before_r)
             left_right = (left, right)
             a = after.format(*(list(before_l) + list_before_r))
-            self.logger.debug("Final rule = %s -> %s", left_right, a)
+            # The below is just too much logging - should be silenced in production:
+            # self.logger.debug("Final rule = %s -> %s", left_right, a)
             yield (left_right, a)
 
     def add_rules_from_file(self, path):

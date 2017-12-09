@@ -16,6 +16,18 @@ pip install sanskrit_parser
 
 ## Usage
 - See [genereated sphynx docs](https://kmadathil.github.io/sanskrit_parser/build/html/).
+- PS: Command line usage is also documented there.
+
+### Deploying REST API server
+Run:
+```
+sudo mkdir /var/www/.sanskrit_parser
+sudo chmod a+rwx /var/www/.sanskrit_parser
+```
+
+## Contribution
+- Generate docs: `cd docs; make html`
+
 
 ## Sanskrit Parser Stack
 
