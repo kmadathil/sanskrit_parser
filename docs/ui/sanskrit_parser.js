@@ -24,7 +24,7 @@ function createPanel(heading, row, id) {
 $(document).ready(function(){
     $("#goButton").on('click',function(){
         var txt = $("#inputText").val();
-        var urlbase = $.query.get('api_url_base') !== ""? $.query.get('api_url_base') : "https://api.vedavaapi.org/py_skt_parser_api/";
+        var urlbase = $.query.get('api_url_base') !== ""? $.query.get('api_url_base') : "https://api.vedavaapi.org/py_skt_parser/";
         var option = {};
         var tsel = $("#analysisType").val();
         if (!txt) {
