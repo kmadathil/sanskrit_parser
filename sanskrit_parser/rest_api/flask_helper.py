@@ -7,6 +7,11 @@ import jsonpickle
 from flask import url_for
 from flask_cors import CORS
 
+logging.basicConfig(
+  level=logging.DEBUG,
+  format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
+)
+
 """ The flask app we serve in run.py.
 """
 app = flask.Flask(
@@ -17,6 +22,7 @@ app = flask.Flask(
 CORS(app=app,
      # injects the `Access-Control-Allow-Credentials` header in responses. This allows cookies and credentials to be submitted across domains.
      supports_credentials=True)
+logging.info(str(app))
 
 app.config.update(
   DEBUG=True,

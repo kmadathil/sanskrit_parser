@@ -9,15 +9,14 @@ import sys
 from sanskrit_parser.rest_api.flask_helper import app
 from sanskrit_parser.rest_api import api_v1
 
-# Add parent directory to PYTHONPATH, so that vedavaapi_py_api module can be found.
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-print(sys.path)
-
-
 logging.basicConfig(
   level=logging.DEBUG,
   format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
 )
+
+# Add parent directory to PYTHONPATH, so that sanskrit_parser module can be found.
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+logging.debug(sys.path)
 
 params = {
   'port': 9000,
@@ -32,6 +31,7 @@ def main(argv):
   setup_app()
   app.run(
     host="0.0.0.0",
+    debug=False,
     port=params["port"],
     use_reloader=False
   )
