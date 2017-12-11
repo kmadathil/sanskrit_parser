@@ -10,6 +10,7 @@ from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 import sanskrit_parser.util.inriaxmlwrapper as inriaxmlwrapper
 import sanskrit_parser.util.inriatagmapper as inriatagmapper
+from sanskrit_parser.util import normalization
 
 import re
 import networkx as nx
@@ -325,10 +326,12 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
+        parser.add_argument('--dont-normalize', action='store_true',
+                            help="Do not normalize the input/output string", default=False)
         return parser.parse_args()
 
     def main():
-        args=getArgs()
+        args = getArgs()
         print("Input String:", args.data)
 
         if args.debug:
@@ -338,36 +341,39 @@ if __name__ == "__main__":
             logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
                                 filemode='w', level=logging.INFO)
 
-        s=SanskritLexicalAnalyzer()
+        s = SanskritLexicalAnalyzer()
+        # Normalize input unless not asked to do so
+        normalize = not args.dont_normalize
         if args.input_encoding is None:
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i=SanskritBase.SanskritObject(args.data,encoding=ie)
+        i = SanskritBase.SanskritObject(args.data,encoding=ie, normalize=normalize)
         print("Input String in SLP1:",i.canonical())
-        if not args.split:
-            ts=s.getLexicalTags(i)
-            print(ts)
-            if args.tag_set or args.base:
-                if args.tag_set:
-                    g=set(args.tag_set)
-                print(s.hasTag(i,SanskritBase.SanskritObject(args.base),g))
-        else:
-            import datetime
-            print("Start Split:", datetime.datetime.now())
-            graph=s.getSandhiSplits(i,debug=args.debug)
-            print("End DAG generation:", datetime.datetime.now())
-            if graph:
-                splits=graph.findAllPaths(max_paths=args.max_paths,
-                                          debug=args.debug)
-                print("End pathfinding:", datetime.datetime.now())
-                print("Splits:")
-                if splits:
-                    for split in splits:
-                        print(split)
-                else:
-                    print("None")
+        with SanskritBase.denormalization(normalize):
+            if not args.split:
+                ts=s.getLexicalTags(i)
+                print(ts)
+                if args.tag_set or args.base:
+                    if args.tag_set:
+                        g=set(args.tag_set)
+                    print(s.hasTag(i,SanskritBase.SanskritObject(args.base),g))
             else:
-                print("No Valid Splits Found")
+                import datetime
+                print("Start Split:", datetime.datetime.now())
+                graph=s.getSandhiSplits(i,debug=args.debug)
+                print("End DAG generation:", datetime.datetime.now())
+                if graph:
+                    splits=graph.findAllPaths(max_paths=args.max_paths,
+                                              debug=args.debug)
+                    print("End pathfinding:", datetime.datetime.now())
+                    print("Splits:")
+                    if splits:
+                        for split in splits:
+                            print(split)
+                    else:
+                        print("None")
+                else:
+                    print("No Valid Splits Found")
     main()
 

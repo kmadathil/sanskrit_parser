@@ -4,7 +4,7 @@ from flask import Blueprint
 import flask_restplus
 from flask_restplus import Resource
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
 
 logging.basicConfig(
@@ -29,7 +29,7 @@ analyzer = SanskritMorphologicalAnalyzer()
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (SanskritObject(tag[0]).devanagari(), [t.devanagari() for t in list(tag[1])])
+    return (SanskritObject(tag[0], encoding=SLP1).devanagari(), [t.devanagari() for t in list(tag[1])])
 
 
 def jtags(tags):
@@ -41,7 +41,7 @@ def jtags(tags):
 class Tags(Resource):
     def get(self, p):
         """ Get lexical tags for p """
-        pobj = SanskritObject(p)
+        pobj = SanskritObject(p, normalize=True)
         tags = analyzer.getLexicalTags(pobj)
         if tags is not None:
             ptags = jtags(tags)
@@ -55,7 +55,7 @@ class Tags(Resource):
 class Splits(Resource):
     def get(self, v):
         """ Get lexical tags for v """
-        vobj = SanskritObject(v)
+        vobj = SanskritObject(v, normalize=True)
         g = analyzer.getSandhiSplits(vobj)
         if g:
             splits = g.findAllPaths(10)
@@ -70,7 +70,7 @@ class Splits(Resource):
 class Morpho(Resource):
     def get(self, v):
         """ Get morphological tags for v """
-        vobj = SanskritObject(v)
+        vobj = SanskritObject(v, normalize=True)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
             splits = g.findAllPaths(10)
