@@ -49,6 +49,7 @@ SCHEMES = {
 logger = logging.getLogger(__name__)
 denormalize = False
 
+
 class SanskritObject(object):
     """ Sanskrit Object Class: Base of the class hierarchy
 
@@ -135,6 +136,7 @@ class SanskritObject(object):
     def __repr__(self):
         return str(self)
 
+
 @contextmanager
 def denormalization(d):
     global denormalize
@@ -142,6 +144,7 @@ def denormalization(d):
     denormalize = d
     yield
     denormalize = save_denormalize
+
 
 if __name__ == "__main__":
     import argparse
