@@ -15,12 +15,12 @@ from tinydb import TinyDB, Query
 class DhatuWrapper(object):
     """
     Class to interface with the kRShNamAchArya dhAtupATha
-    https://github.com/sanskrit-coders/stardict-sanskrit/tree/master/sa-vyAkaraNa/dhAtu-pATha-kRShNamAchArya
+    https://github.com/sanskrit-coders/stardict-sanskrit/tree/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya
     """
-    git_url='https://raw.githubusercontent.com/sanskrit-coders/stardict-sanskrit/master/sa-vyAkaraNa/dhAtu-pATha-kRShNamAchArya/mUlam/Dhatu%20Patha%20%E0%A4%95%E0%A5%83%E0%A4%B7%E0%A5%8D%E0%A4%A3%E0%A4%BE%E0%A4%9A%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF%E0%A4%B8%E0%A5%8D%E0%A4%AF%20%E0%A4%95%E0%A5%83%E0%A4%A4%E0%A5%87%E0%A4%83%20-%20Sheet1.tsv'
+    git_url='https://raw.githubusercontent.com/sanskrit-coders/stardict-sanskrit/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya/mUlam/dhAtu-pATha-kRShNAchArya.tsv'
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
-    local_filename="dhAtu-pATha-kRShNamAchArya.tsv"
-    db_file = "dhAtu-pATha-kRShNamAchArya.json"
+    local_filename="dhAtu-pATha-kRShNAchArya.tsv"
+    db_file = "dhAtu-pATha-kRShNAchArya.json"
     q = Query()
     def __init__(self, logger=None):
         self.logger = logger or logging.getLogger(__name__)
