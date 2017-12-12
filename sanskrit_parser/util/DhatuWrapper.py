@@ -39,6 +39,8 @@ class DhatuWrapper(object):
         if not os.path.exists(os.path.join(self.base_dir, filename)):
             self.logger.debug("%s not found. Downloading it", filename)
             r = requests.get(self.git_url, stream=True)
+            assert r.status_code != 404,\
+                   "Could not download file {}".format(self.git_url)
             with open(os.path.join(self.base_dir, filename), "wb") as fd:
                 for chunk in r.iter_content(chunk_size=128):
                     fd.write(chunk)
