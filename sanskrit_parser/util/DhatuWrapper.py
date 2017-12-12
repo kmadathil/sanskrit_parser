@@ -17,7 +17,8 @@ class DhatuWrapper(object):
     Class to interface with the kRShNamAchArya dhAtupATha
     https://github.com/sanskrit-coders/stardict-sanskrit/tree/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya
     """
-    git_url='https://raw.githubusercontent.com/sanskrit-coders/stardict-sanskrit/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya/mUlam/dhAtu-pATha-kRShNAchArya.tsv'
+    # Moved to our own repo
+    git_url='https://raw.githubusercontent.com/kmadathil/sanskrit_parser/master/data/dhAtu-pATha-kRShNAchArya.tsv'
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
     local_filename="dhAtu-pATha-kRShNAchArya.tsv"
     db_file = "dhAtu-pATha-kRShNAchArya.json"
