@@ -10,7 +10,7 @@ import logging
 import pytest
 import json
 
-from sanskrit_parser.rest_api.run import app
+from sanskrit_parser.rest_api import run
 
 logging.basicConfig(
   level=logging.DEBUG,
@@ -21,20 +21,22 @@ logging.basicConfig(
 @pytest.fixture(scope='module')
 def app_fixture(request):
   app = run.app.test_client()
+  logging.debug(str(app))
   return app
 
 
 def test_analyses(app_fixture):
-  url = "analyses/astyuttarasyAm"
+  url = "/sanskrit_parser/v1/analyses/astyuttarasyAm"
   response = app_fixture.get(url)
   analysis = json.loads(response.data)
-  log.debug(str(analysis))
-  assert analysis.__len__() > 0
+  logging.debug(str(analysis))
+  assert analysis.__len__() > 1
+
 
 def test_splits(app_fixture):
-  url = "splits/astyuttarasyAm"
+  url = "/sanskrit_parser/v1/splits/astyuttarasyAm"
   response = app_fixture.get(url)
   split = json.loads(response.data)
-  log.debug(str(split))
-  assert split.__len__() > 0
+  logging.debug(str(split))
+  assert split["splits"].__len__() > 0
 
