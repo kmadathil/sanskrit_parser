@@ -16,3 +16,13 @@ def test_is_sakarmaka():
     is_sakarmaka = w.is_sakarmaka(it)
 
     assert is_sakarmaka is True
+
+
+def test_is_sakarmaka_for_dvikarmaka():
+    s = SanskritObject("nI")
+    it = s.transcoded(SLP1)
+    w = DhatuWrapper.DhatuWrapper()
+
+    is_sakarmaka = w.is_sakarmaka(it)
+
+    assert is_sakarmaka is True

@@ -6,7 +6,6 @@ Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 from __future__ import print_function
 
 import csv
-import functools
 import logging
 import os
 
@@ -84,8 +83,8 @@ class DhatuWrapper(object):
         # Tags
         tl = self._get_dhatus(d)
         if len(tl) != 0:
-            r = functools.reduce(lambda x, y: x or y, ['sakarmaka' in t['karmakatvaM'] for t in tl])
-            return r
+            supported_karmakas = {'sakarmakaH', 'dvikarmakaH'}
+            return any([t['karmakatvaM'] in supported_karmakas for t in tl])
         else:
             self.logger.debug("Couldn't find dhatu {} in database".format(d))
             return False
