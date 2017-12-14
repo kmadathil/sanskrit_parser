@@ -50,19 +50,22 @@ Command line usage
 
 from __future__ import print_function
 import requests
-import os, shutil
+import os
+import shutil
 import inspect
 from lxml import etree
 from collections import defaultdict
 from io import BytesIO
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
 import logging
-import time, datetime
+import time
+import datetime
 
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
+
 
 class InriaXMLWrapper(object):
     """
@@ -76,8 +79,7 @@ class InriaXMLWrapper(object):
     folder = "data"
     old_dir = os.path.join(old_base_dir, folder)
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
-    
-    
+
     def __init__(self, files_list=None, logger=None):
         if files_list is None:
             files_list = ['all']
@@ -92,13 +94,13 @@ class InriaXMLWrapper(object):
             self.pickle_file = "_all.pickle"
         self.logger = logger or logging.getLogger(__name__)
         self._relocate_data()
-        self._load_forms()        
-    
+        self._load_forms()
+
     @staticmethod
     def _relocate_data():
         if os.path.exists(InriaXMLWrapper.old_dir):
             shutil.move(InriaXMLWrapper.old_dir, InriaXMLWrapper.base_dir)
-            
+
     def _get_files(self):
         """ Download files if not present in cache """
         if not os.path.exists(self.base_dir):
@@ -112,9 +114,9 @@ class InriaXMLWrapper(object):
                 with open(os.path.join(self.base_dir, filename), "wb") as fd:
                     for chunk in r.iter_content(chunk_size=128):
                         fd.write(chunk)
-                        
+
     def _generate_dict(self):
-        """ Create dict with mapping 
+        """ Create dict with mapping
             form : set([<tag 1>, ... , <tag n>])
             and pickle it
         """
@@ -131,7 +133,7 @@ class InriaXMLWrapper(object):
         self.logger.debug("Pickling forms database for faster loads")
         with open(os.path.join(self.base_dir, self.pickle_file), "wb") as fd:
             pickle.dump(self.forms, fd, pickle.HIGHEST_PROTOCOL)
-            
+
     def _load_forms(self):
         """ Load/create dict of tags for forms """
         pickle_path = os.path.join(self.base_dir, self.pickle_file)
@@ -140,15 +142,15 @@ class InriaXMLWrapper(object):
             start = time.time()
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
-            self.logger.info("Loading finished at %s, took %f s", 
-                          datetime.datetime.now(),
-                          time.time() - start
-                          )
+            self.logger.info("Loading finished at %s, took %f s",
+                             datetime.datetime.now(),
+                             time.time() - start
+                             )
         else:
             self.logger.debug("Pickle file not found, creating ...")
             self._generate_dict()
         self.logger.info("Cached %d forms for fast lookup", len(self.forms))
-            
+
     def _xml_to_tags(self, word):
         # FIXME - This is currently from sanskritmark. Check if this can be simplified
         if word in self.forms:
@@ -156,34 +158,40 @@ class InriaXMLWrapper(object):
             results = []
             for tag in tags:
                 root = etree.parse(BytesIO(tag)).getroot()
-                # The next two steps require explanation. In Gerard's XML files, All possible attributes are given as children of 'f'. The last child is always 's' which stores the stem. All other children are the various possible word attributes. Given as 'na' or 'v' etc. Gio
-                children = root.getchildren()[:-1] # attributes
-                baseword = root.getchildren()[-1].get('stem').strip() # 's' stem
+                # The next two steps require explanation. In Gerard's XML files,
+                # All possible attributes are given as children of 'f'. The last
+                # child is always 's' which stores the stem. All other children
+                # are the various possible word attributes. Given as 'na' or 'v'
+                # etc. Gio
+                children = root.getchildren()[:-1]  # attributes
+                baseword = root.getchildren()[-1].get('stem').strip()  # 's' stem
                 attributes = []
                 for child in children:
-                    taglist = child.xpath('.//*') # Fetches all elements (abbreviations) of a particular verb / word characteristics.
-                    output = [child.tag] # The first member of output list is the tag of element 'v', 'na' etc.
-                    output = output + [ tagitem.tag for tagitem in taglist] # Other tags (abbreviations) and add it to output list.
+                    taglist = child.xpath(
+                        './/*')  # Fetches all elements (abbreviations) of a particular verb / word characteristics.
+                    output = [child.tag]  # The first member of output list is the tag of element 'v', 'na' etc.
+                    output = output + [tagitem.tag for tagitem in
+                                       taglist]  # Other tags (abbreviations) and add it to output list.
                     attributes.append(output)
                 for attrib in attributes:
-                    results.append((baseword, set(attrib))) 
+                    results.append((baseword, set(attrib)))
             return results
         else:
             return None
-    
+
     def valid(self, word):
         return word in self.forms
-    
+
     def get_tags(self, word):
-            return self._xml_to_tags(word)
-        
-        
-        
+        return self._xml_to_tags(word)
+
+
 if __name__ == "__main__":
     from argparse import ArgumentParser
+
     def getArgs():
         """
-          Argparse routine. 
+          Argparse routine.
           Returns args variable
         """
         # Parser Setup
@@ -193,31 +201,30 @@ if __name__ == "__main__":
         parser.add_argument('--loglevel', type=str, default="info",
                             help="logging level. Can be any level supported by logging module")
 
-        parser.add_argument('word', nargs = '?', type=str, 
-                            default=None, 
+        parser.add_argument('word', nargs='?', type=str,
+                            default=None,
                             help="Word to look up")
 
         return parser.parse_args()
 
     def main():
-        args=getArgs()
+        args = getArgs()
         if args.input_encoding is None:
             ie = None
         else:
             ie = SCHEMES[args.input_encoding]
-        
+
         if args.loglevel:
             numeric_level = getattr(logging, args.loglevel.upper(), None)
             if not isinstance(numeric_level, int):
                 raise ValueError('Invalid log level: %s' % args.loglevel)
-            logging.basicConfig(level = numeric_level)
-            
+            logging.basicConfig(level=numeric_level)
+
         word_in = SanskritObject(args.word, encoding=ie).transcoded(SLP1)
         xmlDB = InriaXMLWrapper()
         print("Getting tags for", word_in)
         tags = xmlDB.get_tags(word_in)
-        if tags != None:
+        if tags is not None:
             map(print, tags)
-            
+
     main()
-    
