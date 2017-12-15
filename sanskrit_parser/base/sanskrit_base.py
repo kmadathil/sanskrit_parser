@@ -62,7 +62,7 @@ class SanskritObject(object):
 
     """
 
-    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8', normalize=False):
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8', strict_io=True):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
@@ -76,7 +76,7 @@ class SanskritObject(object):
             if thing is not None:
                 # Autodetect Encoding
                 self.encoding = SCHEMES[detect.detect(self.thing)]
-        if normalize:
+        if not strict_io:
             # Convert to SLP1 and normalize
             self.thing = self.canonical()
             self.encoding = SLP1
@@ -97,16 +97,19 @@ class SanskritObject(object):
         """
         return sanscript.transliterate(self.thing, self.encoding, encoding)
 
-    def canonical(self):
+    def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self
         """
-        return self.transcoded(SLP1)
+        s = self.transcoded(SLP1)
+        if not strict_io:
+            s = normalization.denormalize(s)
+        return s
 
-    def devanagari(self, denormalize=True):
+    def devanagari(self, strict_io=True):
         """ Return devanagari transcoding of self
         """
         s = self.transcoded(SLP1)
-        if denormalize:
+        if not strict_io:
             s = normalization.denormalize(s)
         return sanscript.transliterate(s, SLP1, DEVANAGARI)
 
@@ -138,10 +141,10 @@ class SanskritObject(object):
 
 
 @contextmanager
-def denormalization(d):
+def outputctx(strict_io):
     global denormalize
     save_denormalize = denormalize
-    denormalize = d
+    denormalize = not strict_io
     yield
     denormalize = save_denormalize
 

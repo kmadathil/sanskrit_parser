@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def normalize(s):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
@@ -20,9 +21,9 @@ def normalize(s):
         s = re.sub("[\u200b\u200c\u200d]", "", s)
         # Punctuation and numeric characters
         for c in ",'-;().?!\"0123456789":
-            s = s.replace(c,'')
+            s = s.replace(c, '')
         # Some bad visargas
-        s = s.replace(':','H')
+        s = s.replace(':', 'H')
         # Replace line-breaks with spaces
         s = s.replace('\r\n', ' ').replace('\n', ' ')
         return s
@@ -37,6 +38,7 @@ def normalize(s):
         logger.warning("Detected H at end of string. Replacing with s")
         s = s[:-1] + 's'
     return s
+
 
 def denormalize(s):
     """ Converts internal representation into user-friendly output

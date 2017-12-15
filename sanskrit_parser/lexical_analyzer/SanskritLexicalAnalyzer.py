@@ -326,8 +326,8 @@ if __name__ == "__main__":
         parser.add_argument('--split',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
-        parser.add_argument('--dont-normalize', action='store_true',
-                            help="Do not normalize the input/output string", default=False)
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
 
     def main():
@@ -342,15 +342,13 @@ if __name__ == "__main__":
                                 filemode='w', level=logging.INFO)
 
         s = SanskritLexicalAnalyzer()
-        # Normalize input unless not asked to do so
-        normalize = not args.dont_normalize
         if args.input_encoding is None:
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i = SanskritBase.SanskritObject(args.data,encoding=ie, normalize=normalize)
+        i = SanskritBase.SanskritObject(args.data,encoding=ie, strict_io=args.strict_io)
         print("Input String in SLP1:",i.canonical())
-        with SanskritBase.denormalization(normalize):
+        with SanskritBase.outputctx(args.strict_io):
             if not args.split:
                 ts=s.getLexicalTags(i)
                 print(ts)
