@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Tests for the ullekhanam API.
+Tests for the rest api
 """
 
 from __future__ import absolute_import
@@ -13,30 +13,29 @@ import json
 from sanskrit_parser.rest_api import run
 
 logging.basicConfig(
-  level=logging.DEBUG,
-  format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
+    level=logging.DEBUG,
+    format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
 )
 
 
 @pytest.fixture(scope='module')
 def app_fixture(request):
-  app = run.app.test_client()
-  logging.debug(str(app))
-  return app
+    app = run.app.test_client()
+    logging.debug(str(app))
+    return app
 
 
 def test_analyses(app_fixture):
-  url = "/sanskrit_parser/v1/analyses/astyuttarasyAm"
-  response = app_fixture.get(url)
-  analysis = json.loads(response.data)
-  logging.debug(str(analysis))
-  assert analysis.__len__() > 1
+    url = "/sanskrit_parser/v1/analyses/astyuttarasyAm"
+    response = app_fixture.get(url)
+    analysis = json.loads(response.data)
+    logging.debug(str(analysis))
+    assert len(analysis) > 1
 
 
 def test_splits(app_fixture):
-  url = "/sanskrit_parser/v1/splits/astyuttarasyAm"
-  response = app_fixture.get(url)
-  split = json.loads(response.data)
-  logging.debug(str(split))
-  assert split["splits"].__len__() > 0
-
+    url = "/sanskrit_parser/v1/splits/astyuttarasyAm"
+    response = app_fixture.get(url)
+    split = json.loads(response.data)
+    logging.debug(str(split))
+    assert len(split["splits"]) > 0
