@@ -18,7 +18,7 @@ content = urllib.urlopen(url).read()
 doc = BeautifulSoup(content, 'html.parser')
 
 logging.info("Fetching Sandhi-extracted files ...")
-for link  in doc.find_all('a'):
+for link in doc.find_all('a'):
     if link.contents[0].endswith("Extracted") and link.get('href').endswith(".txt"):
         src = link.get('href')
         if not src.startswith('http'):
@@ -26,4 +26,4 @@ for link  in doc.find_all('a'):
         logging.info("Fetching " + src)
         wget.download(src, out=outdir)
 
-logging.info( "Finished")
+logging.info("Finished")
