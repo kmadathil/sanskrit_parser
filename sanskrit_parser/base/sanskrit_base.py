@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 from __future__ import print_function
-from indic_transliteration import sanscript
-from indic_transliteration import detect
 
 import six
+
+from indic_transliteration import sanscript
+from indic_transliteration import detect
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 # Wrap scheme names defined in sanscript
 BENGALI = sanscript.BENGALI
@@ -44,6 +49,11 @@ SCHEMES = {
 }
 
 
+@lru_cache(maxsize=8)
+def _get_schema_map(input_encoding, output_encoding):
+    return sanscript.SchemeMap(sanscript.SCHEMES[input_encoding], sanscript.SCHEMES[output_encoding])
+
+
 class SanskritObject(object):
     """ Sanskrit Object Class: Base of the class hierarchy
 
@@ -82,7 +92,8 @@ class SanskritObject(object):
             Returns:
               str: transcoded version
         """
-        return sanscript.transliterate(self.thing, self.encoding, encoding)
+        schema = _get_schema_map(self.encoding, encoding)
+        return sanscript.transliterate(self.thing, self.encoding, encoding, schema)
 
     def canonical(self):
         """ Return canonical transcoding (SLP1) of self

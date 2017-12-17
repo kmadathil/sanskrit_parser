@@ -87,7 +87,7 @@ setup(
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
                     'python-constraint', 'requests', 'six', 'flask',
-                    'jsonpickle'],
+                    'jsonpickle', 'backports.functools_lru_cache'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,
