@@ -165,8 +165,8 @@ class Sandhi(object):
         :return: list of strings of possible sandhi forms, or None if no sandhi can be performed 
         
         """
-        first = first_in.transcoded(SLP1)
-        second = second_in.transcoded(SLP1)
+        first = first_in.canonical()
+        second = second_in.canonical()
         self.logger.debug("Join: %s, %s", first, second)
         if first is None or len(first) == 0:
             return second
@@ -199,7 +199,7 @@ class Sandhi(object):
         :return: set of tuple of strings of possible split forms, or None if no split can be performed 
         
         """
-        word = word_in.transcoded(SLP1)
+        word = word_in.canonical()
         self.logger.debug("Split: %s, %d", word, idx)
         splits = set()
         # Figure out how may chars we can extract for the afters
@@ -231,7 +231,7 @@ class Sandhi(object):
         
         """
         splits = set()
-        word = word_in.transcoded(SLP1)
+        word = word_in.canonical()
         start = start or 0
         stop = stop or len(word)
         for idx in six.moves.range(start, stop):
@@ -269,7 +269,7 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = list(map(six.text_type.strip, c.split('-')))
-                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
+                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
@@ -289,7 +289,7 @@ class Sandhi(object):
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
                         splits = list(map(six.text_type.strip, re.split('([+-])', c)))
-                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
+                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
                         if len(splits) == 3:
                             if splits[1] == '-':
                                 varnas -= set(splits[2])
@@ -333,7 +333,7 @@ class Sandhi(object):
                 if line.startswith('#') or line == '':
                     continue
                 self.logger.debug("Processing rule %s", line)
-                rule = SanskritObject(line).transcoded(SLP1)
+                rule = SanskritObject(line).canonical()
                 for r in self.expand_rule(rule):
                     self.add_rule(*r, annotation= "%s:%d" % (filename, linenum+1))
                 

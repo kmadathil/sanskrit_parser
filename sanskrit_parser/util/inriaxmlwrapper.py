@@ -56,7 +56,7 @@ import inspect
 from lxml import etree
 from collections import defaultdict
 from io import BytesIO
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
 import logging
 import time
 import datetime
@@ -220,7 +220,7 @@ if __name__ == "__main__":
                 raise ValueError('Invalid log level: %s' % args.loglevel)
             logging.basicConfig(level=numeric_level)
 
-        word_in = SanskritObject(args.word, encoding=ie).transcoded(SLP1)
+        word_in = SanskritObject(args.word, encoding=ie).canonical()
         xmlDB = InriaXMLWrapper()
         print("Getting tags for", word_in)
         tags = xmlDB.get_tags(word_in)

@@ -20,7 +20,7 @@ need_lakara=False
 dw=DhatuWrapper()
 
 def getSLP1Tagset(n):
-    return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
+    return set(map(lambda x: x.canonical(),list(n[1])))
 
 # Lakaras
 _lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','viDiliN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
@@ -322,7 +322,7 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i=SanskritBase.SanskritObject(args.data,encoding=ie, strict_io=args.strict_io)
-        print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
+        print("Input String in SLP1:",i.canonical())
         import datetime
         print("Start Split:", datetime.datetime.now())
         graph=s.getSandhiSplits(i,tag=True,debug=args.debug)

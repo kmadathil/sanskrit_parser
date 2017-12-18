@@ -49,7 +49,7 @@ class MaheshvaraSutras(object):
 
         Attributes:
            MS(SanskritObject): Internal representation of mAheshvara sutras
-          MSS(str)           : Transcoded(SLP1) string representation
+          MSS(str)           : Canonical (SLP1) representation
     """
 
     def __init__(self):
@@ -61,7 +61,7 @@ class MaheshvaraSutras(object):
             u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् ',
             sanskrit_base.DEVANAGARI)
         # SLP1 version for internal operations
-        self.MSS = self.MS.transcoded(sanskrit_base.SLP1)
+        self.MSS = self.MS.canonical()
 
     def __str__(self):
         # Use SLP1 for default string output
@@ -81,7 +81,7 @@ class MaheshvaraSutras(object):
               (SanskritObject): List of varnas to the same encoding as p
         """
         # SLP1 encoded pratyahara string
-        ps = p.transcoded(sanskrit_base.SLP1)
+        ps = p.canonical()
         # it - halantyam
         pit = ps[-1]
         # Non it - all except it
@@ -117,7 +117,7 @@ class MaheshvaraSutras(object):
               boolean: Is v in p?
         """
 
-        vs = v.transcoded(sanskrit_base.SLP1)
+        vs = v.canonical()
         # १ . १ . ६९ अणुदित् सवर्णस्य चाप्रत्ययः
         # So, we change long and pluta vowels to short ones in the input string
         # Replace long vowels with short ones (note SLP1 encoding)
@@ -128,7 +128,7 @@ class MaheshvaraSutras(object):
         # Convert Pratyahara into String
         # the 'a' varna needs special treatment - we remove the
         # अकारः मुखसुखार्थः before searching!
-        pos = self.getPratyahara(p, longp, remove_a=vs[0] == 'a').transcoded(sanskrit_base.SLP1)
+        pos = self.getPratyahara(p, longp, remove_a=vs[0] == 'a').canonical()
 
         # Check if varna String is in Pratyahara String
         return (pos.find(vs) != -1)
@@ -169,12 +169,12 @@ if __name__ == "__main__":
             e = None
         p = sanskrit_base.SanskritObject(args.pratyahara, e)
         longp = not args.short
-        print(six.text_type(p.transcoded(sanskrit_base.DEVANAGARI)))
-        print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).transcoded(sanskrit_base.DEVANAGARI)))
+        print(six.text_type(p.devanagari()))
+        print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).devanagari()))
         if args.varna is not None:
             v = sanskrit_base.SanskritObject(args.varna, e)
-            print(u"Is {} in {}?".format(v.transcoded(sanskrit_base.DEVANAGARI),
-                                         p.transcoded(sanskrit_base.DEVANAGARI)))
+            print(u"Is {} in {}?".format(v.devanagari(),
+                                         p.devanagari()))
             print(m.isInPratyahara(p, v, longp))
 
     main()

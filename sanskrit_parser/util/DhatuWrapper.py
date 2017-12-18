@@ -12,7 +12,7 @@ import os
 import requests
 from tinydb import TinyDB, Query
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
 
 
 class DhatuWrapper(object):
@@ -60,13 +60,13 @@ class DhatuWrapper(object):
                 # Get Keys
                 if irx == 0:
                     # Only the first 9 columns are useful
-                    headers = [SanskritObject(x).transcoded(SLP1) for x in row[0:8]]
+                    headers = [SanskritObject(x).canonical() for x in row[0:8]]
                     self.logger.debug("Found dhatu tsv headers: {}".format(str(headers)))
                 else:
                     j = {}
                     for i, x in enumerate(row):
                         if i < len(headers):
-                            t = SanskritObject(x).transcoded(SLP1)
+                            t = SanskritObject(x).canonical()
                             j[headers[i]] = t
                     self.db.insert(j)
         self.logger.debug("Saved dhatus database")
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         else:
             ie = SCHEMES[args.input_encoding]
         i = SanskritObject(args.dhatu, encoding=ie)
-        it = i.transcoded(SLP1)
+        it = i.canonical()
         print("Input String in SLP1:", it)
         logger.info("Input String in SLP1: {}".format(it))
         w = DhatuWrapper(logger=logger)

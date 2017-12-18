@@ -144,7 +144,7 @@ class SanskritLexicalAnalyzer(object):
             Returns
                 list: List of (base, tagset) pairs
         """
-        ot = obj.transcoded(SanskritBase.SLP1)
+        ot = obj.canonical()
         tags=self.forms.get_tags(ot)
         if tmap and (tags is not None):
             tags=inriatagmapper.inriaTagMapper(tags)
@@ -170,7 +170,7 @@ class SanskritLexicalAnalyzer(object):
             # Name is none, or name matches
             # Tagset is None, or all its elements are found in Inria tagset
             if ((name is None) or\
-                name.transcoded(SanskritBase.SLP1)==li[0]) and \
+                name.canonical()==li[0]) and \
                ((tagset is None) or\
                 tagset.issubset(li[1])):
                 r.append(li)
