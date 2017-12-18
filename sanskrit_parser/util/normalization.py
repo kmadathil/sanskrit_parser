@@ -11,23 +11,19 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
+
 
 def normalize(s):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
     """
-    def _dumpchars(s):
-        # Remove Unicode Zero-Width characters
-        s = re.sub("[\u200b\u200c\u200d]", "", s)
-        # Punctuation and numeric characters
-        for c in ",'-;().?!\"0123456789":
-            s = s.replace(c, '')
-        # Some bad visargas
-        s = s.replace(':', 'H')
-        # Replace line-breaks with spaces
-        s = s.replace('\r\n', ' ').replace('\n', ' ')
-        return s
-    s = _dumpchars(s)
+    # Some bad visargas
+    s = s.replace(':', 'H')
+    # Remove Unicode Zero-Width characters, punctuation and numeric characters
+    s = deletions.sub("", s)
+    # Replace line-breaks with spaces
+    s = s.replace('\n', ' ')
     if s[-1] == 'M':
         logger.warning("Detected anusvAra at end of string. Replacing with m")
         s = s[:-1] + 'm'
