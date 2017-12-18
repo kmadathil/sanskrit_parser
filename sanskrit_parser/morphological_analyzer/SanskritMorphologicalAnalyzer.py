@@ -302,6 +302,8 @@ if __name__ == "__main__":
         parser.add_argument('--need-lakara',action='store_true')
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
 
     def main():
@@ -319,29 +321,30 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i=SanskritBase.SanskritObject(args.data,encoding=ie)
+        i=SanskritBase.SanskritObject(args.data,encoding=ie, strict_io=args.strict_io)
         print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
         import datetime
         print("Start Split:", datetime.datetime.now())
         graph=s.getSandhiSplits(i,tag=True,debug=args.debug)
         print("End DAG generation:", datetime.datetime.now())
-        if graph:
-            splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
-            print("End pathfinding:", datetime.datetime.now())
-            print("Splits:")
-            for sp in splits:
-                print("Lexical Split:",sp)
-                p=s.constrainPath(sp)
-                if p:
-                    print("Valid Morphologies")
-                    for pp in p:
-                        print([(spp,pp[str(spp)]) for spp in sp])
-                else:
-                    print("No valid morphologies for this split")
-            print("End Morphological Analysis:", datetime.datetime.now())
-        else:
-            print("No Valid Splits Found")
-            return
+        with SanskritBase.outputctx(args.strict_io):
+            if graph:
+                splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
+                print("End pathfinding:", datetime.datetime.now())
+                print("Splits:")
+                for sp in splits:
+                    print("Lexical Split:",sp)
+                    p=s.constrainPath(sp)
+                    if p:
+                        print("Valid Morphologies")
+                        for pp in p:
+                            print([(spp,pp[str(spp)]) for spp in sp])
+                    else:
+                        print("No valid morphologies for this split")
+                print("End Morphological Analysis:", datetime.datetime.now())
+            else:
+                print("No Valid Splits Found")
+                return
             
     main()
 

@@ -2,7 +2,10 @@
 from __future__ import print_function
 from indic_transliteration import sanscript
 from indic_transliteration import detect
+from sanskrit_parser.util import normalization
 
+from contextlib import contextmanager
+import logging
 import six
 
 # Wrap scheme names defined in sanscript
@@ -43,6 +46,9 @@ SCHEMES = {
     'WX': WX
 }
 
+logger = logging.getLogger(__name__)
+denormalize = False
+
 
 class SanskritObject(object):
     """ Sanskrit Object Class: Base of the class hierarchy
@@ -56,7 +62,7 @@ class SanskritObject(object):
 
     """
 
-    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8', strict_io=True):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
@@ -70,6 +76,13 @@ class SanskritObject(object):
             if thing is not None:
                 # Autodetect Encoding
                 self.encoding = SCHEMES[detect.detect(self.thing)]
+        if not strict_io:
+            # Convert to SLP1 and normalize
+            self.thing = self.canonical()
+            self.encoding = SLP1
+            logger.debug("Before normalization: %s", self.thing)
+            self.thing = normalization.normalize(self.thing)
+            logger.debug("After normalization: %s", self.thing)
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }
         self.tags = []
@@ -84,15 +97,21 @@ class SanskritObject(object):
         """
         return sanscript.transliterate(self.thing, self.encoding, encoding)
 
-    def canonical(self):
+    def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self
         """
-        return self.transcoded(SLP1)
+        s = self.transcoded(SLP1)
+        if not strict_io:
+            s = normalization.denormalize(s)
+        return s
 
-    def devanagari(self):
+    def devanagari(self, strict_io=True):
         """ Return devanagari transcoding of self
         """
-        return self.transcoded(DEVANAGARI)
+        s = self.transcoded(SLP1)
+        if not strict_io:
+            s = normalization.denormalize(s)
+        return sanscript.transliterate(s, SLP1, DEVANAGARI)
 
     def setLexicalTags(self, t):
         """ Set Lexical Tags on Sanskrit Object
@@ -111,10 +130,23 @@ class SanskritObject(object):
         return self.tags
 
     def __str__(self):
-        return self.transcoded(SLP1)
+        global denormalize
+        s = self.transcoded(SLP1)
+        if denormalize:
+            s = normalization.denormalize(s)
+        return s
 
     def __repr__(self):
         return str(self)
+
+
+@contextmanager
+def outputctx(strict_io):
+    global denormalize
+    save_denormalize = denormalize
+    denormalize = not strict_io
+    yield
+    denormalize = save_denormalize
 
 
 if __name__ == "__main__":

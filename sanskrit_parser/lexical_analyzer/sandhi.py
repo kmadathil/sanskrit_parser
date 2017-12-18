@@ -107,7 +107,7 @@ import inspect
 import logging
 import datetime
 import six
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES, outputctx
 from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
 
 class Sandhi(object):
@@ -369,6 +369,8 @@ if __name__ == "__main__":
         parser.add_argument('--split', action='store_true', help="Split the given word using sandhi rules")
         parser.add_argument('--join', action='store_true', help="Join the given words using sandhi rules")
         parser.add_argument('--all', action='store_true', help="Return splits at all possible locations")
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         
         # String to encode
         parser.add_argument('word', nargs = '?', type=str, 
@@ -402,22 +404,23 @@ if __name__ == "__main__":
         if not args.split and not args.join:
             print("Neither split nor join option chosen. Here's a demo of joining")
             args.join = True
-        if args.split:
-            word_in = SanskritObject(args.word, encoding=ie)
-            if args.all:
-                print("All possible splits for {}".format(args.word))
-                splits = sandhi.split_all(word_in)
-            else:
-                pos = int(args.word_or_pos)
-                print("Splitting {0} at {1}".format(args.word, pos))
-                splits = sandhi.split_at(word_in, pos)
-            print(splits)
-        if args.join:
-            print("Joining {0} {1}".format(args.word, args.word_or_pos))
-            first_in = SanskritObject(args.word, encoding=ie)
-            second_in = SanskritObject(args.word_or_pos, encoding=ie)
-            joins = sandhi.join(first_in, second_in)
-            print(joins)
+        with outputctx(args.strict_io):
+            if args.split:
+                word_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                if args.all:
+                    print("All possible splits for {}".format(args.word))
+                    splits = sandhi.split_all(word_in)
+                else:
+                    pos = int(args.word_or_pos)
+                    print("Splitting {0} at {1}".format(args.word, pos))
+                    splits = sandhi.split_at(word_in, pos)
+                print(splits)
+            if args.join:
+                print("Joining {0} {1}".format(args.word, args.word_or_pos))
+                first_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                second_in = SanskritObject(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
+                joins = sandhi.join(first_in, second_in)
+                print(joins)
 
         logging.info("Finished processing at %s", datetime.datetime.now())
         logging.info("---------------------------------------------------")
