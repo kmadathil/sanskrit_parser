@@ -76,10 +76,12 @@ class SanskritObject(object):
             if thing is not None:
                 # Autodetect Encoding
                 self.encoding = SCHEMES[detect.detect(self.thing)]
-        if not strict_io:
-            # Convert to SLP1 and normalize
-            self.thing = self.canonical()
+        if self.encoding != SLP1:
+            # Convert to SLP1 
+            self.thing = self.transcoded(SLP1)
             self.encoding = SLP1
+        if not strict_io:
+            # Normalize
             logger.debug("Before normalization: %s", self.thing)
             self.thing = normalization.normalize(self.thing)
             logger.debug("After normalization: %s", self.thing)
@@ -100,7 +102,7 @@ class SanskritObject(object):
     def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self
         """
-        s = self.transcoded(SLP1)
+        s = self.thing
         if not strict_io:
             s = normalization.denormalize(s)
         return s
@@ -108,7 +110,7 @@ class SanskritObject(object):
     def devanagari(self, strict_io=True):
         """ Return devanagari transcoding of self
         """
-        s = self.transcoded(SLP1)
+        s = self.thing
         if not strict_io:
             s = normalization.denormalize(s)
         return sanscript.transliterate(s, SLP1, DEVANAGARI)
