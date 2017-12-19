@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
 
 
-def normalize(s):
+def normalize(s,vis_end=True):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
     """
@@ -30,7 +30,7 @@ def normalize(s):
     if s[-1] == 'o':
         logger.warning("Detected o at end of string. Replacing with aH")
         s = s[:-1] + 'aH'
-    if s[-1] == 'H':
+    if (s[-1] == 'H') & vis_end:
         logger.warning("Detected H at end of string. Replacing with s")
         s = s[:-1] + 's'
     return s
