@@ -63,7 +63,7 @@ class SanskritObject(object):
     """
 
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
-                 strict_io=True,strict_io_vis=True):
+                 strict_io=True, strict_io_vis=True):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings

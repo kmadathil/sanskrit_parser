@@ -12,9 +12,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
-rakarantas = ['punaH','antaH']
+rakarantas = ['punaH', 'antaH']
 
-def normalize(s,vis_end=True):
+
+def normalize(s, vis_end=True):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
     """
