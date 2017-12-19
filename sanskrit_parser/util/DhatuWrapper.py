@@ -8,6 +8,7 @@ from __future__ import print_function
 import csv
 import logging
 import os
+import codecs
 
 import requests
 from tinydb import TinyDB, Query
@@ -53,7 +54,7 @@ class DhatuWrapper(object):
     def _generate_db(self):
         """ Create db from tsv file """
         self.logger.debug("Parsing files into dict for faster lookup")
-        with open(os.path.join(self.base_dir, self.local_filename), "r") as csvfile:
+        with codecs.open(os.path.join(self.base_dir, self.local_filename), "r", encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile, delimiter='\t', quotechar='"')
             # FIXME - Rewrite from here
             for irx, row in enumerate(reader):

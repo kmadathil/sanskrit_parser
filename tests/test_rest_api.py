@@ -30,7 +30,7 @@ def test_analyses(app_fixture):
     response = app_fixture.get(url)
     analysis = json.loads(response.data)
     logging.debug(str(analysis))
-    assert len(analysis.analysis) > 0
+    assert len(analysis["analysis"]) > 0
 
 
 def test_splits(app_fixture):

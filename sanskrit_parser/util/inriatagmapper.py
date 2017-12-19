@@ -106,7 +106,7 @@ def _inriaTagsToDb(tag):
     return (iset, SanskritObject(otag, encoding=SCHEMES['Devanagari']))
 
 
-inriatagdb = map(_inriaTagsToDb, inriatags)
+inriatagdb = list(map(_inriaTagsToDb, inriatags))
 
 
 def inriaMapTag(tag):
@@ -134,13 +134,13 @@ def inriaTagMapper(tags):
     Returns
        list[(<stem>,set([our tags])) ...]
     '''
-    return map(inriaMapTag, tags)
+    return list(map(inriaMapTag, tags))
 
 
 if __name__ == "__main__":
     import sys
 
     if len(sys.argv) >= 2:
-        print(map(lambda x: inriaMapTag(eval(x)), sys.argv[1:]))
+        print(list(map(lambda x: inriaMapTag(eval(x)), sys.argv[1:])))
     else:
         print("Need at least one argument to convert")
