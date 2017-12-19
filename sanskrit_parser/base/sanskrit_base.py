@@ -77,7 +77,7 @@ class SanskritObject(object):
                 # Autodetect Encoding
                 self.encoding = SCHEMES[detect.detect(self.thing)]
         if self.encoding != SLP1:
-            # Convert to SLP1 
+            # Convert to SLP1
             self.thing = self.transcoded(SLP1)
             self.encoding = SLP1
         if not strict_io:
