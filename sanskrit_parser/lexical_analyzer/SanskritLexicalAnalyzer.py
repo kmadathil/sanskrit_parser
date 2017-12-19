@@ -346,7 +346,9 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i = SanskritBase.SanskritObject(args.data,encoding=ie, strict_io=args.strict_io)
+        i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                                        strict_io=args.strict_io,
+                                        strict_io_vis=(not args.split))
         print("Input String in SLP1:",i.canonical())
         with SanskritBase.outputctx(args.strict_io):
             if not args.split:

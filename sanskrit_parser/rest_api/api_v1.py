@@ -59,7 +59,7 @@ class Splits(Resource):
         g = analyzer.getSandhiSplits(vobj)
         if g:
             splits = g.findAllPaths(10)
-            jsplits = [[ss.devanagari() for ss in s] for s in splits]
+            jsplits = [[ss.devanagari(strict_io=False) for ss in s] for s in splits]
         else:
             jsplits = []
         r = {"input": v, "devanagari": vobj.devanagari(), "splits": jsplits}
@@ -80,9 +80,9 @@ class Morpho(Resource):
         for sp in splits:
             p = analyzer.constrainPath(sp)
             if p:
-                sl = "_".join([spp.devanagari() for spp in sp])
+                sl = "_".join([spp.devanagari(strict_io=False) for spp in sp])
                 mres[sl] = []
                 for pp in p:
-                    mres[sl].append([(spp.devanagari(), jtag(pp[spp.canonical()])) for spp in sp])
+                    mres[sl].append([(spp.devanagari(strict_io=False), jtag(pp[spp.canonical()])) for spp in sp])
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
         return r
