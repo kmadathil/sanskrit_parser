@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
-
+rakarantas = ['punaH','antaH']
 
 def normalize(s,vis_end=True):
     """ Converts user-input into format expected by internal modules.
@@ -31,8 +31,12 @@ def normalize(s,vis_end=True):
         logger.warning("Detected o at end of string. Replacing with aH")
         s = s[:-1] + 'aH'
     if (s[-1] == 'H') & vis_end:
-        logger.warning("Detected H at end of string. Replacing with s")
-        s = s[:-1] + 's'
+        if s in rakarantas:
+            logger.warning("Detected H at end of string. Replacing with r")
+            s = s[:-1] + 'r'
+        else:
+            logger.warning("Detected H at end of string. Replacing with s")
+            s = s[:-1] + 's'
     return s
 
 
