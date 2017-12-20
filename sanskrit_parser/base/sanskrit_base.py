@@ -85,7 +85,7 @@ class SanskritObject(object):
             # Normalize
             logger.debug("Before normalization: %s", self.thing)
             self.thing = normalization.normalize(self.thing,
-                    replace_ending_visarga=strict_io_replace_ending_visarga)
+                                                 replace_ending_visarga=strict_io_replace_ending_visarga)
             logger.debug("After normalization: %s", self.thing)
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }
