@@ -15,7 +15,7 @@ deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
 rakarantas = ['punaH', 'antaH']
 
 
-def normalize(s, vis_end=True):
+def normalize(s, replace_ending_visarga=True):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
     """
@@ -31,7 +31,7 @@ def normalize(s, vis_end=True):
     if s[-1] == 'o':
         logger.warning("Detected o at end of string. Replacing with aH")
         s = s[:-1] + 'aH'
-    if (s[-1] == 'H') & vis_end:
+    if (s[-1] == 'H') & replace_ending_visarga:
         if s in rakarantas:
             logger.warning("Detected H at end of string. Replacing with r")
             s = s[:-1] + 'r'
