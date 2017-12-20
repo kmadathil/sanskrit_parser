@@ -5,10 +5,8 @@ Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 """
 from __future__ import print_function
 
-import csv
 import logging
 import os
-import codecs
 
 import requests
 from tinydb import TinyDB, Query
