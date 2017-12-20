@@ -23,7 +23,8 @@ logging.basicConfig(
 def generate_db(tsv_file, db_file):
         """ Create db from tsv file """
         logger.info("Converting tsv %s to db file %s", tsv_file, db_file)
-        os.remove(db_file)
+        if os.path.exists(db_file):
+            os.remove(db_file)
         db = TinyDB(db_file)
         with codecs.open(tsv_file, "rb", encoding="utf-8") as f:
             row = f.readline().split("\t")
@@ -41,5 +42,5 @@ def generate_db(tsv_file, db_file):
 
 if __name__ == "__main__":
     tsv_file = "dhAtu-pATha-kRShNAchArya.tsv"
-    db_file = os.path.basename(tsv_file) + ".json"
+    db_file = os.path.splitext(tsv_file)[0] + ".json"
     generate_db(tsv_file, db_file)
