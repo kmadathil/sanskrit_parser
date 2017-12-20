@@ -22,9 +22,8 @@ class DhatuWrapper(object):
     https://github.com/sanskrit-coders/stardict-sanskrit/tree/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya
     """
     # Moved to our own repo
-    git_url = 'https://raw.githubusercontent.com/kmadathil/sanskrit_parser/master/data/dhAtu-pATha-kRShNAchArya.tsv'
+    git_url = 'https://raw.githubusercontent.com/kmadathil/sanskrit_parser/master/data/dhAtu-pATha-kRShNAchArya.json'
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
-    local_filename = "dhAtu-pATha-kRShNAchArya.tsv"
     db_file = "dhAtu-pATha-kRShNAchArya.json"
     q = Query()
 
@@ -41,36 +40,14 @@ class DhatuWrapper(object):
         if not os.path.exists(self.base_dir):
             self.logger.debug("Data cache not found. Creating.")
             os.makedirs(self.base_dir)
-        filename = self.local_filename
-        if not os.path.exists(os.path.join(self.base_dir, filename)):
-            self.logger.debug("%s not found. Downloading it", filename)
+        if not os.path.exists(os.path.join(self.base_dir, self.db_file)):
+            self.logger.debug("%s not found. Downloading it", self.db_file)
             r = requests.get(self.git_url, stream=True)
             assert r.status_code != 404, \
                 "Could not download file {}".format(self.git_url)
-            with open(os.path.join(self.base_dir, filename), "wb") as fd:
+            with open(os.path.join(self.base_dir, self.db_file), "wb") as fd:
                 for chunk in r.iter_content(chunk_size=128):
                     fd.write(chunk)
-
-    def _generate_db(self):
-        """ Create db from tsv file """
-        self.logger.debug("Parsing files into dict for faster lookup")
-        with codecs.open(os.path.join(self.base_dir, self.local_filename), "r", encoding="utf-8") as csvfile:
-            reader = csv.reader(csvfile, delimiter='\t', quotechar='"')
-            # FIXME - Rewrite from here
-            for irx, row in enumerate(reader):
-                # Get Keys
-                if irx == 0:
-                    # Only the first 9 columns are useful
-                    headers = [SanskritObject(x).canonical() for x in row[0:8]]
-                    self.logger.debug("Found dhatu tsv headers: {}".format(str(headers)))
-                else:
-                    j = {}
-                    for i, x in enumerate(row):
-                        if i < len(headers):
-                            t = SanskritObject(x).canonical()
-                            j[headers[i]] = t
-                    self.db.insert(j)
-        self.logger.debug("Saved dhatus database")
 
     def _get_dhatus(self, d):
         """ Get all tags for a dhatu d """
