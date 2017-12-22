@@ -62,7 +62,8 @@ class SanskritObject(object):
 
     """
 
-    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8', strict_io=True):
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
+                 strict_io=True, replace_ending_visarga='s'):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
@@ -83,7 +84,13 @@ class SanskritObject(object):
         if not strict_io:
             # Normalize
             logger.debug("Before normalization: %s", self.thing)
-            self.thing = normalization.normalize(self.thing)
+            tmp = normalization.normalize(self.thing)
+            if replace_ending_visarga == 's':
+                self.thing = normalization.replace_ending_visarga_s(tmp)
+            elif replace_ending_visarga == 'r':
+                self.thing = normalization.replace_ending_visarga_r(tmp)
+            else:
+                self.thing = tmp
             logger.debug("After normalization: %s", self.thing)
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }

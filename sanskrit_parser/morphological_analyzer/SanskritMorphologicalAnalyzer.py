@@ -321,7 +321,9 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i=SanskritBase.SanskritObject(args.data,encoding=ie, strict_io=args.strict_io)
+        i=SanskritBase.SanskritObject(args.data,encoding=ie,
+                                      strict_io=args.strict_io,
+                                      replace_ending_visarga=None)
         print("Input String in SLP1:",i.canonical())
         import datetime
         print("Start Split:", datetime.datetime.now())

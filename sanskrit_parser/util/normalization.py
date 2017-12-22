@@ -30,9 +30,22 @@ def normalize(s):
     if s[-1] == 'o':
         logger.warning("Detected o at end of string. Replacing with aH")
         s = s[:-1] + 'aH'
-    if s[-1] == 'H':
+    return s
+
+
+def replace_ending_visarga_s(s):
+    """ Replace the final visarga of a string with s """
+    if (s[-1] == 'H'):
         logger.warning("Detected H at end of string. Replacing with s")
         s = s[:-1] + 's'
+    return s
+
+
+def replace_ending_visarga_r(s):
+    """ Replace the final visarga of a string with r """
+    if (s[-1] == 'H'):
+        logger.warning("Detected H at end of string. Replacing with s")
+        s = s[:-1] + 'r'
     return s
 
 
@@ -42,6 +55,7 @@ def denormalize(s):
     """
     logger.debug("Denormalizing %s", s)
     s = s.replace("s ", "H ")
-    s = re.sub("s$", "H", s)
+    s = s.replace("r ", "H ")
+    s = re.sub("[sr]$", "H", s)
     logger.debug("%s", s)
     return s
