@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 deletions = re.compile("[\u200b\u200c\u200d,'-;().?!\"0123456789{}#\r]")
 
+
 def normalize(s):
     """ Converts user-input into format expected by internal modules.
     Input s is expected to be an SLP1 encoded string
@@ -31,6 +32,7 @@ def normalize(s):
         s = s[:-1] + 'aH'
     return s
 
+
 def replace_ending_visarga_s(s):
     """ Replace the final visarga of a string with s """
     if (s[-1] == 'H'):
@@ -38,13 +40,14 @@ def replace_ending_visarga_s(s):
         s = s[:-1] + 's'
     return s
 
+
 def replace_ending_visarga_r(s):
     """ Replace the final visarga of a string with r """
     if (s[-1] == 'H'):
         logger.warning("Detected H at end of string. Replacing with s")
         s = s[:-1] + 'r'
     return s
-    
+
 
 def denormalize(s):
     """ Converts internal representation into user-friendly output
