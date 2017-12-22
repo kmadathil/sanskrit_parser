@@ -346,20 +346,34 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i = SanskritBase.SanskritObject(args.data,encoding=ie,
-                                        strict_io=args.strict_io,
-                            strict_io_replace_ending_visarga=(not args.split))
-        print("Input String in SLP1:",i.canonical())
         with SanskritBase.outputctx(args.strict_io):
             if not args.split:
-                ts=s.getLexicalTags(i)
+                i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                                                strict_io=args.strict_io,
+                                                replace_ending_visarga='s')
+                print("Input String in SLP1:",i.canonical())
+                ts = s.getLexicalTags(i)
                 print(ts)
+                # Possible rakaranta
+                # Try by replacing end visarga with 'r' instead
+                if (not args.strict_io):
+                    i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                                                    strict_io=args.strict_io,
+                                                    replace_ending_visarga='r')
+                    ts = s.getLexicalTags(i)
+                    if ts is not None:
+                        print("Input String in SLP1:",i.canonical())
+                        print(ts)
                 if args.tag_set or args.base:
                     if args.tag_set:
                         g=set(args.tag_set)
                     print(s.hasTag(i,SanskritBase.SanskritObject(args.base),g))
             else:
                 import datetime
+                i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                                                strict_io=args.strict_io,
+                                                replace_ending_visarga=None)
+                print("Input String in SLP1:",i.canonical())
                 print("Start Split:", datetime.datetime.now())
                 graph=s.getSandhiSplits(i,debug=args.debug)
                 print("End DAG generation:", datetime.datetime.now())
