@@ -13,7 +13,7 @@ SanskritMorphologicalAnalyzer.need_lakara = True
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (SanskritObject(tag[0]).devanagari(), [t.devanagari() for t in list(tag[1])])
+    return (SanskritObject(tag[0], encoding=SLP1).devanagari(), [t.devanagari() for t in list(tag[1])])
 
 def jtags(tags):
     """ Helper to translate tags to serializable format"""
