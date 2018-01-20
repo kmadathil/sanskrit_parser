@@ -127,13 +127,13 @@ class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanskrit lexical analysis. 
     
     """
-    sandhi = Sandhi() # Singleton!
+    sandhi = Sandhi()  # Singleton!
 
-    def __init__(self, lexical_lookup = "inria"):
+    def __init__(self, lexical_lookup="inria"):
         forms = LexicalLookupFactory.create(lexical_lookup)
         self.forms = forms
         pass
-    
+
     def getLexicalTags(self, obj, tmap=True):
         """ Get Lexical tags for a word
 
@@ -325,7 +325,7 @@ if __name__ == "__main__":
         parser.add_argument('--split', action='store_true')
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--max-paths', type=int, default=10)
-        parser.add_argument('--lexical-lookup', type=str, default="inria")
+        parser.add_argument('--lexical-lookup', type=str, default="combined")
         parser.add_argument('--strict-io', action='store_true',
                             help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
@@ -341,7 +341,7 @@ if __name__ == "__main__":
             logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
                                 filemode='w', level=logging.INFO)
 
-        s=SanskritLexicalAnalyzer(args.lexical_lookup)
+        s = SanskritLexicalAnalyzer(args.lexical_lookup)
         if args.input_encoding is None:
             ie = None
         else:
@@ -370,10 +370,10 @@ if __name__ == "__main__":
                     print(s.hasTag(i, SanskritBase.SanskritObject(args.base), g))
             else:
                 import datetime
-                i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                i = SanskritBase.SanskritObject(args.data, encoding=ie,
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga=None)
-                print("Input String in SLP1:",i.canonical())
+                print("Input String in SLP1:", i.canonical())
                 print("Start Split:", datetime.datetime.now())
                 graph = s.getSandhiSplits(i, debug=args.debug)
                 print("End DAG generation:", datetime.datetime.now())
