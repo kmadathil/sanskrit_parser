@@ -28,10 +28,10 @@
                     <label for="inputText">Input Text</label>
                     <input type="text" class="form-control" id="inputText" placeholder="pada or vakya for analysis">
                 </div>
-                <button type="submit" class="btn btn-primary form-group" id="goButton">Go</button>
+                <button type="button" class="btn btn-primary form-group" id="goButton">Go</button>
             </div>
             <div id="devtab" class="d-none">
-                <h3>Input</h3>
+                <h3>Your input</h3>
                 <p id="devinp">input</p>
             </div>
             <div id="restab" class="d-none">
@@ -45,6 +45,13 @@
             </div>
             <div id="jsonbox" class="collapse">
             </div>
+	    <div id="issueButton" class="d-none mt-3">
+                <button id="issueButtonButton" type="button" class="btn btn-info">
+                    Report Issue
+                </button>
+		<button id="gmailLink" type="button" class="d-none btn btn-warning"> Help, your issue button is not opening gmail</button>
+
+            </div>
         </div>
         
         <!-- Optional JavaScript -->
@@ -54,6 +61,7 @@
            src="https://code.jquery.com/jquery-3.2.1.min.js"
            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
            crossorigin="anonymous"></script>
+        <script src="lib/jquery.query-object-2.2.3.js" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
         <script src="sanskrit_parser.js"></script>

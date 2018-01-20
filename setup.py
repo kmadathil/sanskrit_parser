@@ -28,7 +28,7 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='0.0.1.dev5',
+  version='0.0.1.dev6',
 
   description='Tools for lexical and morphological analysis of Sanskrit',
   long_description=long_description,
@@ -86,7 +86,8 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
-                    'python-constraint', 'requests', 'six', 'sanskrit_util'],
+                    'python-constraint', 'requests', 'six', 'flask',
+                    'jsonpickle', 'sanskrit_util'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,

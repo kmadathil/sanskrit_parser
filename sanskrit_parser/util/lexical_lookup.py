@@ -7,21 +7,20 @@ Base class + factory for lexical lookup classes
 from __future__ import print_function
 import abc
 import os
-import inspect
 from argparse import ArgumentParser
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
-import logging
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
+
 
 class LexicalLookup(object):
-    
-    __metaclass__  = abc.ABCMeta
-    
+
+    __metaclass__ = abc.ABCMeta
+
     base_dir = os.path.expanduser("~/.sanskrit_parser/data")
-    
+
     @abc.abstractmethod
     def valid(self, word):
         """ Return True if word is a valid pada """
-        
+
     @abc.abstractmethod
     def get_tags(self, word, tmap=True):
         """ Return lexical tags of word """
@@ -29,7 +28,7 @@ class LexicalLookup(object):
     @staticmethod
     def getArgs():
         """
-          Argparse routine. 
+          Argparse routine.
           Returns args variable
         """
         # Parser Setup
@@ -39,20 +38,20 @@ class LexicalLookup(object):
         parser.add_argument('--loglevel', type=str, default="info",
                             help="logging level. Can be any level supported by logging module")
 
-        parser.add_argument('word', nargs = '?', type=str, 
-                            default=None, 
+        parser.add_argument('word', nargs='?', type=str,
+                            default=None,
                             help="Word to look up")
 
         return parser.parse_args()
-    
+
     def main(self, args):
         if args.input_encoding is None:
             ie = None
         else:
             ie = SCHEMES[args.input_encoding]
-            
+
         word_in = SanskritObject(args.word, encoding=ie).transcoded(SLP1)
         print("Getting tags for", word_in)
         tags = self.get_tags(word_in)
-        if tags != None:
+        if tags is not None:
             map(print, tags)

@@ -74,6 +74,27 @@ method:
 
 **Note**: As mentioned previously, both over-generation and
 under-generation are possible with the ``Sandhi`` class.
+
+
+Command line usage
+==================
+
+::
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
+    Joining te eva
+    set([u'teeva', u'taeva', u'ta eva', u'tayeva'])
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1
+    Splitting taeva at 1
+    set([(u'tar', u'eva'), (u'tas', u'eva'), (u'taH', u'eva'), (u'ta', u'eva')])
+
+    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
+    All possible splits for taeva
+    set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'), (u'ta', u'eva'), (u'te', u'eva'), (u'taH', u'eva'), (u'tae', u'va'), (u'taeva', u''), (u'tas', u'eva')])
+
+
+
 """
 
 from __future__ import print_function
@@ -86,8 +107,8 @@ import inspect
 import logging
 import datetime
 import six
-from sanskrit_parser.base.SanskritBase import SanskritObject, SLP1, SCHEMES
-from sanskrit_parser.base.MaheshvaraSutras import MaheshvaraSutras
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES, outputctx
+from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
 
 class Sandhi(object):
     """
@@ -144,8 +165,8 @@ class Sandhi(object):
         :return: list of strings of possible sandhi forms, or None if no sandhi can be performed 
         
         """
-        first = first_in.transcoded(SLP1)
-        second = second_in.transcoded(SLP1)
+        first = first_in.canonical()
+        second = second_in.canonical()
         self.logger.debug("Join: %s, %s", first, second)
         if first is None or len(first) == 0:
             return second
@@ -178,7 +199,7 @@ class Sandhi(object):
         :return: set of tuple of strings of possible split forms, or None if no split can be performed 
         
         """
-        word = word_in.transcoded(SLP1)
+        word = word_in.canonical()
         self.logger.debug("Split: %s, %d", word, idx)
         splits = set()
         # Figure out how may chars we can extract for the afters
@@ -210,7 +231,7 @@ class Sandhi(object):
         
         """
         splits = set()
-        word = word_in.transcoded(SLP1)
+        word = word_in.canonical()
         start = start or 0
         stop = stop or len(word)
         for idx in six.moves.range(start, stop):
@@ -248,7 +269,7 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = list(map(six.text_type.strip, c.split('-')))
-                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
+                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
@@ -268,7 +289,7 @@ class Sandhi(object):
                     if c.startswith("*"):
                         # This is a mAheswara sUtra pratyAhAra
                         splits = list(map(six.text_type.strip, re.split('([+-])', c)))
-                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).transcoded(SLP1))
+                        varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
                         if len(splits) == 3:
                             if splits[1] == '-':
                                 varnas -= set(splits[2])
@@ -290,7 +311,8 @@ class Sandhi(object):
             list_before_r = list(before_r)
             left_right = (left, right)
             a = after.format(*(list(before_l) + list_before_r))
-            self.logger.debug("Final rule = %s -> %s", left_right, a)
+            # The below is just too much logging - should be silenced in production:
+            # self.logger.debug("Final rule = %s -> %s", left_right, a)
             yield (left_right, a)
 
     def add_rules_from_file(self, path):
@@ -311,7 +333,7 @@ class Sandhi(object):
                 if line.startswith('#') or line == '':
                     continue
                 self.logger.debug("Processing rule %s", line)
-                rule = SanskritObject(line).transcoded(SLP1)
+                rule = SanskritObject(line).canonical()
                 for r in self.expand_rule(rule):
                     self.add_rule(*r, annotation= "%s:%d" % (filename, linenum+1))
                 
@@ -347,6 +369,8 @@ if __name__ == "__main__":
         parser.add_argument('--split', action='store_true', help="Split the given word using sandhi rules")
         parser.add_argument('--join', action='store_true', help="Join the given words using sandhi rules")
         parser.add_argument('--all', action='store_true', help="Return splits at all possible locations")
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         
         # String to encode
         parser.add_argument('word', nargs = '?', type=str, 
@@ -380,22 +404,23 @@ if __name__ == "__main__":
         if not args.split and not args.join:
             print("Neither split nor join option chosen. Here's a demo of joining")
             args.join = True
-        if args.split:
-            word_in = SanskritObject(args.word, encoding=ie)
-            if args.all:
-                print("All possible splits for {}".format(args.word))
-                splits = sandhi.split_all(word_in)
-            else:
-                pos = int(args.word_or_pos)
-                print("Splitting {0} at {1}".format(args.word, pos))
-                splits = sandhi.split_at(word_in, pos)
-            print(splits)
-        if args.join:
-            print("Joining {0} {1}".format(args.word, args.word_or_pos))
-            first_in = SanskritObject(args.word, encoding=ie)
-            second_in = SanskritObject(args.word_or_pos, encoding=ie)
-            joins = sandhi.join(first_in, second_in)
-            print(joins)
+        with outputctx(args.strict_io):
+            if args.split:
+                word_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                if args.all:
+                    print("All possible splits for {}".format(args.word))
+                    splits = sandhi.split_all(word_in)
+                else:
+                    pos = int(args.word_or_pos)
+                    print("Splitting {0} at {1}".format(args.word, pos))
+                    splits = sandhi.split_at(word_in, pos)
+                print(splits)
+            if args.join:
+                print("Joining {0} {1}".format(args.word, args.word_or_pos))
+                first_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                second_in = SanskritObject(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
+                joins = sandhi.join(first_in, second_in)
+                print(joins)
 
         logging.info("Finished processing at %s", datetime.datetime.now())
         logging.info("---------------------------------------------------")

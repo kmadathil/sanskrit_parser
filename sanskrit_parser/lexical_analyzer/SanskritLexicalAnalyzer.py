@@ -7,8 +7,10 @@
 """
 
 from __future__ import print_function
-import sanskrit_parser.base.SanskritBase as SanskritBase
 from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
+import sanskrit_parser.base.sanskrit_base as SanskritBase
+import sanskrit_parser.util.inriatagmapper as inriatagmapper
+from sanskrit_parser.util import normalization
 
 import re
 import networkx as nx
@@ -28,7 +30,7 @@ class SanskritLexicalGraph(object):
     """
     start = "__start__"
     end = "__end__"
-    def __init__(self,elem=None,end=False):
+    def __init__(self, elem=None, end=False):
         ''' DAG Class Init
         
         Params:
@@ -36,13 +38,13 @@ class SanskritLexicalGraph(object):
             end  (bool :optional:): Add end edge to initial element
         '''
         self.roots = []
-        self.G     = nx.DiGraph()
+        self.G = nx.DiGraph()
         if elem is not None:
-            self.addNode(elem,root=True,end=end)
+            self.addNode(elem, root=True, end=end)
     def __iter__(self):
         ''' Iterate over nodes '''
         return self.G.__iter__()
-    def hasNode(self,t):
+    def hasNode(self, t):
         ''' Does a given node exist in the graph?
 
             Params:
@@ -51,7 +53,7 @@ class SanskritLexicalGraph(object):
                boolean
         '''
         return t in self.G
-    def appendToNode(self,t,rdag):
+    def appendToNode(self, t, rdag):
         """ append rdag to self, adding edges from a given node to rdag's roots 
 
             Params:
@@ -60,10 +62,10 @@ class SanskritLexicalGraph(object):
         """
         # t is in our graph
         assert t in self.G
-        self.G = nx.compose(self.G,rdag.G)
+        self.G = nx.compose(self.G, rdag.G)
         for r in rdag.roots:
-            self.G.add_edge(t,r)
-    def addNode(self,node,root=False,end=False):
+            self.G.add_edge(t, r)
+    def addNode(self, node, root=False, end=False):
         """ Extend dag with node inserted at root             
 
             Params:
@@ -76,11 +78,11 @@ class SanskritLexicalGraph(object):
         if root:
             self.roots.append(node)
         if end:
-            self.G.add_edge(node,self.end)
-    def addEndEdge(self,node):
+            self.G.add_edge(node, self.end)
+    def addEndEdge(self, node):
         ''' Add an edge from node to end '''
         assert node in self.G
-        self.G.add_edge(node,self.end)
+        self.G.add_edge(node, self.end)
     def lockStart(self):
         ''' Make the graph ready for search by adding a start node
 
@@ -89,9 +91,9 @@ class SanskritLexicalGraph(object):
         '''
         self.G.add_node(self.start)
         for r in self.roots:
-            self.G.add_edge(self.start,r)
-        self.roots=[]
-    def findAllPaths(self,max_paths=10,sort=True,debug=False):
+            self.G.add_edge(self.start, r)
+        self.roots = []
+    def findAllPaths(self, max_paths=10, sort=True, debug=False):
         """ Find all paths through DAG to End 
 
             Params:
@@ -103,14 +105,14 @@ class SanskritLexicalGraph(object):
         if self.roots:
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
-        if max_paths <=1000:
-            return list(six.moves.map(lambda x: x[1:-1],\
+        if max_paths <= 1000:
+            return list(six.moves.map(lambda x: x[1:-1], \
                              islice(nx.shortest_simple_paths(self.G,
                                                              self.start,
                                                              self.end),
                                     max_paths)))
-        else: # Fall back to all_simple_paths
-            ps = list(six.moves.map(lambda x: x[1:-1],\
+        else:  # Fall back to all_simple_paths
+            ps = list(six.moves.map(lambda x: x[1:-1], \
                              nx.all_simple_paths(self.G, self.start, self.end)))
             # If we do not intend to display paths, no need to sort them
             if sort:
@@ -120,12 +122,11 @@ class SanskritLexicalGraph(object):
     def __str__(self):
         """ Print representation of DAG """
         return str(self.G)
-    
+
 class SanskritLexicalAnalyzer(object):
     """ Singleton class to hold methods for Sanskrit lexical analysis. 
     
     """
-    
     sandhi = Sandhi() # Singleton!
 
     def __init__(self, lexical_lookup = "inria"):
@@ -133,7 +134,7 @@ class SanskritLexicalAnalyzer(object):
         self.forms = forms
         pass
     
-    def getLexicalTags(self,obj, tmap=True):
+    def getLexicalTags(self, obj, tmap=True):
         """ Get Lexical tags for a word
 
             Params:
@@ -143,11 +144,11 @@ class SanskritLexicalAnalyzer(object):
             Returns
                 list: List of (base, tagset) pairs
         """
-        ot = obj.transcoded(SanskritBase.SLP1)
-        tags=self.forms.get_tags(ot, tmap)
+        ot = obj.canonical()
+        tags = self.forms.get_tags(ot, tmap)
         return tags
-        
-    def hasTag(self,obj,name,tagset):
+
+    def hasTag(self, obj, name, tagset):
         """ Check if word matches lexical tags
 
             Params:
@@ -167,16 +168,16 @@ class SanskritLexicalAnalyzer(object):
             # Name is none, or name matches
             # Tagset is None, or all its elements are found in Inria tagset
             if ((name is None) or\
-                name.transcoded(SanskritBase.SLP1)==li[0]) and \
+                name.canonical() == li[0]) and \
                ((tagset is None) or\
                 tagset.issubset(li[1])):
                 r.append(li)
-        if r==[]:
+        if r == []:
             return None
         else:
             return r
 
-    def tagLexicalGraph(self,g):
+    def tagLexicalGraph(self, g):
         ''' Tag a Lexical Graph with lexical tags
 
          Params:
@@ -184,12 +185,12 @@ class SanskritLexicalAnalyzer(object):
         '''
         for n in g:
             # Avoid start and end
-            if isinstance(n,SanskritBase.SanskritObject):
-                t=self.getLexicalTags(n)
-                logger.debug("Tags for %s = %s", n, t)
+            if isinstance(n, SanskritBase.SanskritObject):
+                t = self.getLexicalTags(n)
+                logger.debug("Got tags %s for %s", t, n)
                 n.setLexicalTags(t)
-        
-    def getSandhiSplits(self,o,tag=False,debug=False):
+
+    def getSandhiSplits(self, o, tag=False, debug=False):
         ''' Get all valid Sandhi splits for a string
 
             Params: 
@@ -202,15 +203,15 @@ class SanskritLexicalAnalyzer(object):
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
         s = o.canonical()
-        dag = self._possible_splits(s,debug)
+        dag = self._possible_splits(s, debug)
         if tag and dag:
             self.tagLexicalGraph(dag)
         if not dag:
             return None
         else:
             return dag
-        
-    def _possible_splits(self,s,debug=False):
+
+    def _possible_splits(self, s, debug=False):
         ''' private method to dynamically compute all sandhi splits
 
         Used by getSandhiSplits
@@ -219,17 +220,17 @@ class SanskritLexicalAnalyzer(object):
             Returns:
               SanskritLexicalGraph : DAG of possible splits
         '''
-        logger.debug("Splitting "+s)
+        logger.debug("Splitting " + s)
         def _is_valid_word(ss):
             r = self.forms.valid(ss)
             return r
-         
+
         def _sandhi_splits_all(s, start=None,
                                stop=None):
-            obj = SanskritBase.SanskritObject(s,encoding=SanskritBase.SLP1)
+            obj = SanskritBase.SanskritObject(s, encoding=SanskritBase.SLP1)
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
-                
+
         splits = False
 
         # Memoization for dynamic programming - remember substrings that've
@@ -240,68 +241,68 @@ class SanskritLexicalAnalyzer(object):
 
         # If a space is found in a string, stop at that space
         spos = s.find(' ')
-        if spos!=-1:
+        if spos != -1:
             # Replace the first space only
-            s=s.replace(' ','',1)
-            
-        s_c_list = _sandhi_splits_all(s, start=0, stop=spos+1)
-        logger.debug("s_c_list: "+str(s_c_list))
+            s = s.replace(' ', '', 1)
+
+        s_c_list = _sandhi_splits_all(s, start=0, stop=spos + 1)
+        logger.debug("s_c_list: " + str(s_c_list))
         if s_c_list == None: s_c_list = []
 
         node_cache = {}
 
-        for (s_c_left,s_c_right) in s_c_list:
+        for (s_c_left, s_c_right) in s_c_list:
             # Is the left side a valid word?
             if _is_valid_word(s_c_left):
-                logger.debug("Valid left word: "+s_c_left)
+                logger.debug("Valid left word: " + s_c_left)
                 # For each split with a valid left part, check it there are
                 # valid splits of the right part
                 if s_c_right and s_c_right != '':
-                    logger.debug("Trying to split:"+s_c_right)
-                    rdag = self._possible_splits(s_c_right,debug)
+                    logger.debug("Trying to split:" + s_c_right)
+                    rdag = self._possible_splits(s_c_right, debug)
                     # if there are valid splits of the right side
                     if rdag:
                         # Make sure we got a graph back
-                        assert isinstance(rdag,SanskritLexicalGraph)
+                        assert isinstance(rdag, SanskritLexicalGraph)
                         # if there are valid splits of the right side
                         if s_c_left not in node_cache:
                             # Extend splits list with s_c_left appended with
                             # possible splits of s_c_right
-                            t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                            t = SanskritBase.SanskritObject(s_c_left, encoding=SanskritBase.SLP1)
                             node_cache[s_c_left] = t
                         else:
                             t = node_cache[s_c_left]
                         if not splits:
                             splits = SanskritLexicalGraph()
                         if not splits.hasNode(t):
-                            splits.addNode(t,root=True)
-                        splits.appendToNode(t,rdag)
-                else: # Null right part
+                            splits.addNode(t, root=True)
+                        splits.appendToNode(t, rdag)
+                else:  # Null right part
                     # Why cache s_c_left here? To handle the case
                     # where the same s_c_left appears with a null and non-null
                     # right side.
                     if s_c_left not in node_cache:
                         # Extend splits list with s_c_left appended with
                         # possible splits of s_c_right
-                        t = SanskritBase.SanskritObject(s_c_left,encoding=SanskritBase.SLP1)
+                        t = SanskritBase.SanskritObject(s_c_left, encoding=SanskritBase.SLP1)
                         node_cache[s_c_left] = t
                     else:
                         t = node_cache[s_c_left]
                     if not splits:
                         splits = SanskritLexicalGraph()
                     if not splits.hasNode(t):
-                        splits.addNode(t,root=True,end=True)
+                        splits.addNode(t, root=True, end=True)
                     else:
                         splits.addEndEdge(t)
             else:
-                logger.debug("Invalid left word: "+s_c_left)
+                logger.debug("Invalid left word: " + s_c_left)
         # Update scoreboard for this substring, so we don't have to split
-        # again  
-        self.dynamic_scoreboard[s]=splits
+        # again
+        self.dynamic_scoreboard[s] = splits
         if not splits:
-            logger.debug("Returning:"+str(splits))
+            logger.debug("Returning:" + str(splits))
         else:
-            logger.debug("Returning: "+" ".join(map(str,splits.G.nodes())))
+            logger.debug("Returning: " + " ".join(map(str, splits.G.nodes())))
         return splits
 
 if __name__ == "__main__":
@@ -314,21 +315,23 @@ if __name__ == "__main__":
         # Parser Setup
         parser = ArgumentParser(description='Lexical Analyzer')
         # String to encode
-        parser.add_argument('data',nargs="?",type=str,default="adhi")
+        parser.add_argument('data', nargs="?", type=str, default="adhi")
         # Input Encoding (autodetect by default)
-        parser.add_argument('--input-encoding',type=str,default=None)
+        parser.add_argument('--input-encoding', type=str, default=None)
         # Filter by base name
-        parser.add_argument('--base',type=str,default=None)
+        parser.add_argument('--base', type=str, default=None)
         # Filter by tag set
-        parser.add_argument('--tag-set',type=str,default=None,nargs="+")
-        parser.add_argument('--split',action='store_true')
-        parser.add_argument('--debug',action='store_true')
-        parser.add_argument('--max-paths',type=int,default=10)
+        parser.add_argument('--tag-set', type=str, default=None, nargs="+")
+        parser.add_argument('--split', action='store_true')
+        parser.add_argument('--debug', action='store_true')
+        parser.add_argument('--max-paths', type=int, default=10)
         parser.add_argument('--lexical-lookup', type=str, default="inria")
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
 
     def main():
-        args=getArgs()
+        args = getArgs()
         print("Input String:", args.data)
 
         if args.debug:
@@ -343,31 +346,48 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print("Input String in SLP1:",i.canonical())
-        if not args.split:
-            ts=s.getLexicalTags(i)
-            print(ts)
-            if args.tag_set or args.base:
-                if args.tag_set:
-                    g=set(args.tag_set)
-                print(s.hasTag(i,SanskritBase.SanskritObject(args.base),g))
-        else:
-            import datetime
-            print("Start Split:", datetime.datetime.now())
-            graph=s.getSandhiSplits(i,debug=args.debug)
-            print("End DAG generation:", datetime.datetime.now())
-            if graph:
-                splits=graph.findAllPaths(max_paths=args.max_paths,
-                                          debug=args.debug)
-                print("End pathfinding:", datetime.datetime.now())
-                print("Splits:")
-                if splits:
-                    for split in splits:
-                        print(split)
-                else:
-                    print("None")
+        with SanskritBase.outputctx(args.strict_io):
+            if not args.split:
+                i = SanskritBase.SanskritObject(args.data, encoding=ie,
+                                                strict_io=args.strict_io,
+                                                replace_ending_visarga='s')
+                print("Input String in SLP1:", i.canonical())
+                ts = s.getLexicalTags(i)
+                print(ts)
+                # Possible rakaranta
+                # Try by replacing end visarga with 'r' instead
+                if not args.strict_io:
+                    i = SanskritBase.SanskritObject(args.data, encoding=ie,
+                                                    strict_io=args.strict_io,
+                                                    replace_ending_visarga='r')
+                    ts = s.getLexicalTags(i)
+                    if ts is not None:
+                        print("Input String in SLP1:", i.canonical())
+                        print(ts)
+                if args.tag_set or args.base:
+                    if args.tag_set:
+                        g = set(args.tag_set)
+                    print(s.hasTag(i, SanskritBase.SanskritObject(args.base), g))
             else:
-                print("No Valid Splits Found")
+                import datetime
+                i = SanskritBase.SanskritObject(args.data,encoding=ie,
+                                                strict_io=args.strict_io,
+                                                replace_ending_visarga=None)
+                print("Input String in SLP1:",i.canonical())
+                print("Start Split:", datetime.datetime.now())
+                graph = s.getSandhiSplits(i, debug=args.debug)
+                print("End DAG generation:", datetime.datetime.now())
+                if graph:
+                    splits = graph.findAllPaths(max_paths=args.max_paths,
+                                              debug=args.debug)
+                    print("End pathfinding:", datetime.datetime.now())
+                    print("Splits:")
+                    if splits:
+                        for split in splits:
+                            print(split)
+                    else:
+                        print("None")
+                else:
+                    print("No Valid Splits Found")
     main()
 

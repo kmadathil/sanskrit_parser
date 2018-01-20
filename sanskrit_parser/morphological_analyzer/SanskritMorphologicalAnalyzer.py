@@ -6,7 +6,7 @@
 
 '''
 from __future__ import print_function
-import sanskrit_parser.base.SanskritBase as SanskritBase
+import sanskrit_parser.base.sanskrit_base as SanskritBase
 import sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer as SanskritLexicalAnalyzer
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
@@ -21,7 +21,7 @@ need_lakara=False
 dw=DhatuWrapper()
 
 def getSLP1Tagset(n):
-    return set(map(lambda x: x.transcoded(SanskritBase.SLP1),list(n[1])))
+    return set(map(lambda x: x.canonical(),list(n[1])))
 
 # Lakaras
 _lakaras=set(['law','liw','luw','lrw','low','laN','liN','luN','lfN','viDiliN','law-karmaRi','liw-karmaRi','luw-karmaRi','lrw-karmaRi','low-karmaRi','laN-karmaRi','liN-karmaRi','luN-karmaRi','lfN-karmaRi'])
@@ -304,6 +304,8 @@ if __name__ == "__main__":
         parser.add_argument('--debug',action='store_true')
         parser.add_argument('--max-paths',type=int,default=10)
         parser.add_argument('--lexical-lookup', type=str, default="combined")
+        parser.add_argument('--strict-io', action='store_true',
+                            help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
 
     def main():
@@ -321,29 +323,32 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i=SanskritBase.SanskritObject(args.data,encoding=ie)
-        print("Input String in SLP1:",i.transcoded(SanskritBase.SLP1))
+        i=SanskritBase.SanskritObject(args.data,encoding=ie,
+                                      strict_io=args.strict_io,
+                                      replace_ending_visarga=None)
+        print("Input String in SLP1:",i.canonical())
         import datetime
         print("Start Split:", datetime.datetime.now())
         graph=s.getSandhiSplits(i,tag=True,debug=args.debug)
         print("End DAG generation:", datetime.datetime.now())
-        if graph:
-            splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
-            print("End pathfinding:", datetime.datetime.now())
-            print("Splits:")
-            for sp in splits:
-                print("Lexical Split:",sp)
-                p=s.constrainPath(sp)
-                if p:
-                    print("Valid Morphologies")
-                    for pp in p:
-                        pprint.pprint([(spp,pp[str(spp)]) for spp in sp])
-                else:
-                    print("No valid morphologies for this split")
-            print("End Morphological Analysis:", datetime.datetime.now())
-        else:
-            print("No Valid Splits Found")
-            return
+        with SanskritBase.outputctx(args.strict_io):
+            if graph:
+                splits=graph.findAllPaths(max_paths=args.max_paths,debug=args.debug)
+                print("End pathfinding:", datetime.datetime.now())
+                print("Splits:")
+                for sp in splits:
+                    print("Lexical Split:",sp)
+                    p=s.constrainPath(sp)
+                    if p:
+                        print("Valid Morphologies")
+                        for pp in p:
+                            print([(spp,pp[str(spp)]) for spp in sp])
+                    else:
+                        print("No valid morphologies for this split")
+                print("End Morphological Analysis:", datetime.datetime.now())
+            else:
+                print("No Valid Splits Found")
+                return
             
     main()
 

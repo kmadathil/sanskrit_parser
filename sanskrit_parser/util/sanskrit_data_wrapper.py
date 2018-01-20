@@ -12,8 +12,9 @@ import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
-from sanskrit_parser.base.SanskritBase import SanskritObject, DEVANAGARI, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, SLP1
 import requests
+
 
 class SanskritDataWrapper(LexicalLookup):
 
@@ -24,8 +25,8 @@ class SanskritDataWrapper(LexicalLookup):
     def __init__(self, logger=None):
         self._get_file()
         config = {
-            "DATABASE_URI":'sqlite:///' + self.db_file,
-            "DATA_PATH":""}
+            "DATABASE_URI": 'sqlite:///' + self.db_file,
+            "DATA_PATH": ""}
         ctx = sanskrit_util.context.Context(config)
         self.analyzer = sanskrit_util.analyze.SimpleAnalyzer(ctx)
         self.tag_cache = {}
@@ -38,7 +39,7 @@ class SanskritDataWrapper(LexicalLookup):
             return True
         else:
             tags = self.get_tags(word, tmap=False)
-            if tags != None:
+            if tags is not None:
                 self.logger.debug("Found tags")
                 return True
         self.logger.debug("Returning False")
@@ -72,26 +73,28 @@ class SanskritDataWrapper(LexicalLookup):
 
     vacanam = ['एकवचनम्', 'द्विवचनम्', 'बहुवचनम्']
     lingam = ['पुंल्लिङ्गम्', 'स्त्रीलिङ्गम्', 'नपुंसकलिङ्गम्', 'त्रिलिङ्गम्']
-    vibhakti = ['प्रथमाविभक्तिः', 'द्वितीयाविभक्तिः', 'तृतीयाविभक्तिः', 'चतुर्थीविभक्तिः', 'पञ्चमीविभक्तिः', 'षष्ठीविभक्तिः', 'सप्तमीविभक्तिः', 'संबोधनविभक्तिः']
+    vibhakti = ['प्रथमाविभक्तिः', 'द्वितीयाविभक्तिः', 'तृतीयाविभक्तिः',
+                'चतुर्थीविभक्तिः', 'पञ्चमीविभक्तिः', 'षष्ठीविभक्तिः',
+                'सप्तमीविभक्तिः', 'संबोधनविभक्तिः']
     lakAra = ['लट्', 'लुङ्', 'लङ्', 'लिट्', 'लृट्', 'लुट्', 'लृङ्', 'विधिलिङ्', 'लोट्', 'आशीर्लिङ्', 'आगमाभावयुक्तलुङ्']
     pada_prayoga = ['परस्मैपदम्', 'आत्मनेपदम्', 'उभयपदम्', 'कर्तरि', 'कर्मणि']
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     kRdanta = {
-        ('past', 'pass')   : 'कर्मणिभूतकृदन्तः',
-        ('fut', 'para')    : 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
-        ('fut', 'atma')    : 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
-        ('fut', 'pass')    : 'कर्मणिभविष्यत्कृदन्तः',
-        ('pres', 'para')   : 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
-        ('pres', 'atma')   : 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
-        ('pres', 'pass')   : 'कर्मणिवर्तमानकृदन्तः',
-        ('past', 'active') : 'कर्तरिभूतकृदन्तः',
-        ('past', 'pass')   : 'कर्मणिभूतकृदन्तः',
-        ('perf', 'para')   : 'पूर्णभूतकृदन्त-परस्मैपदी',
-        ('perf', 'atma')   : 'पूर्णभूतकृदन्त-आत्मनेपदी'
+        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
+        ('fut', 'para'): 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
+        ('fut', 'atma'): 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
+        ('fut', 'pass'): 'कर्मणिभविष्यत्कृदन्तः',
+        ('pres', 'para'): 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
+        ('pres', 'atma'): 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
+        ('pres', 'pass'): 'कर्मणिवर्तमानकृदन्तः',
+        ('past', 'active'): 'कर्तरिभूतकृदन्तः',
+        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
+        ('perf', 'para'): 'पूर्णभूतकृदन्त-परस्मैपदी',
+        ('perf', 'atma'): 'पूर्णभूतकृदन्त-आत्मनेपदी'
     }
 
     def refresh(self, obj):
-        if hasattr(obj, "id") and obj.id != None:
+        if hasattr(obj, "id") and obj.id is not None:
             return self.analyzer.session.query(type(obj)).populate_existing().get(obj.id)
         else:
             return obj
@@ -144,6 +147,7 @@ class SanskritDataWrapper(LexicalLookup):
             else:
                 out.append(t)
         return out
+
 
 if __name__ == "__main__":
     args = LexicalLookup.getArgs()

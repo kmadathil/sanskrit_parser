@@ -1,0 +1,528 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sanskrit_parser.lexical_analyzer.sandhi &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sanskrit_parser.lexical_analyzer.sandhi</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Intro</span>
+<span class="sd">=====</span>
+<span class="sd">Sandhi splitter for Samskrit.</span>
+<span class="sd">Builds up a database of sandhi rules and utilizes them for both</span>
+<span class="sd">performing sandhi and splitting words.</span>
+
+<span class="sd">Will generate splits that may not all be valid words. That is left to the</span>
+<span class="sd">calling module to validate. See for example SanskritLexicalAnalyzer</span>
+
+<span class="sd">Example usage:</span>
+<span class="sd">    from sandhi import Sandhi</span>
+<span class="sd">    sandhi = Sandhi()</span>
+<span class="sd">    joins = sandhi.join(&#39;tasmin&#39;, &#39;iti&#39;)</span>
+<span class="sd">    splits = sandhi.split_at(&#39;tasminniti&#39;, 5)</span>
+
+<span class="sd">Draws inspiration from https://github.com/sanskrit/sanskrit</span>
+
+<span class="sd">@author: Avinash Varna (github: @avinashvarna)</span>
+
+<span class="sd">Usage</span>
+<span class="sd">=====</span>
+<span class="sd">The ``Sandhi`` class can be used to join/split words:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.lexical_analyzer.sandhi import Sandhi</span>
+<span class="sd">    &gt;&gt;&gt; sandhi = Sandhi()</span>
+<span class="sd">    &gt;&gt;&gt; word1 = SanskritObject(&#39;te&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; word2 = SanskritObject(&#39;eva&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; joins = sandhi.join(word1, word2)</span>
+<span class="sd">    &gt;&gt;&gt; for join in joins:</span>
+<span class="sd">    ...    print(join)</span>
+<span class="sd">    ...</span>
+<span class="sd">    teeva</span>
+<span class="sd">    taeva</span>
+<span class="sd">    ta eva</span>
+<span class="sd">    tayeva</span>
+
+<span class="sd">To split at a specific position, use the ``Sandhi.split_at()`` method:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; w = SanskritObject(&#39;taeva&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; splits = sandhi.split_at(w, 1)</span>
+<span class="sd">    &gt;&gt;&gt; for split in splits:</span>
+<span class="sd">    ...    print(split)</span>
+<span class="sd">    ...</span>
+<span class="sd">    (u&#39;tar&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;tas&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;taH&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;ta&#39;, u&#39;eva&#39;)</span>
+
+<span class="sd">To split at all possible locations, use the ``Sandhi.split_all()``</span>
+<span class="sd">method:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; splits_all = sandhi.split_all(w)</span>
+<span class="sd">    &gt;&gt;&gt; for split in splits_all:</span>
+<span class="sd">    ...    print(split)</span>
+<span class="sd">    ...</span>
+<span class="sd">    (u&#39;t&#39;, u&#39;aeva&#39;)</span>
+<span class="sd">    (u&#39;tar&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;taev&#39;, u&#39;a&#39;)</span>
+<span class="sd">    (u&#39;to&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;ta&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;te&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;taH&#39;, u&#39;eva&#39;)</span>
+<span class="sd">    (u&#39;tae&#39;, u&#39;va&#39;)</span>
+<span class="sd">    (u&#39;taeva&#39;, u&#39;&#39;)</span>
+<span class="sd">    (u&#39;tas&#39;, u&#39;eva&#39;)</span>
+
+<span class="sd">**Note**: As mentioned previously, both over-generation and</span>
+<span class="sd">under-generation are possible with the ``Sandhi`` class.</span>
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva</span>
+<span class="sd">    Joining te eva</span>
+<span class="sd">    set([u&#39;teeva&#39;, u&#39;taeva&#39;, u&#39;ta eva&#39;, u&#39;tayeva&#39;])</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1</span>
+<span class="sd">    Splitting taeva at 1</span>
+<span class="sd">    set([(u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;tas&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;)])</span>
+
+<span class="sd">    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all</span>
+<span class="sd">    All possible splits for taeva</span>
+<span class="sd">    set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;taev&#39;, u&#39;a&#39;), (u&#39;to&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;), (u&#39;te&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;tae&#39;, u&#39;va&#39;), (u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])</span>
+
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
+
+<div class="viewcode-block" id="Sandhi"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi">[docs]</a><span class="k">class</span> <span class="nc">Sandhi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to hold all the sandhi rules and methods for joining and splitting.</span>
+<span class="sd">    Uses SLP1 encoding for all internal operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_default_rules</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">logger</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sandhi class constructor</span>
+<span class="sd">        </span>
+<span class="sd">        :param rules_dir: directory to read rules from</span>
+<span class="sd">        :param use_default_rules: reads pre-built-rules from sandhi_rules dir under module directory</span>
+<span class="sd">        :param logger: instance of python logger to use</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lc_len_max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rc_len_max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span> <span class="ow">or</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rules_dir</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_rules_from_dir</span><span class="p">(</span><span class="n">rules_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_default_rules</span><span class="p">:</span>
+            <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">())))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_rules_from_dir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span><span class="s2">&quot;sandhi_rules&quot;</span><span class="p">))</span>
+        
+<div class="viewcode-block" id="Sandhi.add_rule"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.add_rule">[docs]</a>    <span class="k">def</span> <span class="nf">add_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a single sandhi rule to the rule database</span>
+<span class="sd">        </span>
+<span class="sd">        :param before: tuple of length two of the varNas involved in the sandhi</span>
+<span class="sd">        :param after: result of the sandhi</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">[</span><span class="n">before</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">after</span><span class="p">,</span> <span class="n">annotation</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">[</span><span class="n">after</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">before</span><span class="p">,</span> <span class="n">annotation</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">lc_len_max</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting lc_len_max to </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rc_len_max</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting rc_len_max to </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting after_len_max to </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lc_len_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lc_len_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rc_len_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rc_len_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="Sandhi.join"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs sandhi.</span>
+<span class="sd">        **Warning**: May generate forms that are not lexically valid.</span>
+<span class="sd">        </span>
+<span class="sd">        :param first_in: SanskritObject first word of the sandhi</span>
+<span class="sd">        :param second_in: SanskritObject word of the sandhi</span>
+<span class="sd">        :return: list of strings of possible sandhi forms, or None if no sandhi can be performed </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">first_in</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">)</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="n">second_in</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Join: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">second</span>
+        <span class="k">if</span> <span class="n">second</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">first</span>
+        <span class="n">left_chars</span> <span class="o">=</span> <span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">lc_len_max</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">))]</span>
+        <span class="n">right_chars</span> <span class="o">=</span> <span class="p">[</span><span class="n">second</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rc_len_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">second</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;left_chars = </span><span class="si">%s</span><span class="s2">, right_chars </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">left_chars</span><span class="p">,</span> <span class="n">right_chars</span><span class="p">)</span>
+        
+        <span class="n">joins</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">left_chars</span><span class="p">,</span> <span class="n">right_chars</span><span class="p">):</span>
+            <span class="n">afters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">afters</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">after</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">afters</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found sandhi </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
+                    <span class="n">joins</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">first</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">+</span> <span class="n">after</span><span class="o">+</span> <span class="n">second</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]):])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">joins</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No joins found&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">joins</span></div>
+            
+<div class="viewcode-block" id="Sandhi.split_at"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.split_at">[docs]</a>    <span class="k">def</span> <span class="nf">split_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Split sandhi at the given index of word.</span>
+<span class="sd">        **Warning**: Will generate splits that are not lexically valid.</span>
+<span class="sd">        </span>
+<span class="sd">        :param word_in: SanskritObject word to split</span>
+<span class="sd">        :param idx: position within word at which to try the split</span>
+<span class="sd">        :return: set of tuple of strings of possible split forms, or None if no split can be performed </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">word_in</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Split: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="n">splits</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Figure out how may chars we can extract for the afters</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
+        <span class="n">afters</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">after</span> <span class="ow">in</span> <span class="n">afters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Trying after </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+            <span class="n">befores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">[</span><span class="n">after</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">befores</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">before</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">befores</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found split </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
+                    <span class="n">left</span> <span class="o">=</span> <span class="n">word</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">right</span> <span class="o">=</span> <span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">word</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">):]</span>
+                    <span class="n">splits</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="p">)</span> <span class="p">)</span>
+                
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No split found&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">splits</span></div>
+        
+<div class="viewcode-block" id="Sandhi.split_all"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.split_all">[docs]</a>    <span class="k">def</span> <span class="nf">split_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Split word at all possible locations and return splits.</span>
+<span class="sd">        **Warning**: Will generate splits that are not lexically valid.</span>
+<span class="sd">        </span>
+<span class="sd">        :param word_in: SanskritObject word to split</span>
+<span class="sd">        :return: set of tuple of strings of possible split forms, or None if no split can be performed </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">splits</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">word_in</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">start</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="n">stop</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+            <span class="n">split</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_at</span><span class="p">(</span><span class="n">word_in</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">split</span><span class="p">:</span>
+                <span class="n">splits</span> <span class="o">|=</span> <span class="n">split</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No split found&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">splits</span></div>
+            
+<div class="viewcode-block" id="Sandhi.expand_rule"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.expand_rule">[docs]</a>    <span class="k">def</span> <span class="nf">expand_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expands a given sandhi rule from the rules file to generate all possible combinations</span>
+<span class="sd">        </span>
+<span class="sd">        :param rule: Rule to expand</span>
+<span class="sd">        :return: A generator of all possible expanded rules</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Expanding rule </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span>
+        
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">MaheshvaraSutras</span><span class="p">()</span>
+        
+        <span class="n">b</span><span class="p">,</span> <span class="n">afters</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">rule</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">))</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="n">left_classes</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\[(.*?)\]&#39;</span><span class="p">,</span> <span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Left classes = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">left_classes</span><span class="p">)</span>
+        
+        <span class="c1"># Split after forms into individual forms</span>
+        <span class="n">afters</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">afters</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
+        
+        <span class="n">before_left</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">left_classes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+                    <span class="c1"># This is a mAheswara sUtra pratyAhAra</span>
+                    <span class="n">splits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)))</span>
+                    <span class="n">varnas</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">getPratyahara</span><span class="p">(</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">),</span> <span class="n">longp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_a</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dirghas</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">varnas</span> <span class="o">-=</span> <span class="nb">set</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found pratyAhAra </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">varnas</span><span class="p">)</span>
+                    <span class="n">before_left</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varnas</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">before_left</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;before_left iterator = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">before_left</span><span class="p">)</span>
+        
+        
+        <span class="n">right_classes</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\[(.*?)\]&#39;</span><span class="p">,</span> <span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># Could have used list comprehension, but this is easier to read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;right_classes = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">right_classes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">right_classes</span><span class="p">:</span>
+            <span class="n">before_right</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">right_classes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+                        <span class="c1"># This is a mAheswara sUtra pratyAhAra</span>
+                        <span class="n">splits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;([+-])&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span>
+                        <span class="n">varnas</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">getPratyahara</span><span class="p">(</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">),</span> <span class="n">longp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_a</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dirghas</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                                <span class="n">varnas</span> <span class="o">-=</span> <span class="nb">set</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                            <span class="k">elif</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+                                <span class="n">varnas</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found pratyAhAra </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">varnas</span><span class="p">)</span>
+                        <span class="n">before_right</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varnas</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">before_right</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">before_right</span> <span class="o">=</span> <span class="p">[</span><span class="n">before</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;before_right iterator = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">before_right</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">after</span><span class="p">,</span> <span class="n">before_l</span><span class="p">,</span> <span class="n">before_r</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">afters</span><span class="p">,</span> 
+                                                        <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">before_left</span><span class="p">),</span> 
+                                                        <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">before_right</span><span class="p">)):</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">before_l</span><span class="p">)</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">before_r</span><span class="p">)</span>
+            <span class="n">list_before_r</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">before_r</span><span class="p">)</span>
+            <span class="n">left_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">after</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">before_l</span><span class="p">)</span> <span class="o">+</span> <span class="n">list_before_r</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Final rule = </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">left_right</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">left_right</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sandhi.add_rules_from_file"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.add_rules_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_rules_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add sandhi rules from file.</span>
+<span class="sd">        Each line of the input file should contain one rule. E.g. अ + अ = आ</span>
+<span class="sd">        Lines starting with a # are treated as comments and skipped. </span>
+<span class="sd">        Empty lines are ignored as well.        </span>
+<span class="sd">                </span>
+<span class="sd">        :param path: file to read rules from</span>
+
+<span class="sd">        See also add_rules_from_dir</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processing rule </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="n">rule</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">SLP1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand_rule</span><span class="p">(</span><span class="n">rule</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">linenum</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div>
+                
+<div class="viewcode-block" id="Sandhi.add_rules_from_dir"><a class="viewcode-back" href="../../../sanskrit_parser_lexical_analyzer_sandhi.html#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.add_rules_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_rules_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add sandhi rules from an entire directory.</span>
+<span class="sd">        Reads all .txt files from the given directory and adds rules from them        </span>
+<span class="sd">                </span>
+<span class="sd">        :param directory: path to directory with rules files</span>
+
+<span class="sd">        See also add_rules_from_file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Adding rules from directory </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processing rules from file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_rules_from_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span></div></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+    <span class="k">def</span> <span class="nf">getArgs</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          Argparse routine. </span>
+<span class="sd">          Returns args variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Parser Setup</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sandhi Utility&#39;</span><span class="p">)</span>
+        <span class="c1"># Input Encoding (autodetect by default)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--loglevel&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;logging level. Can be any level supported by logging module&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--split&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Split the given word using sandhi rules&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--join&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Join the given words using sandhi rules&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--all&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Return splits at all possible locations&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># String to encode</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">nargs</span> <span class="o">=</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> 
+                            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;tasminniti&quot;</span><span class="p">,</span> 
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;First word of sandhi if join, or word to split&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;word_or_pos&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> 
+                            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;eva&quot;</span><span class="p">,</span> 
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Second word of sandhi if join, or position to split&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">getArgs</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ie</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
+        
+        <span class="c1"># Setup logging</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">loglevel</span><span class="p">:</span>
+            <span class="n">numeric_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">loglevel</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">numeric_level</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid log level: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">loglevel</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;sandhi.log&quot;</span><span class="p">,</span> <span class="n">filemode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">numeric_level</span><span class="p">)</span>
+            
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;---------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Started processing at </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        
+        <span class="n">sandhi</span> <span class="o">=</span> <span class="n">Sandhi</span><span class="p">()</span>
+        <span class="c1"># if neither split nor join is chosen, just demo both</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Neither split nor join option chosen. Here&#39;s a demo of joining&quot;</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">join</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">:</span>
+            <span class="n">word_in</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All possible splits for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">))</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">sandhi</span><span class="o">.</span><span class="n">split_all</span><span class="p">(</span><span class="n">word_in</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word_or_pos</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splitting </span><span class="si">{0}</span><span class="s2"> at </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">pos</span><span class="p">))</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">sandhi</span><span class="o">.</span><span class="n">split_at</span><span class="p">(</span><span class="n">word_in</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Joining </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">word_or_pos</span><span class="p">))</span>
+            <span class="n">first_in</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">)</span>
+            <span class="n">second_in</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word_or_pos</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">)</span>
+            <span class="n">joins</span> <span class="o">=</span> <span class="n">sandhi</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">joins</span><span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished processing at </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;---------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
