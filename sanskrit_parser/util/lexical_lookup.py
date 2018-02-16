@@ -54,4 +54,5 @@ class LexicalLookup(object):
         print("Getting tags for", word_in)
         tags = self.get_tags(word_in)
         if tags is not None:
-            map(print, tags)
+            for tag in tags:
+                print(tag)
