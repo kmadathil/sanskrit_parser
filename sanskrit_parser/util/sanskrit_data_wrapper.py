@@ -20,7 +20,7 @@ class SanskritDataWrapper(LexicalLookup):
 
     # TODO - Install the data in a different way
     file_url = "https://github.com/kmadathil/sanskrit_parser/blob/cc6e8060e4e3ec0e6f1a4cd04e914f04ee05d78d/sanskrit_parser/util/data/data.db?raw=true"
-    db_file = os.path.join(LexicalLookup.base_dir, 'data.db')
+    db_file = os.path.join(LexicalLookup.base_dir, 'sanskrit_data.db')
 
     def __init__(self, logger=None):
         self._get_file()

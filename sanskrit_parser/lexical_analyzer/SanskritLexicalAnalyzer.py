@@ -129,7 +129,7 @@ class SanskritLexicalAnalyzer(object):
     """
     sandhi = Sandhi()  # Singleton!
 
-    def __init__(self, lexical_lookup="inria"):
+    def __init__(self, lexical_lookup="combined"):
         forms = LexicalLookupFactory.create(lexical_lookup)
         self.forms = forms
         pass

@@ -8,6 +8,7 @@ import json
 import logging
 import os
 import re
+import progressbar
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
@@ -122,7 +123,7 @@ def get_uohd_refs(lexan, maxrefs=200):
                                     logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
                                     s.append(sss)
                                     continue
-                            except: # noqa
+                            except:  # noqa
                                 logger.warning("Split Error: {}".format(ss.encode('utf-8')))
                                 s.append(sss)
                                 continue
@@ -163,7 +164,7 @@ def test_splits(lexan, uohd_refs):
         if splits is None or not _in_splits(s, splits):
             logger.error("FAIL: {} not in {}".format(s, splits))
         return _in_splits(s, splits)
-    except: # noqa
+    except:  # noqa
         logger.warning("Split Exception: {}".format(i.canonical().encode('utf-8')))
         return "Error"
 
@@ -176,8 +177,11 @@ if __name__ == "__main__":
     skip = codecs.open(os.path.join(directory, "uohd_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
+    maxrefs = 100
+    bar = progressbar.ProgressBar(max_value=maxrefs)
+    fail_count = skip_count = error_count = pass_count = 0
     for full, split, ofull, osplit, filename, linenum in \
-            get_uohd_refs(lexan=lexan, maxrefs=10000):
+            bar(get_uohd_refs(lexan=lexan, maxrefs=maxrefs)):
         test = json.dumps({"full": full,
                            "split": split,
                            "orig_full": ofull,
@@ -186,14 +190,20 @@ if __name__ == "__main__":
                            "linenum": linenum}) + "\n"
         if test_splits(lexan, (full, split)) == "Error":
             error.write(test)
+            error_count += 1
         elif test_splits(lexan, (full, split)) == "Skip":
             skip.write(test)
+            skip_count += 1
         elif test_splits(lexan, (full, split)):
             passing.write(test)
+            pass_count += 1
         else:
             failing.write(test)
+            fail_count += 1
 
     passing.close()
     failing.close()
     error.close()
     skip.close()
+
+    print("Pass = %d, Fail = %d, Skip = %d, Error = %d" % (pass_count, fail_count, skip_count, error_count))
