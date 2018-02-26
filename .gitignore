@@ -118,6 +118,7 @@ dist
 sanskrit_parser/util/data
 README.pip
 misc
+*.swp
 
 # intellij stuff
 /*.iml
