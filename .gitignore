@@ -119,6 +119,7 @@ sanskrit_parser/util/data
 README.pip
 misc
 *.swp
+*.bak
 
 # intellij stuff
 /*.iml
