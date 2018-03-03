@@ -8,7 +8,6 @@ import json
 import logging
 import os
 import re
-import progressbar
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
@@ -75,7 +74,7 @@ def get_uohd_refs(lexan, maxrefs=200):
                     split = split.strip()
                     split = split.replace(u'|', '')
                     osplit = split  # Save
-                    splits = map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+'))
+                    splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+')))
                     if splits[-1] == '':
                         splits.pop()
 
@@ -128,7 +127,7 @@ def get_uohd_refs(lexan, maxrefs=200):
                                 s.append(sss)
                                 continue
                             # First split
-                            ssp = map(str, graph.findAllPaths(max_paths=1)[0])
+                            ssp = list(map(str, graph.findAllPaths(max_paths=1)[0]))
                             # Add it to split list
                             s.extend(map(str, ssp))
                     fs.append((full, s, ofull, osplit, basename, lnum))
@@ -145,7 +144,7 @@ def get_uohd_refs(lexan, maxrefs=200):
 def test_splits(lexan, uohd_refs):
     # Check if s is in splits
     def _in_splits(s, splits):
-        return s in [map(str, ss) for ss in splits]
+        return s in [list(map(str, ss)) for ss in splits]
 
     f = uohd_refs[0]
     s = uohd_refs[1]
@@ -158,9 +157,9 @@ def test_splits(lexan, uohd_refs):
         if graph is None:
             return False
         splits = graph.findAllPaths(max_paths=1000, sort=False)
-        if not _in_splits(s, splits):
-            # Currently, this triggers a fallback to all_simple_paths
-            splits = graph.findAllPaths(max_paths=10000, sort=False)
+#         if not _in_splits(s, splits):
+#             # Currently, this triggers a fallback to all_simple_paths
+#             splits = graph.findAllPaths(max_paths=10000, sort=False)
         if splits is None or not _in_splits(s, splits):
             logger.error("FAIL: {} not in {}".format(s, splits))
         return _in_splits(s, splits)
@@ -178,10 +177,9 @@ if __name__ == "__main__":
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
     maxrefs = 100
-    bar = progressbar.ProgressBar(max_value=maxrefs)
     fail_count = skip_count = error_count = pass_count = 0
     for full, split, ofull, osplit, filename, linenum in \
-            bar(get_uohd_refs(lexan=lexan, maxrefs=maxrefs)):
+            get_uohd_refs(lexan=lexan, maxrefs=maxrefs):
         test = json.dumps({"full": full,
                            "split": split,
                            "orig_full": ofull,
