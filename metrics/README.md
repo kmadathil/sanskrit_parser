@@ -14,7 +14,24 @@ further analysis.
 
 Current output should look similar to:
 ```
-
+--------------------------------------------------
+Metrics for inria
+--------------------------------------------------
+Recognized 1438669 / 1932518 words, accuracy = 74.45%
+Correct root for 1181208 / 1438669 recognized words, accuracy = 82.10%
+==================================================
+--------------------------------------------------
+Metrics for sanskrit_data
+--------------------------------------------------
+Recognized 1670698 / 1932518 words, accuracy = 86.45%
+Correct root for 1375194 / 1670698 recognized words, accuracy = 82.31%
+==================================================
+--------------------------------------------------
+Metrics for combined
+--------------------------------------------------
+Recognized 1692948 / 1932518 words, accuracy = 87.60%
+Correct root for 1429996 / 1692948 recognized words, accuracy = 84.47%
+==================================================
 ```
 
 ### Dependencies
