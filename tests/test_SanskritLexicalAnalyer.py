@@ -48,8 +48,8 @@ def test_simple_tag(lexan):
     # gaNeshaH
     i = SanskritObject("gaReSas", encoding=SLP1)
     ts = lexan.getLexicalTags(i)
-    assert [_mapt(tss) for tss in ts] == \
-           [('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))]
+    assert [_mapt(tss) for tss in ts][0] == \
+           ('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))
 
 
 def test_simple_split(lexan):
