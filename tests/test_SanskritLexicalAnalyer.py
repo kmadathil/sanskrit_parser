@@ -6,7 +6,7 @@ import os
 import pytest
 import six
 import json
-from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
+from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from tests.conftest import get_testcount
 

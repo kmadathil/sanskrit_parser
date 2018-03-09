@@ -8,9 +8,10 @@ import json
 import logging
 import os
 import re
+import progressbar
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-from sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer import SanskritLexicalAnalyzer
+from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -176,10 +177,11 @@ if __name__ == "__main__":
     skip = codecs.open(os.path.join(directory, "uohd_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
-    maxrefs = 100
+    maxrefs = 5000
+    bar = progressbar.ProgressBar(max_value=maxrefs)
     fail_count = skip_count = error_count = pass_count = 0
     for full, split, ofull, osplit, filename, linenum in \
-            get_uohd_refs(lexan=lexan, maxrefs=maxrefs):
+            bar(get_uohd_refs(lexan=lexan, maxrefs=maxrefs)):
         test = json.dumps({"full": full,
                            "split": split,
                            "orig_full": ofull,
