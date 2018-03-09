@@ -9,15 +9,17 @@
 from __future__ import print_function
 from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
 import sanskrit_parser.base.sanskrit_base as SanskritBase
-import sanskrit_parser.util.inriatagmapper as inriatagmapper
-from sanskrit_parser.util import normalization
 
-import re
 import networkx as nx
 from itertools import islice
 from .sandhi import Sandhi
 import logging
 import six
+
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +32,10 @@ class SanskritLexicalGraph(object):
     """
     start = "__start__"
     end = "__end__"
+
     def __init__(self, elem=None, end=False):
         ''' DAG Class Init
-        
+
         Params:
             elem (SanskritObject :optional:): Optional initial element
             end  (bool :optional:): Add end edge to initial element
@@ -41,9 +44,11 @@ class SanskritLexicalGraph(object):
         self.G = nx.DiGraph()
         if elem is not None:
             self.addNode(elem, root=True, end=end)
+
     def __iter__(self):
         ''' Iterate over nodes '''
         return self.G.__iter__()
+
     def hasNode(self, t):
         ''' Does a given node exist in the graph?
 
@@ -53,20 +58,21 @@ class SanskritLexicalGraph(object):
                boolean
         '''
         return t in self.G
-    def appendToNode(self, t, rdag):
-        """ append rdag to self, adding edges from a given node to rdag's roots 
+
+    def appendToNode(self, t, nodes):
+        """ Create edges from t to nodes
 
             Params:
                 t (SanskritObject)      : Node to append to
-             rdag (SanskritLexicalGraph): Graph to append to node
+                nodes (iterator(nodes)) : Nodes to append to t
         """
         # t is in our graph
         assert t in self.G
-        self.G = nx.compose(self.G, rdag.G)
-        for r in rdag.roots:
+        for r in nodes:
             self.G.add_edge(t, r)
-    def addNode(self, node, root=False, end=False):
-        """ Extend dag with node inserted at root             
+
+    def addNode(self, node):
+        """ Extend dag with node inserted at root
 
             Params:
                 Node (SanskritObject)      : Node to add
@@ -75,14 +81,15 @@ class SanskritLexicalGraph(object):
         """
         assert node not in self.G
         self.G.add_node(node)
-        if root:
-            self.roots.append(node)
-        if end:
-            self.G.add_edge(node, self.end)
+
     def addEndEdge(self, node):
         ''' Add an edge from node to end '''
         assert node in self.G
         self.G.add_edge(node, self.end)
+
+    def addRoots(self, roots):
+        self.roots.extend(roots)
+
     def lockStart(self):
         ''' Make the graph ready for search by adding a start node
 
@@ -93,27 +100,26 @@ class SanskritLexicalGraph(object):
         for r in self.roots:
             self.G.add_edge(self.start, r)
         self.roots = []
-    def findAllPaths(self, max_paths=10, sort=True, debug=False):
-        """ Find all paths through DAG to End 
+
+    def findAllPaths(self, max_paths=10, sort=True):
+        """ Find all paths through DAG to End
 
             Params:
                max_paths (int :default:=10): Number of paths to find
-                          If this is > 1000, all paths will be found   
-               sort (bool)                 : If True (default), sort paths 
+                          If this is > 1000, all paths will be found
+               sort (bool)                 : If True (default), sort paths
                                              in ascending order of length
         """
         if self.roots:
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <= 1000:
-            return list(six.moves.map(lambda x: x[1:-1], \
-                             islice(nx.shortest_simple_paths(self.G,
-                                                             self.start,
-                                                             self.end),
-                                    max_paths)))
+            return list(six.moves.map(lambda x: x[1:-1],
+                                      islice(nx.shortest_simple_paths(self.G, self.start, self.end),
+                                             max_paths)))
         else:  # Fall back to all_simple_paths
-            ps = list(six.moves.map(lambda x: x[1:-1], \
-                             nx.all_simple_paths(self.G, self.start, self.end)))
+            ps = list(six.moves.map(lambda x: x[1:-1],
+                                    nx.all_simple_paths(self.G, self.start, self.end)))
             # If we do not intend to display paths, no need to sort them
             if sort:
                 ps.sort(key=lambda x: len(x))
@@ -123,10 +129,10 @@ class SanskritLexicalGraph(object):
         """ Print representation of DAG """
         return str(self.G)
 
+
 class SanskritLexicalAnalyzer(object):
-    """ Singleton class to hold methods for Sanskrit lexical analysis. 
-    
-    """
+    """ Singleton class to hold methods for Sanskrit lexical analysis. """
+
     sandhi = Sandhi()  # Singleton!
 
     def __init__(self, lexical_lookup="combined"):
@@ -156,21 +162,19 @@ class SanskritLexicalAnalyzer(object):
                 name(str): name in tag
                 tagset(set): set of tag elements
             Returns
-                list: List of (base, tagset) pairs for obj that 
+                list: List of (base, tagset) pairs for obj that
                       match (name,tagset), or None
         """
-        l = self.getLexicalTags(obj)
-        if l is None:
+        lexical_tags = self.getLexicalTags(obj)
+        if lexical_tags is None:
             return None
         assert (name is not None) or (tagset is not None)
         r = []
-        for li in l:
+        for li in lexical_tags:
             # Name is none, or name matches
             # Tagset is None, or all its elements are found in Inria tagset
-            if ((name is None) or\
-                name.canonical() == li[0]) and \
-               ((tagset is None) or\
-                tagset.issubset(li[1])):
+            if ((name is None) or name.canonical() == li[0]) and \
+                    ((tagset is None) or tagset.issubset(li[1])):
                 r.append(li)
         if r == []:
             return None
@@ -190,12 +194,12 @@ class SanskritLexicalAnalyzer(object):
                 logger.debug("Got tags %s for %s", t, n)
                 n.setLexicalTags(t)
 
-    def getSandhiSplits(self, o, tag=False, debug=False):
+    def getSandhiSplits(self, o, tag=False):
         ''' Get all valid Sandhi splits for a string
 
-            Params: 
+            Params:
               o(SanskritObject): Input object
-              tag(Boolean)     : When True (def=False), return a 
+              tag(Boolean)     : When True (def=False), return a
                                  lexically tagged graph
             Returns:
               SanskritLexicalGraph : DAG all possible splits
@@ -203,24 +207,30 @@ class SanskritLexicalAnalyzer(object):
         # Transform to internal canonical form
         self.dynamic_scoreboard = {}
         s = o.canonical()
-        dag = self._possible_splits(s, debug)
-        if tag and dag:
-            self.tagLexicalGraph(dag)
-        if not dag:
+        self.splits = SanskritLexicalGraph()
+        roots = self._possible_splits(s)
+        if tag and len(roots) > 0:
+            self.tagLexicalGraph(self.splits)
+        if len(roots) == 0:
             return None
         else:
-            return dag
+            self.splits.addRoots(roots)
+            return self.splits
 
-    def _possible_splits(self, s, debug=False):
+    def _possible_splits(self, s):
         ''' private method to dynamically compute all sandhi splits
 
-        Used by getSandhiSplits
-           Params: 
+            Used by getSandhiSplits
+            Adds the individual splits to the graph self.splits and returns
+            the roots of the subgraph corresponding to the split of s
+           Params:
               s(string): Input SLP1 encoded string
             Returns:
-              SanskritLexicalGraph : DAG of possible splits
+              roots : set of roots of subgraph corresponding to possible splits of s
         '''
         logger.debug("Splitting " + s)
+
+        @lru_cache(256)
         def _is_valid_word(ss):
             r = self.forms.valid(ss)
             return r
@@ -231,7 +241,7 @@ class SanskritLexicalAnalyzer(object):
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
 
-        splits = False
+        roots = set()
 
         # Memoization for dynamic programming - remember substrings that've
         # been seen before
@@ -247,7 +257,8 @@ class SanskritLexicalAnalyzer(object):
 
         s_c_list = _sandhi_splits_all(s, start=0, stop=spos + 1)
         logger.debug("s_c_list: " + str(s_c_list))
-        if s_c_list == None: s_c_list = []
+        if s_c_list is None:
+            s_c_list = []
 
         node_cache = {}
 
@@ -259,11 +270,11 @@ class SanskritLexicalAnalyzer(object):
                 # valid splits of the right part
                 if s_c_right and s_c_right != '':
                     logger.debug("Trying to split:" + s_c_right)
-                    rdag = self._possible_splits(s_c_right, debug)
+                    r_roots = self._possible_splits(s_c_right)
                     # if there are valid splits of the right side
-                    if rdag:
+                    if r_roots:
                         # Make sure we got a graph back
-                        assert isinstance(rdag, SanskritLexicalGraph)
+                        assert isinstance(r_roots, set)
                         # if there are valid splits of the right side
                         if s_c_left not in node_cache:
                             # Extend splits list with s_c_left appended with
@@ -272,44 +283,45 @@ class SanskritLexicalAnalyzer(object):
                             node_cache[s_c_left] = t
                         else:
                             t = node_cache[s_c_left]
-                        if not splits:
-                            splits = SanskritLexicalGraph()
-                        if not splits.hasNode(t):
-                            splits.addNode(t, root=True)
-                        splits.appendToNode(t, rdag)
+                        roots.add(t)
+                        if not self.splits.hasNode(t):
+                            self.splits.addNode(t)
+                        self.splits.appendToNode(t, r_roots)
                 else:  # Null right part
                     # Why cache s_c_left here? To handle the case
                     # where the same s_c_left appears with a null and non-null
                     # right side.
                     if s_c_left not in node_cache:
-                        # Extend splits list with s_c_left appended with
-                        # possible splits of s_c_right
                         t = SanskritBase.SanskritObject(s_c_left, encoding=SanskritBase.SLP1)
                         node_cache[s_c_left] = t
                     else:
                         t = node_cache[s_c_left]
-                    if not splits:
-                        splits = SanskritLexicalGraph()
-                    if not splits.hasNode(t):
-                        splits.addNode(t, root=True, end=True)
-                    else:
-                        splits.addEndEdge(t)
+                    # Extend splits list with s_c_left appended with
+                    # possible splits of s_c_right
+                    roots.add(t)
+                    if not self.splits.hasNode(t):
+                        self.splits.addNode(t)
+                    self.splits.addEndEdge(t)
             else:
                 logger.debug("Invalid left word: " + s_c_left)
         # Update scoreboard for this substring, so we don't have to split
         # again
-        self.dynamic_scoreboard[s] = splits
-        if not splits:
-            logger.debug("Returning:" + str(splits))
+        self.dynamic_scoreboard[s] = roots
+        if len(roots) == 0:
+            logger.debug("No splits found, returning None")
+            return None
         else:
-            logger.debug("Returning: " + " ".join(map(str, splits.G.nodes())))
-        return splits
+            logger.debug("Roots: %s", roots)
+        return roots
+
 
 if __name__ == "__main__":
+
     from argparse import ArgumentParser
+
     def getArgs():
         """
-          Argparse routine. 
+          Argparse routine.
           Returns args variable
         """
         # Parser Setup
@@ -375,11 +387,14 @@ if __name__ == "__main__":
                                                 replace_ending_visarga=None)
                 print("Input String in SLP1:", i.canonical())
                 print("Start Split:", datetime.datetime.now())
-                graph = s.getSandhiSplits(i, debug=args.debug)
+                start_split = datetime.datetime.now()
+                graph = s.getSandhiSplits(i)
+                end_graph = datetime.datetime.now()
+                print("Time for graph generation = ", end_graph - start_split)
                 print("End DAG generation:", datetime.datetime.now())
                 if graph:
-                    splits = graph.findAllPaths(max_paths=args.max_paths,
-                                              debug=args.debug)
+                    logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
+                    splits = graph.findAllPaths(max_paths=args.max_paths)
                     print("End pathfinding:", datetime.datetime.now())
                     print("Splits:")
                     if splits:
@@ -389,5 +404,6 @@ if __name__ == "__main__":
                         print("None")
                 else:
                     print("No Valid Splits Found")
+                end_split = datetime.datetime.now()
+                print("Total time for graph generation + find paths", end_split - start_split)
     main()
-
