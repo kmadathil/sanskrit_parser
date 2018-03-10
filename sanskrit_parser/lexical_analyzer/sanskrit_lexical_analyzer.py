@@ -33,7 +33,7 @@ class SanskritLexicalGraph(object):
     start = "__start__"
     end = "__end__"
 
-    def __init__(self, elem=None, end=False):
+    def __init__(self):
         ''' DAG Class Init
 
         Params:
@@ -42,8 +42,6 @@ class SanskritLexicalGraph(object):
         '''
         self.roots = []
         self.G = nx.DiGraph()
-        if elem is not None:
-            self.addNode(elem, root=True, end=end)
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -204,10 +202,12 @@ class SanskritLexicalAnalyzer(object):
             Returns:
               SanskritLexicalGraph : DAG all possible splits
         '''
-        # Transform to internal canonical form
         self.dynamic_scoreboard = {}
+        # Transform to internal canonical form
         s = o.canonical()
+        # Initialize an empty graph to hold the splits
         self.splits = SanskritLexicalGraph()
+        # _possible_splits updates graph in self.splits with nodes and returns roots
         roots = self._possible_splits(s)
         if tag and len(roots) > 0:
             self.tagLexicalGraph(self.splits)
@@ -273,7 +273,7 @@ class SanskritLexicalAnalyzer(object):
                     r_roots = self._possible_splits(s_c_right)
                     # if there are valid splits of the right side
                     if r_roots:
-                        # Make sure we got a graph back
+                        # Make sure we got a set of roots back
                         assert isinstance(r_roots, set)
                         # if there are valid splits of the right side
                         if s_c_left not in node_cache:

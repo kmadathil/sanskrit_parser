@@ -329,11 +329,11 @@ if __name__ == "__main__":
         print("Input String in SLP1:", i.canonical())
         import datetime
         print("Start Split:", datetime.datetime.now())
-        graph = s.getSandhiSplits(i, tag=True, debug=args.debug)
+        graph = s.getSandhiSplits(i, tag=True)
         print("End DAG generation:", datetime.datetime.now())
         with SanskritBase.outputctx(args.strict_io):
             if graph:
-                splits = graph.findAllPaths(max_paths=args.max_paths, debug=args.debug)
+                splits = graph.findAllPaths(max_paths=args.max_paths)
                 print("End pathfinding:", datetime.datetime.now())
                 print("Splits:")
                 for sp in splits:
