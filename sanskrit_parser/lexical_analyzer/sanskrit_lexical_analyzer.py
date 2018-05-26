@@ -381,21 +381,20 @@ if __name__ == "__main__":
                         g = set(args.tag_set)
                     print(s.hasTag(i, SanskritBase.SanskritObject(args.base), g))
             else:
-                import datetime
+                import time
                 i = SanskritBase.SanskritObject(args.data, encoding=ie,
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga=None)
                 print("Input String in SLP1:", i.canonical())
-                print("Start Split:", datetime.datetime.now())
-                start_split = datetime.datetime.now()
+                print("Start Split")
+                start_split = time.time()
                 graph = s.getSandhiSplits(i)
-                end_graph = datetime.datetime.now()
-                print("Time for graph generation = ", end_graph - start_split)
-                print("End DAG generation:", datetime.datetime.now())
+                end_graph = time.time()
+                print("End DAG generation")
                 if graph:
                     logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
                     splits = graph.findAllPaths(max_paths=args.max_paths)
-                    print("End pathfinding:", datetime.datetime.now())
+                    print("End pathfinding", time.time())
                     print("Splits:")
                     if splits:
                         for split in splits:
@@ -404,6 +403,9 @@ if __name__ == "__main__":
                         print("None")
                 else:
                     print("No Valid Splits Found")
-                end_split = datetime.datetime.now()
-                print("Total time for graph generation + find paths", end_split - start_split)
+                end_split = time.time()
+                print("-----------")
+                print("Performance")
+                print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
+                print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
     main()

@@ -316,25 +316,27 @@ if __name__ == "__main__":
 
         if args.debug:
             logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.DEBUG)
-        else:
-            logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.INFO)
         s = SanskritMorphologicalAnalyzer(args.lexical_lookup)
         if args.input_encoding is None:
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i = SanskritBase.SanskritObject(args.data, encoding=ie,
-                                      strict_io=args.strict_io,
-                                      replace_ending_visarga=None)
+                                        strict_io=args.strict_io,
+                                        replace_ending_visarga=None)
         print("Input String in SLP1:", i.canonical())
-        import datetime
-        print("Start Split:", datetime.datetime.now())
+        import time
+        print("Start Split")
+        start_split = time.time()
         graph = s.getSandhiSplits(i, tag=True)
-        print("End DAG generation:", datetime.datetime.now())
+        end_split = time.time()
+        print("End DAG generation")
         with SanskritBase.outputctx(args.strict_io):
             if graph:
+                start_path = time.time()
                 splits = graph.findAllPaths(max_paths=args.max_paths)
-                print("End pathfinding:", datetime.datetime.now())
+                end_path = time.time()
+                print("End pathfinding")
                 print("Splits:")
                 for sp in splits:
                     print("Lexical Split:", sp)
@@ -345,10 +347,13 @@ if __name__ == "__main__":
                             print([(spp, pp[str(spp)]) for spp in sp])
                     else:
                         print("No valid morphologies for this split")
-                print("End Morphological Analysis:", datetime.datetime.now())
+                print("End Morphological Analysis")
+                print("-----------")
+                print("Performance")
+                print("Time taken for split: {0:0.6f}s".format(end_split-start_split))
+                print("Time taken for path: {0:0.6f}s".format(end_path-start_path))
             else:
                 print("No Valid Splits Found")
                 return
 
     main()
-
