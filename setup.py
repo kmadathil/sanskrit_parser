@@ -8,7 +8,6 @@ https://github.com/pypa/sampleproject
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
-from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -16,11 +15,11 @@ here = path.abspath(path.dirname(__file__))
 # Get the long description from the README file
 long_description = ''
 try:
-  import pypandoc
+    import pypandoc
 
-  long_description = pypandoc.convert('README.md', 'rst')
+    long_description = pypandoc.convert('README.md', 'rst')
 except (IOError, ImportError):
-  long_description = ''
+    long_description = ''
 
 setup(
   name='sanskrit_parser',
@@ -56,7 +55,7 @@ setup(
     'Intended Audience :: Science/Research',
     'Intended Audience :: Developers',
     # Left commented as this category doesn't exist
-    #'Natural Language :: Sanskrit',
+    # 'Natural Language :: Sanskrit',
     'Topic :: Text Processing :: Linguistic',
 
     # Pick your license as you wish (should match "license" above)
@@ -75,7 +74,7 @@ setup(
 
   # You can just specify the packages manually here if your project is
   # simple. Or you can use find_packages().
-  packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+  packages=find_packages(exclude=['contrib', 'docs', 'tests', 'metrics']),
 
   # Alternatively, if you want to distribute just a my_module.py, uncomment
   # this:
@@ -87,7 +86,7 @@ setup(
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
                     'python-constraint', 'requests', 'six', 'flask',
-                    'jsonpickle'],
+                    'jsonpickle', 'sanskrit_util'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,

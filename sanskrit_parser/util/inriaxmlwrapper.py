@@ -56,10 +56,12 @@ import inspect
 from lxml import etree
 from collections import defaultdict
 from io import BytesIO
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
 import logging
 import time
 import datetime
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
+from sanskrit_parser.util.lexical_lookup import LexicalLookup
+from sanskrit_parser.util.inriatagmapper import inriaTagMapper
 
 try:
     import cPickle as pickle
@@ -67,7 +69,7 @@ except ImportError:
     import pickle
 
 
-class InriaXMLWrapper(object):
+class InriaXMLWrapper(LexicalLookup):
     """
     Class to interface with the INRIA XML database released
     by Prof. Gerard Huet
@@ -78,11 +80,8 @@ class InriaXMLWrapper(object):
     old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     folder = "data"
     old_dir = os.path.join(old_base_dir, folder)
-    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
 
-    def __init__(self, files_list=None, logger=None):
-        if files_list is None:
-            files_list = ['all']
+    def __init__(self, files_list=['all'], logger=None):
         for f in files_list:
             if f not in self.xml_files:
                 raise Exception(f + "is not a valid file name")
@@ -182,8 +181,11 @@ class InriaXMLWrapper(object):
     def valid(self, word):
         return word in self.forms
 
-    def get_tags(self, word):
-        return self._xml_to_tags(word)
+    def get_tags(self, word, tmap=True):
+            tags = self._xml_to_tags(word)
+            if tmap and (tags is not None):
+                tags = inriaTagMapper(tags)
+            return tags
 
 
 if __name__ == "__main__":
