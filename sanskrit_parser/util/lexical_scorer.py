@@ -45,6 +45,7 @@ class Scorer(object):
         pieces = self.sp.EncodeAsPieces(sentence)
         self.logger.debug("Pieces = %s", pieces)
         score = self.model.score([pieces], total_sentences=1)
+        self.logger.debug("Score = %f", score[0])
         return score[0]
 
     def _get_file(self, local, url):

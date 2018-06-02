@@ -15,6 +15,7 @@ from itertools import islice
 from .sandhi import Sandhi
 import logging
 import six
+import operator
 
 try:
     from functools import lru_cache
@@ -99,7 +100,7 @@ class SanskritLexicalGraph(object):
             self.G.add_edge(self.start, r)
         self.roots = []
 
-    def findAllPaths(self, max_paths=10, sort=True):
+    def findAllPaths(self, max_paths=10, sort=True, score=False):
         """ Find all paths through DAG to End
 
             Params:
@@ -112,9 +113,18 @@ class SanskritLexicalGraph(object):
             self.lockStart()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <= 1000:
-            return list(six.moves.map(lambda x: x[1:-1],
+            paths = list(six.moves.map(lambda x: x[1:-1],
                                       islice(nx.shortest_simple_paths(self.G, self.start, self.end),
                                              max_paths)))
+            if score:
+                from sanskrit_parser.util import lexical_scorer
+                scorer = lexical_scorer.Scorer()
+                path_scores = [(path, scorer.score(path)) for path in paths]
+                sorted_path_scores = sorted(path_scores, key=operator.itemgetter(1), reverse=True)
+                logger.debug("Sorted paths with scores:\n %s", sorted_path_scores)
+                return sorted_path_scores
+            else:
+                return paths
         else:  # Fall back to all_simple_paths
             ps = list(six.moves.map(lambda x: x[1:-1],
                                     nx.all_simple_paths(self.G, self.start, self.end)))
@@ -340,6 +350,7 @@ if __name__ == "__main__":
         parser.add_argument('--lexical-lookup', type=str, default="combined")
         parser.add_argument('--strict-io', action='store_true',
                             help="Do not modify the input/output string to match conventions", default=False)
+        parser.add_argument('--score', action='store_true')
         return parser.parse_args()
 
     def main():
@@ -394,7 +405,7 @@ if __name__ == "__main__":
                 print("End DAG generation:", datetime.datetime.now())
                 if graph:
                     logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
-                    splits = graph.findAllPaths(max_paths=args.max_paths)
+                    splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
                     print("End pathfinding:", datetime.datetime.now())
                     print("Splits:")
                     if splits:
@@ -407,3 +418,4 @@ if __name__ == "__main__":
                 end_split = datetime.datetime.now()
                 print("Total time for graph generation + find paths", end_split - start_split)
     main()
+
