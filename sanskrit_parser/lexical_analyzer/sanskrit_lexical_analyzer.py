@@ -304,9 +304,8 @@ class SanskritLexicalAnalyzer(object):
         # Update scoreboard for this substring, so we don't have to split
         # again
         self.dynamic_scoreboard[s] = roots
-        if roots and len(roots) == 0:
-            logger.debug("No splits found, returning None")
-            return None
+        if len(roots) == 0:
+            logger.debug("No splits found, returning empty set")
         else:
             logger.debug("Roots: %s", roots)
         return roots
