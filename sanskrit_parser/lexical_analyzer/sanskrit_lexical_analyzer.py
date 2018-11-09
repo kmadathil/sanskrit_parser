@@ -235,8 +235,7 @@ class SanskritLexicalAnalyzer(object):
             r = self.forms.valid(ss)
             return r
 
-        def _sandhi_splits_all(s, start=None,
-                               stop=None):
+        def _sandhi_splits_all(s, start=None, stop=None):
             obj = SanskritBase.SanskritObject(s, encoding=SanskritBase.SLP1)
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
@@ -250,12 +249,10 @@ class SanskritLexicalAnalyzer(object):
             return self.dynamic_scoreboard[s]
 
         # If a space is found in a string, stop at that space
-        spos = s.find(' ')
-        if spos != -1:
-            # Replace the first space only
-            s = s.replace(' ', '', 1)
+        spos = s.find(" ")
+        stop = None if spos == -1 else spos
 
-        s_c_list = _sandhi_splits_all(s, start=0, stop=spos + 1)
+        s_c_list = _sandhi_splits_all(s, start=0, stop=stop)
         logger.debug("s_c_list: " + str(s_c_list))
         if s_c_list is None:
             s_c_list = []
@@ -270,7 +267,7 @@ class SanskritLexicalAnalyzer(object):
                 # valid splits of the right part
                 if s_c_right and s_c_right != '':
                     logger.debug("Trying to split:" + s_c_right)
-                    r_roots = self._possible_splits(s_c_right)
+                    r_roots = self._possible_splits(s_c_right.strip())
                     # if there are valid splits of the right side
                     if r_roots:
                         # Make sure we got a set of roots back
