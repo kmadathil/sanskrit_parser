@@ -89,7 +89,7 @@ def load_reference_data():
 def clean_references(splits, full):
     def _dumpchars(str):
         # Remove whitespace characters
-        s = re.sub("\W+", "", str)
+        s = re.sub(r"\W+", "", str)
         # Random characters in UOHD files
         for c in ",'-;().?!\"0123456789":
             s = s.replace(c, '')
