@@ -178,7 +178,7 @@ if __name__ == "__main__":
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
     maxrefs = 5000
-    bar = progressbar.ProgressBar(max_value=maxrefs)
+    bar = progressbar.ProgressBar(maxval=maxrefs)
     fail_count = skip_count = error_count = pass_count = 0
     for full, split, ofull, osplit, filename, linenum in \
             bar(get_uohd_refs(lexan=lexan, maxrefs=maxrefs)):
