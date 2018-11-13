@@ -34,6 +34,7 @@ def process_line(lnum,l):
     '''Process a single line'''
     logging.info("Processing Line {}: {}".format(lnum,l))
     r = None
+    subsplitp = False
     line = l.strip()
     if line and line[0] == '#':
         logging.info("Skipping Comment")
@@ -107,6 +108,8 @@ def process_line(lnum,l):
                     logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
                     s.append(sss)
                     continue
+                else:
+                    subsplitp = True
             except:  # noqa
                 logger.warning("Split Error: {}".format(ss.encode('utf-8')))
                 s.append(sss)
@@ -116,7 +119,7 @@ def process_line(lnum,l):
             # Add it to split list
             s.extend(map(str, ssp))
     logger.info(u"{} => {}".format(full, " ".join(s)))
-    r=[full, s, ofull, osplit]
+    r=[full, s, ofull, osplit, subsplitp]
     return r
 
 def process_uohd_file(fn,m):
@@ -194,11 +197,10 @@ def test_splits(lexan, uohd_refs):
                 return "Skip"
         graph = lexan.getSandhiSplits(i)
         if graph is None:
-            print(uohd_refs)
-            logger.error("FAIL: Empty split for {}",i)
+            logger.error("FAIL: Empty split for {}".format(i.canonical().encode('utf-8')))
             return False
         # Reducing max_paths to 300, as we use 300 for pytest
-        splits = graph.findAllPaths(max_paths=300, sort=False)
+        splits = graph.findAllPaths(max_paths=100, sort=False)
         if splits is None or not _in_splits(s, splits):
             logger.error("FAIL: {} not in {}".format(s, splits))
         return _in_splits(s, splits)
@@ -211,14 +213,15 @@ if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     directory = os.path.join(base_dir, "test_data_SanskritLexicalAnalyzer")
     passing = codecs.open(os.path.join(directory, "uohd_passing.txt"), "w", encoding='utf-8')
+    split_passing = codecs.open(os.path.join(directory, "uohd_split_passing.txt"), "w", encoding='utf-8')
     failing = codecs.open(os.path.join(directory, "uohd_failing.txt"), "w", encoding='utf-8')
     skip = codecs.open(os.path.join(directory, "uohd_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
     maxrefs = 5000
     bar = progressbar.ProgressBar(maxval=maxrefs)
-    fail_count = skip_count = error_count = pass_count = 0
-    for full, split, ofull, osplit, filename, linenum in \
+    fail_count = skip_count = error_count = pass_count = split_count = 0
+    for full, split, ofull, osplit, splitp, filename, linenum in \
             bar(get_uohd_refs(lexan=lexan, maxrefs=maxrefs)):
         test = json.dumps({"full": full,
                            "split": split,
@@ -233,8 +236,12 @@ if __name__ == "__main__":
             skip.write(test)
             skip_count += 1
         elif test_splits(lexan, (full, split)):
-            passing.write(test)
-            pass_count += 1
+            if splitp:
+                split_passing.write(test)
+                split_count += 1
+            else:
+                passing.write(test)
+                pass_count += 1
         else:
             failing.write(test)
             fail_count += 1
@@ -244,4 +251,4 @@ if __name__ == "__main__":
     error.close()
     skip.close()
 
-    print("Pass = %d, Fail = %d, Skip = %d, Error = %d" % (pass_count, fail_count, skip_count, error_count))
+    print("Pass = %d, Split Pass = %d, Fail = %d, Skip = %d, Error = %d" % (pass_count, split_count, fail_count, skip_count, error_count))
