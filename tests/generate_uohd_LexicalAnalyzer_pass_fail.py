@@ -70,10 +70,16 @@ def get_uohd_refs(lexan, maxrefs=200):
                     full, split = line.split('=>')
                     full = full.strip()
                     full = full.replace(u'|', '')
+                    # Zero width joiner/nonjoiner
+                    full = full.replace(u"\u200c", "")
+                    full = full.replace(u"\u200d", "")
                     ofull = full  # Save
                     full = _dumpchars(SanskritObject(full).transcoded(SLP1))
                     split = split.strip()
                     split = split.replace(u'|', '')
+                    # Zero width joiner/nonjoiner
+                    split = split.replace(u"\u200c", "")
+                    split = split.replace(u"\u200d", "")
                     osplit = split  # Save
                     splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+')))
                     if splits[-1] == '':
@@ -104,9 +110,13 @@ def get_uohd_refs(lexan, maxrefs=200):
                     for ss in splits:
                         # Check if this word is in our db
                         # Rakarantas
+                        # FIXME - these four replacements aren't working
+                        # Check intent and actual operation
                         sss = ss.replace('punaH', 'punar')
                         sss = ss.replace('antaH', 'antar')
                         sss = ss.replace('bahiH', 'bahir')
+                        sss = ss.replace('prAtaH', 'prAtar')
+                        # FIXME - the above four replacements aren't working
                         # Sakarantas
                         sss = re.sub('H$', 's', sss)
                         if sss.find('punas') != -1:
