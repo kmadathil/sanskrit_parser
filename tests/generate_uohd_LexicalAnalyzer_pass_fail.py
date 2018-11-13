@@ -19,19 +19,130 @@ logging.basicConfig(filename='gen_uohd_lexan_passfail.log', filemode='w',
                     level=logging.INFO)
 
 
-def get_uohd_refs(lexan, maxrefs=200):
-    def _dumpchars(str):
-        s = str
-        # Random characters in UOHD files
-        for c in ",'-;().?!\"0123456789":
-            s = s.replace(c, '')
-        # Some bad visargas
-        s = s.replace(':', 'H')
-        # UOHD RHS has word-ending anusvaras
-        s = re.sub('M$', 'm', s)
-        return s
+def _dumpchars(sr):
+    s = sr
+    # Random characters in UOHD files
+    for c in ",'-;().?!*\"0123456789":
+        s = s.replace(c, '')
+    # Some bad visargas
+    s = s.replace(':', 'H')
+    # UOHD RHS has word-ending anusvaras
+    s = re.sub('M$', 'm', s)
+    return s
 
+def process_line(lnum,l):
+    '''Process a single line'''
+    logging.info("Processing Line {}: {}".format(lnum,l))
+    r = None
+    line = l.strip()
+    if line and line[0] == '#':
+        logging.info("Skipping Comment")
+        return None
+    if line.find('=>') == -1:
+        logging.info("Cannot find =>")
+        return None
+    full, split = line.split('=>')
+    full = full.strip()
+    full = full.replace(u'|', '')
+    # Zero width joiner/nonjoiner
+    full = full.replace(u"\u200c", "")
+    full = full.replace(u"\u200d", "")
+    ofull = full  # Save
+    full = _dumpchars(SanskritObject(full).transcoded(SLP1))
+    split = split.strip()
+    split = split.replace(u'|', '')
+    # Zero width joiner/nonjoiner
+    split = split.replace(u"\u200c", "")
+    split = split.replace(u"\u200d", "")
+    osplit = split  # Save
+    splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+')))
+    if splits[-1] == '':
+        splits.pop()
+    # Empty full string
+    if len(full) == 0:
+        logger.info("Skipping")
+
+    # UOHD errors, final visarga is sometimes missing
+    if len(splits[-1]) > 1 and splits[-1][-2:] == "AH" and \
+       full[-1] == "A":
+        full = full + "H"
+    if len(splits[-1]) > 1 and splits[-1][-2:] == "aH" and \
+       full[-1] == "a":
+        full = full + "H"
+    if splits[-1][-1] == "A" and len(full) > 1 and full[-2:] == "AH":
+        splits[-1] = splits[-1] + "H"
+    if splits[-1][-1] == "a" and len(full) > 1 and full[-2:] == "aH":
+                    splits[-1] = splits[-1] + "H"
+
+    # FIXME - this creates problems, eg on 'aho', 'prabho'
+    # UOHD stores sandhied final words!
+    # This is not a full fix
+    full = re.sub("o$", "aH", full)
+    # Modified splits
+    s = []
+
+    for ss in splits:
+        # Check if this word is in our db
+        # Rakarantas
+        # FIXME - these four replacements aren't working
+        # Check intent and actual operation
+        sss = ss.replace('punaH', 'punar')
+        sss = ss.replace('antaH', 'antar')
+        sss = ss.replace('bahiH', 'bahir')
+        sss = ss.replace('prAtaH', 'prAtar')
+        # FIXME - the above four replacements aren't working
+        # Sakarantas
+        sss = re.sub('H$', 's', sss)
+        if sss.find('punas') != -1:
+            logger.error("ERROR: found {}".format(sss))
+            # Is in our database
+        if lexan.forms.valid(sss):
+            s.append(sss)
+        else:
+            # If not, treat it as a word to be split
+            try:
+                graph = lexan.getSandhiSplits(SanskritObject(ss, encoding=SLP1))
+                if graph is None:
+                    # Catch stray unicode symbols with the encode
+                    logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
+                    s.append(sss)
+                    continue
+            except:  # noqa
+                logger.warning("Split Error: {}".format(ss.encode('utf-8')))
+                s.append(sss)
+                continue
+            # First split
+            ssp = list(map(str, graph.findAllPaths(max_paths=1)[0]))
+            # Add it to split list
+            s.extend(map(str, ssp))
+    logger.info(u"{} => {}".format(full, " ".join(s)))
+    r=[full, s, ofull, osplit]
+    return r
+
+def process_uohd_file(fn,m):
+    ''' Process a single UoHD file, up to a max of m lines
+    '''
     fs = []
+    logger.info("Processing tests from file %s", fn)
+    basename = os.path.basename(fn)  # Save
+    with codecs.open(fn, "rb", 'utf-8') as f:
+            for lnum, l in enumerate(f):
+                if m  != 0:
+                    r=process_line(lnum,l)
+                    if r is not None:
+                        r.extend([basename,lnum])
+                        logger.info("Appending {}".format(r))
+                        fs.append(r)
+                        if m > 0:
+                            m = m - 1
+                else:
+                    break
+    return fs
+                        
+
+def get_uohd_refs(lexan, maxrefs=200):
+    fs = []
+    # Max splits for the next file, initialize
     m = maxrefs
     flist = ["sandhi_test_data/130-short-stories-extracted.txt",
              "sandhi_test_data/agnipuran-1-111-sandhi_ext.txt",
@@ -58,96 +169,13 @@ def get_uohd_refs(lexan, maxrefs=200):
              "sandhi_test_data/Rajkathakunj_ext.txt",
              "sandhi_test_data/vyutpattivada-ext.txt"]
     for fn in flist:
-        logger.info("Processing tests from file %s", fn)
-        basename = os.path.basename(fn)  # Save
-        with codecs.open(fn, "rb", 'utf-8') as f:
-            for lnum, l in enumerate(f):
-                line = l.strip()
-                if line and line[0] != '#':
-                    if line.find('=>') == -1:
-                        continue
-                    logger.info(u"{}".format(line))
-                    full, split = line.split('=>')
-                    full = full.strip()
-                    full = full.replace(u'|', '')
-                    # Zero width joiner/nonjoiner
-                    full = full.replace(u"\u200c", "")
-                    full = full.replace(u"\u200d", "")
-                    ofull = full  # Save
-                    full = _dumpchars(SanskritObject(full).transcoded(SLP1))
-                    split = split.strip()
-                    split = split.replace(u'|', '')
-                    # Zero width joiner/nonjoiner
-                    split = split.replace(u"\u200c", "")
-                    split = split.replace(u"\u200d", "")
-                    osplit = split  # Save
-                    splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+')))
-                    if splits[-1] == '':
-                        splits.pop()
-
-                    # Empty full string
-                    if len(full) == 0:
-                        logger.info("Skipping")
-
-                    # UOHD errors, final visarga is sometimes missing
-                    if len(splits[-1]) > 1 and splits[-1][-2:] == "AH" and \
-                            full[-1] == "A":
-                        full = full + "H"
-                    if len(splits[-1]) > 1 and splits[-1][-2:] == "aH" and \
-                            full[-1] == "a":
-                        full = full + "H"
-                    if splits[-1][-1] == "A" and len(full) > 1 and full[-2:] == "AH":
-                        splits[-1] = splits[-1] + "H"
-                    if splits[-1][-1] == "a" and len(full) > 1 and full[-2:] == "aH":
-                        splits[-1] = splits[-1] + "H"
-
-                    # UOHD stores sandhied final words!
-                    # This is not a full fix
-                    full = re.sub("o$", "aH", full)
-                    # Modified splits
-                    s = []
-
-                    for ss in splits:
-                        # Check if this word is in our db
-                        # Rakarantas
-                        # FIXME - these four replacements aren't working
-                        # Check intent and actual operation
-                        sss = ss.replace('punaH', 'punar')
-                        sss = ss.replace('antaH', 'antar')
-                        sss = ss.replace('bahiH', 'bahir')
-                        sss = ss.replace('prAtaH', 'prAtar')
-                        # FIXME - the above four replacements aren't working
-                        # Sakarantas
-                        sss = re.sub('H$', 's', sss)
-                        if sss.find('punas') != -1:
-                            logger.error("ERROR: found {}".format(sss))
-                        # Is in our database
-                        if lexan.forms.valid(sss):
-                            s.append(sss)
-                        else:
-                            # If not, treat it as a word to be split
-                            try:
-                                graph = lexan.getSandhiSplits(SanskritObject(ss, encoding=SLP1))
-                                if graph is None:
-                                    # Catch stray unicode symbols with the encode
-                                    logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
-                                    s.append(sss)
-                                    continue
-                            except:  # noqa
-                                logger.warning("Split Error: {}".format(ss.encode('utf-8')))
-                                s.append(sss)
-                                continue
-                            # First split
-                            ssp = list(map(str, graph.findAllPaths(max_paths=1)[0]))
-                            # Add it to split list
-                            s.extend(map(str, ssp))
-                    fs.append((full, s, ofull, osplit, basename, lnum))
-                    logger.info(u"{} => {}".format(full, " ".join(s)))
-                    # -1 = run all tests
-                    if maxrefs > 0:
-                        m = m - 1
-                        if m <= 0:
-                            return fs
+        if m != 0:
+            r=process_uohd_file(fn,m)
+            if r is not None:
+                fs.extend(r)
+                m = m - len(r)
+        else:
+            break
     return fs
 
 
@@ -166,11 +194,11 @@ def test_splits(lexan, uohd_refs):
                 return "Skip"
         graph = lexan.getSandhiSplits(i)
         if graph is None:
+            print(uohd_refs)
+            logger.error("FAIL: Empty split for {}",i)
             return False
-        splits = graph.findAllPaths(max_paths=1000, sort=False)
-#         if not _in_splits(s, splits):
-#             # Currently, this triggers a fallback to all_simple_paths
-#             splits = graph.findAllPaths(max_paths=10000, sort=False)
+        # Reducing max_paths to 300, as we use 300 for pytest
+        splits = graph.findAllPaths(max_paths=300, sort=False)
         if splits is None or not _in_splits(s, splits):
             logger.error("FAIL: {} not in {}".format(s, splits))
         return _in_splits(s, splits)
