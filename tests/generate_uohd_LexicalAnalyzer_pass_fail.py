@@ -98,7 +98,7 @@ def process_line(lnum, l):
         if sss.find('punas') != -1:
             logger.error("ERROR: found {}".format(sss))
             # Is in our database
-        if lexan.forms.valid(sss):
+        if (subsplitp == "Skip") or lexan.forms.valid(sss):
             s.append(sss)
         else:
             # If not, treat it as a word to be split
@@ -107,6 +107,7 @@ def process_line(lnum, l):
                 if graph is None:
                     # Catch stray unicode symbols with the encode
                     logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
+                    subsplitp = "Skip"
                     s.append(sss)
                     continue
                 else:
@@ -194,18 +195,19 @@ def test_splits(lexan, uohd_refs):
     s = uohd_refs[1]
     i = SanskritObject(f, encoding=SLP1)
     try:
-        for sss in s:
-            if not lexan.forms.valid(sss):
-                return "Skip"
+        # for sss in s:
+        #    if not lexan.forms.valid(sss):
+        #        return "Skip"
         graph = lexan.getSandhiSplits(i)
         if graph is None:
             logger.error("FAIL: Empty split for {}".format(i.canonical().encode('utf-8')))
             return False
         # Reducing max_paths to 300, as we use 300 for pytest
-        splits = graph.findAllPaths(max_paths=100, sort=False)
-        if splits is None or not _in_splits(s, splits):
+        splits = graph.findAllPaths(max_paths=300, sort=False)
+        r = _in_splits(s, splits)
+        if splits is None or (not r):
             logger.error("FAIL: {} not in {}".format(s, splits))
-        return _in_splits(s, splits)
+        return r
     except:  # noqa
         logger.warning("Split Exception: {}".format(i.canonical().encode('utf-8')))
         return "Error"
@@ -231,13 +233,14 @@ if __name__ == "__main__":
                            "orig_split": osplit,
                            "filename": filename,
                            "linenum": linenum}) + "\n"
-        if test_splits(lexan, (full, split)) == "Error":
-            error.write(test)
-            error_count += 1
-        elif test_splits(lexan, (full, split)) == "Skip":
+        sr = test_splits(lexan, (full, split))
+        if splitp == "Skip":
             skip.write(test)
             skip_count += 1
-        elif test_splits(lexan, (full, split)):
+        elif sr == "Error":
+            error.write(test)
+            error_count += 1
+        elif sr:
             if splitp:
                 split_passing.write(test)
                 split_count += 1
