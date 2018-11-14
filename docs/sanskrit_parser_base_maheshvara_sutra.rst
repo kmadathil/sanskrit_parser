@@ -2,15 +2,15 @@ base.maheshvara_sutra
 =========================================
 
 .. automodule:: sanskrit_parser.base.maheshvara_sutra
-		:members:
-	  :undoc-members:
-	  :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 Submodules
 -------------
 .. toctree::
-		:maxdepth: 5
+    :maxdepth: 5
 
 
 Indices and tables

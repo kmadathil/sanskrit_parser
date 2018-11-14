@@ -122,13 +122,15 @@ set([(u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;tas&#39;, u&#39;eva&#39;), (u&#39;
 
 $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
 All possible splits for taeva
-set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;taev&#39;, u&#39;a&#39;), (u&#39;to&#39;, u&#39;eva&#39;), (u&#39;ta&#39;, u&#39;eva&#39;), (u&#39;te&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;tae&#39;, u&#39;va&#39;), (u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])
+set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;taev&#39;, u&#39;a&#39;), (u&#39;to&#39;, u&#39;eva&#39;),
+(u&#39;ta&#39;, u&#39;eva&#39;), (u&#39;te&#39;, u&#39;eva&#39;), (u&#39;taH&#39;, u&#39;eva&#39;), (u&#39;tae&#39;, u&#39;va&#39;),
+(u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])
 </pre></div>
 </div>
 <dl class="class">
 <dt id="sanskrit_parser.lexical_analyzer.sandhi.Sandhi">
 <em class="property">class </em><code class="descclassname">sanskrit_parser.lexical_analyzer.sandhi.</code><code class="descname">Sandhi</code><span class="sig-paren">(</span><em>rules_dir=None</em>, <em>use_default_rules=True</em>, <em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/lexical_analyzer/sandhi.html#Sandhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.lexical_analyzer.sandhi.Sandhi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Class to hold all the sandhi rules and methods for joining and splitting.
 Uses SLP1 encoding for all internal operations.</p>
 <dl class="method">
@@ -170,7 +172,7 @@ Reads all .txt files from the given directory and adds rules from them</p>
 <code class="descname">add_rules_from_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/lexical_analyzer/sandhi.html#Sandhi.add_rules_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.lexical_analyzer.sandhi.Sandhi.add_rules_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add sandhi rules from file.
 Each line of the input file should contain one rule. E.g. अ + अ = आ
-Lines starting with a # are treated as comments and skipped. 
+Lines starting with a # are treated as comments and skipped.
 Empty lines are ignored as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
