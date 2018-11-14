@@ -202,8 +202,8 @@ def test_splits(lexan, uohd_refs):
         if graph is None:
             logger.error("FAIL: Empty split for {}".format(i.canonical().encode('utf-8')))
             return False
-        # Reducing max_paths to 300, as we use 300 for pytest
-        splits = graph.findAllPaths(max_paths=300, sort=False)
+        # Reducing max_paths to 100
+        splits = graph.findAllPaths(max_paths=100, sort=False)
         r = _in_splits(s, splits)
         if splits is None or (not r):
             logger.error("FAIL: {} not in {}".format(s, splits))
@@ -222,7 +222,7 @@ if __name__ == "__main__":
     skip = codecs.open(os.path.join(directory, "uohd_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "uohd_error.txt"), "w", encoding='utf-8')
     lexan = SanskritLexicalAnalyzer()
-    maxrefs = 5000
+    maxrefs = 20000
     bar = progressbar.ProgressBar(maxval=maxrefs)
     fail_count = skip_count = error_count = pass_count = split_count = 0
     for full, split, ofull, osplit, splitp, filename, linenum in \
