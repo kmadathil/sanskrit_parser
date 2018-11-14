@@ -4,7 +4,7 @@ from base64 import b64encode
 
 import flask
 import jsonpickle
-from flask import url_for
+# from flask import url_for
 from flask_cors import CORS
 
 logging.basicConfig(
@@ -33,18 +33,18 @@ app.config.update(
 
 @app.route('/')
 def index():
-  flask.session['logstatus'] = 1
-  return flask.redirect('sanskrit_parser/docs')
+    flask.session['logstatus'] = 1
+    return flask.redirect('sanskrit_parser/docs')
 
 
 # Cant use flask-sitemap - won't list flask restplus routes.
 @app.route("/sitemap")
 def site_map():
-  output = []
-  for rule in app.url_map.iter_rules():
-    options = {}
+    output = []
+    for rule in app.url_map.iter_rules():
+        options = {}
     for arg in rule.arguments:
-      options[arg] = "[{0}]".format(arg)
+        options[arg] = "[{0}]".format(arg)
 
     methods = ','.join(rule.methods)
     url = str(rule)
@@ -53,10 +53,10 @@ def site_map():
     line = urllib.request.unquote("{:50s} {:20s} {}".format(rule.endpoint, methods, url))
     output.append(line)
 
-  logging.info(str(output))
-  response = app.response_class(
-    response=jsonpickle.dumps(output),
-    status=200,
-    mimetype='application/json'
-  )
-  return response
+    logging.info(str(output))
+    response = app.response_class(
+      response=jsonpickle.dumps(output),
+      status=200,
+      mimetype='application/json'
+    )
+    return response
