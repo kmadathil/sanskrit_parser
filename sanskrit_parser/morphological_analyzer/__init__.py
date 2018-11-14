@@ -27,8 +27,10 @@ all such valid morphologies.
     ...
     ('Lexical Split:', [asti, uttarasyAm])
     Valid Morphologies
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
     ('Lexical Split:', [asti, uttara, syAm])
     No valid morphologies for this split
     ('Lexical Split:', [asti, ut, tara, syAm])
@@ -50,8 +52,10 @@ Command line usage
     Splits:
     Lexical Split: [asti, uttarasyAm]
     Valid Morphologies
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
     Lexical Split: [asti, uttara, syAm]
     No valid morphologies for this split
     Lexical Split: [asti, ut, tara, syAm]
