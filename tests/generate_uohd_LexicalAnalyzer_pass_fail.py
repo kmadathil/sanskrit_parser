@@ -30,9 +30,10 @@ def _dumpchars(sr):
     s = re.sub('M$', 'm', s)
     return s
 
-def process_line(lnum,l):
+
+def process_line(lnum, l):
     '''Process a single line'''
-    logging.info("Processing Line {}: {}".format(lnum,l))
+    logging.info("Processing Line {}: {}".format(lnum, l))
     r = None
     subsplitp = False
     line = l.strip()
@@ -119,10 +120,11 @@ def process_line(lnum,l):
             # Add it to split list
             s.extend(map(str, ssp))
     logger.info(u"{} => {}".format(full, " ".join(s)))
-    r=[full, s, ofull, osplit, subsplitp]
+    r = [full, s, ofull, osplit, subsplitp]
     return r
 
-def process_uohd_file(fn,m):
+
+def process_uohd_file(fn, m):
     ''' Process a single UoHD file, up to a max of m lines
     '''
     fs = []
@@ -130,10 +132,10 @@ def process_uohd_file(fn,m):
     basename = os.path.basename(fn)  # Save
     with codecs.open(fn, "rb", 'utf-8') as f:
             for lnum, l in enumerate(f):
-                if m  != 0:
-                    r=process_line(lnum,l)
+                if m != 0:
+                    r = process_line(lnum, l)
                     if r is not None:
-                        r.extend([basename,lnum])
+                        r.extend([basename, lnum])
                         logger.info("Appending {}".format(r))
                         fs.append(r)
                         if m > 0:
@@ -141,7 +143,7 @@ def process_uohd_file(fn,m):
                 else:
                     break
     return fs
-                        
+
 
 def get_uohd_refs(lexan, maxrefs=200):
     fs = []
@@ -173,7 +175,7 @@ def get_uohd_refs(lexan, maxrefs=200):
              "sandhi_test_data/vyutpattivada-ext.txt"]
     for fn in flist:
         if m != 0:
-            r=process_uohd_file(fn,m)
+            r = process_uohd_file(fn, m)
             if r is not None:
                 fs.extend(r)
                 m = m - len(r)
