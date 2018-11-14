@@ -5,7 +5,7 @@ import flask_restplus
 from flask_restplus import Resource
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
+from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
 
 logging.basicConfig(
     level=logging.DEBUG,
