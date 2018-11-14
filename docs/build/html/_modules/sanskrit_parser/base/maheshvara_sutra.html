@@ -87,7 +87,7 @@
 
 
 <div class="viewcode-block" id="MaheshvaraSutras"><a class="viewcode-back" href="../../../sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras">[docs]</a><span class="k">class</span> <span class="nc">MaheshvaraSutras</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; </span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Singleton MaheshvaraSutras class</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">    MS(SanskritObject) : Internal representation of mAheshvara sutras</span>
@@ -95,7 +95,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize Maheshvara Sutras object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Note that a space is deliberately left after each it to help in</span>
@@ -111,9 +111,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">MSS</span>
 
 <div class="viewcode-block" id="MaheshvaraSutras.getPratyahara"><a class="viewcode-back" href="../../../sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara">[docs]</a>    <span class="k">def</span> <span class="nf">getPratyahara</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">longp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_a</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dirghas</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return list of varnas covered by a pratyahara</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">              p(:class:SanskritObject): Pratyahara</span>
 <span class="sd">              longp(boolean :optional:): When True (default), uses long pratyaharas</span>
@@ -122,7 +122,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">              (SanskritObject): List of varnas to the same encoding as p</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="c1"># SLP1 encoded pratyahara string</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
         <span class="c1"># it - halantyam</span>
@@ -150,7 +150,7 @@
         <span class="k">return</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MaheshvaraSutras.isInPratyahara"><a class="viewcode-back" href="../../../sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara">[docs]</a>    <span class="k">def</span> <span class="nf">isInPratyahara</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">longp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether a given varna is in a pratyahara</span>
 
 <span class="sd">        Args:</span>
