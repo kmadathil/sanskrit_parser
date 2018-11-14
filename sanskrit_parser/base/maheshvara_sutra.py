@@ -45,7 +45,7 @@ import six
 
 
 class MaheshvaraSutras(object):
-    """ 
+    """
     Singleton MaheshvaraSutras class
     Attributes:
     MS(SanskritObject) : Internal representation of mAheshvara sutras
@@ -53,7 +53,7 @@ class MaheshvaraSutras(object):
     """
 
     def __init__(self):
-        """ 
+        """
         Initialize Maheshvara Sutras object
         """
         # Note that a space is deliberately left after each it to help in
@@ -69,9 +69,9 @@ class MaheshvaraSutras(object):
         return self.MSS
 
     def getPratyahara(self, p, longp=True, remove_a=False, dirghas=False):
-        """ 
+        """
         Return list of varnas covered by a pratyahara
-        
+
         Args:
               p(:class:SanskritObject): Pratyahara
               longp(boolean :optional:): When True (default), uses long pratyaharas
@@ -80,7 +80,7 @@ class MaheshvaraSutras(object):
         Returns:
               (SanskritObject): List of varnas to the same encoding as p
         """
-        
+
         # SLP1 encoded pratyahara string
         ps = p.canonical()
         # it - halantyam
@@ -108,7 +108,7 @@ class MaheshvaraSutras(object):
         return sanskrit_base.SanskritObject(ts, sanskrit_base.SLP1)
 
     def isInPratyahara(self, p, v, longp=True):
-        """ 
+        """
         Checks whether a given varna is in a pratyahara
 
         Args:
