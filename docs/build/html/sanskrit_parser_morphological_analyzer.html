@@ -50,7 +50,7 @@
 can find whether a particular split has a valid morphology, and output
 all such valid morphologies.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer</span> <span class="k">import</span> <span class="n">SanskritMorphologicalAnalyzer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer</span> <span class="k">import</span> <span class="n">SanskritMorphologicalAnalyzer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sentence</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s2">&quot;astyuttarasyAm&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">SanskritMorphologicalAnalyzer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">=</span><span class="n">analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -78,7 +78,7 @@ all such valid morphologies.</p>
 </div>
 <div class="section" id="command-line-usage">
 <h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer astyuttarasyAm --input-encoding SLP1 --need-lakara
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer astyuttarasyAm --input-encoding SLP1 --need-lakara
 Input String: astyuttarasyAm
 Input String in SLP1: astyuttarasyAm
 Start Split: 2017-10-01 11:16:10.489660

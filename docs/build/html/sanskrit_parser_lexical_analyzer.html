@@ -48,7 +48,7 @@
 <p>Use the <code class="docutils literal"><span class="pre">SanskritLexicalAnalyzer</span></code> to split a sentence (wrapped in a
 <code class="docutils literal"><span class="pre">SanskritObject</span></code>) and retrieve the top 10 splits:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer</span> <span class="k">import</span> <span class="n">SanskritLexicalAnalyzer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer</span> <span class="k">import</span> <span class="n">SanskritLexicalAnalyzer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sentence</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">SanskritLexicalAnalyzer</span><span class="p">()</span>
@@ -68,8 +68,8 @@
 <span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;avatA&#39;, u&#39;AtmA&#39;]</span>
 </pre></div>
 </div>
-<p>The lexical_analyzer can also be used to look up the tags for a given
-word form in the INRIA database: (Note that the database stores words
+<p>The lexical_analyzer can also be used to look up the for a given
+word form: (Note that the database stores words
 ending in visarga with an ‘s’ at the end)</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">word</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;hares&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tags</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">getLexicalTags</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
@@ -90,23 +90,26 @@ ending in visarga with an ‘s’ at the end)</p>
 </div>
 <div class="section" id="command-line-usage">
 <h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer astyuttarasyAMdishidevatAtmA --split
-Splits:
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;at&#39;, u&#39;mA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatAt&#39;, u&#39;mA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;at&#39;, u&#39;mA&#39;]
-[u&#39;asti&#39;, u&#39;uttas&#39;, u&#39;asyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]
-[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatA&#39;, u&#39;AtmA&#39;]
+<div class="highlight-default"><div class="highlight"><pre><span></span>   $ python -m sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer astyuttarasyAMdishidevatAtmA --split
+   Splits:
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;at&#39;, u&#39;mA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatAt&#39;, u&#39;mA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;at&#39;, u&#39;mA&#39;]
+   [u&#39;asti&#39;, u&#39;uttas&#39;, u&#39;asyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]
+   [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatA&#39;, u&#39;AtmA&#39;]
 
-$ python -m sanskrit_parser.lexical_analyzer.SanskritLexicalAnalyzer hares
-Input String: hares
-Input String in SLP1: hares
-[(&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))]
+   $ python -m sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer hares
+   Input String: hares
+   Input String in SLP1: hares
+   [(&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;])),
+(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;])),
+(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;])), (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;])),
+(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))]
 </pre></div>
 </div>
 </div>

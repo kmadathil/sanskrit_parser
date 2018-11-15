@@ -27,8 +27,8 @@ Use the ``SanskritLexicalAnalyzer`` to split a sentence (wrapped in a
     [u'asti', u'uttara', u'syAm', u'diSi', u'devat', u'AtmA']
     [u'asti', u'uttarasyAm', u'diSi', u'de', u'avatA', u'AtmA']
 
-The lexical_analyzer can also be used to look up the tags for a given
-word form in the INRIA database: (Note that the database stores words
+The lexical_analyzer can also be used to look up the for a given
+word form: (Note that the database stores words
 ending in visarga with an 's' at the end)
 
 .. code:: python
@@ -70,6 +70,9 @@ Command line usage
     $ python -m sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer hares
     Input String: hares
     Input String in SLP1: hares
-    [('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op'])), ('hari#1', set(['na', 'mas', 'sg', 'gen'])), ('hari#1', set(['na', 'mas', 'abl', 'sg'])), ('hari#1', set(['na', 'fem', 'sg', 'gen'])), ('hari#1', set(['na', 'fem', 'abl', 'sg'])), ('hari#2', set(['na', 'mas', 'sg', 'gen'])), ('hari#2', set(['na', 'mas', 'abl', 'sg'])), ('hari#2', set(['na', 'fem', 'sg', 'gen'])), ('hari#2', set(['na', 'fem', 'abl', 'sg']))]
+    [('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op'])), ('hari#1', set(['na', 'mas', 'sg', 'gen'])),
+ ('hari#1', set(['na', 'mas', 'abl', 'sg'])), ('hari#1', set(['na', 'fem', 'sg', 'gen'])), ('hari#1', set(['na', 'fem', 'abl', 'sg'])),
+ ('hari#2', set(['na', 'mas', 'sg', 'gen'])), ('hari#2', set(['na', 'mas', 'abl', 'sg'])), ('hari#2', set(['na', 'fem', 'sg', 'gen'])),
+ ('hari#2', set(['na', 'fem', 'abl', 'sg']))]
 
 """

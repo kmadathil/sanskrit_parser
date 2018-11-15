@@ -245,8 +245,7 @@ class SanskritLexicalAnalyzer(object):
             r = self.forms.valid(ss)
             return r
 
-        def _sandhi_splits_all(s, start=None,
-                               stop=None):
+        def _sandhi_splits_all(s, start=None, stop=None):
             obj = SanskritBase.SanskritObject(s, encoding=SanskritBase.SLP1)
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
@@ -260,12 +259,10 @@ class SanskritLexicalAnalyzer(object):
             return self.dynamic_scoreboard[s]
 
         # If a space is found in a string, stop at that space
-        spos = s.find(' ')
-        if spos != -1:
-            # Replace the first space only
-            s = s.replace(' ', '', 1)
+        spos = s.find(" ")
+        stop = None if spos == -1 else spos
 
-        s_c_list = _sandhi_splits_all(s, start=0, stop=spos + 1)
+        s_c_list = _sandhi_splits_all(s, start=0, stop=stop)
         logger.debug("s_c_list: " + str(s_c_list))
         if s_c_list is None:
             s_c_list = []
@@ -280,7 +277,7 @@ class SanskritLexicalAnalyzer(object):
                 # valid splits of the right part
                 if s_c_right and s_c_right != '':
                     logger.debug("Trying to split:" + s_c_right)
-                    r_roots = self._possible_splits(s_c_right)
+                    r_roots = self._possible_splits(s_c_right.strip())
                     # if there are valid splits of the right side
                     if r_roots:
                         # Make sure we got a set of roots back
@@ -318,8 +315,7 @@ class SanskritLexicalAnalyzer(object):
         # again
         self.dynamic_scoreboard[s] = roots
         if len(roots) == 0:
-            logger.debug("No splits found, returning None")
-            return None
+            logger.debug("No splits found, returning empty set")
         else:
             logger.debug("Roots: %s", roots)
         return roots
@@ -392,21 +388,20 @@ if __name__ == "__main__":
                         g = set(args.tag_set)
                     print(s.hasTag(i, SanskritBase.SanskritObject(args.base), g))
             else:
-                import datetime
+                import time
                 i = SanskritBase.SanskritObject(args.data, encoding=ie,
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga=None)
                 print("Input String in SLP1:", i.canonical())
-                print("Start Split:", datetime.datetime.now())
-                start_split = datetime.datetime.now()
+                print("Start Split")
+                start_split = time.time()
                 graph = s.getSandhiSplits(i)
-                end_graph = datetime.datetime.now()
-                print("Time for graph generation = ", end_graph - start_split)
-                print("End DAG generation:", datetime.datetime.now())
+                end_graph = time.time()
+                print("End DAG generation")
                 if graph:
                     logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
                     splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
-                    print("End pathfinding:", datetime.datetime.now())
+                    print("End pathfinding", datetime.now())
                     print("Splits:")
                     if splits:
                         for split in splits:
@@ -415,7 +410,10 @@ if __name__ == "__main__":
                         print("None")
                 else:
                     print("No Valid Splits Found")
-                end_split = datetime.datetime.now()
-                print("Total time for graph generation + find paths", end_split - start_split)
+                end_split = time.time()
+                print("-----------")
+                print("Performance")
+                print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
+                print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
     main()
 
