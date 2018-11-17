@@ -206,6 +206,9 @@ class Sandhi(object):
         stop = min(idx+self.after_len_max, len(word))
         afters = [word[idx:i] for i in range(idx+1, stop+1)]
         for after in afters:
+            # this allows us to optionally have a single space
+            # between padas
+            after = after.replace(' ','',1)
             self.logger.debug("Trying after %s", after)
             befores = self.backward[after]
             if befores:
