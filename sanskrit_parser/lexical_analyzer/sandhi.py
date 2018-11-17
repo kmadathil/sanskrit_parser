@@ -207,10 +207,10 @@ class Sandhi(object):
         afters = [word[idx:i] for i in range(idx+1, stop+1)]
         for after in afters:
             # Save length of after string
-            laf=len(after)
+            laf = len(after)
             # this allows us to optionally have a single space
             # between padas. This also nessitates the laf code above
-            after = after.replace(' ','',1)
+            after = after.replace(' ', '', 1)
             self.logger.debug("Trying after %s", after)
             befores = self.backward[after]
             if befores:
