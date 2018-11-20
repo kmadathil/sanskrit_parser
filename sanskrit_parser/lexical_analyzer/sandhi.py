@@ -206,18 +206,13 @@ class Sandhi(object):
         stop = min(idx+self.after_len_max, len(word))
         afters = [word[idx:i] for i in range(idx+1, stop+1)]
         for after in afters:
-            # Save length of after string
-            laf = len(after)
-            # this allows us to optionally have a single space
-            # between padas. This also nessitates the laf code above
-            after = after.replace(' ', '', 1)
             self.logger.debug("Trying after %s", after)
             befores = self.backward[after]
             if befores:
                 for before, annotation in befores:
                     self.logger.debug("Found split %s -> %s (%s)", after, before, annotation)
                     left = word[:idx] + before[0]
-                    right = before[1] + word[idx+laf:]
+                    right = before[1] + word[idx+len(after):]
                     splits.add((left, right))
 
         if len(splits) == 0:
