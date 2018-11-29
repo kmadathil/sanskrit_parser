@@ -10,14 +10,13 @@ import os
 import re
 import progressbar
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, ITRANS
+from sanskrit_parser.base.sanskrit_base import SanskritObject, ITRANS
 from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(filename='gen_bg_lexan_passfail.log', filemode='w',
                     level=logging.INFO)
-
 
 
 def process_bg_file(fn, m):
@@ -28,27 +27,27 @@ def process_bg_file(fn, m):
     basename = os.path.basename(fn)  # Save
     with codecs.open(fn, "rb", 'utf-8') as f:
             # "S0" "S1" "S2" "S3" "S4"
-            state="S0" # Wait state
+            state = "S0"  # Wait state
             for lnum, l in enumerate(f):
                 if m != 0:
                     line = l.strip()
                     # Samasa splitters
-                    line = line.replace(r'\-',' ')
+                    line = line.replace(r'\-', ' ')
                     # ITRANS Halanta symbol, not handled right?
-                    line = line.replace('.h','')
+                    line = line.replace('.h', '')
                     logger.info("State {}".format(state))
                     if line:
                         if line[0] == '%':
                             logger.info("Skipping comment: {}".format(line))
-                            continue 
+                            continue
                         if line[0] == '\\':
                             logger.info("Skipping command: {}".format(line))
                             continue
-                    if state == "S0": # Default State
+                    if state == "S0":  # Default State
                         if not line:
                             logger.info("Skipping blank: {}".format(line))
                             continue
-                        elif line[-2:] == " .": # Found |
+                        elif line[-2:] == " .":  # Found |
                             prev = line
                             pnum = lnum
                             state = "S1"
@@ -61,54 +60,54 @@ def process_bg_file(fn, m):
                             logger.info("Found blank, moving to S0: {}".format(line))
                             state = "S0"
                             continue
-                        if line[-2:] == " .": # Found | , non verse
+                        if line[-2:] == " .":  # Found | , non verse
                             prev = line
                             pnum = lnum
                             state = "S0"
-                            r = [prev[:-2], line.split(" ")[:-1],prev,line, False,
+                            r = [prev[:-2], line.split(" ")[:-1], prev, line, False,
                                  basename, pnum]
                             logger.info("Appending {}".format(r))
                             fs.append(r)
                             if m > 0:
                                 m = m - 1
                             logger.info("Moving to S0: {}".format(line))
-                        elif line[-2:] == "..": # Found ||, verse
+                        elif line[-2:] == "..":  # Found ||, verse
                             prev2 = line
                             pnum2 = lnum
                             state = "S2"
                             logger.info("Moving to S2: {}".format(line))
                         else:
                             logger.info("Going to S0: unknown: {}".format(line))
-                            state="S0"
+                            state = "S0"
                         continue
                     elif state == "S2":
                         if not line:
                             logger.info("Found blank: {}".format(line))
                             continue
-                        if line[-2:] == " .": # Found | verse split 1
+                        if line[-2:] == " .":  # Found | verse split 1
                             split1 = line
-                            snum1  = lnum
+                            # snum1  = lnum
                             state = "S3"
                         else:
                             logger.info("Going to S0: unknown: {}".format(line))
-                            state="S0"
+                            state = "S0"
                         continue
                     elif state == "S3":
                         if not line:
                             logger.info("Found blank, going to S0: {}".format(line))
-                            state="S0"
-                            continue
-                        if line[-2:] == "..": # Found |  verse split 2
-                            split2 = line
-                            snum2 = lnum
                             state = "S0"
-                            r = [prev[:-2], split1.split(" ")[:-1],prev,split1, False,
+                            continue
+                        if line[-2:] == "..":  # Found |  verse split 2
+                            split2 = line
+                            # snum2 = lnum
+                            state = "S0"
+                            r = [prev[:-2], split1.split(" ")[:-1], prev, split1, False,
                                  basename, pnum]
                             logger.info("Appending {}".format(r))
                             fs.append(r)
-                            rprev2=prev2[:prev2.find("..")].strip()
-                            rsplit2=split2[:split2.find("..")].strip().split(" ")
-                            r = [rprev2,rsplit2,prev2,split2, False,
+                            rprev2 = prev2[:prev2.find("..")].strip()
+                            rsplit2 = split2[:split2.find("..")].strip().split(" ")
+                            r = [rprev2, rsplit2, prev2, split2, False,
                                  basename, pnum2]
                             logger.info("Appending {}".format(r))
                             fs.append(r)
@@ -117,7 +116,7 @@ def process_bg_file(fn, m):
                             logger.info("Going to S0: {}".format(line))
                         else:
                             logger.info("Going to S0: unknown: {}".format(line))
-                            state="S0"
+                            state = "S0"
                         continue
                 else:
                     break
@@ -147,10 +146,10 @@ def test_splits(lexan, bg_refs):
         return s in [list(map(str, ss)) for ss in splits]
 
     f = bg_refs[0]
-    s = [re.sub('H$','s',SanskritObject(sx, encoding=ITRANS).canonical()) for sx in bg_refs[1]]
+    s = [re.sub('H$', 's', SanskritObject(sx, encoding=ITRANS).canonical()) for sx in bg_refs[1]]
     i = SanskritObject(f, encoding=ITRANS)
     try:
-        #for sss in s:
+        # for sss in s:
         #   if not lexan.forms.valid(sss):
         #       return "Skip"
         graph = lexan.getSandhiSplits(i)
