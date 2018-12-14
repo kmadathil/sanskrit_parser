@@ -257,7 +257,7 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
     Singleton class to hold methods for Sanksrit morphological analysis.
     """
 
-    def __init__(self, lexical_lookup="inria"):
+    def __init__(self, lexical_lookup="combined"):
         super(SanskritMorphologicalAnalyzer, self).__init__(lexical_lookup)
 
     def constrainPath(self, path):
