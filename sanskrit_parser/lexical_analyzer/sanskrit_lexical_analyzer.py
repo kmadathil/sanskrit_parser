@@ -340,6 +340,10 @@ if __name__ == "__main__":
 
     def main():
         args = getArgs()
+        if args.strict_io:
+            print("Interpreting input strictly")
+        else:
+            print("Interpreting input loosely (strict_io set to false)")
         print("Input String:", args.data)
 
         if args.debug:

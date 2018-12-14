@@ -2,6 +2,7 @@
 from __future__ import print_function
 from indic_transliteration import sanscript
 from indic_transliteration import detect
+from indic_transliteration import deduplication
 from sanskrit_parser.util import normalization
 
 from contextlib import contextmanager
@@ -91,6 +92,10 @@ class SanskritObject(object):
                 self.thing = normalization.replace_ending_visarga_r(tmp)
             else:
                 self.thing = tmp
+            # Lazy Anusvaras (see issue #103)
+            tmpi = sanscript.transliterate(self.thing, SLP1, ITRANS)
+            tmpi = deduplication.fix_lazy_anusvaara_itrans(tmpi)
+            self.thing = sanscript.transliterate(tmpi, ITRANS, SLP1)
             logger.debug("After normalization: %s", self.thing)
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }
