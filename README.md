@@ -7,6 +7,9 @@ Parsers for Sanskrit / संस्कृतम्
 
 Please feel free to ping us if you would like to collaborate on this project.
 
+## Try it out!
+A web interface is available here - https://kmadathil.github.io/sanskrit_parser/ui/index.html
+
 ## Installation
 
 This project has been tested and developed using Python 2.7. A port to Python 3 has been completed, and everything *should* now work in both versions of Python. 
