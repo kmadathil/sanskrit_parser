@@ -92,7 +92,10 @@ class SanskritObject(object):
             else:
                 self.thing = tmp
             # Lazy Anusvaras (see issue #103)
-            self.thing = sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara(self.thing)
+            try:
+                self.thing = sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara(self.thing)
+            except (NameError, AttributeError):
+                print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
             logger.debug("After normalization: %s", self.thing)
         # Tags will go here as
         # { lexical_tag : [possible morphologies] }
