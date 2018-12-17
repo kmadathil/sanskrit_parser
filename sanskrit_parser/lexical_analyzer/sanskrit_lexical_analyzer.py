@@ -405,7 +405,7 @@ if __name__ == "__main__":
                 if graph:
                     logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
                     splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
-                    print("End pathfinding", datetime.now())
+                    print("End pathfinding", time.time())
                     print("Splits:")
                     if splits:
                         for split in splits:
