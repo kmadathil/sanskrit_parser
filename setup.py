@@ -84,7 +84,7 @@ setup(
   # your project is installed. For an analysis of "install_requires" vs pip's
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
-  install_requires=['indic_transliteration, 'lxml', 'networkx', 'tinydb',
+  install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
                     'python-constraint', 'requests', 'six', 'flask',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy==1.0.11'],
 
