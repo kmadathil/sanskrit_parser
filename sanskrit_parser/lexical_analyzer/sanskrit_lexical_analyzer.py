@@ -114,8 +114,9 @@ class SanskritLexicalGraph(object):
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <= 1000:
             paths = list(six.moves.map(lambda x: x[1:-1],
-                                      islice(nx.shortest_simple_paths(self.G, self.start, self.end),
-                                             max_paths)))
+                                       islice(nx.shortest_simple_paths(
+                                              self.G, self.start, self.end),
+                                              max_paths)))
             if score:
                 from sanskrit_parser.util import lexical_scorer
                 scorer = lexical_scorer.Scorer()
@@ -420,4 +421,3 @@ if __name__ == "__main__":
                 print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
                 print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
     main()
-
