@@ -10,7 +10,7 @@ all such valid morphologies.
 .. code:: python
 
     >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-    >>> from sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer import SanskritMorphologicalAnalyzer
+    >>> from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
     >>> sentence = SanskritObject("astyuttarasyAm")
     >>> analyzer = SanskritMorphologicalAnalyzer()
     >>> graph=analyzer.getSandhiSplits(sentence,tag=True)
@@ -27,8 +27,10 @@ all such valid morphologies.
     ...
     ('Lexical Split:', [asti, uttarasyAm])
     Valid Morphologies
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
     ('Lexical Split:', [asti, uttara, syAm])
     No valid morphologies for this split
     ('Lexical Split:', [asti, ut, tara, syAm])
@@ -41,7 +43,7 @@ Command line usage
 
 ::
 
-    $ python -m sanskrit_parser.morphological_analyzer.SanskritMorphologicalAnalyzer astyuttarasyAm --input-encoding SLP1 --need-lakara
+    $ python -m sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer astyuttarasyAm --input-encoding SLP1 --need-lakara
     Input String: astyuttarasyAm
     Input String in SLP1: astyuttarasyAm
     Start Split: 2017-10-01 11:16:10.489660
@@ -50,8 +52,10 @@ Command line usage
     Splits:
     Lexical Split: [asti, uttarasyAm]
     Valid Morphologies
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))), (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
     Lexical Split: [asti, uttara, syAm]
     No valid morphologies for this split
     Lexical Split: [asti, ut, tara, syAm]

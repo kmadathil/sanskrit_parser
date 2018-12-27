@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-  Morphological Analyzer for Sanskrit Sentences. 
+  Morphological Analyzer for Sanskrit Sentences.
 
 
 '''
@@ -11,7 +11,6 @@ import sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer as SanskritLex
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
 import constraint
-import pprint
 
 import logging
 logger = logging.getLogger(__name__)
@@ -20,11 +19,16 @@ need_lakara = False
 
 dw = DhatuWrapper()
 
+
 def getSLP1Tagset(n):
     return set(map(lambda x: x.canonical(), list(n[1])))
 
+
 # Lakaras
-_lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN', 'viDiliN', 'law-karmaRi', 'liw-karmaRi', 'luw-karmaRi', 'lrw-karmaRi', 'low-karmaRi', 'laN-karmaRi', 'liN-karmaRi', 'luN-karmaRi', 'lfN-karmaRi'])
+_lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
+                'viDiliN', 'law-karmaRi', 'liw-karmaRi', 'luw-karmaRi',
+                'lrw-karmaRi', 'low-karmaRi', 'laN-karmaRi', 'liN-karmaRi',
+                'luN-karmaRi', 'lfN-karmaRi'])
 # Disallowed last padas
 _ldis = set(['samAsapUrvapadanAmapadam', 'upasargaH'])
 # Vacanas
@@ -39,12 +43,13 @@ _sankhya = set(['saNKyA'])
 _samastas = set(['samAsapUrvapadanAmapadam'])
 # tiGanta vibhaktis
 _vibhaktis = set(['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tritIyAviBaktiH',
-                'caturTIviBaktiH', 'paNcamIviBaktiH', 'zazWIviBaktiH',
-                'saptamIviBaktiH', 'saMboDanaviBaktiH'])
+                  'caturTIviBaktiH', 'paNcamIviBaktiH', 'zazWIviBaktiH',
+                  'saptamIviBaktiH', 'saMboDanaviBaktiH'])
 _dvitiya = 'dvitIyAviBaktiH'
 _sambodhana = 'saMboDanaviBaktiH'
 
 # Rules for morphological analyzer
+
 
 # Disallow empty tagsets
 def nonempty(*nodes):
@@ -54,21 +59,23 @@ def nonempty(*nodes):
             return False
     return True
 
+
 # Only one lakara
 def oneLakara(*nodes):
     ''' Only one Lakara is allowed '''
     # lakaras in SLP1
     global need_lakara
-    l = 0
+    lakaras = 0
     for n in nodes:
         nset = getSLP1Tagset(n)
         if not(_lakaras.isdisjoint(nset)):
-            l = l + 1
+            lakaras = lakaras + 1
     # Variable to enforce a lakara
     if need_lakara:
-        return l == 1
+        return lakaras == 1
     else:
-        return l <= 1
+        return lakaras <= 1
+
 
 # Last pada cannot be an upasarga or samasapurvapada
 def lastWord(*nodes):
@@ -77,6 +84,7 @@ def lastWord(*nodes):
     r = _ldis.isdisjoint(nset)
     logger.debug(nset)
     return r
+
 
 # Upasarga must be before a verb
 def upasarga(*nodes):
@@ -87,9 +95,10 @@ def upasarga(*nodes):
             r = r and (not _lakaras.isdisjoint(getSLP1Tagset(nodes[ix + 1])))
     return r
 
+
 # Rules for prathamA/sambodhanA
 def prathamA(*nodes):
-    ''' Rules for prathamA, sambodhanA vibhaktis 
+    ''' Rules for prathamA, sambodhanA vibhaktis
 
         padas in prathamA ('kartr'/karman) must match the purusha / vacana of lakara
         sambodhana vibhakti rules: Lakara must be in madhyamapurusha
@@ -134,7 +143,7 @@ def prathamA(*nodes):
                 r = r and (n[0] != 'yuzmad')
             else:
                 # Can't have either with prathama
-                r = r and ((n[0] != 'yuzmad') and  (n[0] != 'asmad'))
+                r = r and ((n[0] != 'yuzmad') and (n[0] != 'asmad'))
             pstem = n[0]
             yuzmad = yuzmad or (pstem == 'yuzmad')
             logger.debug('Temp Prathama result:'.format(r))
@@ -159,8 +168,6 @@ def prathamA(*nodes):
             r = r and (mvacana == dvacana)
     logger.debug('Returning:'.format(r))
     return r
-
-
 
 
 # all padas in same case must match in linga and vacana
@@ -198,6 +205,7 @@ def vibhaktiAgreement(*nodes):
                 logger.debug("Map: {} : {}".format(vibhakti, slv))
     return True
 
+
 # Only sakarmaka dhatus are allowed karma
 def sakarmakarule(*nodes):
     global dw  # DhatuWrapper
@@ -220,17 +228,18 @@ def sakarmakarule(*nodes):
             logger.debug("Sakarmakatva: {}".format(sakarmaka))
     return sakarmaka or (not dvitiya)
 
+
 # samAsa constituents must be followed by another samasa constiuent or subanta
 def samasarules(*nodes):
-    ''' samasa constituents must be followed by tiGantas 
+    ''' samasa constituents must be followed by tiGantas
         (or other samasa constituents)
     '''
     r = True
-    l = len(nodes) - 1
+    ixmax = len(nodes) - 1
     for ix, n in enumerate(nodes):
         nset = getSLP1Tagset(n)
         if not _samastas.isdisjoint(nset):
-            if ix == l:
+            if ix == ixmax:
                 return False
             else:
                 nset1 = getSLP1Tagset(nodes[ix + 1])
@@ -244,10 +253,11 @@ def samasarules(*nodes):
 
 
 class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnalyzer):
-    """ Singleton class to hold methods for Sanksrit morphological analysis. 
-    
     """
-    def __init__(self, lexical_lookup="inria"):
+    Singleton class to hold methods for Sanksrit morphological analysis.
+    """
+
+    def __init__(self, lexical_lookup="combined"):
         super(SanskritMorphologicalAnalyzer, self).__init__(lexical_lookup)
 
     def constrainPath(self, path):
@@ -258,6 +268,7 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         '''
         _ncache = {}
         vlist = []
+
         def _uniq(s):
             if s not in _ncache:
                 _ncache[s] = 0
@@ -286,11 +297,13 @@ class SanskritMorphologicalAnalyzer(SanskritLexicalAnalyzer.SanskritLexicalAnaly
         s = problem.getSolutions()
         return s
 
+
 if __name__ == "__main__":
     from argparse import ArgumentParser
+
     def getArgs():
         """
-          Argparse routine. 
+          Argparse routine.
           Returns args variable
         """
         # Parser Setup
@@ -316,25 +329,27 @@ if __name__ == "__main__":
 
         if args.debug:
             logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.DEBUG)
-        else:
-            logging.basicConfig(filename='SanskritMorphologicalAnalyzer.log', filemode='w', level=logging.INFO)
         s = SanskritMorphologicalAnalyzer(args.lexical_lookup)
         if args.input_encoding is None:
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i = SanskritBase.SanskritObject(args.data, encoding=ie,
-                                      strict_io=args.strict_io,
-                                      replace_ending_visarga=None)
+                                        strict_io=args.strict_io,
+                                        replace_ending_visarga=None)
         print("Input String in SLP1:", i.canonical())
-        import datetime
-        print("Start Split:", datetime.datetime.now())
+        import time
+        print("Start Split")
+        start_split = time.time()
         graph = s.getSandhiSplits(i, tag=True)
-        print("End DAG generation:", datetime.datetime.now())
+        end_split = time.time()
+        print("End DAG generation")
         with SanskritBase.outputctx(args.strict_io):
             if graph:
+                start_path = time.time()
                 splits = graph.findAllPaths(max_paths=args.max_paths)
-                print("End pathfinding:", datetime.datetime.now())
+                end_path = time.time()
+                print("End pathfinding")
                 print("Splits:")
                 for sp in splits:
                     print("Lexical Split:", sp)
@@ -345,10 +360,13 @@ if __name__ == "__main__":
                             print([(spp, pp[str(spp)]) for spp in sp])
                     else:
                         print("No valid morphologies for this split")
-                print("End Morphological Analysis:", datetime.datetime.now())
+                print("End Morphological Analysis")
+                print("-----------")
+                print("Performance")
+                print("Time taken for split: {0:0.6f}s".format(end_split-start_split))
+                print("Time taken for path: {0:0.6f}s".format(end_path-start_path))
             else:
                 print("No Valid Splits Found")
                 return
 
     main()
-

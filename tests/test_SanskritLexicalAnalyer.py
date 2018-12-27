@@ -34,6 +34,10 @@ def get_splitstxt(test_count):
         for l in f:
             test = json.loads(l)
             fs.append((test["full"], test["split"]))
+    with open(os.path.join(data_dir, "uohd_split_passing.txt")) as f:
+        for l in f:
+            test = json.loads(l)
+            fs.append((test["full"], test["split"]))
     with open(os.path.join(data_dir, "uohd_failing.txt")) as f:
         for l in f:
             test = json.loads(l)
