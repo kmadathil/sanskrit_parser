@@ -9,6 +9,7 @@
 from __future__ import print_function
 from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
 import sanskrit_parser.base.sanskrit_base as SanskritBase
+from sanskrit_parser.util import lexical_scorer
 
 import networkx as nx
 from itertools import islice
@@ -43,6 +44,7 @@ class SanskritLexicalGraph(object):
         '''
         self.roots = []
         self.G = nx.DiGraph()
+        self.scorer = lexical_scorer.Scorer()
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -100,7 +102,27 @@ class SanskritLexicalGraph(object):
             self.G.add_edge(self.start, r)
         self.roots = []
 
-    def findAllPaths(self, max_paths=10, sort=True, score=False):
+    def scoreGraph(self):
+        edges = self.G.edges()
+        edges_list = []
+        edges_to_score = []
+        for edge in edges:
+            edges_list.append(edge)
+            if edge[0] == self.start:
+                edges_to_score.append([edge[1]])
+            elif edge[1] == self.end:
+                edges_to_score.append([edge[0]])
+            else:
+                edges_to_score.append(edge)
+        scores = self.scorer.score_splits(edges_to_score)
+        for edge, score in zip(edges_list, scores):
+            # Score is log-likelihood, so higher is better.
+            # For graph path-finding, smaller weight is better, so use negative
+            edges[edge]['weight'] = -score
+        for u, v, w in self.G.edges(data='weight'):
+            logger.debug("u = %s, v = %s, w = %s", u, v, w)
+
+    def findAllPaths(self, max_paths=10, sort=True, score=True):
         """ Find all paths through DAG to End
 
             Params:
@@ -111,20 +133,27 @@ class SanskritLexicalGraph(object):
         """
         if self.roots:
             self.lockStart()
+        if score:
+            self.scoreGraph()
         # shortest_simple_paths is slow for >1000 paths
         if max_paths <= 1000:
-            paths = list(six.moves.map(lambda x: x[1:-1],
-                                       islice(nx.shortest_simple_paths(
-                                              self.G, self.start, self.end),
-                                              max_paths)))
             if score:
-                from sanskrit_parser.util import lexical_scorer
-                scorer = lexical_scorer.Scorer()
-                path_scores = [(path, scorer.score(path)) for path in paths]
+                paths = list(six.moves.map(lambda x: x[1:-1],
+                                           islice(nx.shortest_simple_paths(
+                                                        self.G, self.start, self.end, weight='weight'),
+                                                  max_paths)))
+                scores = self.scorer.score_splits(paths)
+                path_scores = zip(paths, scores)
                 sorted_path_scores = sorted(path_scores, key=operator.itemgetter(1), reverse=True)
                 logger.debug("Sorted paths with scores:\n %s", sorted_path_scores)
-                return sorted_path_scores
+                # Strip the scores from the returned result, to be consistent with no-scoring option
+                sorted_paths, _ = zip(*sorted_path_scores)
+                return list(sorted_paths)
             else:
+                paths = list(six.moves.map(lambda x: x[1:-1],
+                                           islice(nx.shortest_simple_paths(
+                                                        self.G, self.start, self.end),
+                                                  max_paths)))
                 return paths
         else:  # Fall back to all_simple_paths
             ps = list(six.moves.map(lambda x: x[1:-1],
@@ -347,7 +376,8 @@ if __name__ == "__main__":
         parser.add_argument('--lexical-lookup', type=str, default="combined")
         parser.add_argument('--strict-io', action='store_true',
                             help="Do not modify the input/output string to match conventions", default=False)
-        parser.add_argument('--score', action='store_true')
+        parser.add_argument('--no-score', action='store_true',
+                            help="Don't use the lexical scorer to score the splits and reorder them")
         return parser.parse_args()
 
     def main():
@@ -405,7 +435,7 @@ if __name__ == "__main__":
                 print("End DAG generation")
                 if graph:
                     logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
-                    splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
+                    splits = graph.findAllPaths(max_paths=args.max_paths, score=not args.no_score)
                     print("End pathfinding")
                     print("Splits:")
                     if splits:
