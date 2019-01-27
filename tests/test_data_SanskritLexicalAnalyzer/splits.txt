@@ -4,9 +4,9 @@ agajAnanapadmArkaNgajAnanamaharniSam = agajA Anana padma arkam gajAnanam aharniS
 anekadantamBaktAnAmekadantaMyajAmahe =  aneka dam tam BaktAnAm eka dantam yajAmahe
 
 # Kalidasa
-vAgarTAvivasampfktOvAgarTapratipattaye jagataH pitarO vandepArvatIparameSvarO  = vAgarTO iva sampfktO vAgarTa pratipattaye jagatas pitarO vande pArvatI parameSvarO
+vAgarTAvivasampfktOvAgarTapratipattaye jagataH pitarO vandepArvatIparameSvarO  = vAk arTO iva sampfktO vAk arTa pratipattaye jagatas pitarO vande pArvatI parama ISvarO
 
-astyuttarasyAMdiSidevatAtmA himAlayonAmanagADirAjaH = asti uttarasyAm diSi devatAtmA himAlayas nAma nagADirAjas
+astyuttarasyAMdiSidevatAtmA himAlayonAmanagADirAjaH = asti uttarasyAm diSi devatA AtmA hima Alayas nAma naga aDirAjas
 
 #Panini
 jIvikopanizadAvOpamye = jIvikA upanizadO Opamye

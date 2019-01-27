@@ -36,21 +36,21 @@ class Scorer(object):
         self.sp.Load(self.sentencepiece_file)
         self.model = gensim.models.Word2Vec.load(self.word2vec_file)
 
-    def score(self, split):
-        sentence = " ".join(map(six.text_type, split))
-        return self.score_string(sentence)
+    def score_splits(self, splits):
+        sentences = [" ".join(map(six.text_type, split)) for split in splits]
+        return self.score_strings(sentences)
 
-    def score_string(self, sentence):
-        self.logger.debug("Sentence = %s", sentence)
-        pieces = self.sp.EncodeAsPieces(sentence)
+    def score_strings(self, sentences):
+        self.logger.debug("Sentence = %s", sentences)
+        pieces = [self.sp.EncodeAsPieces(sentence) for sentence in sentences]
         self.logger.debug("Pieces = %s", pieces)
-        score = self.model.score([pieces], total_sentences=1)
-        self.logger.debug("Score = %f", score[0])
-        return score[0]
+        scores = self.model.score(pieces, total_sentences=len(sentences))
+        self.logger.debug("Score = %s", scores)
+        return scores
 
     def _get_file(self, local, url):
-        self.logger.debug("%s not found. Fetching from %s", local, url)
         if not os.path.exists(local):
+            self.logger.debug("%s not found. Fetching from %s", local, url)
             r = requests.get(url, stream=True)
             with open(local, "wb") as fd:
                 for chunk in r.iter_content(chunk_size=128):
@@ -68,6 +68,6 @@ if __name__ == "__main__":
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     else:
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-    score = Scorer().score_string(args.data)
+    score = Scorer().score_strings([args.data])
     print("Input:", args.data)
     print("Score =", score)

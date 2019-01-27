@@ -27,7 +27,7 @@ Use the ``SanskritLexicalAnalyzer`` to split a sentence (wrapped in a
     [u'asti', u'uttara', u'syAm', u'diSi', u'devat', u'AtmA']
     [u'asti', u'uttarasyAm', u'diSi', u'de', u'avatA', u'AtmA']
 
-The lexical_analyzer can also be used to look up the for a given
+The lexical_analyzer can also be used to look up the tags for a given
 word form: (Note that the database stores words
 ending in visarga with an 's' at the end)
 

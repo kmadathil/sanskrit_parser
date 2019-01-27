@@ -7,7 +7,7 @@ import pytest
 import six
 import json
 from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, outputctx
 from tests.conftest import get_testcount
 
 
@@ -75,13 +75,11 @@ def test_medium_split(lexan):
 def test_file_splits(lexan, splittext_refs):
     f = splittext_refs[0]
     s = splittext_refs[1]
-    i = SanskritObject(f, encoding=SLP1)
-    graph = lexan.getSandhiSplits(i)
-    assert graph is not None
-    splits = graph.findAllPaths(max_paths=300, sort=False)
-#     if s not in [list(map(str, ss)) for ss in splits]:
-#         # Currently, this triggers a fallback to all_simple_paths
-#         splits = graph.findAllPaths(max_paths=10000, sort=False)
+    with outputctx(False):
+        i = SanskritObject(f, encoding=SLP1, strict_io=True, replace_ending_visarga=None)
+        graph = lexan.getSandhiSplits(i)
+        assert graph is not None
+        splits = graph.findAllPaths(max_paths=300, sort=False)
     assert s in [list(map(str, ss)) for ss in splits]
 
 

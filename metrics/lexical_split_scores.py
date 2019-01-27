@@ -108,10 +108,10 @@ def main(count=None, start=0):
     max_value = count or num_inputs - start
 
     # Write the reference outputs
-    # with open(ref_file) as fp, open(rief_output_file, "w") as out:
-    #    refs = fp.readlines()
-    #    refs = itertools.islice(refs, count)
-    #    out.write("".join(refs))
+    with open(ref_file) as fp, open(ref_output_file, "w") as out:
+        refs = fp.readlines()
+        refs = itertools.islice(refs, stop)
+        out.write("".join(refs))
 
     # Create the objects for scoring
     inria = LexicalSplitMetrics("inria", 10)
@@ -126,7 +126,7 @@ def main(count=None, start=0):
             inria.update(s)
             combined.update(s)
         print("{:20s} | {:30s} | {:5s}".format("Name", "BLEU", "CHRF"))
-        print("-"*50)
+        print("-"*70)
         inria.print_metrics()
         combined.print_metrics()
 
