@@ -211,6 +211,14 @@ class Sandhi(object):
             if befores:
                 for before, annotation in befores:
                     self.logger.debug("Found split %s -> %s (%s)", after, before, annotation)
+                    # Do we have a beginning-of-line match rule
+                    if before[0][0]=="^":
+                        if idx != 0:
+                            # Can't allow matches at any other position
+                            continue
+                        else:
+                            # drop the ^ in the result
+                            before = (before[0][1:],before[1])
                     left = word[:idx] + before[0]
                     right = before[1] + word[idx+len(after):]
                     splits.add((left, right))
