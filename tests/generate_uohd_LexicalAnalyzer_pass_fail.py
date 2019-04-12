@@ -74,7 +74,7 @@ def process_line(lnum, l):
     if splits[-1][-1] == "A" and len(full) > 1 and full[-2:] == "AH":
         splits[-1] = splits[-1] + "H"
     if splits[-1][-1] == "a" and len(full) > 1 and full[-2:] == "aH":
-                    splits[-1] = splits[-1] + "H"
+        splits[-1] = splits[-1] + "H"
 
     # FIXME - this creates problems, eg on 'aho', 'prabho'
     # UOHD stores sandhied final words!
@@ -132,17 +132,17 @@ def process_uohd_file(fn, m):
     logger.info("Processing tests from file %s", fn)
     basename = os.path.basename(fn)  # Save
     with codecs.open(fn, "rb", 'utf-8') as f:
-            for lnum, l in enumerate(f):
-                if m != 0:
-                    r = process_line(lnum, l)
-                    if r is not None:
-                        r.extend([basename, lnum])
-                        logger.info("Appending {}".format(r))
-                        fs.append(r)
-                        if m > 0:
-                            m = m - 1
-                else:
-                    break
+        for lnum, l in enumerate(f):
+            if m != 0:
+                r = process_line(lnum, l)
+                if r is not None:
+                    r.extend([basename, lnum])
+                    logger.info("Appending {}".format(r))
+                    fs.append(r)
+                    if m > 0:
+                        m = m - 1
+            else:
+                break
     return fs
 
 
