@@ -75,7 +75,7 @@ class InriaXMLWrapper(LexicalLookup):
     by Prof. Gerard Huet
     https://gitlab.inria.fr/huet/Heritage_Resources
     """
-    base_url = "https://github.com/kmadathil/sanskrit_parser/blob/sanskrit_util/data/"
+    base_url = "https://github.com/kmadathil/sanskrit_parser/raw/karthik/data/"
     xml_files = ["roots", "nouns", "adverbs", "final", "parts", "pronouns", "upasargas", "all"]
     old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     folder = "data"
