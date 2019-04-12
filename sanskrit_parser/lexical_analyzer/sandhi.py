@@ -169,12 +169,13 @@ class Sandhi(object):
         """
         first = first_in.canonical()
         second = second_in.canonical()
-        self.logger.debug("Join: %s, %s", first, second)
+        self.logger.debug("Join: {}, {}".format(first, second))
         if first is None or len(first) == 0:
             return second
         if second is None:
             return first
         left_chars = [first[i:] for i in range(max(0, len(first)-self.lc_len_max), len(first))]
+        left_chars.append("^"+first)
         right_chars = [second[0:i] for i in range(min(self.rc_len_max, len(second))+1)]
         self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
         joins = set()
