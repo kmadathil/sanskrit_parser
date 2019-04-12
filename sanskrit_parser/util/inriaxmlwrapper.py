@@ -182,10 +182,10 @@ class InriaXMLWrapper(LexicalLookup):
         return word in self.forms
 
     def get_tags(self, word, tmap=True):
-            tags = self._xml_to_tags(word)
-            if tmap and (tags is not None):
-                tags = inriaTagMapper(tags)
-            return tags
+        tags = self._xml_to_tags(word)
+        if tmap and (tags is not None):
+            tags = inriaTagMapper(tags)
+        return tags
 
 
 if __name__ == "__main__":

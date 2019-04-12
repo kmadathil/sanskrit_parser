@@ -26,100 +26,100 @@ def process_bg_file(fn, m):
     logger.info("Processing tests from file %s", fn)
     basename = os.path.basename(fn)  # Save
     with codecs.open(fn, "rb", 'utf-8') as f:
-            # "S0" "S1" "S2" "S3" "S4"
-            state = "S0"  # Wait state
-            for lnum, l in enumerate(f):
-                if m != 0:
-                    line = l.strip()
-                    # Samasa splitters
-                    line = line.replace(r'\-', ' ')
-                    # ITRANS Halanta symbol, not handled right?
-                    line = line.replace('.h', '')
-                    logger.info("State {}".format(state))
-                    if line:
-                        if line[0] == '%':
-                            logger.info("Skipping comment: {}".format(line))
-                            continue
-                        if line[0] == '\\':
-                            logger.info("Skipping command: {}".format(line))
-                            continue
-                    if state == "S0":  # Default State
-                        if not line:
-                            logger.info("Skipping blank: {}".format(line))
-                            continue
-                        elif line[-2:] == " .":  # Found |
-                            prev = line
-                            pnum = lnum
-                            state = "S1"
-                            logger.info("Moving to S1: {}".format(line))
-                        else:
-                            logger.info("Skipping unknown: {}".format(line))
-                            continue
-                    elif state == "S1":
-                        if not line:
-                            logger.info("Found blank, moving to S0: {}".format(line))
-                            state = "S0"
-                            continue
-                        if line[-2:] == " .":  # Found | , non verse
-                            prev = line
-                            pnum = lnum
-                            state = "S0"
-                            r = [prev[:-2], line.split(" ")[:-1], prev, line, False,
-                                 basename, pnum]
-                            logger.info("Appending {}".format(r))
-                            fs.append(r)
-                            if m > 0:
-                                m = m - 1
-                            logger.info("Moving to S0: {}".format(line))
-                        elif line[-2:] == "..":  # Found ||, verse
-                            prev2 = line
-                            pnum2 = lnum
-                            state = "S2"
-                            logger.info("Moving to S2: {}".format(line))
-                        else:
-                            logger.info("Going to S0: unknown: {}".format(line))
-                            state = "S0"
+        # "S0" "S1" "S2" "S3" "S4"
+        state = "S0"  # Wait state
+        for lnum, l in enumerate(f):
+            if m != 0:
+                line = l.strip()
+                # Samasa splitters
+                line = line.replace(r'\-', ' ')
+                # ITRANS Halanta symbol, not handled right?
+                line = line.replace('.h', '')
+                logger.info("State {}".format(state))
+                if line:
+                    if line[0] == '%':
+                        logger.info("Skipping comment: {}".format(line))
                         continue
-                    elif state == "S2":
-                        if not line:
-                            logger.info("Found blank: {}".format(line))
-                            continue
-                        if line[-2:] == " .":  # Found | verse split 1
-                            split1 = line
-                            # snum1  = lnum
-                            state = "S3"
-                        else:
-                            logger.info("Going to S0: unknown: {}".format(line))
-                            state = "S0"
+                    if line[0] == '\\':
+                        logger.info("Skipping command: {}".format(line))
                         continue
-                    elif state == "S3":
-                        if not line:
-                            logger.info("Found blank, going to S0: {}".format(line))
-                            state = "S0"
-                            continue
-                        if line[-2:] == "..":  # Found |  verse split 2
-                            split2 = line
-                            # snum2 = lnum
-                            state = "S0"
-                            r = [prev[:-2], split1.split(" ")[:-1], prev, split1, False,
-                                 basename, pnum]
-                            logger.info("Appending {}".format(r))
-                            fs.append(r)
-                            rprev2 = prev2[:prev2.find("..")].strip()
-                            rsplit2 = split2[:split2.find("..")].strip().split(" ")
-                            r = [rprev2, rsplit2, prev2, split2, False,
-                                 basename, pnum2]
-                            logger.info("Appending {}".format(r))
-                            fs.append(r)
-                            if m > 0:
-                                m = m - 1
-                            logger.info("Going to S0: {}".format(line))
-                        else:
-                            logger.info("Going to S0: unknown: {}".format(line))
-                            state = "S0"
+                if state == "S0":  # Default State
+                    if not line:
+                        logger.info("Skipping blank: {}".format(line))
                         continue
-                else:
-                    break
+                    elif line[-2:] == " .":  # Found |
+                        prev = line
+                        pnum = lnum
+                        state = "S1"
+                        logger.info("Moving to S1: {}".format(line))
+                    else:
+                        logger.info("Skipping unknown: {}".format(line))
+                        continue
+                elif state == "S1":
+                    if not line:
+                        logger.info("Found blank, moving to S0: {}".format(line))
+                        state = "S0"
+                        continue
+                    if line[-2:] == " .":  # Found | , non verse
+                        prev = line
+                        pnum = lnum
+                        state = "S0"
+                        r = [prev[:-2], line.split(" ")[:-1], prev, line, False,
+                             basename, pnum]
+                        logger.info("Appending {}".format(r))
+                        fs.append(r)
+                        if m > 0:
+                            m = m - 1
+                        logger.info("Moving to S0: {}".format(line))
+                    elif line[-2:] == "..":  # Found ||, verse
+                        prev2 = line
+                        pnum2 = lnum
+                        state = "S2"
+                        logger.info("Moving to S2: {}".format(line))
+                    else:
+                        logger.info("Going to S0: unknown: {}".format(line))
+                        state = "S0"
+                    continue
+                elif state == "S2":
+                    if not line:
+                        logger.info("Found blank: {}".format(line))
+                        continue
+                    if line[-2:] == " .":  # Found | verse split 1
+                        split1 = line
+                        # snum1  = lnum
+                        state = "S3"
+                    else:
+                        logger.info("Going to S0: unknown: {}".format(line))
+                        state = "S0"
+                    continue
+                elif state == "S3":
+                    if not line:
+                        logger.info("Found blank, going to S0: {}".format(line))
+                        state = "S0"
+                        continue
+                    if line[-2:] == "..":  # Found |  verse split 2
+                        split2 = line
+                        # snum2 = lnum
+                        state = "S0"
+                        r = [prev[:-2], split1.split(" ")[:-1], prev, split1, False,
+                             basename, pnum]
+                        logger.info("Appending {}".format(r))
+                        fs.append(r)
+                        rprev2 = prev2[:prev2.find("..")].strip()
+                        rsplit2 = split2[:split2.find("..")].strip().split(" ")
+                        r = [rprev2, rsplit2, prev2, split2, False,
+                             basename, pnum2]
+                        logger.info("Appending {}".format(r))
+                        fs.append(r)
+                        if m > 0:
+                            m = m - 1
+                        logger.info("Going to S0: {}".format(line))
+                    else:
+                        logger.info("Going to S0: unknown: {}".format(line))
+                        state = "S0"
+                    continue
+            else:
+                break
     return fs
 
 
