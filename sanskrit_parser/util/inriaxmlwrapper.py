@@ -75,7 +75,7 @@ class InriaXMLWrapper(LexicalLookup):
     by Prof. Gerard Huet
     https://gitlab.inria.fr/huet/Heritage_Resources
     """
-    base_url = "https://github.com/drdhaval2785/inriaxmlwrapper/raw/master/"
+    base_url = "https://raw.githubusercontent.com/drdhaval2785/inriaxmlwrapper/master/"
     xml_files = ["roots", "nouns", "adverbs", "final", "parts", "pronouns", "upasargas", "all"]
     old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     folder = "data"
@@ -182,10 +182,10 @@ class InriaXMLWrapper(LexicalLookup):
         return word in self.forms
 
     def get_tags(self, word, tmap=True):
-            tags = self._xml_to_tags(word)
-            if tmap and (tags is not None):
-                tags = inriaTagMapper(tags)
-            return tags
+        tags = self._xml_to_tags(word)
+        if tmap and (tags is not None):
+            tags = inriaTagMapper(tags)
+        return tags
 
 
 if __name__ == "__main__":
