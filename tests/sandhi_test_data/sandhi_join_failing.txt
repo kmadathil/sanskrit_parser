@@ -1,6 +1,7 @@
 {"expected": "मुद्यत्प्रभावलयिनंपरशुम्", "input": ["उद्यत्प्रभावलयिनम्", "परशुम्"], "line": 68, "actual": ["उद्यत्प्रभावलयिनम्परशुम्", "उद्यत्प्रभावलयिनंपरशुम्", "उद्यत्प्रभावलयिनं परशुम्"], "file": "2.karnabhara-ext.txt"}
 {"expected": "यस्मात्प्रभावोमहा", "input": ["यस्मात्प्रभावः", "महान्"], "line": 150, "actual": ["यस्मात्प्रभावःमहान्", "यस्मात्प्रभावोमहान्", "यस्मात्प्रभावो महान्"], "file": "2.karnabhara-ext.txt"}
 {"expected": "किनु", "input": ["किम्", "नु"], "line": 176, "actual": ["किं नु", "किम्नु", "किन्नु", "किंनु"], "file": "2.karnabhara-ext.txt"}
+{"expected": "भवेत्सतु", "input": ["भवेत्सः", "तु"], "line": 294, "file": "2.karnabhara-ext.txt"}
 {"expected": "वर्त्तमानास्ते", "input": ["वर्तमानाः", "ते"], "line": 19, "actual": ["वर्तमानाःते", "वर्तमानास्ते"], "file": "130-short-stories-extracted.txt"}
 {"expected": "शान्तिस्तथा", "input": ["शान्तः", "तथा"], "line": 63, "actual": ["शान्तस्तथा", "शान्तःतथा"], "file": "130-short-stories-extracted.txt"}
 {"expected": "यत्रायान्ति", "input": ["यात्रा", "आयान्ति"], "line": 266, "actual": ["यात्रायान्ति", "यात्राआयान्ति"], "file": "130-short-stories-extracted.txt"}

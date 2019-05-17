@@ -1,6 +1,7 @@
 {"expected": ["उद्यत्प्रभावलयिनम्", "परशुम्"], "input": "मुद्यत्प्रभावलयिनंपरशुम्", "line": 68, "file": "2.karnabhara-ext.txt"}
 {"expected": ["यस्मात्प्रभावः", "महान्"], "input": "यस्मात्प्रभावोमहा", "line": 150, "file": "2.karnabhara-ext.txt"}
 {"expected": ["किम्", "नु"], "input": "किनु", "line": 176, "file": "2.karnabhara-ext.txt"}
+{"expected": ["भवेत्सः", "तु"], "input": "भवेत्सतु", "line": 294, "file": "2.karnabhara-ext.txt"}
 {"expected": ["वर्तमानाः", "ते"], "input": "वर्त्तमानास्ते", "line": 19, "file": "130-short-stories-extracted.txt"}
 {"expected": ["शान्तः", "तथा"], "input": "शान्तिस्तथा", "line": 63, "file": "130-short-stories-extracted.txt"}
 {"expected": ["यात्रा", "आयान्ति"], "input": "यत्रायान्ति", "line": 266, "file": "130-short-stories-extracted.txt"}
