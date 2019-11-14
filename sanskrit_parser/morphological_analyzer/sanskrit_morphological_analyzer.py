@@ -37,7 +37,7 @@ _vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 _puruzas = ['praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH']
 prathama = 'praTamAviBaktiH'
 # Lingas
-_lingas = set(['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam','triliNgam'])
+_lingas = set(['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam'])
 _sankhya = set(['saNKyA'])
 # Samastapada former parts
 _samastas = set(['samAsapUrvapadanAmapadam'])
@@ -191,7 +191,7 @@ def vibhaktiAgreement(*nodes):
                 sankhya = nset.intersection(_sankhya)
                 if sankhya:  # Is "Sankhya" type (kati etc.)
                     continue
-            assert len(linga) == 1, "Only one linga allowed: {} : {} in {}".format(list(linga),list(nset),n)
+            assert len(linga) == 1, "Only one linga allowed: {} : {} in {}".format(list(linga), list(nset), n)
             linga = list(linga)[0]
             slv = set([linga, vacana])
             if vibhakti in maps:
