@@ -127,20 +127,18 @@ class SanskritObject(object):
             s = normalization.denormalize(s)
         return sanscript.transliterate(s, SLP1, DEVANAGARI)
 
-    def setLexicalTags(self, t):
-        """ Set Lexical Tags on Sanskrit Object
+    def setMorphologicalTags(self, t):
+        """ Set Morphological Tags on Sanskrit Object
 
             Params:
-               t (list): List of lexical tags
+               t (list): List of morphological tags
         """
         for tt in t:
-            # of the form (dhatu_or_prAtipadikam : set([tags]))
-            # FIXME: Incorporate morphological associations
             self.tags.append(tt)
         return self.tags
 
-    def getTags(self):
-        """ Tags on object """
+    def getMorphologicalTags(self):
+        """ Morphological Tags on object """
         return self.tags
 
     def __str__(self):

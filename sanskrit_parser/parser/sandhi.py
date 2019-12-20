@@ -25,7 +25,7 @@ The ``Sandhi`` class can be used to join/split words:
 
 .. code:: python
 
-    >>> from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
+    >>> from sanskrit_parser.parser.sandhi import Sandhi
     >>> sandhi = Sandhi()
     >>> word1 = SanskritObject('te')
     >>> word2 = SanskritObject('eva')
@@ -81,15 +81,15 @@ Command line usage
 
 ::
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
+    $ python -m sanskrit_parser.parser.sandhi --join te eva
     Joining te eva
     set([u'teeva', u'taeva', u'ta eva', u'tayeva'])
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1
+    $ python -m sanskrit_parser.parser.sandhi --split taeva 1
     Splitting taeva at 1
     set([(u'tar', u'eva'), (u'tas', u'eva'), (u'taH', u'eva'), (u'ta', u'eva')])
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
+    $ python -m sanskrit_parser.parser.sandhi --split taeva --all
     All possible splits for taeva
     set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'),
     (u'ta', u'eva'), (u'te', u'eva'), (u'taH', u'eva'), (u'tae', u'va'),

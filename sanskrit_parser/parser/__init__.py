@@ -2,16 +2,16 @@
 Usage
 =====
 
-Use the ``SanskritLexicalAnalyzer`` to split a sentence (wrapped in a
+Use the ``SanskritSandhiAnalyzer`` to split a sentence (wrapped in a
 ``SanskritObject``) and retrieve the top 10 splits:
 
 .. code:: python
 
     >>> from __future__ import print_function
-    >>> from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
+    >>> from sanskrit_parser.parser.sandhi_analyzer import SanskritSandhiAnalyzer
     >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
     >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
-    >>> analyzer = SanskritLexicalAnalyzer()
+    >>> analyzer = SanskritSandhiAnalyzer()
     >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
     >>> for split in splits:
     ...    print(split)
@@ -54,7 +54,7 @@ Command line usage
 
 ::
 
-    $ python -m sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer astyuttarasyAMdishidevatAtmA --split
+    $ python -m sanskrit_parser.parser.sandhi_analyzer astyuttarasyAMdishidevatAtmA 
     Splits:
     [u'asti', u'uttarasyAm', u'diSi', u'devat', u'AtmA']
     [u'asti', u'uttarasyAm', u'diSi', u'devata', u'AtmA']
@@ -67,7 +67,7 @@ Command line usage
     [u'asti', u'uttara', u'syAm', u'diSi', u'devata', u'AtmA']
     [u'asti', u'uttarasyAm', u'diSi', u'de', u'vatA', u'AtmA']
 
-    $ python -m sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer hares
+    $ python -m sanskrit_parser.parser.sandhi_analyzer hares --tags
     Input String: hares
     Input String in SLP1: hares
     [('hf#1', set(['cj', 'snd', 'prim', 'para', 'md', 'sys', 'prs', 'v', 'np', 'sg', 'op'])), ('hari#1', set(['na', 'mas', 'sg', 'gen'])),
@@ -79,7 +79,7 @@ Usage
 ======
 
 The ``SanskritMorphologicalAnalyzer`` class has a similar interface to
-``SanskritLexicalAnalyzer``, and has a ``constrainPath()`` method which
+``SanskritSandhiAnalyzer``, and has a ``constrainPath()`` method which
 can find whether a particular split has a valid morphology, and output
 all such valid morphologies.
 

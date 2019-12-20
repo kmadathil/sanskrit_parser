@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-""" Lexical Analyzer for Sanskrit words
+""" Sandhi Analyzer for Sanskrit words
 
     Author: Karthik Madathil <kmadathil@gmail.com>
 """
@@ -26,10 +26,10 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class SanskritLexicalGraph(object):
-    """ DAG class to hold Lexical Analysis Results
+class SandhiGraph(object):
+    """ DAG class to hold Sandhi Lexical Analysis Results
 
-        Represents the results of lexical analysis as a DAG
+        Represents the results of lexical sandhi analysis as a DAG
         Nodes are SanskritObjects
     """
     start = "__start__"
@@ -168,8 +168,14 @@ class SanskritLexicalGraph(object):
         return str(self.G)
 
 
-class SanskritLexicalAnalyzer(object):
-    """ Singleton class to hold methods for Sanskrit lexical analysis. """
+class LexicalSandhiAnalyzer(object):
+    """ Singleton class to hold methods for Sanskrit lexical sandhi analysis. 
+
+        We define lexical sandhi analysis to be the process of taking an input sequence 
+        and transforming it to a collection (represented by a DAG) of potential sandhi
+        splits of the sequence. Each member of a split is guaranteed to be a valid
+        lexical form. 
+    """
 
     sandhi = Sandhi()  # Singleton!
 
@@ -178,8 +184,8 @@ class SanskritLexicalAnalyzer(object):
         self.forms = forms
         pass
 
-    def getLexicalTags(self, obj, tmap=True):
-        """ Get Lexical tags for a word
+    def getMorphologicalTags(self, obj, tmap=True):
+        """ Get Morphological tags for a word
 
             Params:
                 obj(SanskritObject): word
@@ -193,7 +199,7 @@ class SanskritLexicalAnalyzer(object):
         return tags
 
     def hasTag(self, obj, name, tagset):
-        """ Check if word matches lexical tags
+        """ Check if word matches morhphological tags
 
             Params:
                 obj(SanskritObject): word
@@ -203,14 +209,14 @@ class SanskritLexicalAnalyzer(object):
                 list: List of (base, tagset) pairs for obj that
                       match (name,tagset), or None
         """
-        lexical_tags = self.getLexicalTags(obj)
-        if lexical_tags is None:
+        morphological_tags = self.getMorphologicalTags(obj)
+        if morphological_tags is None:
             return None
         assert (name is not None) or (tagset is not None)
         r = []
-        for li in lexical_tags:
+        for li in morphological_tags:
             # Name is none, or name matches
-            # Tagset is None, or all its elements are found in Inria tagset
+            # Tagset is None, or all its elements are found in tagset
             if ((name is None) or name.canonical() == li[0]) and \
                     ((tagset is None) or tagset.issubset(li[1])):
                 r.append(li)
@@ -219,18 +225,18 @@ class SanskritLexicalAnalyzer(object):
         else:
             return r
 
-    def tagLexicalGraph(self, g):
-        ''' Tag a Lexical Graph with lexical tags
+    def tagSandhiGraph(self, g):
+        ''' Tag a Sandhi Graph with morphological tags for each node
 
          Params:
-            g (SanskritLexicalGraph) : input lexical graph
+            g (SandhiGraph) : input lexical sandhi graph
         '''
         for n in g:
             # Avoid start and end
             if isinstance(n, SanskritBase.SanskritObject):
-                t = self.getLexicalTags(n)
+                t = self.getMorphologicalTags(n)
                 logger.debug("Got tags %s for %s", t, n)
-                n.setLexicalTags(t)
+                n.setMorphologicalTags(t)
 
     def getSandhiSplits(self, o, tag=False):
         ''' Get all valid Sandhi splits for a string
@@ -238,19 +244,19 @@ class SanskritLexicalAnalyzer(object):
             Params:
               o(SanskritObject): Input object
               tag(Boolean)     : When True (def=False), return a
-                                 lexically tagged graph
+                                 morphologically tagged graph
             Returns:
-              SanskritLexicalGraph : DAG all possible splits
+              SandhiGraph : DAG all possible splits
         '''
         self.dynamic_scoreboard = {}
         # Transform to internal canonical form
         s = o.canonical()
         # Initialize an empty graph to hold the splits
-        self.splits = SanskritLexicalGraph()
+        self.splits = SandhiGraph()
         # _possible_splits updates graph in self.splits with nodes and returns roots
         roots = self._possible_splits(s)
         if tag and len(roots) > 0:
-            self.tagLexicalGraph(self.splits)
+            self.tagSandhiGraph(self.splits)
         if len(roots) == 0:
             return None
         else:
@@ -361,7 +367,7 @@ if __name__ == "__main__":
           Returns args variable
         """
         # Parser Setup
-        parser = ArgumentParser(description='Lexical Analyzer')
+        parser = ArgumentParser(description='Lexical Sandhi Analyzer')
         # String to encode
         parser.add_argument('data', nargs="?", type=str, default="adhi")
         # Input Encoding (autodetect by default)
@@ -370,7 +376,7 @@ if __name__ == "__main__":
         parser.add_argument('--base', type=str, default=None)
         # Filter by tag set
         parser.add_argument('--tag-set', type=str, default=None, nargs="+")
-        parser.add_argument('--split', action='store_true')
+        parser.add_argument('--tags',dest='split',action='store_false')
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--max-paths', type=int, default=10)
         parser.add_argument('--lexical-lookup', type=str, default="combined")
@@ -389,13 +395,13 @@ if __name__ == "__main__":
         print("Input String:", args.data)
 
         if args.debug:
-            logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
+            logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
                                 filemode='w', level=logging.DEBUG)
         else:
-            logging.basicConfig(filename='SanskritLexicalAnalyzer.log',
+            logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
                                 filemode='w', level=logging.INFO)
 
-        s = SanskritLexicalAnalyzer(args.lexical_lookup)
+        s = LexicalSandhiAnalyzer(args.lexical_lookup)
         if args.input_encoding is None:
             ie = None
         else:
@@ -406,7 +412,7 @@ if __name__ == "__main__":
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga='s')
                 print("Input String in SLP1:", i.canonical())
-                ts = s.getLexicalTags(i)
+                ts = s.getMorphologicalTags(i)
                 print(ts)
                 # Possible rakaranta
                 # Try by replacing end visarga with 'r' instead
@@ -414,14 +420,21 @@ if __name__ == "__main__":
                     i = SanskritBase.SanskritObject(args.data, encoding=ie,
                                                     strict_io=args.strict_io,
                                                     replace_ending_visarga='r')
-                    ts = s.getLexicalTags(i)
+                    ts = s.getMorphologicalTags(i)
+                    print("Morphological tags:")
                     if ts is not None:
-                        print("Input String in SLP1:", i.canonical())
-                        print(ts)
+                        for t in ts:
+                            print(t)
                 if args.tag_set or args.base:
-                    if args.tag_set:
+                    if args.tag_set is not None:
                         g = set(args.tag_set)
-                    print(s.hasTag(i, SanskritBase.SanskritObject(args.base), g))
+                    else:
+                        g = None
+                    if args.base is not None:
+                        b = SanskritBase.SanskritObject(args.base)
+                    else:
+                        b = None
+                    print(s.hasTag(i, b, g))
             else:
                 import time
                 i = SanskritBase.SanskritObject(args.data, encoding=ie,
