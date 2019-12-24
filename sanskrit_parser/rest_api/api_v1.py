@@ -5,7 +5,7 @@ import flask_restplus
 from flask_restplus import Resource
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
+from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -24,7 +24,7 @@ api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parse
                          default_label=api_blueprint.name,
                          prefix=URL_PREFIX, doc='/docs')
 
-analyzer = SanskritMorphologicalAnalyzer()
+analyzer = VakyaAnalyzer()
 
 
 def jtag(tag):
@@ -42,7 +42,7 @@ class Tags(Resource):
     def get(self, p):
         """ Get lexical tags for p """
         pobj = SanskritObject(p, strict_io=False)
-        tags = analyzer.getLexicalTags(pobj)
+        tags = analyzer.getMorphologicalTags(pobj)
         if tags is not None:
             ptags = jtags(tags)
         else:
