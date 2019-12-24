@@ -133,12 +133,8 @@ class SanskritImmutableString(SanskritString):
     def __ne__(self, other):
         return str(self) != str(other)
 
-
-class SanskritObject(SanskritString):
-    """ Sanskrit Object Class: Derived From SanskritString
-
-        Attributes:
-
+class SanskritNormalizedString(SanskritString):
+    """ SanskritString plus Normalization of input
     """
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
@@ -159,8 +155,17 @@ class SanskritObject(SanskritString):
             except (NameError, AttributeError):
                 print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
             logger.debug("After normalization: %s", self.thing)
+
+class SanskritObject(SanskritNormalizedString):
+    """ Sanskrit Object Class: Derived From SanskritString
+
+        Attributes:
+
+    """
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
+                 strict_io=True, replace_ending_visarga='s'):
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
         # Tags will go here as
-        # { lexical_tag : [possible morphologies] }
         self.tags = []
 
     def setMorphologicalTags(self, t):

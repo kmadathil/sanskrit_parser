@@ -188,7 +188,7 @@ class LexicalSandhiAnalyzer(object):
         """ Get Morphological tags for a word
 
             Params:
-                obj(SanskritObject): word
+                obj(SanskritString): word
                 tmap(Boolean=True): If True, maps
                     tags to our format
             Returns
@@ -202,7 +202,7 @@ class LexicalSandhiAnalyzer(object):
         """ Check if word matches morhphological tags
 
             Params:
-                obj(SanskritObject): word
+                obj(SanskritString): word
                 name(str): name in tag
                 tagset(set): set of tag elements
             Returns
@@ -242,7 +242,7 @@ class LexicalSandhiAnalyzer(object):
         ''' Get all valid Sandhi splits for a string
 
             Params:
-              o(SanskritObject): Input object
+              o(SanskritString): Input object
               tag(Boolean)     : When True (def=False), return a
                                  morphologically tagged graph
             Returns:
@@ -408,7 +408,7 @@ if __name__ == "__main__":
             ie = SanskritBase.SCHEMES[args.input_encoding]
         with SanskritBase.outputctx(args.strict_io):
             if not args.split:
-                i = SanskritBase.SanskritObject(args.data, encoding=ie,
+                i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga='s')
                 print("Input String in SLP1:", i.canonical())
@@ -420,7 +420,7 @@ if __name__ == "__main__":
                 # Possible rakaranta
                 # Try by replacing end visarga with 'r' instead
                 if not args.strict_io:
-                    i = SanskritBase.SanskritObject(args.data, encoding=ie,
+                    i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                                     strict_io=args.strict_io,
                                                     replace_ending_visarga='r')
                     ts = s.getMorphologicalTags(i)
@@ -434,13 +434,13 @@ if __name__ == "__main__":
                     else:
                         g = None
                     if args.base is not None:
-                        b = SanskritBase.SanskritObject(args.base)
+                        b = SanskritBase.SanskritNormalizedString(args.base)
                     else:
                         b = None
                     print(s.hasTag(i, b, g))
             else:
                 import time
-                i = SanskritBase.SanskritObject(args.data, encoding=ie,
+                i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                                 strict_io=args.strict_io,
                                                 replace_ending_visarga=None)
                 print("Input String in SLP1:", i.canonical())

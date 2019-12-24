@@ -345,7 +345,7 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
-        i = SanskritBase.SanskritObject(args.data, encoding=ie,
+        i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                         strict_io=args.strict_io,
                                         replace_ending_visarga=None)
         logger.info(f"Input String in SLP1: {i.canonical()}")
