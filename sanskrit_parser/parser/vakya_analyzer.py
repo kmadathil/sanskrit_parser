@@ -346,8 +346,8 @@ if __name__ == "__main__":
         else:
             ie = SanskritBase.SCHEMES[args.input_encoding]
         i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                        strict_io=args.strict_io,
-                                        replace_ending_visarga=None)
+                                                  strict_io=args.strict_io,
+                                                  replace_ending_visarga=None)
         logger.info(f"Input String in SLP1: {i.canonical()}")
         import time
         logger.info("Start Split")

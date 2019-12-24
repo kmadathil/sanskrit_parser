@@ -133,6 +133,7 @@ class SanskritImmutableString(SanskritString):
     def __ne__(self, other):
         return str(self) != str(other)
 
+
 class SanskritNormalizedString(SanskritString):
     """ SanskritString plus Normalization of input
     """
@@ -155,6 +156,7 @@ class SanskritNormalizedString(SanskritString):
             except (NameError, AttributeError):
                 print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
             logger.debug("After normalization: %s", self.thing)
+
 
 class SanskritObject(SanskritNormalizedString):
     """ Sanskrit Object Class: Derived From SanskritString

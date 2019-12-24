@@ -409,8 +409,8 @@ if __name__ == "__main__":
         with SanskritBase.outputctx(args.strict_io):
             if not args.split:
                 i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                strict_io=args.strict_io,
-                                                replace_ending_visarga='s')
+                                                          strict_io=args.strict_io,
+                                                          replace_ending_visarga='s')
                 print("Input String in SLP1:", i.canonical())
                 ts = s.getMorphologicalTags(i)
                 print("Morphological tags:")
@@ -421,8 +421,8 @@ if __name__ == "__main__":
                 # Try by replacing end visarga with 'r' instead
                 if not args.strict_io:
                     i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                    strict_io=args.strict_io,
-                                                    replace_ending_visarga='r')
+                                                              strict_io=args.strict_io,
+                                                              replace_ending_visarga='r')
                     ts = s.getMorphologicalTags(i)
                     if ts is not None:
                         print("Input String in SLP1:", i.canonical())
@@ -441,8 +441,8 @@ if __name__ == "__main__":
             else:
                 import time
                 i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                strict_io=args.strict_io,
-                                                replace_ending_visarga=None)
+                                                          strict_io=args.strict_io,
+                                                          replace_ending_visarga=None)
                 print("Input String in SLP1:", i.canonical())
                 print("Start Split")
                 start_split = time.time()
