@@ -282,7 +282,7 @@ class LexicalSandhiAnalyzer(object):
             return r
 
         def _sandhi_splits_all(s, start=None, stop=None):
-            obj = SanskritBase.SanskritObject(s, encoding=SanskritBase.SLP1)
+            obj = SanskritBase.SanskritImmutableString(s, encoding=SanskritBase.SLP1)
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
 

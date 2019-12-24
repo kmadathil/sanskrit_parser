@@ -8,7 +8,7 @@ from __future__ import print_function
 import abc
 import os
 from argparse import ArgumentParser
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1, SCHEMES
 
 
 class LexicalLookup(object):
@@ -50,7 +50,8 @@ class LexicalLookup(object):
         else:
             ie = SCHEMES[args.input_encoding]
 
-        word_in = SanskritObject(args.word, encoding=ie).transcoded(SLP1)
+        word_in = SanskritImmutableString(args.word,
+                                          encoding=ie).transcoded(SLP1)
         print("Getting tags for", word_in)
         tags = self.get_tags(word_in)
         if tags is not None:
