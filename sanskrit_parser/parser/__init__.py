@@ -54,7 +54,7 @@ Command line usage
 
 ::
 
-    $ python -m sanskrit_parser.parser.sandhi_analyzer astyuttarasyAMdishidevatAtmA 
+    $ python -m sanskrit_parser.parser.sandhi_analyzer astyuttarasyAMdishidevatAtmA
     Splits:
     [u'asti', u'uttarasyAm', u'diSi', u'devat', u'AtmA']
     [u'asti', u'uttarasyAm', u'diSi', u'devata', u'AtmA']

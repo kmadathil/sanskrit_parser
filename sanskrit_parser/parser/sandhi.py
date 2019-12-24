@@ -277,7 +277,9 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = list(map(six.text_type.strip, c.split('-')))
-                    varnas = set(ms.getPratyahara(SanskritImmutableString(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
+                    varnas = set(ms.getPratyahara(
+                        SanskritImmutableString(splits[0][1:], encoding=SLP1),
+                        longp=False, remove_a=True, dirghas=True).canonical())
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)

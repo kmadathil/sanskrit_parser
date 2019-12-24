@@ -169,12 +169,12 @@ class SandhiGraph(object):
 
 
 class LexicalSandhiAnalyzer(object):
-    """ Singleton class to hold methods for Sanskrit lexical sandhi analysis. 
+    """ Singleton class to hold methods for Sanskrit lexical sandhi analysis.
 
-        We define lexical sandhi analysis to be the process of taking an input sequence 
+        We define lexical sandhi analysis to be the process of taking an input sequence
         and transforming it to a collection (represented by a DAG) of potential sandhi
         splits of the sequence. Each member of a split is guaranteed to be a valid
-        lexical form. 
+        lexical form.
     """
 
     sandhi = Sandhi()  # Singleton!
@@ -376,7 +376,7 @@ if __name__ == "__main__":
         parser.add_argument('--base', type=str, default=None)
         # Filter by tag set
         parser.add_argument('--tag-set', type=str, default=None, nargs="+")
-        parser.add_argument('--tags',dest='split',action='store_false')
+        parser.add_argument('--tags', dest='split', action='store_false')
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--max-paths', type=int, default=10)
         parser.add_argument('--lexical-lookup', type=str, default="combined")

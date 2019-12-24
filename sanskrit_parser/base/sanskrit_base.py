@@ -117,28 +117,32 @@ class SanskritString(object):
     def __repr__(self):
         return str(self)
 
+
 class SanskritImmutableString(SanskritString):
     """ Immutable version of SanskritString
     """
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
-        super().__init__(thing,encoding,unicode_encoding)
+        super().__init__(thing, encoding, unicode_encoding)
+
     def __hash__(self):
         return hash(str(self))
-    def __eq__(self,other):
+
+    def __eq__(self, other):
         return str(self) == str(other)
-    def __ne__(self,other):
+
+    def __ne__(self, other):
         return str(self) != str(other)
-    
+
+
 class SanskritObject(SanskritString):
     """ Sanskrit Object Class: Derived From SanskritString
 
         Attributes:
 
     """
-
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing,encoding,unicode_encoding)
+        super().__init__(thing, encoding, unicode_encoding)
         if not strict_io:
             # Normalize
             logger.debug("Before normalization: %s", self.thing)
@@ -174,7 +178,6 @@ class SanskritObject(SanskritString):
         return self.tags
 
 
-    
 @contextmanager
 def outputctx(strict_io):
     global denormalize

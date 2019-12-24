@@ -11,7 +11,7 @@ import logging
 
 
 def _merge_tags(tags):
-    ''' Merge tags from multiple sources 
+    ''' Merge tags from multiple sources
 
         Inputs
            tags: List of elements of form (baseword, tagset)
@@ -24,7 +24,7 @@ def _merge_tags(tags):
     for t in tags:
         base = t[0]
         if base not in tdict:
-            tdict[base]={frozenset(t[1])}
+            tdict[base] = {frozenset(t[1])}
         else:
             tdict[base].add(frozenset(t[1]))
     tlist = []
@@ -32,6 +32,7 @@ def _merge_tags(tags):
     for base in tdict:
         tlist.extend([(base, set(s)) for s in tdict[base]])
     return tlist
+
 
 class CombinedWrapper(LexicalLookup):
 

@@ -12,7 +12,7 @@ import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString,DEVANAGARI, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI, SLP1
 import requests
 
 

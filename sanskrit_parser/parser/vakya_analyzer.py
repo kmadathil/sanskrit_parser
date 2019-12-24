@@ -7,7 +7,7 @@
 '''
 from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
-from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer, SandhiGraph
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
 import constraint
@@ -260,7 +260,7 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
 
     def __init__(self, lexical_lookup="combined"):
         super(VakyaAnalyzer, self).__init__(lexical_lookup)
-        
+
     def constrainPath(self, path):
         ''' Apply Morphological Constraints on path
 
@@ -332,7 +332,6 @@ if __name__ == "__main__":
                             help="Do not modify the input/output string to match conventions", default=False)
         return parser.parse_args()
 
-    
     def main():
         global need_lakara
         args = getArgs()
