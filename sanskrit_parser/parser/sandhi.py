@@ -109,7 +109,7 @@ import inspect
 import logging
 import datetime
 import six
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1, SCHEMES, outputctx
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SanskritObject, SLP1, SCHEMES, outputctx
 from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
 
 
@@ -424,7 +424,7 @@ if __name__ == "__main__":
             args.join = True
         with outputctx(args.strict_io):
             if args.split:
-                word_in = SanskritImmutableString(args.word, encoding=ie, strict_io=args.strict_io)
+                word_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
                 if args.all:
                     print("All possible splits for {}".format(args.word))
                     splits = sandhi.split_all(word_in)
@@ -435,8 +435,8 @@ if __name__ == "__main__":
                 print(splits)
             if args.join:
                 print("Joining {0} {1}".format(args.word, args.word_or_pos))
-                first_in = SanskritImmutableString(args.word, encoding=ie, strict_io=args.strict_io)
-                second_in = SanskritImmutableString(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
+                first_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                second_in = SanskritObject(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
                 joins = sandhi.join(first_in, second_in)
                 print(joins)
 

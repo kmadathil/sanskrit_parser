@@ -2,14 +2,14 @@
 Tests for DhatuWrapper
 """
 from sanskrit_parser.util import DhatuWrapper
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 def test_is_sakarmaka():
-    s = SanskritObject("kf")
+    s = SanskritImmutableString("kf")
     it = s.transcoded(SLP1)
     w = DhatuWrapper.DhatuWrapper()
 
@@ -19,7 +19,7 @@ def test_is_sakarmaka():
 
 
 def test_is_sakarmaka_for_dvikarmaka():
-    s = SanskritObject("nI")
+    s = SanskritImmutableString("nI")
     it = s.transcoded(SLP1)
     w = DhatuWrapper.DhatuWrapper()
 
