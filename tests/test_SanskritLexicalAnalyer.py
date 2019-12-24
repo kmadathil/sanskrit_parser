@@ -6,14 +6,14 @@ import os
 import pytest
 import six
 import json
-from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, outputctx
 from tests.conftest import get_testcount
 
 
 @pytest.fixture(scope="module")
 def lexan():
-    return SanskritLexicalAnalyzer()
+    return LexicalSandhiAnalyzer()
 
 
 def get_splitstxt(test_count):
@@ -51,7 +51,7 @@ def test_simple_tag(lexan):
 
     # gaNeshaH
     i = SanskritObject("gaReSas", encoding=SLP1)
-    ts = lexan.getLexicalTags(i)
+    ts = lexan.getMorphologicalTags(i)
     assert [_mapt(tss) for tss in ts][0] == \
         ('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))
 
