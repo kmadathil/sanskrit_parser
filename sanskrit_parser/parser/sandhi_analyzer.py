@@ -413,7 +413,10 @@ if __name__ == "__main__":
                                                 replace_ending_visarga='s')
                 print("Input String in SLP1:", i.canonical())
                 ts = s.getMorphologicalTags(i)
-                print(ts)
+                print("Morphological tags:")
+                if ts is not None:
+                    for t in ts:
+                        print(t)
                 # Possible rakaranta
                 # Try by replacing end visarga with 'r' instead
                 if not args.strict_io:
@@ -421,8 +424,8 @@ if __name__ == "__main__":
                                                     strict_io=args.strict_io,
                                                     replace_ending_visarga='r')
                     ts = s.getMorphologicalTags(i)
-                    print("Morphological tags:")
                     if ts is not None:
+                        print("Input String in SLP1:", i.canonical())
                         for t in ts:
                             print(t)
                 if args.tag_set or args.base:
