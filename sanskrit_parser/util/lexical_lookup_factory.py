@@ -10,6 +10,29 @@ from sanskrit_parser.util.lexical_lookup import LexicalLookup
 import logging
 
 
+def _merge_tags(tags):
+    ''' Merge tags from multiple sources 
+
+        Inputs
+           tags: List of elements of form (baseword, tagset)
+        Outputs
+           list of elements of form (baseword, tagset), with
+           tagsets properly merged
+    '''
+    tdict = {}
+    # Convert to a dict of sets for proper set union
+    for t in tags:
+        base = t[0]
+        if base not in tdict:
+            tdict[base]={frozenset(t[1])}
+        else:
+            tdict[base].add(frozenset(t[1]))
+    tlist = []
+    # Convert back to list of tuples
+    for base in tdict:
+        tlist.extend([(base, set(s)) for s in tdict[base]])
+    return tlist
+
 class CombinedWrapper(LexicalLookup):
 
     def __init__(self, logger=None):
@@ -25,6 +48,7 @@ class CombinedWrapper(LexicalLookup):
         sanskrit_data_tags = self.sanskrit_data.get_tags(word, tmap)
         if sanskrit_data_tags is not None:
             tags.extend(sanskrit_data_tags)
+        tags = _merge_tags(tags)
         if tags == []:
             return None
         else:

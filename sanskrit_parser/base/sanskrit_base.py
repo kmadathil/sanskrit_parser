@@ -50,8 +50,8 @@ logger = logging.getLogger(__name__)
 denormalize = False
 
 
-class SanskritObject(object):
-    """ Sanskrit Object Class: Base of the class hierarchy
+class SanskritString(object):
+    """ Sanskrit String Class: Base of the class hierarchy
 
         Attributes:
            thing(str)   : thing to be represented
@@ -62,8 +62,7 @@ class SanskritObject(object):
 
     """
 
-    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
-                 strict_io=True, replace_ending_visarga='s'):
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
@@ -81,25 +80,6 @@ class SanskritObject(object):
             # Convert to SLP1
             self.thing = self.transcoded(SLP1)
             self.encoding = SLP1
-        if not strict_io:
-            # Normalize
-            logger.debug("Before normalization: %s", self.thing)
-            tmp = normalization.normalize(self.thing)
-            if replace_ending_visarga == 's':
-                self.thing = normalization.replace_ending_visarga_s(tmp)
-            elif replace_ending_visarga == 'r':
-                self.thing = normalization.replace_ending_visarga_r(tmp)
-            else:
-                self.thing = tmp
-            # Lazy Anusvaras (see issue #103)
-            try:
-                self.thing = sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara(self.thing)
-            except (NameError, AttributeError):
-                print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
-            logger.debug("After normalization: %s", self.thing)
-        # Tags will go here as
-        # { lexical_tag : [possible morphologies] }
-        self.tags = []
 
     def transcoded(self, encoding=None):
         """ Return a transcoded version of self
@@ -127,6 +107,58 @@ class SanskritObject(object):
             s = normalization.denormalize(s)
         return sanscript.transliterate(s, SLP1, DEVANAGARI)
 
+    def __str__(self):
+        global denormalize
+        s = self.transcoded(SLP1)
+        if denormalize:
+            s = normalization.denormalize(s)
+        return s
+
+    def __repr__(self):
+        return str(self)
+
+class SanskritImmutableString(SanskritString):
+    """ Immutable version of SanskritString
+    """
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
+        super().__init__(thing,encoding,unicode_encoding)
+    def __hash__(self):
+        return hash(str(self))
+    def __eq__(self,other):
+        return str(self) == str(other)
+    def __ne__(self,other):
+        return str(self) != str(other)
+    
+class SanskritObject(SanskritString):
+    """ Sanskrit Object Class: Derived From SanskritString
+
+        Attributes:
+
+    """
+
+    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
+                 strict_io=True, replace_ending_visarga='s'):
+        super().__init__(thing,encoding,unicode_encoding)
+        if not strict_io:
+            # Normalize
+            logger.debug("Before normalization: %s", self.thing)
+            tmp = normalization.normalize(self.thing)
+            if replace_ending_visarga == 's':
+                self.thing = normalization.replace_ending_visarga_s(tmp)
+            elif replace_ending_visarga == 'r':
+                self.thing = normalization.replace_ending_visarga_r(tmp)
+            else:
+                self.thing = tmp
+            # Lazy Anusvaras (see issue #103)
+            try:
+                self.thing = sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara(self.thing)
+            except (NameError, AttributeError):
+                print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
+            logger.debug("After normalization: %s", self.thing)
+        # Tags will go here as
+        # { lexical_tag : [possible morphologies] }
+        self.tags = []
+
     def setMorphologicalTags(self, t):
         """ Set Morphological Tags on Sanskrit Object
 
@@ -141,17 +173,8 @@ class SanskritObject(object):
         """ Morphological Tags on object """
         return self.tags
 
-    def __str__(self):
-        global denormalize
-        s = self.transcoded(SLP1)
-        if denormalize:
-            s = normalization.denormalize(s)
-        return s
 
-    def __repr__(self):
-        return str(self)
-
-
+    
 @contextmanager
 def outputctx(strict_io):
     global denormalize
