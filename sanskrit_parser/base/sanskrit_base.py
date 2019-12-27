@@ -176,8 +176,7 @@ class SanskritObject(SanskritNormalizedString):
             Params:
                t (list): List of morphological tags
         """
-        for tt in t:
-            self.tags.append(tt)
+        self.tags.extend(t)
         return self.tags
 
     def getMorphologicalTags(self):

@@ -362,20 +362,26 @@ if __name__ == "__main__":
                 end_path = time.time()
                 logger.info("End pathfinding")
                 print("Splits:")
+                spl_t = 0
                 for sp in splits:
                     print(f"Lexical Split: {sp}")
+                    start_c = time.time()
                     p = s.constrainPath(sp)
+                    end_c = time.time()
                     if p:
                         print("Valid Morphologies")
                         for pp in p:
                             print([(spp, pp[str(spp)]) for spp in sp])
                     else:
                         logger.warning("No valid morphologies for this split")
+                    logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
+                    spl_t = spl_t + (end_c-start_c)
                 logger.info("End Morphological Analysis")
                 logger.info("-----------")
                 logger.info("Performance")
                 logger.info("Time taken for split: {0:0.6f}s".format(end_split-start_split))
-                logger.info("Time taken for path: {0:0.6f}s".format(end_path-start_path))
+                logger.info(f"Time taken for path: {end_path-start_path:0.6f}s")
+                logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
             else:
                 logger.warning("No Valid Splits Found")
                 return
