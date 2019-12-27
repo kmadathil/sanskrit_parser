@@ -299,91 +299,91 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         return s
 
 
-if __name__ == "__main__":
-    from argparse import ArgumentParser
+from argparse import ArgumentParser
 
-    def _console_logging():
-        console = logging.StreamHandler()
-        console.setLevel(logging.INFO)
-        # set a format which is simpler for console use
-        formatter = logging.Formatter('%(levelname)-8s %(message)s')
-        # tell the handler to use this format
-        console.setFormatter(formatter)
-        # add the handler to the root logger
-        logger.addHandler(console)
+def _console_logging():
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    # set a format which is simpler for console use
+    formatter = logging.Formatter('%(levelname)-8s %(message)s')
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logger.addHandler(console)
 
-    def getArgs():
-        """
-          Argparse routine.
-          Returns args variable
-        """
-        # Parser Setup
-        parser = ArgumentParser(description='Lexical Analyzer')
-        # String to encode
-        parser.add_argument('data', nargs="?", type=str, default="astyuttarasyAMdishidevatAtmA")
-        # Input Encoding (autodetect by default)
-        parser.add_argument('--input-encoding', type=str, default=None)
-        # Need a lakara
-        parser.add_argument('--need-lakara', action='store_true')
-        parser.add_argument('--debug', action='store_true')
-        parser.add_argument('--max-paths', type=int, default=10)
-        parser.add_argument('--lexical-lookup', type=str, default="combined")
-        parser.add_argument('--strict-io', action='store_true',
-                            help="Do not modify the input/output string to match conventions", default=False)
-        return parser.parse_args()
+def getArgs(argv=None):
+    """
+      Argparse routine.
+      Returns args variable
+    """
+    # Parser Setup
+    parser = ArgumentParser(description='Vakya Analyzer')
+    # String to encode
+    parser.add_argument('data', nargs="?", type=str, default="astyuttarasyAMdishidevatAtmA")
+    # Input Encoding (autodetect by default)
+    parser.add_argument('--input-encoding', type=str, default=None)
+    # Need a lakara
+    parser.add_argument('--need-lakara', action='store_true')
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--max-paths', type=int, default=10)
+    parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--strict-io', action='store_true',
+                        help="Do not modify the input/output string to match conventions", default=False)
+    return parser.parse_args(argv)
 
-    def main():
-        global need_lakara
-        args = getArgs()
-        _console_logging()
-        logger.info(f"Input String: {args.data}")
-        need_lakara = args.need_lakara
-        if args.debug:
-            logging.basicConfig(filename='VakyaAnalyzer.log', filemode='w', level=logging.DEBUG)
-        s = VakyaAnalyzer(args.lexical_lookup)
-        if args.input_encoding is None:
-            ie = None
+def main(argv=None):
+    global need_lakara
+    args = getArgs(argv)
+    _console_logging()
+    logger.info(f"Input String: {args.data}")
+    need_lakara = args.need_lakara
+    if args.debug:
+        logging.basicConfig(filename='VakyaAnalyzer.log', filemode='w', level=logging.DEBUG)
+    s = VakyaAnalyzer(args.lexical_lookup)
+    if args.input_encoding is None:
+        ie = None
+    else:
+        ie = SanskritBase.SCHEMES[args.input_encoding]
+    i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
+                                              strict_io=args.strict_io,
+                                              replace_ending_visarga=None)
+    logger.info(f"Input String in SLP1: {i.canonical()}")
+    import time
+    logger.info("Start Split")
+    start_split = time.time()
+    graph = s.getSandhiSplits(i, tag=True)
+    end_split = time.time()
+    logger.info("End DAG generation")
+    with SanskritBase.outputctx(args.strict_io):
+        if graph:
+            start_path = time.time()
+            splits = graph.findAllPaths(max_paths=args.max_paths)
+            end_path = time.time()
+            logger.info("End pathfinding")
+            print("Splits:")
+            spl_t = 0
+            for sp in splits:
+                print(f"Lexical Split: {sp}")
+                start_c = time.time()
+                p = s.constrainPath(sp)
+                end_c = time.time()
+                if p:
+                    print("Valid Morphologies")
+                    for pp in p:
+                        print([(spp, pp[str(spp)]) for spp in sp])
+                else:
+                    logger.warning("No valid morphologies for this split")
+                logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
+                spl_t = spl_t + (end_c-start_c)
+            logger.info("End Morphological Analysis")
+            logger.info("-----------")
+            logger.info("Performance")
+            logger.info("Time taken for split: {0:0.6f}s".format(end_split-start_split))
+            logger.info(f"Time taken for path: {end_path-start_path:0.6f}s")
+            logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
         else:
-            ie = SanskritBase.SCHEMES[args.input_encoding]
-        i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                  strict_io=args.strict_io,
-                                                  replace_ending_visarga=None)
-        logger.info(f"Input String in SLP1: {i.canonical()}")
-        import time
-        logger.info("Start Split")
-        start_split = time.time()
-        graph = s.getSandhiSplits(i, tag=True)
-        end_split = time.time()
-        logger.info("End DAG generation")
-        with SanskritBase.outputctx(args.strict_io):
-            if graph:
-                start_path = time.time()
-                splits = graph.findAllPaths(max_paths=args.max_paths)
-                end_path = time.time()
-                logger.info("End pathfinding")
-                print("Splits:")
-                spl_t = 0
-                for sp in splits:
-                    print(f"Lexical Split: {sp}")
-                    start_c = time.time()
-                    p = s.constrainPath(sp)
-                    end_c = time.time()
-                    if p:
-                        print("Valid Morphologies")
-                        for pp in p:
-                            print([(spp, pp[str(spp)]) for spp in sp])
-                    else:
-                        logger.warning("No valid morphologies for this split")
-                    logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
-                    spl_t = spl_t + (end_c-start_c)
-                logger.info("End Morphological Analysis")
-                logger.info("-----------")
-                logger.info("Performance")
-                logger.info("Time taken for split: {0:0.6f}s".format(end_split-start_split))
-                logger.info(f"Time taken for path: {end_path-start_path:0.6f}s")
-                logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
-            else:
-                logger.warning("No Valid Splits Found")
-                return
+            logger.warning("No Valid Splits Found")
+            return
 
+if __name__ == "__main__":
     main()

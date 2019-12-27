@@ -211,113 +211,114 @@ class LexicalSandhiAnalyzer(object):
         return roots
 
 
-if __name__ == "__main__":
 
-    from argparse import ArgumentParser
 
-    def getArgs():
-        """
-          Argparse routine.
-          Returns args variable
-        """
-        # Parser Setup
-        parser = ArgumentParser(description='Lexical Sandhi Analyzer')
-        # String to encode
-        parser.add_argument('data', nargs="?", type=str, default="adhi")
-        # Input Encoding (autodetect by default)
-        parser.add_argument('--input-encoding', type=str, default=None)
-        # Filter by base name
-        parser.add_argument('--base', type=str, default=None)
-        # Filter by tag set
-        parser.add_argument('--tag-set', type=str, default=None, nargs="+")
-        parser.add_argument('--tags', dest='split', action='store_false')
-        parser.add_argument('--debug', action='store_true')
-        parser.add_argument('--max-paths', type=int, default=10)
-        parser.add_argument('--lexical-lookup', type=str, default="combined")
-        parser.add_argument('--strict-io', action='store_true',
-                            help="Do not modify the input/output string to match conventions", default=False)
-        parser.add_argument('--no-score', dest="score", action='store_false',
-                            help="Don't use the lexical scorer to score the splits and reorder them")
-        return parser.parse_args()
+from argparse import ArgumentParser
 
-    def main():
-        args = getArgs()
-        if args.strict_io:
-            print("Interpreting input strictly")
-        else:
-            print("Interpreting input loosely (strict_io set to false)")
-        print("Input String:", args.data)
+def getArgs(argv=None):
+    """
+      Argparse routine.
+      Returns args variable
+    """
+    # Parser Setup
+    parser = ArgumentParser(description='Lexical Sandhi Analyzer')
+    # String to encode
+    parser.add_argument('data', nargs="?", type=str, default="adhi")
+    # Input Encoding (autodetect by default)
+    parser.add_argument('--input-encoding', type=str, default=None)
+    # Filter by base name
+    parser.add_argument('--base', type=str, default=None)
+    # Filter by tag set
+    parser.add_argument('--tag-set', type=str, default=None, nargs="+")
+    parser.add_argument('--tags', dest='split', action='store_false')
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--max-paths', type=int, default=10)
+    parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--strict-io', action='store_true',
+                        help="Do not modify the input/output string to match conventions", default=False)
+    parser.add_argument('--no-score', dest="score", action='store_false',
+                        help="Don't use the lexical scorer to score the splits and reorder them")
+    return parser.parse_args(argv)
 
-        if args.debug:
-            logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
-                                filemode='w', level=logging.DEBUG)
-        else:
-            logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
-                                filemode='w', level=logging.INFO)
+def main(argv=None):
+    args = getArgs(argv)
+    if args.strict_io:
+        print("Interpreting input strictly")
+    else:
+        print("Interpreting input loosely (strict_io set to false)")
+    print("Input String:", args.data)
 
-        s = LexicalSandhiAnalyzer(args.lexical_lookup)
-        if args.input_encoding is None:
-            ie = None
-        else:
-            ie = SanskritBase.SCHEMES[args.input_encoding]
-        with SanskritBase.outputctx(args.strict_io):
-            if not args.split:
+    if args.debug:
+        logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
+                            filemode='w', level=logging.DEBUG)
+    else:
+        logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
+                            filemode='w', level=logging.INFO)
+
+    s = LexicalSandhiAnalyzer(args.lexical_lookup)
+    if args.input_encoding is None:
+        ie = None
+    else:
+        ie = SanskritBase.SCHEMES[args.input_encoding]
+    with SanskritBase.outputctx(args.strict_io):
+        if not args.split:
+            i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
+                                                      strict_io=args.strict_io,
+                                                      replace_ending_visarga='s')
+            print("Input String in SLP1:", i.canonical())
+            ts = s.getMorphologicalTags(i)
+            print("Morphological tags:")
+            if ts is not None:
+                for t in ts:
+                    print(t)
+            # Possible rakaranta
+            # Try by replacing end visarga with 'r' instead
+            if not args.strict_io:
                 i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                                           strict_io=args.strict_io,
-                                                          replace_ending_visarga='s')
-                print("Input String in SLP1:", i.canonical())
+                                                          replace_ending_visarga='r')
                 ts = s.getMorphologicalTags(i)
-                print("Morphological tags:")
                 if ts is not None:
+                    print("Input String in SLP1:", i.canonical())
                     for t in ts:
                         print(t)
-                # Possible rakaranta
-                # Try by replacing end visarga with 'r' instead
-                if not args.strict_io:
-                    i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                              strict_io=args.strict_io,
-                                                              replace_ending_visarga='r')
-                    ts = s.getMorphologicalTags(i)
-                    if ts is not None:
-                        print("Input String in SLP1:", i.canonical())
-                        for t in ts:
-                            print(t)
-                if args.tag_set or args.base:
-                    if args.tag_set is not None:
-                        g = set(args.tag_set)
-                    else:
-                        g = None
-                    if args.base is not None:
-                        b = SanskritBase.SanskritNormalizedString(args.base)
-                    else:
-                        b = None
-                    print(s.hasTag(i, b, g))
-            else:
-                import time
-                i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                                          strict_io=args.strict_io,
-                                                          replace_ending_visarga=None)
-                print("Input String in SLP1:", i.canonical())
-                print("Start Split")
-                start_split = time.time()
-                graph = s.getSandhiSplits(i)
-                end_graph = time.time()
-                print("End DAG generation")
-                if graph:
-                    logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
-                    splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
-                    print("End pathfinding", time.time())
-                    print("Splits:")
-                    if splits:
-                        for split in splits:
-                            print(split)
-                    else:
-                        print("None")
+            if args.tag_set or args.base:
+                if args.tag_set is not None:
+                    g = set(args.tag_set)
                 else:
-                    print("No Valid Splits Found")
-                end_split = time.time()
-                print("-----------")
-                print("Performance")
-                print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
-                print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
+                    g = None
+                if args.base is not None:
+                    b = SanskritBase.SanskritNormalizedString(args.base)
+                else:
+                    b = None
+                print(s.hasTag(i, b, g))
+        else:
+            import time
+            i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
+                                                      strict_io=args.strict_io,
+                                                      replace_ending_visarga=None)
+            print("Input String in SLP1:", i.canonical())
+            print("Start Split")
+            start_split = time.time()
+            graph = s.getSandhiSplits(i)
+            end_graph = time.time()
+            print("End DAG generation")
+            if graph:
+                logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
+                splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
+                print("End pathfinding", time.time())
+                print("Splits:")
+                if splits:
+                    for split in splits:
+                        print(split)
+                else:
+                    print("None")
+            else:
+                print("No Valid Splits Found")
+            end_split = time.time()
+            print("-----------")
+            print("Performance")
+            print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
+            print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
+if __name__ == "__main__":
     main()
