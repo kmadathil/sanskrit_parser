@@ -9,10 +9,10 @@ from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
-
+from argparse import ArgumentParser
 import constraint
-
 import logging
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -299,8 +299,6 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         return s
 
 
-from argparse import ArgumentParser
-
 def _console_logging():
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
@@ -310,6 +308,7 @@ def _console_logging():
     console.setFormatter(formatter)
     # add the handler to the root logger
     logger.addHandler(console)
+
 
 def getArgs(argv=None):
     """
@@ -330,6 +329,7 @@ def getArgs(argv=None):
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
     return parser.parse_args(argv)
+
 
 def main(argv=None):
     global need_lakara
@@ -384,6 +384,7 @@ def main(argv=None):
         else:
             logger.warning("No Valid Splits Found")
             return
+
 
 if __name__ == "__main__":
     main()

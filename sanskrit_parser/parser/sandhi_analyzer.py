@@ -13,6 +13,8 @@ import sanskrit_parser.base.sanskrit_base as SanskritBase
 from .sandhi import Sandhi
 import logging
 from .datastructures import SandhiGraph
+from argparse import ArgumentParser
+
 
 try:
     from functools import lru_cache
@@ -211,10 +213,6 @@ class LexicalSandhiAnalyzer(object):
         return roots
 
 
-
-
-from argparse import ArgumentParser
-
 def getArgs(argv=None):
     """
       Argparse routine.
@@ -239,6 +237,7 @@ def getArgs(argv=None):
     parser.add_argument('--no-score', dest="score", action='store_false',
                         help="Don't use the lexical scorer to score the splits and reorder them")
     return parser.parse_args(argv)
+
 
 def main(argv=None):
     args = getArgs(argv)
@@ -320,5 +319,7 @@ def main(argv=None):
             print("Performance")
             print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
             print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
+
+
 if __name__ == "__main__":
     main()
