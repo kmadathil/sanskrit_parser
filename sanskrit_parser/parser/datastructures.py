@@ -14,7 +14,7 @@ import operator
 import six
 from sanskrit_parser.util import lexical_scorer
 
-__all__ = ['SandhiGraph', 'VakyaGraph']
+__all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
 
 
 logger = logging.getLogger(__name__)
@@ -183,6 +183,10 @@ class SandhiGraph(object):
         nx.drawing.nx_agraph.write_dot(self.G, path)
 
 
+lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
+                'viDiliN', 'ASIrliN'])
+karmani = set(['karmaRi'])
+
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -236,7 +240,20 @@ class VakyaGraph(object):
     def addEdges(self):
         assert self.isLocked
         base = self.find_dhatu()
-        self._add_karakas(base)
+        self.add_karakas(base)
+
+    def find_dhatu(self):
+        ''' Find the ti~Nanta '''
+        rlist = []
+        for n in self.G:
+            if not lakaras.isdisjoint(n.getMorphologicalTags()):
+                logger.info(f"{G} is a possible Dhatu")
+                rlist.append(G)
+        return rlist
+
+    def add_karakas(self,base):
+        ''' Add karaka edges from base node (dhatu) base '''
+        pass
 
     def draw(self, *args, **kwargs):
         _ncache = {}
@@ -273,5 +290,12 @@ class VakyaGraphNode(object):
     def makeForbidden(self, nodes):
         self.forbiddenNodes.extend(nodes)
 
+    def getMorphologicalTags(self):
+        return self.pada.getMorphologicalTags()
+
     def __str__(self):
         return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags())
+
+
+def getSLP1Tagset(n):
+    return set(map(lambda x: x.canonical(), list(n[1])))

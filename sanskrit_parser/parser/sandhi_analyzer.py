@@ -240,6 +240,7 @@ def getArgs(argv=None):
 
 
 def main(argv=None):
+    graph = None
     args = getArgs(argv)
     if args.strict_io:
         print("Interpreting input strictly")
@@ -272,7 +273,7 @@ def main(argv=None):
                     print(t)
             # Possible rakaranta
             # Try by replacing end visarga with 'r' instead
-            if not args.strict_io:
+            elif not args.strict_io:
                 i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
                                                           strict_io=args.strict_io,
                                                           replace_ending_visarga='r')
@@ -319,7 +320,7 @@ def main(argv=None):
             print("Performance")
             print("Time for graph generation = {0:0.6f}s".format(end_graph - start_split))
             print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
-
+        return graph
 
 if __name__ == "__main__":
     main()

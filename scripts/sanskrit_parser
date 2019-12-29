@@ -35,13 +35,16 @@ parser = ArgumentParser(description='Sanskrit Parser')
 
 parser.add_argument('command', help='Subcommand to run',
                     choices=["sandhi","vakya","tags"])
+parser.add_argument('--dot-file', type=str, default=None,help='Dotfile')
 # parse_args defaults to [1:] for args, but you need to
 # exclude the rest of the args too, or validation will fail
-args = parser.parse_args(sys.argv[1:2])
+args, rest = parser.parse_known_args()
 if not hasattr(args, 'command'):
     print('Unrecognized command')
     parser.print_help()
     exit(1)
 # use dispatch pattern to invoke method with same name
-eval(getattr(args, 'command')+"(sys.argv[2:])")
-
+graph = eval(getattr(args, 'command')+"(rest)")
+# Write dot file
+if graph is not None and args.dot_file is not None:
+    graph.write_dot(args.dot_file)

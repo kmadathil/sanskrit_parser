@@ -9,6 +9,7 @@ from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
+from sanskrit_parser.parser.datastructures import VakyaGraph, getSLP1Tagset
 from argparse import ArgumentParser
 import constraint
 import logging
@@ -21,13 +22,10 @@ need_lakara = False
 dw = DhatuWrapper()
 
 
-def getSLP1Tagset(n):
-    return set(map(lambda x: x.canonical(), list(n[1])))
-
 
 # Lakaras
 _lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
-                'viDiliN', 'law-karmaRi', 'liw-karmaRi', 'luw-karmaRi',
+                'viDiliN', 'ASIrliN', 'law-karmaRi', 'liw-karmaRi', 'luw-karmaRi',
                 'lrw-karmaRi', 'low-karmaRi', 'laN-karmaRi', 'liN-karmaRi',
                 'luN-karmaRi', 'lfN-karmaRi'])
 # Disallowed last padas
@@ -290,10 +288,10 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         problem.addConstraint(oneLakara)
         problem.addConstraint(lastWord, vlist)
         problem.addConstraint(upasarga, vlist)
-        problem.addConstraint(prathamA, vlist)
+        #problem.addConstraint(prathamA, vlist)
         problem.addConstraint(samasarules, vlist)
-        problem.addConstraint(vibhaktiAgreement, vlist)
-        problem.addConstraint(sakarmakarule, vlist)
+        #problem.addConstraint(vibhaktiAgreement, vlist)
+        #problem.addConstraint(sakarmakarule, vlist)
         problem.addConstraint(nonempty, vlist)
         s = problem.getSolutions()
         return s
@@ -334,6 +332,7 @@ def getArgs(argv=None):
 def main(argv=None):
     global need_lakara
     args = getArgs(argv)
+    vgraph = None
     _console_logging()
     logger.info(f"Input String: {args.data}")
     need_lakara = args.need_lakara
@@ -371,6 +370,9 @@ def main(argv=None):
                     print("Valid Morphologies")
                     for pp in p:
                         print([(spp, pp[str(spp)]) for spp in sp])
+                    #print(p)
+                    # FIXME: This needs to be made to work
+                    #vgraph = VakyaGraph(p)
                 else:
                     logger.warning("No valid morphologies for this split")
                 logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
@@ -383,7 +385,7 @@ def main(argv=None):
             logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
         else:
             logger.warning("No Valid Splits Found")
-            return
+    return vgraph
 
 
 if __name__ == "__main__":
