@@ -21,8 +21,6 @@ need_lakara = False
 
 dw = DhatuWrapper()
 
-
-
 # Lakaras
 _lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                 'viDiliN', 'ASIrliN', 'law-karmaRi', 'liw-karmaRi', 'luw-karmaRi',
@@ -288,10 +286,10 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         problem.addConstraint(oneLakara)
         problem.addConstraint(lastWord, vlist)
         problem.addConstraint(upasarga, vlist)
-        #problem.addConstraint(prathamA, vlist)
+#        #problem.addConstraint(prathamA, vlist)
         problem.addConstraint(samasarules, vlist)
-        #problem.addConstraint(vibhaktiAgreement, vlist)
-        #problem.addConstraint(sakarmakarule, vlist)
+#        #problem.addConstraint(vibhaktiAgreement, vlist)
+#        #problem.addConstraint(sakarmakarule, vlist)
         problem.addConstraint(nonempty, vlist)
         s = problem.getSolutions()
         return s
@@ -370,8 +368,8 @@ def main(argv=None):
                     print("Valid Morphologies")
                     for pp in p:
                         print([(spp, pp[str(spp)]) for spp in sp])
-                    #print(p)
-                    # FIXME: This needs to be made to work
+#                   print(p)
+#                   FIXME: This needs to be made to work
                     vgraph = VakyaGraph(sp)
                 else:
                     logger.warning("No valid morphologies for this split")

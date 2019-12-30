@@ -322,5 +322,6 @@ def main(argv=None):
             print("Total time for graph generation + find paths = {0:0.6f}s".format(end_split - start_split))
         return graph
 
+
 if __name__ == "__main__":
     main()
