@@ -321,7 +321,7 @@ def getArgs(argv=None):
     parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=10)
-    parser.add_argument('--constraint', action='store_true',help='Use Constraint Parser instead of Graph Algorithm')
+    parser.add_argument('--constraint', action='store_true', help='Use Constraint Parser instead of Graph Algorithm')
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)

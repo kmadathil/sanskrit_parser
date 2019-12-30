@@ -241,7 +241,7 @@ class VakyaGraph(object):
         self.path_node_count = len(path)
         logger.info(f"{self.path_node_count} sets of orthogonal nodes")
         self.nsets = []
-        for (ix,sobj) in enumerate(path):
+        for (ix, sobj) in enumerate(path):
             vnlist = []
             mtags = sobj.getMorphologicalTags()
             for mtag in mtags:
@@ -288,7 +288,7 @@ class VakyaGraph(object):
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
-        
+
     def find_dhatu(self):
         ''' Find the ti~Nanta '''
         rlist = []
@@ -300,36 +300,35 @@ class VakyaGraph(object):
 
     def add_samastas(self):
         ''' Add samasta links from next samasta/tiN '''
-        for (i,s) in enumerate(self.nsets):
+        for (i, s) in enumerate(self.nsets):
             for n in s:
                 # If node is a samasta, check options for
                 # next node, and add samasta links if tiN
                 if node_is_a(n, samastas):
                     # Cant have samasta as last node
-                    if i<(len(self.nsets)-1):
+                    if i < (len(self.nsets)-1):
                         nextset = self.nsets[i+1]
                         for nn in nextset:
                             if node_is_a(nn, vibhaktis) or \
                                node_is_a(nn, samastas):
                                 logger.info(f"Adding samasta edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="samasta")
-                                
+
     def add_shashthi(self):
         ''' Add zazWI-sambanDa links to next tiN '''
-        for (i,s) in enumerate(self.nsets):
+        for (i, s) in enumerate(self.nsets):
             for n in s:
                 # If node is a shashthi, check
                 # next node, and add links if tiN
                 if node_is_a(n, shashthi):
                     # Cant have sambandha open at last node
-                    if i<(len(self.nsets)-1):
+                    if i < (len(self.nsets)-1):
                         nextset = self.nsets[i+1]
                         for nn in nextset:
-                            if node_is_a(nn, vibhaktis): 
+                            if node_is_a(nn, vibhaktis):
                                 logger.info(f"Adding shashthi-sambandha edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="zazWI-sambanDa")
-        
-    
+
     def add_karakas(self, bases):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
@@ -365,8 +364,7 @@ class VakyaGraph(object):
                     elif node_is_a(n, sambodhana) and check_sambodhya(d, n):
                         logger.info(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDya")
-                       
-                        
+
     def draw(self, *args, **kwargs):
         _ncache = {}
 
@@ -415,6 +413,7 @@ class VakyaGraphNode(object):
 def getSLP1Tagset(n):
     ''' Given a (base, tagset) pair, extract the tagset '''
     return set(map(lambda x: x.canonical(), list(n[1])))
+
 
 # FIXME should this be a method?
 def getNodeTagset(n):
