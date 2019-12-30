@@ -286,10 +286,10 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         problem.addConstraint(oneLakara)
         problem.addConstraint(lastWord, vlist)
         problem.addConstraint(upasarga, vlist)
-#        #problem.addConstraint(prathamA, vlist)
+        problem.addConstraint(prathamA, vlist)
         problem.addConstraint(samasarules, vlist)
-#        #problem.addConstraint(vibhaktiAgreement, vlist)
-#        #problem.addConstraint(sakarmakarule, vlist)
+        problem.addConstraint(vibhaktiAgreement, vlist)
+        problem.addConstraint(sakarmakarule, vlist)
         problem.addConstraint(nonempty, vlist)
         s = problem.getSolutions()
         return s
@@ -321,6 +321,7 @@ def getArgs(argv=None):
     parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=10)
+    parser.add_argument('--constraint', action='store_true',help='Use Constraint Parser instead of Graph Algorithm')
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
@@ -361,26 +362,27 @@ def main(argv=None):
             spl_t = 0
             for sp in splits:
                 print(f"Lexical Split: {sp}")
-                start_c = time.time()
-                p = s.constrainPath(sp)
-                end_c = time.time()
-                if p:
-                    print("Valid Morphologies")
-                    for pp in p:
-                        print([(spp, pp[str(spp)]) for spp in sp])
-#                   print(p)
-#                   FIXME: This needs to be made to work
+                if not args.constraint:
                     vgraph = VakyaGraph(sp)
                 else:
-                    logger.warning("No valid morphologies for this split")
-                logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
-                spl_t = spl_t + (end_c-start_c)
+                    start_c = time.time()
+                    p = s.constrainPath(sp)
+                    end_c = time.time()
+                    if p:
+                        print("Valid Morphologies")
+                        for pp in p:
+                            print([(spp, pp[str(spp)]) for spp in sp])
+                    else:
+                        logger.warning("No valid morphologies for this split")
+                    logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")
+                    spl_t = spl_t + (end_c-start_c)
             logger.info("End Morphological Analysis")
             logger.info("-----------")
             logger.info("Performance")
             logger.info("Time taken for split: {0:0.6f}s".format(end_split-start_split))
             logger.info(f"Time taken for path: {end_path-start_path:0.6f}s")
-            logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
+            if args.constraint:
+                logger.info(f"Time taken for constraint: {spl_t:0.6f}s")
         else:
             logger.warning("No Valid Splits Found")
     return vgraph

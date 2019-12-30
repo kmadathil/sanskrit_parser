@@ -201,8 +201,8 @@ class SandhiGraph(object):
 lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                'viDiliN', 'ASIrliN'])
 karmani = set(['karmaRi'])
-
-# FIXME - rewrite this as list + list elem assignments + set
+samastas = set(['samAsapUrvapadanAmapadam'])
+# Vibhaktis
 _vibhaktis = ['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tftIyAviBaktiH',
               'caturTIviBaktiH', 'paNcamIviBaktiH', 'zazWIviBaktiH',
               'saptamIviBaktiH', 'saMboDanaviBaktiH']
@@ -215,8 +215,6 @@ shashthi = _vibhaktis[6-1]
 saptami = _vibhaktis[7-1]
 sambodhana = _vibhaktis[8-1]
 vibhaktis = set(_vibhaktis)
-#
-
 # Vacanas
 vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
@@ -241,7 +239,9 @@ class VakyaGraph(object):
         self.G = nx.DiGraph()
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
-        for sobj in path:
+        logger.info(f"{self.path_node_count} sets of orthogonal nodes")
+        self.nsets = []
+        for (ix,sobj) in enumerate(path):
             vnlist = []
             mtags = sobj.getMorphologicalTags()
             for mtag in mtags:
@@ -252,8 +252,10 @@ class VakyaGraph(object):
                 pn = VakyaGraphNode(ncopy)
                 vnlist.append(pn)
             for vn in vnlist:
-                vn.makeForbidden(vnlist)
+                vn.makeDisjoint(vnlist)
                 self.addNode(vn)
+            self.nsets.append(set(vnlist))
+        logger.info(f"Node sets {self.nsets}")
         self.lock()
         self.addEdges()
         # Remove isolated nodes (with no edges)
@@ -284,7 +286,9 @@ class VakyaGraph(object):
         assert self.isLocked
         bases = self.find_dhatu()
         self.add_karakas(bases)
-
+        self.add_samastas()
+        self.add_shashthi()
+        
     def find_dhatu(self):
         ''' Find the ti~Nanta '''
         rlist = []
@@ -294,6 +298,38 @@ class VakyaGraph(object):
                 rlist.append(n)
         return rlist
 
+    def add_samastas(self):
+        ''' Add samasta links from next samasta/tiN '''
+        for (i,s) in enumerate(self.nsets):
+            for n in s:
+                # If node is a samasta, check options for
+                # next node, and add samasta links if tiN
+                if node_is_a(n, samastas):
+                    # Cant have samasta as last node
+                    if i<(len(self.nsets)-1):
+                        nextset = self.nsets[i+1]
+                        for nn in nextset:
+                            if node_is_a(nn, vibhaktis) or \
+                               node_is_a(nn, samastas):
+                                logger.info(f"Adding samasta edge: {n,nn}")
+                                self.G.add_edge(nn, n, label="samasta")
+                                
+    def add_shashthi(self):
+        ''' Add zazWI-sambanDa links to next tiN '''
+        for (i,s) in enumerate(self.nsets):
+            for n in s:
+                # If node is a shashthi, check
+                # next node, and add links if tiN
+                if node_is_a(n, shashthi):
+                    # Cant have sambandha open at last node
+                    if i<(len(self.nsets)-1):
+                        nextset = self.nsets[i+1]
+                        for nn in nextset:
+                            if node_is_a(nn, vibhaktis): 
+                                logger.info(f"Adding shashthi-sambandha edge: {n,nn}")
+                                self.G.add_edge(nn, n, label="zazWI-sambanDa")
+        
+    
     def add_karakas(self, bases):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
@@ -307,26 +343,30 @@ class VakyaGraph(object):
                 karta = prathama
                 karma = dvitiya
             for n in self.G:
-                if not d.isForbidden(n):
+                if not d.isDisjoint(n):
                     if node_is_a(n, karta) and match_purusha_vacana(d, n):
                         logger.info(f"Adding kartA edge to {n}")
                         self.G.add_edge(d, n, label="kartA")
-                    if node_is_a(n, karma):
+                    elif node_is_a(n, karma):
                         logger.info(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
-                    if node_is_a(n, tritiya):
+                    elif node_is_a(n, tritiya):
                         logger.info(f"Adding karana edge to {n}")
                         self.G.add_edge(d, n, label="karaRa")
-                    if node_is_a(n, chaturthi):
+                    elif node_is_a(n, chaturthi):
                         logger.info(f"Adding sampradana edge to {n}")
                         self.G.add_edge(d, n, label="sampradAna")
-                    if node_is_a(n, pancami):
+                    elif node_is_a(n, pancami):
                         logger.info(f"Adding apadana edge to {n}")
                         self.G.add_edge(d, n, label="apAdana")
-                    if node_is_a(n, saptami):
+                    elif node_is_a(n, saptami):
                         logger.info(f"Adding adhikarana edge to {n}")
                         self.G.add_edge(d, n, label="aDikaraRa")
-
+                    elif node_is_a(n, sambodhana) and check_sambodhya(d, n):
+                        logger.info(f"Adding sambodhya edge to {n}")
+                        self.G.add_edge(d, n, label="samboDya")
+                       
+                        
     def draw(self, *args, **kwargs):
         _ncache = {}
 
@@ -349,18 +389,18 @@ class VakyaGraph(object):
 class VakyaGraphNode(object):
     """ Class for VakyaGraph nodes
 
-        This has pada (a SanskritObject) plus a list of forbidden nodes
+        This has pada (a SanskritObject) plus a list of disjoint nodes
         to which edges cannot be created from this node
     """
     def __init__(self, sobj):
         self.pada = sobj
-        self.forbiddenNodes = []
+        self.disjointNodes = []
 
-    def isForbidden(self, node):
-        return node in self.forbiddenNodes
+    def isDisjoint(self, node):
+        return node in self.disjointNodes
 
-    def makeForbidden(self, nodes):
-        self.forbiddenNodes.extend(nodes)
+    def makeDisjoint(self, nodes):
+        self.disjointNodes.extend(nodes)
 
     def getMorphologicalTags(self):
         return self.pada.getMorphologicalTags()
@@ -373,14 +413,17 @@ class VakyaGraphNode(object):
 
 
 def getSLP1Tagset(n):
+    ''' Given a (base, tagset) pair, extract the tagset '''
     return set(map(lambda x: x.canonical(), list(n[1])))
 
-
+# FIXME should this be a method?
 def getNodeTagset(n):
+    ''' Given a Node, extract the tagset '''
     return getSLP1Tagset(n.getMorphologicalTags())
 
 
 def node_is_a(n, st):
+    ''' Check if node matches a particular tag or any of a set of tags '''
     if isinstance(st, str):
         return st in getNodeTagset(n)
     elif isinstance(st, set):
@@ -390,14 +433,17 @@ def node_is_a(n, st):
 
 
 def get_vacana(n):
+    ''' Get Node vacana '''
     return getNodeTagset(n).intersection(vacanas)
 
 
 def get_purusha(n):
+    ''' Get Node puruza '''
     return getNodeTagset(n).intersection(puruzas)
 
 
 def match_purusha_vacana(d, n):
+    ''' Check vacana/puruza compatibility for a Dhatu d and node n '''
     n_base = n.getMorphologicalTags()[0]
     if n_base == 'asmad':
         n_purusha = set([puruzas[2]])
@@ -406,3 +452,8 @@ def match_purusha_vacana(d, n):
     else:
         n_purusha = set([puruzas[0]])
     return (get_vacana(d) == get_vacana(n)) and (get_purusha(d) == n_purusha)
+
+
+def check_sambodhya(d, n):
+    ''' Check sambodhya compatibility for dhatu d and node n '''
+    return (get_vacana(d) == get_vacana(n)) and (get_purusha(d) == set([puruzas[1]]))
