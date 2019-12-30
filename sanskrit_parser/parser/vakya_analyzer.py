@@ -372,7 +372,7 @@ def main(argv=None):
                         print([(spp, pp[str(spp)]) for spp in sp])
                     #print(p)
                     # FIXME: This needs to be made to work
-                    #vgraph = VakyaGraph(p)
+                    vgraph = VakyaGraph(sp)
                 else:
                     logger.warning("No valid morphologies for this split")
                 logger.info(f"Time Taken for Constraint {end_c-start_c:0.6f}s")

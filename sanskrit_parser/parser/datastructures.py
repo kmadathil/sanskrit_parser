@@ -18,6 +18,22 @@ __all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
 
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+def _console_logging():
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    # set a format which is simpler for console use
+    formatter = logging.Formatter('%(levelname)-8s %(message)s')
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logger.addHandler(console)
+
+_console_logging()
+
+
+
 
 
 class SandhiGraph(object):
@@ -183,9 +199,16 @@ class SandhiGraph(object):
         nx.drawing.nx_agraph.write_dot(self.G, path)
 
 
-lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
+lakaras    = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                 'viDiliN', 'ASIrliN'])
-karmani = set(['karmaRi'])
+karmani    = set(['karmaRi'])
+prathama   = 'praTamAviBaktiH'
+dvitiya    = 'dvitIyAviBaktiH'
+sambodhana = 'saMboDanaviBaktiH'
+# Vacanas
+vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
+# Puruzas
+puruzas = 'praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH'
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
@@ -203,6 +226,8 @@ class VakyaGraph(object):
         self.roots = []
         self.isLocked = False
         self.G = nx.DiGraph()
+        # Need this many nodes in the extracted subgraphs
+        self.path_node_count = len(path)
         for sobj in path:
             vnlist = []
             mtags = sobj.getMorphologicalTags()
@@ -215,6 +240,10 @@ class VakyaGraph(object):
             for vn in vnlist:
                 vn.makeForbidden(vnlist)
                 self.addNode(vn)
+        self.lock()
+        self.addEdges()
+        # Remove isolated nodes (with no edges)
+        self.G.remove_nodes_from(list(nx.isolates(self.G)))
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -239,22 +268,40 @@ class VakyaGraph(object):
 
     def addEdges(self):
         assert self.isLocked
-        base = self.find_dhatu()
-        self.add_karakas(base)
+        bases = self.find_dhatu()
+        self.add_karakas(bases)
 
     def find_dhatu(self):
         ''' Find the ti~Nanta '''
         rlist = []
         for n in self.G:
-            if not lakaras.isdisjoint(n.getMorphologicalTags()):
-                logger.info(f"{G} is a possible Dhatu")
-                rlist.append(G)
+            if node_is_a(n,lakaras):
+                logger.info(f"{n} is a possible Dhatu")
+                rlist.append(n)
         return rlist
 
-    def add_karakas(self,base):
+    def add_karakas(self,bases):
         ''' Add karaka edges from base node (dhatu) base '''
-        pass
+        for d in bases:
+            logger.info(f"Processing {d}")
+            if node_is_a(d,karmani):
+                logger.info("Karmani")
+                karta = tritiya
+                karma = prathama
+            else:
+                logger.info("Kartari")
+                karta = prathama
+                karma = dvitiya
+            for n in self.G:
+                if not d.isForbidden(n):
+                    if node_is_a(n,karta) and match_purusha_vacana(d,n):
+                        logger.info(f"Adding kartA edge to {n}")
+                        self.G.add_edge(d,n,label="kartA")
+                    if node_is_a(n,karma):
+                        logger.info(f"Adding karma edge to {n}")
+                        self.G.add_edge(d,n,label="karma")
 
+            
     def draw(self, *args, **kwargs):
         _ncache = {}
 
@@ -296,6 +343,41 @@ class VakyaGraphNode(object):
     def __str__(self):
         return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags())
 
+    def __repr__(self):
+        return str(self)
+
 
 def getSLP1Tagset(n):
     return set(map(lambda x: x.canonical(), list(n[1])))
+
+
+def getNodeTagset(n):
+    return getSLP1Tagset(n.getMorphologicalTags())
+
+
+def node_is_a(n,st):
+    if isinstance(st,str):
+        return st in getNodeTagset(n)
+    elif isinstance(st,set):
+        return not st.isdisjoint(getNodeTagset(n))
+    else:
+        logger.error(f"node_is_a: expecting str or set, got {st}")
+
+        
+def get_vacana(n):
+    return getNodeTagset(n).intersection(vacanas)
+
+
+def get_purusha(n):
+    return getNodeTagset(n).intersection(puruzas)
+
+
+def match_purusha_vacana(d,n):
+    n_base = n.getMorphologicalTags()[0]
+    if n_base == 'asmad':
+        n_purusha = set([puruzas[2]])
+    elif n_base == 'yuzmad':
+        n_purusha = set([puruzas[1]])
+    else:
+        n_purusha = set([puruzas[0]])
+    return (get_vacana(d) == get_vacana(n)) and (get_purusha(d) == n_purusha)
