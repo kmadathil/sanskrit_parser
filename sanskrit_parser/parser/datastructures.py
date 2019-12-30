@@ -202,9 +202,18 @@ class SandhiGraph(object):
 lakaras    = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                 'viDiliN', 'ASIrliN'])
 karmani    = set(['karmaRi'])
-prathama   = 'praTamAviBaktiH'
-dvitiya    = 'dvitIyAviBaktiH'
-sambodhana = 'saMboDanaviBaktiH'
+
+# FIXME - rewrite this as list + list elem assignments + set
+_vibhaktis = ['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tftIyAviBaktiH',
+                  'caturTIviBaktiH', 'paNcamIviBaktiH', 'zazWIviBaktiH',
+                  'saptamIviBaktiH', 'saMboDanaviBaktiH']
+prathama   = _vibhaktis[1-1]
+dvitiya    = _vibhaktis[2-1]
+tritiya = _vibhaktis[3-1]
+sambodhana = _vibhaktis[8-1]
+vibhaktis = set(_vibhaktis)
+#
+
 # Vacanas
 vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
