@@ -209,6 +209,10 @@ _vibhaktis = ['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tftIyAviBaktiH',
 prathama = _vibhaktis[1-1]
 dvitiya = _vibhaktis[2-1]
 tritiya = _vibhaktis[3-1]
+chaturthi = _vibhaktis[4-1]
+pancami = _vibhaktis[5-1]
+shashthi = _vibhaktis[6-1]
+saptami = _vibhaktis[7-1]
 sambodhana = _vibhaktis[8-1]
 vibhaktis = set(_vibhaktis)
 #
@@ -242,6 +246,7 @@ class VakyaGraph(object):
             mtags = sobj.getMorphologicalTags()
             for mtag in mtags:
                 ncopy = SanskritBase.SanskritObject(sobj.canonical(),
+                                                    encoding=SanskritBase.SLP1,
                                                     replace_ending_visarga=None)
                 ncopy.setMorphologicalTags(mtag)
                 pn = VakyaGraphNode(ncopy)
@@ -309,6 +314,18 @@ class VakyaGraph(object):
                     if node_is_a(n, karma):
                         logger.info(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
+                    if node_is_a(n, tritiya):
+                        logger.info(f"Adding karana edge to {n}")
+                        self.G.add_edge(d, n, label="karaRa")
+                    if node_is_a(n, chaturthi):
+                        logger.info(f"Adding sampradana edge to {n}")
+                        self.G.add_edge(d, n, label="sampradAna")
+                    if node_is_a(n, pancami):
+                        logger.info(f"Adding apadana edge to {n}")
+                        self.G.add_edge(d, n, label="apAdana")
+                    if node_is_a(n, saptami):
+                        logger.info(f"Adding adhikarana edge to {n}")
+                        self.G.add_edge(d, n, label="aDikaraRa")
 
     def draw(self, *args, **kwargs):
         _ncache = {}
