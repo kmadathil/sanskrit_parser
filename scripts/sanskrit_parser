@@ -27,6 +27,9 @@ def _console_logging():
     logger.addHandler(console)
 
 _console_logging()
+logging.basicConfig(filename='SanskritParser.log',
+                    filemode='w', level=logging.INFO)
+
 
 def tags(argv):
     argv.append("--tags")

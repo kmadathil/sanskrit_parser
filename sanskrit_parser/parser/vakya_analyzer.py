@@ -364,6 +364,9 @@ def main(argv=None):
                 print(f"Lexical Split: {sp}")
                 if not args.constraint:
                     vgraph = VakyaGraph(sp)
+                    parses = vgraph.get_parses()
+                    for p in parses:
+                        logger.info(f"Parses: {p}")
                 else:
                     start_c = time.time()
                     p = s.constrainPath(sp)

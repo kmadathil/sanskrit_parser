@@ -11,9 +11,11 @@ import networkx as nx
 from itertools import islice
 import logging
 import operator
+from copy import copy
 import six
 from sanskrit_parser.util import lexical_scorer
 from sanskrit_parser.util.disjoint_set import DisjointSet
+
 
 __all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
 
@@ -289,6 +291,7 @@ class VakyaGraph(object):
     def addEdges(self):
         assert self.isLocked
         bases = self.find_dhatu()
+        logger.info("Adding Edges")
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
@@ -329,7 +332,8 @@ class VakyaGraph(object):
                     if i < (len(self.nsets)-1):
                         nextset = self.nsets[i+1]
                         for nn in nextset:
-                            if node_is_a(nn, vibhaktis):
+                            if node_is_a(nn, vibhaktis) or \
+                               node_is_a(nn, samastas):
                                 logger.info(f"Adding shashthi-sambandha edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="zazWI-sambanDa")
 
@@ -372,11 +376,46 @@ class VakyaGraph(object):
 
     def get_parses(self):
         ''' Returns all parses
-
-
         '''
-        rlist = []
-        
+        logger.info("Computing Parses")
+        for (i,ns) in enumerate(self.nsets): # Iterate over disjoint nodesets
+            logger.info(f"Node set number {i} {ns}")
+            if i == 0:
+                # Partial parses = phi + all predecessors
+                partial_parses=set()
+                partial_parses.add(VakyaParse([],self.nsets)) #Null partial parse
+                # For all input edges to this set
+                for n in ns:
+                    logger.info(f"Traversing node {n}")
+                    for pred in self.G.predecessors(n):
+                        logger.info(f"Traversing predecessor {pred} -> {n}")
+                        partial_parses.add(VakyaParse((pred,n),self.nsets))
+            else:
+                for n in ns: # For all input edges to this set
+                    logger.info(f"Traversing node {n}")
+                    for pred in self.G.predecessors(n):
+                        logger.info(f"Traversing predecessor {pred} -> {n}")
+                        store_parses = set()
+                        for ps in partial_parses: # For each partial parse
+#                          If edge is compatible with partial parse, add and create new partial parse
+                            if ps.is_compatible(pred,n):
+                                logger.info(f"{pred} - {n} is compatible with {ps}")
+                                psc = ps.copy() # Copy the nodeset and DisjointSet structures 
+                                psc.extend(pred,n)
+                                store_parses.add(psc)
+                        partial_parses.update(store_parses)
+            logger.info(f"Partial Parses {i}- {partial_parses}")
+#           Afterwards, remove all partial parses of size < i
+            rs = set()
+            for ps in partial_parses:
+                if len(ps) < i:
+                    rs.add(ps)
+            logger.info(f"Removing {rs} from partial parses")
+            partial_parses.difference_update(rs)
+            logger.info(f"Partial Parses {i} {partial_parses}")
+        # Check global compatibility
+        # FIXME
+        return partial_parses
 
     def draw(self, *args, **kwargs):
         _ncache = {}
@@ -422,7 +461,60 @@ class VakyaGraphNode(object):
     def __repr__(self):
         return str(self)
 
+class VakyaParse(object):
+    def __init__(self,nodes,nsets):
+        ''' Initializes a partial parse with a node pair (or []) '''
+        # Initialize disjoint sets DS
+        self.dset = nsets.copy()
+        if nodes:
+            self._populate(nodes)
+        else:
+            self.elem = None
+            self.nodes = []
 
+    def __repr__(self):
+        return repr(self.nodes)
+
+    def _populate(self,nodes):
+        self.elem = nodes[0]
+        self.nodes = set([nodes])
+        # Merge disjoint sets of initial nodes
+        self.dset.union(self.elem,nodes[1])
+
+    def is_compatible(self,pred,node):
+        ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
+        elem = self.elem
+        if elem is None:
+            return True
+        if ((pred in self.nodes) or (not self.dset.connected(elem,pred))) and \
+           (not self.dset.connected(elem,node)):
+            logger.info(f"Compatible {pred} -> {node} with {elem} {self.dset}")
+            return True
+        else:
+            logger.info(f"Incompatible {pred} -> {node} with {elem} {self.dset}")
+            return False
+
+    def extend(self,pred,node):
+        ''' Extend current parse with edge from pred to node '''
+        elem = self.elem
+        if elem is None:
+            self._populate((pred,node))
+        else:
+            self.nodes.add(pred)
+            self.nodes.add(node)
+            self.dset.union(elem,pred)
+            self.dset.union(elem,node)
+
+    def __len__(self):
+        return len(self.nodes)
+
+    def copy(self):
+        ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
+        t = VakyaParse([],self.dset)
+        t.nodes = copy(self.nodes)
+        return t
+
+    
 def getSLP1Tagset(n):
     ''' Given a (base, tagset) pair, extract the tagset '''
     return set(map(lambda x: x.canonical(), list(n[1])))
