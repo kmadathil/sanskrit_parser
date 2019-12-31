@@ -13,6 +13,7 @@ import logging
 import operator
 import six
 from sanskrit_parser.util import lexical_scorer
+from sanskrit_parser.util.disjoint_set import DisjointSet
 
 __all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
 
@@ -240,7 +241,7 @@ class VakyaGraph(object):
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
         logger.info(f"{self.path_node_count} sets of orthogonal nodes")
-        self.nsets = []
+        self.nsets = DisjointSet() #[]
         for (ix, sobj) in enumerate(path):
             vnlist = []
             mtags = sobj.getMorphologicalTags()
@@ -252,14 +253,17 @@ class VakyaGraph(object):
                 pn = VakyaGraphNode(ncopy)
                 vnlist.append(pn)
             for vn in vnlist:
-                vn.makeDisjoint(vnlist)
+                #vn.makeDisjoint(vnlist)
                 self.addNode(vn)
-            self.nsets.append(set(vnlist))
-        logger.info(f"Node sets {self.nsets}")
+            #self.nsets.append(set(vnlist))
+            self.nsets.addset(set(vnlist))
+        logger.info(f"Node sets {self.nsets} Len {len(self.nsets)}")
         self.lock()
         self.addEdges()
         # Remove isolated nodes (with no edges)
-        self.G.remove_nodes_from(list(nx.isolates(self.G)))
+        isolates = list(nx.isolates(self.G))
+        self.G.remove_nodes_from(isolates)
+        self.nsets.remove(isolates)
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -342,7 +346,8 @@ class VakyaGraph(object):
                 karta = prathama
                 karma = dvitiya
             for n in self.G:
-                if not d.isDisjoint(n):
+                #if not d.isDisjoint(n):
+                if not self.nsets.connected(d,n): 
                     if node_is_a(n, karta) and match_purusha_vacana(d, n):
                         logger.info(f"Adding kartA edge to {n}")
                         self.G.add_edge(d, n, label="kartA")
@@ -364,6 +369,14 @@ class VakyaGraph(object):
                     elif node_is_a(n, sambodhana) and check_sambodhya(d, n):
                         logger.info(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDya")
+
+    def get_parses(self):
+        ''' Returns all parses
+
+
+        '''
+        rlist = []
+        
 
     def draw(self, *args, **kwargs):
         _ncache = {}
@@ -456,3 +469,5 @@ def match_purusha_vacana(d, n):
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
     return (get_vacana(d) == get_vacana(n)) and (get_purusha(d) == set([puruzas[1]]))
+
+
