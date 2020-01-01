@@ -420,10 +420,10 @@ class VakyaGraph(object):
                 rs.add(ps)
         logger.info(f"Removing {rs} from partial parses")
         partial_parses.difference_update(rs)        
-        logger.info(f"Partial Parses Final {partial_parses}")
         # Check global compatibility
         # FIXME
-        return partial_parses
+        logger.info(f"Partial Parses Final {partial_parses}")
+        return set([self.G.subgraph(p) for p in partial_parses])
 
     def draw(self, *args, **kwargs):
         _ncache = {}
