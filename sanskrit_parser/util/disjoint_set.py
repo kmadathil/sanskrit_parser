@@ -56,6 +56,8 @@ class DisjointSet(object):
         :param y: second element
         :return: None
         """
+        if x == y:
+            return
         parent_x, parent_y = self.find(x), self.find(y)
         if parent_x != parent_y:
             self._data[parent_x] = parent_y

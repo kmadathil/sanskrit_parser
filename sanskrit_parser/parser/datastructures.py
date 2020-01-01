@@ -413,6 +413,14 @@ class VakyaGraph(object):
             logger.info(f"Removing {rs} from partial parses")
             partial_parses.difference_update(rs)
             logger.info(f"Partial Parses {i} {partial_parses}")
+        # Final removal of all small parses
+        rs = set()
+        for ps in partial_parses:
+            if len(ps) < len(self.nsets):
+                rs.add(ps)
+        logger.info(f"Removing {rs} from partial parses")
+        partial_parses.difference_update(rs)        
+        logger.info(f"Partial Parses Final {partial_parses}")
         # Check global compatibility
         # FIXME
         return partial_parses
@@ -470,14 +478,14 @@ class VakyaParse(object):
             self._populate(nodes)
         else:
             self.elem = None
-            self.nodes = []
+            self.nodes = set()
 
     def __repr__(self):
         return repr(self.nodes)
 
     def _populate(self,nodes):
         self.elem = nodes[0]
-        self.nodes = set([nodes])
+        self.nodes = set(nodes)
         # Merge disjoint sets of initial nodes
         self.dset.union(self.elem,nodes[1])
 
@@ -486,24 +494,32 @@ class VakyaParse(object):
         elem = self.elem
         if elem is None:
             return True
+        logger.debug(f"Checking Compatibility  {pred} -> {node} with {elem} {self.dset}")
+        logger.debug(f"Pred in nodes: {pred in self.nodes} {self.nodes}")
+        logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
+        logger.debug(f"Connected node {self.dset.connected(elem,node)}")
         if ((pred in self.nodes) or (not self.dset.connected(elem,pred))) and \
            (not self.dset.connected(elem,node)):
-            logger.info(f"Compatible {pred} -> {node} with {elem} {self.dset}")
+            logger.debug(f"Compatible")
             return True
         else:
-            logger.info(f"Incompatible {pred} -> {node} with {elem} {self.dset}")
+            logger.debug(f"Incompatible")
             return False
 
     def extend(self,pred,node):
         ''' Extend current parse with edge from pred to node '''
         elem = self.elem
         if elem is None:
+            logger.debug(f"Populating {self.elem}/{self.nodes} with {pred,node}")
             self._populate((pred,node))
         else:
-            self.nodes.add(pred)
+            logger.debug(f"Extending {self.nodes} with {pred,node}")
+            if not pred in self.nodes:
+                self.nodes.add(pred)
+                self.dset.union(elem,pred) 
             self.nodes.add(node)
-            self.dset.union(elem,pred)
             self.dset.union(elem,node)
+            logger.debug(f"Nodes {self.nodes} Dset {self.dset}")
 
     def __len__(self):
         return len(self.nodes)
@@ -512,6 +528,7 @@ class VakyaParse(object):
         ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
         t = VakyaParse([],self.dset)
         t.nodes = copy(self.nodes)
+        t.elem  = self.elem # This will not change
         return t
 
     
