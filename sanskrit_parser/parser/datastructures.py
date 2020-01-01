@@ -386,13 +386,13 @@ class VakyaGraph(object):
             if i == 0:
                 # Partial parses = phi + all predecessors
                 partial_parses=set()
-                partial_parses.add(VakyaParse([],self.nsets)) #Null partial parse
+                partial_parses.add(VakyaParse([],self.nsets,self.G)) #Null partial parse
                 # For all input edges to this set
                 for n in ns:
                     logger.debug(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
                         logger.debug(f"Traversing predecessor {pred} -> {n}")
-                        partial_parses.add(VakyaParse((pred,n),self.nsets))
+                        partial_parses.add(VakyaParse((pred,n),self.nsets,self.G))
             else:
                 for n in ns: # For all input edges to this set
                     logger.debug(f"Traversing node {n}")
@@ -411,7 +411,7 @@ class VakyaGraph(object):
 #           Afterwards, remove all partial parses of size < i
             rs = set()
             for ps in partial_parses:
-                if len(ps) < i:
+                if len(ps) < i-1:
                     rs.add(ps)
             logger.debug(f"Removing {rs} from partial parses")
             partial_parses.difference_update(rs)
@@ -419,12 +419,12 @@ class VakyaGraph(object):
         # Final removal of all small parses
         rs = set()
         for ps in partial_parses:
-            if len(ps) < len(self.nsets):
+            if len(ps) < len(self.nsets)-1:
                 rs.add(ps)
         logger.debug(f"Removing {rs} from partial parses")
         partial_parses.difference_update(rs)        
         logger.info(f"Partial Parses Final {partial_parses}")
-        return set([self.G.subgraph(p.nodes) for p in partial_parses])
+        return set([self.G.edge_subgraph(p.edges) for p in partial_parses])
 
 
     def check_parse_validity(self):
@@ -529,22 +529,25 @@ class VakyaGraphNode(object):
         return str(self)
 
 class VakyaParse(object):
-    def __init__(self,nodes,nsets):
+    def __init__(self,nodes,nsets,G):
         ''' Initializes a partial parse with a node pair (or []) '''
         # Initialize disjoint sets DS
         self.dset = nsets.copy()
+        self.G    = G
         if nodes:
             self._populate(nodes)
         else:
             self.elem = None
             self.nodes = set()
+            self.edges = set()
 
     def __repr__(self):
-        return repr(self.nodes)
+        return repr(self.edges)
 
     def _populate(self,nodes):
         self.elem = nodes[0]
         self.nodes = set(nodes)
+        self.edges = set([(nodes[0],nodes[1])])
         # Merge disjoint sets of initial nodes
         self.dset.union(self.elem,nodes[1])
 
@@ -569,24 +572,26 @@ class VakyaParse(object):
         ''' Extend current parse with edge from pred to node '''
         elem = self.elem
         if elem is None:
-            logger.debug(f"Populating {self.elem}/{self.nodes} with {pred,node}")
+            logger.info(f"Populating {self.elem}/{self.edges} with {(pred,node)}")
             self._populate((pred,node))
         else:
-            logger.debug(f"Extending {self.nodes} with {pred,node}")
+            logger.info(f"Extending {self.edges} with {(pred,node)}")
             if not pred in self.nodes:
                 self.nodes.add(pred)
                 self.dset.union(elem,pred) 
             self.nodes.add(node)
+            self.edges.add((pred,node))
             self.dset.union(elem,node)
-            logger.debug(f"Nodes {self.nodes} Dset {self.dset}")
+        logger.info(f"Edges {self.edges} Dset {self.dset}")
 
     def __len__(self):
-        return len(self.nodes)
+        return len(self.edges)
 
     def copy(self):
         ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
-        t = VakyaParse([],self.dset)
+        t = VakyaParse([],self.dset,self.G)
         t.nodes = copy(self.nodes)
+        t.edges = copy(self.edges)
         t.elem  = self.elem # This will not change
         return t
 
