@@ -116,7 +116,7 @@ class LexicalSandhiAnalyzer(object):
         if len(roots) == 0:
             return None
         else:
-            self.splits.addRoots(roots)
+            self.splits.add_roots(roots)
             return self.splits
 
     def _possible_splits(self, s):
@@ -183,9 +183,9 @@ class LexicalSandhiAnalyzer(object):
                         else:
                             t = node_cache[s_c_left]
                         roots.add(t)
-                        if not self.splits.hasNode(t):
-                            self.splits.addNode(t)
-                        self.splits.appendToNode(t, r_roots)
+                        if not self.splits.has_node(t):
+                            self.splits.add_node(t)
+                        self.splits.append_to_node(t, r_roots)
                 else:  # Null right part
                     # Why cache s_c_left here? To handle the case
                     # where the same s_c_left appears with a null and non-null
@@ -198,9 +198,9 @@ class LexicalSandhiAnalyzer(object):
                     # Extend splits list with s_c_left appended with
                     # possible splits of s_c_right
                     roots.add(t)
-                    if not self.splits.hasNode(t):
-                        self.splits.addNode(t)
-                    self.splits.addEndEdge(t)
+                    if not self.splits.has_node(t):
+                        self.splits.add_node(t)
+                    self.splits.add_end_edge(t)
             else:
                 logger.debug("Invalid left word: " + s_c_left)
         # Update scoreboard for this substring, so we don't have to split
@@ -305,7 +305,7 @@ def main(argv=None):
             print("End DAG generation")
             if graph:
                 logger.debug("Graph has %d nodes and %d edges" % (len(graph.G.nodes()), len(graph.G.edges())))
-                splits = graph.findAllPaths(max_paths=args.max_paths, score=args.score)
+                splits = graph.find_all_paths(max_paths=args.max_paths, score=args.score)
                 print("End pathfinding", time.time())
                 print("Splits:")
                 if splits:

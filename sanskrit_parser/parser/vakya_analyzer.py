@@ -355,7 +355,7 @@ def main(argv=None):
     with SanskritBase.outputctx(args.strict_io):
         if graph:
             start_path = time.time()
-            splits = graph.findAllPaths(max_paths=args.max_paths)
+            splits = graph.find_all_paths(max_paths=args.max_paths)
             end_path = time.time()
             logger.info("End pathfinding")
             print("Splits:")
@@ -364,9 +364,6 @@ def main(argv=None):
                 print(f"Lexical Split: {sp}")
                 if not args.constraint:
                     vgraph = VakyaGraph(sp)
-                    parses = vgraph.get_parses()
-                    for p in parses:
-                        logger.info(f"Parses: {p}")
                 else:
                     start_c = time.time()
                     p = s.constrainPath(sp)
