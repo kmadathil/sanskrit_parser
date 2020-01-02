@@ -13,6 +13,7 @@ import logging
 import operator
 from copy import copy
 import six
+import time
 from collections import defaultdict
 from sanskrit_parser.util import lexical_scorer
 from sanskrit_parser.util.disjoint_set import DisjointSet
@@ -267,9 +268,12 @@ class VakyaGraph(object):
         isolates = list(nx.isolates(self.G))
         self.G.remove_nodes_from(isolates)
         self.nsets.remove(isolates)
+        start_parse = time.time()
         self.parses = self.get_parses()
         self.check_parse_validity()
-        
+        end_parse = time.time()
+        logger.info(f"Time for parse: {(end_parse-start_parse):1.6f}s")
+
     def __iter__(self):
         ''' Iterate over nodes '''
         return self.G.__iter__()
@@ -423,7 +427,7 @@ class VakyaGraph(object):
                 rs.add(ps)
         logger.debug(f"Removing {rs} from partial parses")
         partial_parses.difference_update(rs)        
-        logger.info(f"Partial Parses Final {partial_parses}")
+        logger.debug(f"Partial Parses Final {partial_parses}")
         return set([self.G.edge_subgraph(p.edges) for p in partial_parses])
 
 
@@ -436,15 +440,21 @@ class VakyaGraph(object):
         # Check a parse for validity
         def _check(parse):
             r = True
-            count = defaultdict(lambda : defaultdict(int))
+            count  = defaultdict(lambda : defaultdict(int))
+            toedge = defaultdict(int)
             for (u,v,l) in parse.edges(data='label'):
                 if l in karakas:
                     count[u][l] = count[u][l]+1
+                    toedge[v] = toedge[v]+1
             for u in count: # Dhatu
                 for k in count[u]: # Each karaka should count only once
                     if count[u][k]>1:
                         logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
                         r = False
+            for v in toedge:
+                if toedge[v]>1:
+                    logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+                    return False
             return r
         iv = set()
         logger.info(f"Parses before validity check {len(self.parses)}")
@@ -556,12 +566,12 @@ class VakyaParse(object):
         elem = self.elem
         if elem is None:
             return True
-        logger.debug(f"Checking Compatibility  {pred} -> {node} with {elem} {self.dset}")
         logger.debug(f"Pred in nodes: {pred in self.nodes} {self.nodes}")
+        logger.debug(f"Node in nodes: {node in self.nodes} {self.nodes}")
         logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
         logger.debug(f"Connected node {self.dset.connected(elem,node)}")
         if ((pred in self.nodes) or (not self.dset.connected(elem,pred))) and \
-           (not self.dset.connected(elem,node)):
+           ((node in self.nodes) or (not self.dset.connected(elem,node))):
             logger.debug(f"Compatible")
             return True
         else:
@@ -572,17 +582,18 @@ class VakyaParse(object):
         ''' Extend current parse with edge from pred to node '''
         elem = self.elem
         if elem is None:
-            logger.info(f"Populating {self.elem}/{self.edges} with {(pred,node)}")
+            logger.debug(f"Populating {self.elem}/{self.edges} with {(pred,node)}")
             self._populate((pred,node))
         else:
-            logger.info(f"Extending {self.edges} with {(pred,node)}")
+            logger.debug(f"Extending {self.edges} with {(pred,node)}")
             if not pred in self.nodes:
                 self.nodes.add(pred)
-                self.dset.union(elem,pred) 
-            self.nodes.add(node)
+                self.dset.union(elem,pred)
+            if not node in self.nodes:
+                self.nodes.add(node)
+                self.dset.union(elem,node)
             self.edges.add((pred,node))
-            self.dset.union(elem,node)
-        logger.info(f"Edges {self.edges} Dset {self.dset}")
+        logger.debug(f"Edges {self.edges} Dset {self.dset}")
 
     def __len__(self):
         return len(self.edges)
