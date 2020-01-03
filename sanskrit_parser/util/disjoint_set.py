@@ -8,11 +8,12 @@
 from collections import defaultdict
 from copy import copy
 
+
 class DisjointSet(object):
     ''' Disjoint Set Class with Indexing'''
     def __init__(self, sets=None):
         self._data = defaultdict(lambda x: x)
-        self._len  = 0
+        self._len = 0
         self._sets = []
         if sets is not None:
             for st in sets:
@@ -26,16 +27,16 @@ class DisjointSet(object):
         ''' Iterator '''
         return iter(self._sets)
 
-    def __getitem__(self,ix):
+    def __getitem__(self, ix):
         return self._sets[ix]
-    
+
     def __repr__(self):
         return repr(self._sets)
 
-    def addset(self,st):
+    def addset(self, st):
         ''' Adds a set st to the DisjointSet. Representative element is whatever the set iterator returns first'''
-        for (i,e) in enumerate(st):
-            if i==0:
+        for (i, e) in enumerate(st):
+            if i == 0:
                 parent = e
             self._data[e] = parent
         self._sets.append(st)
@@ -77,7 +78,6 @@ class DisjointSet(object):
         """
         return self.find(x) == self.find(y)
 
-
     def remove(self, elems):
         ''' Removes elements from the Disjoint Set'''
         for e in elems:
@@ -99,4 +99,3 @@ class DisjointSet(object):
         for s in self:
             t.addset(copy(s))
         return t
-        
