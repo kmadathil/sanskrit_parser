@@ -58,26 +58,15 @@ extracted from this graph are also written out as _parse.dot files
     Lexical Split: [asti, uttarasyAm, diSi]
     ...
     Parse 0
-    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
-    uttarasyAm=>['uttara#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    diSi=>['diS', {saptamIviBaktiH, ekavacanam, strIliNgam}]
-    Parse 1
-    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
-    uttarasyAm=>['uttara#1', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    diSi=>['diS#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    Parse 2
-    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
-    uttarasyAm=>['uttara#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    diSi=>['diS#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    Parse 3
-    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
-    uttarasyAm=>['uttara#1', {ekavacanam, saptamIviBaktiH, strIliNgam}]
-    diSi=>['diS', {saptamIviBaktiH, ekavacanam, strIliNgam}]
+    asti=>['as#1', {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
+    diSi=>['diS#2', {ekavacanam, strIliNgam, saptamIviBaktiH}]
+    uttarasyAm=>['uttara#1', {ekavacanam, strIliNgam, saptamIviBaktiH}]
     ...
 
     $ dot -Tpng vakya.dot -o vakya.png
     $ eog vakya.png
-
+    $ dot -Tpng vakya_parse0.dot -o vakya.png
+    $ eog vakya_parse0.png
 """
 
 
