@@ -1,0 +1,560 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sanskrit_parser.parser.vakya_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for sanskrit_parser.parser.vakya_analyzer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;  Morphological Analyzer for Sanskrit Sentences.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">======</span>
+
+<span class="sd">The ``SanskritMorphologicalAnalyzer`` class has a similar interface to</span>
+<span class="sd">``SanskritSandhiAnalyzer``, and has a ``constrainPath()`` method which</span>
+<span class="sd">can find whether a particular split has a valid morphology, and output</span>
+<span class="sd">all such valid morphologies.</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1</span>
+<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer</span>
+<span class="sd">    &gt;&gt;&gt; sentence = SanskritObject(&quot;astyuttarasyAm&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; analyzer = SanskritMorphologicalAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; graph=analyzer.getSandhiSplits(sentence,tag=True)</span>
+<span class="sd">    &gt;&gt;&gt; splits=graph.findAllPaths()</span>
+<span class="sd">    &gt;&gt;&gt; for sp in splits:</span>
+<span class="sd">    &gt;&gt;&gt;     print(&quot;Lexical Split:&quot;,sp)</span>
+<span class="sd">    &gt;&gt;&gt;     p=analyzer.constrainPath(sp)</span>
+<span class="sd">    &gt;&gt;&gt;     if p:</span>
+<span class="sd">    &gt;&gt;&gt;         print(&quot;Valid Morphologies&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;         for pp in p:</span>
+<span class="sd">    &gt;&gt;&gt;             print([(spp,pp[str(spp)]) for spp in sp])</span>
+<span class="sd">    &gt;&gt;&gt;     else:</span>
+<span class="sd">    &gt;&gt;&gt;         print(&quot;No valid morphologies for this split&quot;)</span>
+<span class="sd">    ...</span>
+<span class="sd">    (&#39;Lexical Split:&#39;, [asti, uttarasyAm])</span>
+<span class="sd">    Valid Morphologies</span>
+<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
+<span class="sd">    (uttarasyAm, (&#39;uttara#2&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
+<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
+<span class="sd">    (uttarasyAm, (&#39;uttara#1&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
+<span class="sd">    (&#39;Lexical Split:&#39;, [asti, uttara, syAm])</span>
+<span class="sd">    No valid morphologies for this split</span>
+<span class="sd">    (&#39;Lexical Split:&#39;, [asti, ut, tara, syAm])</span>
+<span class="sd">    No valid morphologies for this split</span>
+
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    $ python -m sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer astyuttarasyAm --input-encoding SLP1 --need-lakara</span>
+<span class="sd">    Input String: astyuttarasyAm</span>
+<span class="sd">    Input String in SLP1: astyuttarasyAm</span>
+<span class="sd">    Start Split: 2017-10-01 11:16:10.489660</span>
+<span class="sd">    End DAG generation: 2017-10-01 11:16:10.496199</span>
+<span class="sd">    End pathfinding: 2017-10-01 11:16:10.497342</span>
+<span class="sd">    Splits:</span>
+<span class="sd">    Lexical Split: [asti, uttarasyAm]</span>
+<span class="sd">    Valid Morphologies</span>
+<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
+<span class="sd">    (uttarasyAm, (&#39;uttara#2&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
+<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
+<span class="sd">    (uttarasyAm, (&#39;uttara#1&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
+<span class="sd">    Lexical Split: [asti, uttara, syAm]</span>
+<span class="sd">    No valid morphologies for this split</span>
+<span class="sd">    Lexical Split: [asti, ut, tara, syAm]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">as</span> <span class="nn">SanskritBase</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util.DhatuWrapper</span> <span class="k">import</span> <span class="n">DhatuWrapper</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="k">import</span> <span class="n">VakyaGraph</span><span class="p">,</span> <span class="n">getSLP1Tagset</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">import</span> <span class="nn">constraint</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">need_lakara</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">dw</span> <span class="o">=</span> <span class="n">DhatuWrapper</span><span class="p">()</span>
+
+<span class="c1"># Lakaras</span>
+<span class="n">_lakaras</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;law&#39;</span><span class="p">,</span> <span class="s1">&#39;liw&#39;</span><span class="p">,</span> <span class="s1">&#39;luw&#39;</span><span class="p">,</span> <span class="s1">&#39;lrw&#39;</span><span class="p">,</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;laN&#39;</span><span class="p">,</span> <span class="s1">&#39;liN&#39;</span><span class="p">,</span> <span class="s1">&#39;luN&#39;</span><span class="p">,</span> <span class="s1">&#39;lfN&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;viDiliN&#39;</span><span class="p">,</span> <span class="s1">&#39;ASIrliN&#39;</span><span class="p">,</span> <span class="s1">&#39;law-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;liw-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;luw-karmaRi&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;lrw-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;low-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;laN-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;liN-karmaRi&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;luN-karmaRi&#39;</span><span class="p">,</span> <span class="s1">&#39;lfN-karmaRi&#39;</span><span class="p">])</span>
+<span class="c1"># Disallowed last padas</span>
+<span class="n">_ldis</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;samAsapUrvapadanAmapadam&#39;</span><span class="p">,</span> <span class="s1">&#39;upasargaH&#39;</span><span class="p">])</span>
+<span class="c1"># Vacanas</span>
+<span class="n">_vacanas</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;ekavacanam&#39;</span><span class="p">,</span> <span class="s1">&#39;dvivacanam&#39;</span><span class="p">,</span> <span class="s1">&#39;bahuvacanam&#39;</span><span class="p">])</span>
+<span class="c1"># Puruzas</span>
+<span class="n">_puruzas</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;praTamapuruzaH&#39;</span><span class="p">,</span> <span class="s1">&#39;maDyamapuruzaH&#39;</span><span class="p">,</span> <span class="s1">&#39;uttamapuruzaH&#39;</span><span class="p">]</span>
+<span class="n">prathama</span> <span class="o">=</span> <span class="s1">&#39;praTamAviBaktiH&#39;</span>
+<span class="c1"># Lingas</span>
+<span class="n">_lingas</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;puMlliNgam&#39;</span><span class="p">,</span> <span class="s1">&#39;napuMsakaliNgam&#39;</span><span class="p">,</span> <span class="s1">&#39;strIliNgam&#39;</span><span class="p">,</span> <span class="s1">&#39;triliNgam&#39;</span><span class="p">])</span>
+<span class="n">_sankhya</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;saNKyA&#39;</span><span class="p">])</span>
+<span class="c1"># Samastapada former parts</span>
+<span class="n">_samastas</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;samAsapUrvapadanAmapadam&#39;</span><span class="p">])</span>
+<span class="c1"># tiGanta vibhaktis</span>
+<span class="n">_vibhaktis</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;praTamAviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;dvitIyAviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;tritIyAviBaktiH&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;caturTIviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;paNcamIviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;zazWIviBaktiH&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;saptamIviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;saMboDanaviBaktiH&#39;</span><span class="p">])</span>
+<span class="n">_dvitiya</span> <span class="o">=</span> <span class="s1">&#39;dvitIyAviBaktiH&#39;</span>
+<span class="n">_sambodhana</span> <span class="o">=</span> <span class="s1">&#39;saMboDanaviBaktiH&#39;</span>
+
+<span class="c1"># Rules for morphological analyzer</span>
+
+
+<span class="c1"># Disallow empty tagsets</span>
+<div class="viewcode-block" id="nonempty"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.nonempty">[docs]</a><span class="k">def</span> <span class="nf">nonempty</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; No empty tagsets allowed &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># Only one lakara</span>
+<div class="viewcode-block" id="oneLakara"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.oneLakara">[docs]</a><span class="k">def</span> <span class="nf">oneLakara</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Only one Lakara is allowed &#39;&#39;&#39;</span>
+    <span class="c1"># lakaras in SLP1</span>
+    <span class="k">global</span> <span class="n">need_lakara</span>
+    <span class="n">lakaras</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">_lakaras</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset</span><span class="p">)):</span>
+            <span class="n">lakaras</span> <span class="o">=</span> <span class="n">lakaras</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># Variable to enforce a lakara</span>
+    <span class="k">if</span> <span class="n">need_lakara</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lakaras</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lakaras</span> <span class="o">&lt;=</span> <span class="mi">1</span></div>
+
+
+<span class="c1"># Last pada cannot be an upasarga or samasapurvapada</span>
+<div class="viewcode-block" id="lastWord"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.lastWord">[docs]</a><span class="k">def</span> <span class="nf">lastWord</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_ldis</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">nset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># Upasarga must be before a verb</span>
+<div class="viewcode-block" id="upasarga"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.upasarga">[docs]</a><span class="k">def</span> <span class="nf">upasarga</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;upasargaH&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">nset</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_lakaras</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ix</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># Rules for prathamA/sambodhanA</span>
+<div class="viewcode-block" id="prathamA"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.prathamA">[docs]</a><span class="k">def</span> <span class="nf">prathamA</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Rules for prathamA, sambodhanA vibhaktis</span>
+
+<span class="sd">        padas in prathamA (&#39;kartr&#39;/karman) must match the purusha / vacana of lakara</span>
+<span class="sd">        sambodhana vibhakti rules: Lakara must be in madhyamapurusha</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">vacana</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">puruza</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="c1"># Pick the first lakara</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">_lakaras</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset</span><span class="p">)):</span>
+            <span class="n">vacana</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_vacanas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found Lakara vacana:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vacana</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vacana</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one vacana allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vacana</span><span class="p">))</span>
+            <span class="n">vacana</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vacana</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">puruza</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_puruzas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found Lakara puruza:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">puruza</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">puruza</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one puruza allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">puruza</span><span class="p">))</span>
+            <span class="n">puruza</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">puruza</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># No lakara found</span>
+    <span class="k">if</span> <span class="n">vacana</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">need_lakara</span>
+    <span class="n">pstem</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dstem</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dvacana</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">yuzmad</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prathama</span> <span class="ow">in</span> <span class="n">nset</span><span class="p">:</span>
+            <span class="n">mvacana</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_vacanas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found PrathamA </span><span class="si">{}</span><span class="s2"> vacana:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mvacana</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mvacana</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one mvacana allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mvacana</span><span class="p">))</span>
+            <span class="n">mvacana</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mvacana</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Pre Prathama result:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mvacana</span> <span class="o">==</span> <span class="n">vacana</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">puruza</span> <span class="o">==</span> <span class="n">_puruzas</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># Can&#39;t have asmad with madhyama</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;asmad&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">puruza</span> <span class="o">==</span> <span class="n">_puruzas</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="c1"># Can&#39;t have yuzmad with uttama</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;yuzmad&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Can&#39;t have either with prathama</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">((</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;yuzmad&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;asmad&#39;</span><span class="p">))</span>
+            <span class="n">pstem</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">yuzmad</span> <span class="o">=</span> <span class="n">yuzmad</span> <span class="ow">or</span> <span class="p">(</span><span class="n">pstem</span> <span class="o">==</span> <span class="s1">&#39;yuzmad&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Temp Prathama result:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">_sambodhana</span> <span class="ow">in</span> <span class="n">nset</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Pre Sambodhana result:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+            <span class="n">dvacana</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_vacanas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found Sambodhana </span><span class="si">{}</span><span class="s2"> vacana:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dvacana</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dvacana</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one dvacana allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dvacana</span><span class="p">))</span>
+            <span class="n">dvacana</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dvacana</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Lakara must be in madhyamapurusha</span>
+            <span class="k">if</span> <span class="n">puruza</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="n">puruza</span> <span class="o">==</span> <span class="n">_puruzas</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Temp Sambodhana result:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+            <span class="n">dstem</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dvacana</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># All nodes has been seen, we have found a dvitiya</span>
+        <span class="k">if</span> <span class="n">pstem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Must match Sambodhana vacana</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Sambodhana check: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">  Yushmad </span><span class="si">{}</span><span class="s1"> mvacana </span><span class="si">{}</span><span class="s1"> dvacana </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pstem</span><span class="p">,</span> <span class="n">dstem</span><span class="p">,</span> <span class="n">yuzmad</span><span class="p">,</span> <span class="n">mvacana</span><span class="p">,</span> <span class="n">dvacana</span><span class="p">))</span>
+            <span class="c1"># # Prathama stem must be yuzmad</span>
+            <span class="c1"># r = r and yuzmad</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mvacana</span> <span class="o">==</span> <span class="n">dvacana</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Returning:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># all padas in same case must match in linga and vacana</span>
+<div class="viewcode-block" id="vibhaktiAgreement"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.vibhaktiAgreement">[docs]</a><span class="k">def</span> <span class="nf">vibhaktiAgreement</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; All padas in same vibhakti must agree in linga and vacana &#39;&#39;&#39;</span>
+    <span class="n">maps</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">vibhakti</span> <span class="o">=</span> <span class="n">_vibhaktis</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">nset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vibhakti</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vibhakti</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one vibhakti allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vibhakti</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found vibhakti:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vibhakti</span><span class="p">))</span>
+            <span class="n">vibhakti</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vibhakti</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">vacana</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_vacanas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found vacana:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vacana</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vacana</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one vacana allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vacana</span><span class="p">))</span>
+            <span class="n">vacana</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vacana</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">linga</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_lingas</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found linga:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">linga</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linga</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sankhya</span> <span class="o">=</span> <span class="n">nset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">_sankhya</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sankhya</span><span class="p">:</span>  <span class="c1"># Is &quot;Sankhya&quot; type (kati etc.)</span>
+                    <span class="k">continue</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">linga</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Only one linga allowed: </span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">linga</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">nset</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">linga</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">linga</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">slv</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">linga</span><span class="p">,</span> <span class="n">vacana</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">vibhakti</span> <span class="ow">in</span> <span class="n">maps</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">maps</span><span class="p">[</span><span class="n">vibhakti</span><span class="p">]</span> <span class="o">!=</span> <span class="n">slv</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unequal:</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maps</span><span class="p">[</span><span class="n">vibhakti</span><span class="p">],</span> <span class="n">slv</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Equal:</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maps</span><span class="p">[</span><span class="n">vibhakti</span><span class="p">],</span> <span class="n">slv</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">maps</span><span class="p">[</span><span class="n">vibhakti</span><span class="p">]</span> <span class="o">=</span> <span class="n">slv</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Map: </span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vibhakti</span><span class="p">,</span> <span class="n">slv</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># Only sakarmaka dhatus are allowed karma</span>
+<div class="viewcode-block" id="sakarmakarule"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.sakarmakarule">[docs]</a><span class="k">def</span> <span class="nf">sakarmakarule</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">dw</span>  <span class="c1"># DhatuWrapper</span>
+    <span class="n">dvitiya</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">sakarmaka</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_dvitiya</span> <span class="ow">in</span> <span class="n">nset</span><span class="p">:</span>
+            <span class="c1"># Found a dvitiya</span>
+            <span class="n">dvitiya</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Dvitiya: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="n">nset</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">_lakaras</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset</span><span class="p">)):</span>
+            <span class="c1"># Found a lakara, can get the dhatu</span>
+            <span class="n">dh</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">hpos</span> <span class="o">=</span> <span class="n">dh</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hpos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">dh</span> <span class="o">=</span> <span class="n">dh</span><span class="p">[:</span><span class="n">hpos</span><span class="p">]</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Lakara: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">nset</span><span class="p">)))</span>
+            <span class="n">sakarmaka</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">is_sakarmaka</span><span class="p">(</span><span class="n">dh</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Sakarmakatva: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sakarmaka</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sakarmaka</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">dvitiya</span><span class="p">)</span></div>
+
+
+<span class="c1"># samAsa constituents must be followed by another samasa constiuent or subanta</span>
+<div class="viewcode-block" id="samasarules"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.samasarules">[docs]</a><span class="k">def</span> <span class="nf">samasarules</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; samasa constituents must be followed by tiGantas</span>
+<span class="sd">        (or other samasa constituents)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">ixmax</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+        <span class="n">nset</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_samastas</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ix</span> <span class="o">==</span> <span class="n">ixmax</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nset1</span> <span class="o">=</span> <span class="n">getSLP1Tagset</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ix</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">_samastas</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset1</span><span class="p">):</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_vibhaktis</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">nset1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># upasarga rules</span>
+<span class="c1"># karmapravcanIya rules</span>
+
+
+<div class="viewcode-block" id="VakyaAnalyzer"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">VakyaAnalyzer</span><span class="p">(</span><span class="n">LexicalSandhiAnalyzer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Singleton class to hold methods for Sanksrit vakya analysis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lexical_lookup</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VakyaAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lexical_lookup</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VakyaAnalyzer.constrainPath"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer.constrainPath">[docs]</a>    <span class="k">def</span> <span class="nf">constrainPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Apply Morphological Constraints on path</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            path(list): List of SanskritObjects (tagged)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">_ncache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">vlist</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">_uniq</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_ncache</span><span class="p">:</span>
+                <span class="n">_ncache</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="n">s</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_ncache</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ncache</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">s</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_ncache</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+        <span class="c1"># Ensure we have tags</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="s2">&quot;No tags for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="c1"># Solver</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">Problem</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">_uniq</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="n">vlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Added Variable </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">))</span>
+            <span class="n">problem</span><span class="o">.</span><span class="n">addVariable</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">oneLakara</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">lastWord</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">upasarga</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">prathamA</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">samasarules</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">vibhaktiAgreement</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">sakarmakarule</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="n">nonempty</span><span class="p">,</span> <span class="n">vlist</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">getSolutions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">s</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_console_logging</span><span class="p">():</span>
+    <span class="n">console</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="c1"># set a format which is simpler for console use</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># tell the handler to use this format</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="c1"># add the handler to the root logger</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="getArgs"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.getArgs">[docs]</a><span class="k">def</span> <span class="nf">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Vakya Analyzer&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Need a lakara</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--need-lakara&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--constraint&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use Constraint Parser instead of Graph Algorithm&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">need_lakara</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">vgraph</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_console_logging</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">need_lakara</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">need_lakara</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;VakyaAnalyzer.log&#39;</span><span class="p">,</span> <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">VakyaAnalyzer</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                              <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                              <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String in SLP1: {i.canonical()}&quot;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Start Split&quot;</span><span class="p">)</span>
+    <span class="n">start_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">end_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End DAG generation&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">outputctx</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="p">:</span>
+            <span class="n">start_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">)</span>
+            <span class="n">end_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End pathfinding&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splits:&quot;</span><span class="p">)</span>
+            <span class="n">spl_t</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">constraint</span><span class="p">:</span>
+                    <span class="n">vgraph</span> <span class="o">=</span> <span class="n">VakyaGraph</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">start_c</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">constrainPath</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+                    <span class="n">end_c</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Valid Morphologies&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">pp</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">([(</span><span class="n">spp</span><span class="p">,</span> <span class="n">pp</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">spp</span><span class="p">)])</span> <span class="k">for</span> <span class="n">spp</span> <span class="ow">in</span> <span class="n">sp</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No valid morphologies for this split&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time Taken for Constraint {end_c-start_c:0.6f}s&quot;</span><span class="p">)</span>
+                    <span class="n">spl_t</span> <span class="o">=</span> <span class="n">spl_t</span> <span class="o">+</span> <span class="p">(</span><span class="n">end_c</span><span class="o">-</span><span class="n">start_c</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End Morphological Analysis&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Performance&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Time taken for split: </span><span class="si">{0:0.6f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_split</span><span class="o">-</span><span class="n">start_split</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time taken for path: {end_path-start_path:0.6f}s&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">constraint</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time taken for constraint: </span><span class="si">{spl_t:0.6f}</span><span class="s2">s&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No Valid Splits Found&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vgraph</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_parser.html">parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

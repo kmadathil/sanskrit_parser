@@ -1,0 +1,540 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sanskrit_parser.parser.sandhi_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for sanskrit_parser.parser.sandhi_analyzer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">Intro</span>
+<span class="sd">=====</span>
+
+<span class="sd">Sandhi Analyzer for Sanskrit words</span>
+
+<span class="sd">@author: Karthik Madathil (github: @kmadathil)</span>
+
+<span class="sd">Usage</span>
+<span class="sd">=====</span>
+
+<span class="sd">Use the ``SanskritSandhiAnalyzer`` to split a sentence (wrapped in a</span>
+<span class="sd">``SanskritObject``) and retrieve the top 10 splits:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; from __future__ import print_function</span>
+<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer</span>
+<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1</span>
+<span class="sd">    &gt;&gt;&gt; sentence = SanskritObject(&quot;astyuttarasyAMdishidevatAtmA&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; analyzer = LexicalSandhiAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)</span>
+<span class="sd">    &gt;&gt;&gt; for split in splits:</span>
+<span class="sd">    ...    print(split)</span>
+<span class="sd">    ...</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;at&#39;, u&#39;mA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;at&#39;, u&#39;mA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttas&#39;, u&#39;rasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;avatA&#39;, u&#39;AtmA&#39;]</span>
+
+<span class="sd">The lexical_analyzer can also be used to look up the tags for a given</span>
+<span class="sd">word form: (Note that the database stores words</span>
+<span class="sd">ending in visarga with an &#39;s&#39; at the end)</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &gt;&gt;&gt; word = SanskritObject(&#39;hares&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tags = analyzer.getLexicalTags(word)</span>
+<span class="sd">    &gt;&gt;&gt; for tag in tags:</span>
+<span class="sd">    ...    print(tag)</span>
+<span class="sd">    ...</span>
+<span class="sd">    (&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    $ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA</span>
+<span class="sd">    ... </span>
+<span class="sd">    Splits:</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devatA, AtmA]</span>
+<span class="sd">    [asti, uttara, syAm, diSi, devatA, AtmA]</span>
+<span class="sd">    [astI, uttarasyAm, diSi, devatA, AtmA]</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devatAt, mA]</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devata, AtmA]</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devat, AtmA]</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devatAtmA]</span>
+<span class="sd">    [asti, uttarasyAm, diSi, devatA, at, mA]</span>
+<span class="sd">    [asti, uttara, syAm, diSi, devat, AtmA]</span>
+<span class="sd">    [asti, uttarasyAm, di, Si, devatA, AtmA]</span>
+<span class="sd">    -----------</span>
+<span class="sd">    .. </span>
+<span class="sd">    $ scripts/sanskrit_parser tags hares</span>
+<span class="sd">    ...</span>
+<span class="sd">    Morphological tags:</span>
+<span class="sd">    (&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})</span>
+<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
+<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+<span class="sd">    (&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})</span>
+<span class="sd">    (&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+<span class="sd">    Input String in SLP1: hares</span>
+<span class="sd">    (&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})</span>
+<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
+<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+<span class="sd">    (&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})</span>
+<span class="sd">    (&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})</span>
+<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
+<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util.lexical_lookup_factory</span> <span class="k">import</span> <span class="n">LexicalLookupFactory</span>
+<span class="kn">import</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">as</span> <span class="nn">SanskritBase</span>
+
+<span class="kn">from</span> <span class="nn">.sandhi</span> <span class="k">import</span> <span class="n">Sandhi</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">.datastructures</span> <span class="k">import</span> <span class="n">SandhiGraph</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">lru_cache</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">backports.functools_lru_cache</span> <span class="k">import</span> <span class="n">lru_cache</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">LexicalSandhiAnalyzer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Singleton class to hold methods for Sanskrit lexical sandhi analysis.</span>
+
+<span class="sd">        We define lexical sandhi analysis to be the process of taking an input sequence</span>
+<span class="sd">        and transforming it to a collection (represented by a DAG) of potential sandhi</span>
+<span class="sd">        splits of the sequence. Each member of a split is guaranteed to be a valid</span>
+<span class="sd">        lexical form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sandhi</span> <span class="o">=</span> <span class="n">Sandhi</span><span class="p">()</span>  <span class="c1"># Singleton!</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lexical_lookup</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">):</span>
+        <span class="n">forms</span> <span class="o">=</span> <span class="n">LexicalLookupFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">lexical_lookup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forms</span> <span class="o">=</span> <span class="n">forms</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.getMorphologicalTags"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags">[docs]</a>    <span class="k">def</span> <span class="nf">getMorphologicalTags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">tmap</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get Morphological tags for a word</span>
+
+<span class="sd">            Params:</span>
+<span class="sd">                obj(SanskritString): word</span>
+<span class="sd">                tmap(Boolean=True): If True, maps</span>
+<span class="sd">                    tags to our format</span>
+<span class="sd">            Returns</span>
+<span class="sd">                list: List of (base, tagset) pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ot</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">ot</span><span class="p">,</span> <span class="n">tmap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tags</span></div>
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.hasTag"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag">[docs]</a>    <span class="k">def</span> <span class="nf">hasTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tagset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check if word matches morhphological tags</span>
+
+<span class="sd">            Params:</span>
+<span class="sd">                obj(SanskritString): word</span>
+<span class="sd">                name(str): name in tag</span>
+<span class="sd">                tagset(set): set of tag elements</span>
+<span class="sd">            Returns</span>
+<span class="sd">                list: List of (base, tagset) pairs for obj that</span>
+<span class="sd">                      match (name,tagset), or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">morphological_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">morphological_tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tagset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">morphological_tags</span><span class="p">:</span>
+            <span class="c1"># Name is none, or name matches</span>
+            <span class="c1"># Tagset is None, or all its elements are found in tagset</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span> <span class="o">==</span> <span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> \
+                    <span class="p">((</span><span class="n">tagset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tagset</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.tagSandhiGraph"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph">[docs]</a>    <span class="k">def</span> <span class="nf">tagSandhiGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Tag a Sandhi Graph with morphological tags for each node</span>
+
+<span class="sd">         Params:</span>
+<span class="sd">            g (SandhiGraph) : input lexical sandhi graph</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
+            <span class="c1"># Avoid start and end</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">):</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Got tags </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                <span class="n">n</span><span class="o">.</span><span class="n">setMorphologicalTags</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.getSandhiSplits"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">[docs]</a>    <span class="k">def</span> <span class="nf">getSandhiSplits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Get all valid Sandhi splits for a string</span>
+
+<span class="sd">            Params:</span>
+<span class="sd">              o(SanskritString): Input object</span>
+<span class="sd">              tag(Boolean)     : When True (def=False), return a</span>
+<span class="sd">                                 morphologically tagged graph</span>
+<span class="sd">            Returns:</span>
+<span class="sd">              SandhiGraph : DAG all possible splits</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_scoreboard</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Transform to internal canonical form</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
+        <span class="c1"># Initialize an empty graph to hold the splits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splits</span> <span class="o">=</span> <span class="n">SandhiGraph</span><span class="p">()</span>
+        <span class="c1"># _possible_splits updates graph in self.splits with nodes and returns roots</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_possible_splits</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tagSandhiGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">add_roots</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits</span></div>
+
+    <span class="k">def</span> <span class="nf">_possible_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; private method to dynamically compute all sandhi splits</span>
+
+<span class="sd">            Used by getSandhiSplits</span>
+<span class="sd">            Adds the individual splits to the graph self.splits and returns</span>
+<span class="sd">            the roots of the subgraph corresponding to the split of s</span>
+<span class="sd">           Params:</span>
+<span class="sd">              s(string): Input SLP1 encoded string</span>
+<span class="sd">            Returns:</span>
+<span class="sd">              roots : set of roots of subgraph corresponding to possible splits of s</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Splitting &quot;</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="nd">@lru_cache</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">_is_valid_word</span><span class="p">(</span><span class="n">ss</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">r</span>
+
+        <span class="k">def</span> <span class="nf">_sandhi_splits_all</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritImmutableString</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SanskritBase</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sandhi</span><span class="o">.</span><span class="n">split_all</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">splits</span>
+
+        <span class="n">roots</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># Memoization for dynamic programming - remember substrings that&#39;ve</span>
+        <span class="c1"># been seen before</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_scoreboard</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">{}</span><span class="s2"> in scoreboard&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_scoreboard</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+
+        <span class="c1"># If a space is found in a string, stop at that space</span>
+        <span class="n">spos</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">spos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">spos</span>
+
+        <span class="n">s_c_list</span> <span class="o">=</span> <span class="n">_sandhi_splits_all</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;s_c_list: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">s_c_list</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">s_c_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">s_c_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">node_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">s_c_left</span><span class="p">,</span> <span class="n">s_c_right</span><span class="p">)</span> <span class="ow">in</span> <span class="n">s_c_list</span><span class="p">:</span>
+            <span class="c1"># Is the left side a valid word?</span>
+            <span class="k">if</span> <span class="n">_is_valid_word</span><span class="p">(</span><span class="n">s_c_left</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Valid left word: &quot;</span> <span class="o">+</span> <span class="n">s_c_left</span><span class="p">)</span>
+                <span class="c1"># For each split with a valid left part, check it there are</span>
+                <span class="c1"># valid splits of the right part</span>
+                <span class="k">if</span> <span class="n">s_c_right</span> <span class="ow">and</span> <span class="n">s_c_right</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Trying to split:&quot;</span> <span class="o">+</span> <span class="n">s_c_right</span><span class="p">)</span>
+                    <span class="n">r_roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_possible_splits</span><span class="p">(</span><span class="n">s_c_right</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="c1"># if there are valid splits of the right side</span>
+                    <span class="k">if</span> <span class="n">r_roots</span><span class="p">:</span>
+                        <span class="c1"># Make sure we got a set of roots back</span>
+                        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r_roots</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+                        <span class="c1"># if there are valid splits of the right side</span>
+                        <span class="k">if</span> <span class="n">s_c_left</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node_cache</span><span class="p">:</span>
+                            <span class="c1"># Extend splits list with s_c_left appended with</span>
+                            <span class="c1"># possible splits of s_c_right</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">s_c_left</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SanskritBase</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span>
+                            <span class="n">node_cache</span><span class="p">[</span><span class="n">s_c_left</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="n">node_cache</span><span class="p">[</span><span class="n">s_c_left</span><span class="p">]</span>
+                        <span class="n">roots</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">append_to_node</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">r_roots</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># Null right part</span>
+                    <span class="c1"># Why cache s_c_left here? To handle the case</span>
+                    <span class="c1"># where the same s_c_left appears with a null and non-null</span>
+                    <span class="c1"># right side.</span>
+                    <span class="k">if</span> <span class="n">s_c_left</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node_cache</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">s_c_left</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SanskritBase</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span>
+                        <span class="n">node_cache</span><span class="p">[</span><span class="n">s_c_left</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="n">node_cache</span><span class="p">[</span><span class="n">s_c_left</span><span class="p">]</span>
+                    <span class="c1"># Extend splits list with s_c_left appended with</span>
+                    <span class="c1"># possible splits of s_c_right</span>
+                    <span class="n">roots</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">splits</span><span class="o">.</span><span class="n">add_end_edge</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Invalid left word: &quot;</span> <span class="o">+</span> <span class="n">s_c_left</span><span class="p">)</span>
+        <span class="c1"># Update scoreboard for this substring, so we don&#39;t have to split</span>
+        <span class="c1"># again</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_scoreboard</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">roots</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No splits found, returning empty set&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Roots: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">roots</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">roots</span></div>
+
+
+<div class="viewcode-block" id="getArgs"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.getArgs">[docs]</a><span class="k">def</span> <span class="nf">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Lexical Sandhi Analyzer&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;adhi&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Filter by base name</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--base&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Filter by tag set</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tag-set&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tags&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Don&#39;t use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String:&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;LexicalSandhiAnalyzer.log&#39;</span><span class="p">,</span>
+                            <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;LexicalSandhiAnalyzer.log&#39;</span><span class="p">,</span>
+                            <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
+    <span class="k">with</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">outputctx</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                                      <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                                      <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Morphological tags:&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="c1"># Possible rakaranta</span>
+            <span class="c1"># Try by replacing end visarga with &#39;r&#39; instead</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                                          <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                                          <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tag_set</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tag_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">g</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tag_set</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">g</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">b</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">b</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">hasTag</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">time</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                                      <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                                      <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start Split&quot;</span><span class="p">)</span>
+            <span class="n">start_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">end_graph</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End DAG generation&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Graph has </span><span class="si">%d</span><span class="s2"> nodes and </span><span class="si">%d</span><span class="s2"> edges&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()),</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End pathfinding&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splits:&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">splits</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No Valid Splits Found&quot;</span><span class="p">)</span>
+            <span class="n">end_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----------&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Performance&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time for graph generation = </span><span class="si">{0:0.6f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_graph</span> <span class="o">-</span> <span class="n">start_split</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total time for graph generation + find paths = </span><span class="si">{0:0.6f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_split</span> <span class="o">-</span> <span class="n">start_split</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_parser.html">parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
