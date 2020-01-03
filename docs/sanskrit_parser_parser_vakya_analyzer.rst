@@ -1,7 +1,7 @@
-morphological_analyzer
-========================================================
+parser.vakya_analyzer
+===================================================================
 
-.. automodule:: sanskrit_parser.morphological_analyzer
+.. automodule:: sanskrit_parser.parser.vakya_analyzer
   :members:
   :undoc-members:
   :show-inheritance:

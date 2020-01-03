@@ -55,7 +55,7 @@ master_doc = 'sanskrit_parser'
 
 # General information about the project.
 project = 'sanskrit_parser'
-copyright = '2017, sanskrit-programmers'
+copyright = '2017-2019, sanskrit-programmers'
 author = 'sanskrit-programmers'
 
 # The version info for the project you're documenting, acts as replacement for

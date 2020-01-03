@@ -1,7 +1,7 @@
-sanskrit_parser's documentation
-=========================================
+parser.sandhi_analyzer
+===================================================================
 
-.. automodule:: sanskrit_parser
+.. automodule:: sanskrit_parser.parser.sandhi_analyzer
   :members:
   :undoc-members:
   :show-inheritance:
@@ -12,9 +12,6 @@ Submodules
 .. toctree::
   :maxdepth: 5
 
-  sanskrit_parser_parser
-  sanskrit_parser_base
-  sanskrit_parser_util
 
 Indices and tables
 ------------------

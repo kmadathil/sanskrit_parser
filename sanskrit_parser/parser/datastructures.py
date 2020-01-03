@@ -3,7 +3,7 @@
 #
 """ Sanskrit Parser Data Structures
 
-    Author: Karthik Madathil <kmadathil@gmail.com>
+    @author: Karthik Madathil (github: @kmadathil)
 """
 
 import sanskrit_parser.base.sanskrit_base as SanskritBase
@@ -26,7 +26,7 @@ dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def _console_logging():
@@ -268,7 +268,7 @@ class VakyaGraph(object):
             for vn in vnlist:
                 self.add_node(vn)
             self.nsets.addset(set(vnlist))
-        logger.info(f"Node sets {self.nsets} Len {len(self.nsets)}")
+        logger.debug(f"Node sets {self.nsets} Len {len(self.nsets)}")
         self.lock()
         self.add_edges()
         # Remove isolated nodes (with no edges)
@@ -418,29 +418,30 @@ class VakyaGraph(object):
     def get_parses(self):
         ''' Returns all parses
         '''
-        logger.debug("Computing Parses")
+        logger.info("Computing Parses")
         for (i, ns) in enumerate(self.nsets):  # Iterate over disjoint nodesets
             logger.debug(f"Node set number {i} {ns}")
             if i == 0:
                 # Partial parses = phi + all predecessors
                 partial_parses = set()
-                partial_parses.add(VakyaParse([], self.nsets, self.G))  # Null partial parse
+                partial_parses.add(VakyaParse(None, self.nsets, self.G))  # Null partial parse
                 # For all input edges to this set
                 for n in ns:
-                    logger.debug(f"Traversing node {n}")
+                    logger.info(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
-                        logger.debug(f"Traversing predecessor {pred} -> {n}")
+                        logger.info(f"Traversing predecessor {pred} -> {n}")
                         partial_parses.add(VakyaParse((pred, n), self.nsets, self.G))
             else:
                 store_parses = set()
                 for n in ns:  # For all input edges to this set
-                    logger.debug(f"Traversing node {n}")
+                    logger.info(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
-                        logger.debug(f"Traversing predecessor {pred} -> {n}")
+                        logger.info(f"Traversing predecessor {pred} -> {n}")
                         for ps in partial_parses:  # For each partial parse
                             # If edge is compatible with partial parse, add and create new partial parse
+                            logger.debug(f"Trying to extend parse {ps}")
                             if not ps.is_discordant(pred, n):
-                                logger.debug(f"{pred} - {n} is non-discordant with {ps}")
+                                logger.info(f"{pred} - {n} is non-discordant with {ps}")
                                 psc = ps.copy()  # Copy the nodeset and DisjointSet structures
                                 psc.extend(pred, n)
                                 store_parses.add(psc)
@@ -451,9 +452,9 @@ class VakyaGraph(object):
             for ps in partial_parses:
                 if len(ps) < i-1:
                     rs.add(ps)
-            logger.debug(f"Removing {rs} from partial parses")
+            logger.info(f"Removing {rs} from partial parses")
             partial_parses.difference_update(rs)
-            logger.debug(f"Partial Parses {i} {partial_parses}")
+            logger.info(f"Partial Parses {i} {partial_parses}")
         # Final removal of all small parses
         rs = set()
         for ps in partial_parses:
@@ -586,7 +587,7 @@ class VakyaParse(object):
         # Initialize disjoint sets DS
         self.dset = nsets.copy()
         self.G = G
-        if nodes:
+        if nodes is not None:
             self._populate(nodes)
         else:
             self.elem = None
@@ -607,7 +608,7 @@ class VakyaParse(object):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
         elem = self.elem
         if elem is None:
-            return True
+            return False
         logger.debug(f"Pred in nodes: {pred in self.nodes} {self.nodes}")
         logger.debug(f"Node in nodes: {node in self.nodes} {self.nodes}")
         logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
@@ -643,7 +644,7 @@ class VakyaParse(object):
 
     def copy(self):
         ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
-        t = VakyaParse([], self.dset, self.G)
+        t = VakyaParse(None, self.dset, self.G)
         t.nodes = copy(self.nodes)
         t.edges = copy(self.edges)
         t.elem = self.elem  # This will not change

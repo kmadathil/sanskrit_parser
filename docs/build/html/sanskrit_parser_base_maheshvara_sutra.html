@@ -4,24 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>base.maheshvara_sutra &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="util" href="sanskrit_parser_util.html" />
@@ -32,13 +24,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-sanskrit_parser.base.maheshvara_sutra">
@@ -46,18 +39,18 @@
 <div class="section" id="intro">
 <h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
 <p>Get varnas in a pratyahara:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">MS</span> <span class="o">=</span> <span class="n">MaheshvaraSutras</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">jaS</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;jaS&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jaS</span> <span class="o">=</span> <span class="n">SanskritImmutableString</span><span class="p">(</span><span class="s1">&#39;jaS&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">getPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">))</span>
 <span class="go">jabagaqada</span>
 </pre></div>
 </div>
 <p>Check if a varna is in a pratyahara:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">SanskritImmutableString</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">isInPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">,</span> <span class="n">g</span><span class="p">))</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">SanskritImmutableString</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">isInPratyahara</span><span class="p">(</span><span class="n">jaS</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
 <span class="go">False</span>
 </pre></div>
@@ -65,7 +58,7 @@
 </div>
 <div class="section" id="command-line-usage">
 <h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m sanskrit_parser.base.maheshvara_sutra --encoding SLP1 --pratyahara jaS
 aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTacawatav kapay Sazasar hal
 जश्
 जबगडद
@@ -74,10 +67,10 @@ aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTac
 <dl class="class">
 <dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras">
 <em class="property">class </em><code class="descclassname">sanskrit_parser.base.maheshvara_sutra.</code><code class="descname">MaheshvaraSutras</code><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Singleton MaheshvaraSutras class
 Attributes:
-MS(SanskritObject) : Internal representation of mAheshvara sutras
+MS(SanskritImmutableString) : Internal representation of mAheshvara sutras
 MSS(str)           : Canonical (SLP1) representation</p>
 <dl class="method">
 <dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara">
@@ -85,12 +78,12 @@ MSS(str)           : Canonical (SLP1) representation</p>
 <dd><p>Return list of varnas covered by a pratyahara</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>p(:class:SanskritObject): Pratyahara
+<dd>p(:class:SanskritImmutableString): Pratyahara
 longp(boolean :optional:): When True (default), uses long pratyaharas
 remove_a(boolean :optional:): When True, removes intermediate ‘a’.This is better for computational use
 dirghas(boolean :optional:) When True (default=False) adds dirgha vowels to the returned varnas</dd>
 <dt>Returns:</dt>
-<dd>(SanskritObject): List of varnas to the same encoding as p</dd>
+<dd>(SanskritImmutableString): List of varnas to the same encoding as p</dd>
 </dl>
 </dd></dl>
 
@@ -100,8 +93,8 @@ dirghas(boolean :optional:) When True (default=False) adds dirgha vowels to the 
 <dd><p>Checks whether a given varna is in a pratyahara</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>p(SanskritObject): Pratyahara
-v(SanskritObject): Varna
+<dd>p(SanskritImmutableString): Pratyahara
+v(SanskritImmutableString): Varna
 longp(boolean :optional:): When True (default), uses long pratyaharas</dd>
 <dt>Returns</dt>
 <dd>boolean: Is v in p?</dd>
@@ -128,6 +121,7 @@ longp(boolean :optional:): When True (default), uses long pratyaharas</dd>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -143,8 +137,7 @@ longp(boolean :optional:): When True (default), uses long pratyaharas</dd>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_base.html">base</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_base.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">base.maheshvara_sutra</a><ul>
@@ -177,24 +170,34 @@ longp(boolean :optional:): When True (default), uses long pratyaharas</dd>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, sanskrit-programmers.
+      &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/sanskrit_parser_base_maheshvara_sutra.rst.txt"

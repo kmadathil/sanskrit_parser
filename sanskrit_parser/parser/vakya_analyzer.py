@@ -1,7 +1,84 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-  Morphological Analyzer for Sanskrit Sentences.
+'''  Morphological Analyzer for Sanskrit Sentences.
+
+Usage
+======
+
+The ``SanskritMorphologicalAnalyzer`` class has a similar interface to
+``SanskritSandhiAnalyzer``, and has a ``constrainPath()`` method which
+can find whether a particular split has a valid morphology, and output
+all such valid morphologies.
+
+.. code:: python
+
+    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+    >>> from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
+    >>> sentence = SanskritObject("astyuttarasyAm")
+    >>> analyzer = SanskritMorphologicalAnalyzer()
+    >>> graph=analyzer.getSandhiSplits(sentence,tag=True)
+    >>> splits=graph.findAllPaths()
+    >>> for sp in splits:
+    >>>     print("Lexical Split:",sp)
+    >>>     p=analyzer.constrainPath(sp)
+    >>>     if p:
+    >>>         print("Valid Morphologies")
+    >>>         for pp in p:
+    >>>             print([(spp,pp[str(spp)]) for spp in sp])
+    >>>     else:
+    >>>         print("No valid morphologies for this split")
+    ...
+    ('Lexical Split:', [asti, uttarasyAm])
+    Valid Morphologies
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
+    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
+    ('Lexical Split:', [asti, uttara, syAm])
+    No valid morphologies for this split
+    ('Lexical Split:', [asti, ut, tara, syAm])
+    No valid morphologies for this split
+
+
+
+Command line usage
+==================
+
+The sanskrit_parser script can be used to view parses as below.
+
+If the --dot option is provided, a .dot file is created with all the possible
+morphologies as nodes, and possible relations as edges. The valid parses
+extracted from this graph are also written out as _parse.dot files
+
+
+::
+
+    $ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+    ...
+    Lexical Split: [asti, uttarasyAm, diSi]
+    ...
+    Parse 0
+    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
+    uttarasyAm=>['uttara#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    diSi=>['diS', {saptamIviBaktiH, ekavacanam, strIliNgam}]
+    Parse 1
+    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
+    uttarasyAm=>['uttara#1', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    diSi=>['diS#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    Parse 2
+    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
+    uttarasyAm=>['uttara#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    diSi=>['diS#2', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    Parse 3
+    asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
+    uttarasyAm=>['uttara#1', {ekavacanam, saptamIviBaktiH, strIliNgam}]
+    diSi=>['diS', {saptamIviBaktiH, ekavacanam, strIliNgam}]
+    ...
+
+    $ dot -Tpng vakya.dot -o vakya.png
+    $ eog vakya.png
+
+"""
 
 
 '''
@@ -258,7 +335,7 @@ class VakyaAnalyzer(LexicalSandhiAnalyzer):
         super(VakyaAnalyzer, self).__init__(lexical_lookup)
 
     def constrainPath(self, path):
-        ''' Apply Morphological Constraints on path
+        ''' (Deprecated) Apply Morphological Constraints on path
 
         Params:
             path(list): List of SanskritObjects (tagged)
@@ -320,8 +397,8 @@ def getArgs(argv=None):
     # Need a lakara
     parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
-    parser.add_argument('--max-paths', type=int, default=10)
-    parser.add_argument('--constraint', action='store_true', help='Use Constraint Parser instead of Graph Algorithm')
+    parser.add_argument('--max-paths', type=int, default=1)
+    parser.add_argument('--constraint', action='store_true', help='Use Constraint Parser instead of Graph Algorithm (deprecated)')
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
@@ -364,6 +441,10 @@ def main(argv=None):
                 print(f"Lexical Split: {sp}")
                 if not args.constraint:
                     vgraph = VakyaGraph(sp)
+                    for (ix, p) in enumerate(vgraph.parses):
+                        print(f"Parse {ix}")
+                        for n in p:
+                            print(n)
                 else:
                     start_c = time.time()
                     p = s.constrainPath(sp)
