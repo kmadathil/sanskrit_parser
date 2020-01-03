@@ -636,7 +636,7 @@ class VakyaParse(object):
             if node not in self.nodes:
                 self.nodes.add(node)
                 self.dset.union(elem, node)
-                self.edges.add((pred, node))
+            self.edges.add((pred, node))
         logger.debug(f"Edges {self.edges} Dset {self.dset}")
 
     def __len__(self):
