@@ -15,11 +15,14 @@ from copy import copy
 import six
 import time
 from collections import defaultdict
+from os.path import dirname, basename, splitext, join
 from sanskrit_parser.util import lexical_scorer
 from sanskrit_parser.util.disjoint_set import DisjointSet
-from os.path import dirname, basename, splitext, join
+from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
 __all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
+
+dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
@@ -225,6 +228,10 @@ vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
 puruzas = 'praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH'
 karakas = set(['kartA','karma','karaRa','apAdAna','sampradAna','aDikaraRa'])
+predicative_verbs = set(['as','BU','vft'])
+_lingas = ['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam']
+lingas = set(_lingas)
+napumsakam = _lingas[1]
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
@@ -241,7 +248,8 @@ class VakyaGraph(object):
         '''
         self.roots = []
         self.isLocked = False
-        self.G = nx.DiGraph()
+        #self.G = nx.MultDiGraph() # Allow parallel edges
+        self.G = nx.DiGraph() 
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
         logger.info(f"{self.path_node_count} sets of orthogonal nodes")
@@ -302,7 +310,9 @@ class VakyaGraph(object):
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
-
+        #self.add_kriyavisheshana(bases) FIXME Parallel edge problem
+        self.add_visheshana()
+        
     def find_dhatu(self):
         ''' Find the ti~Nanta '''
         rlist = []
@@ -312,6 +322,14 @@ class VakyaGraph(object):
                 rlist.append(n)
         return rlist
 
+    def add_visheshana(self):
+        for n in self.G:
+            if n.node_is_a(vibhaktis):
+                for no in self.G:
+                    if (not self.nsets.connected(n,no)) and match_linga_vacana_vibhakti(n,no):
+                        logger.info(f"Adding viSezaRa edge: {n,no}")
+                        self.G.add_edge(n, no, label="viSezaRa")
+                
     def add_samastas(self):
         ''' Add samasta links from next samasta/tiN '''
         for (i, s) in enumerate(self.nsets):
@@ -348,6 +366,11 @@ class VakyaGraph(object):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
             logger.info(f"Processing {d}")
+            dh = d.getMorphologicalTags()[0]
+            hpos = dh.find("#")
+            if hpos != -1:
+                dh = dh[:hpos]
+            logger.info(f"Dhatu: {dh} Sakarmaka {dw.is_sakarmaka(dh)}")
             if d.node_is_a(karmani):
                 logger.info("Karmani")
                 karta = tritiya
@@ -359,10 +382,14 @@ class VakyaGraph(object):
             for n in self.G:
                 #if not d.isDisjoint(n):
                 if not self.nsets.connected(d,n): 
-                    if n.node_is_a(karta) and match_purusha_vacana(d, n):
-                        logger.info(f"Adding kartA edge to {n}")
-                        self.G.add_edge(d, n, label="kartA")
-                    elif n.node_is_a(karma):
+                    if n.node_is_a(karta):
+                        if match_purusha_vacana(d, n):
+                            logger.info(f"Adding kartA edge to {n}")
+                            self.G.add_edge(d, n, label="kartA")
+                        elif dh in predicative_verbs:
+                            logger.info(f"Adding kartfsamAnADikaraRa edge to {n}")
+                            self.G.add_edge(d, n, label="kartfsamAnADikaraRa")
+                    elif n.node_is_a(karma) and dw.is_sakarmaka(dh):
                         logger.info(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
                     elif n.node_is_a(tritiya):
@@ -381,10 +408,21 @@ class VakyaGraph(object):
                         logger.info(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDya")
 
+
+    def add_kriyavisheshana(self,bases):
+        ''' Add kriyaviSezaRa edges from base node (dhatu) base '''
+        for d in bases:
+            for n in self.G:
+                if not self.nsets.connected(d,n): 
+                    if n.node_is_a(prathama) and n.node_is_a(napumsakam):
+                        logger.info(f"Adding kriyAviSezaRa edge to {n}")
+                        self.G.add_edge(d, n, label="kriyAviSezaRa")
+
+
     def get_parses(self):
         ''' Returns all parses
         '''
-        logger.info("Computing Parses")
+        logger.debug("Computing Parses")
         for (i,ns) in enumerate(self.nsets): # Iterate over disjoint nodesets
             logger.debug(f"Node set number {i} {ns}")
             if i == 0:
@@ -398,19 +436,19 @@ class VakyaGraph(object):
                         logger.debug(f"Traversing predecessor {pred} -> {n}")
                         partial_parses.add(VakyaParse((pred,n),self.nsets,self.G))
             else:
+                store_parses = set()
                 for n in ns: # For all input edges to this set
                     logger.debug(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
                         logger.debug(f"Traversing predecessor {pred} -> {n}")
-                        store_parses = set()
                         for ps in partial_parses: # For each partial parse
 #                          If edge is compatible with partial parse, add and create new partial parse
-                            if ps.is_compatible(pred,n):
-                                logger.debug(f"{pred} - {n} is compatible with {ps}")
+                            if not ps.is_discordant(pred,n):
+                                logger.debug(f"{pred} - {n} is non-discordant with {ps}")
                                 psc = ps.copy() # Copy the nodeset and DisjointSet structures 
                                 psc.extend(pred,n)
                                 store_parses.add(psc)
-                        partial_parses.update(store_parses)
+                partial_parses.update(store_parses)
             logger.debug(f"Partial Parses {i}- {partial_parses}")
 #           Afterwards, remove all partial parses of size < i
             rs = set()
@@ -523,10 +561,17 @@ class VakyaGraphNode(object):
         else:
             logger.error(f"node_is_a: expecting str or set, got {st}")
 
+    def get_vibhakti(self):
+        ''' Get Node vacana '''
+        return self.getNodeTagset().intersection(vibhaktis)
+
     def get_vacana(self):
         ''' Get Node vacana '''
         return self.getNodeTagset().intersection(vacanas)
 
+    def get_linga(self):
+        ''' Get Node linga '''
+        return self.getNodeTagset().intersection(lingas)
 
     def get_purusha(self):
         ''' Get Node puruza '''
@@ -561,7 +606,7 @@ class VakyaParse(object):
         # Merge disjoint sets of initial nodes
         self.dset.union(self.elem,nodes[1])
 
-    def is_compatible(self,pred,node):
+    def is_discordant(self,pred,node):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
         elem = self.elem
         if elem is None:
@@ -571,12 +616,13 @@ class VakyaParse(object):
         logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
         logger.debug(f"Connected node {self.dset.connected(elem,node)}")
         if ((pred in self.nodes) or (not self.dset.connected(elem,pred))) and \
-           ((node in self.nodes) or (not self.dset.connected(elem,node))):
-            logger.debug(f"Compatible")
-            return True
-        else:
-            logger.debug(f"Incompatible")
+           ((node in self.nodes) or (not self.dset.connected(elem,node))) and \
+           ((node, pred) not in self.edges): # Handle the bidi visheshana edges
+            logger.debug(f"Non-Discoradant")
             return False
+        else:
+            logger.debug(f"Discordant")
+            return True
 
     def extend(self,pred,node):
         ''' Extend current parse with edge from pred to node '''
@@ -592,7 +638,7 @@ class VakyaParse(object):
             if not node in self.nodes:
                 self.nodes.add(node)
                 self.dset.union(elem,node)
-            self.edges.add((pred,node))
+                self.edges.add((pred,node))
         logger.debug(f"Edges {self.edges} Dset {self.dset}")
 
     def __len__(self):
@@ -623,6 +669,15 @@ def match_purusha_vacana(d, n):
     else:
         n_purusha = set([puruzas[0]])
     return (d.get_vacana() == n.get_vacana()) and (d.get_purusha() == n_purusha)
+
+
+def match_linga_vacana(n1, n2):
+    ''' Check linga/puruza compatibility for two nodes '''
+    return (n1.get_vacana() == n2.get_vacana()) and (n1.get_linga() == n2.get_linga())
+    
+def match_linga_vacana_vibhakti(n1, n2):
+    return (n1.get_vacana() == n2.get_vacana()) and (n1.get_linga() == n2.get_linga()) \
+        and (n1.get_vibhakti() == n2.get_vibhakti())
 
 
 def check_sambodhya(d, n):
