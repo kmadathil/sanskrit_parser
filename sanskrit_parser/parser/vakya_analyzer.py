@@ -1,43 +1,51 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''  Morphological Analyzer for Sanskrit Sentences.
+'''Morphological Analyzer for Sanskrit Sentences.
 
 Usage
 ======
 
-The ``SanskritMorphologicalAnalyzer`` class has a similar interface to
-``SanskritSandhiAnalyzer``, and has a ``constrainPath()`` method which
+The ``VakyaAnalyzer`` class has a similar interface to
+``LexicalAnalyzer``, and has a ``constrainPath()`` method which
 can find whether a particular split has a valid morphology, and output
 all such valid morphologies.
 
-.. code:: python
+.. code-block:: python
 
-    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-    >>> from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
-    >>> sentence = SanskritObject("astyuttarasyAm")
-    >>> analyzer = SanskritMorphologicalAnalyzer()
-    >>> graph=analyzer.getSandhiSplits(sentence,tag=True)
-    >>> splits=graph.findAllPaths()
-    >>> for sp in splits:
-    >>>     print("Lexical Split:",sp)
-    >>>     p=analyzer.constrainPath(sp)
-    >>>     if p:
-    >>>         print("Valid Morphologies")
-    >>>         for pp in p:
-    >>>             print([(spp,pp[str(spp)]) for spp in sp])
-    >>>     else:
-    >>>         print("No valid morphologies for this split")
-    ...
-    ('Lexical Split:', [asti, uttarasyAm])
-    Valid Morphologies
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
-    (uttarasyAm, ('uttara#2', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    [(asti, ('as#1', set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),
-    (uttarasyAm, ('uttara#1', set([strIliNgam, saptamIviBaktiH, ekavacanam])))]
-    ('Lexical Split:', [asti, uttara, syAm])
-    No valid morphologies for this split
-    ('Lexical Split:', [asti, ut, tara, syAm])
-    No valid morphologies for this split
+        from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+        from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
+        from sanskrit_parser.parser.datastructures import VakyaGraph
+        sentence = SanskritObject("astyuttarasyAmdiSi",encoding=SLP1)
+        analyzer = VakyaAnalyzer()
+        graph=analyzer.getSandhiSplits(sentence,tag=True)
+        splits=graph.find_all_paths(max_paths=1)
+        for sp in splits:
+            print("Lexical Split:",sp)
+            vgraph = VakyaGraph(sp)
+            if vgraph.parses:
+              for (ix, p) in enumerate(vgraph.parses):
+                  print(f"Parse {ix}")
+                  for n in p:
+                      print(n)
+            else:
+              print("No valid morphologies for this split")
+        ...
+        Parse 0
+        diSi=>['diS#2', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        asti=>['as', {parasmEpadam, praTamapuruzaH, ekavacanam, law}]
+        uttarasyAm=>['uttara#1', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        Parse 1
+        diSi=>['diS#2', {dvitIyAviBaktiH, napuMsakaliNgam, bahuvacanam}]
+        asti=>['as#1', {kartari, prATamikaH, ekavacanam, law, praTamapuruzaH}]
+        uttarasyAm=>['uttara#1', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        Parse 2
+        diSi=>['diS#2', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        asti=>['asti', {strIliNgam, samAsapUrvapadanAmapadam}]
+        uttarasyAm=>['uttara#1', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        Parse 3
+        uttarasyAm=>['uttara#2', {strIliNgam, ekavacanam, saptamIviBaktiH}]
+        diSi=>['diS', {saptamIviBaktiH, ekavacanam, strIliNgam}]
+        asti=>['as', {parasmEpadam, praTamapuruzaH, ekavacanam, law}]
 
 
 
@@ -46,9 +54,10 @@ Command line usage
 
 The sanskrit_parser script can be used to view parses as below.
 
-If the --dot option is provided, a .dot file is created with all the possible
-morphologies as nodes, and possible relations as edges. The valid parses
-extracted from this graph are also written out as _parse.dot files
+If the --dot option is provided, a graph is output in .dot fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as _parse.dot files
 
 
 ::
@@ -67,10 +76,9 @@ extracted from this graph are also written out as _parse.dot files
     $ eog vakya.png
     $ dot -Tpng vakya_parse0.dot -o vakya.png
     $ eog vakya_parse0.png
-"""
-
 
 '''
+
 from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer

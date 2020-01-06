@@ -35,73 +35,60 @@
   <h1>Source code for sanskrit_parser.parser.vakya_analyzer</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&#39;&#39;&#39;  Morphological Analyzer for Sanskrit Sentences.</span>
+<span class="sd">&#39;&#39;&#39;Morphological Analyzer for Sanskrit Sentences.</span>
 
 <span class="sd">Usage</span>
 <span class="sd">======</span>
 
-<span class="sd">The ``SanskritMorphologicalAnalyzer`` class has a similar interface to</span>
-<span class="sd">``SanskritSandhiAnalyzer``, and has a ``constrainPath()`` method which</span>
+<span class="sd">The ``VakyaAnalyzer`` class has a similar interface to</span>
+<span class="sd">``LexicalAnalyzer``, and has a ``constrainPath()`` method which</span>
 <span class="sd">can find whether a particular split has a valid morphology, and output</span>
 <span class="sd">all such valid morphologies.</span>
 
-<span class="sd">.. code:: python</span>
+<span class="sd">.. code-block:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1</span>
-<span class="sd">    &gt;&gt;&gt; from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer</span>
-<span class="sd">    &gt;&gt;&gt; sentence = SanskritObject(&quot;astyuttarasyAm&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; analyzer = SanskritMorphologicalAnalyzer()</span>
-<span class="sd">    &gt;&gt;&gt; graph=analyzer.getSandhiSplits(sentence,tag=True)</span>
-<span class="sd">    &gt;&gt;&gt; splits=graph.findAllPaths()</span>
-<span class="sd">    &gt;&gt;&gt; for sp in splits:</span>
-<span class="sd">    &gt;&gt;&gt;     print(&quot;Lexical Split:&quot;,sp)</span>
-<span class="sd">    &gt;&gt;&gt;     p=analyzer.constrainPath(sp)</span>
-<span class="sd">    &gt;&gt;&gt;     if p:</span>
-<span class="sd">    &gt;&gt;&gt;         print(&quot;Valid Morphologies&quot;)</span>
-<span class="sd">    &gt;&gt;&gt;         for pp in p:</span>
-<span class="sd">    &gt;&gt;&gt;             print([(spp,pp[str(spp)]) for spp in sp])</span>
-<span class="sd">    &gt;&gt;&gt;     else:</span>
-<span class="sd">    &gt;&gt;&gt;         print(&quot;No valid morphologies for this split&quot;)</span>
-<span class="sd">    ...</span>
-<span class="sd">    (&#39;Lexical Split:&#39;, [asti, uttarasyAm])</span>
-<span class="sd">    Valid Morphologies</span>
-<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
-<span class="sd">    (uttarasyAm, (&#39;uttara#2&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
-<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
-<span class="sd">    (uttarasyAm, (&#39;uttara#1&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
-<span class="sd">    (&#39;Lexical Split:&#39;, [asti, uttara, syAm])</span>
-<span class="sd">    No valid morphologies for this split</span>
-<span class="sd">    (&#39;Lexical Split:&#39;, [asti, ut, tara, syAm])</span>
-<span class="sd">    No valid morphologies for this split</span>
+<span class="sd">        from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1</span>
+<span class="sd">        from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer</span>
+<span class="sd">        from sanskrit_parser.parser.datastructures import VakyaGraph</span>
+<span class="sd">        sentence = SanskritObject(&quot;astyuttarasyAmdiSi&quot;,encoding=SLP1)</span>
+<span class="sd">        analyzer = VakyaAnalyzer()</span>
+<span class="sd">        graph=analyzer.getSandhiSplits(sentence,tag=True)</span>
+<span class="sd">        splits=graph.find_all_paths(max_paths=1)</span>
+<span class="sd">        for sp in splits:</span>
+<span class="sd">            print(&quot;Lexical Split:&quot;,sp)</span>
+<span class="sd">            vgraph = VakyaGraph(sp)</span>
+<span class="sd">            if vgraph.parses:</span>
+<span class="sd">              for (ix, p) in enumerate(vgraph.parses):</span>
+<span class="sd">                  print(f&quot;Parse {ix}&quot;)</span>
+<span class="sd">                  for n in p:</span>
+<span class="sd">                      print(n)</span>
+<span class="sd">            else:</span>
+<span class="sd">              print(&quot;No valid morphologies for this split&quot;)</span>
+<span class="sd">        ...</span>
+<span class="sd">        Parse 0</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        asti=&gt;[&#39;as&#39;, {parasmEpadam, praTamapuruzaH, ekavacanam, law}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 1</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {dvitIyAviBaktiH, napuMsakaliNgam, bahuvacanam}]</span>
+<span class="sd">        asti=&gt;[&#39;as#1&#39;, {kartari, prATamikaH, ekavacanam, law, praTamapuruzaH}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 2</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        asti=&gt;[&#39;asti&#39;, {strIliNgam, samAsapUrvapadanAmapadam}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 3</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        diSi=&gt;[&#39;diS&#39;, {saptamIviBaktiH, ekavacanam, strIliNgam}]</span>
+<span class="sd">        asti=&gt;[&#39;as&#39;, {parasmEpadam, praTamapuruzaH, ekavacanam, law}]</span>
 
 
 
 <span class="sd">Command line usage</span>
 <span class="sd">==================</span>
 
-<span class="sd">::</span>
-
-<span class="sd">    $ python -m sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer astyuttarasyAm --input-encoding SLP1 --need-lakara</span>
-<span class="sd">    Input String: astyuttarasyAm</span>
-<span class="sd">    Input String in SLP1: astyuttarasyAm</span>
-<span class="sd">    Start Split: 2017-10-01 11:16:10.489660</span>
-<span class="sd">    End DAG generation: 2017-10-01 11:16:10.496199</span>
-<span class="sd">    End pathfinding: 2017-10-01 11:16:10.497342</span>
-<span class="sd">    Splits:</span>
-<span class="sd">    Lexical Split: [asti, uttarasyAm]</span>
-<span class="sd">    Valid Morphologies</span>
-<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
-<span class="sd">    (uttarasyAm, (&#39;uttara#2&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
-<span class="sd">    [(asti, (&#39;as#1&#39;, set([kartari, law, ekavacanam, prATamikaH, praTamapuruzaH]))),</span>
-<span class="sd">    (uttarasyAm, (&#39;uttara#1&#39;, set([strIliNgam, saptamIviBaktiH, ekavacanam])))]</span>
-<span class="sd">    Lexical Split: [asti, uttara, syAm]</span>
-<span class="sd">    No valid morphologies for this split</span>
-<span class="sd">    Lexical Split: [asti, ut, tara, syAm]</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-
-
 <span class="sd">&#39;&#39;&#39;</span>
+
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">as</span> <span class="nn">SanskritBase</span>
 <span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
@@ -355,7 +342,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">VakyaAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lexical_lookup</span><span class="p">)</span>
 
 <div class="viewcode-block" id="VakyaAnalyzer.constrainPath"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer.constrainPath">[docs]</a>    <span class="k">def</span> <span class="nf">constrainPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Apply Morphological Constraints on path</span>
+        <span class="sd">&#39;&#39;&#39; (Deprecated) Apply Morphological Constraints on path</span>
 
 <span class="sd">        Params:</span>
 <span class="sd">            path(list): List of SanskritObjects (tagged)</span>
@@ -417,8 +404,8 @@
     <span class="c1"># Need a lakara</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--need-lakara&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--constraint&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use Constraint Parser instead of Graph Algorithm&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--constraint&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use Constraint Parser instead of Graph Algorithm (deprecated)&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -461,6 +448,10 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">constraint</span><span class="p">:</span>
                     <span class="n">vgraph</span> <span class="o">=</span> <span class="n">VakyaGraph</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parse </span><span class="si">{ix}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">start_c</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
                     <span class="n">p</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">constrainPath</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>

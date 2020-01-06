@@ -35,7 +35,7 @@
   <h1>Source code for sanskrit_parser.parser.sandhi_analyzer</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Intro</span>
 <span class="sd">=====</span>
 
@@ -46,7 +46,7 @@
 <span class="sd">Usage</span>
 <span class="sd">=====</span>
 
-<span class="sd">Use the ``SanskritSandhiAnalyzer`` to split a sentence (wrapped in a</span>
+<span class="sd">Use the ``LexicalSandhiAnalyzer`` to split a sentence (wrapped in a</span>
 <span class="sd">``SanskritObject``) and retrieve the top 10 splits:</span>
 
 <span class="sd">.. code:: python</span>
@@ -71,14 +71,14 @@
 <span class="sd">    [u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
 <span class="sd">    [u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;avatA&#39;, u&#39;AtmA&#39;]</span>
 
-<span class="sd">The lexical_analyzer can also be used to look up the tags for a given</span>
+<span class="sd">The sandhi_analyzer can also be used to look up the tags for a given</span>
 <span class="sd">word form: (Note that the database stores words</span>
 <span class="sd">ending in visarga with an &#39;s&#39; at the end)</span>
 
 <span class="sd">.. code:: python</span>
 
 <span class="sd">    &gt;&gt;&gt; word = SanskritObject(&#39;hares&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; tags = analyzer.getLexicalTags(word)</span>
+<span class="sd">    &gt;&gt;&gt; tags = analyzer.getMorphologicalTags(word)</span>
 <span class="sd">    &gt;&gt;&gt; for tag in tags:</span>
 <span class="sd">    ...    print(tag)</span>
 <span class="sd">    ...</span>
@@ -93,58 +93,6 @@
 <span class="sd">    (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
 
 
-<span class="sd">Command line usage</span>
-<span class="sd">==================</span>
-
-<span class="sd">::</span>
-
-<span class="sd">    $ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA</span>
-<span class="sd">    ... </span>
-<span class="sd">    Splits:</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devatA, AtmA]</span>
-<span class="sd">    [asti, uttara, syAm, diSi, devatA, AtmA]</span>
-<span class="sd">    [astI, uttarasyAm, diSi, devatA, AtmA]</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devatAt, mA]</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devata, AtmA]</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devat, AtmA]</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devatAtmA]</span>
-<span class="sd">    [asti, uttarasyAm, diSi, devatA, at, mA]</span>
-<span class="sd">    [asti, uttara, syAm, diSi, devat, AtmA]</span>
-<span class="sd">    [asti, uttarasyAm, di, Si, devatA, AtmA]</span>
-<span class="sd">    -----------</span>
-<span class="sd">    .. </span>
-<span class="sd">    $ scripts/sanskrit_parser tags hares</span>
-<span class="sd">    ...</span>
-<span class="sd">    Morphological tags:</span>
-<span class="sd">    (&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})</span>
-<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
-<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
-<span class="sd">    (&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})</span>
-<span class="sd">    (&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
-<span class="sd">    Input String in SLP1: hares</span>
-<span class="sd">    (&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})</span>
-<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
-<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
-<span class="sd">    (&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})</span>
-<span class="sd">    (&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})</span>
-<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})</span>
-<span class="sd">    (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 

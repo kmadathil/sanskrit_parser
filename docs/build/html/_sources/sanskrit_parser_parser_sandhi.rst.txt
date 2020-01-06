@@ -1,4 +1,4 @@
-lexical_analyzer.sandhi
+parser.sandhi
 ===================================================================
 
 .. automodule:: sanskrit_parser.parser.sandhi

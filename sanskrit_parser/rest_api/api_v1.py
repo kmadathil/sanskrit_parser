@@ -6,6 +6,7 @@ from flask_restplus import Resource
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
+from sanskrit_parser.parser.datastructures import VakyaGraph
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -58,7 +59,7 @@ class Splits(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj)
         if g:
-            splits = g.findAllPaths(10)
+            splits = g.find_all_paths(10)
             jsplits = [[ss.devanagari(strict_io=False) for ss in s] for s in splits]
         else:
             jsplits = []
@@ -73,16 +74,17 @@ class Morpho(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
-            splits = g.findAllPaths(10)
+            splits = g.find_all_paths(10)
         else:
             splits = []
         mres = {}
         for sp in splits:
-            p = analyzer.constrainPath(sp)
-            if p:
-                sl = "_".join([spp.devanagari(strict_io=False) for spp in sp])
+            vg = VakyaGraph(sp)
+            for (ix, p) in enumerate(vg.parses):
+                sl = "_".join([n.pada.devanagari(strict_io=False) \
+                               for n in p])
                 mres[sl] = []
-                for pp in p:
-                    mres[sl].append([(spp.devanagari(strict_io=False), jtag(pp[spp.canonical()])) for spp in sp])
+                for n in p:
+                    mres[sl].append([jtag(n.getMorphologicalTags())])
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
         return r

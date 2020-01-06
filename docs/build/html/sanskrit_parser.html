@@ -35,13 +35,103 @@
             
   <div class="section" id="module-sanskrit_parser">
 <span id="sanskrit-parser-s-documentation"></span><h1>sanskrit_parser’s documentation<a class="headerlink" href="#module-sanskrit_parser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Sanskrit parser is a python library to help parse Sanskrit input</p>
+<dl class="docutils">
+<dt>It provides three main levels of output, in order of increasing complexity:</dt>
+<dd><ol class="first last arabic simple">
+<li><em>tags</em> - Morphological analysis of a word</li>
+<li><em>sandhi</em> - Sandhi Split of a phrase</li>
+<li><em>vakya</em> - Morphological Analysis of a sentence (after Sandhi split)</li>
+</ol>
+</dd>
+</dl>
+<p>This project is still under development. Please report any issues <a class="reference external" href="https://github.com/kmadathil/sanskrit_parser/issues">here</a>.</p>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sanskrit_parser</span></code> script can be used to view parses, sandhi splits,
+or morphological tags as below.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">--dot</span></code> option is provided, a graph is output in <code class="docutils literal notranslate"><span class="pre">.dot</span></code> fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as <code class="docutils literal notranslate"><span class="pre">_parse.dot</span></code> files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+...
+Lexical Split: [asti, uttarasyAm, diSi]
+...
+Parse 0
+asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
+diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+...
+
+$ dot -Tpng vakya.dot -o vakya.png
+$ eog vakya.png
+$ dot -Tpng vakya_parse0.dot -o vakya.png
+$ eog vakya_parse0.png
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA
+...
+Splits:
+[asti, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttara, syAm, diSi, devatA, AtmA]
+[astI, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttarasyAm, diSi, devatAt, mA]
+[asti, uttarasyAm, diSi, devata, AtmA]
+[asti, uttarasyAm, diSi, devat, AtmA]
+[asti, uttarasyAm, diSi, devatAtmA]
+[asti, uttarasyAm, diSi, devatA, at, mA]
+[asti, uttara, syAm, diSi, devat, AtmA]
+[asti, uttarasyAm, di, Si, devatA, AtmA]
+-----------
+..
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ scripts/sanskrit_parser tags hares
+...
+Morphological tags:
+(&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
+(&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
+(&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+Input String in SLP1: hares
+(&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
+(&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
+(&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+</pre></div>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_parser.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">lexical_analyzer.sandhi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">parser.sandhi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#intro">Intro</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#usage">Usage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#command-line-usage">Command line usage</a></li>
@@ -54,7 +144,6 @@
 <li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html">parser.sandhi_analyzer</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#intro">Intro</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#usage">Usage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#command-line-usage">Command line usage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#submodules">Submodules</a><ul class="simple">
 </ul>
 </li>
@@ -68,6 +157,13 @@
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html">parser.datastructures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 </ul>

@@ -1,7 +1,7 @@
-parser.sandhi
+parser.datastructures
 ===================================================================
 
-.. automodule:: sanskrit_parser.parser.sandhi
+.. automodule:: sanskrit_parser.parser.datastructures
   :members:
   :undoc-members:
   :show-inheritance:

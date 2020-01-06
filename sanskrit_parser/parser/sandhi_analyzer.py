@@ -58,58 +58,6 @@ ending in visarga with an 's' at the end)
     ('hari#2', set(['na', 'fem', 'abl', 'sg']))
 
 
-Command line usage
-==================
-
-::
-
-    $ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA
-    ...
-    Splits:
-    [asti, uttarasyAm, diSi, devatA, AtmA]
-    [asti, uttara, syAm, diSi, devatA, AtmA]
-    [astI, uttarasyAm, diSi, devatA, AtmA]
-    [asti, uttarasyAm, diSi, devatAt, mA]
-    [asti, uttarasyAm, diSi, devata, AtmA]
-    [asti, uttarasyAm, diSi, devat, AtmA]
-    [asti, uttarasyAm, diSi, devatAtmA]
-    [asti, uttarasyAm, diSi, devatA, at, mA]
-    [asti, uttara, syAm, diSi, devat, AtmA]
-    [asti, uttarasyAm, di, Si, devatA, AtmA]
-    -----------
-    ..
-    $ scripts/sanskrit_parser tags hares
-    ...
-    Morphological tags:
-    ('hf#1', {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
-    ('hari#1', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#1', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hari#2', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#2', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hf', {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
-    ('hari', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari', {ekavacanam, strIliNgam, paYcamIviBaktiH})
-    ('hari', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    Input String in SLP1: hares
-    ('hf#1', {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
-    ('hari#1', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#1', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hari#2', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#2', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hf', {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
-    ('hari', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari', {ekavacanam, strIliNgam, paYcamIviBaktiH})
-    ('hari', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
 
 """
 
