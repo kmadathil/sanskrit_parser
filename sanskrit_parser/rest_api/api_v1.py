@@ -89,8 +89,9 @@ class Morpho(Resource):
             vg = VakyaGraph(sp)
             sl = "_".join([n.devanagari(strict_io=False)
                            for n in sp])
-            mres[sl] = []
             for (ix, p) in enumerate(vg.parses):
+                if sl not in mres:
+                    mres[sl] = []
                 t = []
                 for n in p:
                     preds = list(p.predecessors(n))

@@ -26,7 +26,7 @@ dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def _console_logging():
@@ -427,21 +427,21 @@ class VakyaGraph(object):
                 partial_parses.add(VakyaParse(None, self.nsets, self.G))  # Null partial parse
                 # For all input edges to this set
                 for n in ns:
-                    logger.info(f"Traversing node {n}")
+                    logger.debug(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
-                        logger.info(f"Traversing predecessor {pred} -> {n}")
+                        logger.debug(f"Traversing predecessor {pred} -> {n}")
                         partial_parses.add(VakyaParse((pred, n), self.nsets, self.G))
             else:
                 store_parses = set()
                 for n in ns:  # For all input edges to this set
-                    logger.info(f"Traversing node {n}")
+                    logger.debug(f"Traversing node {n}")
                     for pred in self.G.predecessors(n):
-                        logger.info(f"Traversing predecessor {pred} -> {n}")
+                        logger.debug(f"Traversing predecessor {pred} -> {n}")
                         for ps in partial_parses:  # For each partial parse
                             # If edge is compatible with partial parse, add and create new partial parse
                             logger.debug(f"Trying to extend parse {ps}")
                             if not ps.is_discordant(pred, n):
-                                logger.info(f"{pred} - {n} is non-discordant with {ps}")
+                                logger.debug(f"{pred} - {n} is non-discordant with {ps}")
                                 psc = ps.copy()  # Copy the nodeset and DisjointSet structures
                                 psc.extend(pred, n)
                                 store_parses.add(psc)
@@ -452,9 +452,9 @@ class VakyaGraph(object):
             for ps in partial_parses:
                 if len(ps) < i-1:
                     rs.add(ps)
-            logger.info(f"Removing {rs} from partial parses")
+            logger.debug(f"Removing {rs} from partial parses")
             partial_parses.difference_update(rs)
-            logger.info(f"Partial Parses {i} {partial_parses}")
+            logger.debug(f"Partial Parses {i} {partial_parses}")
         # Final removal of all small parses
         rs = set()
         for ps in partial_parses:
