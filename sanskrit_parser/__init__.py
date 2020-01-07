@@ -4,8 +4,8 @@
 Sanskrit parser is a python library to help parse Sanskrit input
 
 It provides three main levels of output, in order of increasing complexity:
-  1. *tags* - Morphological analysis of a word 
-  2. *sandhi* - Sandhi Split of a phrase 
+  1. *tags* - Morphological analysis of a word
+  2. *sandhi* - Sandhi Split of a phrase
   3. *vakya* - Morphological Analysis of a sentence (after Sandhi split)
 
 This project is still under development. Please report any issues `here

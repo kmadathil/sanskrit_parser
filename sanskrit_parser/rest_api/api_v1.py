@@ -1,5 +1,3 @@
-import logging
-
 from flask import Blueprint
 import flask_restplus
 from flask_restplus import Resource
@@ -23,12 +21,19 @@ api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parse
 
 analyzer = VakyaAnalyzer()
 
-def jedge(pred,node,label):
-    return (node.pada.devanagari(strict_io=False), jtag(node.getMorphologicalTags()), SanskritObject(label, encoding=SLP1).devanagari(strict_io=False), pred.pada.devanagari(strict_io=False))
+
+def jedge(pred, node, label):
+    return (node.pada.devanagari(strict_io=False),
+            jtag(node.getMorphologicalTags()),
+            SanskritObject(label, encoding=SLP1).devanagari(strict_io=False),
+            pred.pada.devanagari(strict_io=False))
+
 
 def jnode(node):
     """ Helper to translate parse node into serializable format"""
-    return (node.pada.devanagari(strict_io=False),jtag(node.getMorphologicalTags()),"","")
+    return (node.pada.devanagari(strict_io=False),
+            jtag(node.getMorphologicalTags()), "", "")
+
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
@@ -82,7 +87,7 @@ class Morpho(Resource):
         mres = {}
         for sp in splits:
             vg = VakyaGraph(sp)
-            sl = "_".join([n.devanagari(strict_io=False) \
+            sl = "_".join([n.devanagari(strict_io=False)
                            for n in sp])
             mres[sl] = []
             for (ix, p) in enumerate(vg.parses):
@@ -91,8 +96,8 @@ class Morpho(Resource):
                     preds = list(p.predecessors(n))
                     if preds:
                         pred = preds[0]  # Only one
-                        l = p.edges[pred,n]['label']
-                        t.append(jedge(pred,n,l))
+                        lbl = p.edges[pred, n]['label']
+                        t.append(jedge(pred, n, lbl))
                     else:
                         t.append(jnode(n))
                 mres[sl].append(t)
