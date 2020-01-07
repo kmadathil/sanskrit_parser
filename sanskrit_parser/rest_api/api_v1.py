@@ -8,10 +8,6 @@ from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
-)
 
 URL_PREFIX = '/v1'
 api_blueprint = Blueprint(
@@ -27,6 +23,12 @@ api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parse
 
 analyzer = VakyaAnalyzer()
 
+def jedge(pred,node,label):
+    return (node.pada.devanagari(strict_io=False), jtag(node.getMorphologicalTags()), SanskritObject(label, encoding=SLP1).devanagari(strict_io=False), pred.pada.devanagari(strict_io=False))
+
+def jnode(node):
+    """ Helper to translate parse node into serializable format"""
+    return (node.pada.devanagari(strict_io=False),jtag(node.getMorphologicalTags()),"","")
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
@@ -80,11 +82,19 @@ class Morpho(Resource):
         mres = {}
         for sp in splits:
             vg = VakyaGraph(sp)
+            sl = "_".join([n.devanagari(strict_io=False) \
+                           for n in sp])
+            mres[sl] = []
             for (ix, p) in enumerate(vg.parses):
-                sl = "_".join([n.pada.devanagari(strict_io=False) \
-                               for n in p])
-                mres[sl] = []
+                t = []
                 for n in p:
-                    mres[sl].append([jtag(n.getMorphologicalTags())])
+                    preds = list(p.predecessors(n))
+                    if preds:
+                        pred = preds[0]  # Only one
+                        l = p.edges[pred,n]['label']
+                        t.append(jedge(pred,n,l))
+                    else:
+                        t.append(jnode(n))
+                mres[sl].append(t)
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
         return r

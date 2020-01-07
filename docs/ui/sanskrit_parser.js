@@ -9,10 +9,12 @@ function createPanel(heading, row, id) {
     h += "<ol class=\"list-group\">";
     row.forEach(function (sitem) {
         h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
-        h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th></thead><tbody>";
+        h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
         sitem.forEach(function (item) {
             h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
-            h += item[1][0] + " - " + item[1][1] + "</td></tr>";
+            h += item[1][0] + " - " + item[1][1] + "</td><td>";
+            h += item[2] + "</td><td>";
+            h += item[3] + "</td></tr>";
         });
         h += "</tbody></table></li>";
     });

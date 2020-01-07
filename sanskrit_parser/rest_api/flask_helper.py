@@ -7,10 +7,6 @@ import jsonpickle
 # from flask import url_for
 from flask_cors import CORS
 
-logging.basicConfig(
-  level=logging.DEBUG,
-  format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
-)
 
 """ The flask app we serve in run.py.
 """
