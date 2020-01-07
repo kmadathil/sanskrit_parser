@@ -1,11 +1,12 @@
 from flask import Blueprint
 import flask_restplus
 from flask_restplus import Resource
+from random import randint
+import subprocess
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph
-
 
 URL_PREFIX = '/v1'
 api_blueprint = Blueprint(
@@ -85,7 +86,9 @@ class Morpho(Resource):
         else:
             splits = []
         mres = {}
+        plotbase = {}
         for sp in splits:
+            bn = f"{randint(0,9999):4}"
             vg = VakyaGraph(sp)
             sl = "_".join([n.devanagari(strict_io=False)
                            for n in sp])
@@ -102,5 +105,8 @@ class Morpho(Resource):
                     else:
                         t.append(jnode(n))
                 mres[sl].append(t)
-        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
+            plotbase[sl] = bn
+            vg.write_dot(f"static/{bn}.dot")
+            subprocess.run(f"dot -Tpng static/{bn}*dot -O", shell=True)
+        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres, "plotbase": plotbase}
         return r

@@ -1,14 +1,17 @@
-function createPanel(heading, row, id) {
+function createPanel(heading, row, imgbase, urlbase, id) {
     "use strict;"
     var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
     var expanded = id === 0 ? "show" : "";
     var h = "<div class=\"card " + cardClass + " \"><div class=\"card-header " + cardClass + "\">";
     h += "<a class=\"text-white\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
-    h += heading + "</a></div>";
+    h += heading + "</a><p class=\"alignright\"> <a target=\"_blank\" class=\"text-white\" href=\"";
+    h += urlbase + "static/" + imgbase + ".dot.png\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>";
     h += "<div id=\"collapse" + id + "\" class=\"collapse " + expanded + "\"><div class=\"card-block\">";
     h += "<ol class=\"list-group\">";
-    row.forEach(function (sitem) {
+    row.forEach(function (sitem, index) {
         h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
+	h += "<p class=\"alignright\"> <a target=\"_blank\" href=\"";
+	h += urlbase + "static/" + imgbase + "_parse" + index + ".dot.png\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
         h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
         sitem.forEach(function (item) {
             h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
@@ -101,7 +104,7 @@ $(document).ready( function () {
                 keys.forEach(function (key) {
                     var item = key.split("_").join(" ");
                     console.log(key);
-                    restable += createPanel(item, result.analysis[key], panelID);
+                    restable += createPanel(item, result.analysis[key], result.plotbase[key], urlbase, panelID);
                     panelID += 1;
                 });
                 break;

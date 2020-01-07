@@ -5,3 +5,11 @@
 .list-group-item {
     display: list-item;
 }
+
+.alignleft {
+	float: left;
+}
+
+.alignright {
+	float: right;
+}

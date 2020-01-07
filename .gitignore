@@ -59,6 +59,7 @@ local_settings.py
 # Flask stuff:
 instance/
 .webassets-cache
+sanskrit_parser/rest_api/static/
 
 # Scrapy stuff:
 .scrapy
