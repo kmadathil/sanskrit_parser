@@ -89,7 +89,7 @@ class Morpho(Resource):
         plotbase = {}
         for sp in splits:
             bn = f"{randint(0,9999):4}"
-            vg = VakyaGraph(sp)
+            vg = VakyaGraph(sp, max_parse_dc=100)
             sl = "_".join([n.devanagari(strict_io=False)
                            for n in sp])
             for (ix, p) in enumerate(vg.parses):

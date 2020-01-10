@@ -395,6 +395,7 @@ def getArgs(argv=None):
     parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=1)
+    parser.add_argument('--split-above', type=int, default=100)
     parser.add_argument('--constraint', action='store_true', help='Use Constraint Parser instead of Graph Algorithm (deprecated)')
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
@@ -429,7 +430,7 @@ def main(argv=None):
     with SanskritBase.outputctx(args.strict_io):
         if graph:
             start_path = time.time()
-            splits = graph.find_all_paths(max_paths=args.max_paths)
+            splits = graph.find_all_paths(max_paths=args.max_paths, score=False)
             end_path = time.time()
             logger.info("End pathfinding")
             print("Splits:")
@@ -437,7 +438,7 @@ def main(argv=None):
             for sp in splits:
                 print(f"Lexical Split: {sp}")
                 if not args.constraint:
-                    vgraph = VakyaGraph(sp)
+                    vgraph = VakyaGraph(sp, max_parse_dc=args.split_above)
                     for (ix, p) in enumerate(vgraph.parses):
                         print(f"Parse {ix}")
                         for n in p:

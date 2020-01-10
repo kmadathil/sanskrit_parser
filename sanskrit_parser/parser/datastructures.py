@@ -241,12 +241,13 @@ class VakyaGraph(object):
         Nodes are SanskritObjects with morphological tags
         Edges are potential relationships between them
     """
-    def __init__(self, path):
+    def __init__(self, path, max_parse_dc=4):
         ''' DAG Class Init
 
         Params:
              path: Path from SanghiGraph
         '''
+        self.max_parse_dc = max_parse_dc
         self.roots = []
         self.isLocked = False
 #        self.G = nx.MultDiGraph() # Allow parallel edges
@@ -276,7 +277,7 @@ class VakyaGraph(object):
         self.G.remove_nodes_from(isolates)
         self.nsets.remove(isolates)
         start_parse = time.time()
-        self.parses = self.get_parses()
+        self.parses = self.get_parses_dc()
         self.check_parse_validity()
         end_parse = time.time()
         logger.info(f"Time for parse: {(end_parse-start_parse):1.6f}s")
@@ -465,6 +466,85 @@ class VakyaGraph(object):
         logger.debug(f"Partial Parses Final {partial_parses}")
         return set([self.G.edge_subgraph(p.edges) for p in partial_parses])
 
+    def get_parses_dc(self):
+        ''' Returns all parses (Divide and Conquer Version)
+        '''
+        logger.info("Computing Parses (Divide & Conquer)")
+        def _get_parse_sub(mn,mx):
+            # Iterate over subsets of disjoint nodesets
+            for (i, ns) in enumerate(islice(self.nsets, mn, mx)):  
+                logger.debug(f"Node set number {i} {ns}")
+                if i == 0:
+                    # Partial parses = phi + all predecessors
+                    partial_parses = set()
+                    partial_parses.add(VakyaParse(None, self.nsets, self.G))  # Null partial parse
+                    # For all input edges to this set
+                    for n in ns:
+                        logger.debug(f"Traversing node {n}")
+                        for pred in self.G.predecessors(n):
+                            logger.debug(f"Traversing predecessor {pred} -> {n}")
+                            partial_parses.add(VakyaParse((pred, n), self.nsets, self.G))
+                else:
+                    store_parses = set()
+                    for n in ns:  # For all input edges to this set
+                        logger.debug(f"Traversing node {n}")
+                        for pred in self.G.predecessors(n):
+                            logger.debug(f"Traversing predecessor {pred} -> {n}")
+                            for ps in partial_parses:  # For each partial parse
+                                # If edge is compatible with partial parse, add and create new partial parse
+                                logger.debug(f"Trying to extend parse {ps}")
+                                if not ps.is_discordant(pred, n):
+                                    logger.debug(f"{pred} - {n} is non-discordant with {ps}")
+                                    psc = ps.copy()  # Copy the nodeset and DisjointSet structures
+                                    psc.extend(pred, n)
+                                    store_parses.add(psc)
+                    partial_parses.update(store_parses)
+                logger.debug(f"Partial Parses {i}- {partial_parses}")
+    #           Afterwards, remove all partial parses of size < i
+                partial_parses = _pp_minlen(partial_parses, i-1)
+                logger.debug(f"Partial Parses {i} {partial_parses}")
+            # Final removal of all small parses
+            partial_parses = _pp_minlen(partial_parses, mx-mn-1)
+            logger.debug(f"Partial Parses Final {partial_parses}")
+            return partial_parses
+
+        def _pp_minlen(partial_parses, l):
+            rs = set()
+            for ps in partial_parses:
+                if len(ps) < l:
+                    rs.add(ps)
+            logger.debug(f"Removing {rs} from partial parses")
+            partial_parses.difference_update(rs)
+            return partial_parses
+        
+        # Divide & Conquer routine
+        def _dc(mn, mx):
+            logger.info(f"Divide And Conquer {mn, mx}")
+            if (mx - mn) > self.max_parse_dc:
+                md = int((mx + mn)/2)
+                return _merge_partials(_dc(mn, md),_dc(md, mx), mx, mn)
+            else:
+                return _get_parse_sub(mn, mx)
+
+        def _merge_partials(pp1, pp2, mx, mn):
+            logger.info(f"Merging between {mn, mx}")
+            l = mx - mn
+            start_time = time.time()
+            logger.debug(f"Merging {pp1, pp2}")
+            ppmt = {ppa.merge(ppb) for ppa in pp1 for ppb in pp2}
+            logger.debug(f"Merged {ppmt}")
+            # Clean up
+            if ppmt:
+                ppmt = _pp_minlen(ppmt, l-1)
+            logger.debug(f"Cleaned up {ppmt} to length {l-1}")
+            end_time = time.time()
+            logger.info(f"Time for merge {end_time-start_time}")
+            return ppmt
+        
+        partial_parses = _dc(0, self.path_node_count)
+        logger.debug(f"Partial Parses Before Return {partial_parses}")
+        return set([self.G.edge_subgraph(p.edges) for p in partial_parses])
+
     def check_parse_validity(self):
         ''' Validity Check for parses
 
@@ -491,7 +571,7 @@ class VakyaGraph(object):
                     return False
             return r
         iv = set()
-        logger.info(f"Parses before validity check {len(self.parses)}")
+        logger.debug(f"Parses before validity check {len(self.parses)}")
         for p in self.parses:
             if not _check(p):
                 logger.info(f"Will remove {p}")
@@ -639,6 +719,17 @@ class VakyaParse(object):
             self.edges.add((pred, node))
         logger.debug(f"Edges {self.edges} Dset {self.dset}")
 
+    def merge(self, other):
+        ''' Merge two VakyaParses '''
+        t = self.copy()
+        # merge if all edges are not discordant
+        if all([not self.is_discordant(e[0], e[1]) for e in other.edges]):
+            logger.debug("Can merge")
+            for e in other.edges:
+                t.extend(e[0], e[1])
+                logger.debug(f"Extending with {e}")
+        return t
+    
     def __len__(self):
         return len(self.edges)
 

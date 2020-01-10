@@ -92,7 +92,7 @@ $(document).ready( function () {
                 restable += "</table>";
                 break;
             case "Analyze":
-                $("#reshead").text("Morphological Analysis");
+                $("#reshead").text("Sentence Analysis");
                 panelID = 0;
                 keys = Object.keys(result.analysis);
                 restable += "<strong>Found " + keys.length + " valid morphologies</strong>";
