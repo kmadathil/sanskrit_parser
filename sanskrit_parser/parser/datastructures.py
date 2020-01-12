@@ -327,7 +327,7 @@ class VakyaGraph(object):
             if n.node_is_a(vibhaktis):
                 for no in self.G:
                     if (not self.nsets.connected(n, no)) and match_linga_vacana_vibhakti(n, no):
-                        logger.info(f"Adding viSezaRa edge: {n,no}")
+                        logger.debug(f"Adding viSezaRa edge: {n,no}")
                         self.G.add_edge(n, no, label="viSezaRa")
 
     def add_samastas(self):
@@ -343,7 +343,7 @@ class VakyaGraph(object):
                         for nn in nextset:
                             if nn.node_is_a(vibhaktis) or \
                                nn.node_is_a(samastas):
-                                logger.info(f"Adding samasta edge: {n,nn}")
+                                logger.debug(f"Adding samasta edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="samasta")
 
     def add_shashthi(self):
@@ -359,52 +359,52 @@ class VakyaGraph(object):
                         for nn in nextset:
                             if nn.node_is_a(vibhaktis) or \
                                nn.node_is_a(samastas):
-                                logger.info(f"Adding shashthi-sambandha edge: {n,nn}")
+                                logger.debug(f"Adding shashthi-sambandha edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="zazWI-sambanDa")
 
     def add_karakas(self, bases):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
-            logger.info(f"Processing {d}")
+            logger.debug(f"Processing {d}")
             dh = d.getMorphologicalTags()[0]
             hpos = dh.find("#")
             if hpos != -1:
                 dh = dh[:hpos]
-            logger.info(f"Dhatu: {dh} Sakarmaka {dw.is_sakarmaka(dh)}")
+            logger.debug(f"Dhatu: {dh} Sakarmaka {dw.is_sakarmaka(dh)}")
             if d.node_is_a(karmani):
-                logger.info("Karmani")
+                logger.debug("Karmani")
                 karta = tritiya
                 karma = prathama
             else:
-                logger.info("Kartari")
+                logger.debug("Kartari")
                 karta = prathama
                 karma = dvitiya
             for n in self.G:
                 if not self.nsets.connected(d, n):
                     if n.node_is_a(karta):
                         if match_purusha_vacana(d, n):
-                            logger.info(f"Adding kartA edge to {n}")
+                            logger.debug(f"Adding kartA edge to {n}")
                             self.G.add_edge(d, n, label="kartA")
                         elif dh in predicative_verbs:
-                            logger.info(f"Adding kartfsamAnADikaraRa edge to {n}")
+                            logger.debug(f"Adding kartfsamAnADikaraRa edge to {n}")
                             self.G.add_edge(d, n, label="kartfsamAnADikaraRa")
                     elif n.node_is_a(karma) and dw.is_sakarmaka(dh):
-                        logger.info(f"Adding karma edge to {n}")
+                        logger.debug(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
                     elif n.node_is_a(tritiya):
-                        logger.info(f"Adding karana edge to {n}")
+                        logger.debug(f"Adding karana edge to {n}")
                         self.G.add_edge(d, n, label="karaRa")
                     elif n.node_is_a(chaturthi):
-                        logger.info(f"Adding sampradana edge to {n}")
+                        logger.debug(f"Adding sampradana edge to {n}")
                         self.G.add_edge(d, n, label="sampradAna")
                     elif n.node_is_a(pancami):
-                        logger.info(f"Adding apadana edge to {n}")
+                        logger.debug(f"Adding apadana edge to {n}")
                         self.G.add_edge(d, n, label="apAdana")
                     elif n.node_is_a(saptami):
-                        logger.info(f"Adding adhikarana edge to {n}")
+                        logger.debug(f"Adding adhikarana edge to {n}")
                         self.G.add_edge(d, n, label="aDikaraRa")
                     elif n.node_is_a(sambodhana) and check_sambodhya(d, n):
-                        logger.info(f"Adding sambodhya edge to {n}")
+                        logger.debug(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDya")
 
     def add_kriyavisheshana(self, bases):
@@ -413,7 +413,7 @@ class VakyaGraph(object):
             for n in self.G:
                 if not self.nsets.connected(d, n):
                     if n.node_is_a(prathama) and n.node_is_a(napumsakam):
-                        logger.info(f"Adding kriyAviSezaRa edge to {n}")
+                        logger.debug(f"Adding kriyAviSezaRa edge to {n}")
                         self.G.add_edge(d, n, label="kriyAviSezaRa")
 
     def get_parses(self):
@@ -469,8 +469,8 @@ class VakyaGraph(object):
     def get_parses_dc(self):
         ''' Returns all parses (Divide and Conquer Version)
         '''
-        logger.info("Computing Parses (Divide & Conquer)")
-        def _get_parse_sub(mn,mx):
+        logger.debug("Computing Parses (Divide & Conquer)")
+        def _get_parse_sub(mn, mx):
             # Iterate over subsets of disjoint nodesets
             for (i, ns) in enumerate(islice(self.nsets, mn, mx)):  
                 logger.debug(f"Node set number {i} {ns}")
@@ -504,8 +504,8 @@ class VakyaGraph(object):
                 partial_parses = _pp_minlen(partial_parses, i-1)
                 logger.debug(f"Partial Parses {i} {partial_parses}")
             # Final removal of all small parses
-            partial_parses = _pp_minlen(partial_parses, mx-mn-1)
-            logger.debug(f"Partial Parses Final {partial_parses}")
+            #partial_parses = _pp_minlen(partial_parses, mx-mn-1)
+            #logger.debug(f"Partial Parses Final {partial_parses}")
             return partial_parses
 
         def _pp_minlen(partial_parses, l):
@@ -524,20 +524,35 @@ class VakyaGraph(object):
                 md = int((mx + mn)/2)
                 return _merge_partials(_dc(mn, md),_dc(md, mx), mx, mn)
             else:
-                return _get_parse_sub(mn, mx)
+                # Clean up
+                start_clean = time.time()
+                t =  _get_parse_sub(mn, mx)
+                if t:
+                    t = _pp_minlen(t, mx-mn-1)
+                end_time = time.time()
+                logger.info(f"Time for cleanup {end_time-start_clean}")
+                return t
 
         def _merge_partials(pp1, pp2, mx, mn):
             logger.info(f"Merging between {mn, mx}")
             l = mx - mn
             start_time = time.time()
             logger.debug(f"Merging {pp1, pp2}")
-            ppmt = {ppa.merge(ppb) for ppa in pp1 for ppb in pp2}
+            ppmt = set()
+            for ppa in pp1:
+                for ppb in pp2:
+                    if ppa.can_merge(ppb):
+                        ppmt.add(ppa.merge(ppb))
+#            ppmt = {ppa.merge(ppb) for ppa in pp1 for ppb in pp2}
+#                    if ppa.can_merge(ppb)}
             logger.debug(f"Merged {ppmt}")
             # Clean up
+            start_clean = time.time()
             if ppmt:
                 ppmt = _pp_minlen(ppmt, l-1)
             logger.debug(f"Cleaned up {ppmt} to length {l-1}")
             end_time = time.time()
+            logger.info(f"Time for cleanup {end_time-start_clean}")
             logger.info(f"Time for merge {end_time-start_time}")
             return ppmt
         
@@ -549,25 +564,36 @@ class VakyaGraph(object):
         ''' Validity Check for parses
 
             Remove parses with double kArakas
-            TODO - Other checks
+            Remove parses with multiple to edges into a node
+            Remove parses with cycles
         '''
         # Check a parse for validity
         def _check(parse):
             r = True
             count = defaultdict(lambda: defaultdict(int))
             toedge = defaultdict(int)
+            fromv = defaultdict(int)
+            tov   = defaultdict(int)
             for (u, v, l) in parse.edges(data='label'):
                 if l in karakas:
                     count[u][l] = count[u][l]+1
                     toedge[v] = toedge[v]+1
+                if l in 'viSezaRa':
+                    fromv[u] = fromv[u] + 1
+                    tov[v] = tov[v] + 1
+                    
             for u in count:  # Dhatu
                 for k in count[u]:  # Each karaka should count only once
                     if count[u][k] > 1:
                         logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
-                        r = False
+                        return False
             for v in toedge:
                 if toedge[v] > 1:
                     logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+                    return False
+            for v in tov:
+                if v in fromv:
+                    logger.info(f"Viseshana has visheshana {v} - violates global constraint")
                     return False
             return r
         iv = set()
@@ -682,7 +708,9 @@ class VakyaParse(object):
         self.nodes = set(nodes)
         self.edges = set([(nodes[0], nodes[1])])
         # Merge disjoint sets of initial nodes
-        self.dset.union(self.elem, nodes[1])
+        # Store the corresponding set as "eset" for
+        # later merge operations
+        self.eset = self.dset.union(self.elem, nodes[1])
 
     def is_discordant(self, pred, node):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
@@ -719,15 +747,31 @@ class VakyaParse(object):
             self.edges.add((pred, node))
         logger.debug(f"Edges {self.edges} Dset {self.dset}")
 
+    def can_merge(self, other):
+        ''' Can we merge two VakyaParses '''
+        # merge if all edges are not discordant
+        #for e in other.edges:
+        #    if self.is_discordant(e[0], e[1]):
+        #        return False
+        #return True
+        # Updated can_merge algo  - This should be functionally same
+        # But O(N) instead of O(N^2)
+        return ((not ((other.nodes - self.nodes) & self.get_eset())) and \
+        (not ({tuple(reversed(x)) for x in other.edges} & self.edges)))
+
+
     def merge(self, other):
         ''' Merge two VakyaParses '''
         t = self.copy()
-        # merge if all edges are not discordant
-        if all([not self.is_discordant(e[0], e[1]) for e in other.edges]):
-            logger.debug("Can merge")
-            for e in other.edges:
-                t.extend(e[0], e[1])
-                logger.debug(f"Extending with {e}")
+#        if not self.can_merge(other):
+#            return t
+        logger.debug("Can merge")
+#        for e in other.edges:
+#            t.extend(e[0], e[1])
+#            logger.debug(f"Extending with {e}")
+        t.nodes.update(other.nodes)
+        t.edges.update(other.edges)
+        t.dset.union(self.elem, other.elem)
         return t
     
     def __len__(self):
@@ -739,7 +783,19 @@ class VakyaParse(object):
         t.nodes = copy(self.nodes)
         t.edges = copy(self.edges)
         t.elem = self.elem  # This will not change
+        # We do not update t.eset to avoid making copy an O(N)
+        # operation
         return t
+
+    def get_eset(self):
+        if hasattr(self, "eset"):
+            return self.eset
+        else:
+            # Search once if needed
+            for s in self.dset._sets:
+                if self.elem in s:
+                    self.eset = s
+                    return self.eset
 
 
 def getSLP1Tagset(n):

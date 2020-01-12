@@ -437,6 +437,7 @@ def main(argv=None):
             spl_t = 0
             for sp in splits:
                 print(f"Lexical Split: {sp}")
+                logger.info(f"Lexical Split: {sp}")
                 if not args.constraint:
                     vgraph = VakyaGraph(sp, max_parse_dc=args.split_above)
                     for (ix, p) in enumerate(vgraph.parses):

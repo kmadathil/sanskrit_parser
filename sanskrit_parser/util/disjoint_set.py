@@ -69,6 +69,7 @@ class DisjointSet(object):
                 s_y = s
         s_x.update(s_y)
         self._sets.remove(s_y)
+        return s_x
 
     def connected(self, x, y) -> bool:
         """
