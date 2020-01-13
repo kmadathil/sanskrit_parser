@@ -395,7 +395,7 @@ def getArgs(argv=None):
     parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=1)
-    parser.add_argument('--split-above', type=int, default=100)
+    parser.add_argument('--split-above', type=int, default=5)
     parser.add_argument('--constraint', action='store_true', help='Use Constraint Parser instead of Graph Algorithm (deprecated)')
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
