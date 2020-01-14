@@ -645,8 +645,8 @@ class VakyaParse(object):
         logger.debug(f"Node in nodes: {node in self.nodes} {self.nodes}")
         logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
         logger.debug(f"Connected node {self.dset.connected(elem,node)}")
-        if ((pred in self.nodes) or (not self.dset.connected(elem, pred))) and \
-           ((node in self.nodes) or (not self.dset.connected(elem, node))) and \
+        if ((pred in self.nodes) or (pred not in self.get_eset())) and \
+           ((node in self.nodes) or (node not in self.get_eset())) and \
            ((node, pred) not in self.edges):   # Handle the bidi visheshana edges
             logger.debug(f"Non-Discoradant")
             return False

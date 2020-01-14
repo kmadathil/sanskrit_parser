@@ -1,8 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, redirect
 import flask_restplus
 from flask_restplus import Resource
 from random import randint
 import subprocess
+from os import path
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
@@ -107,6 +108,13 @@ class Morpho(Resource):
                 mres[sl].append(t)
             plotbase[sl] = bn
             vg.write_dot(f"static/{bn}.dot")
-            subprocess.run(f"dot -Tpng static/{bn}*dot -O", shell=True)
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres, "plotbase": plotbase}
         return r
+
+    @api.route('/graph/<string:v>')
+    class Graph(Resource):
+        def get(self, v):
+            """ Get graph for v """
+            if not path.exists(f"static/{v}.dot.png"):
+                subprocess.run(f"dot -Tpng static/{v}.dot -O", shell=True)
+            return redirect(f"/static/{v}.dot.png")
