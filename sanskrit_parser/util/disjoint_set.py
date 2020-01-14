@@ -49,9 +49,9 @@ class DisjointSet(object):
         if x != self._data[x]:
             self._data[x] = self.find(self._data[x])
         return self._data[x]
-        #for s in self._sets:
-        #    if x in s:
-        #        return s
+#        #for s in self._sets:
+#        #    if x in s:
+#        #        return s
 
     def union(self, x, y):
         """

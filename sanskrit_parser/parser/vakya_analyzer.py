@@ -81,10 +81,8 @@ as _parse.dot files
 from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
-from sanskrit_parser.parser.datastructures import VakyaGraph, getSLP1Tagset
+from sanskrit_parser.parser.datastructures import VakyaGraph
 from argparse import ArgumentParser
-import constraint
 import logging
 
 logger = logging.getLogger(__name__)
@@ -155,7 +153,6 @@ def main(argv=None):
             end_path = time.time()
             logger.info("End pathfinding")
             print("Splits:")
-            spl_t = 0
             for sp in splits:
                 print(f"Lexical Split: {sp}")
                 logger.info(f"Lexical Split: {sp}")
