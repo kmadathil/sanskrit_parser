@@ -144,7 +144,7 @@ self.roots</p>
 
 <dl class="class">
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph">
-<em class="property">class </em><code class="descclassname">sanskrit_parser.parser.datastructures.</code><code class="descname">VakyaGraph</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sanskrit_parser.parser.datastructures.</code><code class="descname">VakyaGraph</code><span class="sig-paren">(</span><em>path</em>, <em>max_parse_dc=4</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>DAG class for Sanskrit Vakya Analysis</p>
 <p>Represents Sanskrit Vakya Analysis as a DAG
@@ -199,7 +199,8 @@ Edges are potential relationships between them</p>
 <code class="descname">check_parse_validity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.check_parse_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.check_parse_validity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validity Check for parses</p>
 <p>Remove parses with double kArakas
-TODO - Other checks</p>
+Remove parses with multiple to edges into a node
+Remove parses with cycles</p>
 </dd></dl>
 
 <dl class="method">
@@ -214,8 +215,8 @@ TODO - Other checks</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.get_parses">
-<code class="descname">get_parses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.get_parses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.get_parses" title="Permalink to this definition">¶</a></dt>
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.get_parses_dc">
+<code class="descname">get_parses_dc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.get_parses_dc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.get_parses_dc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all parses</p>
 </dd></dl>
 
@@ -272,7 +273,7 @@ TODO - Other checks</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_parser.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">lexical_analyzer.sandhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">parser.sandhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html">parser.sandhi_analyzer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html">parser.vakya_analyzer</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">parser.datastructures</a><ul>

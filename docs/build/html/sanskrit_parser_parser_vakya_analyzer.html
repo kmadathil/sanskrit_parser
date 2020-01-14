@@ -39,15 +39,14 @@
 <p>Morphological Analyzer for Sanskrit Sentences.</p>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">VakyaAnalyzer</span></code> class has a similar interface to
-<code class="docutils literal notranslate"><span class="pre">LexicalAnalyzer</span></code>, and has a <code class="docutils literal notranslate"><span class="pre">constrainPath()</span></code> method which
-can find whether a particular split has a valid morphology, and output
-all such valid morphologies.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">VakyaGraph</span></code> class can be initialized with a split output from
+<code class="docutils literal notranslate"><span class="pre">LexicalSandhiAnalyzer.getSandhiSplits</span></code>. The <code class="docutils literal notranslate"><span class="pre">.parses</span></code> member contains
+all valid parses for that split</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.vakya_analyzer</span> <span class="kn">import</span> <span class="n">VakyaAnalyzer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="kn">import</span> <span class="n">LexicalSandhiAnalyzer</span>
 <span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="kn">import</span> <span class="n">VakyaGraph</span>
 <span class="n">sentence</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s2">&quot;astyuttarasyAmdiSi&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span>
-<span class="n">analyzer</span> <span class="o">=</span> <span class="n">VakyaAnalyzer</span><span class="p">()</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">()</span>
 <span class="n">graph</span><span class="o">=</span><span class="n">analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">splits</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
@@ -82,23 +81,27 @@ all such valid morphologies.</p>
 </div>
 <div class="section" id="command-line-usage">
 <h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer">
-<em class="property">class </em><code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">VakyaAnalyzer</code><span class="sig-paren">(</span><em>lexical_lookup='combined'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#VakyaAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer" title="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer</span></code></a></p>
-<p>Singleton class to hold methods for Sanksrit vakya analysis.</p>
-<dl class="method">
-<dt id="sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer.constrainPath">
-<code class="descname">constrainPath</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#VakyaAnalyzer.constrainPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.VakyaAnalyzer.constrainPath" title="Permalink to this definition">¶</a></dt>
-<dd><p>(Deprecated) Apply Morphological Constraints on path</p>
-<dl class="docutils">
-<dt>Params:</dt>
-<dd>path(list): List of SanskritObjects (tagged)</dd>
-</dl>
-</dd></dl>
+<p>The sanskrit_parser script can be used to view parses as below.</p>
+<p>If the –dot option is provided, a graph is output in .dot fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as _parse.dot files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+...
+Lexical Split: [asti, uttarasyAm, diSi]
+...
+Parse 0
+asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
+diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+...
 
-</dd></dl>
-
+$ dot -Tpng vakya.dot -o vakya.png
+$ eog vakya.png
+$ dot -Tpng vakya_parse0.dot -o vakya.png
+$ eog vakya_parse0.png
+</pre></div>
+</div>
 <dl class="function">
 <dt id="sanskrit_parser.parser.vakya_analyzer.getArgs">
 <code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">getArgs</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#getArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.getArgs" title="Permalink to this definition">¶</a></dt>
@@ -107,57 +110,9 @@ Returns args variable</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.lastWord">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">lastWord</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#lastWord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.lastWord" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
 <dt id="sanskrit_parser.parser.vakya_analyzer.main">
 <code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">main</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.main" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.nonempty">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">nonempty</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#nonempty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.nonempty" title="Permalink to this definition">¶</a></dt>
-<dd><p>No empty tagsets allowed</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.oneLakara">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">oneLakara</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#oneLakara"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.oneLakara" title="Permalink to this definition">¶</a></dt>
-<dd><p>Only one Lakara is allowed</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.prathamA">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">prathamA</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#prathamA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.prathamA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rules for prathamA, sambodhanA vibhaktis</p>
-<p>padas in prathamA (‘kartr’/karman) must match the purusha / vacana of lakara
-sambodhana vibhakti rules: Lakara must be in madhyamapurusha</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.sakarmakarule">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">sakarmakarule</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#sakarmakarule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.sakarmakarule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.samasarules">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">samasarules</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#samasarules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.samasarules" title="Permalink to this definition">¶</a></dt>
-<dd><p>samasa constituents must be followed by tiGantas
-(or other samasa constituents)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.upasarga">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">upasarga</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#upasarga"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.upasarga" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="sanskrit_parser.parser.vakya_analyzer.vibhaktiAgreement">
-<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">vibhaktiAgreement</code><span class="sig-paren">(</span><em>*nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#vibhaktiAgreement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.vibhaktiAgreement" title="Permalink to this definition">¶</a></dt>
-<dd><p>All padas in same vibhakti must agree in linga and vacana</p>
-</dd></dl>
 
 </div>
 <div class="section" id="submodules">
