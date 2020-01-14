@@ -60,14 +60,14 @@ def test_simple_split(lexan):
     # gaNeshannamAmi
     i = SanskritObject("gaReSannamAmi", encoding=SLP1)
     graph = lexan.getSandhiSplits(i)
-    splits = graph.findAllPaths()
+    splits = graph.find_all_paths()
     assert [u'gaReSam', u'namAmi'] in [list(map(str, ss)) for ss in splits]
 
 
 def test_medium_split(lexan):
     i = SanskritObject("budDaMSaraRaNgacCAmi", encoding=SLP1)
     graph = lexan.getSandhiSplits(i)
-    splits = graph.findAllPaths()
+    splits = graph.find_all_paths()
     assert [u'budDam', u'SaraRam', u'gacCAmi'] in \
            [list(map(str, ss)) for ss in splits]
 
@@ -79,7 +79,7 @@ def test_file_splits(lexan, splittext_refs):
         i = SanskritObject(f, encoding=SLP1, strict_io=True, replace_ending_visarga=None)
         graph = lexan.getSandhiSplits(i)
         assert graph is not None
-        splits = graph.findAllPaths(max_paths=300, sort=False)
+        splits = graph.find_all_paths(max_paths=300, sort=False)
     assert s in [list(map(str, ss)) for ss in splits]
 
 

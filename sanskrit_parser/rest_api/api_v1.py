@@ -82,7 +82,7 @@ class Morpho(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
-            splits = g.find_all_paths(10)
+            splits = g.find_all_paths(3)
         else:
             splits = []
         mres = {}
