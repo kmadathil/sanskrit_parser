@@ -80,17 +80,16 @@ class SanskritDataWrapper(LexicalLookup):
     pada_prayoga = ['परस्मैपदम्', 'आत्मनेपदम्', 'उभयपदम्', 'कर्तरि', 'कर्मणि']
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     kRdanta = {
-        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
-        ('fut', 'para'): 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
-        ('fut', 'atma'): 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
-        ('fut', 'pass'): 'कर्मणिभविष्यत्कृदन्तः',
-        ('pres', 'para'): 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
-        ('pres', 'atma'): 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
-        ('pres', 'pass'): 'कर्मणिवर्तमानकृदन्तः',
-        ('past', 'active'): 'कर्तरिभूतकृदन्तः',
-        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
-        ('perf', 'para'): 'पूर्णभूतकृदन्त-परस्मैपदी',
-        ('perf', 'atma'): 'पूर्णभूतकृदन्त-आत्मनेपदी'
+        ('fut', 'para'): ['Satf', 'Bavizyat', 'kartari'],  # 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
+        ('fut', 'atma'): ['SAnac', 'Bavizyat', 'kartari'],  #'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
+        ('fut', 'pass'): ['kftya', 'Bavizyat', 'karmaRi'],  #'कर्मणिभविष्यत्कृदन्तः',
+        ('pres', 'para'): ['Satf', 'kartari'],  #'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
+        ('pres', 'atma'): ['SAnac', 'kartari'],  #'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
+        ('pres', 'pass'): ['SAnac', 'karmaRi'],  #'कर्मणिवर्तमानकृदन्तः',
+        ('past', 'active'): ['ktavatu' 'kartari'],  #'कर्तरिभूतकृदन्तः',
+        ('past', 'pass'): ['kta' 'karmaRi'],  # 'कर्मणिभूतकृदन्तः',
+        ('perf', 'para'): ['kvasu'],  #'पूर्णभूतकृदन्त-परस्मैपदी',
+        ('perf', 'atma'): ['kAnac'],  #'पूर्णभूतकृदन्त-आत्मनेपदी'
     }
 
     def refresh(self, obj):
@@ -114,8 +113,8 @@ class SanskritDataWrapper(LexicalLookup):
         if type(stem) == ParticipleStem:
             mode = stem.mode.abbr
             voice = stem.voice.abbr
-
-            tagset.add(SanskritImmutableString(self.kRdanta[(mode, voice)], DEVANAGARI))
+            for t in self.kRdanta[(mode, voice)]:
+                tagset.add(SanskritImmutableString(t, SLP1))
         return (stem.name, tagset)
 
     def map_verb(self, obj):

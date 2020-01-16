@@ -37,6 +37,8 @@ class LexicalLookup(object):
         parser.add_argument('--input-encoding', type=str, default=None)
         parser.add_argument('--loglevel', type=str, default="info",
                             help="logging level. Can be any level supported by logging module")
+        parser.add_argument('--no-map-tags', dest='map_tags',
+                            action='store_false')
 
         parser.add_argument('word', nargs='?', type=str,
                             default=None,
@@ -53,7 +55,7 @@ class LexicalLookup(object):
         word_in = SanskritImmutableString(args.word,
                                           encoding=ie).transcoded(SLP1)
         print("Getting tags for", word_in)
-        tags = self.get_tags(word_in)
+        tags = self.get_tags(word_in, tmap=args.map_tags)
         if tags is not None:
             for tag in tags:
                 print(tag)
