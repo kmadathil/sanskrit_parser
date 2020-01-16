@@ -226,7 +226,7 @@ if __name__ == "__main__":
         word_in = SanskritImmutableString(args.word, encoding=ie).canonical()
         xmlDB = InriaXMLWrapper()
         print("Getting tags for", word_in)
-        tags = xmlDB.get_tags(word_in,tmap=args.map_tags)
+        tags = xmlDB.get_tags(word_in, tmap=args.map_tags)
         if tags is not None:
             for t in tags:
                 print(t)

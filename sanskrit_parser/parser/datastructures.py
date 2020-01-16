@@ -236,6 +236,7 @@ napumsakam = _lingas[1]
 avyaya = set(['avyayam'])
 kriyavisheshana = set(['kriyAviSezaRam'])
 
+
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -312,7 +313,7 @@ class VakyaGraph(object):
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
-        self.add_kriyavisheshana(bases) # FIXME Parallel edge problem
+        self.add_kriyavisheshana(bases)  # FIXME Parallel edge problem
         self.add_visheshana()
 
     def find_dhatu(self):

@@ -81,15 +81,15 @@ class SanskritDataWrapper(LexicalLookup):
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     kRdanta = {
         ('fut', 'para'): ['Satf', 'Bavizyat', 'kartari'],  # 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
-        ('fut', 'atma'): ['SAnac', 'Bavizyat', 'kartari'],  #'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
-        ('fut', 'pass'): ['kftya', 'Bavizyat', 'karmaRi'],  #'कर्मणिभविष्यत्कृदन्तः',
-        ('pres', 'para'): ['Satf', 'kartari'],  #'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
-        ('pres', 'atma'): ['SAnac', 'kartari'],  #'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
-        ('pres', 'pass'): ['SAnac', 'karmaRi'],  #'कर्मणिवर्तमानकृदन्तः',
-        ('past', 'active'): ['ktavatu' 'kartari'],  #'कर्तरिभूतकृदन्तः',
+        ('fut', 'atma'): ['SAnac', 'Bavizyat', 'kartari'],  # 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
+        ('fut', 'pass'): ['kftya', 'Bavizyat', 'karmaRi'],  # 'कर्मणिभविष्यत्कृदन्तः',
+        ('pres', 'para'): ['Satf', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
+        ('pres', 'atma'): ['SAnac', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
+        ('pres', 'pass'): ['SAnac', 'karmaRi'],  # 'कर्मणिवर्तमानकृदन्तः',
+        ('past', 'active'): ['ktavatu' 'kartari'],  # 'कर्तरिभूतकृदन्तः',
         ('past', 'pass'): ['kta' 'karmaRi'],  # 'कर्मणिभूतकृदन्तः',
-        ('perf', 'para'): ['kvasu'],  #'पूर्णभूतकृदन्त-परस्मैपदी',
-        ('perf', 'atma'): ['kAnac'],  #'पूर्णभूतकृदन्त-आत्मनेपदी'
+        ('perf', 'para'): ['kvasu'],  # 'पूर्णभूतकृदन्त-परस्मैपदी',
+        ('perf', 'atma'): ['kAnac'],  # 'पूर्णभूतकृदन्त-आत्मनेपदी'
     }
 
     def refresh(self, obj):
