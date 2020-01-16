@@ -30,9 +30,11 @@ def _merge_tags(tags):
             rs = set()
             add = True
             for tbs in tdict[base]:
-                if ttags.issuperset(tbs):
+                if ttags == tbs:  # Already in there
+                    break
+                elif ttags.issuperset(tbs):  # Superset, add and remove subset
                     rs.add(tbs)
-                if ttags.issubset(tbs):
+                elif ttags.issubset(tbs):  # Subset, don't add
                     add = False
                     break
             if rs:
