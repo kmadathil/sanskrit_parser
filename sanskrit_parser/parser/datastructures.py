@@ -233,6 +233,8 @@ _lingas = ['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam']
 lingas = set(_lingas)
 napumsakam = _lingas[1]
 
+avyaya = set(['avyayam'])
+kriyavisheshana = set(['kriyAviSezaRam'])
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
@@ -310,7 +312,7 @@ class VakyaGraph(object):
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
-#       self.add_kriyavisheshana(bases) FIXME Parallel edge problem
+        self.add_kriyavisheshana(bases) # FIXME Parallel edge problem
         self.add_visheshana()
 
     def find_dhatu(self):
@@ -393,28 +395,28 @@ class VakyaGraph(object):
                         self.G.add_edge(d, n, label="karma")
                     elif n.node_is_a(tritiya):
                         logger.debug(f"Adding karana edge to {n}")
-                        self.G.add_edge(d, n, label="karaRa")
+                        self.G.add_edge(d, n, label="karaRam")
                     elif n.node_is_a(chaturthi):
                         logger.debug(f"Adding sampradana edge to {n}")
-                        self.G.add_edge(d, n, label="sampradAna")
+                        self.G.add_edge(d, n, label="sampradAnam")
                     elif n.node_is_a(pancami):
                         logger.debug(f"Adding apadana edge to {n}")
-                        self.G.add_edge(d, n, label="apAdana")
+                        self.G.add_edge(d, n, label="apAdanam")
                     elif n.node_is_a(saptami):
                         logger.debug(f"Adding adhikarana edge to {n}")
-                        self.G.add_edge(d, n, label="aDikaraRa")
+                        self.G.add_edge(d, n, label="aDikaraRam")
                     elif n.node_is_a(sambodhana) and check_sambodhya(d, n):
                         logger.debug(f"Adding sambodhya edge to {n}")
-                        self.G.add_edge(d, n, label="samboDya")
+                        self.G.add_edge(d, n, label="samboDyam")
 
     def add_kriyavisheshana(self, bases):
         ''' Add kriyaviSezaRa edges from base node (dhatu) base '''
         for d in bases:
             for n in self.G:
                 if not self.nsets.connected(d, n):
-                    if n.node_is_a(prathama) and n.node_is_a(napumsakam):
+                    if n.node_is_a(avyaya) and n.node_is_a(kriyavisheshana):
                         logger.debug(f"Adding kriyAviSezaRa edge to {n}")
-                        self.G.add_edge(d, n, label="kriyAviSezaRa")
+                        self.G.add_edge(d, n, label="kriyAviSezaRam")
 
     def get_parses_dc(self):
         ''' Returns all parses
