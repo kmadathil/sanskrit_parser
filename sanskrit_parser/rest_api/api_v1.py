@@ -6,7 +6,7 @@ import subprocess
 from os import path
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-from sanskrit_parser.parser.vakya_analyzer import VakyaAnalyzer
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph
 
 URL_PREFIX = '/v1'
@@ -21,7 +21,7 @@ api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parse
                          default_label=api_blueprint.name,
                          prefix=URL_PREFIX, doc='/docs')
 
-analyzer = VakyaAnalyzer()
+analyzer = LexicalSandhiAnalyzer()
 
 
 def jedge(pred, node, label):
@@ -83,7 +83,7 @@ class Morpho(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
-            splits = g.find_all_paths(3)
+            splits = g.find_all_paths(10)
         else:
             splits = []
         mres = {}

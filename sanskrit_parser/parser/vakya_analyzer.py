@@ -119,6 +119,8 @@ def getArgs(argv=None):
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
+    parser.add_argument('--no-score', dest="score", action='store_false',
+                            help="Don't use the lexical scorer to score the splits and reorder them")
     return parser.parse_args(argv)
 
 
@@ -149,7 +151,7 @@ def main(argv=None):
     with SanskritBase.outputctx(args.strict_io):
         if graph:
             start_path = time.time()
-            splits = graph.find_all_paths(max_paths=args.max_paths, score=False)
+            splits = graph.find_all_paths(max_paths=args.max_paths, score=args.score)
             end_path = time.time()
             logger.info("End pathfinding")
             print("Splits:")
