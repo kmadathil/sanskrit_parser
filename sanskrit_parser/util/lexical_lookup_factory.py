@@ -26,7 +26,19 @@ def _merge_tags(tags):
         if base not in tdict:
             tdict[base] = {frozenset(t[1])}
         else:
-            tdict[base].add(frozenset(t[1]))
+            ttags = frozenset(t[1])
+            rs = set()
+            add = True
+            for tbs in tdict[base]:
+                if ttags.issuperset(tbs):
+                    rs.add(tbs)
+                if ttags.issubset(tbs):
+                    add = False
+                    break
+            if rs:
+                tdict[base].difference_update(rs)
+            if add:
+                tdict[base].add(ttags)
     tlist = []
     # Convert back to list of tuples
     for base in tdict:
