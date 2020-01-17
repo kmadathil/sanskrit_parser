@@ -210,6 +210,8 @@ lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                'viDiliN', 'ASIrliN'])
 krtverbs = set(['ktvA', 'Satf', 'Sanac', 'tumun', 'kta', 'ktavatu'])
 purvakala = set(['ktvA'])
+samanakala = set(['Satf', 'Sanac'])
+nishta = set(['kta', 'ktavatu'])
 karmani = set(['karmaRi'])
 samastas = set(['samAsapUrvapadanAmapadam'])
 # Vibhaktis
@@ -331,7 +333,6 @@ class VakyaGraph(object):
                 logger.info(f"{n} is a possible Krt Dhatu")
                 rlist.append(n)
         return rlist
-        
 
     def find_lakaras(self):
         ''' Find the ti~Nanta '''
@@ -393,7 +394,7 @@ class VakyaGraph(object):
             if d.node_is_a(lakaras) or d.node_is_a('avyayaDAturUpa'):
                 is_sak = dw.is_sakarmaka(dh)
             else:
-                is_sak = True # No way of knowing, set True
+                is_sak = True  # No way of knowing, set True
             logger.debug(f"Dhatu: {dh} Sakarmaka {is_sak}")
             if d.node_is_a(karmani):
                 logger.debug("Karmani")
@@ -405,14 +406,24 @@ class VakyaGraph(object):
                 karma = dvitiya
             for n in self.G:
                 if not self.nsets.connected(d, n):
-                    if n.node_is_a(karta) and d.node_is_a(lakaras):
-                        if match_purusha_vacana(d, n):
+                    if n.node_is_a(karta):
+                        # Only Lakaras and karmani krts are allowed kartA
+                        if d.node_is_a(lakaras):
+                            if match_purusha_vacana(d, n):
+                                logger.debug(f"Adding kartA edge to {n}")
+                                self.G.add_edge(d, n, label="kartA")
+                            elif dh in predicative_verbs:
+                                logger.debug(f"Adding kartfsamAnADikaraRa edge to {n}")
+                                self.G.add_edge(d, n, label="kartfsamAnADikaraRa")
+                        elif d.node_is_a(karmani) and match_linga_vacana(d, n):
                             logger.debug(f"Adding kartA edge to {n}")
                             self.G.add_edge(d, n, label="kartA")
-                        elif dh in predicative_verbs:
-                            logger.debug(f"Adding kartfsamAnADikaraRa edge to {n}")
-                            self.G.add_edge(d, n, label="kartfsamAnADikaraRa")
-                    elif n.node_is_a(karma) and is_sak:
+
+                    elif (n.node_is_a(karma) and
+                          (d.node_is_a(lakaras) or not d.node_is_a(karmani))
+                          and is_sak):
+                        # Likewise, only Lakaras and kartari krts are allowed
+                        # Karma
                         logger.debug(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
                     elif n.node_is_a(tritiya):
@@ -451,7 +462,10 @@ class VakyaGraph(object):
                     elif n.node_is_a('tumun'):
                         logger.debug(f"Adding prayojanam edge to {n}")
                         self.G.add_edge(d, n, label="prayojanam")
-                        
+                    elif n.node_is_a(samanakala) and n.node_is_a(prathama):
+                        logger.debug(f"Adding samAnakAlaH edge to {n}")
+                        self.G.add_edge(d, n, label="samAnakAlaH")
+
     def get_parses_dc(self):
         ''' Returns all parses
         '''
