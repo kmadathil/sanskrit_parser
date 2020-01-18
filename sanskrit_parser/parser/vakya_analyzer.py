@@ -81,7 +81,7 @@ as _parse.dot files
 from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.parser.datastructures import VakyaGraph
+from sanskrit_parser.parser.datastructures import VakyaGraph, jedge, jnode
 from argparse import ArgumentParser
 import logging
 
@@ -161,8 +161,21 @@ def main(argv=None):
                 vgraph = VakyaGraph(sp, max_parse_dc=args.split_above)
                 for (ix, p) in enumerate(vgraph.parses):
                     print(f"Parse {ix}")
-                    for n in p:
-                        print(n)
+                    t = []
+                    for n in sorted(list(p), key=lambda x: x.index):
+                        preds = list(p.predecessors(n))
+                        if preds:
+                            pred = preds[0]  # Only one
+                            lbl = p.edges[pred, n]['label']
+                            t.append(jedge(pred, n, lbl))
+                        else:
+                            t.append(jnode(n))
+                    for e in t:
+                        if e[2]:
+                            print(f"{e[0]} => {e[1]} : {e[2]} of {e[3]}")
+                        else:
+                            print(f"{e[0]} => {e[1]}")
+
             logger.info("End Morphological Analysis")
             logger.info("-----------")
             logger.info("Performance")

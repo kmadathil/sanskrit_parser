@@ -6,7 +6,7 @@
     @author: Karthik Madathil (github: @kmadathil)
 """
 
-import sanskrit_parser.base.sanskrit_base as SanskritBase
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString, SLP1
 import networkx as nx
 from itertools import islice
 import logging
@@ -267,11 +267,11 @@ class VakyaGraph(object):
             vnlist = []
             mtags = sobj.getMorphologicalTags()
             for mtag in mtags:
-                ncopy = SanskritBase.SanskritObject(sobj.canonical(),
-                                                    encoding=SanskritBase.SLP1,
-                                                    replace_ending_visarga=None)
+                ncopy = SanskritObject(sobj.canonical(),
+                                       encoding=SLP1,
+                                       replace_ending_visarga=None)
                 ncopy.setMorphologicalTags(mtag)
-                pn = VakyaGraphNode(ncopy)
+                pn = VakyaGraphNode(ncopy, ix)
                 vnlist.append(pn)
             for vn in vnlist:
                 self.add_node(vn)
@@ -545,12 +545,14 @@ class VakyaGraph(object):
         def _check(parse):
             r = True
             count = defaultdict(lambda: defaultdict(int))
+            edges = {}
             toedge = defaultdict(int)
             fromv = defaultdict(int)
             tov = defaultdict(int)
             for (u, v, l) in parse.edges(data='label'):
                 if l in karakas:
                     count[u][l] = count[u][l]+1
+                    edges[(u.index, v.index)] = 1
                     toedge[v] = toedge[v]+1
                 if l in 'viSezaRa':
                     fromv[u] = fromv[u] + 1
@@ -560,6 +562,11 @@ class VakyaGraph(object):
                 for k in count[u]:  # Each karaka should count only once
                     if count[u][k] > 1:
                         logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
+                        return False
+            for (ui, vi) in edges:
+                for (wi, xi) in edges:
+                    if _non_projective(ui, vi, wi, xi):  # Non-projective
+                        logger.info(f"Sannidhi violation {ui} - {vi} : {wi} - {xi}")
                         return False
             for v in toedge:
                 if toedge[v] > 1:
@@ -612,15 +619,10 @@ class VakyaGraphNode(object):
         This has pada (a SanskritObject) plus a list of disjoint nodes
         to which edges cannot be created from this node
     """
-    def __init__(self, sobj):
+    def __init__(self, sobj, index):
         self.pada = sobj
         self.disjointNodes = []
-
-    # def isDisjoint(self, node):
-    #     return node in self.disjointNodes
-
-    # def makeDisjoint(self, nodes):
-    #     self.disjointNodes.extend(nodes)
+        self.index = index
 
     def getMorphologicalTags(self):
         return self.pada.getMorphologicalTags()
@@ -654,6 +656,9 @@ class VakyaGraphNode(object):
         ''' Get Node puruza '''
         return self.getNodeTagset().intersection(puruzas)
 
+    def get_node_pos(self, node):
+        return self.path.index(node.pada.canonical())
+
     def __str__(self):
         return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags())
 
@@ -676,6 +681,9 @@ class VakyaParse(object):
 
     def __repr__(self):
         return repr(self.edges)
+
+    def __str__(self):
+        return str([f"{x.pada} : {x.index}" for x in self.nodes])
 
     def _populate(self, nodes):
         self.elem = nodes[0]
@@ -797,3 +805,33 @@ def match_linga_vacana_vibhakti(n1, n2):
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
     return (d.get_vacana() == d.get_vacana()) and (d.get_purusha() == set([puruzas[1]]))
+
+
+def jedge(pred, node, label):
+    return (node.pada.canonical(strict_io=False),
+            jtag(node.getMorphologicalTags()),
+            SanskritImmutableString(label, encoding=SLP1).canonical(strict_io=False),
+            pred.pada.canonical(strict_io=False))
+
+
+def jnode(node):
+    """ Helper to translate parse node into serializable format"""
+    return (node.pada.canonical(strict_io=False),
+            jtag(node.getMorphologicalTags()), "", "")
+
+
+def jtag(tag):
+    """ Helper to translate tag to serializable format"""
+    return (SanskritImmutableString(tag[0], encoding=SLP1).canonical(strict_io=False), [t.canonical(strict_io=False) for t in list(tag[1])])
+
+
+def _non_projective(u, v, w, x):
+    """ Checks if an edge pair is non-projective """
+    mnu = min(u, v)
+    mxu = max(u, v)
+    mnw = min(w, x)
+    mxw = max(w, x)
+    if mnu < mnw:
+        return (mxu < mxw) and (mxu > mnw)
+    elif mxu > mxw:
+        return (mnu > mnw) and (mnu < mxw)
