@@ -485,13 +485,13 @@ class VakyaGraph(object):
                 if i == 0:
                     # Partial parses = phi + all predecessors
                     partial_parses = set()
-                    partial_parses.add(VakyaParse(None, self.partitions))  # Null partial parse
+                    partial_parses.add(VakyaParse(None))  # Null partial parse
                     # For all input edges to this set
                     for n in ns:
                         logger.debug(f"Traversing node {n}")
                         for pred in self.G.predecessors(n):
                             logger.debug(f"Traversing predecessor {pred} -> {n}")
-                            partial_parses.add(VakyaParse((pred, n), self.partitions))
+                            partial_parses.add(VakyaParse((pred, n)))
                 else:
                     store_parses = set()
                     small_parses = set()
@@ -676,12 +676,10 @@ class VakyaGraphNode(object):
 
 
 class VakyaParse(object):
-    def __init__(self, nodepair, psets):
+    def __init__(self, nodepair):
         ''' Initializes a partial parse with a node pair (or []) '''
         # DisjointSet  (as in Kruskal)
         self.connections = DisjointSet()
-        # Maintain a list of partitions not added to ST yet
-        self.pending_partitions = {frozenset(s) for s in psets}
         # "Extinguished" nodes - nodes from partitions whose representatives
         # Have been added to the forest/ST already
         self.extinguished = set()
@@ -709,17 +707,16 @@ class VakyaParse(object):
     def _activate_and_extinguish_alternatives(self, node):
         ''' Make node active, extinguish other nodes in its partition '''
         self.activenodes.add(node)
-        for s in self.pending_partitions:
-            if node in s:
-                ts = s
-                break
-        self.extinguished.update(ts)
-        self.extinguished.remove(node)
-        self.pending_partitions.difference_update(ts)
+        self.extinguished.add(node.index)
+
+    def _is_extinguished(self, node):
+        ''' Is a node extinguished '''
+        return (node.index in self.extinguished) and \
+            (node not in self.activenodes)
 
     def is_safe(self, pred, node):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
-        if (pred in self.extinguished) or (node in self.extinguished):
+        if self._is_extinguished(pred) or self._is_extinguished(node):
             r = False
         elif (pred in self.activenodes) and (node in self.activenodes):
             r = not self.connections.connected(pred, node)
@@ -748,8 +745,9 @@ class VakyaParse(object):
         if (len(other.edges) + len(self.edges)) != l:
             return False
         # No extinguished nodes
-        if self.extinguished.intersection(other.activenodes):
-            return False
+        for x in other.activenodes:
+            if self._is_extinguished(x):
+                return False
         # No cycles
         for (u, v) in other.edges:
             if (u in self.activenodes) and (v in self.activenodes):
@@ -761,7 +759,6 @@ class VakyaParse(object):
         ''' Merge two VakyaParses '''
         t = self.copy()
         logger.debug("Merging")
-        t.pending_partitions.intersection_update(other.pending_partitions)
         t.extinguished.update(other.extinguished)
         t.activenodes.update(other.activenodes)
         t.edges.update(other.edges)
@@ -774,7 +771,7 @@ class VakyaParse(object):
 
     def copy(self):
         ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
-        t = VakyaParse(None, self.pending_partitions)
+        t = VakyaParse(None)
         t.activenodes = copy(self.activenodes)
         t.edges = copy(self.edges)
         t.extinguished = copy(self.extinguished)
@@ -801,17 +798,20 @@ def match_purusha_vacana(d, n):
 
 def match_linga_vacana(n1, n2):
     ''' Check linga/puruza compatibility for two nodes '''
-    return (n1.get_vacana() == n2.get_vacana()) and (n1.get_linga() == n2.get_linga())
+    return (n1.get_vacana() == n2.get_vacana()) and \
+        (n1.get_linga() == n2.get_linga())
 
 
 def match_linga_vacana_vibhakti(n1, n2):
-    return (n1.get_vacana() == n2.get_vacana()) and (n1.get_linga() == n2.get_linga()) \
-        and (n1.get_vibhakti() == n2.get_vibhakti())
+    return (n1.get_vacana() == n2.get_vacana()) and \
+        (n1.get_linga() == n2.get_linga()) and \
+        (n1.get_vibhakti() == n2.get_vibhakti())
 
 
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
-    return (d.get_vacana() == d.get_vacana()) and (d.get_purusha() == set([puruzas[1]]))
+    return (d.get_vacana() == d.get_vacana()) and \
+        (d.get_purusha() == set([puruzas[1]]))
 
 
 def jedge(pred, node, label):
