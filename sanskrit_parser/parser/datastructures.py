@@ -262,7 +262,7 @@ class VakyaGraph(object):
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
         logger.info(f"{self.path_node_count} sets of orthogonal nodes")
-        self.nsets = DisjointSet()
+        self.partitions = []
         for (ix, sobj) in enumerate(path):
             vnlist = []
             mtags = sobj.getMorphologicalTags()
@@ -275,19 +275,23 @@ class VakyaGraph(object):
                 vnlist.append(pn)
             for vn in vnlist:
                 self.add_node(vn)
-            self.nsets.addset(set(vnlist))
-        logger.debug(f"Node sets {self.nsets} Len {len(self.nsets)}")
+            self.partitions.append(set(vnlist))
+        logger.debug(f"Node Partitions {self.partitions} Len {len(self.partitions)}")
         self.lock()
         self.add_edges()
         # Remove isolated nodes (with no edges)
         isolates = list(nx.isolates(self.G))
         self.G.remove_nodes_from(isolates)
-        self.nsets.remove(isolates)
+        for s in self.partitions:
+            s.difference_update(isolates)
         start_parse = time.time()
         self.parses = self.get_parses_dc()
-        self.check_parse_validity()
         end_parse = time.time()
+        self.check_parse_validity()
+        end_check = time.time()
         logger.info(f"Time for parse: {(end_parse-start_parse):1.6f}s")
+        logger.info(f"Total for Global Check: {(end_check-end_parse):1.6f}s")
+        logger.info(f"Total Time for parse: {(end_check-start_parse):1.6f}s")
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -347,20 +351,20 @@ class VakyaGraph(object):
         for n in self.G:
             if n.node_is_a(vibhaktis):
                 for no in self.G:
-                    if (not self.nsets.connected(n, no)) and match_linga_vacana_vibhakti(n, no):
+                    if (not _is_same_partition(n, no)) and match_linga_vacana_vibhakti(n, no):
                         logger.debug(f"Adding viSezaRa edge: {n,no}")
                         self.G.add_edge(n, no, label="viSezaRa")
 
     def add_samastas(self):
         ''' Add samasta links from next samasta/tiN '''
-        for (i, s) in enumerate(self.nsets):
+        for (i, s) in enumerate(self.partitions):
             for n in s:
                 # If node is a samasta, check options for
                 # next node, and add samasta links if tiN
                 if n.node_is_a(samastas):
                     # Cant have samasta as last node
-                    if i < (len(self.nsets)-1):
-                        nextset = self.nsets[i+1]
+                    if i < (len(self.partitions)-1):
+                        nextset = self.partitions[i+1]
                         for nn in nextset:
                             if nn.node_is_a(vibhaktis) or \
                                nn.node_is_a(samastas):
@@ -369,14 +373,14 @@ class VakyaGraph(object):
 
     def add_shashthi(self):
         ''' Add zazWI-sambanDa links to next tiN '''
-        for (i, s) in enumerate(self.nsets):
+        for (i, s) in enumerate(self.partitions):
             for n in s:
                 # If node is a shashthi, check
                 # next node, and add links if tiN
                 if n.node_is_a(shashthi):
                     # Cant have sambandha open at last node
-                    if i < (len(self.nsets)-1):
-                        nextset = self.nsets[i+1]
+                    if i < (len(self.partitions)-1):
+                        nextset = self.partitions[i+1]
                         for nn in nextset:
                             if nn.node_is_a(vibhaktis) or \
                                nn.node_is_a(samastas):
@@ -405,7 +409,7 @@ class VakyaGraph(object):
                 karta = prathama
                 karma = dvitiya
             for n in self.G:
-                if not self.nsets.connected(d, n):
+                if not _is_same_partition(d, n):
                     if n.node_is_a(karta):
                         # Only Lakaras and karmani krts are allowed kartA
                         if d.node_is_a(lakaras):
@@ -446,7 +450,7 @@ class VakyaGraph(object):
         ''' Add kriyaviSezaRa edges from base node (dhatu) base '''
         for d in bases:
             for n in self.G:
-                if not self.nsets.connected(d, n):
+                if not _is_same_partition(d, n):
                     if n.node_is_a(avyaya) and n.node_is_a(kriyavisheshana):
                         logger.debug(f"Adding kriyAviSezaRa edge to {n}")
                         self.G.add_edge(d, n, label="kriyAviSezaRam")
@@ -455,7 +459,7 @@ class VakyaGraph(object):
         ''' Add kriya-kriya edges from lakaras to krts'''
         for d in lakaras:
             for n in krts:
-                if not self.nsets.connected(d, n):
+                if not _is_same_partition(d, n):
                     if n.node_is_a(purvakala):
                         logger.debug(f"Adding pUrvakAlaH edge to {n}")
                         self.G.add_edge(d, n, label="pUrvakAlaH")
@@ -468,23 +472,26 @@ class VakyaGraph(object):
 
     def get_parses_dc(self):
         ''' Returns all parses
+
+            Uses modified Kruskal Algorithm to compute (generalized) spanning
+            tree of k-partite VakyaGraph
         '''
         logger.debug("Computing Parses (Divide & Conquer)")
 
         def _get_parse_sub(mn, mx):
             # Iterate over subsets of disjoint nodesets
-            for (i, ns) in enumerate(islice(self.nsets, mn, mx)):
+            for (i, ns) in enumerate(islice(self.partitions, mn, mx)):
                 logger.debug(f"Node set number {i} {ns}")
                 if i == 0:
                     # Partial parses = phi + all predecessors
                     partial_parses = set()
-                    partial_parses.add(VakyaParse(None, self.nsets, self.G))  # Null partial parse
+                    partial_parses.add(VakyaParse(None, self.partitions))  # Null partial parse
                     # For all input edges to this set
                     for n in ns:
                         logger.debug(f"Traversing node {n}")
                         for pred in self.G.predecessors(n):
                             logger.debug(f"Traversing predecessor {pred} -> {n}")
-                            partial_parses.add(VakyaParse((pred, n), self.nsets, self.G))
+                            partial_parses.add(VakyaParse((pred, n), self.partitions))
                 else:
                     store_parses = set()
                     small_parses = set()
@@ -497,13 +504,16 @@ class VakyaGraph(object):
                                 logger.debug(f"Traversing predecessor {pred} -> {n}")
                                 # If edge is compatible with partial parse, add and create new partial parse
                                 logger.debug(f"Trying to extend parse {ps}")
-                                if not ps.is_discordant(pred, n):
-                                    logger.debug(f"{pred} - {n} is non-discordant with {ps}")
+                                if ps.is_safe(pred, n):
+                                    logger.debug(f"{pred} - {n} is safe for {ps}")
                                     psc = ps.copy()  # Copy the nodeset and DisjointSet structures
                                     psc.extend(pred, n)
                                     store_parses.add(psc)
                     partial_parses.difference_update(small_parses)
                     partial_parses.update(store_parses)
+                logger.debug(f"Partial Parses")
+                for p in partial_parses:
+                    logger.debug(p)
             return partial_parses
 
         # Divide & Conquer routine
@@ -621,7 +631,6 @@ class VakyaGraphNode(object):
     """
     def __init__(self, sobj, index):
         self.pada = sobj
-        self.disjointNodes = []
         self.index = index
 
     def getMorphologicalTags(self):
@@ -667,88 +676,97 @@ class VakyaGraphNode(object):
 
 
 class VakyaParse(object):
-    def __init__(self, nodes, nsets, G):
+    def __init__(self, nodepair, psets):
         ''' Initializes a partial parse with a node pair (or []) '''
-        # Initialize disjoint sets DS
-        self.dset = nsets.copy()
-        self.G = G
-        if nodes is not None:
-            self._populate(nodes)
+        # DisjointSet  (as in Kruskal)
+        self.connections = DisjointSet()
+        # Maintain a list of partitions not added to ST yet
+        self.pending_partitions = {frozenset(s) for s in psets}
+        # "Extinguished" nodes - nodes from partitions whose representatives
+        # Have been added to the forest/ST already
+        self.extinguished = set()
+        # Nodes in the forest/ST
+        self.activenodes = set()
+        if nodepair is not None:
+            self._populate(nodepair)
         else:
-            self.elem = None
-            self.nodes = set()
+            # Edges in the forest/ST
             self.edges = set()
 
     def __repr__(self):
-        return repr(self.edges)
+        return str(self)
 
     def __str__(self):
-        return str([f"{x.pada} : {x.index}" for x in self.nodes])
+        return str([(u.pada.canonical(), v.pada.canonical()) for (u, v) in self.edges])
 
-    def _populate(self, nodes):
-        self.elem = nodes[0]
-        self.nodes = set(nodes)
-        self.edges = set([(nodes[0], nodes[1])])
-        # Merge disjoint sets of initial nodes
-        # Store the corresponding set as "eset" for
-        # later merge operations
-        self.eset = self.dset.union(self.elem, nodes[1])
+    def _populate(self, nodepair):
+        # Add first edge to forest
+        self.edges = set([(nodepair[0], nodepair[1])])
+        for n in nodepair:
+            self._activate_and_extinguish_alternatives(n)
+        self.connections.union(nodepair[0], nodepair[1])
 
-    def is_discordant(self, pred, node):
+    def _activate_and_extinguish_alternatives(self, node):
+        ''' Make node active, extinguish other nodes in its partition '''
+        self.activenodes.add(node)
+        for s in self.pending_partitions:
+            if node in s:
+                ts = s
+                break
+        self.extinguished.update(ts)
+        self.extinguished.remove(node)
+        self.pending_partitions.difference_update(ts)
+
+    def is_safe(self, pred, node):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
-        elem = self.elem
-        if elem is None:
-            return False
-        logger.debug(f"Pred in nodes: {pred in self.nodes} {self.nodes}")
-        logger.debug(f"Node in nodes: {node in self.nodes} {self.nodes}")
-        logger.debug(f"Connected pred {self.dset.connected(elem,pred)}")
-        logger.debug(f"Connected node {self.dset.connected(elem,node)}")
-        if ((pred in self.nodes) or (pred not in self.get_eset())) and \
-           ((node in self.nodes) or (node not in self.get_eset())) and \
-           ((node, pred) not in self.edges):   # Handle the bidi visheshana edges
-            logger.debug(f"Non-Discoradant")
-            return False
+        if (pred in self.extinguished) or (node in self.extinguished):
+            r = False
+        elif (pred in self.activenodes) and (node in self.activenodes):
+            r = not self.connections.connected(pred, node)
         else:
-            logger.debug(f"Discordant")
-            return True
+            r = True
+        return r
 
     def extend(self, pred, node):
         ''' Extend current parse with edge from pred to node '''
-        elem = self.elem
-        if elem is None:
-            logger.debug(f"Populating {self.elem}/{self.edges} with {(pred,node)}")
+        if not self.activenodes:
+            logger.debug(f"Populating {self.edges} with {(pred,node)}")
             self._populate((pred, node))
         else:
             logger.debug(f"Extending {self.edges} with {(pred,node)}")
-            if pred not in self.nodes:
-                self.nodes.add(pred)
-                self.dset.union(elem, pred)
-            if node not in self.nodes:
-                self.nodes.add(node)
-                self.dset.union(elem, node)
+            if pred not in self.activenodes:
+                self._activate_and_extinguish_alternatives(pred)
+            if node not in self.activenodes:
+                self._activate_and_extinguish_alternatives(node)
             self.edges.add((pred, node))
-        logger.debug(f"Edges {self.edges} Dset {self.dset}")
+            self.connections.union(pred, node)
+        logger.debug(f"Edges {self.edges}")
 
     def can_merge(self, other, l):
         ''' Can we merge two VakyaParses '''
-        # merge if all edges are not discordant
-#        #for e in other.edges:
-#        #    if self.is_discordant(e[0], e[1]):
-#        #        return False
-#        #return True
-        # Updated can_merge algo  - This should be functionally same
-        # But O(N) instead of O(N^2). Or is it?
-        return ((len(other.edges) + len(self.edges)) == l) and \
-               ((not ((other.nodes - self.nodes) & self.get_eset())) and
-                (not ({tuple(reversed(x)) for x in other.edges} & self.edges)))
+        # Proper length
+        if (len(other.edges) + len(self.edges)) != l:
+            return False
+        # No extinguished nodes
+        if self.extinguished.intersection(other.activenodes):
+            return False
+        # No cycles
+        for (u, v) in other.edges:
+            if (u in self.activenodes) and (v in self.activenodes):
+                if self.connections.connected(u, v):
+                    return False
+        return True
 
     def merge(self, other):
         ''' Merge two VakyaParses '''
         t = self.copy()
-        logger.debug("Can merge")
-        t.nodes.update(other.nodes)
+        logger.debug("Merging")
+        t.pending_partitions.intersection_update(other.pending_partitions)
+        t.extinguished.update(other.extinguished)
+        t.activenodes.update(other.activenodes)
         t.edges.update(other.edges)
-        t.dset.union(self.elem, other.elem)
+        for (u, v) in other.edges:
+            self.connections.union(u, v)
         return t
 
     def __len__(self):
@@ -756,23 +774,12 @@ class VakyaParse(object):
 
     def copy(self):
         ''' Return a one level deep copy - in between a shallow and a fully deep copy '''
-        t = VakyaParse(None, self.dset, self.G)
-        t.nodes = copy(self.nodes)
+        t = VakyaParse(None, self.pending_partitions)
+        t.activenodes = copy(self.activenodes)
         t.edges = copy(self.edges)
-        t.elem = self.elem  # This will not change
-        # We do not update t.eset to avoid making copy an O(N)
-        # operation
+        t.extinguished = copy(self.extinguished)
+        t.connections = self.connections.copy()
         return t
-
-    def get_eset(self):
-        if hasattr(self, "eset"):
-            return self.eset
-        else:
-            # Search once if needed
-            for s in self.dset._sets:
-                if self.elem in s:
-                    self.eset = s
-                    return self.eset
 
 
 def getSLP1Tagset(n):
@@ -835,3 +842,8 @@ def _non_projective(u, v, w, x):
         return (mxu < mxw) and (mxu > mnw)
     elif mxu > mxw:
         return (mnu > mnw) and (mnu < mxw)
+
+
+def _is_same_partition(n1, n2):
+    ''' Are the two nodes n1 and n2 are in the same partition in psets '''
+    return n1.index == n2.index

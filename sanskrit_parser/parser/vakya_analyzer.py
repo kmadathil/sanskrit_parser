@@ -119,8 +119,8 @@ def getArgs(argv=None):
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
-    parser.add_argument('--no-score', dest="score", action='store_false',
-                        help="Don't use the lexical scorer to score the splits and reorder them")
+    parser.add_argument('--score', dest="score", action='store_true',
+                        help="Use the lexical scorer to score the splits and reorder them")
     return parser.parse_args(argv)
 
 
