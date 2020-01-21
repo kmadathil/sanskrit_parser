@@ -107,9 +107,9 @@ class Morpho(Resource):
                         t.append(jnode(n))
                 mres[sl].append(t)
             plotbase[sl] = bn
-            try: 
+            try:
                 vg.write_dot(f"static/{bn}.dot")
-            except:
+            except Exception:
                 pass
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres, "plotbase": plotbase}
         return r

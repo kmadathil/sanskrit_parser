@@ -292,7 +292,7 @@ def getArgs(argv=None):
     parser.add_argument('--no-score', dest="score", action='store_false',
                         help="Don't use the lexical scorer to score the splits and reorder them")
     parser.add_argument('--no-map-tags', dest='map_tags',
-                            action='store_false', help="show raw (unmapped to our standard set) tags")
+                        action='store_false', help="show raw (unmapped to our standard set) tags")
     return parser.parse_args(argv)
 
 
