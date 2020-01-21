@@ -291,6 +291,8 @@ def getArgs(argv=None):
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--no-score', dest="score", action='store_false',
                         help="Don't use the lexical scorer to score the splits and reorder them")
+    parser.add_argument('--no-map-tags', dest='map_tags',
+                            action='store_false', help="show raw (unmapped to our standard set) tags")
     return parser.parse_args(argv)
 
 
@@ -321,7 +323,7 @@ def main(argv=None):
                                                       strict_io=args.strict_io,
                                                       replace_ending_visarga='s')
             print("Input String in SLP1:", i.canonical())
-            ts = s.getMorphologicalTags(i)
+            ts = s.getMorphologicalTags(i, tmap=args.map_tags)
             print("Morphological tags:")
             if ts is not None:
                 for t in ts:
