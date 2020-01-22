@@ -328,6 +328,7 @@ class VakyaGraph(object):
         self.add_kriyavisheshana(bases)  # FIXME Parallel edge problem
         self.add_visheshana()
         self.add_kriya_kriya(laks, krts)
+        self.add_avyayas(bases)
 
     def find_krtverbs(self):
         ''' Find non ti~Nanta verbs'''
@@ -469,6 +470,22 @@ class VakyaGraph(object):
                     elif n.node_is_a(samanakala) and n.node_is_a(prathama):
                         logger.debug(f"Adding samAnakAlaH edge to {n}")
                         self.G.add_edge(d, n, label="samAnakAlaH")
+
+    def add_avyayas(self, bases):
+        ''' Add Avyaya Links '''
+        # Upasargas
+        for (i, s) in enumerate(self.partitions):
+            for n in s:
+                # If node is a upasargs, check
+                # next node, and add links if  bases
+                if n.node_is_a('upasargaH'):
+                    # Cant have upasargs at last node
+                    if i < (len(self.partitions)-1):
+                        nextset = self.partitions[i+1]
+                        for nn in nextset:
+                            if nn in bases:
+                                logger.info(f"Adding upasarga edge: {n,nn}")
+                                self.G.add_edge(nn, n, label="upasargaH")
 
     def get_parses_dc(self):
         ''' Returns all parses
@@ -701,22 +718,22 @@ class VakyaParse(object):
         # Add first edge to forest
         self.edges = set([(nodepair[0], nodepair[1])])
         for n in nodepair:
-            self._activate_and_extinguish_alternatives(n)
+            self.activate_and_extinguish_alternatives(n)
         self.connections.union(nodepair[0], nodepair[1])
 
-    def _activate_and_extinguish_alternatives(self, node):
+    def activate_and_extinguish_alternatives(self, node):
         ''' Make node active, extinguish other nodes in its partition '''
         self.activenodes.add(node)
         self.extinguished.add(node.index)
 
-    def _is_extinguished(self, node):
+    def is_extinguished(self, node):
         ''' Is a node extinguished '''
         return (node.index in self.extinguished) and \
             (node not in self.activenodes)
 
     def is_safe(self, pred, node):
         ''' Checks if a partial parse is compatible with a given node and predecessor pair '''
-        if self._is_extinguished(pred) or self._is_extinguished(node):
+        if self.is_extinguished(pred) or self.is_extinguished(node):
             r = False
         elif (pred in self.activenodes) and (node in self.activenodes):
             r = not self.connections.connected(pred, node)
@@ -732,9 +749,9 @@ class VakyaParse(object):
         else:
             logger.debug(f"Extending {self.edges} with {(pred,node)}")
             if pred not in self.activenodes:
-                self._activate_and_extinguish_alternatives(pred)
+                self.activate_and_extinguish_alternatives(pred)
             if node not in self.activenodes:
-                self._activate_and_extinguish_alternatives(node)
+                self.activate_and_extinguish_alternatives(node)
             self.edges.add((pred, node))
             self.connections.union(pred, node)
         logger.debug(f"Edges {self.edges}")
@@ -746,7 +763,7 @@ class VakyaParse(object):
             return False
         # No extinguished nodes
         for x in other.activenodes:
-            if self._is_extinguished(x):
+            if self.is_extinguished(x):
                 return False
         # No cycles
         for (u, v) in other.edges:
