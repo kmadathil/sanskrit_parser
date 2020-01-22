@@ -20,7 +20,7 @@ from sanskrit_parser.util import lexical_scorer
 from sanskrit_parser.util.disjoint_set import DisjointSet
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
 
-__all__ = ['SandhiGraph', 'VakyaGraph', 'getSLP1Tagset']
+__all__ = ['SandhiGraph', 'VakyaGraph', 'VakyaParse', 'getSLP1Tagset']
 
 dw = DhatuWrapper()
 
@@ -216,7 +216,7 @@ karmani = set(['karmaRi'])
 samastas = set(['samAsapUrvapadanAmapadam'])
 # Vibhaktis
 _vibhaktis = ['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tftIyAviBaktiH',
-              'caturTIviBaktiH', 'paNcamIviBaktiH', 'zazWIviBaktiH',
+              'caturTIviBaktiH', 'paYcamIviBaktiH', 'zazWIviBaktiH',
               'saptamIviBaktiH', 'saMboDanaviBaktiH']
 prathama = _vibhaktis[1-1]
 dvitiya = _vibhaktis[2-1]
@@ -239,6 +239,9 @@ napumsakam = _lingas[1]
 
 avyaya = set(['avyayam'])
 kriyavisheshana = set(['kriyAviSezaRam'])
+nishedha = set(['na'])
+karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'su', 'ati', 'api'])
+karmap_5 = set(['apa', 'pari', 'A', 'prati'])
 
 
 class VakyaGraph(object):
@@ -476,16 +479,33 @@ class VakyaGraph(object):
         # Upasargas
         for (i, s) in enumerate(self.partitions):
             for n in s:
-                # If node is a upasargs, check
-                # next node, and add links if  bases
                 if n.node_is_a('upasargaH'):
-                    # Cant have upasargs at last node
+                    # Cant have upasargas at last node
                     if i < (len(self.partitions)-1):
                         nextset = self.partitions[i+1]
                         for nn in nextset:
                             if nn in bases:
-                                logger.info(f"Adding upasarga edge: {n,nn}")
+                                logger.debug(f"Adding upasarga edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="upasargaH")
+                elif n.node_is_a(avyaya) and (n.getMorphologicalTags()[0] in nishedha):
+                    for b in bases:
+                        if not _is_same_partition(n, b):
+                            logger.debug(f"Adding nishedha edge: {n, b}")
+                            self.G.add_edge(b, n, label="nizeDa")
+                elif n.node_is_a('karmapravacanIyaH'):
+                    for b in bases:
+                        if not _is_same_partition(n, b):
+                            logger.info(f"Adding karmapravacaniya karma edge: {n, b}")
+                            self.G.add_edge(b, n, label="karma")
+                    nextset = self.partitions[i+1]
+                    prevset = self.partitions[i-1]
+                    for nn in nextset.union(prevset):
+                        if nn.node_is_a(dvitiya) and (n.getMorphologicalTags()[0] in karmap_2):
+                            logger.info(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
+                            self.G.add_edge(n, nn, label="upapadadvitIya")
+                        elif nn.node_is_a(pancami) and (n.getMorphologicalTags()[0] in karmap_5):
+                            logger.info(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
+                            self.G.add_edge(n, nn, label="upapadapancami")
 
     def get_parses_dc(self):
         ''' Returns all parses
