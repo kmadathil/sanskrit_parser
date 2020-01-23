@@ -334,6 +334,7 @@ class VakyaGraph(object):
         self.add_kriya_kriya(laks, krts)
         self.add_avyayas(bases)
         self.add_bhavalakshana(krts, laks)
+        self.add_vipsa()
 
     def find_krtverbs(self):
         ''' Find non ti~Nanta verbs'''
@@ -358,8 +359,16 @@ class VakyaGraph(object):
             if n.node_is_a(vibhaktis):
                 for no in self.G:
                     if (not _is_same_partition(n, no)) and match_linga_vacana_vibhakti(n, no):
-                        logger.debug(f"Adding viSezaRa edge: {n,no}")
-                        self.G.add_edge(n, no, label="viSezaRa")
+                        if _get_base(n) != _get_base(no):
+                            logger.debug(f"Adding viSezaRa edge: {n,no}")
+                            self.G.add_edge(n, no, label="viSezaRa")
+
+    def add_vipsa(self):
+        for n in self.G:
+            for no in self.G:
+                if (n.index < no.index) and (_get_base(n) == _get_base(no)):
+                    logger.info(f"Adding vIpsa edge: {n, no}")
+                    self.G.add_edge(n, no, label="vIpsA")
 
     def add_samastas(self):
         ''' Add samasta links from next samasta/tiN '''
@@ -397,7 +406,7 @@ class VakyaGraph(object):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
             logger.debug(f"Processing {d}")
-            dh = d.getMorphologicalTags()[0]
+            dh = _get_base(d)
             hpos = dh.find("#")
             if hpos != -1:
                 dh = dh[:hpos]
@@ -459,7 +468,7 @@ class VakyaGraph(object):
                 if not _is_same_partition(d, n):
                     if n.node_is_a(avyaya) and \
                          (n.node_is_a(kriyavisheshana) or
-                          n.getMorphologicalTags()[0] in avyaya_kriyav):
+                          _get_base(n) in avyaya_kriyav):
                         logger.info(f"Adding kriyAviSezaRa edge to {n}")
                         self.G.add_edge(d, n, label="kriyAviSezaRam")
 
@@ -491,12 +500,12 @@ class VakyaGraph(object):
                             if nn in bases:
                                 logger.debug(f"Adding upasarga edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="upasargaH")
-                elif n.node_is_a(avyaya) and (n.getMorphologicalTags()[0] in nishedha):
+                elif n.node_is_a(avyaya) and (_get_base(n) in nishedha):
                     for b in bases:
                         if not _is_same_partition(n, b):
                             logger.debug(f"Adding nishedha edge: {n, b}")
                             self.G.add_edge(b, n, label="nizeDa")
-                elif n.node_is_a('karmapravacanIyaH') and not (n.getMorphologicalTags()[0] in avyaya_kriyav):
+                elif n.node_is_a('karmapravacanIyaH') and not (_get_base(n) in avyaya_kriyav):
                     for b in bases:
                         if not _is_same_partition(n, b):
                             logger.info(f"Adding karmapravacaniya karma edge: {n, b}")
@@ -504,10 +513,10 @@ class VakyaGraph(object):
                     nextset = self.partitions[i+1]
                     prevset = self.partitions[i-1]
                     for nn in nextset.union(prevset):
-                        if nn.node_is_a(dvitiya) and (n.getMorphologicalTags()[0] in karmap_2):
+                        if nn.node_is_a(dvitiya) and (_get_base(n) in karmap_2):
                             logger.info(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
                             self.G.add_edge(n, nn, label="upapadadvitIya")
-                        elif nn.node_is_a(pancami) and (n.getMorphologicalTags()[0] in karmap_5):
+                        elif nn.node_is_a(pancami) and (_get_base(n) in karmap_5):
                             logger.info(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
                             self.G.add_edge(n, nn, label="upapadapancami")
 
@@ -719,7 +728,8 @@ class VakyaGraphNode(object):
         return self.path.index(node.pada.canonical())
 
     def __str__(self):
-        return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags())
+        return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags()) + \
+            ": " + str(self.index)
 
     def __repr__(self):
         return str(self)
@@ -836,7 +846,7 @@ def getSLP1Tagset(n):
 
 def match_purusha_vacana(d, n):
     ''' Check vacana/puruza compatibility for a Dhatu d and node n '''
-    n_base = n.getMorphologicalTags()[0]
+    n_base = _get_base(n)
     if n_base == 'asmad':
         n_purusha = set([puruzas[2]])
     elif n_base == 'yuzmad':
@@ -897,3 +907,7 @@ def _non_projective(u, v, w, x):
 def _is_same_partition(n1, n2):
     ''' Are the two nodes n1 and n2 are in the same partition in psets '''
     return n1.index == n2.index
+
+
+def _get_base(n):
+    return n.getMorphologicalTags()[0]
