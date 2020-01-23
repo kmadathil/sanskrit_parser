@@ -242,6 +242,7 @@ kriyavisheshana = set(['kriyAviSezaRam'])
 nishedha = set(['na'])
 karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'su', 'ati', 'api'])
 karmap_5 = set(['apa', 'pari', 'A', 'prati'])
+avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva'])
 
 
 class VakyaGraph(object):
@@ -332,6 +333,7 @@ class VakyaGraph(object):
         self.add_visheshana()
         self.add_kriya_kriya(laks, krts)
         self.add_avyayas(bases)
+        self.add_bhavalakshana(krts, laks)
 
     def find_krtverbs(self):
         ''' Find non ti~Nanta verbs'''
@@ -455,8 +457,10 @@ class VakyaGraph(object):
         for d in bases:
             for n in self.G:
                 if not _is_same_partition(d, n):
-                    if n.node_is_a(avyaya) and n.node_is_a(kriyavisheshana):
-                        logger.debug(f"Adding kriyAviSezaRa edge to {n}")
+                    if n.node_is_a(avyaya) and \
+                         (n.node_is_a(kriyavisheshana) or
+                          n.getMorphologicalTags()[0] in avyaya_kriyav):
+                        logger.info(f"Adding kriyAviSezaRa edge to {n}")
                         self.G.add_edge(d, n, label="kriyAviSezaRam")
 
     def add_kriya_kriya(self, lakaras, krts):
@@ -492,7 +496,7 @@ class VakyaGraph(object):
                         if not _is_same_partition(n, b):
                             logger.debug(f"Adding nishedha edge: {n, b}")
                             self.G.add_edge(b, n, label="nizeDa")
-                elif n.node_is_a('karmapravacanIyaH'):
+                elif n.node_is_a('karmapravacanIyaH') and not (n.getMorphologicalTags()[0] in avyaya_kriyav):
                     for b in bases:
                         if not _is_same_partition(n, b):
                             logger.info(f"Adding karmapravacaniya karma edge: {n, b}")
@@ -506,6 +510,15 @@ class VakyaGraph(object):
                         elif nn.node_is_a(pancami) and (n.getMorphologicalTags()[0] in karmap_5):
                             logger.info(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
                             self.G.add_edge(n, nn, label="upapadapancami")
+
+    def add_bhavalakshana(self, krts, laks):
+        ''' Add bhavalakshana edges from saptami krts to lakaras '''
+        for k in krts:
+            if k.node_is_a(saptami):
+                for l in laks:
+                    if not _is_same_partition(k, l):
+                        logger.info(f"Adding Bhavalakshana edge: {k, l}")
+                        self.G.add_edge(l, k, label="BAvalakzaRam")
 
     def get_parses_dc(self):
         ''' Returns all parses

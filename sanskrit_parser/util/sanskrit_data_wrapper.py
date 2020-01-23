@@ -86,8 +86,8 @@ class SanskritDataWrapper(LexicalLookup):
         ('pres', 'para'): ['Satf', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
         ('pres', 'atma'): ['SAnac', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
         ('pres', 'pass'): ['SAnac', 'karmaRi'],  # 'कर्मणिवर्तमानकृदन्तः',
-        ('past', 'active'): ['ktavatu' 'kartari'],  # 'कर्तरिभूतकृदन्तः',
-        ('past', 'pass'): ['kta' 'karmaRi'],  # 'कर्मणिभूतकृदन्तः',
+        ('past', 'active'): ['ktavatu', 'kartari'],  # 'कर्तरिभूतकृदन्तः',
+        ('past', 'pass'): ['kta', 'karmaRi'],  # 'कर्मणिभूतकृदन्तः',
         ('perf', 'para'): ['kvasu'],  # 'पूर्णभूतकृदन्त-परस्मैपदी',
         ('perf', 'atma'): ['kAnac'],  # 'पूर्णभूतकृदन्त-आत्मनेपदी'
     }
