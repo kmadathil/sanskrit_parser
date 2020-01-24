@@ -208,8 +208,8 @@ class SandhiGraph(object):
 
 lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                'viDiliN', 'ASIrliN'])
-krtverbs = set(['ktvA', 'Satf', 'Sanac', 'tumun', 'kta', 'ktavatu'])
-purvakala = set(['ktvA'])
+krtverbs = set(['ktvA', 'Satf', 'Sanac', 'tumun', 'kta', 'ktavatu', 'lyap'])
+purvakala = set(['ktvA', 'lyap'])
 samanakala = set(['Satf', 'Sanac'])
 nishta = set(['kta', 'ktavatu'])
 karmani = set(['karmaRi'])
@@ -231,7 +231,7 @@ vibhaktis = set(_vibhaktis)
 vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
 puruzas = 'praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH'
-karakas = set(['kartA', 'karma', 'karaRa', 'apAdAna', 'sampradAna', 'aDikaraRa'])
+karakas = set(['kartA', 'karma', 'karaRam', 'apAdAnam', 'sampradAnam', 'aDikaraRam'])
 predicative_verbs = set(['as', 'BU', 'vft'])
 _lingas = ['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam']
 lingas = set(_lingas)
@@ -242,7 +242,8 @@ kriyavisheshana = set(['kriyAviSezaRam'])
 nishedha = set(['na'])
 karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'su', 'ati', 'api'])
 karmap_5 = set(['apa', 'pari', 'A', 'prati'])
-avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva'])
+avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
+projlabels = karakas.union(kriyavisheshana)
 
 
 class VakyaGraph(object):
@@ -286,8 +287,10 @@ class VakyaGraph(object):
         # Remove isolated nodes (with no edges)
         isolates = list(nx.isolates(self.G))
         self.G.remove_nodes_from(isolates)
-        for s in self.partitions:
+        for (ix, s) in enumerate(self.partitions):
             s.difference_update(isolates)
+            if len(s) == 0:
+                logger.error(f"Partition {ix}: {path[ix]} went to zero length!")
         start_parse = time.time()
         self.parses = self.get_parses_dc()
         end_parse = time.time()
@@ -496,8 +499,11 @@ class VakyaGraph(object):
                     # Cant have upasargas at last node
                     if i < (len(self.partitions)-1):
                         nextset = self.partitions[i+1]
+                        # Upasarga to upasarga links ok
+                        # Upasarga to any verb form barring ktvA
                         for nn in nextset:
-                            if nn in bases:
+                            if ((nn in bases) and not nn.node_is_a('ktvA')) or \
+                               nn.node_is_a('upasargaH'):
                                 logger.debug(f"Adding upasarga edge: {n,nn}")
                                 self.G.add_edge(nn, n, label="upasargaH")
                 elif n.node_is_a(avyaya) and (_get_base(n) in nishedha):
@@ -586,7 +592,7 @@ class VakyaGraph(object):
                 return t
 
         def _merge_partials(pp1, pp2, mx, mn):
-            logger.info(f"Merging between {mn, mx}")
+            logger.info(f"Merging between {mn, mx} {len(pp1)} x {len(pp2)}")
             start_time = time.time()
             logger.debug(f"Merging {pp1, pp2}")
             ppmt = set()
@@ -594,6 +600,7 @@ class VakyaGraph(object):
                 for ppb in pp2:
                     if ppa.can_merge(ppb, mx-mn-1):
                         ppmt.add(ppa.merge(ppb))
+            logger.info(f"{len(ppmt)} parses")
             logger.debug(f"Merged {ppmt}")
             end_time = time.time()
             logger.info(f"Time for merge {end_time-start_time}")
@@ -610,46 +617,10 @@ class VakyaGraph(object):
             Remove parses with multiple to edges into a node
             Remove parses with cycles
         '''
-        # Check a parse for validity
-        def _check(parse):
-            r = True
-            count = defaultdict(lambda: defaultdict(int))
-            edges = {}
-            toedge = defaultdict(int)
-            fromv = defaultdict(int)
-            tov = defaultdict(int)
-            for (u, v, l) in parse.edges(data='label'):
-                if l in karakas:
-                    count[u][l] = count[u][l]+1
-                    edges[(u.index, v.index)] = 1
-                    toedge[v] = toedge[v]+1
-                if l in 'viSezaRa':
-                    fromv[u] = fromv[u] + 1
-                    tov[v] = tov[v] + 1
-
-            for u in count:  # Dhatu
-                for k in count[u]:  # Each karaka should count only once
-                    if count[u][k] > 1:
-                        logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
-                        return False
-            for (ui, vi) in edges:
-                for (wi, xi) in edges:
-                    if _non_projective(ui, vi, wi, xi):  # Non-projective
-                        logger.info(f"Sannidhi violation {ui} - {vi} : {wi} - {xi}")
-                        return False
-            for v in toedge:
-                if toedge[v] > 1:
-                    logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
-                    return False
-            for v in tov:
-                if v in fromv:
-                    logger.info(f"Viseshana has visheshana {v} - violates global constraint")
-                    return False
-            return r
         iv = set()
-        logger.debug(f"Parses before validity check {len(self.parses)}")
+        logger.info(f"Parses before validity check {len(self.parses)}")
         for p in self.parses:
-            if not _check(p):
+            if not _check_parse(p):
                 logger.info(f"Will remove {p}")
                 iv.add(p)  # Collect invalid parses
         # Remove them
@@ -802,7 +773,7 @@ class VakyaParse(object):
     def can_merge(self, other, l):
         ''' Can we merge two VakyaParses '''
         # Proper length
-        if (len(other.edges) + len(self.edges)) != l:
+        if (len(other.edges) + len(self.edges)) < l:
             return False
         # No extinguished nodes
         for x in other.activenodes:
@@ -911,3 +882,42 @@ def _is_same_partition(n1, n2):
 
 def _get_base(n):
     return n.getMorphologicalTags()[0]
+
+
+# Check a parse for validity
+def _check_parse(parse):
+    r = True
+    count = defaultdict(lambda: defaultdict(int))
+    edges = {}
+    toedge = defaultdict(int)
+    fromv = defaultdict(int)
+    tov = defaultdict(int)
+    for (u, v, l) in parse.edges(data='label'):
+        if l in karakas:
+            count[u][l] = count[u][l]+1
+            toedge[v] = toedge[v]+1
+        if l in 'viSezaRa':
+            fromv[u] = fromv[u] + 1
+            tov[v] = tov[v] + 1
+        if l in projlabels:  # Labels with sannidhi expectation
+            edges[(u.index, v.index)] = 1
+
+    for u in count:  # Dhatu
+        for k in count[u]:  # Each karaka should count only once
+            if count[u][k] > 1:
+                logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
+                return False
+    for (ui, vi) in edges:
+        for (wi, xi) in edges:
+            if _non_projective(ui, vi, wi, xi):  # Non-projective
+                logger.info(f"Sannidhi violation {ui} - {vi} : {wi} - {xi}")
+                return False
+    for v in toedge:
+        if toedge[v] > 1:
+            logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+            return False
+    for v in tov:
+        if v in fromv:
+            logger.info(f"Viseshana has visheshana {v} - violates global constraint")
+            return False
+    return r
