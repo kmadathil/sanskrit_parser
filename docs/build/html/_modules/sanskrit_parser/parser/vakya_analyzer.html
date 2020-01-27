@@ -1,0 +1,284 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sanskrit_parser.parser.vakya_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for sanskrit_parser.parser.vakya_analyzer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;Morphological Analyzer for Sanskrit Sentences.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">======</span>
+
+<span class="sd">The ``VakyaGraph`` class can be initialized with a split output from</span>
+<span class="sd">``LexicalSandhiAnalyzer.getSandhiSplits``. The ``.parses`` member contains</span>
+<span class="sd">all valid parses for that split</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">        from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1</span>
+<span class="sd">        from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer</span>
+<span class="sd">        from sanskrit_parser.parser.datastructures import VakyaGraph</span>
+<span class="sd">        sentence = SanskritObject(&quot;astyuttarasyAmdiSi&quot;,encoding=SLP1)</span>
+<span class="sd">        analyzer = LexicalSandhiAnalyzer()</span>
+<span class="sd">        graph=analyzer.getSandhiSplits(sentence,tag=True)</span>
+<span class="sd">        splits=graph.find_all_paths(max_paths=1)</span>
+<span class="sd">        for sp in splits:</span>
+<span class="sd">            print(&quot;Lexical Split:&quot;,sp)</span>
+<span class="sd">            vgraph = VakyaGraph(sp)</span>
+<span class="sd">            if vgraph.parses:</span>
+<span class="sd">              for (ix, p) in enumerate(vgraph.parses):</span>
+<span class="sd">                  print(f&quot;Parse {ix}&quot;)</span>
+<span class="sd">                  for n in p:</span>
+<span class="sd">                      print(n)</span>
+<span class="sd">            else:</span>
+<span class="sd">              print(&quot;No valid morphologies for this split&quot;)</span>
+<span class="sd">        ...</span>
+<span class="sd">        Parse 0</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        asti=&gt;[&#39;as&#39;, {parasmEpadam, praTamapuruzaH, ekavacanam, law}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 1</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {dvitIyAviBaktiH, napuMsakaliNgam, bahuvacanam}]</span>
+<span class="sd">        asti=&gt;[&#39;as#1&#39;, {kartari, prATamikaH, ekavacanam, law, praTamapuruzaH}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 2</span>
+<span class="sd">        diSi=&gt;[&#39;diS#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        asti=&gt;[&#39;asti&#39;, {strIliNgam, samAsapUrvapadanAmapadam}]</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#1&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        Parse 3</span>
+<span class="sd">        uttarasyAm=&gt;[&#39;uttara#2&#39;, {strIliNgam, ekavacanam, saptamIviBaktiH}]</span>
+<span class="sd">        diSi=&gt;[&#39;diS&#39;, {saptamIviBaktiH, ekavacanam, strIliNgam}]</span>
+<span class="sd">        asti=&gt;[&#39;as&#39;, {parasmEpadam, praTamapuruzaH, ekavacanam, law}]</span>
+
+
+
+<span class="sd">Command line usage</span>
+<span class="sd">==================</span>
+
+<span class="sd">The sanskrit_parser script can be used to view parses as below.</span>
+
+<span class="sd">If the --dot option is provided, a graph is output in .dot fomat with</span>
+<span class="sd">all the possible morphologies as nodes, and possible relations as</span>
+<span class="sd">edges. The valid parses extracted from this graph are also written out</span>
+<span class="sd">as _parse.dot files</span>
+
+
+<span class="sd">::</span>
+
+<span class="sd">    $ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot</span>
+<span class="sd">    ...</span>
+<span class="sd">    Lexical Split: [asti, uttarasyAm, diSi]</span>
+<span class="sd">    ...</span>
+<span class="sd">    Parse 0</span>
+<span class="sd">    asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]</span>
+<span class="sd">    diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]</span>
+<span class="sd">    uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]</span>
+<span class="sd">    ...</span>
+
+<span class="sd">    $ dot -Tpng vakya.dot -o vakya.png</span>
+<span class="sd">    $ eog vakya.png</span>
+<span class="sd">    $ dot -Tpng vakya_parse0.dot -o vakya.png</span>
+<span class="sd">    $ eog vakya_parse0.png</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">as</span> <span class="nn">SanskritBase</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util.DhatuWrapper</span> <span class="k">import</span> <span class="n">DhatuWrapper</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="k">import</span> <span class="n">VakyaGraph</span><span class="p">,</span> <span class="n">getSLP1Tagset</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">import</span> <span class="nn">constraint</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_console_logging</span><span class="p">():</span>
+    <span class="n">console</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="c1"># set a format which is simpler for console use</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># tell the handler to use this format</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="c1"># add the handler to the root logger</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="getArgs"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.getArgs">[docs]</a><span class="k">def</span> <span class="nf">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Vakya Analyzer&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Need a lakara</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--need-lakara&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--split-above&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">need_lakara</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">vgraph</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_console_logging</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">need_lakara</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">need_lakara</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;VakyaAnalyzer.log&#39;</span><span class="p">,</span> <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                              <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                              <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String in SLP1: {i.canonical()}&quot;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Start Split&quot;</span><span class="p">)</span>
+    <span class="n">start_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">end_split</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End DAG generation&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">outputctx</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="p">:</span>
+            <span class="n">start_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">end_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End pathfinding&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splits:&quot;</span><span class="p">)</span>
+            <span class="n">spl_t</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">vgraph</span> <span class="o">=</span> <span class="n">VakyaGraph</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">max_parse_dc</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">split_above</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parse </span><span class="si">{ix}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End Morphological Analysis&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Performance&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Time taken for split: </span><span class="si">{0:0.6f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_split</span><span class="o">-</span><span class="n">start_split</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time taken for path: {end_path-start_path:0.6f}s&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No Valid Splits Found&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vgraph</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_parser.html">parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

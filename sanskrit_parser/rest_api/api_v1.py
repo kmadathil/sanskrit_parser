@@ -1,16 +1,13 @@
-import logging
-
-from flask import Blueprint
+from flask import Blueprint, redirect
 import flask_restplus
 from flask_restplus import Resource
+from random import randint
+import subprocess
+from os import path
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-from sanskrit_parser.morphological_analyzer.sanskrit_morphological_analyzer import SanskritMorphologicalAnalyzer
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
-)
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
+from sanskrit_parser.parser.datastructures import VakyaGraph
 
 URL_PREFIX = '/v1'
 api_blueprint = Blueprint(
@@ -24,7 +21,20 @@ api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parse
                          default_label=api_blueprint.name,
                          prefix=URL_PREFIX, doc='/docs')
 
-analyzer = SanskritMorphologicalAnalyzer()
+analyzer = LexicalSandhiAnalyzer()
+
+
+def jedge(pred, node, label):
+    return (node.pada.devanagari(strict_io=False),
+            jtag(node.getMorphologicalTags()),
+            SanskritObject(label, encoding=SLP1).devanagari(strict_io=False),
+            pred.pada.devanagari(strict_io=False))
+
+
+def jnode(node):
+    """ Helper to translate parse node into serializable format"""
+    return (node.pada.devanagari(strict_io=False),
+            jtag(node.getMorphologicalTags()), "", "")
 
 
 def jtag(tag):
@@ -42,7 +52,7 @@ class Tags(Resource):
     def get(self, p):
         """ Get lexical tags for p """
         pobj = SanskritObject(p, strict_io=False)
-        tags = analyzer.getLexicalTags(pobj)
+        tags = analyzer.getMorphologicalTags(pobj)
         if tags is not None:
             ptags = jtags(tags)
         else:
@@ -58,7 +68,7 @@ class Splits(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj)
         if g:
-            splits = g.findAllPaths(10)
+            splits = g.find_all_paths(10)
             jsplits = [[ss.devanagari(strict_io=False) for ss in s] for s in splits]
         else:
             jsplits = []
@@ -73,16 +83,41 @@ class Morpho(Resource):
         vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
-            splits = g.findAllPaths(10)
+            splits = g.find_all_paths(10, score=True)
         else:
             splits = []
         mres = {}
+        plotbase = {}
         for sp in splits:
-            p = analyzer.constrainPath(sp)
-            if p:
-                sl = "_".join([spp.devanagari(strict_io=False) for spp in sp])
-                mres[sl] = []
-                for pp in p:
-                    mres[sl].append([(spp.devanagari(strict_io=False), jtag(pp[spp.canonical()])) for spp in sp])
-        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres}
+            bn = f"{randint(0,9999):4}"
+            vg = VakyaGraph(sp, max_parse_dc=5)
+            sl = "_".join([n.devanagari(strict_io=False)
+                           for n in sp])
+            for (ix, p) in enumerate(vg.parses):
+                if sl not in mres:
+                    mres[sl] = []
+                t = []
+                for n in p:
+                    preds = list(p.predecessors(n))
+                    if preds:
+                        pred = preds[0]  # Only one
+                        lbl = p.edges[pred, n]['label']
+                        t.append(jedge(pred, n, lbl))
+                    else:
+                        t.append(jnode(n))
+                mres[sl].append(t)
+            plotbase[sl] = bn
+            try:
+                vg.write_dot(f"static/{bn}.dot")
+            except Exception:
+                pass
+        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres, "plotbase": plotbase}
         return r
+
+    @api.route('/graph/<string:v>')
+    class Graph(Resource):
+        def get(self, v):
+            """ Get graph for v """
+            if not path.exists(f"static/{v}.dot.png"):
+                subprocess.run(f"dot -Tpng static/{v}.dot -O", shell=True)
+            return redirect(f"/static/{v}.dot.png")

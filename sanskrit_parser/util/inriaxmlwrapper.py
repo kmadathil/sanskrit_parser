@@ -59,7 +59,7 @@ from io import BytesIO
 import logging
 import time
 import datetime
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper
 
@@ -206,7 +206,8 @@ if __name__ == "__main__":
         parser.add_argument('word', nargs='?', type=str,
                             default=None,
                             help="Word to look up")
-
+        parser.add_argument('--no-map-tags', dest='map_tags',
+                            action='store_false')
         return parser.parse_args()
 
     def main():
@@ -222,11 +223,12 @@ if __name__ == "__main__":
                 raise ValueError('Invalid log level: %s' % args.loglevel)
             logging.basicConfig(level=numeric_level)
 
-        word_in = SanskritObject(args.word, encoding=ie).canonical()
+        word_in = SanskritImmutableString(args.word, encoding=ie).canonical()
         xmlDB = InriaXMLWrapper()
         print("Getting tags for", word_in)
-        tags = xmlDB.get_tags(word_in)
+        tags = xmlDB.get_tags(word_in, tmap=args.map_tags)
         if tags is not None:
-            map(print, tags)
+            for t in tags:
+                print(t)
 
     main()

@@ -4,24 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>sanskrit_parser’s documentation &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -30,47 +22,152 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-sanskrit_parser">
 <span id="sanskrit-parser-s-documentation"></span><h1>sanskrit_parser’s documentation<a class="headerlink" href="#module-sanskrit_parser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Sanskrit parser is a python library to help parse Sanskrit input</p>
+<dl class="docutils">
+<dt>It provides three main levels of output, in order of increasing complexity:</dt>
+<dd><ol class="first last arabic simple">
+<li><em>tags</em> - Morphological analysis of a word</li>
+<li><em>sandhi</em> - Sandhi Split of a phrase</li>
+<li><em>vakya</em> - Morphological Analysis of a sentence (after Sandhi split)</li>
+</ol>
+</dd>
+</dl>
+<p>This project is still under development. Please report any issues <a class="reference external" href="https://github.com/kmadathil/sanskrit_parser/issues">here</a>.</p>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sanskrit_parser</span></code> script can be used to view parses, sandhi splits,
+or morphological tags as below.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">--dot</span></code> option is provided, a graph is output in <code class="docutils literal notranslate"><span class="pre">.dot</span></code> fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as <code class="docutils literal notranslate"><span class="pre">_parse.dot</span></code> files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+...
+Lexical Split: [asti, uttarasyAm, diSi]
+...
+Parse 0
+asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
+diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+...
+
+$ dot -Tpng vakya.dot -o vakya.png
+$ eog vakya.png
+$ dot -Tpng vakya_parse0.dot -o vakya.png
+$ eog vakya_parse0.png
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA
+...
+Splits:
+[asti, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttara, syAm, diSi, devatA, AtmA]
+[astI, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttarasyAm, diSi, devatAt, mA]
+[asti, uttarasyAm, diSi, devata, AtmA]
+[asti, uttarasyAm, diSi, devat, AtmA]
+[asti, uttarasyAm, diSi, devatAtmA]
+[asti, uttarasyAm, diSi, devatA, at, mA]
+[asti, uttara, syAm, diSi, devat, AtmA]
+[asti, uttarasyAm, di, Si, devatA, AtmA]
+-----------
+..
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ scripts/sanskrit_parser tags hares
+...
+Morphological tags:
+(&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
+(&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
+(&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+Input String in SLP1: hares
+(&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
+(&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
+(&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+</pre></div>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#command-line-usage">Command line usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html">lexical_analyzer.sandhi</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html#intro">Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html#usage">Usage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html#command-line-usage">Command line usage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html#submodules">Submodules</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_parser.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">parser.sandhi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#intro">Intro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#command-line-usage">Command line usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#submodules">Submodules</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_lexical_analyzer_sandhi.html#indices-and-tables">Indices and tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html">parser.sandhi_analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#intro">Intro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html">parser.vakya_analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html#command-line-usage">Command line usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html">parser.datastructures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html#indices-and-tables">Indices and tables</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#command-line-usage">Command line usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#submodules">Submodules</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html#indices-and-tables">Indices and tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_parser.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a><ul>
@@ -121,6 +218,7 @@
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -136,8 +234,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
 </ul>
@@ -151,24 +248,34 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, sanskrit-programmers.
+      &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/index.rst.txt"

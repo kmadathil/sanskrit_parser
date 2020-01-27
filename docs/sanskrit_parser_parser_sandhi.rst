@@ -1,7 +1,7 @@
-lexical_analyzer
-=========================================
+parser.sandhi
+===================================================================
 
-.. automodule:: sanskrit_parser.lexical_analyzer
+.. automodule:: sanskrit_parser.parser.sandhi
   :members:
   :undoc-members:
   :show-inheritance:
@@ -12,7 +12,6 @@ Submodules
 .. toctree::
   :maxdepth: 5
 
-  sanskrit_parser_lexical_analyzer_sandhi
 
 Indices and tables
 ------------------

@@ -1,0 +1,284 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>parser.sandhi_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="parser.vakya_analyzer" href="sanskrit_parser_parser_vakya_analyzer.html" />
+    <link rel="prev" title="parser.sandhi" href="sanskrit_parser_parser_sandhi.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sanskrit_parser.parser.sandhi_analyzer">
+<span id="parser-sandhi-analyzer"></span><h1>parser.sandhi_analyzer<a class="headerlink" href="#module-sanskrit_parser.parser.sandhi_analyzer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Sandhi Analyzer for Sanskrit words</p>
+<p>&#64;author: Karthik Madathil (github: &#64;kmadathil)</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">LexicalSandhiAnalyzer</span></code> to split a sentence (wrapped in a
+<code class="docutils literal notranslate"><span class="pre">SanskritObject</span></code>) and retrieve the top 10 splits:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sentence</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">splits</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="o">.</span><span class="n">findAllPaths</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;at&#39;, u&#39;mA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;vatA&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devata&#39;, u&#39;at&#39;, u&#39;mA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttas&#39;, u&#39;rasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttara&#39;, u&#39;syAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
+<span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;de&#39;, u&#39;avatA&#39;, u&#39;AtmA&#39;]</span>
+</pre></div>
+</div>
+<p>The sandhi_analyzer can also be used to look up the tags for a given
+word form: (Note that the database stores words
+ending in visarga with an ‘s’ at the end)</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">word</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;hares&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tags</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;]))</span>
+<span class="go">(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="go">(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="go">(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="go">(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="go">(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="go">(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+<span class="go">(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
+<span class="go">(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer">
+<em class="property">class </em><code class="descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="descname">LexicalSandhiAnalyzer</code><span class="sig-paren">(</span><em>lexical_lookup='combined'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Singleton class to hold methods for Sanskrit lexical sandhi analysis.</p>
+<p>We define lexical sandhi analysis to be the process of taking an input sequence
+and transforming it to a collection (represented by a DAG) of potential sandhi
+splits of the sequence. Each member of a split is guaranteed to be a valid
+lexical form.</p>
+<dl class="method">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags">
+<code class="descname">getMorphologicalTags</code><span class="sig-paren">(</span><em>obj</em>, <em>tmap=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getMorphologicalTags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Morphological tags for a word</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd><p class="first">obj(SanskritString): word
+tmap(Boolean=True): If True, maps</p>
+<blockquote class="last">
+<div>tags to our format</div></blockquote>
+</dd>
+<dt>Returns</dt>
+<dd>list: List of (base, tagset) pairs</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">
+<code class="descname">getSandhiSplits</code><span class="sig-paren">(</span><em>o</em>, <em>tag=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getSandhiSplits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all valid Sandhi splits for a string</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd><p class="first">o(SanskritString): Input object
+tag(Boolean)     : When True (def=False), return a</p>
+<blockquote class="last">
+<div>morphologically tagged graph</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>SandhiGraph : DAG all possible splits</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag">
+<code class="descname">hasTag</code><span class="sig-paren">(</span><em>obj</em>, <em>name</em>, <em>tagset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.hasTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if word matches morhphological tags</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>obj(SanskritString): word
+name(str): name in tag
+tagset(set): set of tag elements</dd>
+<dt>Returns</dt>
+<dd><dl class="first last docutils">
+<dt>list: List of (base, tagset) pairs for obj that</dt>
+<dd>match (name,tagset), or None</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.sandhi">
+<code class="descname">sandhi</code><em class="property"> = &lt;sanskrit_parser.parser.sandhi.Sandhi object&gt;</em><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.sandhi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph">
+<code class="descname">tagSandhiGraph</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.tagSandhiGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tag a Sandhi Graph with morphological tags for each node</p>
+<dl class="docutils">
+<dt>Params:</dt>
+<dd>g (SandhiGraph) : input lexical sandhi graph</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.getArgs">
+<code class="descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="descname">getArgs</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#getArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.getArgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Argparse routine.
+Returns args variable</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.main">
+<code class="descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="descname">main</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_parser.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">parser.sandhi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">parser.sandhi_analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#intro">Intro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html">parser.vakya_analyzer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html">parser.datastructures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_parser.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="sanskrit_parser_parser.html">parser</a><ul>
+      <li>Previous: <a href="sanskrit_parser_parser_sandhi.html" title="previous chapter">parser.sandhi</a></li>
+      <li>Next: <a href="sanskrit_parser_parser_vakya_analyzer.html" title="next chapter">parser.vakya_analyzer</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/sanskrit_parser_parser_sandhi_analyzer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

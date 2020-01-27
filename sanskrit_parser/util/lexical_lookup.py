@@ -8,7 +8,7 @@ from __future__ import print_function
 import abc
 import os
 from argparse import ArgumentParser
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1, SCHEMES
 
 
 class LexicalLookup(object):
@@ -37,6 +37,8 @@ class LexicalLookup(object):
         parser.add_argument('--input-encoding', type=str, default=None)
         parser.add_argument('--loglevel', type=str, default="info",
                             help="logging level. Can be any level supported by logging module")
+        parser.add_argument('--no-map-tags', dest='map_tags',
+                            action='store_false')
 
         parser.add_argument('word', nargs='?', type=str,
                             default=None,
@@ -50,9 +52,10 @@ class LexicalLookup(object):
         else:
             ie = SCHEMES[args.input_encoding]
 
-        word_in = SanskritObject(args.word, encoding=ie).transcoded(SLP1)
+        word_in = SanskritImmutableString(args.word,
+                                          encoding=ie).transcoded(SLP1)
         print("Getting tags for", word_in)
-        tags = self.get_tags(word_in)
+        tags = self.get_tags(word_in, tmap=args.map_tags)
         if tags is not None:
             for tag in tags:
                 print(tag)

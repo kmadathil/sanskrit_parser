@@ -9,7 +9,7 @@ Get varnas in a pratyahara:
 
     >>> from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
     >>> MS = MaheshvaraSutras()
-    >>> jaS = SanskritObject('jaS', encoding=SLP1)
+    >>> jaS = SanskritImmutableString('jaS', encoding=SLP1)
     >>> print(MS.getPratyahara(jaS))
     jabagaqada
 
@@ -17,10 +17,10 @@ Check if a varna is in a pratyahara:
 
 .. code:: python
 
-    >>> g = SanskritObject('g')
+    >>> g = SanskritImmutableString('g')
     >>> print(MS.isInPratyahara(jaS, g))
     True
-    >>> k = SanskritObject('k')
+    >>> k = SanskritImmutableString('k')
     >>> print(MS.isInPratyahara(jaS, k))
     False
 
@@ -48,7 +48,7 @@ class MaheshvaraSutras(object):
     """
     Singleton MaheshvaraSutras class
     Attributes:
-    MS(SanskritObject) : Internal representation of mAheshvara sutras
+    MS(SanskritImmutableString) : Internal representation of mAheshvara sutras
     MSS(str)           : Canonical (SLP1) representation
     """
 
@@ -58,7 +58,7 @@ class MaheshvaraSutras(object):
         """
         # Note that a space is deliberately left after each it to help in
         # demarcating them.
-        self.MS = sanskrit_base.SanskritObject(
+        self.MS = sanskrit_base.SanskritImmutableString(
             u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् ',
             sanskrit_base.DEVANAGARI)
         # SLP1 version for internal operations
@@ -73,12 +73,12 @@ class MaheshvaraSutras(object):
         Return list of varnas covered by a pratyahara
 
         Args:
-              p(:class:SanskritObject): Pratyahara
+              p(:class:SanskritImmutableString): Pratyahara
               longp(boolean :optional:): When True (default), uses long pratyaharas
               remove_a(boolean :optional:): When True, removes intermediate 'a'.This is better for computational use
               dirghas(boolean :optional:) When True (default=False) adds dirgha vowels to the returned varnas
         Returns:
-              (SanskritObject): List of varnas to the same encoding as p
+              (SanskritImmutableString): List of varnas to the same encoding as p
         """
 
         # SLP1 encoded pratyahara string
@@ -105,15 +105,15 @@ class MaheshvaraSutras(object):
         # Add dIrgha vowels if requested
         if dirghas:
             ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF').replace('x', 'xX')
-        return sanskrit_base.SanskritObject(ts, sanskrit_base.SLP1)
+        return sanskrit_base.SanskritImmutableString(ts, sanskrit_base.SLP1)
 
     def isInPratyahara(self, p, v, longp=True):
         """
         Checks whether a given varna is in a pratyahara
 
         Args:
-            p(SanskritObject): Pratyahara
-            v(SanskritObject): Varna
+            p(SanskritImmutableString): Pratyahara
+            v(SanskritImmutableString): Varna
             longp(boolean :optional:): When True (default), uses long pratyaharas
         Returns
              boolean: Is v in p?
@@ -145,7 +145,7 @@ if __name__ == "__main__":
           Returns args variable
         """
         # Parser Setup
-        parser = argparse.ArgumentParser(description='SanskritObject')
+        parser = argparse.ArgumentParser(description='SanskritImmutableString')
         # Pratyahara - print out the list of varnas in this
         parser.add_argument('--pratyahara', type=str, default="ik")
         # Varna. Optional. Check if this varna is in pratyahara above
@@ -169,12 +169,12 @@ if __name__ == "__main__":
             e = sanskrit_base.SCHEMES[args.encoding]
         else:
             e = None
-        p = sanskrit_base.SanskritObject(args.pratyahara, e)
+        p = sanskrit_base.SanskritImmutableString(args.pratyahara, e)
         longp = not args.short
         print(six.text_type(p.devanagari()))
         print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).devanagari()))
         if args.varna is not None:
-            v = sanskrit_base.SanskritObject(args.varna, e)
+            v = sanskrit_base.SanskritImmutableString(args.varna, e)
             print(u"Is {} in {}?".format(v.devanagari(),
                                          p.devanagari()))
             print(m.isInPratyahara(p, v, longp))

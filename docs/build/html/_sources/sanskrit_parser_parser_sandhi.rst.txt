@@ -1,7 +1,7 @@
-morphological_analyzer
-========================================================
+parser.sandhi
+===================================================================
 
-.. automodule:: sanskrit_parser.morphological_analyzer
+.. automodule:: sanskrit_parser.parser.sandhi
   :members:
   :undoc-members:
   :show-inheritance:

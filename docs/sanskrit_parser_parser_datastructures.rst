@@ -1,7 +1,7 @@
-lexical_analyzer.sandhi
+parser.datastructures
 ===================================================================
 
-.. automodule:: sanskrit_parser.lexical_analyzer.sandhi
+.. automodule:: sanskrit_parser.parser.datastructures
   :members:
   :undoc-members:
   :show-inheritance:

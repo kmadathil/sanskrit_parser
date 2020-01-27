@@ -4,24 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>sanskrit_parser.base.maheshvara_sutra &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -30,13 +22,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for sanskrit_parser.base.maheshvara_sutra</h1><div class="highlight"><pre>
@@ -51,7 +44,7 @@
 
 <span class="sd">    &gt;&gt;&gt; from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras</span>
 <span class="sd">    &gt;&gt;&gt; MS = MaheshvaraSutras()</span>
-<span class="sd">    &gt;&gt;&gt; jaS = SanskritObject(&#39;jaS&#39;, encoding=SLP1)</span>
+<span class="sd">    &gt;&gt;&gt; jaS = SanskritImmutableString(&#39;jaS&#39;, encoding=SLP1)</span>
 <span class="sd">    &gt;&gt;&gt; print(MS.getPratyahara(jaS))</span>
 <span class="sd">    jabagaqada</span>
 
@@ -59,10 +52,10 @@
 
 <span class="sd">.. code:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; g = SanskritObject(&#39;g&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = SanskritImmutableString(&#39;g&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; print(MS.isInPratyahara(jaS, g))</span>
 <span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; k = SanskritObject(&#39;k&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; k = SanskritImmutableString(&#39;k&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; print(MS.isInPratyahara(jaS, k))</span>
 <span class="sd">    False</span>
 
@@ -90,7 +83,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Singleton MaheshvaraSutras class</span>
 <span class="sd">    Attributes:</span>
-<span class="sd">    MS(SanskritObject) : Internal representation of mAheshvara sutras</span>
+<span class="sd">    MS(SanskritImmutableString) : Internal representation of mAheshvara sutras</span>
 <span class="sd">    MSS(str)           : Canonical (SLP1) representation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -100,7 +93,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Note that a space is deliberately left after each it to help in</span>
         <span class="c1"># demarcating them.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">MS</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MS</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritImmutableString</span><span class="p">(</span>
             <span class="sa">u</span><span class="s1">&#39;अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् &#39;</span><span class="p">,</span>
             <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">DEVANAGARI</span><span class="p">)</span>
         <span class="c1"># SLP1 version for internal operations</span>
@@ -115,12 +108,12 @@
 <span class="sd">        Return list of varnas covered by a pratyahara</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">              p(:class:SanskritObject): Pratyahara</span>
+<span class="sd">              p(:class:SanskritImmutableString): Pratyahara</span>
 <span class="sd">              longp(boolean :optional:): When True (default), uses long pratyaharas</span>
 <span class="sd">              remove_a(boolean :optional:): When True, removes intermediate &#39;a&#39;.This is better for computational use</span>
 <span class="sd">              dirghas(boolean :optional:) When True (default=False) adds dirgha vowels to the returned varnas</span>
 <span class="sd">        Returns:</span>
-<span class="sd">              (SanskritObject): List of varnas to the same encoding as p</span>
+<span class="sd">              (SanskritImmutableString): List of varnas to the same encoding as p</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># SLP1 encoded pratyahara string</span>
@@ -147,15 +140,15 @@
         <span class="c1"># Add dIrgha vowels if requested</span>
         <span class="k">if</span> <span class="n">dirghas</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;aA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;iI&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;uU&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;fF&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;xX&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritImmutableString</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SLP1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MaheshvaraSutras.isInPratyahara"><a class="viewcode-back" href="../../../sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara">[docs]</a>    <span class="k">def</span> <span class="nf">isInPratyahara</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">longp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether a given varna is in a pratyahara</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            p(SanskritObject): Pratyahara</span>
-<span class="sd">            v(SanskritObject): Varna</span>
+<span class="sd">            p(SanskritImmutableString): Pratyahara</span>
+<span class="sd">            v(SanskritImmutableString): Varna</span>
 <span class="sd">            longp(boolean :optional:): When True (default), uses long pratyaharas</span>
 <span class="sd">        Returns</span>
 <span class="sd">             boolean: Is v in p?</span>
@@ -187,7 +180,7 @@
 <span class="sd">          Returns args variable</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Parser Setup</span>
-        <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;SanskritObject&#39;</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;SanskritImmutableString&#39;</span><span class="p">)</span>
         <span class="c1"># Pratyahara - print out the list of varnas in this</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--pratyahara&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ik&quot;</span><span class="p">)</span>
         <span class="c1"># Varna. Optional. Check if this varna is in pratyahara above</span>
@@ -211,12 +204,12 @@
             <span class="n">e</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">encoding</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">e</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pratyahara</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritImmutableString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pratyahara</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
         <span class="n">longp</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">short</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">devanagari</span><span class="p">()))</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">getPratyahara</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">longp</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">remove_a</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dirghas</span><span class="p">)</span><span class="o">.</span><span class="n">devanagari</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">varna</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritObject</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">varna</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">sanskrit_base</span><span class="o">.</span><span class="n">SanskritImmutableString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">varna</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Is </span><span class="si">{}</span><span class="s2"> in </span><span class="si">{}</span><span class="s2">?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">devanagari</span><span class="p">(),</span>
                                          <span class="n">p</span><span class="o">.</span><span class="n">devanagari</span><span class="p">()))</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">isInPratyahara</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">longp</span><span class="p">))</span>
@@ -225,6 +218,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -240,8 +234,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_lexical_analyzer.html">lexical_analyzer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_morphological_analyzer.html">morphological_analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_parser.html">parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_base.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sanskrit_parser_util.html">util</a></li>
 </ul>
@@ -257,24 +250,34 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, sanskrit-programmers.
+      &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

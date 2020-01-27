@@ -25,10 +25,10 @@ The ``Sandhi`` class can be used to join/split words:
 
 .. code:: python
 
-    >>> from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
+    >>> from sanskrit_parser.parser.sandhi import Sandhi
     >>> sandhi = Sandhi()
-    >>> word1 = SanskritObject('te')
-    >>> word2 = SanskritObject('eva')
+    >>> word1 = SanskritImmutableString('te')
+    >>> word2 = SanskritImmutableString('eva')
     >>> joins = sandhi.join(word1, word2)
     >>> for join in joins:
     ...    print(join)
@@ -42,7 +42,7 @@ To split at a specific position, use the ``Sandhi.split_at()`` method:
 
 .. code:: python
 
-    >>> w = SanskritObject('taeva')
+    >>> w = SanskritImmutableString('taeva')
     >>> splits = sandhi.split_at(w, 1)
     >>> for split in splits:
     ...    print(split)
@@ -81,15 +81,15 @@ Command line usage
 
 ::
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --join te eva
+    $ python -m sanskrit_parser.parser.sandhi --join te eva
     Joining te eva
     set([u'teeva', u'taeva', u'ta eva', u'tayeva'])
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva 1
+    $ python -m sanskrit_parser.parser.sandhi --split taeva 1
     Splitting taeva at 1
     set([(u'tar', u'eva'), (u'tas', u'eva'), (u'taH', u'eva'), (u'ta', u'eva')])
 
-    $ python -m sanskrit_parser.lexical_analyzer.sandhi --split taeva --all
+    $ python -m sanskrit_parser.parser.sandhi --split taeva --all
     All possible splits for taeva
     set([(u't', u'aeva'), (u'tar', u'eva'), (u'taev', u'a'), (u'to', u'eva'),
     (u'ta', u'eva'), (u'te', u'eva'), (u'taH', u'eva'), (u'tae', u'va'),
@@ -109,7 +109,7 @@ import inspect
 import logging
 import datetime
 import six
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, SCHEMES, outputctx
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SanskritNormalizedString, SLP1, SCHEMES, outputctx
 from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
 
 
@@ -163,8 +163,8 @@ class Sandhi(object):
         Performs sandhi.
         **Warning**: May generate forms that are not lexically valid.
 
-        :param first_in: SanskritObject first word of the sandhi
-        :param second_in: SanskritObject word of the sandhi
+        :param first_in: SanskritImmutableString first word of the sandhi
+        :param second_in: SanskritImmutableString word of the sandhi
         :return: list of strings of possible sandhi forms, or None if no sandhi can be performed
         """
         first = first_in.canonical()
@@ -196,7 +196,7 @@ class Sandhi(object):
         Split sandhi at the given index of word.
         **Warning**: Will generate splits that are not lexically valid.
 
-        :param word_in: SanskritObject word to split
+        :param word_in: SanskritImmutableString word to split
         :param idx: position within word at which to try the split
         :return: set of tuple of strings of possible split forms, or None if no split can be performed
         """
@@ -235,7 +235,7 @@ class Sandhi(object):
         Split word at all possible locations and return splits.
         **Warning**: Will generate splits that are not lexically valid.
 
-        :param word_in: SanskritObject word to split
+        :param word_in: SanskritImmutableString word to split
         :return: set of tuple of strings of possible split forms, or None if no split can be performed
         """
         splits = set()
@@ -277,7 +277,9 @@ class Sandhi(object):
                 if c.startswith("*"):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = list(map(six.text_type.strip, c.split('-')))
-                    varnas = set(ms.getPratyahara(SanskritObject(splits[0][1:], encoding=SLP1), longp=False, remove_a=True, dirghas=True).canonical())
+                    varnas = set(ms.getPratyahara(
+                        SanskritImmutableString(splits[0][1:], encoding=SLP1),
+                        longp=False, remove_a=True, dirghas=True).canonical())
                     if len(splits) == 2:
                         varnas -= set(splits[1])
                     self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
@@ -299,7 +301,7 @@ class Sandhi(object):
                                           re.split('([+-])', c)))
                         varnas = set(
                             ms.getPratyahara(
-                                SanskritObject(splits[0][1:], encoding=SLP1),
+                                SanskritImmutableString(splits[0][1:], encoding=SLP1),
                                 longp=False, remove_a=True, dirghas=True)
                             .canonical()
                         )
@@ -346,7 +348,7 @@ class Sandhi(object):
                 if line.startswith('#') or line == '':
                     continue
                 self.logger.debug("Processing rule %s", line)
-                rule = SanskritObject(line).canonical()
+                rule = SanskritImmutableString(line).canonical()
                 for r in self.expand_rule(rule):
                     self.add_rule(*r, annotation="%s:%d" % (filename, linenum+1))
 
@@ -422,7 +424,7 @@ if __name__ == "__main__":
             args.join = True
         with outputctx(args.strict_io):
             if args.split:
-                word_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
+                word_in = SanskritNormalizedString(args.word, encoding=ie, strict_io=args.strict_io)
                 if args.all:
                     print("All possible splits for {}".format(args.word))
                     splits = sandhi.split_all(word_in)
@@ -433,8 +435,8 @@ if __name__ == "__main__":
                 print(splits)
             if args.join:
                 print("Joining {0} {1}".format(args.word, args.word_or_pos))
-                first_in = SanskritObject(args.word, encoding=ie, strict_io=args.strict_io)
-                second_in = SanskritObject(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
+                first_in = SanskritNormalizedString(args.word, encoding=ie, strict_io=args.strict_io)
+                second_in = SanskritNormalizedString(args.word_or_pos, encoding=ie, strict_io=args.strict_io)
                 joins = sandhi.join(first_in, second_in)
                 print(joins)
 

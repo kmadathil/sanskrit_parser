@@ -27,7 +27,7 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='0.0.4',
+  version='0.1.0',
 
   description='Tools for lexical and morphological analysis of Sanskrit',
   long_description=long_description,
@@ -63,8 +63,6 @@ setup(
 
     # Specify the Python versions you support here. In particular, ensure
     # that you indicate whether you support Python 2, Python 3 or both.
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.6',
   ],
@@ -85,9 +83,9 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
-                    'python-constraint', 'requests', 'six', 'flask',
+                    'requests', 'six', 'flask',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy',
-                    'sentencepiece', 'gensim'],
+                    'sentencepiece', 'gensim', 'pygraphviz'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,
@@ -102,7 +100,7 @@ setup(
   # installed, specify them here.  If using Python 2.6 or less, then these
   # have to be included in MANIFEST.in as well.
   package_data={
-       'sanskrit_parser': ['lexical_analyzer/sandhi_rules/*.txt'],
+       'sanskrit_parser': ['parser/sandhi_rules/*.txt'],
   },
 
   # Although 'package_data' is the preferred approach, in some case you may
@@ -111,6 +109,7 @@ setup(
   # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
   # data_files=[('my_data', ['data/data_file'])],
 
+  scripts = ["scripts/sanskrit_parser"],  
   # To provide executable scripts, use entry points in preference to the
   # "scripts" keyword. Entry points provide cross-platform support and allow
   # pip to create the appropriate form of executable for the target platform.

@@ -12,7 +12,7 @@ import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
-from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI, SLP1
 import requests
 
 
@@ -80,17 +80,16 @@ class SanskritDataWrapper(LexicalLookup):
     pada_prayoga = ['परस्मैपदम्', 'आत्मनेपदम्', 'उभयपदम्', 'कर्तरि', 'कर्मणि']
     puruSha = ['उत्तमपुरुषः', 'मध्यमपुरुषः', 'प्रथमपुरुषः']
     kRdanta = {
-        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
-        ('fut', 'para'): 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
-        ('fut', 'atma'): 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
-        ('fut', 'pass'): 'कर्मणिभविष्यत्कृदन्तः',
-        ('pres', 'para'): 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
-        ('pres', 'atma'): 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
-        ('pres', 'pass'): 'कर्मणिवर्तमानकृदन्तः',
-        ('past', 'active'): 'कर्तरिभूतकृदन्तः',
-        ('past', 'pass'): 'कर्मणिभूतकृदन्तः',
-        ('perf', 'para'): 'पूर्णभूतकृदन्त-परस्मैपदी',
-        ('perf', 'atma'): 'पूर्णभूतकृदन्त-आत्मनेपदी'
+        ('fut', 'para'): ['Satf', 'Bavizyat', 'kartari'],  # 'कर्तरिभविष्यत्कृदन्त-परस्मैपदी',
+        ('fut', 'atma'): ['SAnac', 'Bavizyat', 'kartari'],  # 'कर्तरिभविष्यत्कृदन्त-आत्मनेपदी',
+        ('fut', 'pass'): ['kftya', 'Bavizyat', 'karmaRi'],  # 'कर्मणिभविष्यत्कृदन्तः',
+        ('pres', 'para'): ['Satf', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-परस्मैपदी',
+        ('pres', 'atma'): ['SAnac', 'kartari'],  # 'कर्तरिवर्तमानकृदन्त-आत्मनेपदी',
+        ('pres', 'pass'): ['SAnac', 'karmaRi'],  # 'कर्मणिवर्तमानकृदन्तः',
+        ('past', 'active'): ['ktavatu', 'kartari'],  # 'कर्तरिभूतकृदन्तः',
+        ('past', 'pass'): ['kta', 'karmaRi'],  # 'कर्मणिभूतकृदन्तः',
+        ('perf', 'para'): ['kvasu'],  # 'पूर्णभूतकृदन्त-परस्मैपदी',
+        ('perf', 'atma'): ['kAnac'],  # 'पूर्णभूतकृदन्त-आत्मनेपदी'
     }
 
     def refresh(self, obj):
@@ -104,27 +103,27 @@ class SanskritDataWrapper(LexicalLookup):
         tagset = set()
         obj = self.refresh(obj)
 #         self.logger.debug("%s, gender_id = %d", obj, obj.gender_id)
-        tagset.add(SanskritObject(self.lingam[obj.gender_id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.lingam[obj.gender_id - 1], DEVANAGARI))
         if obj.compounded:
-            tagset.add(SanskritObject("समासपूर्वपदनामपदम्", DEVANAGARI))
+            tagset.add(SanskritImmutableString("समासपूर्वपदनामपदम्", DEVANAGARI))
         else:
-            tagset.add(SanskritObject(self.vacanam[obj.number_id - 1], DEVANAGARI))
-            tagset.add(SanskritObject(self.vibhakti[obj.case_id - 1], DEVANAGARI))
+            tagset.add(SanskritImmutableString(self.vacanam[obj.number_id - 1], DEVANAGARI))
+            tagset.add(SanskritImmutableString(self.vibhakti[obj.case_id - 1], DEVANAGARI))
         stem = obj.stem
         if type(stem) == ParticipleStem:
             mode = stem.mode.abbr
             voice = stem.voice.abbr
-
-            tagset.add(SanskritObject(self.kRdanta[(mode, voice)], DEVANAGARI))
+            for t in self.kRdanta[(mode, voice)]:
+                tagset.add(SanskritImmutableString(t, SLP1))
         return (stem.name, tagset)
 
     def map_verb(self, obj):
         tagset = set()
         newobj = self.refresh(obj)
-        tagset.add(SanskritObject(self.lakAra[newobj.mode.id - 1], DEVANAGARI))
-        tagset.add(SanskritObject(self.pada_prayoga[newobj.voice.id - 1], DEVANAGARI))
-        tagset.add(SanskritObject(self.puruSha[newobj.person.id - 1], DEVANAGARI))
-        tagset.add(SanskritObject(self.vacanam[newobj.number.id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.lakAra[newobj.mode.id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.pada_prayoga[newobj.voice.id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.puruSha[newobj.person.id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.vacanam[newobj.number.id - 1], DEVANAGARI))
         return (newobj.root.name, tagset)
 
     def map_tags(self, tags):
@@ -137,13 +136,13 @@ class SanskritDataWrapper(LexicalLookup):
             elif type(t) == Verb:
                 out.append(self.map_verb(t))
             elif type(t) == Indeclinable:
-                out.append((t.name, set([SanskritObject('avyayam', SLP1)])))
+                out.append((t.name, set([SanskritImmutableString('avyayam', SLP1)])))
             elif type(t) == Gerund:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set([SanskritObject('ktvA', SLP1)])))
+                out.append((newobj.root.name, set([SanskritImmutableString('ktvA', SLP1)])))
             elif type(t) == Infinitive:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set([SanskritObject('tumun', SLP1)])))
+                out.append((newobj.root.name, set([SanskritImmutableString('tumun', SLP1)])))
             else:
                 out.append(t)
         return out

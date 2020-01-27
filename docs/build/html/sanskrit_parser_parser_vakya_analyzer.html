@@ -1,0 +1,225 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>parser.vakya_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="parser.datastructures" href="sanskrit_parser_parser_datastructures.html" />
+    <link rel="prev" title="parser.sandhi_analyzer" href="sanskrit_parser_parser_sandhi_analyzer.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sanskrit_parser.parser.vakya_analyzer">
+<span id="parser-vakya-analyzer"></span><h1>parser.vakya_analyzer<a class="headerlink" href="#module-sanskrit_parser.parser.vakya_analyzer" title="Permalink to this headline">¶</a></h1>
+<p>Morphological Analyzer for Sanskrit Sentences.</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">VakyaGraph</span></code> class can be initialized with a split output from
+<code class="docutils literal notranslate"><span class="pre">LexicalSandhiAnalyzer.getSandhiSplits</span></code>. The <code class="docutils literal notranslate"><span class="pre">.parses</span></code> member contains
+all valid parses for that split</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SLP1</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="kn">import</span> <span class="n">LexicalSandhiAnalyzer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="kn">import</span> <span class="n">VakyaGraph</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s2">&quot;astyuttarasyAmdiSi&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">()</span>
+<span class="n">graph</span><span class="o">=</span><span class="n">analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">splits</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Lexical Split:&quot;</span><span class="p">,</span><span class="n">sp</span><span class="p">)</span>
+    <span class="n">vgraph</span> <span class="o">=</span> <span class="n">VakyaGraph</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">:</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
+          <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parse {ix}&quot;</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;No valid morphologies for this split&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">Parse</span> <span class="mi">0</span>
+<span class="n">diSi</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;diS#2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">asti</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">parasmEpadam</span><span class="p">,</span> <span class="n">praTamapuruzaH</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">law</span><span class="p">}]</span>
+<span class="n">uttarasyAm</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;uttara#1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">Parse</span> <span class="mi">1</span>
+<span class="n">diSi</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;diS#2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">dvitIyAviBaktiH</span><span class="p">,</span> <span class="n">napuMsakaliNgam</span><span class="p">,</span> <span class="n">bahuvacanam</span><span class="p">}]</span>
+<span class="n">asti</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;as#1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">kartari</span><span class="p">,</span> <span class="n">prATamikaH</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">law</span><span class="p">,</span> <span class="n">praTamapuruzaH</span><span class="p">}]</span>
+<span class="n">uttarasyAm</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;uttara#1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">Parse</span> <span class="mi">2</span>
+<span class="n">diSi</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;diS#2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">asti</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;asti&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">samAsapUrvapadanAmapadam</span><span class="p">}]</span>
+<span class="n">uttarasyAm</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;uttara#1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">Parse</span> <span class="mi">3</span>
+<span class="n">uttarasyAm</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;uttara#2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">strIliNgam</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">saptamIviBaktiH</span><span class="p">}]</span>
+<span class="n">diSi</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;diS&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">saptamIviBaktiH</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">strIliNgam</span><span class="p">}]</span>
+<span class="n">asti</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">parasmEpadam</span><span class="p">,</span> <span class="n">praTamapuruzaH</span><span class="p">,</span> <span class="n">ekavacanam</span><span class="p">,</span> <span class="n">law</span><span class="p">}]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The sanskrit_parser script can be used to view parses as below.</p>
+<p>If the –dot option is provided, a graph is output in .dot fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as _parse.dot files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+...
+Lexical Split: [asti, uttarasyAm, diSi]
+...
+Parse 0
+asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
+diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+...
+
+$ dot -Tpng vakya.dot -o vakya.png
+$ eog vakya.png
+$ dot -Tpng vakya_parse0.dot -o vakya.png
+$ eog vakya_parse0.png
+</pre></div>
+</div>
+<dl class="function">
+<dt id="sanskrit_parser.parser.vakya_analyzer.getArgs">
+<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">getArgs</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#getArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.getArgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Argparse routine.
+Returns args variable</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sanskrit_parser.parser.vakya_analyzer.main">
+<code class="descclassname">sanskrit_parser.parser.vakya_analyzer.</code><code class="descname">main</code><span class="sig-paren">(</span><em>argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/vakya_analyzer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.vakya_analyzer.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sanskrit_parser_parser.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi.html">parser.sandhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_sandhi_analyzer.html">parser.sandhi_analyzer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">parser.vakya_analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command line usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html">parser.datastructures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sanskrit_parser_parser.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="sanskrit_parser_parser.html">parser</a><ul>
+      <li>Previous: <a href="sanskrit_parser_parser_sandhi_analyzer.html" title="previous chapter">parser.sandhi_analyzer</a></li>
+      <li>Next: <a href="sanskrit_parser_parser_datastructures.html" title="next chapter">parser.datastructures</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/sanskrit_parser_parser_vakya_analyzer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

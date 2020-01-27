@@ -11,7 +11,7 @@ import os
 import requests
 from tinydb import TinyDB, Query
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 
 
 class DhatuWrapper(object):
@@ -100,7 +100,7 @@ if __name__ == "__main__":
             ie = None
         else:
             ie = SCHEMES[args.input_encoding]
-        i = SanskritObject(args.dhatu, encoding=ie)
+        i = SanskritImmutableString(args.dhatu, encoding=ie)
         it = i.canonical()
         print("Input String in SLP1:", it)
         logger.info("Input String in SLP1: {}".format(it))
