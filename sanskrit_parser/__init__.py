@@ -78,20 +78,5 @@ as ``_parse.dot`` files
     ('hari', {ekavacanam, strIliNgam, paYcamIviBaktiH})
     ('hari', {zazWIviBaktiH, ekavacanam, puMlliNgam})
     ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    Input String in SLP1: hares
-    ('hf#1', {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
-    ('hari#1', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#1', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#1', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hari#2', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari#2', {ekavacanam, paYcamIviBaktiH, strIliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari#2', {zazWIviBaktiH, ekavacanam, strIliNgam})
-    ('hf', {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
-    ('hari', {ekavacanam, puMlliNgam, paYcamIviBaktiH})
-    ('hari', {ekavacanam, strIliNgam, paYcamIviBaktiH})
-    ('hari', {zazWIviBaktiH, ekavacanam, puMlliNgam})
-    ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
 
 """

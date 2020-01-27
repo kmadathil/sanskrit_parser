@@ -10,7 +10,7 @@ from copy import copy
 
 class DisjointSet(object):
     ''' Disjoint Set Class with Indexing'''
-    def __init__(self, sets=None):
+    def __init__(self):
         self._data = {}
 
     def find(self, x):
