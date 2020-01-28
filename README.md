@@ -45,9 +45,11 @@ Sandhi splitting subroutine
        No semantic validation will be performed (up to higher levels)
        
 #### Current Status
-Module that performs sandhi split/join and convenient rule definition is at `lexical_analyzer/sandhi.py`.
+Module that performs sandhi split/join and convenient rule definition is at `parser/sandhi.py`.
 
 Rule definitions (human readable!) are at `lexical_analyzer/sandhi_rules/*.txt`
+
+Use `sanskrit_parser tags` on the command line
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -84,7 +86,9 @@ Sanskrit Sentence
 All semantically valid sandhi split sequences
 
 #### Current Status
-Module that performs sentence split is at `lexical_analyzer/SanksritLexicalAnalyzer.py`
+Module at `parser/sandhi_analyer.py`
+
+Use `sanskrit_parser sandhi` on the command line
 
 
 ###    Level 3
@@ -104,7 +108,9 @@ Semantically valid sequence of tagged padas (output of Level 1)
 1.  Enhanced sequence of tagged padas, with karakas tagged, and a dependency graph associated
 
 #### Current Status
-Early experimental version (simple sentences only) is at `morphological_analyzer/SanskritMorphologicalAnalyzer.py`
+Module at `parser/vakya_analyer.py`
+
+Limited version available using `sanskrit_parser vakya`
 
 ## Seq2Seq based Sanskrit Parser
 
