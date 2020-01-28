@@ -151,6 +151,18 @@ self.roots</p>
 Nodes are SanskritObjects with morphological tags
 Edges are potential relationships between them</p>
 <dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_avyayas">
+<code class="descname">add_avyayas</code><span class="sig-paren">(</span><em>bases</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_avyayas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_avyayas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Avyaya Links</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_bhavalakshana">
+<code class="descname">add_bhavalakshana</code><span class="sig-paren">(</span><em>krts</em>, <em>laks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_bhavalakshana"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_bhavalakshana" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add bhavalakshana edges from saptami krts to lakaras</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_edges">
 <code class="descname">add_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_edges" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -159,6 +171,12 @@ Edges are potential relationships between them</p>
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_karakas">
 <code class="descname">add_karakas</code><span class="sig-paren">(</span><em>bases</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_karakas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_karakas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add karaka edges from base node (dhatu) base</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_kriya_kriya">
+<code class="descname">add_kriya_kriya</code><span class="sig-paren">(</span><em>lakaras</em>, <em>krts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_kriya_kriya"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_kriya_kriya" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add kriya-kriya edges from lakaras to krts</p>
 </dd></dl>
 
 <dl class="method">
@@ -190,6 +208,11 @@ Edges are potential relationships between them</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_vipsa">
+<code class="descname">add_vipsa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_vipsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_vipsa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph.add_visheshana">
 <code class="descname">add_visheshana</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.add_visheshana"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.add_visheshana" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -209,8 +232,14 @@ Remove parses with cycles</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.find_dhatu">
-<code class="descname">find_dhatu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.find_dhatu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.find_dhatu" title="Permalink to this definition">¶</a></dt>
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.find_krtverbs">
+<code class="descname">find_krtverbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.find_krtverbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.find_krtverbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find non ti~Nanta verbs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaGraph.find_lakaras">
+<code class="descname">find_lakaras</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.find_lakaras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.find_lakaras" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the ti~Nanta</p>
 </dd></dl>
 
@@ -218,6 +247,8 @@ Remove parses with cycles</p>
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph.get_parses_dc">
 <code class="descname">get_parses_dc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.get_parses_dc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.get_parses_dc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all parses</p>
+<p>Uses modified Kruskal Algorithm to compute (generalized) spanning
+tree of k-partite VakyaGraph</p>
 </dd></dl>
 
 <dl class="method">
@@ -229,6 +260,54 @@ Remove parses with cycles</p>
 <dt id="sanskrit_parser.parser.datastructures.VakyaGraph.write_dot">
 <code class="descname">write_dot</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaGraph.write_dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaGraph.write_dot" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse">
+<em class="property">class </em><code class="descclassname">sanskrit_parser.parser.datastructures.</code><code class="descname">VakyaParse</code><span class="sig-paren">(</span><em>nodepair</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.activate_and_extinguish_alternatives">
+<code class="descname">activate_and_extinguish_alternatives</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.activate_and_extinguish_alternatives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.activate_and_extinguish_alternatives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make node active, extinguish other nodes in its partition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.can_merge">
+<code class="descname">can_merge</code><span class="sig-paren">(</span><em>other</em>, <em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.can_merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.can_merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can we merge two VakyaParses</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a one level deep copy - in between a shallow and a fully deep copy</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.extend">
+<code class="descname">extend</code><span class="sig-paren">(</span><em>pred</em>, <em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.extend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend current parse with edge from pred to node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.is_extinguished">
+<code class="descname">is_extinguished</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.is_extinguished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.is_extinguished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is a node extinguished</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.is_safe">
+<code class="descname">is_safe</code><span class="sig-paren">(</span><em>pred</em>, <em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.is_safe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.is_safe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a partial parse is compatible with a given node and predecessor pair</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sanskrit_parser.parser.datastructures.VakyaParse.merge">
+<code class="descname">merge</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/datastructures.html#VakyaParse.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.datastructures.VakyaParse.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two VakyaParses</p>
+</dd></dl>
 
 </dd></dl>
 

@@ -326,6 +326,8 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Don&#39;t use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-map-tags&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;map_tags&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;show raw (unmapped to our standard set) tags&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
 
 
@@ -356,7 +358,7 @@
                                                       <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
                                                       <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
-            <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tmap</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">map_tags</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Morphological tags:&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>

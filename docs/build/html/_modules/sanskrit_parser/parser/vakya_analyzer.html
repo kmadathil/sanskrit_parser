@@ -116,10 +116,8 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">as</span> <span class="nn">SanskritBase</span>
 <span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.util.DhatuWrapper</span> <span class="k">import</span> <span class="n">DhatuWrapper</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="k">import</span> <span class="n">VakyaGraph</span><span class="p">,</span> <span class="n">getSLP1Tagset</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.datastructures</span> <span class="k">import</span> <span class="n">VakyaGraph</span><span class="p">,</span> <span class="n">jedge</span><span class="p">,</span> <span class="n">jnode</span>
 <span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
-<span class="kn">import</span> <span class="nn">constraint</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -156,6 +154,8 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
 
 
@@ -186,19 +186,31 @@
     <span class="k">with</span> <span class="n">SanskritBase</span><span class="o">.</span><span class="n">outputctx</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">graph</span><span class="p">:</span>
             <span class="n">start_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">splits</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
             <span class="n">end_path</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End pathfinding&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splits:&quot;</span><span class="p">)</span>
-            <span class="n">spl_t</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{sp}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">vgraph</span> <span class="o">=</span> <span class="n">VakyaGraph</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">max_parse_dc</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">split_above</span><span class="p">)</span>
                 <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parse </span><span class="si">{ix}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+                        <span class="n">preds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">preds</span><span class="p">:</span>
+                            <span class="n">pred</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Only one</span>
+                            <span class="n">lbl</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+                            <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jedge</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">lbl</span><span class="p">))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jnode</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{e[0]}</span><span class="s2"> =&gt; </span><span class="si">{e[1]}</span><span class="s2"> : </span><span class="si">{e[2]}</span><span class="s2"> of </span><span class="si">{e[3]}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{e[0]}</span><span class="s2"> =&gt; </span><span class="si">{e[1]}</span><span class="s2">&quot;</span><span class="p">)</span>
+
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;End Morphological Analysis&quot;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-----------&quot;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Performance&quot;</span><span class="p">)</span>

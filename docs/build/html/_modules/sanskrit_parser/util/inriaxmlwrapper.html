@@ -241,7 +241,8 @@
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
                             <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Word to look up&quot;</span><span class="p">)</span>
-
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-map-tags&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;map_tags&#39;</span><span class="p">,</span>
+                            <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -260,9 +261,10 @@
         <span class="n">word_in</span> <span class="o">=</span> <span class="n">SanskritImmutableString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">)</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
         <span class="n">xmlDB</span> <span class="o">=</span> <span class="n">InriaXMLWrapper</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Getting tags for&quot;</span><span class="p">,</span> <span class="n">word_in</span><span class="p">)</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="n">xmlDB</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">word_in</span><span class="p">)</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="n">xmlDB</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">word_in</span><span class="p">,</span> <span class="n">tmap</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">map_tags</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">map</span><span class="p">(</span><span class="nb">print</span><span class="p">,</span> <span class="n">tags</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
