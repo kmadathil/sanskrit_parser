@@ -257,7 +257,7 @@ class VakyaGraph(object):
         Nodes are SanskritObjects with morphological tags
         Edges are potential relationships between them
     """
-    def __init__(self, path, max_parse_dc=4, fast_merge=False):
+    def __init__(self, path, max_parse_dc=4, fast_merge=True):
         ''' DAG Class Init
 
         Params:
@@ -839,14 +839,13 @@ class VakyaParse(object):
 
     def merge_f(self, other):
         ''' Merge two VakyaParses: Fast method '''
-        # FIXME: results do not match
         t = self.copy()
         logger.debug("Merging")
         t.extinguished.update(other.extinguished)
         t.activenodes.update(other.activenodes)
         t.edges.update(other.edges)
         for (u, v) in other.edges:
-            self.connections.union(u, v)
+            t.connections.union(u, v)
         return t
 
     def merge_s(self, other, l):

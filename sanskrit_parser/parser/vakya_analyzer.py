@@ -121,7 +121,7 @@ def getArgs(argv=None):
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--score', dest="score", action='store_true',
                         help="Use the lexical scorer to score the splits and reorder them")
-    parser.add_argument('--fast-merge', action='store_true', help="Debug only")
+    parser.add_argument('--slow-merge', dest='fast_merge', action='store_false', help="Development Only: use if you see issues in divide and conquer")
     return parser.parse_args(argv)
 
 
