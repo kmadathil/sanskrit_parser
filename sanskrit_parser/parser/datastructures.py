@@ -244,6 +244,10 @@ karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'su', 'ati', 'api'])
 karmap_5 = set(['apa', 'pari', 'A', 'prati'])
 avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
 projlabels = karakas.union(kriyavisheshana)
+# sambaddha links are projective
+samplabels = {'sambadDa-'+l for l in projlabels}
+projlabels.update(samplabels) 
+sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA"}
 
 
 class VakyaGraph(object):
@@ -338,6 +342,7 @@ class VakyaGraph(object):
         self.add_avyayas(bases)
         self.add_bhavalakshana(krts, laks)
         self.add_vipsa()
+        self.add_sentence_conjunctions(bases)
 
     def find_krtverbs(self):
         ''' Find non ti~Nanta verbs'''
@@ -369,7 +374,8 @@ class VakyaGraph(object):
     def add_vipsa(self):
         for n in self.G:
             for no in self.G:
-                if (n.index < no.index) and (_get_base(n) == _get_base(no)):
+                if (n.index == (no.index-1)) and \
+                   (n.pada.canonical() == no.pada.canonical()):
                     logger.info(f"Adding vIpsa edge: {n, no}")
                     self.G.add_edge(n, no, label="vIpsA")
 
@@ -534,6 +540,40 @@ class VakyaGraph(object):
                     if not _is_same_partition(k, l):
                         logger.info(f"Adding Bhavalakshana edge: {k, l}")
                         self.G.add_edge(l, k, label="BAvalakzaRam")
+
+    def add_sentence_conjunctions(self, bases):
+        ''' Add sentence conjunction links 
+        
+        For all nodes which match sentence_conjuction keys
+        add vAkyasambanDaH link between y-t pair 
+              - if vibhakti matches where relevant
+        Reverse all edges to node, add sambadDa- to link label (eg sambadDa-karma, if node is not vIpsa
+	if node is saMyojakaH, and not vIpsA add saMbadDakriyA links to verbs
+	if associated t* doesn't exist vAkyasambanDaH links from verbs 
+        '''
+        def _is_vipsa(n):
+            for p, d in self.G.pred[n].items():
+                if d['label'] == 'vIpsA':
+                    return True
+            return False
+
+        sentence_conjunctions_y = set(sentence_conjunctions.keys())
+        for n in self.G:
+            nb = _get_base(n)
+            if nb in sentence_conjunctions_y:
+                if not _is_vipsa(n):
+                    # Reverse edges, add sambadDa label
+                    for p, d in list(self.G.pred[n].items()):
+                        self.G.remove_edge(p, n)
+                        self.G.add_edge(n, p, label='sambadDa-'+d['label'])
+                    # Matching pair
+                    s_t = sentence_conjunctions[nb]
+                    for nn in self.G:
+                        if (not _is_vipsa(nn)) and _get_base(nn) == s_t:
+                            if match_linga_vacana(n, nn):
+                                self.G.add_edge(nn, n, label="vAkyasambanDaH")
+                        if n.node_is_a('saMyojakaH') and (nn in bases):
+                            self.G.add_edge(n, nn, label='saMbadDakriyA') 
 
     def get_parses_dc(self):
         ''' Returns all parses
@@ -887,11 +927,13 @@ def _get_base(n):
 # Check a parse for validity
 def _check_parse(parse):
     r = True
+    smbds = samplabels.union({'saMbadDakriyA'})
     count = defaultdict(lambda: defaultdict(int))
     edges = {}
     toedge = defaultdict(int)
     fromv = defaultdict(int)
     tov = defaultdict(int)
+    sk = defaultdict(int)
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
@@ -901,7 +943,8 @@ def _check_parse(parse):
             tov[v] = tov[v] + 1
         if l in projlabels:  # Labels with sannidhi expectation
             edges[(u.index, v.index)] = 1
-
+        if l in smbds:
+            sk[u] = sk[u] + 1
     for u in count:  # Dhatu
         for k in count[u]:  # Each karaka should count only once
             if count[u][k] > 1:
@@ -915,6 +958,10 @@ def _check_parse(parse):
     for v in toedge:
         if toedge[v] > 1:
             logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+            return False
+    for u in sk:   # Sambaddhakaraka = only one allowed from node
+        if sk[u] > 1:
+            logger.info(f"Sambaddha karaka edges for {u} is {sk[u]} - violates global constraint")
             return False
     for v in tov:
         if v in fromv:
