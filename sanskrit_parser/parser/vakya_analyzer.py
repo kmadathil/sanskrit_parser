@@ -121,6 +121,7 @@ def getArgs(argv=None):
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--score', dest="score", action='store_true',
                         help="Use the lexical scorer to score the splits and reorder them")
+    parser.add_argument('--fast-merge', action='store_true', help="Debug only")
     return parser.parse_args(argv)
 
 
@@ -158,7 +159,8 @@ def main(argv=None):
             for sp in splits:
                 print(f"Lexical Split: {sp}")
                 logger.info(f"Lexical Split: {sp}")
-                vgraph = VakyaGraph(sp, max_parse_dc=args.split_above)
+                vgraph = VakyaGraph(sp, max_parse_dc=args.split_above,
+                                    fast_merge=args.fast_merge)
                 for (ix, p) in enumerate(vgraph.parses):
                     print(f"Parse {ix}")
                     t = []

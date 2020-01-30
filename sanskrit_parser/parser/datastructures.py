@@ -246,7 +246,7 @@ avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
 projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+l for l in projlabels}
-projlabels.update(samplabels) 
+projlabels.update(samplabels)
 sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA"}
 
 
@@ -257,13 +257,14 @@ class VakyaGraph(object):
         Nodes are SanskritObjects with morphological tags
         Edges are potential relationships between them
     """
-    def __init__(self, path, max_parse_dc=4):
+    def __init__(self, path, max_parse_dc=4, fast_merge=False):
         ''' DAG Class Init
 
         Params:
              path: Path from SanghiGraph
         '''
         self.max_parse_dc = max_parse_dc
+        self.fast_merge = fast_merge
         self.roots = []
         self.isLocked = False
 #        self.G = nx.MultDiGraph() # Allow parallel edges
@@ -542,14 +543,14 @@ class VakyaGraph(object):
                         self.G.add_edge(l, k, label="BAvalakzaRam")
 
     def add_sentence_conjunctions(self, bases):
-        ''' Add sentence conjunction links 
-        
+        ''' Add sentence conjunction links
+
         For all nodes which match sentence_conjuction keys
-        add vAkyasambanDaH link between y-t pair 
+        add vAkyasambanDaH link between y-t pair
               - if vibhakti matches where relevant
         Reverse all edges to node, add sambadDa- to link label (eg sambadDa-karma, if node is not vIpsa
-	if node is saMyojakaH, and not vIpsA add saMbadDakriyA links to verbs
-	if associated t* doesn't exist vAkyasambanDaH links from verbs 
+        if node is saMyojakaH, and not vIpsA add saMbadDakriyA links to verbs
+        if associated t* doesn't exist vAkyasambanDaH links from verbs
         '''
         def _is_vipsa(n):
             for p, d in self.G.pred[n].items():
@@ -573,7 +574,7 @@ class VakyaGraph(object):
                             if match_linga_vacana(n, nn):
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
                         if n.node_is_a('saMyojakaH') and (nn in bases):
-                            self.G.add_edge(n, nn, label='saMbadDakriyA') 
+                            self.G.add_edge(n, nn, label='saMbadDakriyA')
 
     def get_parses_dc(self):
         ''' Returns all parses
@@ -638,8 +639,13 @@ class VakyaGraph(object):
             ppmt = set()
             for ppa in pp1:
                 for ppb in pp2:
-                    if ppa.can_merge(ppb, mx-mn-1):
-                        ppmt.add(ppa.merge(ppb))
+                    if self.fast_merge:
+                        if ppa.can_merge(ppb, mx-mn-1):
+                            ppmt.add(ppa.merge_f(ppb))
+                    else:  # Slow Merge
+                        merged = ppa.merge_s(ppb, mx-mn-1)
+                        if merged:
+                            ppmt.add(merged)
             logger.info(f"{len(ppmt)} parses")
             logger.debug(f"Merged {ppmt}")
             end_time = time.time()
@@ -819,15 +825,21 @@ class VakyaParse(object):
         for x in other.activenodes:
             if self.is_extinguished(x):
                 return False
+        conn = self.connections.copy()
         # No cycles
         for (u, v) in other.edges:
             if (u in self.activenodes) and (v in self.activenodes):
-                if self.connections.connected(u, v):
+                if conn.connected(u, v):
                     return False
+                else:
+                    conn.union(u, v)
+            else:
+                conn.union(u, v)
         return True
 
-    def merge(self, other):
-        ''' Merge two VakyaParses '''
+    def merge_f(self, other):
+        ''' Merge two VakyaParses: Fast method '''
+        # FIXME: results do not match
         t = self.copy()
         logger.debug("Merging")
         t.extinguished.update(other.extinguished)
@@ -835,6 +847,19 @@ class VakyaParse(object):
         t.edges.update(other.edges)
         for (u, v) in other.edges:
             self.connections.union(u, v)
+        return t
+
+    def merge_s(self, other, l):
+        ''' Merge two VakyaParses: Slow method '''
+        # Proper length
+        if (len(other.edges) + len(self.edges)) < l:
+            return False
+        t = self.copy()
+        for (u, v) in other.edges:
+            if t.is_safe(u, v):
+                t.extend(u, v)
+            else:
+                return False
         return t
 
     def __len__(self):
