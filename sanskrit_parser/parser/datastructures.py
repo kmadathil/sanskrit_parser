@@ -26,21 +26,6 @@ dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
-def _console_logging():
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    # set a format which is simpler for console use
-    formatter = logging.Formatter('%(levelname)-8s %(message)s')
-    # tell the handler to use this format
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logger.addHandler(console)
-
-
-_console_logging()
 
 
 class SandhiGraph(object):
@@ -409,7 +394,7 @@ class VakyaGraph(object):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
             logger.debug(f"Processing {d}")
-            dh = _get_base(d)
+            dh = _get_base(d).canonical()
             hpos = dh.find("#")
             if hpos != -1:
                 dh = dh[:hpos]

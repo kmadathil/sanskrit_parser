@@ -91,7 +91,7 @@ logger.setLevel(logging.INFO)
 
 def _console_logging():
     console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
+    console.setLevel(logging.ERROR)
     # set a format which is simpler for console use
     formatter = logging.Formatter('%(levelname)-8s %(message)s')
     # tell the handler to use this format
@@ -112,7 +112,6 @@ def getArgs(argv=None):
     # Input Encoding (autodetect by default)
     parser.add_argument('--input-encoding', type=str, default=None)
     # Need a lakara
-    parser.add_argument('--need-lakara', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=1)
     parser.add_argument('--split-above', type=int, default=5)
@@ -125,12 +124,10 @@ def getArgs(argv=None):
 
 
 def main(argv=None):
-    global need_lakara
     args = getArgs(argv)
     vgraph = None
     _console_logging()
     logger.info(f"Input String: {args.data}")
-    need_lakara = args.need_lakara
     if args.debug:
         logging.basicConfig(filename='VakyaAnalyzer.log', filemode='w', level=logging.DEBUG)
     s = LexicalSandhiAnalyzer(args.lexical_lookup)
