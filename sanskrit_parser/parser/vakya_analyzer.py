@@ -5,29 +5,25 @@
 Usage
 ======
 
-The ``VakyaGraph`` class can be initialized with a split output from
-``LexicalSandhiAnalyzer.getSandhiSplits``. The ``.parses`` member contains
-all valid parses for that split
+The ``Parser`` class can be used to generate vakya parses thus:
 
 .. code-block:: python
-
-        from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
-        from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-        from sanskrit_parser.parser.datastructures import VakyaGraph
-        sentence = SanskritObject("astyuttarasyAmdiSi",encoding=SLP1)
-        analyzer = LexicalSandhiAnalyzer()
-        graph=analyzer.getSandhiSplits(sentence,tag=True)
-        splits=graph.find_all_paths(max_paths=1)
-        for sp in splits:
-            print("Lexical Split:",sp)
-            vgraph = VakyaGraph(sp)
-            if vgraph.parses:
-              for (ix, p) in enumerate(vgraph.parses):
-                  print(f"Parse {ix}")
-                  for n in p:
-                      print(n)
-            else:
-              print("No valid morphologies for this split")
+       
+        from itertools import islice
+        from sanskrit_parser import Parser
+        string = "astyuttarasyAMdiSi"
+        input_encoding = "SLP1"
+        output_encoding = "SLP1"
+        parser = Parser(input_encoding=input_encoding, 
+                        output_encoding=output_encoding,
+                        replace_ending_visarga='s')
+        parse_result = parser.parse(string)
+        print('Splits:')
+        for split in parse_result.splits(max_splits=10):
+            print(f'Lexical Split: {split}')
+            for i, parse in enumerate(islice(split.parses(), 2)):
+                print(f'Parse {i}')
+                print(f'{parse}')
         ...
         Parse 0
         diSi=>['diS#2', {strIliNgam, ekavacanam, saptamIviBaktiH}]

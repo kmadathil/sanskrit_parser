@@ -80,3 +80,5 @@ as ``_parse.dot`` files
     ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
 
 """
+from .api import Parser
+

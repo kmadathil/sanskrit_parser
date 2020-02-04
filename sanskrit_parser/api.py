@@ -37,7 +37,7 @@ class JSONEncoder(json.JSONEncoder):
 class Parser():
     strict_io: bool = False
     input_encoding: str = None
-    output_encoding: str = 'slp1'
+    output_encoding: str = 'SLP1'
     lexical_lookup: str = "combined"
     score: bool = True
     split_above: int = 5
@@ -48,6 +48,8 @@ class Parser():
               ):
         if self.input_encoding is not None:
             self.input_encoding = SCHEMES[self.input_encoding]
+        if self.output_encoding is not None:
+            self.output_encoding = SCHEMES[self.output_encoding]
         s = SanskritNormalizedString(input_string,
                                      self.input_encoding,
                                      self.strict_io,
@@ -203,8 +205,8 @@ if __name__ == "__main__":
               )
 
     def main():
-        examples = [('devadattogrAmaMgacCati', 'slp1'),
-                    ('astyuttarasyAMdishidevatAtmA', 'devanagari')
+        examples = [('devadattogrAmaMgacCati', 'SLP1'),
+                    ('astyuttarasyAMdishidevatAtmA', 'Devanagari')
                     ]
         for string, encoding in examples:
             api_example(string, encoding)
