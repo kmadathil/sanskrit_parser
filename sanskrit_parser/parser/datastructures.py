@@ -845,7 +845,7 @@ def jnode(node):
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (SanskritImmutableString(tag[0], encoding=SLP1).canonical(strict_io=False), [t.canonical(strict_io=False) for t in list(tag[1])])
+    return (tag[0].canonical(strict_io=False), [t.canonical(strict_io=False) for t in list(tag[1])])
 
 
 def _non_projective(u, v, w, x):
