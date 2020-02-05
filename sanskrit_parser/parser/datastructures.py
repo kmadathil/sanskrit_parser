@@ -26,21 +26,6 @@ dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
-def _console_logging():
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    # set a format which is simpler for console use
-    formatter = logging.Formatter('%(levelname)-8s %(message)s')
-    # tell the handler to use this format
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logger.addHandler(console)
-
-
-_console_logging()
 
 
 class SandhiGraph(object):
@@ -909,22 +894,22 @@ def check_sambodhya(d, n):
         (d.get_purusha() == set([puruzas[1]]))
 
 
-def jedge(pred, node, label):
-    return (node.pada.canonical(strict_io=False),
-            jtag(node.getMorphologicalTags()),
-            SanskritImmutableString(label, encoding=SLP1).canonical(strict_io=False),
-            pred.pada.canonical(strict_io=False))
+def jedge(pred, node, label, strict_io=False):
+    return (node.pada.canonical(strict_io=strict_io),
+            jtag(node.getMorphologicalTags(), strict_io),
+            SanskritImmutableString(label, encoding=SLP1).canonical(strict_io=strict_io),
+            pred.pada.canonical(strict_io=strict_io))
 
 
-def jnode(node):
+def jnode(node, strict_io=False):
     """ Helper to translate parse node into serializable format"""
-    return (node.pada.canonical(strict_io=False),
-            jtag(node.getMorphologicalTags()), "", "")
+    return (node.pada.canonical(strict_io=strict_io),
+            jtag(node.getMorphologicalTags(), strict_io), "", "")
 
 
-def jtag(tag):
+def jtag(tag, strict_io=False):
     """ Helper to translate tag to serializable format"""
-    return (SanskritImmutableString(tag[0], encoding=SLP1).canonical(strict_io=False), [t.canonical(strict_io=False) for t in list(tag[1])])
+    return (SanskritImmutableString(tag[0], encoding=SLP1).canonical(strict_io=strict_io), [t.canonical(strict_io=strict_io) for t in list(tag[1])])
 
 
 def _non_projective(u, v, w, x):

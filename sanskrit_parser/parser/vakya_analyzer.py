@@ -86,18 +86,6 @@ from argparse import ArgumentParser
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
-def _console_logging():
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    # set a format which is simpler for console use
-    formatter = logging.Formatter('%(levelname)-8s %(message)s')
-    # tell the handler to use this format
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logger.addHandler(console)
 
 
 def getArgs(argv=None):
@@ -113,7 +101,6 @@ def getArgs(argv=None):
     parser.add_argument('--input-encoding', type=str, default=None)
     # Need a lakara
     parser.add_argument('--need-lakara', action='store_true')
-    parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=1)
     parser.add_argument('--split-above', type=int, default=5)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
@@ -129,11 +116,8 @@ def main(argv=None):
     global need_lakara
     args = getArgs(argv)
     vgraph = None
-    _console_logging()
     logger.info(f"Input String: {args.data}")
     need_lakara = args.need_lakara
-    if args.debug:
-        logging.basicConfig(filename='VakyaAnalyzer.log', filemode='w', level=logging.DEBUG)
     s = LexicalSandhiAnalyzer(args.lexical_lookup)
     if args.input_encoding is None:
         ie = None
@@ -169,9 +153,9 @@ def main(argv=None):
                         if preds:
                             pred = preds[0]  # Only one
                             lbl = p.edges[pred, n]['label']
-                            t.append(jedge(pred, n, lbl))
+                            t.append(jedge(pred, n, lbl, args.strict_io))
                         else:
-                            t.append(jnode(n))
+                            t.append(jnode(n, args.strict_io))
                     for e in t:
                         if e[2]:
                             print(f"{e[0]} => {e[1]} : {e[2]} of {e[3]}")

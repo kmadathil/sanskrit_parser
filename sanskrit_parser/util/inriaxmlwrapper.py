@@ -137,18 +137,18 @@ class InriaXMLWrapper(LexicalLookup):
         """ Load/create dict of tags for forms """
         pickle_path = os.path.join(self.base_dir, self.pickle_file)
         if os.path.exists(pickle_path):
-            self.logger.info("Pickle file found, loading at %s", datetime.datetime.now())
+            self.logger.debug("Pickle file found, loading at %s", datetime.datetime.now())
             start = time.time()
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
-            self.logger.info("Loading finished at %s, took %f s",
+            self.logger.debug("Loading finished at %s, took %f s",
                              datetime.datetime.now(),
                              time.time() - start
                              )
         else:
             self.logger.debug("Pickle file not found, creating ...")
             self._generate_dict()
-        self.logger.info("Cached %d forms for fast lookup", len(self.forms))
+        self.logger.debug("Cached %d forms for fast lookup", len(self.forms))
 
     def _xml_to_tags(self, word):
         # FIXME - This is currently from sanskritmark. Check if this can be simplified

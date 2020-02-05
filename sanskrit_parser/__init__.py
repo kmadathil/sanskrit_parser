@@ -80,3 +80,26 @@ as ``_parse.dot`` files
     ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
 
 """
+import logging
+
+log_file_name='SanskritParser.log'
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+console = logging.StreamHandler()
+console.setLevel(logging.ERROR)
+# set a format which is simpler for console use
+formatter = logging.Formatter('%(levelname)-8s %(message)s')
+# tell the handler to use this format
+console.setFormatter(formatter)
+# add the handler to the root logger
+logger.addHandler(console)
+
+# create file handler which logs even debug messages
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh = logging.FileHandler(log_file_name)
+fh.setLevel(logging.ERROR)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+

@@ -284,7 +284,6 @@ def getArgs(argv=None):
     # Filter by tag set
     parser.add_argument('--tag-set', type=str, default=None, nargs="+")
     parser.add_argument('--tags', dest='split', action='store_false')
-    parser.add_argument('--debug', action='store_true')
     parser.add_argument('--max-paths', type=int, default=10)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
     parser.add_argument('--strict-io', action='store_true',
@@ -304,13 +303,6 @@ def main(argv=None):
     else:
         print("Interpreting input loosely (strict_io set to false)")
     print("Input String:", args.data)
-
-    if args.debug:
-        logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
-                            filemode='w', level=logging.DEBUG)
-    else:
-        logging.basicConfig(filename='LexicalSandhiAnalyzer.log',
-                            filemode='w', level=logging.INFO)
 
     s = LexicalSandhiAnalyzer(args.lexical_lookup)
     if args.input_encoding is None:
