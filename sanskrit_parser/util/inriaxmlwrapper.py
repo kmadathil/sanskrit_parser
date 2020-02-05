@@ -142,9 +142,8 @@ class InriaXMLWrapper(LexicalLookup):
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
             self.logger.debug("Loading finished at %s, took %f s",
-                             datetime.datetime.now(),
-                             time.time() - start
-                             )
+                              datetime.datetime.now(),
+                              time.time() - start)
         else:
             self.logger.debug("Pickle file not found, creating ...")
             self._generate_dict()

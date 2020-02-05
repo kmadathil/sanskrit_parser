@@ -82,7 +82,7 @@ as ``_parse.dot`` files
 """
 import logging
 
-log_file_name='SanskritParser.log'
+log_file_name = 'SanskritParser.log'
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -104,5 +104,4 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 from .api import Parser
-
 
