@@ -75,9 +75,13 @@ class ParseResult(Serializable):
         return f"ParseResult('{self.input_string}')"
 
     def splits(self, max_splits: int = 10):
-        split_results = self.sandhi_graph.find_all_paths(max_splits,
-                                                         self.parser.score)
+        split_results = self.sandhi_graph.find_all_paths(max_paths=max_splits,
+                                                         sort=True,
+                                                         score=self.parser.score)
+        logger.debug("End pathfinding")
+        logger.debug("Splits:")
         for split in split_results:
+            logger.debug(f"Lexical Split: {split}")
             yield Split(self.parser, self.input_string, split)
 
     def serializable(self):
@@ -102,7 +106,8 @@ class Split(Serializable):
     def parses(self):
         vgraph = VakyaGraph(self.split,
                             max_parse_dc=self.parser.split_above)
-        for parse_graph in vgraph.parses:
+        for (ix, parse_graph) in enumerate(vgraph.parses):
+            logger.debug(f"Parse {ix}")
             yield Parse(self, parse_graph)
 
     def serializable(self):

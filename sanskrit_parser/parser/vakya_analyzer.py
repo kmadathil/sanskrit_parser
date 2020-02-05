@@ -109,62 +109,25 @@ def getArgs(argv=None):
 
 
 def main(argv=None):
+    from sanskrit_parser import Parser
     args = getArgs(argv)
     vgraph = None
     logger.info(f"Input String: {args.data}")
-    need_lakara = args.need_lakara
-    s = LexicalSandhiAnalyzer(args.lexical_lookup)
-    if args.input_encoding is None:
-        ie = None
-    else:
-        ie = SanskritBase.SCHEMES[args.input_encoding]
-    i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,
-                                              strict_io=args.strict_io,
-                                              replace_ending_visarga=None)
-    logger.info(f"Input String in SLP1: {i.canonical()}")
-    import time
-    logger.info("Start Split")
-    start_split = time.time()
-    graph = s.getSandhiSplits(i, tag=True)
-    end_split = time.time()
-    logger.info("End DAG generation")
-    with SanskritBase.outputctx(args.strict_io):
-        if graph:
-            start_path = time.time()
-            splits = graph.find_all_paths(max_paths=args.max_paths, score=args.score)
-            end_path = time.time()
-            logger.info("End pathfinding")
-            print("Splits:")
-            for sp in splits:
-                print(f"Lexical Split: {sp}")
-                logger.info(f"Lexical Split: {sp}")
-                vgraph = VakyaGraph(sp, max_parse_dc=args.split_above,
-                                    fast_merge=args.fast_merge)
-                for (ix, p) in enumerate(vgraph.parses):
-                    print(f"Parse {ix}")
-                    t = []
-                    for n in sorted(list(p), key=lambda x: x.index):
-                        preds = list(p.predecessors(n))
-                        if preds:
-                            pred = preds[0]  # Only one
-                            lbl = p.edges[pred, n]['label']
-                            t.append(jedge(pred, n, lbl, args.strict_io))
-                        else:
-                            t.append(jnode(n, args.strict_io))
-                    for e in t:
-                        if e[2]:
-                            print(f"{e[0]} => {e[1]} : {e[2]} of {e[3]}")
-                        else:
-                            print(f"{e[0]} => {e[1]}")
+    parser = Parser(input_encoding=args.input_encoding,
+                    output_encoding="SLP1",
+                    replace_ending_visarga=None,
+                    score=args.score,
+                    split_above=args.split_above,
+                    lexical_lookup=args.lexical_lookup)
+    parse_result = parser.parse(args.data)
+    print('Splits:')
+    for split in parse_result.splits(max_splits=args.max_paths):
+        print(f'Lexical Split: {split}')
+        for i, parse in enumerate(split.parses()):
+            print(f'Parse {i}')
+            print(f'{parse}')
 
-            logger.info("End Morphological Analysis")
-            logger.info("-----------")
-            logger.info("Performance")
-            logger.info("Time taken for split: {0:0.6f}s".format(end_split-start_split))
-            logger.info(f"Time taken for path: {end_path-start_path:0.6f}s")
-        else:
-            logger.warning("No Valid Splits Found")
-    return vgraph
+    return None
 
 
 if __name__ == "__main__":

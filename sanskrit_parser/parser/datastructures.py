@@ -256,7 +256,7 @@ class VakyaGraph(object):
         self.G = nx.DiGraph()
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
-        logger.info(f"{self.path_node_count} sets of orthogonal nodes")
+        logger.debug(f"{self.path_node_count} sets of orthogonal nodes")
         self.partitions = []
         for (ix, sobj) in enumerate(path):
             vnlist = []
@@ -318,7 +318,7 @@ class VakyaGraph(object):
         bases = []
         bases.extend(laks)
         bases.extend(krts)
-        logger.info("Adding Edges")
+        logger.debug("Adding Edges")
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
@@ -335,7 +335,7 @@ class VakyaGraph(object):
         rlist = []
         for n in self.G:
             if n.node_is_a(krtverbs):
-                logger.info(f"{n} is a possible Krt Dhatu")
+                logger.debug(f"{n} is a possible Krt Dhatu")
                 rlist.append(n)
         return rlist
 
@@ -344,7 +344,7 @@ class VakyaGraph(object):
         rlist = []
         for n in self.G:
             if n.node_is_a(lakaras):
-                logger.info(f"{n} is a possible Dhatu")
+                logger.debug(f"{n} is a possible Dhatu")
                 rlist.append(n)
         return rlist
 
@@ -362,7 +362,7 @@ class VakyaGraph(object):
             for no in self.G:
                 if (n.index == (no.index-1)) and \
                    (n.pada.canonical() == no.pada.canonical()):
-                    logger.info(f"Adding vIpsa edge: {n, no}")
+                    logger.debug(f"Adding vIpsa edge: {n, no}")
                     self.G.add_edge(n, no, label="vIpsA")
 
     def add_samastas(self):
@@ -464,7 +464,7 @@ class VakyaGraph(object):
                     if n.node_is_a(avyaya) and \
                          (n.node_is_a(kriyavisheshana) or
                           _get_base(n) in avyaya_kriyav):
-                        logger.info(f"Adding kriyAviSezaRa edge to {n}")
+                        logger.debug(f"Adding kriyAviSezaRa edge to {n}")
                         self.G.add_edge(d, n, label="kriyAviSezaRam")
 
     def add_kriya_kriya(self, lakaras, krts):
@@ -506,16 +506,16 @@ class VakyaGraph(object):
                 elif n.node_is_a('karmapravacanIyaH') and not (_get_base(n) in avyaya_kriyav):
                     for b in bases:
                         if not _is_same_partition(n, b):
-                            logger.info(f"Adding karmapravacaniya karma edge: {n, b}")
+                            logger.debug(f"Adding karmapravacaniya karma edge: {n, b}")
                             self.G.add_edge(b, n, label="karma")
                     nextset = self.partitions[i+1]
                     prevset = self.partitions[i-1]
                     for nn in nextset.union(prevset):
                         if nn.node_is_a(dvitiya) and (_get_base(n) in karmap_2):
-                            logger.info(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
+                            logger.debug(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
                             self.G.add_edge(n, nn, label="upapadadvitIya")
                         elif nn.node_is_a(pancami) and (_get_base(n) in karmap_5):
-                            logger.info(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
+                            logger.debug(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
                             self.G.add_edge(n, nn, label="upapadapancami")
 
     def add_bhavalakshana(self, krts, laks):
@@ -524,7 +524,7 @@ class VakyaGraph(object):
             if k.node_is_a(saptami):
                 for l in laks:
                     if not _is_same_partition(k, l):
-                        logger.info(f"Adding Bhavalakshana edge: {k, l}")
+                        logger.debug(f"Adding Bhavalakshana edge: {k, l}")
                         self.G.add_edge(l, k, label="BAvalakzaRam")
 
     def add_sentence_conjunctions(self, bases):
@@ -631,7 +631,7 @@ class VakyaGraph(object):
                         merged = ppa.merge_s(ppb, mx-mn-1)
                         if merged:
                             ppmt.add(merged)
-            logger.info(f"{len(ppmt)} parses")
+            logger.debug(f"{len(ppmt)} parses")
             logger.debug(f"Merged {ppmt}")
             end_time = time.time()
             logger.info(f"Time for merge {end_time-start_time}")
@@ -649,10 +649,10 @@ class VakyaGraph(object):
             Remove parses with cycles
         '''
         iv = set()
-        logger.info(f"Parses before validity check {len(self.parses)}")
+        logger.debug(f"Parses before validity check {len(self.parses)}")
         for p in self.parses:
             if not _check_parse(p):
-                logger.info(f"Will remove {p}")
+                logger.debug(f"Will remove {p}")
                 iv.add(p)  # Collect invalid parses
         # Remove them
         self.parses.difference_update(iv)
@@ -678,7 +678,7 @@ class VakyaGraph(object):
         d = dirname(path)
         be = basename(path)
         b, e = splitext(be)
-        logger.info(f"Path {d} {b} {e}")
+        logger.debug(f"Path {d} {b} {e}")
         for i, p in enumerate(self.parses):
             pt = join(d, b+f"_parse{i}"+e)
             nx.drawing.nx_agraph.write_dot(p, pt)
@@ -957,23 +957,23 @@ def _check_parse(parse):
     for u in count:  # Dhatu
         for k in count[u]:  # Each karaka should count only once
             if count[u][k] > 1:
-                logger.info(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
+                logger.debug(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
                 return False
     for (ui, vi) in edges:
         for (wi, xi) in edges:
             if _non_projective(ui, vi, wi, xi):  # Non-projective
-                logger.info(f"Sannidhi violation {ui} - {vi} : {wi} - {xi}")
+                logger.debug(f"Sannidhi violation {ui} - {vi} : {wi} - {xi}")
                 return False
     for v in toedge:
         if toedge[v] > 1:
-            logger.info(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+            logger.debug(f"Toedges for {v} is {toedge[v]} - violates global constraint")
             return False
     for u in sk:   # Sambaddhakaraka = only one allowed from node
         if sk[u] > 1:
-            logger.info(f"Sambaddha karaka edges for {u} is {sk[u]} - violates global constraint")
+            logger.debug(f"Sambaddha karaka edges for {u} is {sk[u]} - violates global constraint")
             return False
     for v in tov:
         if v in fromv:
-            logger.info(f"Viseshana has visheshana {v} - violates global constraint")
+            logger.debug(f"Viseshana has visheshana {v} - violates global constraint")
             return False
     return r
