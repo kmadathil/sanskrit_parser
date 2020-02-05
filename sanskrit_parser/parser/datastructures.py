@@ -225,14 +225,16 @@ napumsakam = _lingas[1]
 avyaya = set(['avyayam'])
 kriyavisheshana = set(['kriyAviSezaRam'])
 nishedha = set(['na'])
-karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'su', 'ati', 'api'])
+karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'ati'])
 karmap_5 = set(['apa', 'pari', 'A', 'prati'])
+# FIXME - api and su (pUjAyaM) in here temporarily - need a better solution
+karmap_null = set(['su', 'api'])
 avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
 projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+l for l in projlabels}
 projlabels.update(samplabels)
-sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA"}
+sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None}
 
 
 class VakyaGraph(object):
@@ -503,7 +505,7 @@ class VakyaGraph(object):
                         if not _is_same_partition(n, b):
                             logger.debug(f"Adding nishedha edge: {n, b}")
                             self.G.add_edge(b, n, label="nizeDa")
-                elif n.node_is_a('karmapravacanIyaH') and not (_get_base(n) in avyaya_kriyav):
+                elif n.node_is_a('karmapravacanIyaH') and not (_get_base(n) in avyaya_kriyav) and not(_get_base(n) in karmap_null):
                     for b in bases:
                         if not _is_same_partition(n, b):
                             logger.info(f"Adding karmapravacaniya karma edge: {n, b}")
@@ -557,9 +559,14 @@ class VakyaGraph(object):
                     for nn in self.G:
                         if (not _is_vipsa(nn)) and _get_base(nn) == s_t:
                             if match_linga_vacana(n, nn):
+                                logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
                         if n.node_is_a('saMyojakaH') and (nn in bases):
+                            logger.info(f"Adding saMbadDakriyA edge: {nn, n}")
                             self.G.add_edge(n, nn, label='saMbadDakriyA')
+                            if s_t is None:
+                                logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
+                                self.G.add_edge(nn, n, label="vAkyasambanDaH")
 
     def get_parses_dc(self):
         ''' Returns all parses
@@ -813,11 +820,8 @@ class VakyaParse(object):
         conn = self.connections.copy()
         # No cycles
         for (u, v) in other.edges:
-            if (u in self.activenodes) and (v in self.activenodes):
-                if conn.connected(u, v):
-                    return False
-                else:
-                    conn.union(u, v)
+            if conn.connected(u, v):
+                return False
             else:
                 conn.union(u, v)
         return True
