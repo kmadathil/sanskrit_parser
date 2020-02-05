@@ -103,3 +103,6 @@ fh.setLevel(logging.ERROR)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
 
+from .api import Parser
+
+

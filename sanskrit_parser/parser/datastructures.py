@@ -401,7 +401,7 @@ class VakyaGraph(object):
         ''' Add karaka edges from base node (dhatu) base '''
         for d in bases:
             logger.debug(f"Processing {d}")
-            dh = _get_base(d)
+            dh = _get_base(d).canonical()
             hpos = dh.find("#")
             if hpos != -1:
                 dh = dh[:hpos]
@@ -909,7 +909,7 @@ def jnode(node, strict_io=False):
 
 def jtag(tag, strict_io=False):
     """ Helper to translate tag to serializable format"""
-    return (SanskritImmutableString(tag[0], encoding=SLP1).canonical(strict_io=strict_io), [t.canonical(strict_io=strict_io) for t in list(tag[1])])
+    return (tag[0].canonical(strict_io=strict_io), [t.canonical(strict_io=strict_io) for t in list(tag[1])])
 
 
 def _non_projective(u, v, w, x):
