@@ -78,6 +78,7 @@ from __future__ import print_function
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph, jedge, jnode
+from sanskrit_parser import Parser
 from argparse import ArgumentParser
 import logging
 
@@ -105,13 +106,13 @@ def getArgs(argv=None):
     parser.add_argument('--score', dest="score", action='store_true',
                         help="Use the lexical scorer to score the splits and reorder them")
     parser.add_argument('--slow-merge', dest='fast_merge', action='store_false', help="Development Only: use if you see issues in divide and conquer")
+    parser.add_argument('--dot-file', type=str, default=None,help='Dotfile')
     return parser.parse_args(argv)
 
 
 def main(argv=None):
-    from sanskrit_parser import Parser
     args = getArgs(argv)
-    vgraph = None
+    vgraphs = []
     logger.info(f"Input String: {args.data}")
     parser = Parser(input_encoding=args.input_encoding,
                     output_encoding="SLP1",
@@ -121,11 +122,17 @@ def main(argv=None):
                     lexical_lookup=args.lexical_lookup)
     parse_result = parser.parse(args.data)
     print('Splits:')
+    logger.debug('Splits:')
     for split in parse_result.splits(max_splits=args.max_paths):
-        print(f'Lexical Split: {split}')
+        logger.info(f'Lexical Split: {split}')
         for i, parse in enumerate(split.parses()):
+            logger.debug(f'Parse {i}')
+            logger.debug(f'{parse}')
             print(f'Parse {i}')
             print(f'{parse}')
+            # Write dot file
+    if args.dot_file is not None:
+            parse_result.write_dot(args.dot_file)
 
     return None
 

@@ -80,28 +80,47 @@ as ``_parse.dot`` files
     ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
 
 """
+from .api import Parser
 import logging
-
-log_file_name = 'SanskritParser.log'
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-console = logging.StreamHandler()
-console.setLevel(logging.ERROR)
-# set a format which is simpler for console use
-formatter = logging.Formatter('%(levelname)-8s %(message)s')
-# tell the handler to use this format
-console.setFormatter(formatter)
-# add the handler to the root logger
-logger.addHandler(console)
+def enable_console_logger(level=logging.INFO,
+                          fmt='%(levelname)-8s %(message)s'):
+    '''Enable logger Console Logging for sanskrit_parser
 
-# create file handler which logs even debug messages
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-fh = logging.FileHandler(log_file_name)
-fh.setLevel(logging.ERROR)
-fh.setFormatter(formatter)
-logger.addHandler(fh)
+       Params
+           level: log level
+           fmt  : log format  
+    '''
+    logger = logging.getLogger(__name__)
+    console = logging.StreamHandler()
+    console.setLevel(level)
+    # set a format which is simpler for console use
+    formatter = logging.Formatter(fmt)
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logger.addHandler(console)
 
-from .api import Parser
+
+def enable_file_logger(log_file_name='SanskritParser.log',
+                       level=logging.INFO,
+                       fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s'):
+    '''Enable logger File Logging for sanskrit_parser
+
+       Params
+           log_file_name(str): Log file Name
+           level: log level
+           fmt  : log format  
+    '''
+    logger = logging.getLogger(__name__)
+    # create file handler which logs even debug messages
+    formatter = logging.Formatter(fmt)
+    fh = logging.FileHandler(log_file_name)
+    fh.setLevel(level)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+
 
