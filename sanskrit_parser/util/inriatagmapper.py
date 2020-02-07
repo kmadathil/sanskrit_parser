@@ -118,7 +118,7 @@ def inriaMapTag(tag):
     for s in inriatagdb:
         if s[0] <= tset:
             olist.append(s[1])
-    return (stem, set(olist))
+    return (SanskritImmutableString(stem, SCHEMES['SLP1']), set(olist))
 
 
 def inriaTagMapper(tags):

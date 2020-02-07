@@ -53,7 +53,7 @@ class LexicalLookup(object):
             ie = SCHEMES[args.input_encoding]
 
         word_in = SanskritImmutableString(args.word,
-                                          encoding=ie).transcoded(SLP1)
+                                          encoding=ie).canonical()
         print("Getting tags for", word_in)
         tags = self.get_tags(word_in, tmap=args.map_tags)
         if tags is not None:

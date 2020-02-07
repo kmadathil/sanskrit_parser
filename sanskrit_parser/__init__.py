@@ -102,3 +102,6 @@ fh = logging.FileHandler(log_file_name)
 fh.setLevel(logging.ERROR)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
+
+from .api import Parser
+

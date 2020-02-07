@@ -62,7 +62,7 @@ class SanskritString(object):
 
     """
 
-    def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8'):
+    def __init__(self, thing, encoding=None, unicode_encoding='utf-8'):
         assert isinstance(thing, six.string_types)
         # Encode early, unicode everywhere, decode late is the philosophy
         # However, we need to accept both unicode and non unicode strings
@@ -71,17 +71,16 @@ class SanskritString(object):
             self.thing = thing
         else:
             self.thing = six.text_type(thing, unicode_encoding)
-        self.encoding = encoding
-        if self.encoding is None:
-            if thing is not None:
-                # Autodetect Encoding
-                self.encoding = SCHEMES[detect.detect(self.thing)]
-        if self.encoding != SLP1:
+        if encoding is None:
+            # Autodetect Encoding
+            encoding = SCHEMES[detect.detect(self.thing)]
+        if encoding != SLP1:
             # Convert to SLP1
-            self.thing = self.transcoded(SLP1)
-            self.encoding = SLP1
+            self.thing = sanscript.transliterate(self.thing, encoding, SLP1)
+            # At this point, we are guaranteed that internal
+            # representation is in SLP1
 
-    def transcoded(self, encoding=None):
+    def transcoded(self, encoding=None, strict_io=True):
         """ Return a transcoded version of self
 
             Args:
@@ -89,23 +88,20 @@ class SanskritString(object):
             Returns:
               str: transcoded version
         """
-        return sanscript.transliterate(self.thing, self.encoding, encoding)
+        s = self.thing
+        if not strict_io:
+            s = normalization.denormalize(s)
+        return sanscript.transliterate(s, SLP1, encoding)
 
     def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self
         """
-        s = self.thing
-        if not strict_io:
-            s = normalization.denormalize(s)
-        return s
+        return self.transcoded(SLP1, strict_io)
 
     def devanagari(self, strict_io=True):
         """ Return devanagari transcoding of self
         """
-        s = self.thing
-        if not strict_io:
-            s = normalization.denormalize(s)
-        return sanscript.transliterate(s, SLP1, DEVANAGARI)
+        return self.transcoded(DEVANAGARI, strict_io)
 
     def __str__(self):
         global denormalize

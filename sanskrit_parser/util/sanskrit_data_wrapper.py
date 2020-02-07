@@ -115,7 +115,7 @@ class SanskritDataWrapper(LexicalLookup):
             voice = stem.voice.abbr
             for t in self.kRdanta[(mode, voice)]:
                 tagset.add(SanskritImmutableString(t, SLP1))
-        return (stem.name, tagset)
+        return (SanskritImmutableString(stem.name, SLP1), tagset)
 
     def map_verb(self, obj):
         tagset = set()
@@ -124,7 +124,7 @@ class SanskritDataWrapper(LexicalLookup):
         tagset.add(SanskritImmutableString(self.pada_prayoga[newobj.voice.id - 1], DEVANAGARI))
         tagset.add(SanskritImmutableString(self.puruSha[newobj.person.id - 1], DEVANAGARI))
         tagset.add(SanskritImmutableString(self.vacanam[newobj.number.id - 1], DEVANAGARI))
-        return (newobj.root.name, tagset)
+        return (SanskritImmutableString(newobj.root.name, SLP1), tagset)
 
     def map_tags(self, tags):
         out = []
@@ -136,13 +136,16 @@ class SanskritDataWrapper(LexicalLookup):
             elif type(t) == Verb:
                 out.append(self.map_verb(t))
             elif type(t) == Indeclinable:
-                out.append((t.name, set([SanskritImmutableString('avyayam', SLP1)])))
+                out.append((SanskritImmutableString(t.name, SLP1),
+                            set([SanskritImmutableString('avyayam', SLP1)])))
             elif type(t) == Gerund:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set([SanskritImmutableString('ktvA', SLP1)])))
+                out.append((SanskritImmutableString(newobj.root.name, SLP1),
+                            set([SanskritImmutableString('ktvA', SLP1)])))
             elif type(t) == Infinitive:
                 newobj = self.refresh(t)
-                out.append((newobj.root.name, set([SanskritImmutableString('tumun', SLP1)])))
+                out.append((SanskritImmutableString(newobj.root.name, SLP1),
+                            set([SanskritImmutableString('tumun', SLP1)])))
             else:
                 out.append(t)
         return out
