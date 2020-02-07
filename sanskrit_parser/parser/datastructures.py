@@ -234,7 +234,7 @@ projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+l for l in projlabels}
 projlabels.update(samplabels)
-sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None}
+sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None}
 
 
 class VakyaGraph(object):
