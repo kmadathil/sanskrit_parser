@@ -8,7 +8,7 @@ from __future__ import print_function
 import abc
 import os
 from argparse import ArgumentParser
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1, SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 
 
 class LexicalLookup(object):

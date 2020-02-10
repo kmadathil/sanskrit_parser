@@ -93,6 +93,7 @@ class Split(Serializable):
     parser: Parser
     input_string: str
     split: Sequence[SanskritObject]
+    vgraph: VakyaGraph = None
 
     def __repr__(self):
         return f'Split({self.input_string}) = {self.split}'
@@ -104,11 +105,14 @@ class Split(Serializable):
         return str(out)
 
     def parses(self):
-        vgraph = VakyaGraph(self.split,
-                            max_parse_dc=self.parser.split_above)
-        for (ix, parse_graph) in enumerate(vgraph.parses):
+        self.vgraph = VakyaGraph(self.split,
+                                 max_parse_dc=self.parser.split_above)
+        for (ix, parse_graph) in enumerate(self.vgraph.parses):
             logger.debug(f"Parse {ix}")
             yield Parse(self, parse_graph)
+
+    def write_dot(self, basepath):
+        self.vgraph.write_dot(basepath)
 
     def serializable(self):
         strict_io = self.parser.strict_io

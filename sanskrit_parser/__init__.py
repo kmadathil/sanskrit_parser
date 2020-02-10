@@ -85,13 +85,14 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 def enable_console_logger(level=logging.INFO,
                           fmt='%(levelname)-8s %(message)s'):
     '''Enable logger Console Logging for sanskrit_parser
 
        Params
            level: log level
-           fmt  : log format  
+           fmt  : log format
     '''
     logger = logging.getLogger(__name__)
     console = logging.StreamHandler()
@@ -112,7 +113,7 @@ def enable_file_logger(log_file_name='SanskritParser.log',
        Params
            log_file_name(str): Log file Name
            level: log level
-           fmt  : log format  
+           fmt  : log format
     '''
     logger = logging.getLogger(__name__)
     # create file handler which logs even debug messages
@@ -123,4 +124,4 @@ def enable_file_logger(log_file_name='SanskritParser.log',
     logger.addHandler(fh)
 
 
-
+__all__ = ['Parser']

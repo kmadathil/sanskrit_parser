@@ -8,13 +8,13 @@ Usage
 The ``Parser`` class can be used to generate vakya parses thus:
 
 .. code-block:: python
-       
+
         from itertools import islice
         from sanskrit_parser import Parser
         string = "astyuttarasyAMdiSi"
         input_encoding = "SLP1"
         output_encoding = "SLP1"
-        parser = Parser(input_encoding=input_encoding, 
+        parser = Parser(input_encoding=input_encoding,
                         output_encoding=output_encoding,
                         replace_ending_visarga='s')
         parse_result = parser.parse(string)
@@ -74,11 +74,8 @@ as _parse.dot files
 
 '''
 
-from __future__ import print_function
-import sanskrit_parser.base.sanskrit_base as SanskritBase
-from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.parser.datastructures import VakyaGraph, jedge, jnode
 from sanskrit_parser import Parser
+from os.path import dirname, basename, splitext, join
 from argparse import ArgumentParser
 import logging
 
@@ -106,13 +103,12 @@ def getArgs(argv=None):
     parser.add_argument('--score', dest="score", action='store_true',
                         help="Use the lexical scorer to score the splits and reorder them")
     parser.add_argument('--slow-merge', dest='fast_merge', action='store_false', help="Development Only: use if you see issues in divide and conquer")
-    parser.add_argument('--dot-file', type=str, default=None,help='Dotfile')
+    parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
     return parser.parse_args(argv)
 
 
 def main(argv=None):
     args = getArgs(argv)
-    vgraphs = []
     logger.info(f"Input String: {args.data}")
     parser = Parser(input_encoding=args.input_encoding,
                     output_encoding="SLP1",
@@ -123,16 +119,21 @@ def main(argv=None):
     parse_result = parser.parse(args.data)
     print('Splits:')
     logger.debug('Splits:')
-    for split in parse_result.splits(max_splits=args.max_paths):
+    for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
         logger.info(f'Lexical Split: {split}')
-        for i, parse in enumerate(split.parses()):
-            logger.debug(f'Parse {i}')
+        for pi, parse in enumerate(split.parses()):
+            logger.debug(f'Parse {pi}')
             logger.debug(f'{parse}')
-            print(f'Parse {i}')
+            print(f'Parse {pi}')
             print(f'{parse}')
-            # Write dot file
-    if args.dot_file is not None:
-            parse_result.write_dot(args.dot_file)
+        # Write dot files
+        if args.dot_file is not None:
+            path = args.dot_file
+            d = dirname(path)
+            be = basename(path)
+            b, e = splitext(be)
+            splitbase = join(d, b + f"_split{si}" + e)
+            split.write_dot(splitbase)
 
     return None
 
