@@ -10,6 +10,7 @@ from sanskrit_parser import Parser
 from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritNormalizedString
 from sanskrit_parser.base.sanskrit_base import outputctx
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
+from sanskrit_parser import enable_file_logger, enable_console_logger
 
 logger = logging.getLogger(__name__)
 
@@ -188,3 +189,35 @@ def tags(argv=None):
             else:
                 b = None
             print(s.hasTag(i, b, g))
+
+
+def cmd_line():
+    """ Command Line Wrapper Function
+    """
+    parser = ArgumentParser(description='Sanskrit Parser')
+
+    parser.add_argument('command', help='Subcommand to run',
+                        choices=["sandhi","vakya","tags"])
+    parser.add_argument('--debug', action='store_true')
+
+    # parse_args defaults to [1:] for args, but you need to
+    # exclude the rest of the args too, or validation will fail
+    args, rest = parser.parse_known_args()
+
+    # Logging
+    enable_console_logger(level=logging.INFO)
+    if args.debug:
+        enable_file_logger(level=logging.DEBUG)
+    else:
+        enable_file_logger(level=logging.INFO)
+
+    if not hasattr(args, 'command'):
+        print('Unrecognized command')
+        parser.print_help()
+        exit(1)
+    # use dispatch pattern to invoke method with same name
+    eval(getattr(args, 'command')+"(rest)")
+
+
+
+

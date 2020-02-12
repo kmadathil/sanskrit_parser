@@ -4,40 +4,6 @@
     Author: Karthik Madathil <kmadathil@gmail.com>
 """
 
-from argparse import ArgumentParser
-import logging
-import sys
+from sanskrit_parser.cmd_line import cmd_line
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject
-from sanskrit_parser.parser.sandhi_analyzer import main as sa
-from sanskrit_parser.cmd_line import vakya, sandhi, tags
-from sanskrit_parser import enable_file_logger, enable_console_logger
-
-
-# def tags(argv):
-#     argv.append("--tags")
-#     sa(argv)
-
-parser = ArgumentParser(description='Sanskrit Parser')
-
-parser.add_argument('command', help='Subcommand to run',
-                    choices=["sandhi","vakya","tags"])
-parser.add_argument('--debug', action='store_true')
-
-# parse_args defaults to [1:] for args, but you need to
-# exclude the rest of the args too, or validation will fail
-args, rest = parser.parse_known_args()
-
-# Logging
-enable_console_logger(level=logging.INFO)
-if args.debug:
-    enable_file_logger(level=logging.DEBUG)
-else:
-    enable_file_logger(level=logging.INFO)
-
-if not hasattr(args, 'command'):
-    print('Unrecognized command')
-    parser.print_help()
-    exit(1)
-# use dispatch pattern to invoke method with same name
-eval(getattr(args, 'command')+"(rest)")
+cmd_line()
