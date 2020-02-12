@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>inriaxmlwrapper &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -48,7 +46,7 @@ by Prof. Gerard Huet
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>The InriaXMLWrapper utility class can also be used to lookup tags:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.util.inriaxmlwrapper</span> <span class="k">import</span> <span class="n">InriaXMLWrapper</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sanskrit_parser.util.inriaxmlwrapper</span> <span class="kn">import</span> <span class="n">InriaXMLWrapper</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">InriaXMLWrapper</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db_tags</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="s1">&#39;hares&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tags</span> <span class="o">==</span> <span class="n">db_tags</span>
@@ -76,46 +74,46 @@ Getting tags for hares
 </div>
 <dl class="class">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper">
-<em class="property">class </em><code class="descclassname">sanskrit_parser.util.inriaxmlwrapper.</code><code class="descname">InriaXMLWrapper</code><span class="sig-paren">(</span><em>files_list=['all'], logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.util.inriaxmlwrapper.</code><code class="sig-name descname">InriaXMLWrapper</code><span class="sig-paren">(</span><em class="sig-param">files_list=['all'], logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.util.lexical_lookup.LexicalLookup</span></code></p>
 <p>Class to interface with the INRIA XML database released
 by Prof. Gerard Huet
 <a class="reference external" href="https://gitlab.inria.fr/huet/Heritage_Resources">https://gitlab.inria.fr/huet/Heritage_Resources</a></p>
 <dl class="attribute">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.base_url">
-<code class="descname">base_url</code><em class="property"> = 'https://raw.githubusercontent.com/drdhaval2785/inriaxmlwrapper/master/'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.base_url" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">base_url</code><em class="property"> = 'https://raw.githubusercontent.com/drdhaval2785/inriaxmlwrapper/master/'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.base_url" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder">
-<code class="descname">folder</code><em class="property"> = 'data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">folder</code><em class="property"> = 'data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags">
-<code class="descname">get_tags</code><span class="sig-paren">(</span><em>word</em>, <em>tmap=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.get_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_tags</code><span class="sig-paren">(</span><em class="sig-param">word</em>, <em class="sig-param">tmap=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.get_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return lexical tags of word</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir">
-<code class="descname">old_base_dir</code><em class="property"> = '/home/karthick/personal_projects/sanskrit/sanskrit_parser/sanskrit_parser/util'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">old_base_dir</code><em class="property"> = '/home/karthick/personal_projects/sanskrit/sanskrit_parser/sanskrit_parser/util'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir">
-<code class="descname">old_dir</code><em class="property"> = '/home/karthick/personal_projects/sanskrit/sanskrit_parser/sanskrit_parser/util/data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">old_dir</code><em class="property"> = '/home/karthick/personal_projects/sanskrit/sanskrit_parser/sanskrit_parser/util/data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid">
-<code class="descname">valid</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">valid</code><span class="sig-paren">(</span><em class="sig-param">word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if word is a valid pada</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.xml_files">
-<code class="descname">xml_files</code><em class="property"> = ['roots', 'nouns', 'adverbs', 'final', 'parts', 'pronouns', 'upasargas', 'all']</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.xml_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">xml_files</code><em class="property"> = ['roots', 'nouns', 'adverbs', 'final', 'parts', 'pronouns', 'upasargas', 'all']</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.xml_files" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -129,9 +127,9 @@ by Prof. Gerard Huet
 <div class="section" id="indices-and-tables">
 <h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -154,6 +152,8 @@ by Prof. Gerard Huet
 
 <h3>Navigation</h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_api.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_cmd_line.html">cmd_line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sanskrit_parser_util.html">util</a><ul class="current">
@@ -186,13 +186,11 @@ by Prof. Gerard Huet
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -213,7 +211,7 @@ by Prof. Gerard Huet
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

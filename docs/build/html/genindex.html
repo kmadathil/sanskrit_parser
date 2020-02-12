@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Index &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -50,6 +48,8 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
@@ -94,6 +94,8 @@
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_samastas">add_samastas() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
 </li>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_sentence_conjunctions">add_sentence_conjunctions() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_shashthi">add_shashthi() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_vipsa">add_vipsa() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
@@ -118,9 +120,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.can_merge">can_merge() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
 </li>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.check_parse_validity">check_parse_validity() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.check_parse_validity">check_parse_validity() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.cmd_line">cmd_line() (in module sanskrit_parser.cmd_line)</a>
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.copy">copy() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
 </li>
@@ -129,6 +133,10 @@
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.JSONEncoder.default">default() (sanskrit_parser.api.JSONEncoder method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.draw">draw() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
 
@@ -156,12 +164,18 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.find_all_paths">find_all_paths() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.fast_merge">fast_merge (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.fast_merge">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.fast_merge">[1]</a>
 </li>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.find_krtverbs">find_krtverbs() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
+      </ul></li>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.find_all_paths">find_all_paths() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.find_krtverbs">find_krtverbs() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.find_lakaras">find_lakaras() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
 </li>
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder">folder (sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper attribute)</a>
@@ -177,20 +191,22 @@
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags">get_tags() (sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper method)</a>
 </li>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.getArgs">getArgs() (in module sanskrit_parser.parser.sandhi_analyzer)</a>
-
-      <ul>
-        <li><a href="sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.getArgs">(in module sanskrit_parser.parser.vakya_analyzer)</a>
 </li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags">getMorphologicalTags() (sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer method)</a>
 </li>
       <li><a href="sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara">getPratyahara() (sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getSandhiArgs">getSandhiArgs() (in module sanskrit_parser.cmd_line)</a>
+</li>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">getSandhiSplits() (sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer method)</a>
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.getSLP1Tagset">getSLP1Tagset() (in module sanskrit_parser.parser.datastructures)</a>
+</li>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getTagsArgs">getTagsArgs() (in module sanskrit_parser.cmd_line)</a>
+</li>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getVakyaArgs">getVakyaArgs() (in module sanskrit_parser.cmd_line)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -210,12 +226,18 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper">InriaXMLWrapper (class in sanskrit_parser.util.inriaxmlwrapper)</a>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.input_encoding">input_encoding (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.input_encoding">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.input_encoding">[1]</a>
 </li>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.is_extinguished">is_extinguished() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
+      </ul></li>
+      <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper">InriaXMLWrapper (class in sanskrit_parser.util.inriaxmlwrapper)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.is_extinguished">is_extinguished() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.is_safe">is_safe() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
 </li>
       <li><a href="sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara">isInPratyahara() (sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras method)</a>
@@ -229,15 +251,25 @@
       <li><a href="sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.join">join() (sanskrit_parser.parser.sandhi.Sandhi method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.JSONEncoder">JSONEncoder (class in sanskrit_parser.api)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer">LexicalSandhiAnalyzer (class in sanskrit_parser.parser.sandhi_analyzer)</a>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.lexical_lookup">lexical_lookup (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.lexical_lookup">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.lexical_lookup">[1]</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer">LexicalSandhiAnalyzer (class in sanskrit_parser.parser.sandhi_analyzer)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.lock">lock() (sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.lock_start">lock_start() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
@@ -251,14 +283,12 @@
       <li><a href="sanskrit_parser_base_maheshvara_sutra.html#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras">MaheshvaraSutras (class in sanskrit_parser.base.maheshvara_sutra)</a>
 </li>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.main">main() (in module sanskrit_parser.parser.sandhi_analyzer)</a>
-
-      <ul>
-        <li><a href="sanskrit_parser_parser_vakya_analyzer.html#sanskrit_parser.parser.vakya_analyzer.main">(in module sanskrit_parser.parser.vakya_analyzer)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.merge">merge() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.merge_f">merge_f() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
+</li>
+      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.merge_s">merge_s() (sanskrit_parser.parser.datastructures.VakyaParse method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -268,10 +298,60 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir">old_base_dir (sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir">old_dir (sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.output_encoding">output_encoding (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.output_encoding">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.output_encoding">[1]</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parse">Parse (class in sanskrit_parser.api)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.parse">parse() (sanskrit_parser.api.Parser method)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.parse">(sanskrit_parser.Parser method)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.parse">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseEdge">ParseEdge (class in sanskrit_parser.api)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseNode">ParseNode (class in sanskrit_parser.api)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#sanskrit_parser.Parser">Parser (class in sanskrit_parser)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser">[1]</a>
+
+      <ul>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser">(class in sanskrit_parser.api)</a>
+</li>
+      </ul></li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseResult">ParseResult (class in sanskrit_parser.api)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Split.parses">parses() (sanskrit_parser.api.Split method)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseTag">ParseTag (class in sanskrit_parser.api)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.replace_ending_visarga">replace_ending_visarga (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.replace_ending_visarga">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.replace_ending_visarga">[1]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -282,43 +362,91 @@
 </li>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.sandhi">sandhi (sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer attribute)</a>
 </li>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.sandhi">sandhi() (in module sanskrit_parser.cmd_line)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph">SandhiGraph (class in sanskrit_parser.parser.datastructures)</a>
 </li>
       <li><a href="index.html#module-sanskrit_parser">sanskrit_parser (module)</a>, <a href="sanskrit_parser.html#module-sanskrit_parser">[1]</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#module-sanskrit_parser.api">sanskrit_parser.api (module)</a>
 </li>
       <li><a href="sanskrit_parser_base.html#module-sanskrit_parser.base">sanskrit_parser.base (module)</a>
 </li>
       <li><a href="sanskrit_parser_base_maheshvara_sutra.html#module-sanskrit_parser.base.maheshvara_sutra">sanskrit_parser.base.maheshvara_sutra (module)</a>
 </li>
+      <li><a href="sanskrit_parser_cmd_line.html#module-sanskrit_parser.cmd_line">sanskrit_parser.cmd_line (module)</a>
+</li>
       <li><a href="sanskrit_parser_parser.html#module-sanskrit_parser.parser">sanskrit_parser.parser (module)</a>
 </li>
       <li><a href="sanskrit_parser_parser_datastructures.html#module-sanskrit_parser.parser.datastructures">sanskrit_parser.parser.datastructures (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_sandhi.html#module-sanskrit_parser.parser.sandhi">sanskrit_parser.parser.sandhi (module)</a>
 </li>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#module-sanskrit_parser.parser.sandhi_analyzer">sanskrit_parser.parser.sandhi_analyzer (module)</a>
-</li>
-      <li><a href="sanskrit_parser_parser_vakya_analyzer.html#module-sanskrit_parser.parser.vakya_analyzer">sanskrit_parser.parser.vakya_analyzer (module)</a>
 </li>
       <li><a href="sanskrit_parser_util.html#module-sanskrit_parser.util">sanskrit_parser.util (module)</a>
 </li>
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#module-sanskrit_parser.util.inriaxmlwrapper">sanskrit_parser.util.inriaxmlwrapper (module)</a>
 </li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.score">score (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.score">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.score">[1]</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.score_graph">score_graph() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
 </li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Serializable">Serializable (class in sanskrit_parser.api)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parse.serializable">serializable() (sanskrit_parser.api.Parse method)</a>
+
+      <ul>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseEdge.serializable">(sanskrit_parser.api.ParseEdge method)</a>
+</li>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseNode.serializable">(sanskrit_parser.api.ParseNode method)</a>
+</li>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseResult.serializable">(sanskrit_parser.api.ParseResult method)</a>
+</li>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseTag.serializable">(sanskrit_parser.api.ParseTag method)</a>
+</li>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Serializable.serializable">(sanskrit_parser.api.Serializable method)</a>
+</li>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Split.serializable">(sanskrit_parser.api.Split method)</a>
+</li>
+      </ul></li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Split">Split (class in sanskrit_parser.api)</a>
+</li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.split_above">split_above (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.split_above">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.split_above">[1]</a>
+</li>
+      </ul></li>
       <li><a href="sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.split_all">split_all() (sanskrit_parser.parser.sandhi.Sandhi method)</a>
 </li>
       <li><a href="sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.split_at">split_at() (sanskrit_parser.parser.sandhi.Sandhi method)</a>
 </li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseResult.splits">splits() (sanskrit_parser.api.ParseResult method)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.start">start (sanskrit_parser.parser.datastructures.SandhiGraph attribute)</a>
 </li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Parser.strict_io">strict_io (sanskrit_parser.api.Parser attribute)</a>
+
+      <ul>
+        <li><a href="index.html#sanskrit_parser.Parser.strict_io">(sanskrit_parser.Parser attribute)</a>, <a href="sanskrit_parser.html#sanskrit_parser.Parser.strict_io">[1]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.tags">tags() (in module sanskrit_parser.cmd_line)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph">tagSandhiGraph() (sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer method)</a>
 </li>
@@ -328,6 +456,8 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.vakya">vakya() (in module sanskrit_parser.cmd_line)</a>
+</li>
       <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph">VakyaGraph (class in sanskrit_parser.parser.datastructures)</a>
 </li>
   </ul></td>
@@ -336,15 +466,21 @@
 </li>
       <li><a href="sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid">valid() (sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper method)</a>
 </li>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Split.vgraph">vgraph (sanskrit_parser.api.Split attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.write_dot">write_dot() (sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
+      <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.ParseResult.write_dot">write_dot() (sanskrit_parser.api.ParseResult method)</a>
 
       <ul>
+        <li><a href="sanskrit_parser_api.html#sanskrit_parser.api.Split.write_dot">(sanskrit_parser.api.Split method)</a>
+</li>
+        <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph.write_dot">(sanskrit_parser.parser.datastructures.SandhiGraph method)</a>
+</li>
         <li><a href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.write_dot">(sanskrit_parser.parser.datastructures.VakyaGraph method)</a>
 </li>
       </ul></li>
@@ -378,6 +514,8 @@
 
 <h3>Navigation</h3>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_api.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_cmd_line.html">cmd_line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_parser.html">parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_base.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_util.html">util</a></li>
@@ -391,13 +529,11 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -418,7 +554,7 @@
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

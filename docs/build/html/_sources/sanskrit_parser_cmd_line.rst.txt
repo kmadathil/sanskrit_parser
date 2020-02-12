@@ -1,7 +1,7 @@
-parser
-=========================================
+cmd_line
+===================================================================
 
-.. automodule:: sanskrit_parser.parser
+.. automodule:: sanskrit_parser.cmd_line
   :members:
   :undoc-members:
   :show-inheritance:
@@ -12,9 +12,6 @@ Submodules
 .. toctree::
   :maxdepth: 5
 
-  sanskrit_parser_parser_sandhi
-  sanskrit_parser_parser_sandhi_analyzer
-  sanskrit_parser_parser_datastructures
 
 Indices and tables
 ------------------

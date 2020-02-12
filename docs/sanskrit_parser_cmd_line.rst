@@ -1,7 +1,7 @@
-parser.vakya_analyzer
+cmd_line
 ===================================================================
 
-.. automodule:: sanskrit_parser.parser.vakya_analyzer
+.. automodule:: sanskrit_parser.cmd_line
   :members:
   :undoc-members:
   :show-inheritance:

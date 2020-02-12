@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sanskrit_parser.cmd_line &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for sanskrit_parser.cmd_line</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Karthik Madathil (github: @kmadathil)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser</span> <span class="k">import</span> <span class="n">Parser</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SCHEMES</span><span class="p">,</span> <span class="n">SanskritNormalizedString</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">outputctx</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.parser.sandhi_analyzer</span> <span class="k">import</span> <span class="n">LexicalSandhiAnalyzer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser</span> <span class="k">import</span> <span class="n">enable_file_logger</span><span class="p">,</span> <span class="n">enable_console_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="getVakyaArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getVakyaArgs">[docs]</a><span class="k">def</span> <span class="nf">getVakyaArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Vakya Analyzer&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Need a lakara</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--need-lakara&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--split-above&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--slow-merge&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;fast_merge&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Development Only: use if you see issues in divide and conquer&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dot-file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Dotfile&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vakya"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.vakya">[docs]</a><span class="k">def</span> <span class="nf">vakya</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getVakyaArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">input_encoding</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">,</span>
+                    <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                    <span class="n">output_encoding</span><span class="o">=</span><span class="s2">&quot;SLP1&quot;</span><span class="p">,</span>
+                    <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">score</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                    <span class="n">split_above</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">split_above</span><span class="p">,</span>
+                    <span class="n">lexical_lookup</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="n">parse_result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">)):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pi</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">()):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parse </span><span class="si">{pi}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parse </span><span class="si">{pi}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1"># Write dot files</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">be</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
+            <span class="n">splitbase</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span> <span class="o">+</span> <span class="n">f</span><span class="s2">&quot;_split</span><span class="si">{si}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">split</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">splitbase</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="getSandhiArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getSandhiArgs">[docs]</a><span class="k">def</span> <span class="nf">getSandhiArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sandhi Analyzer&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;astyuttarasyAMdishidevatAtmA&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max-paths&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dot-file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Dotfile&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sandhi"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.sandhi">[docs]</a><span class="k">def</span> <span class="nf">sandhi</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getSandhiArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">input_encoding</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">,</span>
+                    <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                    <span class="n">output_encoding</span><span class="o">=</span><span class="s2">&quot;SLP1&quot;</span><span class="p">,</span>
+                    <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">score</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                    <span class="n">lexical_lookup</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="n">parse_result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">)):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Write dot files</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parse_result</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dot_file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="getTagsArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getTagsArgs">[docs]</a><span class="k">def</span> <span class="nf">getTagsArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Argparse routine.</span>
+<span class="sd">      Returns args variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Parser Setup</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Morphological tags&#39;</span><span class="p">)</span>
+    <span class="c1"># String to encode</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;adhi&quot;</span><span class="p">)</span>
+    <span class="c1"># Input Encoding (autodetect by default)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--input-encoding&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Filter by base name</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--base&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># Filter by tag set</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tag-set&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tags&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lexical-lookup&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;combined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--strict-io&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-map-tags&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;map_tags&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;show raw (unmapped to our standard set) tags&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="tags"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.tags">[docs]</a><span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getTagsArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ie</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">outputctx</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                                  <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                                  <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tmap</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">map_tags</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Morphological tags:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="c1"># Possible rakaranta</span>
+        <span class="c1"># Try by replacing end visarga with &#39;r&#39; instead</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ie</span><span class="p">,</span>
+                                                      <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
+                                                      <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input String in SLP1:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tag_set</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tag_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tag_set</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">hasTag</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="cmd_line"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.cmd_line">[docs]</a><span class="k">def</span> <span class="nf">cmd_line</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Command Line Wrapper Function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sanskrit Parser&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Subcommand to run&#39;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sandhi&quot;</span><span class="p">,</span><span class="s2">&quot;vakya&quot;</span><span class="p">,</span><span class="s2">&quot;tags&quot;</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># parse_args defaults to [1:] for args, but you need to</span>
+    <span class="c1"># exclude the rest of the args too, or validation will fail</span>
+    <span class="n">args</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>
+
+    <span class="c1"># Logging</span>
+    <span class="n">enable_console_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">enable_file_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">enable_file_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;command&#39;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unrecognized command&#39;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># use dispatch pattern to invoke method with same name</span>
+    <span class="nb">eval</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;command&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;(rest)&quot;</span><span class="p">)</span></div>
+
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_api.html">api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_cmd_line.html">cmd_line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_parser.html">parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_base.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_util.html">util</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../sanskrit_parser.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2019, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
