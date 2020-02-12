@@ -2,40 +2,14 @@
 """
 @author: Karthik Madathil (github: @kmadathil)
 
-
-Command line usage
-==================
-
-The sanskrit_parser script can be used to view parses as below.
-
-If the --dot option is provided, a graph is output in .dot fomat with
-all the possible morphologies as nodes, and possible relations as
-edges. The valid parses extracted from this graph are also written out
-as _parse.dot files
-
-
-::
-
-    $ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
-    ...
-    Lexical Split: [asti, uttarasyAm, diSi]
-    ...
-    Parse 0
-    asti=>['as#1', {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
-    diSi=>['diS#2', {ekavacanam, strIliNgam, saptamIviBaktiH}]
-    uttarasyAm=>['uttara#1', {ekavacanam, strIliNgam, saptamIviBaktiH}]
-    ...
-
-    $ dot -Tpng vakya.dot -o vakya.png
-    $ eog vakya.png
-    $ dot -Tpng vakya_parse0.dot -o vakya.png
-    $ eog vakya_parse0.png
-
 """
 from os.path import dirname, basename, splitext, join
 from argparse import ArgumentParser
 import logging
 from sanskrit_parser import Parser
+from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritNormalizedString
+from sanskrit_parser.base.sanskrit_base import outputctx
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -145,3 +119,72 @@ def sandhi(argv=None):
         parse_result.write_dot(args.dot_file)
 
     return None
+
+
+def getTagsArgs(argv=None):
+    """
+      Argparse routine.
+      Returns args variable
+    """
+    # Parser Setup
+    parser = ArgumentParser(description='Morphological tags')
+    # String to encode
+    parser.add_argument('data', nargs="?", type=str, default="adhi")
+    # Input Encoding (autodetect by default)
+    parser.add_argument('--input-encoding', type=str, default=None)
+    # Filter by base name
+    parser.add_argument('--base', type=str, default=None)
+    # Filter by tag set
+    parser.add_argument('--tag-set', type=str, default=None, nargs="+")
+    parser.add_argument('--tags', dest='split', action='store_false')
+    parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--strict-io', action='store_true',
+                        help="Do not modify the input/output string to match conventions", default=False)
+    parser.add_argument('--no-map-tags', dest='map_tags',
+                        action='store_false', help="show raw (unmapped to our standard set) tags")
+    return parser.parse_args(argv)
+
+
+def tags(argv=None):
+    args = getTagsArgs(argv)
+    if args.strict_io:
+        print("Interpreting input strictly")
+    else:
+        print("Interpreting input loosely (strict_io set to false)")
+    logger.info(f"Input String: {args.data}")
+    if args.input_encoding is None:
+        ie = None
+    else:
+        ie = SCHEMES[args.input_encoding]
+    s = LexicalSandhiAnalyzer(args.lexical_lookup)
+    with outputctx(args.strict_io):
+        i = SanskritNormalizedString(args.data, encoding=ie,
+                                                  strict_io=args.strict_io,
+                                                  replace_ending_visarga='s')
+        print("Input String in SLP1:", i.canonical())
+        ts = s.getMorphologicalTags(i, tmap=args.map_tags)
+        print("Morphological tags:")
+        if ts is not None:
+            for t in ts:
+                print(t)
+        # Possible rakaranta
+        # Try by replacing end visarga with 'r' instead
+        elif not args.strict_io:
+            i = SanskritNormalizedString(args.data, encoding=ie,
+                                                      strict_io=args.strict_io,
+                                                      replace_ending_visarga='r')
+            ts = s.getMorphologicalTags(i)
+            if ts is not None:
+                print("Input String in SLP1:", i.canonical())
+                for t in ts:
+                    print(t)
+        if args.tag_set or args.base:
+            if args.tag_set is not None:
+                g = set(args.tag_set)
+            else:
+                g = None
+            if args.base is not None:
+                b = SanskritNormalizedString(args.base)
+            else:
+                b = None
+            print(s.hasTag(i, b, g))

@@ -16,7 +16,8 @@ Submodules
   sanskrit_parser_parser_sandhi_analyzer
   sanskrit_parser_parser_vakya_analyzer
   sanskrit_parser_parser_datastructures
-  
+  sanskrit_parser_parser_cmd_line
+
 Indices and tables
 ------------------
 
