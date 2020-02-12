@@ -115,6 +115,7 @@ class Parser():
     score: bool = True
     split_above: int = 5
     replace_ending_visarga: str = None
+    fast_merge = True
 
     def parse(self,
               input_string: str,
@@ -179,6 +180,7 @@ class Split(Serializable):
 
     def parses(self):
         self.vgraph = VakyaGraph(self.split,
+                                 fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
         for (ix, parse_graph) in enumerate(self.vgraph.parses):
             logger.debug(f"Parse {ix}")
