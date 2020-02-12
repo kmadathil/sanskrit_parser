@@ -10,7 +10,7 @@ import sys
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject
 from sanskrit_parser.parser.sandhi_analyzer import main as sa
-from sanskrit_parser.api import vakya, sandhi
+from sanskrit_parser.cmd_line import vakya, sandhi
 from sanskrit_parser import enable_file_logger, enable_console_logger
 
 
