@@ -39,7 +39,7 @@ def jnode(node):
 
 def jtag(tag):
     """ Helper to translate tag to serializable format"""
-    return (SanskritObject(tag[0], encoding=SLP1).devanagari(strict_io=False), [t.devanagari(strict_io=False) for t in list(tag[1])])
+    return (tag[0].devanagari(strict_io=False), [t.devanagari(strict_io=False) for t in list(tag[1])])
 
 
 def jtags(tags):

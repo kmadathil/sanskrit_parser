@@ -83,7 +83,7 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration', 'lxml', 'networkx', 'tinydb',
-                    'requests', 'six', 'flask',
+                    'requests', 'six', 'flask', 'flask_restplus',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy',
                     'sentencepiece', 'gensim', 'pygraphviz'],
 
