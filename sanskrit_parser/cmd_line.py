@@ -160,8 +160,8 @@ def tags(argv=None):
     s = LexicalSandhiAnalyzer(args.lexical_lookup)
     with outputctx(args.strict_io):
         i = SanskritNormalizedString(args.data, encoding=ie,
-                                                  strict_io=args.strict_io,
-                                                  replace_ending_visarga='s')
+                                     strict_io=args.strict_io,
+                                     replace_ending_visarga='s')
         print("Input String in SLP1:", i.canonical())
         ts = s.getMorphologicalTags(i, tmap=args.map_tags)
         print("Morphological tags:")
@@ -172,8 +172,8 @@ def tags(argv=None):
         # Try by replacing end visarga with 'r' instead
         elif not args.strict_io:
             i = SanskritNormalizedString(args.data, encoding=ie,
-                                                      strict_io=args.strict_io,
-                                                      replace_ending_visarga='r')
+                                         strict_io=args.strict_io,
+                                         replace_ending_visarga='r')
             ts = s.getMorphologicalTags(i)
             if ts is not None:
                 print("Input String in SLP1:", i.canonical())
@@ -197,7 +197,7 @@ def cmd_line():
     parser = ArgumentParser(description='Sanskrit Parser')
 
     parser.add_argument('command', help='Subcommand to run',
-                        choices=["sandhi","vakya","tags"])
+                        choices=["sandhi", "vakya", "tags"])
     parser.add_argument('--debug', action='store_true')
 
     # parse_args defaults to [1:] for args, but you need to
@@ -217,7 +217,3 @@ def cmd_line():
         exit(1)
     # use dispatch pattern to invoke method with same name
     eval(getattr(args, 'command')+"(rest)")
-
-
-
-
