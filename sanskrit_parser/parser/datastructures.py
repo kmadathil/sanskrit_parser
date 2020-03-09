@@ -248,7 +248,7 @@ class VakyaGraph(object):
         ''' DAG Class Init
 
         Params:
-             path: Path from SanghiGraph
+             path: Path from SandhiGraph
         '''
         self.max_parse_dc = max_parse_dc
         self.fast_merge = fast_merge
