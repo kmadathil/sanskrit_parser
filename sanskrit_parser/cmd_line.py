@@ -208,8 +208,8 @@ def cmd_line():
     enable_console_logger(level=logging.INFO)
     if args.debug:
         enable_file_logger(level=logging.DEBUG)
-    else:
-        enable_file_logger(level=logging.INFO)
+    # else:
+    #    enable_file_logger(level=logging.INFO)
 
     if not hasattr(args, 'command'):
         print('Unrecognized command')
