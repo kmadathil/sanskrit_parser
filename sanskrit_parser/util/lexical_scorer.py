@@ -22,8 +22,8 @@ import sentencepiece as spm
 class Scorer(object):
 
     # TODO - Install the data in a different way
-    sentencepiece_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/sanskrit_util/data/sentencepiece.model?raw=true"
-    word2vec_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/sanskrit_util/data/word2vec_model.dat?raw=true"
+    sentencepiece_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/master/data/sentencepiece.model?raw=true"
+    word2vec_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/master/data/word2vec_model.dat?raw=true"
     base_dir = os.path.expanduser("~/.sanskrit_parser/data/")
     sentencepiece_file = os.path.join(base_dir, "sentencepiece.model")
     word2vec_file = os.path.join(base_dir, "word2vec_model.dat")
