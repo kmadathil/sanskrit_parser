@@ -186,7 +186,7 @@ if __name__ == "__main__":
                            "orig_full": ofull,
                            "orig_split": osplit,
                            "filename": filename,
-                           "linenum": linenum}) + "\n"
+                           "linenum": str(linenum)}) + ","
         sr = test_splits(lexan, (full, split))
         if sr == "Skip":
             skip.write(test)
