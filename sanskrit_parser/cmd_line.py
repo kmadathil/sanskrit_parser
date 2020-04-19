@@ -55,24 +55,26 @@ def vakya(argv=None):
                     split_above=args.split_above,
                     lexical_lookup=args.lexical_lookup)
     parse_result = parser.parse(args.data)
-    print('Splits:')
-    logger.debug('Splits:')
-    for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
-        logger.info(f'Lexical Split: {split}')
-        for pi, parse in enumerate(split.parses()):
-            logger.debug(f'Parse {pi}')
-            logger.debug(f'{parse}')
-            print(f'Parse {pi}')
-            print(f'{parse}')
-        # Write dot files
-        if args.dot_file is not None:
-            path = args.dot_file
-            d = dirname(path)
-            be = basename(path)
-            b, e = splitext(be)
-            splitbase = join(d, b + f"_split{si}" + e)
-            split.write_dot(splitbase)
-
+    if parse_result is not None:
+        print('Splits:')
+        logger.debug('Splits:')
+        for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
+            logger.info(f'Lexical Split: {split}')
+            for pi, parse in enumerate(split.parses()):
+                logger.debug(f'Parse {pi}')
+                logger.debug(f'{parse}')
+                print(f'Parse {pi}')
+                print(f'{parse}')
+            # Write dot files
+            if args.dot_file is not None:
+                path = args.dot_file
+                d = dirname(path)
+                be = basename(path)
+                b, e = splitext(be)
+                splitbase = join(d, b + f"_split{si}" + e)
+                split.write_dot(splitbase)
+    else:
+        print('No splits found. Please check the input to ensure there are no typos.')
     return None
 
 
@@ -111,14 +113,16 @@ def sandhi(argv=None):
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
     parse_result = parser.parse(args.data)
-    print('Splits:')
-    logger.debug('Splits:')
-    for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
-        logger.info(f'Split: {split}')
-    # Write dot files
-    if args.dot_file is not None:
-        parse_result.write_dot(args.dot_file)
-
+    if parse_result is not None:
+        print('Splits:')
+        logger.debug('Splits:')
+        for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
+            logger.info(f'Split: {split}')
+        # Write dot files
+        if args.dot_file is not None:
+            parse_result.write_dot(args.dot_file)
+    else:
+        print('No splits found. Please check the input to ensure there are no typos.')
     return None
 
 
@@ -217,3 +221,7 @@ def cmd_line():
         exit(1)
     # use dispatch pattern to invoke method with same name
     eval(getattr(args, 'command')+"(rest)")
+
+
+if __name__ == "__main__":
+    cmd_line()

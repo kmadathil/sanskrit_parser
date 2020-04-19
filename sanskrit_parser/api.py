@@ -45,6 +45,7 @@ diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : aDikaraRam of a
 import time
 import json
 import abc
+import warnings
 from dataclasses import dataclass
 from typing import Sequence
 from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
@@ -101,6 +102,9 @@ class Parser():
         logger.debug("Start Split")
         graph = sandhi_analyzer.getSandhiSplits(s, tag=True)
         logger.debug("End DAG generation")
+        if graph is None:
+            warnings.warn("No splits found. Please check the input to ensure there are no typos.")
+            return None
         return ParseResult(self, input_string, graph)
 
 
