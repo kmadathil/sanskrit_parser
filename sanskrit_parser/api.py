@@ -17,27 +17,32 @@ The ``Parser`` class can be used to generate vakya parses thus:
                         output_encoding=output_encoding,
                         replace_ending_visarga='s')
         parse_result = parser.parse(string)
-        print('Splits:')
-        for split in parse_result.splits(max_splits=10):
-            print(f'Lexical Split: {split}')
-            for i, parse in enumerate(islice(split.parses(), 3)):
-                print(f'Parse {i}')
-                print(f'{parse}')
-        ...
-Lexical Split: ['asti', 'uttarasyAm', 'diSi']
-Parse 0
-asti => (asti, ['samAsapUrvapadanAmapadam', 'strIliNgam']) : samasta of uttarasyAm
-uttarasyAm => (uttara#1, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam'])
-diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : viSezaRa of uttarasyAm
-Parse 1
-asti => (asti, ['samAsapUrvapadanAmapadam', 'strIliNgam']) : samasta of uttarasyAm
-uttarasyAm => (uttara#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam']) : viSezaRa of diSi
-diSi => (diS#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam'])
-Parse 2
-asti => (as#1, ['kartari', 'praTamapuruzaH', 'law', 'parasmEpadam', 'ekavacanam', 'prATamikaH'])
-uttarasyAm => (uttara#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam']) : viSezaRa of diSi
-diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : aDikaraRam of asti
+        if parse_result is not None:
+            print('Splits:')
+            for split in parse_result.splits(max_splits=10):
+                print(f'Lexical Split: {split}')
+                for i, parse in enumerate(islice(split.parses(), 3)):
+                    print(f'Parse {i}')
+                    print(f'{parse}')
+        else:
+            print('No splits found.  Please check the input to ensure there are no typos.')
 
+
+This produces the output::
+
+    Lexical Split: ['asti', 'uttarasyAm', 'diSi']
+    Parse 0
+    asti => (asti, ['samAsapUrvapadanAmapadam', 'strIliNgam']) : samasta of uttarasyAm
+    uttarasyAm => (uttara#1, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam'])
+    diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : viSezaRa of uttarasyAm
+    Parse 1
+    asti => (asti, ['samAsapUrvapadanAmapadam', 'strIliNgam']) : samasta of uttarasyAm
+    uttarasyAm => (uttara#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam']) : viSezaRa of diSi
+    diSi => (diS#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam'])
+    Parse 2
+    asti => (as#1, ['kartari', 'praTamapuruzaH', 'law', 'parasmEpadam', 'ekavacanam', 'prATamikaH'])
+    uttarasyAm => (uttara#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam']) : viSezaRa of diSi
+    diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : aDikaraRam of asti
 
 @author: avinashvarna
 """
