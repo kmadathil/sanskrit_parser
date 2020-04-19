@@ -221,7 +221,3 @@ def cmd_line():
         exit(1)
     # use dispatch pattern to invoke method with same name
     eval(getattr(args, 'command')+"(rest)")
-
-
-if __name__ == "__main__":
-    cmd_line()
