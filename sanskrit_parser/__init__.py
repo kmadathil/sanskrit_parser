@@ -35,9 +35,9 @@ as ``_parse.dot`` files
     uttarasyAm=>['uttara#1', {ekavacanam, strIliNgam, saptamIviBaktiH}]
     ...
 
-    $ dot -Tpng vakya.dot -o vakya.png
+    $ dot -Tpng vakya_split0.dot -o vakya_split0.png
     $ eog vakya.png
-    $ dot -Tpng vakya_parse0.dot -o vakya.png
+    $ dot -Tpng vakya_split0_parse0.dot -o vakya_split0_parse0.png
     $ eog vakya_parse0.png
 
 
