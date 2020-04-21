@@ -7,11 +7,11 @@
     <title>api &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="cmd_line" href="sanskrit_parser_cmd_line.html" />
@@ -46,28 +46,33 @@
                 <span class="n">output_encoding</span><span class="o">=</span><span class="n">output_encoding</span><span class="p">,</span>
                 <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
 <span class="n">parse_result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Lexical Split: {split}&#39;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)):</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parse {i}&#39;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{parse}&#39;</span><span class="p">)</span>
-<span class="o">...</span>
+<span class="k">if</span> <span class="n">parse_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{i}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No splits found.  Please check the input to ensure there are no typos.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Lexical Split: [‘asti’, ‘uttarasyAm’, ‘diSi’]
-Parse 0
-asti =&gt; (asti, [‘samAsapUrvapadanAmapadam’, ‘strIliNgam’]) : samasta of uttarasyAm
-uttarasyAm =&gt; (uttara#1, [‘saptamIviBaktiH’, ‘strIliNgam’, ‘ekavacanam’])
-diSi =&gt; (diS, [‘saptamIviBaktiH’, ‘ekavacanam’, ‘strIliNgam’]) : viSezaRa of uttarasyAm
-Parse 1
-asti =&gt; (asti, [‘samAsapUrvapadanAmapadam’, ‘strIliNgam’]) : samasta of uttarasyAm
-uttarasyAm =&gt; (uttara#2, [‘saptamIviBaktiH’, ‘strIliNgam’, ‘ekavacanam’]) : viSezaRa of diSi
-diSi =&gt; (diS#2, [‘saptamIviBaktiH’, ‘strIliNgam’, ‘ekavacanam’])
-Parse 2
-asti =&gt; (as#1, [‘kartari’, ‘praTamapuruzaH’, ‘law’, ‘parasmEpadam’, ‘ekavacanam’, ‘prATamikaH’])
-uttarasyAm =&gt; (uttara#2, [‘saptamIviBaktiH’, ‘strIliNgam’, ‘ekavacanam’]) : viSezaRa of diSi
-diSi =&gt; (diS, [‘saptamIviBaktiH’, ‘ekavacanam’, ‘strIliNgam’]) : aDikaraRam of asti</p>
+<p>This produces the output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lexical</span> <span class="n">Split</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;asti&#39;</span><span class="p">,</span> <span class="s1">&#39;uttarasyAm&#39;</span><span class="p">,</span> <span class="s1">&#39;diSi&#39;</span><span class="p">]</span>
+<span class="n">Parse</span> <span class="mi">0</span>
+<span class="n">asti</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">asti</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;samAsapUrvapadanAmapadam&#39;</span><span class="p">,</span> <span class="s1">&#39;strIliNgam&#39;</span><span class="p">])</span> <span class="p">:</span> <span class="n">samasta</span> <span class="n">of</span> <span class="n">uttarasyAm</span>
+<span class="n">uttarasyAm</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">uttara</span><span class="c1">#1, [&#39;saptamIviBaktiH&#39;, &#39;strIliNgam&#39;, &#39;ekavacanam&#39;])</span>
+<span class="n">diSi</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">diS</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;saptamIviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;ekavacanam&#39;</span><span class="p">,</span> <span class="s1">&#39;strIliNgam&#39;</span><span class="p">])</span> <span class="p">:</span> <span class="n">viSezaRa</span> <span class="n">of</span> <span class="n">uttarasyAm</span>
+<span class="n">Parse</span> <span class="mi">1</span>
+<span class="n">asti</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">asti</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;samAsapUrvapadanAmapadam&#39;</span><span class="p">,</span> <span class="s1">&#39;strIliNgam&#39;</span><span class="p">])</span> <span class="p">:</span> <span class="n">samasta</span> <span class="n">of</span> <span class="n">uttarasyAm</span>
+<span class="n">uttarasyAm</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">uttara</span><span class="c1">#2, [&#39;saptamIviBaktiH&#39;, &#39;strIliNgam&#39;, &#39;ekavacanam&#39;]) : viSezaRa of diSi</span>
+<span class="n">diSi</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">diS</span><span class="c1">#2, [&#39;saptamIviBaktiH&#39;, &#39;strIliNgam&#39;, &#39;ekavacanam&#39;])</span>
+<span class="n">Parse</span> <span class="mi">2</span>
+<span class="n">asti</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">as</span><span class="c1">#1, [&#39;kartari&#39;, &#39;praTamapuruzaH&#39;, &#39;law&#39;, &#39;parasmEpadam&#39;, &#39;ekavacanam&#39;, &#39;prATamikaH&#39;])</span>
+<span class="n">uttarasyAm</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">uttara</span><span class="c1">#2, [&#39;saptamIviBaktiH&#39;, &#39;strIliNgam&#39;, &#39;ekavacanam&#39;]) : viSezaRa of diSi</span>
+<span class="n">diSi</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">diS</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;saptamIviBaktiH&#39;</span><span class="p">,</span> <span class="s1">&#39;ekavacanam&#39;</span><span class="p">,</span> <span class="s1">&#39;strIliNgam&#39;</span><span class="p">])</span> <span class="p">:</span> <span class="n">aDikaraRam</span> <span class="n">of</span> <span class="n">asti</span>
+</pre></div>
+</div>
 <p>&#64;author: avinashvarna</p>
 <dl class="class">
 <dt id="sanskrit_parser.api.JSONEncoder">
@@ -112,6 +117,21 @@ implement default like this:</p>
 <dt id="sanskrit_parser.api.ParseEdge">
 <em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseEdge</code><span class="sig-paren">(</span><em class="sig-param">predecessor: str</em>, <em class="sig-param">node: sanskrit_parser.api.ParseNode</em>, <em class="sig-param">label: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseEdge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseEdge.label">
+<code class="sig-name descname">label</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseEdge.node">
+<code class="sig-name descname">node</code><em class="property">: ParseNode</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseEdge.predecessor">
+<code class="sig-name descname">predecessor</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="sanskrit_parser.api.ParseEdge.serializable">
 <code class="sig-name descname">serializable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseEdge.serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.serializable" title="Permalink to this definition">¶</a></dt>
@@ -136,6 +156,21 @@ implement default like this:</p>
 <dt id="sanskrit_parser.api.ParseResult">
 <em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseResult</code><span class="sig-paren">(</span><em class="sig-param">parser: sanskrit_parser.api.Parser</em>, <em class="sig-param">input_string: str</em>, <em class="sig-param">sandhi_graph: sanskrit_parser.parser.datastructures.SandhiGraph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseResult.input_string">
+<code class="sig-name descname">input_string</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.input_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseResult.parser">
+<code class="sig-name descname">parser</code><em class="property">: Parser</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseResult.sandhi_graph">
+<code class="sig-name descname">sandhi_graph</code><em class="property">: SandhiGraph</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.sandhi_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="sanskrit_parser.api.ParseResult.serializable">
 <code class="sig-name descname">serializable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult.serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult.serializable" title="Permalink to this definition">¶</a></dt>
@@ -158,11 +193,21 @@ implement default like this:</p>
 <dt id="sanskrit_parser.api.ParseTag">
 <em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseTag</code><span class="sig-paren">(</span><em class="sig-param">root: str, tags: Sequence[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseTag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseTag.root">
+<code class="sig-name descname">root</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseTag.root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="sanskrit_parser.api.ParseTag.serializable">
 <code class="sig-name descname">serializable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseTag.serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseTag.serializable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an object that can be serialized by json.JSONEncoder</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.ParseTag.tags">
+<code class="sig-name descname">tags</code><em class="property">: Sequence[str]</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.ParseTag.tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -177,17 +222,17 @@ implement default like this:</p>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.input_encoding">
-<code class="sig-name descname">input_encoding</code><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Parser.input_encoding" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">input_encoding</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Parser.input_encoding" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.lexical_lookup">
-<code class="sig-name descname">lexical_lookup</code><em class="property"> = 'combined'</em><a class="headerlink" href="#sanskrit_parser.api.Parser.lexical_lookup" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lexical_lookup</code><em class="property">: str</em><em class="property"> = 'combined'</em><a class="headerlink" href="#sanskrit_parser.api.Parser.lexical_lookup" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.output_encoding">
-<code class="sig-name descname">output_encoding</code><em class="property"> = 'SLP1'</em><a class="headerlink" href="#sanskrit_parser.api.Parser.output_encoding" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">output_encoding</code><em class="property">: str</em><em class="property"> = 'SLP1'</em><a class="headerlink" href="#sanskrit_parser.api.Parser.output_encoding" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -197,22 +242,22 @@ implement default like this:</p>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.replace_ending_visarga">
-<code class="sig-name descname">replace_ending_visarga</code><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Parser.replace_ending_visarga" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">replace_ending_visarga</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Parser.replace_ending_visarga" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.score">
-<code class="sig-name descname">score</code><em class="property"> = True</em><a class="headerlink" href="#sanskrit_parser.api.Parser.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#sanskrit_parser.api.Parser.score" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.split_above">
-<code class="sig-name descname">split_above</code><em class="property"> = 5</em><a class="headerlink" href="#sanskrit_parser.api.Parser.split_above" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split_above</code><em class="property">: int</em><em class="property"> = 5</em><a class="headerlink" href="#sanskrit_parser.api.Parser.split_above" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="sanskrit_parser.api.Parser.strict_io">
-<code class="sig-name descname">strict_io</code><em class="property"> = False</em><a class="headerlink" href="#sanskrit_parser.api.Parser.strict_io" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">strict_io</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#sanskrit_parser.api.Parser.strict_io" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -234,6 +279,16 @@ implement default like this:</p>
 <dt id="sanskrit_parser.api.Split">
 <em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">Split</code><span class="sig-paren">(</span><em class="sig-param">parser: sanskrit_parser.api.Parser, input_string: str, split: Sequence[sanskrit_parser.base.sanskrit_base.SanskritObject], vgraph: sanskrit_parser.parser.datastructures.VakyaGraph = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
+<dl class="attribute">
+<dt id="sanskrit_parser.api.Split.input_string">
+<code class="sig-name descname">input_string</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Split.input_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sanskrit_parser.api.Split.parser">
+<code class="sig-name descname">parser</code><em class="property">: Parser</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Split.parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="sanskrit_parser.api.Split.parses">
 <code class="sig-name descname">parses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Split.parses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Split.parses" title="Permalink to this definition">¶</a></dt>
@@ -246,8 +301,13 @@ implement default like this:</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="sanskrit_parser.api.Split.split">
+<code class="sig-name descname">split</code><em class="property">: Sequence[SanskritObject]</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Split.split" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="sanskrit_parser.api.Split.vgraph">
-<code class="sig-name descname">vgraph</code><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Split.vgraph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">vgraph</code><em class="property">: sanskrit_parser.parser.datastructures.VakyaGraph</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.api.Split.vgraph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -315,7 +375,7 @@ implement default like this:</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -332,7 +392,7 @@ implement default like this:</p>
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

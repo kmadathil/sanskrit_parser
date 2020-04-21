@@ -7,11 +7,11 @@
     <title>sanskrit_parser.parser.sandhi &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -132,8 +132,8 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -142,8 +142,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritImmutableString</span><span class="p">,</span> <span class="n">SanskritNormalizedString</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span><span class="p">,</span> <span class="n">outputctx</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="k">import</span> <span class="n">MaheshvaraSutras</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritImmutableString</span><span class="p">,</span> <span class="n">SanskritNormalizedString</span><span class="p">,</span> <span class="n">SLP1</span><span class="p">,</span> <span class="n">SCHEMES</span><span class="p">,</span> <span class="n">outputctx</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.maheshvara_sutra</span> <span class="kn">import</span> <span class="n">MaheshvaraSutras</span>
 
 
 <div class="viewcode-block" id="Sandhi"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi">[docs]</a><span class="k">class</span> <span class="nc">Sandhi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -152,7 +152,7 @@
 <span class="sd">    Uses SLP1 encoding for all internal operations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_default_rules</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_default_rules</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sandhi class constructor</span>
 
@@ -405,7 +405,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+    <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
 
     <span class="k">def</span> <span class="nf">getArgs</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -522,7 +522,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -539,7 +539,7 @@
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

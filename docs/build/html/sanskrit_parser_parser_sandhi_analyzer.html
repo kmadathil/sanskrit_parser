@@ -7,14 +7,14 @@
     <title>parser.sandhi_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="parser.vakya_analyzer" href="sanskrit_parser_parser_vakya_analyzer.html" />
+    <link rel="next" title="parser.datastructures" href="sanskrit_parser_parser_datastructures.html" />
     <link rel="prev" title="parser.sandhi" href="sanskrit_parser_parser_sandhi.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -50,7 +50,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">splits</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="o">.</span><span class="n">findAllPaths</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="k">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devatA&#39;, u&#39;AtmA&#39;]</span>
 <span class="go">[u&#39;asti&#39;, u&#39;uttarasyAm&#39;, u&#39;diSi&#39;, u&#39;devat&#39;, u&#39;AtmA&#39;]</span>
@@ -70,7 +70,7 @@ ending in visarga with an ‘s’ at the end)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">word</span> <span class="o">=</span> <span class="n">SanskritObject</span><span class="p">(</span><span class="s1">&#39;hares&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tags</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="k">print</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">(&#39;hf#1&#39;, set([&#39;cj&#39;, &#39;snd&#39;, &#39;prim&#39;, &#39;para&#39;, &#39;md&#39;, &#39;sys&#39;, &#39;prs&#39;, &#39;v&#39;, &#39;np&#39;, &#39;sg&#39;, &#39;op&#39;]))</span>
 <span class="go">(&#39;hari#1&#39;, set([&#39;na&#39;, &#39;mas&#39;, &#39;sg&#39;, &#39;gen&#39;]))</span>
@@ -218,7 +218,6 @@ Returns args variable</p>
 <li class="toctree-l4"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_vakya_analyzer.html">parser.vakya_analyzer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html">parser.datastructures</a></li>
 </ul>
 </li>
@@ -235,7 +234,7 @@ Returns args variable</p>
   <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
   <li><a href="sanskrit_parser_parser.html">parser</a><ul>
       <li>Previous: <a href="sanskrit_parser_parser_sandhi.html" title="previous chapter">parser.sandhi</a></li>
-      <li>Next: <a href="sanskrit_parser_parser_vakya_analyzer.html" title="next chapter">parser.vakya_analyzer</a></li>
+      <li>Next: <a href="sanskrit_parser_parser_datastructures.html" title="next chapter">parser.datastructures</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -249,7 +248,7 @@ Returns args variable</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -266,7 +265,7 @@ Returns args variable</p>
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -7,11 +7,11 @@
     <title>sanskrit_parser.parser.datastructures &#8212; sanskrit_parser 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -39,19 +39,19 @@
 <span class="sd">    @author: Karthik Madathil (github: @kmadathil)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="k">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SanskritImmutableString</span><span class="p">,</span> <span class="n">SLP1</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritObject</span><span class="p">,</span> <span class="n">SanskritImmutableString</span><span class="p">,</span> <span class="n">SLP1</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">operator</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.util</span> <span class="k">import</span> <span class="n">lexical_scorer</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.util.disjoint_set</span> <span class="k">import</span> <span class="n">DisjointSet</span>
-<span class="kn">from</span> <span class="nn">sanskrit_parser.util.DhatuWrapper</span> <span class="k">import</span> <span class="n">DhatuWrapper</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util</span> <span class="kn">import</span> <span class="n">lexical_scorer</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util.disjoint_set</span> <span class="kn">import</span> <span class="n">DisjointSet</span>
+<span class="kn">from</span> <span class="nn">sanskrit_parser.util.DhatuWrapper</span> <span class="kn">import</span> <span class="n">DhatuWrapper</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SandhiGraph&#39;</span><span class="p">,</span> <span class="s1">&#39;VakyaGraph&#39;</span><span class="p">,</span> <span class="s1">&#39;VakyaParse&#39;</span><span class="p">,</span> <span class="s1">&#39;getSLP1Tagset&#39;</span><span class="p">]</span>
 
@@ -70,7 +70,7 @@
     <span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;__start__&quot;</span>
     <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;__end__&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; DAG Class Init</span>
 
 <span class="sd">        Params:</span>
@@ -81,7 +81,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">lexical_scorer</span><span class="o">.</span><span class="n">Scorer</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Iterate over nodes &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
 
@@ -198,7 +198,7 @@
                 <span class="n">ps</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">ps</span></div>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print representation of DAG &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
 
@@ -221,7 +221,7 @@
         <span class="c1"># H = nx.convert_node_labels_to_integers(G, label_attribute=’node_label’)</span>
         <span class="c1"># H_layout = nx.nx_pydot.pydot_layout(G, prog=’dot’)</span>
         <span class="c1"># G_layout = {H.nodes[n][‘node_label’]: p for n, p in H_layout.items()}</span>
-        <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div></div>
+        <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_pydot</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div></div>
 
 
 <span class="n">lakaras</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;law&#39;</span><span class="p">,</span> <span class="s1">&#39;liw&#39;</span><span class="p">,</span> <span class="s1">&#39;luw&#39;</span><span class="p">,</span> <span class="s1">&#39;lrw&#39;</span><span class="p">,</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;laN&#39;</span><span class="p">,</span> <span class="s1">&#39;liN&#39;</span><span class="p">,</span> <span class="s1">&#39;luN&#39;</span><span class="p">,</span> <span class="s1">&#39;lfN&#39;</span><span class="p">,</span>
@@ -277,11 +277,11 @@
 <span class="sd">        Nodes are SanskritObjects with morphological tags</span>
 <span class="sd">        Edges are potential relationships between them</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">max_parse_dc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fast_merge</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">max_parse_dc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fast_merge</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; DAG Class Init</span>
 
 <span class="sd">        Params:</span>
-<span class="sd">             path: Path from SanghiGraph</span>
+<span class="sd">             path: Path from SandhiGraph</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_parse_dc</span> <span class="o">=</span> <span class="n">max_parse_dc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fast_merge</span> <span class="o">=</span> <span class="n">fast_merge</span>
@@ -291,7 +291,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="c1"># Need this many nodes in the extracted subgraphs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_node_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{self.path_node_count}</span><span class="s2"> sets of orthogonal nodes&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.path_node_count}</span><span class="s2"> sets of orthogonal nodes&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">sobj</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
             <span class="n">vnlist</span> <span class="o">=</span> <span class="p">[]</span>
@@ -306,7 +306,7 @@
             <span class="k">for</span> <span class="n">vn</span> <span class="ow">in</span> <span class="n">vnlist</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">vn</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vnlist</span><span class="p">))</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Node Partitions </span><span class="si">{self.partitions}</span><span class="s2"> Len {len(self.partitions)}&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node Partitions </span><span class="si">{self.partitions}</span><span class="s2"> Len {len(self.partitions)}&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_edges</span><span class="p">()</span>
         <span class="c1"># Remove isolated nodes (with no edges)</span>
@@ -315,21 +315,21 @@
         <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="p">):</span>
             <span class="n">s</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">isolates</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Partition </span><span class="si">{ix}</span><span class="s2">: </span><span class="si">{path[ix]}</span><span class="s2"> went to zero length!&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Partition </span><span class="si">{ix}</span><span class="s2">: </span><span class="si">{path[ix]}</span><span class="s2"> went to zero length!&quot;</span><span class="p">)</span>
         <span class="n">start_parse</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parses_dc</span><span class="p">()</span>
         <span class="n">end_parse</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_parse_validity</span><span class="p">()</span>
         <span class="n">end_check</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time for parse: {(end_parse-start_parse):1.6f}s&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Total for Global Check: {(end_check-end_parse):1.6f}s&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Total Time for parse: {(end_check-start_parse):1.6f}s&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time for parse: {(end_parse-start_parse):1.6f}s&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total for Global Check: {(end_check-end_parse):1.6f}s&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total Time for parse: {(end_check-start_parse):1.6f}s&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Iterate over nodes &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print representation of DAG &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
 
@@ -370,7 +370,7 @@
         <span class="n">rlist</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">krtverbs</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{n}</span><span class="s2"> is a possible Krt Dhatu&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{n}</span><span class="s2"> is a possible Krt Dhatu&quot;</span><span class="p">)</span>
                 <span class="n">rlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rlist</span></div>
 
@@ -379,7 +379,7 @@
         <span class="n">rlist</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">lakaras</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{n}</span><span class="s2"> is a possible Dhatu&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{n}</span><span class="s2"> is a possible Dhatu&quot;</span><span class="p">)</span>
                 <span class="n">rlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rlist</span></div>
 
@@ -389,7 +389,7 @@
                 <span class="k">for</span> <span class="n">no</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
                     <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">no</span><span class="p">))</span> <span class="ow">and</span> <span class="n">match_linga_vacana_vibhakti</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">no</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">_get_base</span><span class="p">(</span><span class="n">no</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding viSezaRa edge: {n,no}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding viSezaRa edge: {n,no}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">no</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;viSezaRa&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_vipsa"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_vipsa">[docs]</a>    <span class="k">def</span> <span class="nf">add_vipsa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -397,7 +397,7 @@
             <span class="k">for</span> <span class="n">no</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="p">(</span><span class="n">no</span><span class="o">.</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="ow">and</span> \
                    <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span> <span class="o">==</span> <span class="n">no</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">()):</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding vIpsa edge: {n, no}&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding vIpsa edge: {n, no}&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">no</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;vIpsA&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_samastas"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_samastas">[docs]</a>    <span class="k">def</span> <span class="nf">add_samastas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -413,7 +413,7 @@
                         <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="n">nextset</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">vibhaktis</span><span class="p">)</span> <span class="ow">or</span> \
                                <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">samastas</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding samasta edge: {n,nn}&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding samasta edge: {n,nn}&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;samasta&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_shashthi"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_shashthi">[docs]</a>    <span class="k">def</span> <span class="nf">add_shashthi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -429,13 +429,13 @@
                         <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="n">nextset</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">vibhaktis</span><span class="p">)</span> <span class="ow">or</span> \
                                <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">samastas</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding shashthi-sambandha edge: {n,nn}&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding shashthi-sambandha edge: {n,nn}&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;zazWI-sambanDa&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_karakas"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_karakas">[docs]</a>    <span class="k">def</span> <span class="nf">add_karakas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bases</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Add karaka edges from base node (dhatu) base &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Processing </span><span class="si">{d}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{d}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">dh</span> <span class="o">=</span> <span class="n">_get_base</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
             <span class="n">hpos</span> <span class="o">=</span> <span class="n">dh</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">hpos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
@@ -444,7 +444,7 @@
                 <span class="n">is_sak</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">is_sakarmaka</span><span class="p">(</span><span class="n">dh</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">is_sak</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># No way of knowing, set True</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Dhatu: </span><span class="si">{dh}</span><span class="s2"> Sakarmaka </span><span class="si">{is_sak}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dhatu: </span><span class="si">{dh}</span><span class="s2"> Sakarmaka </span><span class="si">{is_sak}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">karmani</span><span class="p">):</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Karmani&quot;</span><span class="p">)</span>
                 <span class="n">karta</span> <span class="o">=</span> <span class="n">tritiya</span>
@@ -459,13 +459,13 @@
                         <span class="c1"># Only Lakaras and karmani krts are allowed kartA</span>
                         <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">lakaras</span><span class="p">):</span>
                             <span class="k">if</span> <span class="n">match_purusha_vacana</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding kartA edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding kartA edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;kartA&quot;</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="n">dh</span> <span class="ow">in</span> <span class="n">predicative_verbs</span><span class="p">:</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding kartfsamAnADikaraRa edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding kartfsamAnADikaraRa edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;kartfsamAnADikaraRa&quot;</span><span class="p">)</span>
                         <span class="k">elif</span> <span class="n">d</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">karmani</span><span class="p">)</span> <span class="ow">and</span> <span class="n">match_linga_vacana</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding kartA edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding kartA edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;kartA&quot;</span><span class="p">)</span>
 
                     <span class="k">elif</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">karma</span><span class="p">)</span> <span class="ow">and</span>
@@ -473,22 +473,22 @@
                           <span class="ow">and</span> <span class="n">is_sak</span><span class="p">):</span>
                         <span class="c1"># Likewise, only Lakaras and kartari krts are allowed</span>
                         <span class="c1"># Karma</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding karma edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding karma edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;karma&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">tritiya</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding karana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding karana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;karaRam&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">chaturthi</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding sampradana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding sampradana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sampradAnam&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">pancami</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding apadana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding apadana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;apAdanam&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">saptami</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding adhikarana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding adhikarana edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;aDikaraRam&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">sambodhana</span><span class="p">)</span> <span class="ow">and</span> <span class="n">check_sambodhya</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding sambodhya edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding sambodhya edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;samboDyam&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_kriyavisheshana"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_kriyavisheshana">[docs]</a>    <span class="k">def</span> <span class="nf">add_kriyavisheshana</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bases</span><span class="p">):</span>
@@ -499,7 +499,7 @@
                     <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">avyaya</span><span class="p">)</span> <span class="ow">and</span> \
                          <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">kriyavisheshana</span><span class="p">)</span> <span class="ow">or</span>
                           <span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">avyaya_kriyav</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding kriyAviSezaRa edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding kriyAviSezaRa edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;kriyAviSezaRam&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_kriya_kriya"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_kriya_kriya">[docs]</a>    <span class="k">def</span> <span class="nf">add_kriya_kriya</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lakaras</span><span class="p">,</span> <span class="n">krts</span><span class="p">):</span>
@@ -508,13 +508,13 @@
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">krts</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">purvakala</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding pUrvakAlaH edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding pUrvakAlaH edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;pUrvakAlaH&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;tumun&#39;</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding prayojanam edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding prayojanam edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;prayojanam&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">samanakala</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">prathama</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding samAnakAlaH edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding samAnakAlaH edge to </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;samAnakAlaH&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_avyayas"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_avyayas">[docs]</a>    <span class="k">def</span> <span class="nf">add_avyayas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bases</span><span class="p">):</span>
@@ -531,26 +531,26 @@
                         <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="n">nextset</span><span class="p">:</span>
                             <span class="k">if</span> <span class="p">((</span><span class="n">nn</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;ktvA&#39;</span><span class="p">))</span> <span class="ow">or</span> \
                                <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;upasargaH&#39;</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding upasarga edge: {n,nn}&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding upasarga edge: {n,nn}&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;upasargaH&quot;</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">avyaya</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">nishedha</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">:</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding nishedha edge: {n, b}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding nishedha edge: {n, b}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;nizeDa&quot;</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;karmapravacanIyaH&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">avyaya_kriyav</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span><span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">karmap_null</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">:</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding karmapravacaniya karma edge: {n, b}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding karmapravacaniya karma edge: {n, b}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;karma&quot;</span><span class="p">)</span>
                     <span class="n">nextset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
                     <span class="n">prevset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="n">nextset</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">prevset</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">dvitiya</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">karmap_2</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding karmapravacaniya upapada 2 edge: {n,nn}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding karmapravacaniya upapada 2 edge: {n,nn}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;upapadadvitIya&quot;</span><span class="p">)</span>
                         <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">pancami</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">karmap_5</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding karmapravacaniya upapada 5 edge: {n,nn}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding karmapravacaniya upapada 5 edge: {n,nn}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;upapadapancami&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_bhavalakshana"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_bhavalakshana">[docs]</a>    <span class="k">def</span> <span class="nf">add_bhavalakshana</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">krts</span><span class="p">,</span> <span class="n">laks</span><span class="p">):</span>
@@ -559,7 +559,7 @@
             <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">saptami</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">laks</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding Bhavalakshana edge: {k, l}&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding Bhavalakshana edge: {k, l}&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BAvalakzaRam&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.add_sentence_conjunctions"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.add_sentence_conjunctions">[docs]</a>    <span class="k">def</span> <span class="nf">add_sentence_conjunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bases</span><span class="p">):</span>
@@ -592,13 +592,13 @@
                     <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
                         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_vipsa</span><span class="p">(</span><span class="n">nn</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_get_base</span><span class="p">(</span><span class="n">nn</span><span class="p">)</span> <span class="o">==</span> <span class="n">s_t</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">match_linga_vacana</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding vAkyasambanDaH edge: {nn, n}&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding vAkyasambanDaH edge: {nn, n}&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;vAkyasambanDaH&quot;</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;saMyojakaH&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nn</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding saMbadDakriyA edge: {nn, n}&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding saMbadDakriyA edge: {nn, n}&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;saMbadDakriyA&#39;</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">s_t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Adding vAkyasambanDaH edge: {nn, n}&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding vAkyasambanDaH edge: {nn, n}&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;vAkyasambanDaH&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.get_parses_dc"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.get_parses_dc">[docs]</a>    <span class="k">def</span> <span class="nf">get_parses_dc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -612,16 +612,16 @@
         <span class="k">def</span> <span class="nf">_get_parse_sub</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
             <span class="c1"># Iterate over subsets of disjoint nodesets</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ns</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">)):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Node set number </span><span class="si">{i}</span><span class="s2"> </span><span class="si">{ns}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node set number </span><span class="si">{i}</span><span class="s2"> </span><span class="si">{ns}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="c1"># Partial parses = phi + all predecessors</span>
                     <span class="n">partial_parses</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
                     <span class="n">partial_parses</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">VakyaParse</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>  <span class="c1"># Null partial parse</span>
                     <span class="c1"># For all input edges to this set</span>
                     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Traversing node </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Traversing node </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Traversing predecessor </span><span class="si">{pred}</span><span class="s2"> -&gt; </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Traversing predecessor </span><span class="si">{pred}</span><span class="s2"> -&gt; </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="n">partial_parses</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">VakyaParse</span><span class="p">((</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">store_parses</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -630,26 +630,26 @@
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">:</span>  <span class="c1"># Small parses to be removed</span>
                             <span class="n">small_parses</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">:</span>  <span class="c1"># For all input edges to this set</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Traversing node </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Traversing node </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Traversing predecessor </span><span class="si">{pred}</span><span class="s2"> -&gt; </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Traversing predecessor </span><span class="si">{pred}</span><span class="s2"> -&gt; </span><span class="si">{n}</span><span class="s2">&quot;</span><span class="p">)</span>
                                 <span class="c1"># If edge is compatible with partial parse, add and create new partial parse</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Trying to extend parse </span><span class="si">{ps}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying to extend parse </span><span class="si">{ps}</span><span class="s2">&quot;</span><span class="p">)</span>
                                 <span class="k">if</span> <span class="n">ps</span><span class="o">.</span><span class="n">is_safe</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{pred}</span><span class="s2"> - </span><span class="si">{n}</span><span class="s2"> is safe for </span><span class="si">{ps}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{pred}</span><span class="s2"> - </span><span class="si">{n}</span><span class="s2"> is safe for </span><span class="si">{ps}</span><span class="s2">&quot;</span><span class="p">)</span>
                                     <span class="n">psc</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Copy the nodeset and DisjointSet structures</span>
                                     <span class="n">psc</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
                                     <span class="n">store_parses</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">psc</span><span class="p">)</span>
                     <span class="n">partial_parses</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">small_parses</span><span class="p">)</span>
                     <span class="n">partial_parses</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">store_parses</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Partial Parses&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Partial Parses&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">partial_parses</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">partial_parses</span>
 
         <span class="c1"># Divide &amp; Conquer routine</span>
         <span class="k">def</span> <span class="nf">_dc</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Divide And Conquer {mn, mx}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Divide And Conquer {mn, mx}&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">mx</span> <span class="o">-</span> <span class="n">mn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_parse_dc</span><span class="p">:</span>
                 <span class="n">md</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">mx</span> <span class="o">+</span> <span class="n">mn</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">_merge_partials</span><span class="p">(</span><span class="n">_dc</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">md</span><span class="p">),</span> <span class="n">_dc</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="n">mx</span><span class="p">),</span> <span class="n">mx</span><span class="p">,</span> <span class="n">mn</span><span class="p">)</span>
@@ -658,9 +658,9 @@
                 <span class="k">return</span> <span class="n">t</span>
 
         <span class="k">def</span> <span class="nf">_merge_partials</span><span class="p">(</span><span class="n">pp1</span><span class="p">,</span> <span class="n">pp2</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">mn</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Merging between {mn, mx} {len(pp1)} x {len(pp2)}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merging between {mn, mx} {len(pp1)} x {len(pp2)}&quot;</span><span class="p">)</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Merging {pp1, pp2}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merging {pp1, pp2}&quot;</span><span class="p">)</span>
             <span class="n">ppmt</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">ppa</span> <span class="ow">in</span> <span class="n">pp1</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">ppb</span> <span class="ow">in</span> <span class="n">pp2</span><span class="p">:</span>
@@ -671,14 +671,14 @@
                         <span class="n">merged</span> <span class="o">=</span> <span class="n">ppa</span><span class="o">.</span><span class="n">merge_s</span><span class="p">(</span><span class="n">ppb</span><span class="p">,</span> <span class="n">mx</span><span class="o">-</span><span class="n">mn</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">merged</span><span class="p">:</span>
                             <span class="n">ppmt</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">merged</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{len(ppmt)} parses&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Merged </span><span class="si">{ppmt}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;{len(ppmt)} parses&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merged </span><span class="si">{ppmt}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time for merge {end_time-start_time}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time for merge {end_time-start_time}&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ppmt</span>
 
         <span class="n">partial_parses</span> <span class="o">=</span> <span class="n">_dc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_node_count</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Partial Parses Before Return </span><span class="si">{partial_parses}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Partial Parses Before Return </span><span class="si">{partial_parses}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">partial_parses</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.check_parse_validity"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.check_parse_validity">[docs]</a>    <span class="k">def</span> <span class="nf">check_parse_validity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -689,14 +689,14 @@
 <span class="sd">            Remove parses with cycles</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">iv</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parses before validity check {len(self.parses)}&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parses before validity check {len(self.parses)}&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parses</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">_check_parse</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Will remove </span><span class="si">{p}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Will remove </span><span class="si">{p}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">iv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>  <span class="c1"># Collect invalid parses</span>
         <span class="c1"># Remove them</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parses</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Parses after validity check {len(self.parses)}&quot;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parses after validity check {len(self.parses)}&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.draw"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">_ncache</span> <span class="o">=</span> <span class="p">{}</span>
@@ -714,14 +714,14 @@
                 <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">_uniq</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="VakyaGraph.write_dot"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph.write_dot">[docs]</a>    <span class="k">def</span> <span class="nf">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_pydot</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="n">be</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Path </span><span class="si">{d}</span><span class="s2"> </span><span class="si">{b}</span><span class="s2"> </span><span class="si">{e}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path </span><span class="si">{d}</span><span class="s2"> </span><span class="si">{b}</span><span class="s2"> </span><span class="si">{e}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
-            <span class="n">pt</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span><span class="o">+</span><span class="n">f</span><span class="s2">&quot;_parse</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span></div></div>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;_parse</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">drawing</span><span class="o">.</span><span class="n">nx_pydot</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">VakyaGraphNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -730,7 +730,7 @@
 <span class="sd">        This has pada (a SanskritObject) plus a list of disjoint nodes</span>
 <span class="sd">        to which edges cannot be created from this node</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sobj</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sobj</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pada</span> <span class="o">=</span> <span class="n">sobj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
 
@@ -748,7 +748,7 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNodeTagset</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;node_is_a: expecting str or set, got </span><span class="si">{st}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;node_is_a: expecting str or set, got </span><span class="si">{st}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_vibhakti</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Get Node vacana &#39;&#39;&#39;</span>
@@ -769,16 +769,16 @@
     <span class="k">def</span> <span class="nf">get_node_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;=&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">())</span> <span class="o">+</span> \
             <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="VakyaParse"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse">[docs]</a><span class="k">class</span> <span class="nc">VakyaParse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodepair</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodepair</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Initializes a partial parse with a node pair (or []) &#39;&#39;&#39;</span>
         <span class="c1"># DisjointSet  (as in Kruskal)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connections</span> <span class="o">=</span> <span class="n">DisjointSet</span><span class="p">()</span>
@@ -793,10 +793,10 @@
             <span class="c1"># Edges in the forest/ST</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">([(</span><span class="n">u</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodepair</span><span class="p">):</span>
@@ -829,17 +829,17 @@
 <div class="viewcode-block" id="VakyaParse.extend"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.extend">[docs]</a>    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Extend current parse with edge from pred to node &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">activenodes</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Populating </span><span class="si">{self.edges}</span><span class="s2"> with {(pred,node)}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Populating </span><span class="si">{self.edges}</span><span class="s2"> with {(pred,node)}&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_populate</span><span class="p">((</span><span class="n">pred</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Extending </span><span class="si">{self.edges}</span><span class="s2"> with {(pred,node)}&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extending </span><span class="si">{self.edges}</span><span class="s2"> with {(pred,node)}&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">pred</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">activenodes</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">activate_and_extinguish_alternatives</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">activenodes</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">activate_and_extinguish_alternatives</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">pred</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Edges </span><span class="si">{self.edges}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edges </span><span class="si">{self.edges}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VakyaParse.can_merge"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.can_merge">[docs]</a>    <span class="k">def</span> <span class="nf">can_merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Can we merge two VakyaParses &#39;&#39;&#39;</span>
@@ -883,7 +883,7 @@
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">t</span></div>
 
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
 
 <div class="viewcode-block" id="VakyaParse.copy"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaParse.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -994,24 +994,24 @@
     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">count</span><span class="p">:</span>  <span class="c1"># Dhatu</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">count</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>  <span class="c1"># Each karaka should count only once</span>
             <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Count for </span><span class="si">{u}</span><span class="s2"> </span><span class="si">{k}</span><span class="s2"> is </span><span class="si">{count[u][k]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Count for </span><span class="si">{u}</span><span class="s2"> </span><span class="si">{k}</span><span class="s2"> is </span><span class="si">{count[u][k]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">wi</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_non_projective</span><span class="p">(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">wi</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>  <span class="c1"># Non-projective</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Sannidhi violation </span><span class="si">{ui}</span><span class="s2"> - </span><span class="si">{vi}</span><span class="s2"> : </span><span class="si">{wi}</span><span class="s2"> - </span><span class="si">{xi}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sannidhi violation </span><span class="si">{ui}</span><span class="s2"> - </span><span class="si">{vi}</span><span class="s2"> : </span><span class="si">{wi}</span><span class="s2"> - </span><span class="si">{xi}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">toedge</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">toedge</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Toedges for </span><span class="si">{v}</span><span class="s2"> is </span><span class="si">{toedge[v]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Toedges for </span><span class="si">{v}</span><span class="s2"> is </span><span class="si">{toedge[v]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sk</span><span class="p">:</span>   <span class="c1"># Sambaddhakaraka = only one allowed from node</span>
         <span class="k">if</span> <span class="n">sk</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Sambaddha karaka edges for </span><span class="si">{u}</span><span class="s2"> is </span><span class="si">{sk[u]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sambaddha karaka edges for </span><span class="si">{u}</span><span class="s2"> is </span><span class="si">{sk[u]}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tov</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fromv</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Viseshana has visheshana </span><span class="si">{v}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Viseshana has visheshana </span><span class="si">{v}</span><span class="s2"> - violates global constraint&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="n">r</span>
 </pre></div>
@@ -1058,7 +1058,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -1075,7 +1075,7 @@
       &copy;2017-2019, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
