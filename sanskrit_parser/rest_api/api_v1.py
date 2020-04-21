@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect
-import flask_restplus
-from flask_restplus import Resource
+import flask_restx
+from flask_restx import Resource
 from random import randint
 import subprocess
 from os import path
@@ -15,7 +15,7 @@ api_blueprint = Blueprint(
     template_folder='templates'
 )
 
-api = flask_restplus.Api(app=api_blueprint, version='1.0', title='sanskrit_parser API',
+api = flask_restx.Api(app=api_blueprint, version='1.0', title='sanskrit_parser API',
                          description='For detailed intro and to report issues: see <a href="https://github.com/kmadathil/sanskrit_parser">here</a>. '
                                      'A list of REST and non-REST API routes avalilable on this server: <a href="../sitemap">sitemap</a>.',
                          default_label=api_blueprint.name,
