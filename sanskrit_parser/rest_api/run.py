@@ -5,10 +5,15 @@
 import logging
 import os.path
 import sys
+from logging.handlers import RotatingFileHandler
+
+# Add parent directory to PYTHONPATH, so that sanskrit_parser module can be found.
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+logging.debug(sys.path)
+
 
 from sanskrit_parser.rest_api.flask_helper import app
 from sanskrit_parser.rest_api import api_v1
-from logging.handlers import RotatingFileHandler
 
 LOG_FILENAME = "SanskritParserApi.log"
 LOG_FORMAT = "%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s " 
@@ -28,9 +33,6 @@ console.setFormatter(formatter)
 logging.getLogger(' ').addHandler(console)
 
 
-# Add parent directory to PYTHONPATH, so that sanskrit_parser module can be found.
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-logging.debug(sys.path)
 
 params = {
     'port': 9000,
