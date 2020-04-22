@@ -188,7 +188,7 @@ class SandhiGraph(object):
         # H = nx.convert_node_labels_to_integers(G, label_attribute=’node_label’)
         # H_layout = nx.nx_pydot.pydot_layout(G, prog=’dot’)
         # G_layout = {H.nodes[n][‘node_label’]: p for n, p in H_layout.items()}
-        nx.drawing.nx_agraph.write_dot(self.G, path)
+        nx.drawing.nx_pydot.write_dot(self.G, path)
 
 
 lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
@@ -681,14 +681,14 @@ class VakyaGraph(object):
                 labels={x: _uniq(str(x)) for x in self})
 
     def write_dot(self, path):
-        nx.drawing.nx_agraph.write_dot(self.G, path)
+        nx.drawing.nx_pydot.write_dot(self.G, path)
         d = dirname(path)
         be = basename(path)
         b, e = splitext(be)
         logger.debug(f"Path {d} {b} {e}")
         for i, p in enumerate(self.parses):
             pt = join(d, b+f"_parse{i}"+e)
-            nx.drawing.nx_agraph.write_dot(p, pt)
+            nx.drawing.nx_pydot.write_dot(p, pt)
 
 
 class VakyaGraphNode(object):
