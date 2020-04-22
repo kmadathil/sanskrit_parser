@@ -737,8 +737,8 @@ class VakyaGraphNode(object):
         return self.path.index(node.pada.canonical())
 
     def __str__(self):
-        return str(self.pada) + "=>" + str(self.pada.getMorphologicalTags()) + \
-            ": " + str(self.index)
+        return str(self.pada) + " " + str(self.pada.getMorphologicalTags()) + \
+            " " + str(self.index)
 
     def __repr__(self):
         return str(self)
