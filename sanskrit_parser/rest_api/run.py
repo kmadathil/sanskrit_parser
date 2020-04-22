@@ -8,27 +8,22 @@ import sys
 
 from sanskrit_parser.rest_api.flask_helper import app
 from sanskrit_parser.rest_api import api_v1
-from sanskrit_parser import enable_file_logger, enable_console_logger
 
-enable_console_logger(level=logging.INFO)
-enable_file_logger(level=logging.DEBUG)
-print(logging.getLogger('sanskrit_parser').getEffectiveLevel())
+logging.basicConfig(
+     level=logging.DEBUG,
+     filename="SanskritParserApi.log",
+     filemode='w',
+     format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
+)
 
-#logging.basicConfig(
-#      level=logging.INFO,
-#      filename="SanskritParserApi.log",
-#      filemode='w',
-#      format="%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
-# )
-
-#console = logging.StreamHandler()
-#console.setLevel(logging.INFO)
-## set a format which is simpler for console use
-#formatter = logging.Formatter('%(levelname)-8s %(message)s')
-## tell the handler to use this format
-#console.setFormatter(formatter)
-## add the handler to the root logger
-#logging.getLogger(' ').addHandler(console)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# set a format which is simpler for console use
+formatter = logging.Formatter('%(levelname)-8s %(message)s')
+# tell the handler to use this format
+console.setFormatter(formatter)
+# add the handler to the root logger
+logging.getLogger(' ').addHandler(console)
 
 
 # Add parent directory to PYTHONPATH, so that sanskrit_parser module can be found.
