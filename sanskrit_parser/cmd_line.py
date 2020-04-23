@@ -198,7 +198,9 @@ def tags(argv=None):
 def cmd_line():
     """ Command Line Wrapper Function
     """
-    parser = ArgumentParser(description='Sanskrit Parser')
+    parser = ArgumentParser(description='Sanskrit Parser',
+                            usage='%(prog)s [sandhi|vakya|tag]  [options] \n\n Use %(prog)s [sandhi|vakya|tag] --help for further options',
+                            add_help=False)
 
     parser.add_argument('command', help='Subcommand to run',
                         choices=["sandhi", "vakya", "tags"])
