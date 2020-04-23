@@ -1,0 +1,12 @@
+[Unit]
+Description=sanskrit parser web application
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/var/www/sanskrit_parser/sanskrit_parser/rest_api
+ExecStart=/home/ec2-user/venv3/bin/gunicorn -b unix:sanskrit_parser.sock run:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
