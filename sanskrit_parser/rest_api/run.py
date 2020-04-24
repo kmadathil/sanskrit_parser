@@ -16,7 +16,7 @@ from sanskrit_parser.rest_api.flask_helper import app
 from sanskrit_parser.rest_api import api_v1
 
 LOG_FILENAME = "SanskritParserApi.log"
-LOG_FORMAT = "%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s " 
+LOG_FORMAT = "%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
 formatter = logging.Formatter(LOG_FORMAT)
 handler = RotatingFileHandler(LOG_FILENAME, maxBytes=10000000, backupCount=5)
 handler.setLevel(logging.DEBUG)
@@ -31,8 +31,6 @@ formatter = logging.Formatter('%(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 # add the handler to the root logger
 logging.getLogger(' ').addHandler(console)
-
-
 
 params = {
     'port': 9000,
