@@ -9,9 +9,14 @@ import logging
 import os
 import re
 import progressbar
+from itertools import islice
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, ITRANS
-from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
+from sanskrit_parser import Parser
+from sanskrit_parser.base.sanskrit_base import SanskritString, ITRANS
+
+from indic_transliteration.sanscript import transliterate
+from indic_transliteration import sanscript
+
 
 logger = logging.getLogger(__name__)
 
@@ -146,23 +151,16 @@ def test_splits(lexan, bg_refs):
         return s in [list(map(str, ss)) for ss in splits]
 
     f = bg_refs[0]
-    s = [re.sub('H$', 's', SanskritObject(sx, encoding=ITRANS).canonical()) for sx in bg_refs[1]]
-    i = SanskritObject(f, encoding=ITRANS)
     try:
-        # for sss in s:
-        #   if not lexan.forms.valid(sss):
-        #       return "Skip"
-        graph = lexan.getSandhiSplits(i)
+        graph = lexan.parse(f)
         if graph is None:
             logger.error("FAIL: Empty split for {}".format(i.canonical().encode('utf-8')))
             return False
-        # Reducing max_paths to 100
-        splits = graph.findAllPaths(max_paths=100, sort=False)
-        r = _in_splits(s, splits)
-        if splits is None or (not r):
-            logger.error("FAIL: {} not in {}".format(s, splits))
-        return r
-    except:  # noqa
+        if graph is None or graph is False:
+            return "Error"
+        return graph
+
+    except Exception:
         logger.warning("Split Exception: {}".format(i.canonical().encode('utf-8')))
         return "Error"
 
@@ -175,9 +173,15 @@ if __name__ == "__main__":
     failing = codecs.open(os.path.join(directory, "bg_failing.txt"), "w", encoding='utf-8')
     skip = codecs.open(os.path.join(directory, "bg_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "bg_error.txt"), "w", encoding='utf-8')
-    lexan = SanskritLexicalAnalyzer()
+    lexan = Parser(replace_ending_visarga='s')
     maxrefs = 20000
     bar = progressbar.ProgressBar(maxval=maxrefs)
+
+    passing.write('{"passing":[')
+    failing.write('{"failing":[')
+    error.write('{"errors":[')
+    skip.write('{"skips":[')
+
     fail_count = skip_count = error_count = pass_count = split_count = 0
     for full, split, ofull, osplit, splitp, filename, linenum in \
             bar(get_bg_refs(lexan=lexan, maxrefs=maxrefs)):
@@ -186,7 +190,7 @@ if __name__ == "__main__":
                            "orig_full": ofull,
                            "orig_split": osplit,
                            "filename": filename,
-                           "linenum": linenum}) + "\n"
+                           "linenum": linenum}) + ","
         sr = test_splits(lexan, (full, split))
         if sr == "Skip":
             skip.write(test)
@@ -199,11 +203,55 @@ if __name__ == "__main__":
                 split_passing.write(test)
                 split_count += 1
             else:
-                passing.write(test)
-                pass_count += 1
+                # make two copies of split for further processing
+                parseSplit = split
+                expectedSplit = split
+                indexValue = -1
+                for splitIndex, splitString in enumerate(sr.splits(max_splits=10)):
+   	                didNotFind = False
+   	                splitString = splitString.__str__().strip('][').split(', ')
+
+   	                # Convert input split into SLP format since parser returns in slp format
+   	                slpSplits = []
+   	                for itransStr in parseSplit:
+   	                    slpStr = transliterate(itransStr,sanscript.ITRANS, sanscript.SLP1 )
+   	                    slpSplits.append(slpStr)
+
+   	                # remove unwanted " ' " from Split String
+   	                cleanedSplits = []
+   	                for splitKhanda in splitString:
+   	                    splitKhandaClean = splitKhanda.strip("'")
+   	                    cleanedSplits.append(splitKhandaClean)
+   	                
+   	                # check if the cleaned split is present in slpSplits.
+   	                # if not found, set didNotFind to True which is used later for sandhi
+   	                # failure check
+   	                split = cleanedSplits
+   	                for slpSplit in slpSplits:
+   	                    if (slpSplit not in split):
+   	                        didNotFind = True
+   	                if didNotFind:
+   	                    continue
+   	                else:
+   	                    indexValue = splitIndex
+   	                    value = split
+
+                if (indexValue != -1):
+                    # print('Found ', value)
+                    passing.write(test)
+                    pass_count += 1
+                else:
+                    # print('Expected ', expectedSplit, '\n')
+                    failing.write(test)
+                    fail_count += 1
         else:
             failing.write(test)
             fail_count += 1
+
+    passing.write(']}')
+    failing.write(']}')
+    error.write(']}')
+    skip.write(']}')
 
     passing.close()
     failing.close()
