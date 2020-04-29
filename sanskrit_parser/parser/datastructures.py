@@ -232,7 +232,7 @@ karmap_null = set(['su', 'api'])
 avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
 projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
-samplabels = {'sambadDa-'+l for l in projlabels}
+samplabels = {'sambadDa-'+l for l in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
 sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None}
 
@@ -357,7 +357,7 @@ class VakyaGraph(object):
                     if (not _is_same_partition(n, no)) and match_linga_vacana_vibhakti(n, no):
                         if _get_base(n) != _get_base(no):
                             logger.debug(f"Adding viSezaRa edge: {n,no}")
-                            self.G.add_edge(n, no, label="viSezaRa")
+                            self.G.add_edge(n, no, label="viSezaRam")
 
     def add_vipsa(self):
         for n in self.G:
@@ -940,24 +940,28 @@ def _get_base(n):
 # Check a parse for validity
 def _check_parse(parse):
     r = True
-    smbds = samplabels.union({'saMbadDakriyA'})
+    smbds = samplabels
     count = defaultdict(lambda: defaultdict(int))
     edges = {}
     toedge = defaultdict(int)
     fromv = defaultdict(int)
     tov = defaultdict(int)
     sk = defaultdict(int)
+    vsmbd = {}
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
             toedge[v] = toedge[v]+1
-        if l in 'viSezaRa':
+        if l in 'viSezaRam':
             fromv[u] = fromv[u] + 1
             tov[v] = tov[v] + 1
         if l in projlabels:  # Labels with sannidhi expectation
             edges[(u.index, v.index)] = 1
         if l in smbds:
             sk[u] = sk[u] + 1
+        if l in 'vAkyasambanDaH':
+            vsmbd[u.index] = v.index
+            vsmbd[v.index] = u.index
     for u in count:  # Dhatu
         for k in count[u]:  # Each karaka should count only once
             if count[u][k] > 1:
@@ -980,4 +984,18 @@ def _check_parse(parse):
         if v in fromv:
             logger.debug(f"Viseshana has visheshana {v} - violates global constraint")
             return False
+    # Vakyasambabdha nodes - yadi/tarhi yatra/tatra etc cannot have links
+    # beyond their partner
+    for (u, v, l) in parse.edges(data='label'):
+        if u.index in vsmbd:
+            if ((vsmbd[u.index] > u.index) and (v.index > vsmbd[u.index])) or \
+               ((vsmbd[u.index] < u.index) and (v.index < vsmbd[u.index])):
+                logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {u} {vsmbd[u.index]}")
+                return False
+        if v.index in vsmbd:
+            if ((vsmbd[v.index] > v.index) and (u.index > vsmbd[v.index])) or \
+               ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
+                logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
+                return False
+
     return r
