@@ -234,8 +234,8 @@ projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+l for l in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
-sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None}
-
+sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None, "ca": None}
+conjunctions = set(sentence_conjunctions.keys())
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
@@ -330,7 +330,7 @@ class VakyaGraph(object):
         self.add_avyayas(bases)
         self.add_bhavalakshana(krts, laks)
         self.add_vipsa()
-        self.add_sentence_conjunctions(bases)
+        self.add_sentence_conjunctions(laks, krts)
 
     def find_krtverbs(self):
         ''' Find non ti~Nanta verbs'''
@@ -529,7 +529,7 @@ class VakyaGraph(object):
                         logger.debug(f"Adding Bhavalakshana edge: {k, l}")
                         self.G.add_edge(l, k, label="BAvalakzaRam")
 
-    def add_sentence_conjunctions(self, bases):
+    def add_sentence_conjunctions(self, laks, krts):
         ''' Add sentence conjunction links
 
         For all nodes which match sentence_conjuction keys
@@ -544,7 +544,10 @@ class VakyaGraph(object):
                 if d['label'] == 'vIpsA':
                     return True
             return False
-
+        # Only prathama krts are needed here. The rest aren't relevant
+        bases = []
+        bases.extend(laks)
+        bases.extend([n  for n in krts if n.node_is_a(prathama)])
         sentence_conjunctions_y = set(sentence_conjunctions.keys())
         for n in self.G:
             nb = _get_base(n)
@@ -948,6 +951,7 @@ def _check_parse(parse):
     tov = defaultdict(int)
     sk = defaultdict(int)
     vsmbd = {}
+    conj = defaultdict(lambda : {"from":0, "to": 0})
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
@@ -962,6 +966,12 @@ def _check_parse(parse):
         if l in 'vAkyasambanDaH':
             vsmbd[u.index] = v.index
             vsmbd[v.index] = u.index
+        # Conjuction nodes must have in and out edges
+        if _get_base(u) in conjunctions:
+            conj[u]["from"] = conj[u]["from"] + 1
+        if _get_base(v) in conjunctions:
+            conj[v]["to"] = conj[v]["to"] + 1
+
     for u in count:  # Dhatu
         for k in count[u]:  # Each karaka should count only once
             if count[u][k] > 1:
@@ -997,5 +1007,9 @@ def _check_parse(parse):
                ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
                 logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
                 return False
-
+    # Conjugations have to have one to and from edge
+    for u in conj:
+        if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
+            logger.info(f"Samyojaka violation for {u.index} {conj[u]}")
+            return False
     return r
