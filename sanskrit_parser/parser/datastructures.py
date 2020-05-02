@@ -234,7 +234,9 @@ projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+l for l in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
-sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None, "ca": None}
+sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra",
+                         "yaTA": "taTA", "api": None, "cet": None, "yat": None,
+                         "natu": None, "ca": None}
 conjunctions = set(sentence_conjunctions.keys())
 
 # Edge costs used for ordering
@@ -243,6 +245,7 @@ for k in karakas:
     edge_cost[k] = 0.9
 edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
+
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
@@ -555,7 +558,7 @@ class VakyaGraph(object):
         # Only prathama krts are needed here. The rest aren't relevant
         bases = []
         bases.extend(laks)
-        bases.extend([n  for n in krts if n.node_is_a(prathama)])
+        bases.extend([n for n in krts if n.node_is_a(prathama)])
         sentence_conjunctions_y = set(sentence_conjunctions.keys())
         for n in self.G:
             nb = _get_base(n)
@@ -950,16 +953,22 @@ def _get_base(n):
 
 def _order_parses(pu):
     '''
-        Order a set of parses by weight. 
+        Order a set of parses by weight.
         '''
     # Sigma abs(n1-n2)
     def _parse_cost(parse):
-        w = 0;
+        w = 0
         for (u, v, l) in parse.edges(data='label'):
-            w = w + abs(u.index - v.index) * edge_cost[l]
+            # Abs Edge length times edge_type cost
+            _w = abs(u.index - v.index) * edge_cost[l]
+            if u.node_is_a(lakaras):
+                # Lakaras are preferred
+                _w = 0.9 * _w
+            w = w + _w
         return w
     t = sorted(pu, key=_parse_cost)
     return t, [_parse_cost(te) for te in t]
+
 
 # Check a parse for validity
 def _check_parse(parse):
@@ -972,7 +981,7 @@ def _check_parse(parse):
     tov = defaultdict(int)
     sk = defaultdict(int)
     vsmbd = {}
-    conj = defaultdict(lambda : {"from":0, "to": 0})
+    conj = defaultdict(lambda: {"from": 0, "to": 0})
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
