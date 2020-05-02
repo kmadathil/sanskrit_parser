@@ -160,8 +160,8 @@ class Split(Serializable):
                                  fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
         for (ix, parse_graph) in enumerate(self.vgraph.parses):
-            logger.debug(f"Parse {ix}")
-            yield Parse(self, parse_graph)
+            logger.debug(f"Parse {ix}, Cost {self.vgraph.parse_costs[ix]}")
+            yield Parse(self, parse_graph, self.vgraph.parse_costs[ix])
 
     def write_dot(self, basepath):
         self.vgraph.write_dot(basepath)
@@ -224,7 +224,7 @@ class ParseEdge(Serializable):
 
 class Parse(Serializable):
 
-    def __init__(self, split: Split, parse_graph):
+    def __init__(self, split: Split, parse_graph, cost):
         strict_io = split.parser.strict_io
         encoding = split.parser.output_encoding
         graph = []
@@ -242,6 +242,7 @@ class Parse(Serializable):
             else:
                 graph.append(node)
         self.graph = graph
+        self.cost = cost
 
     def __str__(self):
         return '\n'.join([str(t) for t in self.graph])

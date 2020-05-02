@@ -63,7 +63,7 @@ def vakya(argv=None):
             for pi, parse in enumerate(split.parses()):
                 logger.debug(f'Parse {pi}')
                 logger.debug(f'{parse}')
-                print(f'Parse {pi}')
+                print(f'Parse {pi} : (Cost = {parse.cost})')
                 print(f'{parse}')
             # Write dot files
             if args.dot_file is not None:

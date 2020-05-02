@@ -237,6 +237,13 @@ projlabels.update(samplabels)
 sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra", "yaTA": "taTA", "api": None, "cet": None, "yat": None, "natu": None, "ca": None}
 conjunctions = set(sentence_conjunctions.keys())
 
+# Edge costs used for ordering
+edge_cost = defaultdict(lambda: 1)
+for k in karakas:
+    edge_cost[k] = 0.9
+edge_cost['karma'] = 0.85
+edge_cost['kartA'] = 0.8
+
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -288,6 +295,7 @@ class VakyaGraph(object):
         end_parse = time.time()
         self.check_parse_validity()
         end_check = time.time()
+        self.parses, self.parse_costs = _order_parses(self.parses)
         logger.info(f"Time for parse: {(end_parse-start_parse):1.6f}s")
         logger.info(f"Total for Global Check: {(end_check-end_parse):1.6f}s")
         logger.info(f"Total Time for parse: {(end_check-start_parse):1.6f}s")
@@ -939,6 +947,19 @@ def _is_same_partition(n1, n2):
 def _get_base(n):
     return n.getMorphologicalTags()[0]
 
+
+def _order_parses(pu):
+    '''
+        Order a set of parses by weight. 
+        '''
+    # Sigma abs(n1-n2)
+    def _parse_cost(parse):
+        w = 0;
+        for (u, v, l) in parse.edges(data='label'):
+            w = w + abs(u.index - v.index) * edge_cost[l]
+        return w
+    t = sorted(pu, key=_parse_cost)
+    return t, [_parse_cost(te) for te in t]
 
 # Check a parse for validity
 def _check_parse(parse):
