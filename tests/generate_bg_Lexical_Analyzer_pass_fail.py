@@ -217,7 +217,7 @@ if __name__ == "__main__":
     failing = codecs.open(os.path.join(directory, "bg_failing.txt"), "w", encoding='utf-8')
     skip = codecs.open(os.path.join(directory, "bg_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "bg_error.txt"), "w", encoding='utf-8')
-    lexan = Parser(input_encoding=ITRANS, replace_ending_visarga='s', output_encoding=SLP1)
+    lexan = Parser(input_encoding=ITRANS, output_encoding=SLP1)
     maxrefs = 20000
     bar = progressbar.ProgressBar(maxval=maxrefs)
 
