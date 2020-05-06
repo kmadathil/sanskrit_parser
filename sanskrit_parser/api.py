@@ -85,7 +85,7 @@ class Parser():
     def __init__(self, strict_io: bool = False, input_encoding: str = None,
                  output_encoding: str = 'SLP1', lexical_lookup: str = "combined",
                  score: bool = True, split_above: int = 5,
-                 replace_ending_visarga: str = None, fast_merge = True):
+                 replace_ending_visarga: str = None, fast_merge: bool = True):
         self.strict_io = strict_io
         if input_encoding is not None:
             self.input_encoding = SCHEMES[input_encoding]

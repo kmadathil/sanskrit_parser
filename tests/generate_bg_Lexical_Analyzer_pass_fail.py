@@ -7,10 +7,9 @@ import inspect
 import json
 import logging
 import os
-import re
 import progressbar
-from itertools import islice
-import sys, traceback
+import sys
+import traceback
 
 from sanskrit_parser import Parser
 
@@ -21,7 +20,7 @@ from indic_transliteration import sanscript
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(handlers=[logging.FileHandler(filename='gen_bg_lexan_passfail.log',
-                                                 encoding='utf-8', mode='w')],
+                                                  encoding='utf-8', mode='w')],
                     level=logging.INFO)
 
 
@@ -154,7 +153,7 @@ def test_splits(lexan, bg_refs):
     f = bg_refs[0]
     try:
         graph = lexan.parse(f)
-        #print(graph.serializable())
+        # print(graph.serializable())
         if graph is None:
             logger.error("FAIL: Empty split for {}".format(bg_refs[0].encode('utf-8')))
             return False
@@ -166,39 +165,39 @@ def test_splits(lexan, bg_refs):
         expectedSplit = bg_refs[1]
         indexValue = -1
         for splitIndex, splitString in enumerate(graph.splits(max_splits=10)):
-                didNotFind = False
-                splitString = splitString.__str__().strip('][').split(', ')
+            didNotFind = False
+            splitString = splitString.__str__().strip('][').split(', ')
 
-                # Convert input split into SLP format since parser returns in slp format
-                slpSplits = []
-                for itransStr in parseSplit:
-                    slpStr = transliterate(itransStr,sanscript.ITRANS, sanscript.SLP1 )
-                    slpSplits.append(slpStr)
+            # Convert input split into SLP format since parser returns in slp format
+            slpSplits = []
+            for itransStr in parseSplit:
+                slpStr = transliterate(itransStr, sanscript.ITRANS, sanscript.SLP1)
+                slpSplits.append(slpStr)
 
-                # remove unwanted " ' " from Split String
-                cleanedSplits = []
-                for splitKhanda in splitString:
-                    splitKhandaClean = splitKhanda.strip("'")
-                    cleanedSplits.append(splitKhandaClean)
+            # remove unwanted " ' " from Split String
+            cleanedSplits = []
+            for splitKhanda in splitString:
+                splitKhandaClean = splitKhanda.strip("'")
+                cleanedSplits.append(splitKhandaClean)
 
-                # check if the cleaned split is present in slpSplits.
-                # if not found, set didNotFind to True which is used later for sandhi
-                # failure check
-                split = cleanedSplits
-                for slpSplit in slpSplits:
-                    if (slpSplit not in split):
-                        didNotFind = True
-                if didNotFind:
-                    continue
-                else:
-                    indexValue = splitIndex
-                    value = split
+            # check if the cleaned split is present in slpSplits.
+            # if not found, set didNotFind to True which is used later for sandhi
+            # failure check
+            split = cleanedSplits
+            for slpSplit in slpSplits:
+                if (slpSplit not in split):
+                    didNotFind = True
+            if didNotFind:
+                continue
+            else:
+                indexValue = splitIndex
+                value = split
 
         if (indexValue != -1):
-            #print('Found ', value)
+            logging.debug('Found %s', value)
             return "Pass"
         else:
-            #print('Expected ', expectedSplit, '\n')
+            logging.debug('Expected %s', expectedSplit)
             return None
 
         return graph
