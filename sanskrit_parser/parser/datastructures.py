@@ -199,6 +199,7 @@ samanakala = set(['Satf', 'Sanac'])
 nishta = set(['kta', 'ktavatu'])
 karmani = set(['karmaRi'])
 samastas = set(['samAsapUrvapadanAmapadam'])
+nijanta = set(['RijantaH'])
 # Vibhaktis
 _vibhaktis = ['praTamAviBaktiH', 'dvitIyAviBaktiH', 'tftIyAviBaktiH',
               'caturTIviBaktiH', 'paYcamIviBaktiH', 'zazWIviBaktiH',
@@ -216,7 +217,7 @@ vibhaktis = set(_vibhaktis)
 vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
 puruzas = 'praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH'
-karakas = set(['kartA', 'karma', 'karaRam', 'apAdAnam', 'sampradAnam', 'aDikaraRam'])
+karakas = set(['kartA', 'karma', 'karaRam', 'apAdAnam', 'sampradAnam', 'aDikaraRam','hetu-kartA'])
 predicative_verbs = set(['as', 'BU', 'vft'])
 _lingas = ['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam']
 lingas = set(_lingas)
@@ -429,7 +430,11 @@ class VakyaGraph(object):
                 karma = prathama
             else:
                 logger.debug("Kartari")
-                karta = prathama
+                if d.node_is_a(nijanta):
+                    logger.info("Nijanta Dhatu")
+                    karta = tritiya
+                else:
+                    karta = prathama
                 karma = dvitiya
             for n in self.G:
                 if not _is_same_partition(d, n):
@@ -445,7 +450,6 @@ class VakyaGraph(object):
                         elif d.node_is_a(karmani) and match_linga_vacana(d, n):
                             logger.debug(f"Adding kartA edge to {n}")
                             self.G.add_edge(d, n, label="kartA")
-
                     elif (n.node_is_a(karma) and
                           (d.node_is_a(lakaras) or not d.node_is_a(karmani))
                           and is_sak):
@@ -468,6 +472,9 @@ class VakyaGraph(object):
                     elif n.node_is_a(sambodhana) and check_sambodhya(d, n):
                         logger.debug(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDyam")
+                    elif n.node_is_a(prathama) and d.node_is_a(nijanta):
+                        logger.debug(f"Adding hetu-kartA edge to {n}")
+                        self.G.add_edge(d, n, label="hetu-kartA")
 
     def add_kriyavisheshana(self, bases):
         ''' Add kriyaviSezaRa edges from base node (dhatu) base '''
