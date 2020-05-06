@@ -80,24 +80,25 @@ class JSONEncoder(json.JSONEncoder):
         return super().default(o)
 
 
-@dataclass
 class Parser():
-    strict_io: bool = False
-    input_encoding: str = None
-    output_encoding: str = 'SLP1'
-    lexical_lookup: str = "combined"
-    score: bool = True
-    split_above: int = 5
-    replace_ending_visarga: str = None
-    fast_merge = True
+
+    def __init__(self, strict_io: bool = False, input_encoding: str = None,
+                 output_encoding: str = 'SLP1', lexical_lookup: str = "combined",
+                 score: bool = True, split_above: int = 5,
+                 replace_ending_visarga: str = None, fast_merge = True):
+        self.strict_io = strict_io
+        if input_encoding is not None:
+            self.input_encoding = SCHEMES[input_encoding]
+        self.output_encoding = SCHEMES[output_encoding]
+        self.lexical_lookup = lexical_lookup
+        self.score = score
+        self.split_above = split_above
+        self.replace_ending_visarga = replace_ending_visarga
+        self.fast_merge = fast_merge
 
     def parse(self,
               input_string: str,
               ):
-        if self.input_encoding is not None:
-            self.input_encoding = SCHEMES[self.input_encoding]
-        if self.output_encoding is not None:
-            self.output_encoding = SCHEMES[self.output_encoding]
         s = SanskritNormalizedString(input_string,
                                      encoding=self.input_encoding,
                                      strict_io=self.strict_io,

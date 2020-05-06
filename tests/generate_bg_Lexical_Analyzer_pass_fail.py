@@ -13,7 +13,6 @@ from itertools import islice
 import sys, traceback
 
 from sanskrit_parser import Parser
-from sanskrit_parser.base.sanskrit_base import SanskritString, ITRANS, SLP1
 
 from indic_transliteration.sanscript import transliterate
 from indic_transliteration import sanscript
@@ -21,7 +20,8 @@ from indic_transliteration import sanscript
 
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename='gen_bg_lexan_passfail.log', filemode='w',
+logging.basicConfig(handlers=[logging.FileHandler(filename='gen_bg_lexan_passfail.log',
+                                                 encoding='utf-8', mode='w')],
                     level=logging.INFO)
 
 
@@ -135,7 +135,7 @@ def get_bg_refs(lexan, maxrefs=200):
     m = maxrefs
     flist = ["sandhi_test_data/gitAanvayasandhivigraha.itx"]
     for fn in flist:
-        if m != 0:
+        if m > 0:
             r = process_bg_file(fn, m)
             if r is not None:
                 fs.extend(r)
@@ -180,7 +180,7 @@ def test_splits(lexan, bg_refs):
                 for splitKhanda in splitString:
                     splitKhandaClean = splitKhanda.strip("'")
                     cleanedSplits.append(splitKhandaClean)
-                
+
                 # check if the cleaned split is present in slpSplits.
                 # if not found, set didNotFind to True which is used later for sandhi
                 # failure check
@@ -217,7 +217,7 @@ if __name__ == "__main__":
     failing = codecs.open(os.path.join(directory, "bg_failing.txt"), "w", encoding='utf-8')
     skip = codecs.open(os.path.join(directory, "bg_skip.txt"), "w", encoding='utf-8')
     error = codecs.open(os.path.join(directory, "bg_error.txt"), "w", encoding='utf-8')
-    lexan = Parser(input_encoding=ITRANS, output_encoding=SLP1)
+    lexan = Parser(input_encoding='ITRANS', output_encoding='SLP1')
     maxrefs = 20000
     bar = progressbar.ProgressBar(maxval=maxrefs)
 
