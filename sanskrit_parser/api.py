@@ -89,6 +89,8 @@ class Parser():
         self.strict_io = strict_io
         if input_encoding is not None:
             self.input_encoding = SCHEMES[input_encoding]
+        else:
+            self.input_encoding = None
         self.output_encoding = SCHEMES[output_encoding]
         self.lexical_lookup = lexical_lookup
         self.score = score
