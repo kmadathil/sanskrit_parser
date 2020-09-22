@@ -1,36 +1,27 @@
 from sanskrit_parser.generator.sutra import *
+from sanskrit_parser import enable_console_logger
+import logging
 
-def test_sandhi(s1, s2):
-    print(f"String {s1} {s2}")
-    triggered = [s for s in all_sandhi_sutras if s.isTriggered(s1, s2)]
-    if triggered:
-        print("Triggered rules")
-        for t in triggered:
-            print(t)
-        r = triggered[0].operate(s1, s2)
-        print(f"Result: {r}")
-        return r
-    else:
-        return False
+enable_console_logger(logging.DEBUG)
 
 test_list = [
-    ("rama", "eti"),
-    ("gaRa", "upadeSaH"),
-    ("rama", "iti"),
-    ("tyaktvA", "uttiSTa"),
-    ("tava", "oSTaH"),
-    ("deva", "fzi"),
-    ("kavO", "asmAkam"),
-    ("gavi", "asmAkam"),
-    ("gavi", "iha"),
-    ("AgacCa", "atra"),
-    ("yAne", "eti"),
+    ("rAma", "eti", "rAmEti"),
+    ("gaRa", "upadeSaH", "gaRopadeSaH"),
+    ("rAma", "iti", "rAmeti"),
+    ("tyaktvA", "uttizTa", "tyaktvottizTa"),
+    ("tava", "ozTaH", "tavOzTaH"),
+    ("deva", "fzi", "devarzi"),
+    ("kavO", "asmAkam", "kavAvasmAkam"),
+    ("gavi", "asmAkam", "gavyasmAkam"),
+    ("gavi", "iha", "gavIha"),
+    ("AgacCa", "atra", "AgacCAtra"),
+    ("yAne", "eti", "yAnayeti"),
     ]
 
-for s in test_list:
-    _s = s
-    while (_s):
-        r = _s
-        _s = test_sandhi(*_s)
-    print(f"Final Result: {r[0]+r[1]}\n\n")
-  
+
+def test_static():
+    for s in test_list:
+        r = SutraEngine.sandhi(s[0],s[1])
+        assert "".join(list(r))==s[2]
+
+test_static()
