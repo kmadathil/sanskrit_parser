@@ -13,7 +13,9 @@ test_list = [
     ("deva", "fzi", "devarzi"),
     ("kavO", "asmAkam", "kavAvasmAkam"),
     ("gavi", "asmAkam", "gavyasmAkam"),
+    ("kavI", "etau", "kavyetau"),
     ("gavi", "iha", "gavIha"),
+    ("kavI", "iha", "kavIha"),
     ("AgacCa", "atra", "AgacCAtra"),
     ("yAne", "eti", "yAnayeti"),
     ]

@@ -23,6 +23,9 @@ class SutraEngine(object):
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(cls, sutras: list):
         _s = sutras
+        # Apavada
+        # Antaranga
+        # Nitya
         # Para > purva
         aps_nums = [s._aps_num for s in sutras]
         nmax = aps_nums.index(max(aps_nums))
@@ -88,15 +91,15 @@ class SandhiSutra(Sutra):
 #    Sutra: AdguRaH
 def aadgunah_c(s1: str,  s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     # First letter of second string
     f = s2[0]
-    return (e == "a") and _isInPratyahara("ik", f)
+    return _isSavarna("a", e) and _isInPratyahara("ik", f)
 
 def aadgunah_o(s1: str,  s2: str) -> str:
     # Last letter of first string
     f = s2[0]
-    if f.lower() == "f":
+    if _isSavarna("f", f):
         GlobalTriggers.uran_trigger = True
     # First letter of second string
     f = guna(f)
@@ -108,14 +111,11 @@ aadgunah = SandhiSutra(SanskritImmutableString("aad guRaH",SLP1),(6,1,87),
 #     Sutra: vfdDireci
 def vriddhirechi_c(s1: str,  s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     # First letter of second string
     f = s2[0]
-    return (e == "a") and \
-       ms.isInPratyahara(
-           SanskritImmutableString("ec",SLP1),
-           SanskritImmutableString(f,SLP1)
-                       )
+    return _isSavarna("a", e) and \
+       _isInPratyahara("ec",f)
 
 def vriddhirechi_o(s1: str,  s2: str) -> str:
     f = s2[0]
@@ -142,9 +142,9 @@ uranraprah = SandhiSutra(SanskritImmutableString("uraRraparaH",SLP1),(1,1,51),
 # Sutra  ikoyaRaci
 def ikoyanaci_c(s1:str, s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     # first letter of second string
-    f = s2[0].lower()
+    f = s2[0]
     return _isInPratyahara("ik",e) and _isInPratyahara("ac",f)
 
 def ikoyanaci_o(s1:str, s2: str) -> str:
@@ -159,9 +159,9 @@ ikoyanaci = SandhiSutra(SanskritImmutableString("ikoyaRaci",SLP1),(6,1,77),
 # Sutra ecoyavAyAvaH
 def ecoyavayavah_c(s1:str, s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     # first letter of second string
-    f = s2[0].lower()
+    f = s2[0]
     return _isInPratyahara("ec",e) and _isInPratyahara("ac",f)
 
 def ecoyavayavah_o(s1:str, s2: str) -> str:
@@ -176,10 +176,10 @@ ecoyavayavah = SandhiSutra(SanskritImmutableString("ecoyavAyAvaH",SLP1),(6,1,78)
 # Sutra akaHsavarRedIrGaH
 def savarnadirgha_c(s1:str, s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     # first letter of second string
-    f = s2[0].lower()
-    return _isInPratyahara("ak",e) and (e == f)
+    f = s2[0]
+    return _isInPratyahara("ak",e) and _isSavarna(e, f)
 
 def savarnadirgha_o(s1:str, s2: str) -> str:
     # Last letter of first string
@@ -197,6 +197,13 @@ savarnadirgha = SandhiSutra(SanskritImmutableString("akaHsavarRedIrGaH",SLP1),
 # Pratyahara check
 def _isInPratyahara(p, s):
     return ms.isInPratyahara(
+        SanskritImmutableString(p,SLP1),
+        SanskritImmutableString(s,SLP1)
+    )
+
+# Savarna check
+def _isSavarna(p, s):
+    return ms.isSavarna(
         SanskritImmutableString(p,SLP1),
         SanskritImmutableString(s,SLP1)
     )

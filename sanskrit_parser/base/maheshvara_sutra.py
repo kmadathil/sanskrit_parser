@@ -135,6 +135,56 @@ class MaheshvaraSutras(object):
         # Check if varna String is in Pratyahara String
         return (pos.find(vs) != -1)
 
+    def isSavarna(self, v, a):
+        """
+        Checks whether a given varna "a" is savarna to another "v"
+
+        Args:
+            v(SanskritImmutableString): Varna Indicator
+            a(SanskritImmutableString): Varna
+
+        v can be a svara (in which case we return True irrespective of length 
+        of a) 
+        v can be an udit, in which we return True for anything in the group
+        v can be tapara in which we return true only for the right length
+
+        Returns
+             boolean: Is v savarna to p?
+        """
+        ac = a.canonical()
+        vc = v.canonical()
+
+        # Single
+        if len(vc) == 1:
+            # १ . १ . ६९ अणुदित् सवर्णस्य चाप्रत्ययः
+            # So, we change long and pluta vowels to short ones in the input string
+            # Replace long vowels with short ones (note SLP1 encoding)
+            ac = re.sub('[AIUFX]+', lambda m: m.group(0).lower(), ac)
+            # Remove pluta
+            ac = ac.replace('3', '')
+            vc = re.sub('[AIUFX]+', lambda m: m.group(0).lower(), vc)
+            # Remove pluta
+            vc = vc.replace('3', '')
+            return ac == vc
+        elif vc[-1] == "t":
+            # taparastatkAlasya
+            return ac == vc[:-1]
+            # FIXME implment tkArsya para interpretation
+        elif vc[-1] == "u":
+            # १ . १ . ६९ अणुदित् सवर्णस्य चाप्रत्ययः
+            if vc[0] == "k":
+                vc = "kKgGN"
+            elif vc[0] == "c":
+                vc = "cCjJY"
+            elif vc[0] == "w":
+                vc = "wWqQR"
+            elif vc[0] == "t":
+                vc = "tTdDn"
+            elif vc[0] == "p":
+                vc = "pPbBm"
+            return ac in vc
+        else:
+            return ac in vc
 
 if __name__ == "__main__":
     import argparse
