@@ -2,9 +2,9 @@
 Operational Sutras
 
 """
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
+from .maheshvara import * 
 from .guna_vriddhi import guna, vriddhi, ikoyan, ayavayav
-from .maheshvara import ms
 
 import logging
 logger = logging.getLogger(__name__)
@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 # Global Triggers
 class GlobalTriggers(object):
     uran_trigger = False
-
 
 # Sutra execution engine
 class SutraEngine(object):
@@ -40,7 +39,9 @@ class SutraEngine(object):
             logger.debug("Triggered rules")
             for t in triggered:
                 logger.debug(t)
-            r = cls.sutra_priority(triggered).operate(*args)
+            s = cls.sutra_priority(triggered)
+            s.update(*args) # State update
+            r = s.operate(*args) # Transformation
             logger.debug(f"O: {r}")
             return r
         else:
@@ -51,177 +52,155 @@ class SutraEngine(object):
     def _exec(cls, l, *args):
         logger.debug(f"Input: {args}")
         _r = cls._exec_single(l, *args)
+        r = None
         while(_r):
             r = _r
             _r = cls._exec_single(l, *_r)
-        logger.debug(f"Final Result: {r[0]+r[1]}\n\n")
+        if r is None: # Nothing got triggered
+            r = args
+        logger.debug(f"Final Result: {str(r[0])+str(r[1])}\n\n")
         return r
     
     @classmethod
     def sandhi(cls, s1, s2):
         r = cls._exec(cls.sandhi_sutra_list, s1, s2)
         return r
+
+
     
 # Base class
 class Sutra(object):
-    def __init__(self, name: str, aps:tuple):
-        self.a_p_s = aps  # Tuple: (Adhaya, pada, sutra)
-        self.name = name
-        self._aps_str = '.'.join([str(x) for x in list(self.a_p_s)])
-        self._aps_num = aps[2]+aps[1]*1000+aps[0]*10000
+    def __init__(self, name, aps):
+        if isinstance(name, str):
+            self.name = SanskritImmutableString(name, SLP1)
+        else:
+            self.name = name
+        if isinstance(aps, str):
+            self.aps = aps  # Adhaya.pada.sutra
+            aps_t = aps.split(".")
+            self._aps_tuple = aps_t
+        elif isinstance(aps, tuple):
+            aps_t = aps
+            self._aps_tuple = aps_t
+            self.aps = '.'.join([str(x) for x in list(aps_t)])
+        self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000
         SutraEngine.all_sutra_list.append(self)
     def __str__(self):
-        return f"{self._aps_str:7}: {str(self.name)}"
+        return f"{self.aps:7}: {str(self.name)}"
     
 class SandhiSutra(Sutra):
-    def __init__(self, name, aps, adhikara, cond, op):
+    def __init__(self, name, aps, cond, xform, adhikara=None,
+                 trig=None, update=None):
         super().__init__(name, aps)
         self.adhikara = adhikara
         self.cond = cond
-        self.op   = op
+        self.xform   = xform
+        self.update_f = update
+        self.trig = trig
         SutraEngine.sandhi_sutra_list.append(self)
     def inAdhikara(self, context):
         return self.adhikara(context)
-    def isTriggered(self, s1, s2):
-        return self.cond(s1,s2)
-    def operate(self, s1, s2):
-        return self.op(s1, s2)
-
-
-#    Sutra: AdguRaH
-def aadgunah_c(s1: str,  s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # First letter of second string
-    f = s2[0]
-    return _isSavarna("a", e) and _isInPratyahara("ik", f)
-
-def aadgunah_o(s1: str,  s2: str) -> str:
-    # Last letter of first string
-    f = s2[0]
-    if _isSavarna("f", f):
-        GlobalTriggers.uran_trigger = True
-    # First letter of second string
-    f = guna(f)
-    return s1[:-1], f+s2[1:]
-
-aadgunah = SandhiSutra(SanskritImmutableString("aad guRaH",SLP1),(6,1,87),
-                       None, aadgunah_c, aadgunah_o)
-
-#     Sutra: vfdDireci
-def vriddhirechi_c(s1: str,  s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # First letter of second string
-    f = s2[0]
-    return _isSavarna("a", e) and \
-       _isInPratyahara("ec",f)
-
-def vriddhirechi_o(s1: str,  s2: str) -> str:
-    f = s2[0]
-    # First letter of second string
-    f = vriddhi(f)
-    return s1[:-1], f+s2[1:]
-     
     
-vriddhirechi = SandhiSutra(SanskritImmutableString("vfdDireci",SLP1),(6,1,88),
-                           None, vriddhirechi_c, vriddhirechi_o)
+    def isTriggered(self, s1, s2):
+        # To check triggering, we define the following
+        # l -> object to the left (s1)
+        # r -> object to the right (s2)
+        # e -> left tadanta (s1)[-1]
+        # f -> s2[0]
+        l = s1
+        r = s2
+        e = SanskritImmutableString(l.canonical()[-1], SLP1)
+        f = SanskritImmutableString(r.canonical()[0], SLP1)
+        if self.trig is not None:
+            t = self.trig()
+        else:
+            t = True
+        if self.cond is not None:
+            c = self.cond(l, r, e, f)
+        else:
+            c = True
+        return c and t
+
+    def update(self, s1, s2):
+        # To check triggering, we define the following
+        # l -> object to the left (s1)
+        # r -> object to the right (s2)
+        # e -> left tadanta (s1)[-1]
+        # f -> s2[0]
+        l = s1
+        r = s2
+        e = SanskritImmutableString(l.canonical()[-1], SLP1)
+        f = SanskritImmutableString(r.canonical()[0], SLP1)
+        if self.update_f is not None:
+            self.update_f(l, r, e, f)
+
+    def operate(self, s1, s2):
+        # To operate, we define the following
+        # e -> left tadanta str(s1)[-1]
+        # f -> str(s2)[0]
+        # lne -> s1.canonical()[:-1]
+        # rnf -> s2.canonical()[1:]
+        # We take the string tuple returned, and update s1, s2
+        l = s1.canonical()
+        r = s2.canonical()
+        e = l[-1]
+        f = r[0]
+        lne = l[:-1]
+        rnf = r[1:]
+        ret = self.xform(e, f, lne, rnf)
+        s1.update(ret[0], SLP1)
+        s2.update(ret[1], SLP1)
+        return (s1, s2)
+
+# Sutra: "aad guRaH"
+aadgunah = SandhiSutra("aad guRaH",
+                       (6,1,87),
+                       lambda l, r, e, f: isSavarna("a", e) and isInPratyahara("ik", f), # Condition
+                       lambda e, f, lne, rnf: (lne, guna(f)+rnf), # Transformation
+                       update=lambda l, r, e, f: setattr(GlobalTriggers, "uran_trigger", True) if isSavarna("f", f) else None  # State update
+)
+
+# Sutra: "vfdDireci"
+vriddhirechi = SandhiSutra("vfdDireci",
+                           (6,1,88),
+                           lambda l, r, e, f: isSavarna("a", e) and  isInPratyahara("ec",f), # Condition
+                           lambda e, f, lne, rnf: (lne, vriddhi(f)+rnf), # Transformation
+)
+
+# # Sutra: uraR raparaH
+uranraprah = SandhiSutra("uraRraparaH",
+                         (1,1,51),
+                         None, # Condition
+                         lambda e, f, lne, rnf: (lne+e, f+"r"+rnf), # Xform
+                         trig=lambda : GlobalTriggers.uran_trigger, # Trigger
+                         update=lambda l, r, e, f: setattr(GlobalTriggers, "uran_trigger", False) # State Update
+)
+
+# # Sutra  ikoyaRaci
+ikoyanaci = SandhiSutra("ikoyaRaci",
+                        (6,1,77),
+                        lambda l, r, e, f: isInPratyahara("ik",e) and isInPratyahara("ac",f), # Condition
+                        lambda e, f, lne, rnf: (lne+ikoyan(e), f+rnf), #Operation
+)
+
+# # Sutra ecoyavAyAvaH
+ecoyavayavah = SandhiSutra("ecoyavAyAvaH",(6,1,78),
+                           lambda l, r, e, f: isInPratyahara("ec",e) and isInPratyahara("ac",f), # Condition
+                           lambda e, f, lne, rnf: (lne+ayavayav(e), f+rnf), #Operation                  
+)
 
 
-# Sutra: uraR raparaH
-def uranraparah_c(s1:str, s2: str) -> str:
-    return GlobalTriggers.uran_trigger
-
-def uranraparah_o(s1:str, s2: str) -> str:
-    GlobalTriggers.uran_trigger = False
-    return s1, s2[0]+"r"+s2[1:]
-
-uranraprah = SandhiSutra(SanskritImmutableString("uraRraparaH",SLP1),(1,1,51),
-                           None, uranraparah_c, uranraparah_o)
-
-# Sutra  ikoyaRaci
-def ikoyanaci_c(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # first letter of second string
-    f = s2[0]
-    return _isInPratyahara("ik",e) and _isInPratyahara("ac",f)
-
-def ikoyanaci_o(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    return s1[:-1]+ikoyan(e), s2
-
-ikoyanaci = SandhiSutra(SanskritImmutableString("ikoyaRaci",SLP1),(6,1,77),
-                           None, ikoyanaci_c, ikoyanaci_o)
+# # Sutra akaHsavarRedIrGaH
+savarnadirgha = SandhiSutra("akaHsavarRedIrGaH",
+                             (6,1,101),
+                            lambda l, r, e, f: isInPratyahara("ak",e) and isSavarna(e, f), # Condition
+                            lambda e, f, lne, rnf: (lne+e.upper(), rnf), #Operation                  
+)
 
 
-# Sutra ecoyavAyAvaH
-def ecoyavayavah_c(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # first letter of second string
-    f = s2[0]
-    return _isInPratyahara("ec",e) and _isInPratyahara("ac",f)
-
-def ecoyavayavah_o(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    return s1[:-1]+ayavayav(e), s2
-
-ecoyavayavah = SandhiSutra(SanskritImmutableString("ecoyavAyAvaH",SLP1),(6,1,78),
-                           None, ecoyavayavah_c, ecoyavayavah_o)
-
-
-# Sutra akaHsavarRedIrGaH
-def savarnadirgha_c(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # first letter of second string
-    f = s2[0]
-    return _isInPratyahara("ak",e) and _isSavarna(e, f)
-
-def savarnadirgha_o(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    return s1[:-1]+e.upper(), s2[1:]
-
-savarnadirgha = SandhiSutra(SanskritImmutableString("akaHsavarRedIrGaH",SLP1),
-                            (6,1,101),
-                           None, savarnadirgha_c, savarnadirgha_o)
-
-
-# Sutra eNaHpadAntAdati
-def engahpadantadati_c(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    # first letter of second string
-    f = s2[0]
-    return _isInPratyahara("eN",e) and _isSavarna("at",f)
-
-def engahpadantadati_o(s1:str, s2: str) -> str:
-    # Last letter of first string
-    e = s1[-1]
-    return s1, s2[1:]
-
-engahpadantadati = SandhiSutra(SanskritImmutableString("eNaHpadAntAdati",SLP1),
+# # Sutra eNaHpadAntAdati
+engahpadantadati = SandhiSutra("eNaHpadAntAdati",
                                (6,1,109),
-                               None, engahpadantadati_c, engahpadantadati_o)
-
-
-# Utility functions
-
-# Pratyahara check
-def _isInPratyahara(p, s):
-    return ms.isInPratyahara(
-        SanskritImmutableString(p,SLP1),
-        SanskritImmutableString(s,SLP1)
-    )
-
-# Savarna check
-def _isSavarna(p, s):
-    return ms.isSavarna(
-        SanskritImmutableString(p,SLP1),
-        SanskritImmutableString(s,SLP1)
-    )
-
+                               lambda l, r, e, f: isInPratyahara("eN",e) and isSavarna("at",f), # Condition
+                               lambda e, f, lne, rnf: (lne+e, rnf), #Operation                  
+)            
