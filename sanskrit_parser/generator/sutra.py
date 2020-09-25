@@ -149,7 +149,7 @@ def ikoyanaci_c(s1:str, s2: str) -> str:
 
 def ikoyanaci_o(s1:str, s2: str) -> str:
     # Last letter of first string
-    e = s1[-1].lower()
+    e = s1[-1]
     return s1[:-1]+ikoyan(e), s2
 
 ikoyanaci = SandhiSutra(SanskritImmutableString("ikoyaRaci",SLP1),(6,1,77),
@@ -190,6 +190,23 @@ savarnadirgha = SandhiSutra(SanskritImmutableString("akaHsavarRedIrGaH",SLP1),
                             (6,1,101),
                            None, savarnadirgha_c, savarnadirgha_o)
 
+
+# Sutra eNaHpadAntAdati
+def engahpadantadati_c(s1:str, s2: str) -> str:
+    # Last letter of first string
+    e = s1[-1]
+    # first letter of second string
+    f = s2[0]
+    return _isInPratyahara("eN",e) and _isSavarna("at",f)
+
+def engahpadantadati_o(s1:str, s2: str) -> str:
+    # Last letter of first string
+    e = s1[-1]
+    return s1, s2[1:]
+
+engahpadantadati = SandhiSutra(SanskritImmutableString("eNaHpadAntAdati",SLP1),
+                               (6,1,109),
+                               None, engahpadantadati_c, engahpadantadati_o)
 
 
 # Utility functions
