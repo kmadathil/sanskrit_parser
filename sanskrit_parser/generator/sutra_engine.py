@@ -3,8 +3,8 @@ Operational Sutras
 
 """
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
-from .maheshvara import * 
-from .guna_vriddhi import guna, vriddhi, ikoyan, ayavayav
+#from .maheshvara import * 
+#from .guna_vriddhi import guna, vriddhi, ikoyan, ayavayav
 
 import logging
 logger = logging.getLogger(__name__)
@@ -15,8 +15,6 @@ class GlobalTriggers(object):
 
 # Sutra execution engine
 class SutraEngine(object):
-    all_sutra_list = []
-    sandhi_sutra_list = []
 
     @classmethod
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
@@ -62,8 +60,8 @@ class SutraEngine(object):
         return r
     
     @classmethod
-    def sandhi(cls, s1, s2):
-        r = cls._exec(cls.sandhi_sutra_list, s1, s2)
+    def sandhi(cls, s1, s2, sandhi_sutra_list):
+        r = cls._exec(sandhi_sutra_list, s1, s2)
         return r
 
 
@@ -84,7 +82,6 @@ class Sutra(object):
             self._aps_tuple = aps_t
             self.aps = '.'.join([str(x) for x in list(aps_t)])
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000
-        SutraEngine.all_sutra_list.append(self)
     def __str__(self):
         return f"{self.aps:7}: {str(self.name)}"
     
@@ -97,7 +94,6 @@ class SandhiSutra(Sutra):
         self.xform   = xform
         self.update_f = update
         self.trig = trig
-        SutraEngine.sandhi_sutra_list.append(self)
     def inAdhikara(self, context):
         return self.adhikara(context)
     
@@ -151,56 +147,3 @@ class SandhiSutra(Sutra):
         s1.update(ret[0], SLP1)
         s2.update(ret[1], SLP1)
         return (s1, s2)
-
-# Sutra: "aad guRaH"
-aadgunah = SandhiSutra("aad guRaH",
-                       (6,1,87),
-                       lambda l, r, e, f: isSavarna("a", e) and isInPratyahara("ik", f), # Condition
-                       lambda e, f, lne, rnf: (lne, guna(f)+rnf), # Transformation
-                       update=lambda l, r, e, f: setattr(GlobalTriggers, "uran_trigger", True) if isSavarna("f", f) else None  # State update
-)
-
-# Sutra: "vfdDireci"
-vriddhirechi = SandhiSutra("vfdDireci",
-                           (6,1,88),
-                           lambda l, r, e, f: isSavarna("a", e) and  isInPratyahara("ec",f), # Condition
-                           lambda e, f, lne, rnf: (lne, vriddhi(f)+rnf), # Transformation
-)
-
-# # Sutra: uraR raparaH
-uranraprah = SandhiSutra("uraRraparaH",
-                         (1,1,51),
-                         None, # Condition
-                         lambda e, f, lne, rnf: (lne+e, f+"r"+rnf), # Xform
-                         trig=lambda : GlobalTriggers.uran_trigger, # Trigger
-                         update=lambda l, r, e, f: setattr(GlobalTriggers, "uran_trigger", False) # State Update
-)
-
-# # Sutra  ikoyaRaci
-ikoyanaci = SandhiSutra("ikoyaRaci",
-                        (6,1,77),
-                        lambda l, r, e, f: isInPratyahara("ik",e) and isInPratyahara("ac",f), # Condition
-                        lambda e, f, lne, rnf: (lne+ikoyan(e), f+rnf), #Operation
-)
-
-# # Sutra ecoyavAyAvaH
-ecoyavayavah = SandhiSutra("ecoyavAyAvaH",(6,1,78),
-                           lambda l, r, e, f: isInPratyahara("ec",e) and isInPratyahara("ac",f), # Condition
-                           lambda e, f, lne, rnf: (lne+ayavayav(e), f+rnf), #Operation                  
-)
-
-
-# # Sutra akaHsavarRedIrGaH
-savarnadirgha = SandhiSutra("akaHsavarRedIrGaH",
-                             (6,1,101),
-                            lambda l, r, e, f: isInPratyahara("ak",e) and isSavarna(e, f), # Condition
-                            lambda e, f, lne, rnf: (lne+e.upper(), rnf), #Operation                  
-)
-
-
-# # Sutra eNaHpadAntAdati
-engahpadantadati = SandhiSutra("eNaHpadAntAdati",
-                               (6,1,109),
-                               lambda l, r, e, f: isInPratyahara("eN",e) and isSavarna("at",f), # Condition
-                               lambda e, f, lne, rnf: (lne+e, rnf), #Operation                  
-)            
