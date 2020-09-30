@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Sutra YAML Processor
+
+@author: kmadathil
+"""
 from sanskrit_parser.generator.sutra_engine import SandhiSutra, GlobalTriggers
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
@@ -165,6 +171,8 @@ def process_yaml(y):
                             setattr(GlobalTriggers, k, s[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
-        sutra_dict[s["id"]] = SandhiSutra(sname, s["id"], cond=scond, xform=sxform, trig=strig, update=supdate)
+        sutra_dict[s["id"]] = SandhiSutra(sname, s["id"], cond=scond,
+                                          xform=sxform, trig=strig,
+                                          update=supdate)
             
     return sutra_dict

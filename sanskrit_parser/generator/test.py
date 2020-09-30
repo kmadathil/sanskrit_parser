@@ -1,6 +1,5 @@
 from sanskrit_parser import enable_console_logger
 from sanskrit_parser.base.sanskrit_base import SLP1
-import sanskrit_parser.generator.ach_sandhi as ach_sandhi
 import sanskrit_parser.generator.sutra_engine as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
@@ -34,7 +33,5 @@ def test_static(sandhi_sutra_list):
         r = sutra.SutraEngine.sandhi(l, r, sandhi_sutra_list)
         assert ("".join([_r.canonical() for _r in list(r)])==s[2])
 
-sandhi_sutra_list = ach_sandhi.sutra_list
-#test_static(sandhi_sutra_list)
-from ach_sandhi_yaml import sutra_list
+from sandhi_yaml import sutra_list
 test_static(sutra_list)

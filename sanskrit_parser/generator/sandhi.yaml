@@ -1,4 +1,5 @@
-# Sutras for ach sandhi
+# Sutras for ac sandhi
+#  @author: kmadathil
 
 # Sutra: Name
 # Id: <adhyAya.pAda.sutra>
@@ -21,8 +22,10 @@
 #   r = first varna of right pada
 #  ll = second last varna of left pada
 #  rr = second varna of right pada
-#  lc = left pada - last varna
-#  rc = right pada - first varna
+#  lc = left pada except last varna
+#  rc = right pada except first varna
+
+# ac sandhi
 
 -   sutra: aad guRaH
     id: 6.1.87
@@ -66,7 +69,7 @@
       l: _ik
       r: _ac
     xform:
-       l: ikoyan(l)
+      l: ikoyan(l)
        
 -   sutra: ecoyavAyAvaH
     id: 6.1.78
@@ -85,7 +88,6 @@
       l: dirgha(l)
       r: null
 
-
 -   sutra: eNaHpadAntAdati
     id: 6.1.109
     condition:
@@ -95,3 +97,6 @@
       r: null
 
 
+# visarga sandhi
+
+# hal sandhi
