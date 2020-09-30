@@ -1,10 +1,12 @@
-from sanskrit_parser import enable_console_logger
+from sanskrit_parser import enable_console_logger, enable_file_logger
 from sanskrit_parser.base.sanskrit_base import SLP1
 import sanskrit_parser.generator.sutra_engine as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
 import logging
 #logging.basicConfig(level=logging.INFO)
+enable_console_logger()
+enable_file_logger(level=logging.DEBUG)
 
 test_list = [
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
