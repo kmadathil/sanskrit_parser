@@ -2,6 +2,9 @@ from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from .operations import adesha
 from .maheshvara import ms
 
+def dirgha(s: str):
+    return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
+
 def guna(s: str):
     return adesha(s, "iIuUfFxX", "eeooaaaa")
 

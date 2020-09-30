@@ -1,0 +1,97 @@
+# Sutras for ach sandhi
+
+# Sutra: Name
+# Id: <adhyAya.pAda.sutra>
+# Condition: boolean
+# Trigger: (list of) global triggers needed to enable this rule
+# Xform: dict of transformations
+# Update: trigger updates
+#   (list of) trigger: condition: <c> value: v 
+# Every boolean is a(n or reduced list of) var: <value> and conditions
+#     l: a - l is savarna of a varna
+#     l: ut - l is short u varna
+#     r: ku - l is kavarga
+#     r: _ac - r is in pratyahara "ac"
+#     r: $l  - r is savarna of l (variable)
+# Defined variables, can be used as lvalues and rvalues in xform and
+# lvalues in conditions. To use a variable as rvalue in a condition, prefix with $
+#   lp = left pada
+#   rp = right pada
+#   l = last varna of left pada
+#   r = first varna of right pada
+#  ll = second last varna of left pada
+#  rr = second varna of right pada
+#  lc = left pada - last varna
+#  rc = right pada - first varna
+
+-   sutra: aad guRaH
+    id: 6.1.87
+    condition:
+       l: a
+       r: _ik
+    xform:
+       l: null
+       r: guna(r)
+    trigger: null
+    update:
+      uran_trigger:
+          value: True
+          condition:
+             r: f
+
+-   sutra: vfdDireci
+    id: 6.1.88
+    condition:
+       l: a
+       r: _ec
+    xform:
+       l: null
+       r: vriddhi(r)
+    trigger: null
+    update: null
+             
+-   sutra: uraRraparaH
+    id: 1.1.51
+    condition: null
+    xform:
+       r: r+"r"
+    trigger: uran_trigger 
+    update:
+      uran_trigger:
+          value: False
+
+-   sutra: ikoyaRaci
+    id: 6.1.77
+    condition:
+      l: _ik
+      r: _ac
+    xform:
+       l: ikoyan(l)
+       
+-   sutra: ecoyavAyAvaH
+    id: 6.1.78
+    condition:
+      l: _ec
+      r: _ac
+    xform:
+       l: ayavayav(l)
+       
+-   sutra: akaHsavarRedIrGaH
+    id: 6.1.101
+    condition:
+      l: _ak
+      r: $l
+    xform:
+      l: dirgha(l)
+      r: null
+
+
+-   sutra: eNaHpadAntAdati
+    id: 6.1.109
+    condition:
+      l: _eN
+      r: at
+    xform:
+      r: null
+
+

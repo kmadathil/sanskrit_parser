@@ -1,6 +1,6 @@
 from .sutra_engine import SandhiSutra, GlobalTriggers
 from .maheshvara import * 
-from .guna_vriddhi import guna, vriddhi, ikoyan, ayavayav
+from .paribhasha import guna, vriddhi, ikoyan, ayavayav
 
 # Sutra: "aad guRaH"
 aadgunah = SandhiSutra("aad guRaH",

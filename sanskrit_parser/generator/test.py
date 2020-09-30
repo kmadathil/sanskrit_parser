@@ -5,7 +5,7 @@ import sanskrit_parser.generator.sutra_engine as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
 import logging
-enable_console_logger(logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 test_list = [
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
@@ -27,7 +27,7 @@ test_list = [
     ]
 
 
-def test_static():
+def test_static(sandhi_sutra_list):
     for s in test_list:
         l = PaninianObject(s[0], SLP1)
         r = PaninianObject(s[1], SLP1)
@@ -35,4 +35,6 @@ def test_static():
         assert ("".join([_r.canonical() for _r in list(r)])==s[2])
 
 sandhi_sutra_list = ach_sandhi.sutra_list
-test_static()
+#test_static(sandhi_sutra_list)
+from ach_sandhi_yaml import sutra_list
+test_static(sutra_list)
