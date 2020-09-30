@@ -4,7 +4,7 @@ import sanskrit_parser.generator.sutra_engine as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
 import logging
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 test_list = [
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
