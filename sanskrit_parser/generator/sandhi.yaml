@@ -28,7 +28,7 @@
 
 # ac sandhi
 
--   sutra: aad guRaH
+-   sutra: आद्गुणः
     id: 6.1.87
     condition:
        l: a
@@ -43,7 +43,7 @@
           condition:
              r: f
 
--   sutra: vfdDireci
+-   sutra: वृद्धिरेचि
     id: 6.1.88
     condition:
        l: a
@@ -54,7 +54,7 @@
     trigger: null
     update: null
              
--   sutra: uraRraparaH
+-   sutra: उरण् रपरः
     id: 1.1.51
     condition: null
     xform:
@@ -64,7 +64,7 @@
       uran_trigger:
           value: False
 
--   sutra: ikoyaRaci
+-   sutra: इको यणचि
     id: 6.1.77
     condition:
       l: _ik
@@ -72,7 +72,7 @@
     xform:
       l: ikoyan(l)
        
--   sutra: ecoyavAyAvaH
+-   sutra: एचोऽयवायावः
     id: 6.1.78
     condition:
       l: _ec
@@ -80,7 +80,7 @@
     xform:
        l: ayavayav(l)
        
--   sutra: akaHsavarRedIrGaH
+-   sutra: अकः सवर्णे दीर्घः
     id: 6.1.101
     condition:
       l: _ak
@@ -89,7 +89,7 @@
       l: dirgha(l)
       r: null
 
--   sutra: eNaHpadAntAdati
+-   sutra: एङः पदान्तादति
     id: 6.1.109
     condition:
       l: _eN
@@ -103,7 +103,7 @@
 # hal sandhi
 
 - sutra: स्तोः श्चुना श्चुः
-  id: 8.5.50
+  id: 8.4.40
   condition:
       - l: [s, tu]
         r: [S, cu]
@@ -114,7 +114,7 @@
       l: shcutva(l)
 
 - sutra: ष्टुना ष्टुः
-  id: 8.5.51
+  id: 8.4.41
   condition:
       - l: [s, tu]
         r: [z, wu]
@@ -126,15 +126,15 @@
 
 # FIXME - implement the anaam
 - sutra: न पदान्ताट्टोरनाम्
-  id: 8.5.52
-  overrides: 8.5.51
+  id: 8.4.42
+  overrides: 8.4.41
   condition:
       - l: wu
         r: [s, tu]
   xform:
 - sutra: न पदान्ताट्टोरनाम्
-  id: 8.5.52.1
-  overrides: 8.5.52
+  id: 8.4.42.1
+  overrides: 8.4.42
   condition:
       - l: wu
         rp: [=nAm, =navatis, =nagaris]
@@ -142,15 +142,15 @@
         r: zwutva(r)
         
 - sutra: तोः षि
-  id: 8.5.54
-  overrides: 8.5.51
+  id: 8.4.43
+  overrides: 8.4.41
   condition:
       - l: tu
         r: z
   xform:
 - sutra: शात्
-  id: 8.5.55
-  overrides: 8.5.50
+  id: 8.4.44
+  overrides: 8.4.40
   condition:
       - l: S
         r: [s, tu]
