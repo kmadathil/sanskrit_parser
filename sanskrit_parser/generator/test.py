@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from sanskrit_parser import enable_console_logger, enable_file_logger
 from sanskrit_parser.base.sanskrit_base import SLP1
 import sanskrit_parser.generator.sutra_engine as sutra
@@ -25,8 +26,22 @@ test_list = [
     ("yAne", "atra", "yAnetra"),
     ("yAne", "AgacCati", "yAnayAgacCati"),
     ("vizRo", "ava", "vizRova"),
+    ("haras", "Sete", "haraSSete"),
+    ("Bavat", "caraRam", "BavaccaraRam"),
+    ("praS", "nas", "praSnas"),
+    ("rAmas", "zazQa", "rAmazzazQa"),
+    ("rAmas", "wIkate", "rAmazwIkate"),
+    ("sarpiz", "tamam", "sarpizwamam"),
+    ("marut", "wIkate", "maruwwIkate"),
     ]
 
+test_list_d = [
+    ("मरुत्", "टीकते", "मरुट्टीकते"),
+    ("मधुलिट्", "तरति", "मधुलिट्तरति"),
+    ("मरुत्", "षष्ठः", "मरुत्षष्ठः"),
+    ("सन्", "षष्ठः", "सन्षष्ठः"),
+    ("षण्", "नाम्", "षण्णाम्"), 
+]
 
 def test_static(sandhi_sutra_list):
     for s in test_list:
@@ -34,6 +49,12 @@ def test_static(sandhi_sutra_list):
         r = PaninianObject(s[1], SLP1)
         r = sutra.SutraEngine.sandhi(l, r, sandhi_sutra_list)
         assert ("".join([_r.canonical() for _r in list(r)])==s[2])
+    for s in test_list_d:
+        l = PaninianObject(s[0])
+        r = PaninianObject(s[1])
+        r = sutra.SutraEngine.sandhi(l, r, sandhi_sutra_list)
+        assert ("".join([_r.devanagari() for _r in list(r)])==s[2]), \
+        f"{''.join([_r.devanagari() for _r in list(r)])}, {s[2]}"
 
 from sandhi_yaml import sutra_list
 test_static(sutra_list)

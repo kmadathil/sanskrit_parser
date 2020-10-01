@@ -35,6 +35,13 @@ def process_yaml(y):
                 s[c] = None
         svar = "sutra_"+s["id"].replace(".","_")
         sname = s["sutra"]
+        soverrides = None
+        if "overrides" in s:
+            if isinstance(s["overrides"], str):
+                soverrides = [s["overrides"]]
+            else:
+                soverrides = s["overrides"]
+            logger.debug(f"Sutra {s['id']} Overrides {soverrides}")
         scond = None
         if s["condition"] is not None:
             logger.debug("Processing Condition")
@@ -49,22 +56,42 @@ def process_yaml(y):
                         x = True
                         for k in _s:
                             logger.debug(f"Checking cond {_s[k]} against {k}")
-                            if (_s[k][0] == "_"):
-                                # Pratyahara
-                                logger.debug(f"Checking pratyahara {_s[k][1:]}")
-                                _x = isInPratyahara(_s[k][1:], eval(k))
-                            elif (_s[k][0] == "$"):
-                                # Variable
-                                logger.debug(f"Checking variable {_s[k][1:]} ")
-                                _x = isSavarna(eval(_s[k][1:]), eval(k))
+                            def _cond_single(sk, k, lp, rp, l, r):
+                                if (sk[0] == "_"):
+                                    # Pratyahara
+                                    logger.debug(f"Checking pratyahara {sk[1:]} {k}")
+                                    _x = isInPratyahara(sk[1:], k)
+                                elif (sk[0] == "$"):
+                                    # Variable
+                                    logger.debug(f"Checking variable {sk[1:]} {k}")
+                                    _x = isSavarna(eval(sk[1:]), k)
+                                elif (sk[0] == "="):
+                                    # Raw equality
+                                    logger.debug(f"Checking raw {sk[1:]} {k}")
+                                    _x = (sk[1:]==k.canonical())
+                                else:
+                                     logger.debug(f"Checking savarna {sk} {k} ")
+                                     _x = isSavarna(sk, k)
+                                logger.debug(f"Return {_x}")
+                                return _x
+                            if isinstance(_s[k], list):
+                                logger.debug(f"List")
+                                _x = False
+                                for sk in _s[k]:
+                                    _x = _x or _cond_single(sk, eval(k),
+                                                            lp, rp, l, r)
                             else:
-                               _x = isSavarna(_s[k], eval(k))              
+                                logger.debug(f"Single")
+                                _x = _cond_single(_s[k], eval(k), lp, rp, l, r)
                             logger.debug(f"Got {_x}")
                             x = x and _x
                         return x 
                     # List implies an or in condition
                     if isinstance(s, list):
-                        return [_c(lp, rp, l, r) for _s in s].any()
+                        _ret = False
+                        for _s in s:
+                           _ret = _ret or _c(lp, rp, l, r)
+                        return _ret
                     else:
                         _s = s
                         return _c(lp, rp, l, r) 
@@ -162,7 +189,9 @@ def process_yaml(y):
                             logger.debug(f"Update condition check {s[k]['condition']}")
                             # List implies an or in condition
                             if isinstance(s[k]['condition'], list):
-                                cond = [_c(lp, rp, l, r) for _s in s[k]['condition']].any()
+                                cond = False
+                                for _s in s[k]['condition']:
+                                    cond = cond or _c(lp, rp, l, r) 
                             else:
                                 _s = s[k]['condition']
                                 cond = _c(lp, rp, l, r) 
@@ -171,8 +200,13 @@ def process_yaml(y):
                             setattr(GlobalTriggers, k, s[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
-        sutra_dict[s["id"]] = SandhiSutra(sname, s["id"], cond=scond,
+        if s["id"] in sutra_dict:
+            logger.error(f"Duplicate Sutra {s['id']} - {sutra_dict[s['id']]} and sname")
+            assert False
+        sutra_dict[s["id"]] = SandhiSutra(sname, s["id"],
+                                          cond=scond,
                                           xform=sxform, trig=strig,
-                                          update=supdate)
+                                          update=supdate,
+                                          overrides=soverrides)
             
     return sutra_dict

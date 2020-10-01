@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Sutras for ac sandhi
 #  @author: kmadathil
 
@@ -100,3 +101,58 @@
 # visarga sandhi
 
 # hal sandhi
+
+- sutra: स्तोः श्चुना श्चुः
+  id: 8.5.50
+  condition:
+      - l: [s, tu]
+        r: [S, cu]
+      - l: [S, cu]
+        r: [s, tu]
+  xform:
+      r: shcutva(r)
+      l: shcutva(l)
+
+- sutra: ष्टुना ष्टुः
+  id: 8.5.51
+  condition:
+      - l: [s, tu]
+        r: [z, wu]
+      - l: [z, wu]
+        r: [s, tu]
+  xform:
+      r: zwutva(r)
+      l: zwutva(l)
+
+# FIXME - implement the anaam
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.5.52
+  overrides: 8.5.51
+  condition:
+      - l: wu
+        r: [s, tu]
+  xform:
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.5.52.1
+  overrides: 8.5.52
+  condition:
+      - l: wu
+        rp: [=nAm, =navatis, =nagaris]
+  xform:
+        r: zwutva(r)
+        
+- sutra: तोः षि
+  id: 8.5.54
+  overrides: 8.5.51
+  condition:
+      - l: tu
+        r: z
+  xform:
+- sutra: शात्
+  id: 8.5.55
+  overrides: 8.5.50
+  condition:
+      - l: S
+        r: [s, tu]
+  xform:
+

@@ -36,6 +36,12 @@ def ayavayav(s: str):
     else:
         return s
 
+def shcutva(s: str):
+    return adesha(s, "stTdDn", "ScCjJY")
+
+def zwutva(s: str):
+    return adesha(s, "stTdDn", "zwWqQR")
+
 # sUtra: adeN guRaH
 def is_guna(s: str):
     so = SanskritImmutableString(s, encoding=SLP1)
