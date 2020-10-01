@@ -15,8 +15,12 @@
 #     r: ku - l is kavarga
 #     r: _ac - r is in pratyahara "ac"
 #     r: $l  - r is savarna of l (variable)
-# Defined variables, can be used as lvalues and rvalues in xform and
-# lvalues in conditions. To use a variable as rvalue in a condition, prefix with $
+#    rp: =naam - rp is exactly the string "naam"
+#
+# Preefined variables, can be used as lvalues and rvalues in xform and
+# lvalues in conditions. To use a variable as rvalue in a condition,
+# prefix with $ (eg l: $r checkes for savarnatva between l and r)
+#
 #   lp = left pada
 #   rp = right pada
 #   l = last varna of left pada
