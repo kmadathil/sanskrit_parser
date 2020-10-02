@@ -48,15 +48,15 @@ def process_yaml(y):
             def _exec_cond(s):
                 logger.debug(f"Cond dict {s}")
                 # FIXME Fix variables after fixing sutra_engine
-                def _cond(lp, rp, l, r):
-                    def _c(lp, rp, l, r):
+                def _cond(env):
+                    def _c(env):
                         # _s a dict
                         # LHS = variable
                         # RHS = _pratyahara , {variable}, or savarna
                         x = True
                         for k in _s:
                             logger.debug(f"Checking cond {_s[k]} against {k}")
-                            def _cond_single(sk, k, lp, rp, l, r):
+                            def _cond_single(sk, k):
                                 if (sk[0] == "_"):
                                     # Pratyahara
                                     logger.debug(f"Checking pratyahara {sk[1:]} {k}")
@@ -64,7 +64,7 @@ def process_yaml(y):
                                 elif (sk[0] == "$"):
                                     # Variable
                                     logger.debug(f"Checking variable {sk[1:]} {k}")
-                                    _x = isSavarna(eval(sk[1:]), k)
+                                    _x = isSavarna(env[sk[1:]], k)
                                 elif (sk[0] == "="):
                                     # Raw equality
                                     logger.debug(f"Checking raw {sk[1:]} {k}")
@@ -78,11 +78,10 @@ def process_yaml(y):
                                 logger.debug(f"List")
                                 _x = False
                                 for sk in _s[k]:
-                                    _x = _x or _cond_single(sk, eval(k),
-                                                            lp, rp, l, r)
+                                    _x = _x or _cond_single(sk, env[k])
                             else:
                                 logger.debug(f"Single")
-                                _x = _cond_single(_s[k], eval(k), lp, rp, l, r)
+                                _x = _cond_single(_s[k], env[k])
                             logger.debug(f"Got {_x}")
                             x = x and _x
                         return x 
@@ -90,11 +89,11 @@ def process_yaml(y):
                     if isinstance(s, list):
                         _ret = False
                         for _s in s:
-                           _ret = _ret or _c(lp, rp, l, r)
+                           _ret = _ret or _c(env)
                         return _ret
                     else:
                         _s = s
-                        return _c(lp, rp, l, r) 
+                        return _c(env) 
                 return _cond
 
             scond = _exec_cond(s["condition"])
@@ -106,12 +105,13 @@ def process_yaml(y):
                 logger.debug(f"Xform dict {s}")
                 xdict = s
                 # FIXME Fix variables after fixing sutra_engine
-                def _xform(l, r, lc, rc):
-                    _l = l
-                    _r = r
-                    _lc = lc
-                    _rc = rc
+                def _xform(env):
+                    _l = l = env["l"].canonical()
+                    _r = r = env["r"].canonical()
+                    _lc = lc = env["lc"].canonical()
+                    _rc = rc = env["rc"].canonical()
                     logger.debug(f"Xform dict {xdict}")
+                    logger.debug(f"Before: {_lc} {_l} {_r} {_rc}")
                     # Execute transforms for predefined variables
                     # FIXME: We assume our code in xform is safe to eval
                     if "l" in xdict:
@@ -134,6 +134,7 @@ def process_yaml(y):
                             _rc = eval(xdict["rc"])
                         else:
                             _rc = ""
+                    logger.debug(f"After {_lc} {_l} {_r} {_rc}")
                     return _lc+_l, _r+_rc
                 return _xform
             sxform = _exec_xform(s["xform"])
@@ -160,9 +161,9 @@ def process_yaml(y):
             def _exec_update(s):
                 logger.debug(f"Update {s}")
                 # FIXME: Fix variable names after fixing sutra engine
-                def _update(lp, rp, l, r, triggers):
+                def _update(env, triggers):
                     # FIXME: Fix variable names after fixing sutra engine
-                    def _c(lp, rp, l, r):
+                    def _c(env):
                         # _s a dict
                         # LHS = variable
                         # RHS = _pratyahara , {variable}, or savarna
@@ -172,13 +173,13 @@ def process_yaml(y):
                             if (_s[k][0] == "_"):
                                 # Pratyahara
                                 logger.debug(f"Checking pratyahara {_s[k][1:]}")
-                                _x = isInPratyahara(_s[k][1:], eval(k))
+                                _x = isInPratyahara(_s[k][1:], env[k])
                             elif (_s[k][0] == "$"):
                                 # Variable
                                 logger.debug(f"Checking variable {_s[k][1:]} ")
-                                _x = isSavarna(eval(_s[k][1:]), eval(k))
+                                _x = isSavarna(env[_s[k][1:]], env[k])
                             else:
-                               _x = isSavarna(_s[k], eval(k))              
+                               _x = isSavarna(_s[k], env[k])              
                             logger.debug(f"Got {_x}")
                             x = x and _x
                         return x 
@@ -191,10 +192,10 @@ def process_yaml(y):
                             if isinstance(s[k]['condition'], list):
                                 cond = False
                                 for _s in s[k]['condition']:
-                                    cond = cond or _c(lp, rp, l, r) 
+                                    cond = cond or _c(env) 
                             else:
                                 _s = s[k]['condition']
-                                cond = _c(lp, rp, l, r) 
+                                cond = _c(env) 
                             logger.debug(f"Check got {cond}")
                         if cond:
                             setattr(triggers, k, s[k]["value"])

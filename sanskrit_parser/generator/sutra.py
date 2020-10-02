@@ -131,52 +131,53 @@ class SandhiSutra(Sutra):
     
     def isTriggered(self, s1, s2, triggers):
         # To check triggering, we define the following
-        # l -> object to the left (s1)
-        # r -> object to the right (s2)
-        # e -> left tadanta (s1)[-1]
-        # f -> s2[0]
-        l = s1
-        r = s2
-        e = SanskritImmutableString(l.canonical()[-1], SLP1)
-        f = SanskritImmutableString(r.canonical()[0], SLP1)
+        env = {}
+        env["lp"] = s1
+        env["rp"] = s2
+        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
+        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
+        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
+        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
         if self.trig is not None:
             t = self.trig(triggers)
         else:
             t = True
         if self.cond is not None:
-            c = self.cond(l, r, e, f)
+            c = self.cond(env)
         else:
             c = True
         return c and t
 
     def update(self, s1, s2, triggers):
         # To check triggering, we define the following
-        # l -> object to the left (s1)
-        # r -> object to the right (s2)
-        # e -> left tadanta (s1)[-1]
-        # f -> s2[0]
-        l = s1
-        r = s2
-        e = SanskritImmutableString(l.canonical()[-1], SLP1)
-        f = SanskritImmutableString(r.canonical()[0], SLP1)
+        env = {}
+        env["lp"] = s1
+        env["rp"] = s2
+        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
+        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
+        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
+        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
         if self.update_f is not None:
-            self.update_f(l, r, e, f, triggers)
+            self.update_f(env, triggers)
 
     def operate(self, s1, s2):
         if self.xform is not None:
             # To operate, we define the following
-            # e -> left tadanta str(s1)[-1]
-            # f -> str(s2)[0]
-            # lne -> s1.canonical()[:-1]
-            # rnf -> s2.canonical()[1:]
+            env = {}
+            env["lp"] = s1
+            env["rp"] = s2
+            env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+            env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+            env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
+            env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
+            env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
+            env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
+            ret = self.xform(env)
             # We take the string tuple returned, and update s1, s2
-            l = s1.canonical()
-            r = s2.canonical()
-            e = l[-1]
-            f = r[0]
-            lne = l[:-1]
-            rnf = r[1:]
-            ret = self.xform(e, f, lne, rnf)
             rs1 = deepcopy(s1)
             rs1.update(ret[0], SLP1)
             rs2 = deepcopy(s2)
