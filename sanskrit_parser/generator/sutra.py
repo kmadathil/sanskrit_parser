@@ -12,72 +12,6 @@ logger = logging.getLogger(__name__)
 # Global Triggers
 class GlobalTriggers(object):
     uran_trigger = False
-
-# Sutra execution engine
-# This is a simple engine, and doesn't follow all Panini rules
-class SutraEngine(object):
-
-    @classmethod
-    # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
-    def sutra_priority(cls, sutras: list):
-        _s = sutras
-        # Apavada
-        # Antaranga
-        # Nitya
-        # Para > purva
-        aps_nums = [s._aps_num for s in sutras]
-        nmax = aps_nums.index(max(aps_nums))
-        smax = sutras[nmax]
-        return smax
-    
-    @classmethod
-    def _exec_single(cls,l,*args):
-        triggered = [s for s in l if (s.isEnabled() and s.isTriggered(*args))]
-        logger.info(f"I: {args}")
-        if triggered:
-            logger.info("Triggered rules")
-            for t in triggered:
-                logger.info(t)
-            s = cls.sutra_priority(triggered)
-            if len(triggered)!=1:
-                logger.info(f"Winner {s}")
-            s.update(*args) # State update
-            r = s.operate(*args) # Transformation
-            s.disable()
-            # Overridden sutras disabled
-            if s.overrides is not None:
-                for so in l:
-                    if so.aps in s.overrides:
-                        so.disable()
-                        logger.info(f"Disabling overriden {so}")
-            logger.info(f"O: {r}")
-            return r
-        else:
-            logger.info(f"Nothing triggered")
-            return False
-
-    @classmethod
-    def _exec(cls, l, *args):
-        logger.info(f"Input: {args}")
-        _r = cls._exec_single(l, *args)
-        r = None
-        while(_r):
-            r = _r
-            _r = cls._exec_single(l, *_r)
-        if r is None: # Nothing got triggered
-            r = args
-        # Reenable everything
-        for s in l:
-            s.enable()
-        logger.info(f"Final Result: {str(r[0])+str(r[1])}\n\n")
-        return r
-    
-    @classmethod
-    def sandhi(cls, s1, s2, sandhi_sutra_list):
-        r = cls._exec(sandhi_sutra_list, s1, s2)
-        return r
-
-
     
 # Base class
 class Sutra(object):
@@ -185,3 +119,5 @@ class SandhiSutra(Sutra):
             return (rs1, rs2)
         else:
             return (s1, s2)
+
+
