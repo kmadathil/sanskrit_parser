@@ -208,7 +208,9 @@ if __name__ == "__main__":
         parser.add_argument('--remove-a', action='store_true')
         # Include dIrghas when returning the pratyAhAra
         parser.add_argument('--dirghas', action='store_true', default=False)
+        parser.add_argument('--output-slp1', action='store_true')
 
+        
         return parser.parse_args()
 
     def main():
@@ -221,8 +223,12 @@ if __name__ == "__main__":
             e = None
         p = sanskrit_base.SanskritImmutableString(args.pratyahara, e)
         longp = not args.short
-        print(six.text_type(p.devanagari()))
-        print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).devanagari()))
+        if args.output_slp1 is False:
+            print(six.text_type(p.devanagari()))
+            print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).devanagari()))
+        else:
+            print(six.text_type(p.canonical()))
+            print(six.text_type(m.getPratyahara(p, longp, args.remove_a, args.dirghas).canonical()))
         if args.varna is not None:
             v = sanskrit_base.SanskritImmutableString(args.varna, e)
             print(u"Is {} in {}?".format(v.devanagari(),

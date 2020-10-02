@@ -174,3 +174,49 @@
      r: _aS
   xform:
      l: null
+
+# Pada
+- sutra: अनुस्वारस्य ययि परसवर्णः
+  id: 8.4.58
+  condition:
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
+
+- sutra: मोऽनुस्वारः
+  id: 8.3.23
+  condition:
+     l: m
+     r: _hal
+  xform:
+     l: str("M")
+
+# FIXME: optional
+- sutra: यरोऽनुनासिकेऽनुनासिको वा 
+  id: 8.4.45
+  # FIXME: this should not be needed - need to think view and priority
+  # Should we disable superceded sutras as well?
+  overrides: 8.2.39
+  condition:
+     l: _yar
+     r: [N,Y,R,n,m]
+  xform:
+     l: anunasika(l)
+
+- sutra: झलां जशोऽन्ते
+  id: 8.2.39
+  condition:
+     l: _Jal
+     r: _aS
+  xform:
+     l: jashtva(l)
+
+- sutra: खरि च
+  id: 8.4.55
+  condition:
+     l: _Jal
+     r: _Kar
+  xform:
+     l: chartva(l)
+     

@@ -2,6 +2,7 @@ from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from .operations import adesha
 from .maheshvara import ms
 
+
 def dirgha(s: str):
     return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
 
@@ -41,6 +42,16 @@ def shcutva(s: str):
 
 def zwutva(s: str):
     return adesha(s, "stTdDn", "zwWqQR")
+
+def jashtva(s: str):
+    return adesha(s, "JBGQDjbgqdKPCWTcwtkpSzsh", "jbgqdjbgqdgbjqdjqdgbjqdg")
+
+def chartva(s: str):
+    return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "kkkkccccwwwwttttpppp")
+
+# Fixme - anunasika ZSs yrl
+def anunasika(s: str):
+    return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
 
 # sUtra: adeN guRaH
 def is_guna(s: str):

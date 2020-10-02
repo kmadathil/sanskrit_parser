@@ -29,11 +29,17 @@ test_list = [
     ("vizRo", "ava", "vizRova"),
     ("haras", "Sete", "haraSSete"),
     ("Bavat", "caraRam", "BavaccaraRam"),
-    ("praS", "nas", "praSnas"),
+    # Fixme: Non pada
+    #("praS", "nas", "praSnas"),
     ("rAmas", "zazQa", "rAmazzazQa"),
     ("rAmas", "wIkate", "rAmazwIkate"),
     ("sarpiz", "tamam", "sarpizwamam"),
     ("marut", "wIkate", "maruwwIkate"),
+    ("SuBam", "karoti", "SuBaNkaroti"),
+    ("vAk", "arTO", "vAgarTO"),
+    ("goDuk", "awati", "goDugawati"),
+    ("goDuk", "girati", "goDuggirati"),
+    ("virAw", "vadati", "virAqvadati"),
     ]
 
 test_list_d = [
@@ -41,7 +47,14 @@ test_list_d = [
     ("मधुलिट्", "तरति", "मधुलिट्तरति"),
     ("मरुत्", "षष्ठः", "मरुत्षष्ठः"),
     ("सन्", "षष्ठः", "सन्षष्ठः"),
-    ("षण्", "नाम्", "षण्णाम्"), 
+    ("षण्", "नाम्", "षण्णाम्"),
+    ("वाग्", "मुखम्", "वाङ्मुखम्"),
+     ("षड्", "मुखम्", "षण्मुखम्"),
+     ("एतद्", "मुरारि", "एतन्मुरारि"),
+     ("त्रिष्टुब्", "नमति", "त्रिष्टुम्नमति"),
+     ("वाग्", "चलति", "वाक्चलति"),
+     ("त्रिष्टुब्", "छन्दः", "त्रिष्टुप्छन्दः"),
+     ("अस्", "ति", "अस्ति"),
 ]
 
 def test_prakriya(sutra_list):
