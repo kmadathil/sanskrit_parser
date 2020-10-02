@@ -50,11 +50,27 @@ class Prakriya(object):
         Current view as seen by sutra s
 
         """
-        # FIXME Implement
-        if self.stages:
-            l = self.stages[-1].outputs
+        if s is not None:
+            aps_num = s._aps_num
         else:
-            l = self.inputs
+            aps_num = 0
+        # Default view
+        l = self.inputs
+        if aps_num < 82000:
+            # FIXME: Only Sapadasaptapadi implemented.
+            # Need to implement asiddhavat, zutvatokorasiddhaH
+            # Can see the entire sapadasaptapadi
+            for s in reversed(self.stages):
+                if s.sutra._aps_num < 82000:
+                    l = s.outputs
+                    break
+        else:
+            # Asiddha
+            # Can see all outputs of sutras less than oneself
+            for s in reversed(self.stages):
+                if s.sutra._aps_num < aps_num:
+                    l = s.outputs
+                    break
         return l
     
     def _exec_single(self):

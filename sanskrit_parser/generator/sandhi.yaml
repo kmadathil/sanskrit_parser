@@ -166,11 +166,11 @@
         r: [s, tu]
   xform:
 
-# - sutra: लोपः शाकल्यस्य
-#   id: 8.3.19
-#   condition:
-#      l: y
-#      ll: a
-#      r: _aS
-#   xform:
-#      l: null
+- sutra: लोपः शाकल्यस्य
+  id: 8.3.19
+  condition:
+     l: y
+     ll: a
+     r: _aS
+  xform:
+     l: null
