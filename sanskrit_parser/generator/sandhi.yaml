@@ -2,21 +2,6 @@
 # Sutras for ac sandhi
 #  @author: kmadathil
 
-# Sutra: Name
-# Id: <adhyAya.pAda.sutra>
-# Condition: boolean
-# Trigger: (list of) global triggers needed to enable this rule
-# Xform: dict of transformations
-# Update: trigger updates
-#   (list of) trigger: condition: <c> value: v 
-# Every boolean is a(n or reduced list of) var: <value> and conditions
-#     l: a - l is savarna of a varna
-#     l: ut - l is short u varna
-#     r: ku - l is kavarga
-#     r: _ac - r is in pratyahara "ac"
-#     r: $l  - r is savarna of l (variable)
-#    rp: =naam - rp is exactly the string "naam"
-#
 # Preefined variables, can be used as lvalues and rvalues in xform and
 # lvalues in conditions. To use a variable as rvalue in a condition,
 # prefix with $ (eg l: $r checkes for savarnatva between l and r)
@@ -29,6 +14,26 @@
 #  rr = second varna of right pada
 #  lc = left pada except last varna
 #  rc = right pada except first varna
+
+# Sutra: Name
+# Id: <adhyAya.pAda.sutra>
+# Condition: boolean
+# Every boolean is a(n or reduced list of) var: <value> and conditions
+#     l: a - l is savarna of a varna
+#     l: ut - l is short u varna
+#     r: ku - l is kavarga
+#     r: _ac - r is in pratyahara "ac"
+#     r: $l  - r is savarna of l (variable)
+#    rp: =naam - rp is exactly the string "naam"
+#
+# Trigger: (list of) global triggers needed to enable this rule
+#
+# Xform: dict of transformations. Each transformation is a python expression
+#    l: dirgha(l)
+#    r: ""
+# 
+# Update: trigger updates
+#   (list of) trigger: condition: <c> value: v 
 
 # ac sandhi
 
@@ -128,7 +133,6 @@
       r: zwutva(r)
       l: zwutva(l)
 
-# FIXME - implement the anaam
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42
   overrides: 8.4.41
@@ -136,6 +140,8 @@
       - l: wu
         r: [s, tu]
   xform:
+
+# Subsutra plus vArtikas
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42.1
   overrides: 8.4.42

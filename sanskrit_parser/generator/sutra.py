@@ -4,6 +4,7 @@ Operational Sutras
 """
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from decimal import Decimal
+from copy import deepcopy
 
 import logging
 logger = logging.getLogger(__name__)
@@ -13,6 +14,7 @@ class GlobalTriggers(object):
     uran_trigger = False
 
 # Sutra execution engine
+# This is a simple engine, and doesn't follow all Panini rules
 class SutraEngine(object):
 
     @classmethod
@@ -41,6 +43,7 @@ class SutraEngine(object):
                 logger.info(f"Winner {s}")
             s.update(*args) # State update
             r = s.operate(*args) # Transformation
+            s.disable()
             # Overridden sutras disabled
             if s.overrides is not None:
                 for so in l:
@@ -160,7 +163,6 @@ class SandhiSutra(Sutra):
             self.update_f(l, r, e, f)
 
     def operate(self, s1, s2):
-        self.disable()
         if self.xform is not None:
             # To operate, we define the following
             # e -> left tadanta str(s1)[-1]
@@ -175,8 +177,10 @@ class SandhiSutra(Sutra):
             lne = l[:-1]
             rnf = r[1:]
             ret = self.xform(e, f, lne, rnf)
-            s1.update(ret[0], SLP1)
-            s2.update(ret[1], SLP1)
-            return (s1, s2)
+            rs1 = deepcopy(s1)
+            rs1.update(ret[0], SLP1)
+            rs2 = deepcopy(s2)
+            rs2.update(ret[1], SLP1)
+            return (rs1, rs2)
         else:
             return (s1, s2)

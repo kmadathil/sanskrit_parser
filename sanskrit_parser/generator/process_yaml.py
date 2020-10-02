@@ -4,7 +4,7 @@ Sutra YAML Processor
 
 @author: kmadathil
 """
-from sanskrit_parser.generator.sutra_engine import SandhiSutra, GlobalTriggers
+from sanskrit_parser.generator.sutra import SandhiSutra, GlobalTriggers
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
 

@@ -18,3 +18,5 @@ class PaninianObject(SanskritObject):
         def fix(self):
                 self.inPrakriya = False
 
+        def isPada(self):
+                return self.hasTag("pada")
