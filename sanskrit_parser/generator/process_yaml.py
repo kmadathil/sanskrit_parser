@@ -4,7 +4,7 @@ Sutra YAML Processor
 
 @author: kmadathil
 """
-from sanskrit_parser.generator.sutra import SandhiSutra, GlobalTriggers
+from sanskrit_parser.generator.sutra import SandhiSutra
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
 
@@ -143,15 +143,15 @@ def process_yaml(y):
             logger.debug("Processing trigger")
             def _exec_trig(s):
                 logger.debug(f"Trig {s}")
-                def _trig():
+                def _trig(triggers):
                     # list of triggers
                     logger.debug(f"Trigger checks {s}")
                     if isinstance(s, list):
                         x = True
                         for t in s:
-                            x = x and getattr(GlobalTriggers, t)
+                            x = x and getattr(triggers, t)
                     else:
-                        return getattr(GlobalTriggers, s)
+                        return getattr(triggers, s)
                 return _trig
             strig =  _exec_trig(s["trigger"])
         supdate= None
@@ -160,7 +160,7 @@ def process_yaml(y):
             def _exec_update(s):
                 logger.debug(f"Update {s}")
                 # FIXME: Fix variable names after fixing sutra engine
-                def _update(lp, rp, l, r):
+                def _update(lp, rp, l, r, triggers):
                     # FIXME: Fix variable names after fixing sutra engine
                     def _c(lp, rp, l, r):
                         # _s a dict
@@ -197,7 +197,7 @@ def process_yaml(y):
                                 cond = _c(lp, rp, l, r) 
                             logger.debug(f"Check got {cond}")
                         if cond:
-                            setattr(GlobalTriggers, k, s[k]["value"])
+                            setattr(triggers, k, s[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:

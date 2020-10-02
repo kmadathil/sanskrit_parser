@@ -129,7 +129,7 @@ class SandhiSutra(Sutra):
     def inAdhikara(self, context):
         return self.adhikara(context)
     
-    def isTriggered(self, s1, s2):
+    def isTriggered(self, s1, s2, triggers):
         # To check triggering, we define the following
         # l -> object to the left (s1)
         # r -> object to the right (s2)
@@ -140,7 +140,7 @@ class SandhiSutra(Sutra):
         e = SanskritImmutableString(l.canonical()[-1], SLP1)
         f = SanskritImmutableString(r.canonical()[0], SLP1)
         if self.trig is not None:
-            t = self.trig()
+            t = self.trig(triggers)
         else:
             t = True
         if self.cond is not None:
@@ -149,7 +149,7 @@ class SandhiSutra(Sutra):
             c = True
         return c and t
 
-    def update(self, s1, s2):
+    def update(self, s1, s2, triggers):
         # To check triggering, we define the following
         # l -> object to the left (s1)
         # r -> object to the right (s2)
@@ -160,7 +160,7 @@ class SandhiSutra(Sutra):
         e = SanskritImmutableString(l.canonical()[-1], SLP1)
         f = SanskritImmutableString(r.canonical()[0], SLP1)
         if self.update_f is not None:
-            self.update_f(l, r, e, f)
+            self.update_f(l, r, e, f, triggers)
 
     def operate(self, s1, s2):
         if self.xform is not None:
