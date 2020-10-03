@@ -49,6 +49,10 @@ def jashtva(s: str):
 def chartva(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "kkkkccccwwwwttttpppp")
 
+def vargatritiya(s: str):
+    return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
+
+
 # Fixme - anunasika ZSs yrl
 def anunasika(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")

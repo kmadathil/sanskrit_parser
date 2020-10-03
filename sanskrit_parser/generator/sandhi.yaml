@@ -43,8 +43,8 @@
        l: a
        r: _ik
     xform:
-       l: null
-       r: guna(r)
+       l: guna(r)
+       r: null
     trigger: null
     update:
       uran_trigger:
@@ -58,8 +58,8 @@
        l: a
        r: _ec
     xform:
-       l: null
-       r: vriddhi(r)
+       l: vriddhi(r)
+       r: null
     trigger: null
     update: null
              
@@ -67,7 +67,7 @@
     id: 1.1.51
     condition: null
     xform:
-       r: r+"r"
+       l: l+"r"
     trigger: uran_trigger 
     update:
       uran_trigger:
@@ -220,3 +220,42 @@
   xform:
      l: chartva(l)
      
+# Fixme: handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
+- sutra: तोर्लि
+  id: 8.4.60
+  overrides: 8.2.39
+  condition:
+     l: tu
+     r: l
+  xform:
+     l: r
+     
+- sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
+  id: 8.3.32
+  condition:
+     ll: [at, it, ut, ft]
+     l: _Nam
+     r: _ac
+  xform:
+     r: l+r
+
+# Fixme optional
+- sutra: झयो होऽन्यतरस्याम्
+  id: 8.4.62
+  condition:
+     l: _Jay
+     r: h
+  xform:
+     r: vargatritiya(l)
+
+
+# Fixme optional
+# vartikam छत्वममि इति वक्तव्यम् incorprated
+- sutra: शश्छोऽटि
+  id: 8.4.63
+  condition:
+     l: _Jay
+     r: S
+     rr: _am
+  xform:
+     r: str("C")

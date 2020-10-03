@@ -35,16 +35,37 @@ class Prakriya(object):
         
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list):
+        def _winner(s1, s2):
+            logger.debug(f"{s1} overrides {s1.overrides}")
+            logger.debug(f"{s2} overrides {s2.overrides}")
+            # Apavada
+            # Antaranga
+            # Nitya
+            if (s2.overrides is not None) and (s1.aps in s2.overrides):
+                logger.debug(f"{s2} overrides {s1}")
+                return s2
+            elif (s1.overrides is not None) and (s2.aps in s1.overrides):
+                logger.debug(f"{s1} overrides {s2}")
+                return s1
+            elif (s1._aps_num > 82000) and (s2._aps_num > 82000):
+                logger.debug(f"Tripadi, lower of {s1} {s2}")
+                if s1._aps_num < s2._aps_num:
+                    return s1
+                else:
+                    return s2
+            else:
+                # Para > purva
+                logger.debug(f"Sapadasaptapadi, higher of {s1} {s2}")
+                if s1._aps_num > s2._aps_num:
+                    return s1
+                else:
+                    return s2
         _s = sutras
-        # Apavada
-        # Antaranga
-        # Nitya
-        # Para > purva
-        aps_nums = [s._aps_num for s in sutras]
-        nmax = aps_nums.index(max(aps_nums))
-        smax = sutras[nmax]
-        return smax
-
+        w = _s[0]
+        for s in _s[1:]:
+            w = _winner(w, s)
+        return w
+        
     def view(self, s):
         """
         Current view as seen by sutra s
