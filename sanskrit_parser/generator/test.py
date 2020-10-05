@@ -29,8 +29,8 @@ test_list = [
     ("vizRo", "ava", "vizRova"),
     ("haras", "Sete", "haraSSete"),
     ("Bavat", "caraRam", "BavaccaraRam"),
-    # Fixme: Non pada
-    #("praS", "nas", "praSnas"),
+    # Non pada
+    ("praS*", "nas", "praSnas"),
     ("rAmas", "zazQa", "rAmazzazQa"),
     ("rAmas", "wIkate", "rAmazwIkate"),
     ("sarpiz", "tamam", "sarpizwamam"),
@@ -79,8 +79,18 @@ def test_prakriya(sutra_list):
     def _test_d(o, s):
         return ("".join([_o.devanagari() for _o in list(o)])==s[2])
     for s in test_list:
-        l = PaninianObject(s[0], SLP1)
-        r = PaninianObject(s[1], SLP1)
+        if s[0][-1] == "*":
+            _pada = False
+            s0 = s[0][:-1]
+            s1 = s[1]
+        else:
+            s0 = s[0]
+            s1 = s[1]
+            _pada = True
+        l = PaninianObject(s0, SLP1)
+        if _pada:
+            l.setTag("pada")
+        r = PaninianObject(s1, SLP1)
         p = Prakriya(sutra_list,((l, r)))
         p.execute()
         p.describe()
@@ -88,8 +98,18 @@ def test_prakriya(sutra_list):
         # One of the outputs
         assert any([_test_c(_o,s) for _o in o])
     for s in test_list_d:
-        l = PaninianObject(s[0])
-        r = PaninianObject(s[1])
+        if s[0][-1] == "*":
+            _pada = False
+            s0 = s[0][:-1]
+            s1 = s[1]
+        else:
+            s0 = s[0]
+            s1 = s[1]
+            _pada = True
+        l = PaninianObject(s0)
+        if _pada:
+            l.setTag("pada")
+        r = PaninianObject(s1)
         p = Prakriya(sutra_list,((l, r)))
         p.execute()
         p.describe()

@@ -72,9 +72,12 @@ def process_yaml(y):
                                     # Raw equality
                                     logger.debug(f"Checking raw {sk[1:]} {k}")
                                     _x = (sk[1:]==k.canonical())
+                                elif (sk[0] == "?"): # Tag check
+                                    logger.debug(f"Checking tag {sk[1:]} {k}")
+                                    _x = k.hasTag(sk[1:])
                                 else:
-                                     logger.debug(f"Checking savarna {sk} {k} ")
-                                     _x = isSavarna(sk, k)
+                                    logger.debug(f"Checking savarna {sk} {k} ")
+                                    _x = isSavarna(sk, k)
                                 logger.debug(f"Return {_x}")
                                 return _x
                             if isinstance(_s[k], list):

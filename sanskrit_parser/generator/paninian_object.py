@@ -15,6 +15,10 @@ class PaninianObject(SanskritObject):
                 return t in self.tags
         def deleteTag(self,t):
                 return self.tags.remove(t)
+        def setTag(self, t):
+                if t not in self.tags:
+                        self.tags.append(t)
+                return t
         def fix(self):
                 self.inPrakriya = False
 

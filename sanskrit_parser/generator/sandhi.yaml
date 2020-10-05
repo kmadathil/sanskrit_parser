@@ -103,11 +103,9 @@
     condition:
       l: _eN
       r: at
+      lp: ?pada
     xform:
       r: null
-
-
-# visarga sandhi
 
 # hal sandhi
 
@@ -137,7 +135,8 @@
   id: 8.4.42
   overrides: 8.4.41
   condition:
-      - l: wu
+      - lp: ?pada
+        l: wu
         r: [s, tu]
   xform:
 
@@ -176,7 +175,6 @@
      l: null
 
 # Pada
-# Fixme - optional at pada end
 - sutra: अनुस्वारस्य ययि परसवर्णः
   id: 8.4.58
   condition:
@@ -185,7 +183,17 @@
   xform:
      l: anunasika(r)
 
-
+#optional at pada end
+- sutra: वा पदान्तस्य
+  id: 8.4.59
+  overrides: 8.4.58
+  optional: True
+  condition:
+     lp: ?pada
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
 
 - sutra: मोऽनुस्वारः
   id: 8.3.23
@@ -198,9 +206,7 @@
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45
   optional: True
-  # FIXME: this should not be needed - need to think view and priority
-  # Should we disable superceded sutras as well?
-  overrides: 8.2.39
+  #overrides: 8.2.39
   condition:
      l: _yar
      r: [N,Y,R,n,m]
@@ -210,6 +216,7 @@
 - sutra: झलां जशोऽन्ते
   id: 8.2.39
   condition:
+     lp: ?pada
      l: _Jal
      r: _aS
   xform:
@@ -275,3 +282,4 @@
 #      r: str("t")+r
 
 # "Visarga" Sandhi
+#ससजुषो रुः
