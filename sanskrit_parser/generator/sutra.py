@@ -34,19 +34,19 @@ class Sutra(object):
             self._aps_tuple = aps_t
             self.aps = '.'.join([str(x) for x in list(aps_t)])
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000 + aps_sub
-        self.enable()
+        #self.enable()
         self.overrides = overrides
         self.optional = optional
         logger.info(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
 
-    def enable(self):
-        self._enable = True
+    # def enable(self):
+    #     self._enable = True
 
-    def disable(self):
-        self._enable = False
+    # def disable(self):
+    #     self._enable = False
 
-    def isEnabled(self):
-        return self._enable
+    # def isEnabled(self):
+    #     return self._enable
 
     def __str__(self):
         if self.optional:

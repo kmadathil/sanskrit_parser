@@ -40,6 +40,8 @@ test_list = [
     ("goDuk", "awati", "goDugawati"),
     ("goDuk", "girati", "goDuggirati"),
     ("virAw", "vadati", "virAqvadati"),
+    ("kavis", "asti", "kavirasti"),
+    ("havis", "vartate", "havirvartate"),
     ]
 
 test_list_d = [
@@ -71,6 +73,14 @@ test_list_d = [
      ("तत्", "जयते", "तज्जयते"),
      # Fixme - tugAgama requires two runs - need prakriti pratyaya working
      #("सन्", "शम्भुः", "सञ्छम्भुः"),
+     ("रामः", "तरति", "रामस्तरति"),
+     ("बालः", "थूकरोति", "बालस्थूकरोति"),
+     ("हरिः", "चलति", "हरिश्चलति"),
+     ("पयः", "क्षीरम्", "पयःक्षीरम्"),
+     ("कः", "त्सरुः", "कःत्सरुः"),
+     ("हरिस्", "शेते", "हरिःशेते"),
+     ("हरिस्", "शेते", "हरिश्शेते"),
+     
 ]
 
 def test_prakriya(sutra_list):

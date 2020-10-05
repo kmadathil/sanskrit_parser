@@ -32,11 +32,14 @@
 #    l: dirgha(l)
 #    r: ""
 # 
-# Update: trigger updates
+# Update:
+#    trigger updates
 #   (list of) trigger: condition: <c> value: v 
+#    Tag updates
 
 # ac sandhi
 
+# FIXME PurvaparayoH needs a bit more thought
 -   sutra: आद्गुणः
     id: 6.1.87
     condition:
@@ -67,7 +70,7 @@
     id: 1.1.51
     condition: null
     xform:
-       l: l+"r"
+       r: str("r")+r
     trigger: uran_trigger 
     update:
       uran_trigger:
@@ -284,11 +287,11 @@
 # "Visarga" Sandhi
 - sutra: ससजुषो रुः
   id: 8.2.66
-  overrides: 8.3.17
+  overrides: [8.3.17, 8.2.39]
   condition:  
      l: s
   xform:
-     l: r
+     l: str("r")
   # FIXME need ru tag
 
 - sutra: अतो रोरप्लुतादप्लुते
@@ -322,3 +325,43 @@
        r: _aS
   xform:
      l: y
+
+- sutra: खरवसानयोर्विसर्जनीयः
+  id: 8.3.15
+  condition:
+     - l:  r
+       r: _Kar
+       lp: ?pada
+     - l:  r
+       lp: ?avasAna
+  xform:
+     l: str("H")
+     
+- sutra: विसर्जनीयस्य सः
+  id: 8.3.34
+  condition:
+     l:  H
+     r: _Kar
+     lp: ?pada
+  xform:
+     l: str("s")
+     
+- sutra: शर्परे विसर्जनीयः
+  id: 8.3.35
+  overrides: 8.3.34
+  condition:
+     l:  H
+     r: _Kar
+     rr: _Sar
+     lp: ?pada
+
+- sutra: वा शरि
+  id: 8.3.36
+  overrides: 8.3.34
+  optional: True
+  condition:
+     l:  H
+     r: _Sar
+     lp: ?pada
+  xform:
+     l: str("s")
