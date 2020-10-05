@@ -15,7 +15,7 @@ class GlobalTriggers(object):
     
 # Base class
 class Sutra(object):
-    def __init__(self, name, aps, overrides=None):
+    def __init__(self, name, aps, optional=False, overrides=None):
         if isinstance(name, str):
             self.name = SanskritImmutableString(name)
         else:
@@ -36,7 +36,8 @@ class Sutra(object):
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000 + aps_sub
         self.enable()
         self.overrides = overrides
-        logger.info(f"Initialized {self}:  {self._aps_num}")
+        self.optional = optional
+        logger.info(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
 
     def enable(self):
         self._enable = True
@@ -48,12 +49,16 @@ class Sutra(object):
         return self._enable
 
     def __str__(self):
-        return f"{self.aps:7}: {str(self.name)}"
+        if self.optional:
+            _o = "*"
+        else:
+            _o = ""
+        return f"{self.aps:7}: {str(self.name)} {_o}"
     
 class SandhiSutra(Sutra):
     def __init__(self, name, aps, cond, xform, adhikara=None,
-                 trig=None, update=None, overrides=None):
-        super().__init__(name, aps, overrides)
+                 trig=None, update=None, optional=False, overrides=None):
+        super().__init__(name, aps, optional, overrides)
         self.adhikara = adhikara
         self.cond = cond
         self.xform   = xform

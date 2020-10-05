@@ -69,18 +69,24 @@ test_list_d = [
      ("त्रिष्टुब्", "शेते", "त्रिष्टुप्छेते"),
      ("तद्", "श्लोकेन", "तच्छ्लोकेन"),
      ("तत्", "जयते", "तज्जयते"),
+     # Fixme - tugAgama requires two runs - need prakriti pratyaya working
+     #("सन्", "शम्भुः", "सञ्छम्भुः"),
 ]
 
 def test_prakriya(sutra_list):
+    def _test_c(o, s):
+        return ("".join([_o.canonical() for _o in list(o)])==s[2])
+    def _test_d(o, s):
+        return ("".join([_o.devanagari() for _o in list(o)])==s[2])
     for s in test_list:
         l = PaninianObject(s[0], SLP1)
         r = PaninianObject(s[1], SLP1)
         p = Prakriya(sutra_list,((l, r)))
         p.execute()
         p.describe()
-        # Only one output
         o = p.output()
-        assert ("".join([_o.canonical() for _o in list(o)])==s[2])
+        # One of the outputs
+        assert any([_test_c(_o,s) for _o in o])
     for s in test_list_d:
         l = PaninianObject(s[0])
         r = PaninianObject(s[1])
@@ -89,8 +95,7 @@ def test_prakriya(sutra_list):
         p.describe()
         # Only one output
         o = p.output()
-        assert ("".join([_o.devanagari() for _o in list(o)])==s[2]), \
-        f"{''.join([_o.devanagari() for _o in list(o)])}, {s[2]}"
+        assert any([_test_d(_o,s) for _o in o])
 
 from sandhi_yaml import sutra_list
 test_prakriya(sutra_list)

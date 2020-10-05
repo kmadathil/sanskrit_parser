@@ -36,6 +36,9 @@ def process_yaml(y):
         svar = "sutra_"+s["id"].replace(".","_")
         sname = s["sutra"]
         soverrides = None
+        sopt = False
+        if "optional" in s:
+            sopt = s["optional"]
         if "overrides" in s:
             if isinstance(s["overrides"], str):
                 soverrides = [s["overrides"]]
@@ -208,6 +211,7 @@ def process_yaml(y):
                                           cond=scond,
                                           xform=sxform, trig=strig,
                                           update=supdate,
+                                          optional=sopt,
                                           overrides=soverrides)
             
     return sutra_dict
