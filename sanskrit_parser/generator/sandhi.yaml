@@ -282,4 +282,43 @@
 #      r: str("t")+r
 
 # "Visarga" Sandhi
-#ससजुषो रुः
+- sutra: ससजुषो रुः
+  id: 8.2.66
+  overrides: 8.3.17
+  condition:  
+     l: s
+  xform:
+     l: r
+  # FIXME need ru tag
+
+- sutra: अतो रोरप्लुतादप्लुते
+  id: 6.1.113
+  condition:  
+     lp: ?ru
+     l: r
+     r: at
+  xform:
+     l: str("u")
+
+- sutra: हशि च
+  id: 6.1.114
+  condition:  
+     lp: ?ru
+     l: r
+     r: _haS
+  xform:
+     l: str("u")
+
+- sutra: भोभगोअघोअपूर्वस्य योऽशि
+  id: 8.3.17
+  condition:
+     - ll: a
+       l:  r
+       lp: ?ru
+       r: _aS
+     - lc: [=bhO, =bhago, =adho]
+       l:  r
+       lp: ?ru
+       r: _aS
+  xform:
+     l: y
