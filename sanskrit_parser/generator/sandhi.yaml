@@ -14,6 +14,8 @@
 #  rr = second varna of right pada
 #  lc = left pada except last varna
 #  rc = right pada except first varna
+#  olp = output left pada (Used only for tagging outputs)
+#  orp = output right pada (Used only for tagging outputs)
 
 # Sutra: Name
 # Id: <adhyAya.pAda.sutra>
@@ -300,6 +302,42 @@
 #   xform:
 #      r: str("t")+r
 
+
+# Sutras in this adhikara set the ru_anu tag to backtrigger 8.3.2/3/4
+# - sutra: अत्रानुनासिकः पूर्वस्य तु वा
+#   id: 8.3.2
+#   optional: True
+#   condition:
+#       lp: ?ru_anu
+#   xform:
+#       l: str("~r")
+#   update:
+#       olp: -ru_anu
+
+- sutra: अनुनासिकात् परोऽनुस्वारः
+  id: 8.3.4
+  condition:
+      lp: ?ru_anu
+  xform:
+      l: str("Mr")
+  update:
+      olp: -ru_anu
+      
+- sutra: नश्छव्यप्रशान्
+  id: 8.3.9
+  condition:
+     l: n
+     r: _Cav
+     rr: _am
+  xform:
+     l: str("r")
+  update:
+     # Set on input to backtrigger 8.3.2/3/4
+     lp: [+ru, +ru_anu]
+
+
+# 8.3.12 - End of 8.3.2 adhikara
+
 # "Visarga" Sandhi
 - sutra: ससजुषो रुः
   id: 8.2.66
@@ -309,6 +347,8 @@
   xform:
      l: str("r")
   update:
+     olp: +ru
+     # Have to do this to back-trigger 6.1.113
      lp: +ru
 
 - sutra: अतो रोरप्लुतादप्लुते

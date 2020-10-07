@@ -115,8 +115,10 @@ class Prakriya(object):
             v = self.view(s, node)
             if len(triggered)!=1:
                 logger.debug(f"Winner {s} View {v}")
-            s.update(*v, self.triggers) # State update
-            r = s.operate(*v) # Transformation
+            # Transformation
+            r = s.operate(*v)
+            # State update 
+            s.update(*v, *r, self.triggers) 
             logger.debug(f"I*: {self.view(None, node)}")
             self.disabled_sutras.append(s)
             # Overridden sutras disabled
@@ -125,7 +127,7 @@ class Prakriya(object):
                     if so.aps in s.overrides:
                         self.disabled_sutras.append(so)
                         logger.debug(f"Disabling overriden {so}")
-            logger.debug(f"O: {r}")
+            logger.debug(f"O: {r} {[_r.tags for _r in r]}")
             # Update Prakriya Tree
             _ps = PrakriyaNode(v, r, s, [t for t in triggered if t != s])
             if node is not None:

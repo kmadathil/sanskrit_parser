@@ -188,14 +188,22 @@ def process_yaml(y):
                             x = x and _x
                         return x
                     
-                    for k in ["lp", "rp"]:
+                    for k in ["olp", "orp", "lp", "rp"]:
                         if k in s.keys():
-                           if s[k][0] == "+":
-                               logger.debug(f"Setting {k} tag {s[k][1:]}")
-                               env[k].setTag(s[k][1:])
-                           elif s[k][0] == "-":
-                               logger.debug(f"Removing {k} tag {s[k][1:]}")
-                               env[k].deleteTag(s[k][1:])
+                           # Set or remove one tag
+                           def _tag(k,sk):
+                               if sk[0] == "+":
+                                   logger.debug(f"Setting {k} tag {sk[1:]}")
+                                   env[k].setTag(sk[1:])
+                               elif sk[0] == "-":
+                                   logger.debug(f"Removing {k} tag {sk[1:]}")
+                                   env[k].deleteTag(sk[1:])
+                           # Possibly set/remove multiple tags         
+                           if isinstance(s[k], list):
+                               for sk in s[k]:
+                                   _tag(k, sk)
+                           else:
+                               _tag(k, s[k])
                                
                     if "trigger" in s.keys():
                         st = s["trigger"]

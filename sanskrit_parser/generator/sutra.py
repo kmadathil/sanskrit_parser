@@ -91,11 +91,13 @@ class SandhiSutra(Sutra):
         logger.debug(f"Check Result {c and t} for {self}")
         return c and t
 
-    def update(self, s1, s2, triggers):
+    def update(self, s1, s2, o1, o2, triggers):
         # To check triggering, we define the following
         env = {}
         env["lp"] = s1
         env["rp"] = s2
+        env["olp"] = o1
+        env["orp"] = o2
         env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
         env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
         env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
