@@ -33,9 +33,13 @@
 #    r: ""
 # 
 # Update:
-#    trigger updates
-#   (list of) trigger: condition: <c> value: v 
-#    Tag updates
+#   lp: +ru - sets tag "ru" on lp
+#   rp: -pada - removes "pada" tag from rp
+#   trigger: - sets triggers
+#     uran_trigger:   - sets trigger uran_trigger 
+#         value: True - to True
+#           condition:  - if
+#              r: f       - r = "f"
 
 # ac sandhi
 
@@ -50,7 +54,8 @@
        r: null
     trigger: null
     update:
-      uran_trigger:
+      trigger:
+        uran_trigger:
           value: True
           condition:
              r: f
@@ -73,7 +78,8 @@
        r: str("r")+r
     trigger: uran_trigger 
     update:
-      uran_trigger:
+      trigger:
+        uran_trigger:
           value: False
 
 -   sutra: इको यणचि
@@ -176,6 +182,16 @@
      r: _aS
   xform:
      l: null
+
+- sutra: ओतो गार्ग्यस्य
+  id: 8.3.20
+  condition:
+     l: y
+     ll: o
+     r: _aS
+  xform:
+     l: null
+
 
 # Pada
 - sutra: अनुस्वारस्य ययि परसवर्णः
@@ -287,44 +303,53 @@
 # "Visarga" Sandhi
 - sutra: ससजुषो रुः
   id: 8.2.66
-  overrides: [8.3.17, 8.2.39]
+  overrides: 8.2.39
   condition:  
      l: s
   xform:
      l: str("r")
-  # FIXME need ru tag
+  update:
+     lp: +ru
 
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
+  overrides: 8.3.17
   condition:  
      lp: ?ru
-     l: r
+     #l: r
+     ll: at
      r: at
   xform:
-     l: str("u")
+     # FIXME: change this to "u" when sliding windows are done
+     l: str("o")
+     lc: lc[:-1]
 
 - sutra: हशि च
   id: 6.1.114
+  overrides: 8.3.17
   condition:  
      lp: ?ru
-     l: r
+     #l: r
+     ll: at
      r: _haS
   xform:
-     l: str("u")
+     # FIXME: change this to "u" when sliding windows are done
+     l: str("o")
+     lc: lc[:-1]
 
 - sutra: भोभगोअघोअपूर्वस्य योऽशि
   id: 8.3.17
   condition:
      - ll: a
-       l:  r
+       #l:  r
        lp: ?ru
        r: _aS
-     - lc: [=bhO, =bhago, =adho]
-       l:  r
+     - lc: [=Bo, =Bago, =aGo]
+       #l:  r
        lp: ?ru
        r: _aS
   xform:
-     l: y
+     l: str("y")
 
 - sutra: खरवसानयोर्विसर्जनीयः
   id: 8.3.15
@@ -365,3 +390,15 @@
      lp: ?pada
   xform:
      l: str("s")
+
+# FIXME: Ignoring updaDmanIya and jihvAmUlIya as they're not seen in practice
+- sutra: कुप्वोः ≍क≍पौ च
+  id: 8.3.37
+  overrides: 8.3.34
+  condition:
+     l:  H
+     r: [ku, pu]
+     lp: ?pada
+  xform:
+     l: l
+ 

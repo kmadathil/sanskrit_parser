@@ -166,9 +166,7 @@ def process_yaml(y):
             logger.debug("Processing update")
             def _exec_update(s):
                 logger.debug(f"Update {s}")
-                # FIXME: Fix variable names after fixing sutra engine
                 def _update(env, triggers):
-                    # FIXME: Fix variable names after fixing sutra engine
                     def _c(env):
                         # _s a dict
                         # LHS = variable
@@ -188,23 +186,35 @@ def process_yaml(y):
                                _x = isSavarna(_s[k], env[k])              
                             logger.debug(f"Got {_x}")
                             x = x and _x
-                        return x 
-                    for k in s:
-                        logger.debug(f"Updating trigger {k} {s[k]}")
-                        cond = True
-                        if "condition" in s[k]:
-                            logger.debug(f"Update condition check {s[k]['condition']}")
-                            # List implies an or in condition
-                            if isinstance(s[k]['condition'], list):
-                                cond = False
-                                for _s in s[k]['condition']:
-                                    cond = cond or _c(env) 
-                            else:
-                                _s = s[k]['condition']
-                                cond = _c(env) 
-                            logger.debug(f"Check got {cond}")
-                        if cond:
-                            setattr(triggers, k, s[k]["value"])
+                        return x
+                    
+                    for k in ["lp", "rp"]:
+                        if k in s.keys():
+                           if s[k][0] == "+":
+                               logger.debug(f"Setting {k} tag {s[k][1:]}")
+                               env[k].setTag(s[k][1:])
+                           elif s[k][0] == "-":
+                               logger.debug(f"Removing {k} tag {s[k][1:]}")
+                               env[k].deleteTag(s[k][1:])
+                               
+                    if "trigger" in s.keys():
+                        st = s["trigger"]
+                        for k in st:
+                            logger.debug(f"Updating trigger {k} {st[k]}")
+                            cond = True
+                            if "condition" in st[k]:
+                                logger.debug(f"Update condition check {st[k]['condition']}")
+                                # List implies an or in condition
+                                if isinstance(st[k]['condition'], list):
+                                    cond = False
+                                    for _s in st[k]['condition']:
+                                        cond = cond or _c(env) 
+                                else:
+                                    _s = st[k]['condition']
+                                    cond = _c(env) 
+                                logger.debug(f"Check got {cond}")
+                            if cond:
+                                setattr(triggers, k, st[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:

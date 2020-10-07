@@ -15,12 +15,14 @@ def vriddhi(s: str):
 def ikoyan(s: str):
     return adesha(s.lower(),
                   ms.getPratyahara(SanskritImmutableString("ik",SLP1)),
-                  ms.getPratyahara(SanskritImmutableString("yaR",SLP1))
+                  ms.getPratyahara(SanskritImmutableString("yaR",SLP1),
+                                   remove_a=True)
                   )
 
 def samprasaranam(s: str):
     return adesha(s,
-                  ms.getPratyahara(SanskritImmutableString("yaR",SLP1)),
+                  ms.getPratyahara(SanskritImmutableString("yaR",SLP1),
+                                   remove_a=True),
                   ms.getPratyahara(SanskritImmutableString("ik",SLP1))
                   )
 

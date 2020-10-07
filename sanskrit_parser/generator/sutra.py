@@ -69,6 +69,7 @@ class SandhiSutra(Sutra):
         return self.adhikara(context)
     
     def isTriggered(self, s1, s2, triggers):
+        logger.debug(f"Checking {self} View: {s1} {s2}")
         # To check triggering, we define the following
         env = {}
         env["lp"] = s1
@@ -87,6 +88,7 @@ class SandhiSutra(Sutra):
             c = self.cond(env)
         else:
             c = True
+        logger.debug(f"Check Result {c and t} for {self}")
         return c and t
 
     def update(self, s1, s2, triggers):
