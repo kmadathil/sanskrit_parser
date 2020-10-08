@@ -1,7 +1,7 @@
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString
 
 class PaninianObject(SanskritObject):
-        """ Sanskrit Object Class: Derived From SanskritString
+        """ Paninian Object Class: Derived From SanskritObject
 
         Attributes:
         

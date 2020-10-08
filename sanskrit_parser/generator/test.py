@@ -3,7 +3,7 @@ from sanskrit_parser import enable_console_logger, enable_file_logger
 from sanskrit_parser.base.sanskrit_base import SLP1
 import sanskrit_parser.generator.sutra as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.generator.prakriya import Prakriya
+from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -94,6 +94,7 @@ test_list_d = [
     ("रामस्", "आसीत्", "रामआसीत्"),
     ("रामस्", "ईशः", "रामईशः"),
     ("भवान्", "चरति", "भवांश्चरति"),
+    ("सन्", "शम्भुः", "सञ्छम्भुः"),
 ]
 
 def test_prakriya(sutra_list):
@@ -114,7 +115,7 @@ def test_prakriya(sutra_list):
         if _pada:
             l.setTag("pada")
         r = PaninianObject(s1, SLP1)
-        p = Prakriya(sutra_list,((l, r)))
+        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
         p.execute()
         p.describe()
         o = p.output()
@@ -133,7 +134,7 @@ def test_prakriya(sutra_list):
         if _pada:
             l.setTag("pada")
         r = PaninianObject(s1)
-        p = Prakriya(sutra_list,((l, r)))
+        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
         p.execute()
         p.describe()
         # Only one output

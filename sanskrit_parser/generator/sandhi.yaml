@@ -294,13 +294,13 @@
 # Fixme Optional
 # Pada
 # Fixme - Pratyaya Agama
-# - sutra: शि तुक्
-#   id: 8.3.31
-#   condition:
-#      l: n
-#      r: S
-#   xform:
-#      r: str("t")+r
+- sutra: शि तुक्
+  id: 8.3.31
+  condition:
+     l: n
+     r: S
+  insert:
+     1: tuk
 
 
 # Sutras in this adhikara set the ru_anu tag to backtrigger 8.3.2/3/4

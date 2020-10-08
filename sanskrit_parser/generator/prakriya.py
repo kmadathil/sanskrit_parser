@@ -16,6 +16,51 @@ produce a vakya.
 import logging
 logger = logging.getLogger(__name__)
 from sanskrit_parser.generator.sutra import GlobalTriggers
+from sanskrit_parser.generator.paninian_object import PaninianObject
+from copy import copy
+
+class PrakriyaVakya(object):
+    """
+    Prakriya Vakya class
+
+    Start with associated prakriti + pratyayas
+    Assemble into padas
+    Handle Pratyaya/String Agama / Lopa
+    
+    Inputs:
+        v = list. 
+        Elements of v can be PaninianObjects or
+            lists thereof
+    Internal storage:
+       - List of lists of PaninianObject objects
+    """
+    def __init__(self, v):
+        self.v = copy(list(v))
+
+    def need_hierarchy_at(self, ix):
+        return not _isScalar(self.v[ix])
+
+    def copy_replace_at(self, ix, r):
+        vc = PrakriyaVakya(self.v)
+        vc.v[ix] = r
+        return vc
+
+    def copy_insert_at(self, ix, r):
+        vc = PrakriyaVakya(self.v)
+        vc.v.insert(ix, r)
+        return vc
+
+    def __getitem__(self, ix):
+        return self.v[ix]
+
+    def __len__(self):
+        return len(self.v)
+
+    def __print__(self):
+        return [str(x) for x in self.v]
+
+    def __repr__(self):
+        return str([str(x) for x in self.v])
         
 class Prakriya(object):
     """
@@ -23,7 +68,7 @@ class Prakriya(object):
     
     Inputs:
        sutra_list: list of Sutra objects
-       inputs    : list of PaninianObject objects
+       inputs    : PrakriyaVakya object
     """
     def __init__(self, sutra_list, inputs):
         self.sutra_list = sutra_list
@@ -36,6 +81,8 @@ class Prakriya(object):
         # Move triggers/disable into Prakriya Stage?
         self.triggers = GlobalTriggers() 
         self.disabled_sutras = []
+        # Sliding window counter
+        self.windowIdx = 0
         
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list):
@@ -70,7 +117,7 @@ class Prakriya(object):
             w = _winner(w, s)
         return w
         
-    def view(self, s, node):
+    def view(self, s, node, ix=0):
         """
         Current view as seen by sutra s
 
@@ -99,27 +146,36 @@ class Prakriya(object):
             while (self.tree.parent[_n] is not None) and (_n.sutra._aps_num > aps_num):
                 _n = self.tree.parent[_n]
             l = _n.outputs
-        #logger.debug(f"View {l} {node} {_n}")
-        return l
+        if ix > (len(l)-2):
+            # Someone has inserted something this sutra can't see
+            logger.debug(f"Unseen insertion? {s} {l} {ix}") 
+            ix = len(l) - 2
+        return l[ix:ix+2]
     
     def _exec_single(self, node):
         l = self.sutra_list
-        triggered = [s for s in l if ((not s in self.disabled_sutras)
-                                      and s.isTriggered(*self.view(s, node), self.triggers))]
-        logger.debug(f"I: {self.view(None, node)}")
+        # Sliding window, check from left
+        for ix in range(len(node.outputs)-1):
+            triggered = [s for s in l if ((not s in self.disabled_sutras)
+                                          and s.isTriggered(*self.view(s, node, ix), self.triggers))]
+            # Break at first index from left where trigger occurs
+            if triggered:
+                break
+        logger.debug(f"I: {node.outputs}")
         if triggered:
-            logger.debug("Triggered rules")
+            logger.debug(f"Triggered rules at window {ix}")
             for t in triggered:
                 logger.debug(t)
             s = self.sutra_priority(triggered)
-            v = self.view(s, node)
+            v = self.view(s, node, ix)
             if len(triggered)!=1:
-                logger.debug(f"Winner {s} View {v}")
+                logger.debug(f"Sutra {s} View {v}")
             # Transformation
             r = s.operate(*v)
             # State update 
-            s.update(*v, *r, self.triggers) 
-            logger.debug(f"I*: {self.view(None, node)}")
+            s.update(*v, *r, self.triggers)
+            r = s.insert(*r)
+            logger.debug(f"I (post update): {v}")
             self.disabled_sutras.append(s)
             # Overridden sutras disabled
             if s.overrides is not None:
@@ -129,7 +185,14 @@ class Prakriya(object):
                         logger.debug(f"Disabling overriden {so}")
             logger.debug(f"O: {r} {[_r.tags for _r in r]}")
             # Update Prakriya Tree
-            _ps = PrakriyaNode(v, r, s, [t for t in triggered if t != s])
+            # Craft inputs and outputs based on viewed inputs
+            # And generated outputs
+            pnv = node.outputs.copy_replace_at(ix,v[0]).copy_replace_at(ix+1,v[1])
+            pnr = node.outputs.copy_replace_at(ix,r[0]).copy_replace_at(ix+1,r[1])
+            if len(r) > 2:
+                for i in range(len(r)-2):
+                    pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
+            _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s])
             if node is not None:
                 self.tree.add_child(node, _ps, opt=s.optional)
             else:
@@ -201,14 +264,15 @@ class PrakriyaNode(object):
        sutra_id: id for triggered sutra
    other_sutras: sutras that were triggered, but did not win.    
     """
-    def __init__(self, inputs, outputs, sutra, other_sutras=[]):
+    def __init__(self, inputs, outputs, sutra, ix=0, other_sutras=[]):
         self.inputs = inputs
         self.outputs = outputs
         self.sutra = sutra
         self.other_sutras = other_sutras
+        self.index = ix
         
     def __str__(self):
-        return f"{self.sutra} {self.inputs} -> {self.outputs}"
+        return f"{self.sutra} {self.inputs[self.index:self.index+2]} -> {self.outputs[self.index:self.index+2]}"
 
     def __hash__(self):
         return hash(str(self))
@@ -229,7 +293,14 @@ class PrakriyaNode(object):
                 print(str(s))
         print("End")
         
-
+    def __dict__(self):
+        return {
+            'sutra': self.sutra,
+            'inputs': self.inputs,
+            'outputs': self.outputs,
+            'window': self.index
+            }
+    
 class PrakriyaTree(object):
     """ 
     Prakriya Tree: Tree of PrakriyaNodes
@@ -275,4 +346,17 @@ class PrakriyaTree(object):
         for r in self.roots:
             print("Root")
             _desc(r)
+
+    def __dict__(self):
+        def _dict(n):
+            d = dict(n)
+            d['children'] = [_dict(c) for c in self.children[n]]
+            return d
+        return {
+            'root': _dict(self.roots[0])
+            }
+        
             
+def _isScalar(x):
+    # We do not expect np arrays or other funky nonscalars here
+    return not (isinstance(x, list) or isinstance(x, tuple))

@@ -7,6 +7,7 @@ Sutra YAML Processor
 from sanskrit_parser.generator.sutra import SandhiSutra
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
+from sanskrit_parser.generator.pratyaya import *
 
 import logging
 logger = logging.getLogger(__name__)
@@ -30,7 +31,7 @@ def process_yaml(y):
         if not "id" in s:
             logger.error("No sutra id")
             assert False
-        for c in ["condition", "trigger", "xform", "update"]:
+        for c in ["condition", "trigger", "xform", "update", "insert"]:
             if not c in s:
                 s[c] = None
         svar = "sutra_"+s["id"].replace(".","_")
@@ -141,10 +142,26 @@ def process_yaml(y):
                         else:
                             _rc = ""
                     logger.debug(f"After {_lc} {_l} {_r} {_rc}")
-                    return _lc+_l, _r+_rc
+                    ret = [_lc+_l, _r+_rc]
+                    return ret 
                 return _xform
             sxform = _exec_xform(s["xform"])
             logger.debug(f"Xform def {sxform}")
+        sinsert = None
+        if s["insert"] is not None:
+            logger.debug("Processing insert")
+            def _exec_insert(s):
+                logger.debug(f"insert dict {s}")
+                idict = s
+                def _insert(env):
+                    _r = {}
+                    for i in idict:
+                        logger.debug(f"Insert {i} {idict[i]}")
+                        _r[i] = eval(idict[i])
+                    return _r
+                return _insert
+            sinsert = _exec_insert(s["insert"])
+            logger.debug(f"Insert def {sinsert}")
         strig = None
         if s["trigger"] is not None:
             logger.debug("Processing trigger")
@@ -230,7 +247,9 @@ def process_yaml(y):
             assert False
         sutra_dict[s["id"]] = SandhiSutra(sname, s["id"],
                                           cond=scond,
-                                          xform=sxform, trig=strig,
+                                          xform=sxform,
+                                          insert=sinsert,
+                                          trig=strig,
                                           update=supdate,
                                           optional=sopt,
                                           overrides=soverrides)

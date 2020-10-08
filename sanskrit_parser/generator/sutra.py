@@ -56,7 +56,7 @@ class Sutra(object):
         return f"{self.aps:7}: {str(self.name)} {_o}"
     
 class SandhiSutra(Sutra):
-    def __init__(self, name, aps, cond, xform, adhikara=None,
+    def __init__(self, name, aps, cond, xform, insert=None, adhikara=None,
                  trig=None, update=None, optional=False, overrides=None):
         super().__init__(name, aps, optional, overrides)
         self.adhikara = adhikara
@@ -64,22 +64,14 @@ class SandhiSutra(Sutra):
         self.xform   = xform
         self.update_f = update
         self.trig = trig
-    
+        self.insertx = insert
+        
     def inAdhikara(self, context):
         return self.adhikara(context)
     
     def isTriggered(self, s1, s2, triggers):
         logger.debug(f"Checking {self} View: {s1} {s2}")
-        # To check triggering, we define the following
-        env = {}
-        env["lp"] = s1
-        env["rp"] = s2
-        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
-        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
-        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
-        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
-        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
-        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
+        env = _env(s1, s2)
         if self.trig is not None:
             t = self.trig(triggers)
         else:
@@ -92,41 +84,54 @@ class SandhiSutra(Sutra):
         return c and t
 
     def update(self, s1, s2, o1, o2, triggers):
-        # To check triggering, we define the following
-        env = {}
-        env["lp"] = s1
-        env["rp"] = s2
+        env = _env(s1, s2)
         env["olp"] = o1
         env["orp"] = o2
-        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
-        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
-        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
-        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
-        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
-        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
         if self.update_f is not None:
             self.update_f(env, triggers)
 
     def operate(self, s1, s2):
         if self.xform is not None:
-            # To operate, we define the following
-            env = {}
-            env["lp"] = s1
-            env["rp"] = s2
-            env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
-            env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
-            env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
-            env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
-            env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
-            env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
+            env = _env(s1, s2)
             ret = self.xform(env)
             # We take the string tuple returned, and update s1, s2
             rs1 = deepcopy(s1)
             rs1.update(ret[0], SLP1)
             rs2 = deepcopy(s2)
             rs2.update(ret[1], SLP1)
-            return (rs1, rs2)
+            return rs1, rs2
         else:
             return (s1, s2)
 
+    def insert(self, s1, s2):
+        if self.insertx is not None:
+            env = _env(s1, s2)
+            itx = self.insertx(env)
+            r = [s1, s2]
+            for i in itx:
+                r.insert(i, itx[i])
+            logger.info(f"After insertion {r}")
+            return r
+        else:
+            return(s1, s2)
 
+def _env(s1, s2):
+    #Helper function to define execution environment
+    env = {}
+    env["lp"] = s1
+    env["rp"] = s2
+    env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+    env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+    if len(s1.canonical()) > 1:
+        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
+        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
+    else:
+        env["ll"] = SanskritImmutableString("")
+        env["lc"] = SanskritImmutableString("")
+    if len(s2.canonical()) > 1:
+        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
+        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
+    else:
+        env["rr"] = SanskritImmutableString("", SLP1)
+        env["rc"] = SanskritImmutableString("", SLP1)
+    return env
