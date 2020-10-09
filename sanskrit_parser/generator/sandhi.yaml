@@ -27,6 +27,8 @@
 #     r: _ac - r is in pratyahara "ac"
 #     r: $l  - r is savarna of l (variable)
 #    rp: =naam - rp is exactly the string "naam"
+#    lp: ?pada - lp has tag pada
+#    lp: !pada - lp does not have tag pada
 #
 # Trigger: (list of) global triggers needed to enable this rule
 #
@@ -123,6 +125,42 @@
       r: null
 
 # hal sandhi
+- sutra: छे च
+  id: 6.1.73
+  condition:
+     l: [at,it,ut,ft,xt]
+     r: C
+  insert:
+     1: tuk
+
+# Fixme - need to check for Nit
+- sutra: आङ्माङोश्च
+  id: 6.1.74
+  overrides: [6.1.75, 6.1.76]
+  condition:
+     lp: [=A, =mA]
+     r: C
+  insert:
+     1: tuk
+     
+- sutra: दीर्घात्
+  id: 6.1.75
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     r: C
+  insert:
+     1: tuk
+     
+- sutra: पदान्ताद्वा
+  id: 6.1.76
+  overrides: 6.1.75
+  optional: true
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     lp: ?pada
+     r: C
+  insert:
+     1: tuk
 
 - sutra: स्तोः श्चुना श्चुः
   id: 8.4.40
@@ -296,14 +334,13 @@
   xform:
      r: str("C")
 
-# Fixme Optional
-# Pada
-# Fixme - Pratyaya Agama
 - sutra: शि तुक्
   id: 8.3.31
   condition:
      l: n
      r: S
+     lp: ?pada
+  optional: true
   insert:
      1: tuk
 

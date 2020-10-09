@@ -110,7 +110,7 @@ class SandhiSutra(Sutra):
             r = [s1, s2]
             for i in itx:
                 r.insert(i, itx[i])
-            logger.info(f"After insertion {r}")
+            logger.debug(f"After insertion {r}")
             return r
         else:
             return(s1, s2)

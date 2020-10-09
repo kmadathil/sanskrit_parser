@@ -76,6 +76,9 @@ def process_yaml(y):
                                 elif (sk[0] == "?"): # Tag check
                                     logger.debug(f"Checking tag {sk[1:]} {k}")
                                     _x = k.hasTag(sk[1:])
+                                elif (sk[0] == "!"): # Tag false check
+                                    logger.debug(f"Checking tag false {sk[1:]} {k}")
+                                    _x = not k.hasTag(sk[1:])
                                 else:
                                     logger.debug(f"Checking savarna {sk} {k} ")
                                     _x = isSavarna(sk, k)
