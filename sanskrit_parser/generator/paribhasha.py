@@ -7,10 +7,24 @@ def dirgha(s: str):
     return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
 
 def guna(s: str):
-    return adesha(s, "iIuUfFxX", "eeooaaaa")
+    if s in "fF":
+        # Uran raparaH
+        r = "ar"
+    elif s in "xX":
+        r = "al"
+    else:
+        r = adesha(s, "iIuU", "eeoo")
+    return r
 
 def vriddhi(s: str):
-    return adesha(guna(s), "aeo", "AEO")
+    if s in "fF":
+        # Uran raparaH
+        r = "Ar"
+    elif s in "xX":
+        r = "Al"
+    else:
+        r = adesha(guna(s), "aeo", "AEO")
+    return r
 
 def ikoyan(s: str):
     return adesha(s.lower(),

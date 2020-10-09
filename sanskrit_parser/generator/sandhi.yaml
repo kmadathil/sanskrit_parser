@@ -52,15 +52,17 @@
        l: a
        r: _ik
     xform:
-       l: guna(r)
-       r: null
+       l: null
+       r: guna(r)
     trigger: null
     update:
-      trigger:
-        uran_trigger:
-          value: True
-          condition:
-             r: f
+      olp: -pada # for pUrvaparayoH
+    # update:
+    #   trigger:
+    #     uran_trigger:
+    #       value: True
+    #       condition:
+    #          r: f
 
 -   sutra: वृद्धिरेचि
     id: 6.1.88
@@ -71,18 +73,20 @@
        l: vriddhi(r)
        r: null
     trigger: null
-    update: null
-             
--   sutra: उरण् रपरः
-    id: 1.1.51
-    condition: null
-    xform:
-       r: str("r")+r
-    trigger: uran_trigger 
     update:
-      trigger:
-        uran_trigger:
-          value: False
+      olp: -pada # for pUrvaparayoH
+
+# Better handled as a paribhAshA
+# -   sutra: उरण् रपरः
+#     id: 1.1.51
+#     condition: null
+#     xform:
+#        r: str("r")+r
+#     trigger: uran_trigger 
+#     update:
+#       trigger:
+#         uran_trigger:
+#           value: False
 
 -   sutra: इको यणचि
     id: 6.1.77
@@ -267,6 +271,7 @@
      ll: [at, it, ut, ft]
      l: _Nam
      r: _ac
+     lp: ?pada
   xform:
      r: l+r
 
