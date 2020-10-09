@@ -77,8 +77,6 @@ class Prakriya(object):
         _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
         self.tree.add_node(_n, root=True)
         self.outputs = []
-        # FIXME- will optional sutras cause an issue for global triggers / disabled sutras?
-        # Move triggers/disable into Prakriya Stage?
         self.triggers = GlobalTriggers() 
         self.disabled_sutras = []
         # Sliding window counter
@@ -156,34 +154,47 @@ class Prakriya(object):
         l = self.sutra_list
         # Sliding window, check from left
         for ix in range(len(node.outputs)-1):
-            triggered = [s for s in l if ((not s in self.disabled_sutras)
+            logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
+            triggered = []
+            triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
                                           and s.isTriggered(*self.view(s, node, ix), self.triggers))]
             # Break at first index from left where trigger occurs
             if triggered:
+                _ix = ix
                 break
         logger.debug(f"I: {node.outputs}")
         if triggered:
+            ix = _ix
             logger.debug(f"Triggered rules at window {ix}")
             for t in triggered:
                 logger.debug(t)
             s = self.sutra_priority(triggered)
             v = self.view(s, node, ix)
-            if len(triggered)!=1:
-                logger.debug(f"Sutra {s} View {v}")
+            logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
+            assert s.aps not in v[0].disabled_sutras
             # Transformation
             r = s.operate(*v)
+            r0 = r[0]
+            v0 = v[0]
             # State update 
             s.update(*v, *r, self.triggers)
             r = s.insert(*r)
             logger.debug(f"I (post update): {v}")
-            self.disabled_sutras.append(s)
+            # Using sutra id in the disabled list to get round paninian object deepcopy
+            r0.disabled_sutras.append(s.aps)
+            if s.optional:
+                # Prevent optional sutra from executing on the same node again
+                v0.disabled_sutras.append(s.aps)
             # Overridden sutras disabled
             if s.overrides is not None:
                 for so in l:
                     if so.aps in s.overrides:
-                        self.disabled_sutras.append(so)
+                        r0.disabled_sutras.append(so.aps)
+                        if s.optional:
+                            # Prevent optional sutra's overridden sutras from executing on the same node again
+                            v0.disabled_sutras.append(so.aps)
                         logger.debug(f"Disabling overriden {so}")
-            logger.debug(f"O: {r} {[_r.tags for _r in r]}")
+            logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
             # Update Prakriya Tree
             # Craft inputs and outputs based on viewed inputs
             # And generated outputs
@@ -272,7 +283,7 @@ class PrakriyaNode(object):
         self.index = ix
         
     def __str__(self):
-        return f"{self.sutra} {self.inputs[self.index:self.index+2]} -> {self.outputs[self.index:self.index+2]}"
+        return f"{self.sutra} {self.inputs} {self.index}-> {self.outputs}"
 
     def __hash__(self):
         return hash(str(self))
@@ -328,7 +339,7 @@ class PrakriyaTree(object):
 
     def add_child(self, node, c, opt=False):
         self.children[node].append(c)
-        assert (c not in self.parent)
+        assert (c not in self.parent), f"Duplicated {c}, hash{c}"
         self.parent[c] = node
         if not c in self.children:
             self.add_node(c)

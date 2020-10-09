@@ -10,6 +10,8 @@ class PaninianObject(SanskritObject):
                  strict_io=True, replace_ending_visarga='s'):
             super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
             self.inPrakriya = True
+            # FIXME: I don't like this being here
+            self.disabled_sutras = []
         # Prakriya Related Tags are ephemeral
         def hasTag(self, t):
                 return t in self.tags
