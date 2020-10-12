@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from sanskrit_parser import enable_console_logger, enable_file_logger
-from sanskrit_parser.base.sanskrit_base import SLP1
+from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 import sanskrit_parser.generator.sutra as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
@@ -28,21 +28,22 @@ test_list = [
     ("yAne", "atra", "yAnetra"),
     ("yAne", "AgacCati", "yAnaAgacCati"),
     ("vizRo", "ava", "vizRova"),
-    ("haras", "Sete", "haraSSete"),
+    ("haras", "Sete", ['haraHSete', 'haraSSete']),
     ("Bavat", "caraRam", "BavaccaraRam"),
     # Non pada
     ("praS*", "nas", "praSnas"),
-    ("rAmas", "zazQa", "rAmazzazQa"),
+    ("rAmas", "zazQa", ["rAmazzazQa", 'rAmaHzazQa']),
     ("rAmas", "wIkate", "rAmazwIkate"),
     ("sarpiz", "tamam", "sarpizwamam"),
     ("marut", "wIkate", "maruwwIkate"),
-    ("SuBam", "karoti", "SuBaNkaroti"),
+    ("SuBam", "karoti", ["SuBaNkaroti", "SuBaMkaroti"]),
     ("vAk", "arTO", "vAgarTO"),
     ("goDuk", "awati", "goDugawati"),
     ("goDuk", "girati", "goDuggirati"),
     ("virAw", "vadati", "virAqvadati"),
     ("kavis", "asti", "kavirasti"),
-    ("havis", "vartate", "havirvartate"),
+    ("havis", "vartate", ["havirvartate", "havirvvartate"]),
+    ("brah*", "mA", ["brahmA", "brahmmA"]),
     ]
 
 test_list_d = [
@@ -51,10 +52,10 @@ test_list_d = [
     ("मरुत्", "षष्ठः", "मरुत्षष्ठः"),
     ("सन्", "षष्ठः", "सन्षष्ठः"),
     ("षण्", "नाम्", "षण्णाम्"),
-    ("वाग्", "मुखम्", "वाङ्मुखम्"),
-     ("षड्", "मुखम्", "षण्मुखम्"),
-     ("एतद्", "मुरारि", "एतन्मुरारि"),
-     ("त्रिष्टुब्", "नमति", "त्रिष्टुम्नमति"),
+    ("वाग्", "मुखम्", ["वाङ्मुखम्", "वाग् मुखम्"]),
+     ("षड्", "मुखम्", ["षण्मुखम्", "षड्मुखम्"]),
+     ("एतद्", "मुरारि", ["एतद् मुरारि", "एतन्मुरारि"]),
+     ("त्रिष्टुब्", "नमति", ["त्रिष्टुम्नमति", "त्रिष्टुब् नमति"]),
      ("वाग्", "चलति", "वाक्चलति"),
      ("त्रिष्टुब्", "छन्दः", "त्रिष्टुप्छन्दः"),
      ("अस्", "ति", "अस्ति"),
@@ -62,25 +63,22 @@ test_list_d = [
      ("प्रत्यङ्", "आत्मा", "प्रत्यङ्ङात्मा"),
      ("सुगण्", "ईशः", "सुगण्णीशः"),
      ("अस्मिन्", "एव", "अस्मिन्नेव"),
-     ("वाग्", "हरि", "वाग्घरि"),
-     ("अज्", "हलौ", "अज्झलौ"),
-     ("मधुलिड्", "हसति", "मधुलिड्ढसति"),
-     ("तद्", "हितम्", "तद्धितम्"),
-     ("त्रिष्टुब्", "हि", "त्रिष्टुब्भि"),
-     ("तद्", "शेते", "तच्छेते"),
-     ("मधुलिड्", "शेते", "मधुलिट्छेते"),
-     ("त्रिष्टुब्", "शेते", "त्रिष्टुप्छेते"),
-     ("तद्", "श्लोकेन", "तच्छ्लोकेन"),
+     ("वाग्", "हरि", ["वाग्घरि", "वाग् हरि"]),
+     ("अज्", "हलौ", ["अज्झलौ", "अज् हलौ"]),
+     ("मधुलिड्", "हसति", ["मधुलिड्ढसति", "मधुलिड्हसति"]),
+     ("तद्", "हितम्", ["तद्धितम्", "तद्हितम्"]),
+     ("त्रिष्टुब्", "हि", ["त्रिष्टुब्हि", "त्रिष्टुब्भि"]),
+     ("तद्", "शेते", ["तच्शेते", "तच्छेते"]),
+     ("मधुलिड्", "शेते", ['मधुलिट्शेते', "मधुलिट्छेते"]),
+     ("त्रिष्टुब्", "शेते", ["त्रिष्टुप्शेते", "त्रिष्टुप्छेते"]),
+     ("तद्", "श्लोकेन", ["तच्श्लोकेन", "तच्छ्लोकेन"]),
      ("तत्", "जयते", "तज्जयते"),
-     # Fixme - tugAgama requires two runs - need prakriti pratyaya working
-     #("सन्", "शम्भुः", "सञ्छम्भुः"),
      ("रामः", "तरति", "रामस्तरति"),
      ("बालः", "थूकरोति", "बालस्थूकरोति"),
      ("हरिः", "चलति", "हरिश्चलति"),
      ("पयः", "क्षीरम्", "पयःक्षीरम्"),
      ("कः", "त्सरुः", "कःत्सरुः"),
-     ("हरिस्", "शेते", "हरिःशेते"),
-     ("हरिस्", "शेते", "हरिश्शेते"),
+     ("हरिस्", "शेते", ["हरिश्शेते", "हरिःशेते"]),
      ("रामस्", "कः", "रामःकः"),
      ("रामस्", "खनति", "रामःखनति"),
      ("रामस्", "पातुः", "रामःपातुः"),
@@ -94,21 +92,27 @@ test_list_d = [
     ("रामस्", "आसीत्", "रामआसीत्"),
     ("रामस्", "ईशः", "रामईशः"),
     ("भवान्", "चरति", "भवांश्चरति"),
-    ("सन्", "शम्भुः", "सञ्च्छम्भुः"),
+    ("सन्", "शम्भुः", ["सञ्च्छम्भुः", 'सञ्शम्भुः', 'सञ्च्शम्भुः']),
     ("स्व", "छाया", "स्वच्छाया"),
     ("आ", "छाया", "आच्छाया"),
     ("आ", "छादयति", "आच्छादयति"),
     ("मा", "छिदत्", "माच्छिदत्"),
-    ("सा", "छाया", "साछाया"),
-    ("सा", "छाया", "साच्छाया"),
-
+    ("सा", "छाया", ["साच्छाया", "साछाया"]),
+    ("कार्*", "यम्", ["कार्य्यम्", "कार्यम्"]),
 ]
 
 def test_prakriya(sutra_list):
-    def _test_c(o, s):
-        return ("".join([_o.canonical() for _o in list(o)])==s[2])
-    def _test_d(o, s):
-        return ("".join([_o.devanagari() for _o in list(o)])==s[2])
+    def _test(output, s, enc):
+        _s = s[2]
+        if not isinstance(_s, list):
+            # Single element
+            _s = [_s]
+        # Remove spaces in reference
+        _s = [x.replace(' ',"") for x in _s]
+        j = ["".join([_o.transcoded(enc) for _o in list(o)]) for o in output]
+        if not  (set(j) == set(_s)):
+            print(set(j), set(_s))
+        return (set(j) == set(_s))
     for s in test_list:
         if s[0][-1] == "*":
             _pada = False
@@ -126,8 +130,7 @@ def test_prakriya(sutra_list):
         p.execute()
         p.describe()
         o = p.output()
-        # One of the outputs
-        assert any([_test_c(_o,s) for _o in o])
+        assert _test(o, s, SLP1)
     for s in test_list_d:
         if s[0][-1] == "*":
             _pada = False
@@ -144,9 +147,8 @@ def test_prakriya(sutra_list):
         p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
         p.execute()
         p.describe()
-        # Only one output
         o = p.output()
-        assert any([_test_d(_o,s) for _o in o])
+        assert _test(o, s, DEVANAGARI)
 
 from sandhi_yaml import sutra_list
 test_prakriya(sutra_list)
