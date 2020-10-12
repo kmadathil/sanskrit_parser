@@ -493,4 +493,39 @@
      r: _yar
   xform:
      r: r+r
- 
+
+# FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this
+# Until we can fix this ;-)
+# - sutra: अनचि च
+#   id: 8.4.47
+#   optional: true
+#   condition:  
+#      ll: _ac
+#      l: _yar
+#      r: _hal
+#   xform:
+#      l: l+l
+
+- sutra: हलो यमां यमि लोपः
+  id: 8.4.64
+  optional: true
+  condition:  
+     ll:  _hal
+     l: _yam
+     r: $l
+  xform:
+     l: null
+
+
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65
+  optional: true
+  condition:  
+     ll:  _hal
+     l: _Jar
+     r: $l
+  xform:
+     l: null
+
+
+

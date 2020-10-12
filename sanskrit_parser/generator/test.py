@@ -11,6 +11,7 @@ enable_console_logger()
 enable_file_logger(level=logging.DEBUG)
 
 test_list = [
+    ("kArt*", "tikaH", ["kArtikaH", "kArttikaH"]),
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
     ("rAma", "eti", "rAmEti"),
     ("rAma", "iti", "rAmeti"),
@@ -99,6 +100,7 @@ test_list_d = [
     ("मा", "छिदत्", "माच्छिदत्"),
     ("सा", "छाया", ["साच्छाया", "साछाया"]),
     ("कार्*", "यम्", ["कार्य्यम्", "कार्यम्"]),
+    ("आदित्य्", "य", ["आदित्य", "आदित्य्य"]),
 ]
 
 def test_prakriya(sutra_list):
