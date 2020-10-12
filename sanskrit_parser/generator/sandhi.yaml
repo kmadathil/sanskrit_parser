@@ -395,7 +395,7 @@
 
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
-  overrides: 8.3.17
+  overrides: [8.3.17, 8.4.46]
   condition:  
      lp: ?ru
      #l: r
@@ -408,7 +408,7 @@
 
 - sutra: हशि च
   id: 6.1.114
-  overrides: 8.3.17
+  overrides: [8.3.17, 8.4.46]
   condition:  
      lp: ?ru
      #l: r
@@ -483,4 +483,14 @@
      lp: ?pada
   xform:
      l: l
+ 
+- sutra: अचो रहाभ्यां द्वे
+  id: 8.4.46
+  optional: true
+  condition:  
+     ll:  _ac
+     l: [r, h]
+     r: _yar
+  xform:
+     r: r+r
  
