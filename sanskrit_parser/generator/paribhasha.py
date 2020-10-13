@@ -1,6 +1,6 @@
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from .operations import adesha
-from .maheshvara import ms
+from .maheshvara import ms, isInPratyahara
 
 
 def dirgha(s: str):
@@ -68,6 +68,16 @@ def chartva(s: str):
 def vargatritiya(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
 
+def adivriddhi(s: str):
+    r = ""
+    av = False
+    for _s in s:
+        if (not av) and isInPratyahara("ac", SanskritImmutableString(_s, encoding=SLP1)):
+            r = r + vriddhi(_s)
+            av = True
+        else:
+            r = r + _s
+    return r
 
 # Fixme - anunasika ZSs yrl
 def anunasika(s: str):

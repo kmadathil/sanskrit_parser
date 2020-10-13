@@ -198,17 +198,17 @@
   id: 8.4.42
   overrides: 8.4.41
   condition:
-      - lp: ?pada
+        lp: ?pada
         l: wu
         r: [s, tu]
-  xform:
+  xform: null
 
 # Subsutra plus vArtikas
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42.1
   overrides: [8.4.42, 8.4.41]
   condition:
-      - l: wu
+        l: wu
         rp: [=nAm, =navatis, =nagaris]
   xform:
         r: zwutva(r)
@@ -217,14 +217,14 @@
   id: 8.4.43
   overrides: 8.4.41
   condition:
-      - l: tu
+        l: tu
         r: z
   xform:
 - sutra: शात्
   id: 8.4.44
   overrides: 8.4.40
   condition:
-      - l: S
+        l: S
         r: [s, tu]
   xform:
 
@@ -539,7 +539,7 @@
 
 
 ## Rules added for pratyayas etc.
-
+# FIXME anga adhikara
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
@@ -548,3 +548,37 @@
      rp: [+R, +Y]
   xform:
      l: vriddhi(l)
+     
+- sutra: सार्वधातुकार्धधातुकयोः
+  id: 7.3.84
+  condition:
+     - lp: ?anga
+       l: _ac
+       rp: ?ArDaDAtuka 
+     - lp: ?anga
+       l: _ac
+       rp: ?sArvaDAtuka
+  xform:
+     l: guna(l)
+
+# FIXME taddhita - Adhikara
+- sutra: ओर्गुणः
+  id: 6.4.146
+  overrides: 7.2.115
+  condition:
+     lp: ?anga
+     l: u
+     rp: ?Ba
+  xform:
+     l: guna(l)
+
+- sutra: तद्धितेष्वचामादेः
+  id: 7.2.117
+  condition:
+     lp: ?anga
+     rp: [+R, +Y]
+  xform:
+     lc: adivriddhi(lc)
+
+# End taddhita adhikara
+# End anga adhikara
