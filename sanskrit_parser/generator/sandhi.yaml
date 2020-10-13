@@ -29,6 +29,7 @@
 #    rp: =naam - rp is exactly the string "naam"
 #    lp: ?pada - lp has tag pada
 #    lp: !pada - lp does not have tag pada
+#    rp: +Y   - rp is a pratyaya with it Y
 #
 # Trigger: (list of) global triggers needed to enable this rule
 #
@@ -46,6 +47,31 @@
 #              r: f       - r = "f"
 
 # ac sandhi
+
+-   sutra: इको यणचि
+    id: 6.1.77
+    condition:
+      l: _ik
+      r: _ac
+    xform:
+      l: ikoyan(l)
+       
+-   sutra: एचोऽयवायावः
+    id: 6.1.78
+    condition:
+      l: _ec
+      r: _ac
+    xform:
+       l: ayavayav(l)
+       
+-   sutra: वान्तो यि प्रत्यये 
+    id: 6.1.79
+    condition:
+      l: [o, O]
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
 
 # FIXME PurvaparayoH needs a bit more thought
 -   sutra: आद्गुणः
@@ -89,22 +115,6 @@
 #       trigger:
 #         uran_trigger:
 #           value: False
-
--   sutra: इको यणचि
-    id: 6.1.77
-    condition:
-      l: _ik
-      r: _ac
-    xform:
-      l: ikoyan(l)
-       
--   sutra: एचोऽयवायावः
-    id: 6.1.78
-    condition:
-      l: _ec
-      r: _ac
-    xform:
-       l: ayavayav(l)
        
 -   sutra: अकः सवर्णे दीर्घः
     id: 6.1.101
@@ -528,4 +538,13 @@
      l: null
 
 
+## Rules added for pratyayas etc.
 
+- sutra: अचो ञ्णिति
+  id: 7.2.115
+  condition:
+     lp: ?anga
+     l: _ac
+     rp: [+R, +Y]
+  xform:
+     l: vriddhi(l)

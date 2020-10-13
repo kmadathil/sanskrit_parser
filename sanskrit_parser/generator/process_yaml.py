@@ -79,6 +79,9 @@ def process_yaml(y):
                                 elif (sk[0] == "!"): # Tag false check
                                     logger.debug(f"Checking tag false {sk[1:]} {k}")
                                     _x = not k.hasTag(sk[1:])
+                                elif (sk[0] == "+"): # It check
+                                    logger.debug(f"Checking it {sk[1:]} {k}")
+                                    _x = k.hasTag("pratyaya") and k.hasIt(sk[1:])
                                 else:
                                     logger.debug(f"Checking savarna {sk} {k} ")
                                     _x = isSavarna(sk, k)
@@ -246,7 +249,7 @@ def process_yaml(y):
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:
-            logger.error(f"Duplicate Sutra {s['id']} - {sutra_dict[s['id']]} and sname")
+            logger.error(f"Duplicate Sutra {s['id']} - {sutra_dict[s['id']]} and {sname}")
             assert False
         sutra_dict[s["id"]] = SandhiSutra(sname, s["id"],
                                           cond=scond,

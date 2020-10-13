@@ -4,6 +4,7 @@ from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 import sanskrit_parser.generator.sutra as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
+from sanskrit_parser.generator.pratyaya import *
 
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -15,7 +16,7 @@ test_list = [
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
     ("rAma", "eti", "rAmEti"),
     ("rAma", "iti", "rAmeti"),
-    ("tyaktvA", "uttizTa", "tyaktvottizTa"),
+    ("tyaktvA", "uttizWa", "tyaktvottizWa"),
     ("tava", "ozTaH", "tavOzTaH"),
     ("deva", "fzi", "devarzi"),
     ("gavi", "asmAkam", "gavyasmAkam"),
@@ -101,6 +102,10 @@ test_list_d = [
     ("सा", "छाया", ["साच्छाया", "साछाया"]),
     ("कार्*", "यम्", ["कार्य्यम्", "कार्यम्"]),
     ("आदित्य्", "य", ["आदित्य", "आदित्य्य"]),
+    ("गो*", yat, "गव्य"),  
+    ("नौ*", yat, "नाव्य"),  
+    ("भू*", GaY, "भाव"),
+    ("कृ*", Ric, "कारि"),
 ]
 
 def test_prakriya(sutra_list):
@@ -111,48 +116,46 @@ def test_prakriya(sutra_list):
             _s = [_s]
         # Remove spaces in reference
         _s = [x.replace(' ',"") for x in _s]
-        j = ["".join([_o.transcoded(enc) for _o in list(o)]) for o in output]
+        j = [
+            PaninianObject("".join([
+                _o.transcoded(SLP1) for _o in list(o)
+            ]), encoding=SLP1).transcoded(enc)
+            for o in output
+        ]
         if not  (set(j) == set(_s)):
             print(set(j), set(_s))
         return (set(j) == set(_s))
+    def run_test(s, encoding=SLP1):
+        if (isinstance(s[0], str) and (s[0][-1] == "*")):
+            _pada = False
+            s0 = s[0][:-1]
+            s1 = s[1]
+        else:
+            s0 = s[0]
+            s1 = s[1]
+            _pada = True
+        if isinstance(s0, str):
+            l = PaninianObject(s0, encoding)
+            if _pada:
+                l.setTag("pada")
+            else:
+                l.setTag("anga")
+        else:
+            l = s0
+        if isinstance(s1, str):
+            r = PaninianObject(s1, encoding)
+        else:
+            r = s1
+        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
+        p.execute()
+        p.describe()
+        o = p.output()
+        assert _test(o, s, encoding)
+        
     for s in test_list:
-        if s[0][-1] == "*":
-            _pada = False
-            s0 = s[0][:-1]
-            s1 = s[1]
-        else:
-            s0 = s[0]
-            s1 = s[1]
-            _pada = True
-        l = PaninianObject(s0, SLP1)
-        if _pada:
-            l.setTag("pada")
-        r = PaninianObject(s1, SLP1)
-        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
-        p.execute()
-        p.describe()
-        o = p.output()
-        assert _test(o, s, SLP1)
+        run_test(s, SLP1)
     for s in test_list_d:
-        if s[0][-1] == "*":
-            _pada = False
-            s0 = s[0][:-1]
-            s1 = s[1]
-        else:
-            s0 = s[0]
-            s1 = s[1]
-            _pada = True
-        l = PaninianObject(s0)
-        if _pada:
-            l.setTag("pada")
-        r = PaninianObject(s1)
-        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
-        p.execute()
-        p.describe()
-        o = p.output()
-        assert _test(o, s, DEVANAGARI)
+        run_test(s, DEVANAGARI)
 
 from sandhi_yaml import sutra_list
 test_prakriya(sutra_list)
-
-
