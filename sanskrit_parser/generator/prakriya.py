@@ -17,7 +17,7 @@ import logging
 logger = logging.getLogger(__name__)
 from sanskrit_parser.generator.sutra import GlobalTriggers
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from copy import copy
+from copy import deepcopy
 
 class PrakriyaVakya(object):
     """
@@ -35,19 +35,24 @@ class PrakriyaVakya(object):
        - List of lists of PaninianObject objects
     """
     def __init__(self, v):
-        self.v = copy(list(v))
+        # Deepcopy is required because we add tags to objects
+        # during prakriya, and we do not want predefined objects getting
+        # tags. 
+        self.v = deepcopy(list(v))
 
     def need_hierarchy_at(self, ix):
         return not _isScalar(self.v[ix])
 
     def copy_replace_at(self, ix, r):
         vc = PrakriyaVakya(self.v)
-        vc.v[ix] = r
+        # As above, deepcopy to prevent predefined objects getting tags
+        vc.v[ix] = deepcopy(r)
         return vc
 
     def copy_insert_at(self, ix, r):
         vc = PrakriyaVakya(self.v)
-        vc.v.insert(ix, r)
+        # As above, deepcopy to prevent predefined objects getting tags
+        vc.v.insert(ix, deepcopy(r))
         return vc
 
     def __getitem__(self, ix):

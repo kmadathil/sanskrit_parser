@@ -29,6 +29,11 @@ tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
 Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 
+# nIpAtAs
+AN = Pratyaya("A",its=["N"], other_tags=["nipAta"])
+mAN = Pratyaya("mA",its=["N"], other_tags=["nipAta"])
+
+
 # bha when applied to prAtipadikas only!
 # FIXME - maybe have two yats?
 yat_t = Pratyaya("ya",its=["t"], other_tags=["svAdi", "tadDita"])

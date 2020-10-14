@@ -148,8 +148,16 @@
   id: 6.1.74
   overrides: [6.1.75, 6.1.76]
   condition:
-     lp: [=A, =mA]
-     r: C
+     - lp:
+        - and
+        - =A
+        - +N
+       r: C
+     - lp:
+        - and
+        - =mA
+        - +N       
+       r: C
   insert:
      1: tuk
      
