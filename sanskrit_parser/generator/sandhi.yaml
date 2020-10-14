@@ -526,7 +526,7 @@
   xform:
      l: null
 
-
+# FIXME - savarna of l
 - sutra: झरो झरि सवर्णे
   id: 8.4.65
   optional: true
@@ -539,7 +539,7 @@
 
 
 ## Rules added for pratyayas etc.
-# FIXME anga adhikara
+# anga adhikara
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
@@ -554,31 +554,52 @@
   condition:
      - lp: ?anga
        l: _ac
-       rp: ?ArDaDAtuka 
-     - lp: ?anga
-       l: _ac
-       rp: ?sArvaDAtuka
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
   xform:
      l: guna(l)
 
-# FIXME taddhita - Adhikara
+# TadDita aDikAra
 - sutra: ओर्गुणः
   id: 6.4.146
   overrides: 7.2.115
   condition:
      lp: ?anga
      l: u
-     rp: ?Ba
+     rp:
+       - and
+       - ?tadDita
+       - ?svAdi
+       - ?!sarvanAmasTAna
   xform:
      l: guna(l)
-
+     
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117
   condition:
-     lp: ?anga
-     rp: [+R, +Y]
+   - lp: ?anga
+     rp:
+       - ?tadDita
+       - +R
+   - lp: ?anga
+     rp:
+       - ?tadDita
+       - +Y
   xform:
      lc: adivriddhi(lc)
 
 # End taddhita adhikara
 # End anga adhikara
+
+# FIXME get this working - need different Domains
+- sutra: यचि भम्
+  id: 1.4.18
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+     r: [y, _ac]
+  update:
+     olp: +Ba

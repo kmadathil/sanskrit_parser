@@ -73,12 +73,12 @@ def process_yaml(y):
                                     # Raw equality
                                     logger.debug(f"Checking raw {sk[1:]} {k}")
                                     _x = (sk[1:]==k.canonical())
+                                elif (sk[0:2] == "?!"): # Tag false check
+                                    logger.debug(f"Checking tag false {sk[2:]} {k}")
+                                    _x = not k.hasTag(sk[2:])
                                 elif (sk[0] == "?"): # Tag check
                                     logger.debug(f"Checking tag {sk[1:]} {k}")
                                     _x = k.hasTag(sk[1:])
-                                elif (sk[0] == "!"): # Tag false check
-                                    logger.debug(f"Checking tag false {sk[1:]} {k}")
-                                    _x = not k.hasTag(sk[1:])
                                 elif (sk[0] == "+"): # It check
                                     logger.debug(f"Checking it {sk[1:]} {k}")
                                     _x = k.hasTag("pratyaya") and k.hasIt(sk[1:])
@@ -89,16 +89,22 @@ def process_yaml(y):
                                 return _x
                             if isinstance(_s[k], list):
                                 logger.debug(f"List")
-                                _x = False
-                                for sk in _s[k]:
-                                    _x = _x or _cond_single(sk, env[k])
+                                if _s[k][0] == "and":
+                                    logger.debug(f"Checking and condition")
+                                    _x = True
+                                    for sk in _s[k][1:]:
+                                        _x = _x and _cond_single(sk, env[k])
+                                else:
+                                    _x = False
+                                    for sk in _s[k]:
+                                        _x = _x or _cond_single(sk, env[k])
                             else:
                                 logger.debug(f"Single")
                                 _x = _cond_single(_s[k], env[k])
                             logger.debug(f"Got {_x}")
                             x = x and _x
                         return x 
-                    # List implies an or in condition
+                    # List implies an or condition
                     if isinstance(s, list):
                         _ret = False
                         for _s in s:
