@@ -48,6 +48,7 @@
 
 # ac sandhi
 
+# FIXME - create samhita adhikara
 -   sutra: इको यणचि
     id: 6.1.77
     condition:
@@ -330,6 +331,14 @@
      lp: ?pada
   xform:
      r: l+r
+
+- sutra: झलां जश् झशि
+  id: 8.4.53
+  condition:
+     l: _Jal
+     r: _JaS
+  xform:
+     l: jashtva(l)
 
 - sutra: झयो होऽन्यतरस्याम्
   optional: True
