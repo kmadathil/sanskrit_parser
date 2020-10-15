@@ -28,6 +28,8 @@ Ric = Pratyaya("i",its=["R", "c"], other_tags=["ArDaDAtuka"])
 tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
 Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
+yat = Pratyaya("ya",its=["t"], other_tags=["ArDaDAtuka"])
+yak = Pratyaya("ya",its=["k"], other_tags=["ArDaDAtuka"])
 
 # nIpAtAs
 AN = Pratyaya("A",its=["N"], other_tags=["nipAta"])

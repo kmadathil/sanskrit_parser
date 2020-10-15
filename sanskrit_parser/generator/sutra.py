@@ -120,8 +120,14 @@ def _env(s1, s2):
     env = {}
     env["lp"] = s1
     env["rp"] = s2
-    env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
-    env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+    if s1.canonical() == "":
+        env["l"] = ""
+    else:
+        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+    if s2.canonical() == "":
+        env["r"] = ""
+    else:
+        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
     if len(s1.canonical()) > 1:
         env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
         env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)

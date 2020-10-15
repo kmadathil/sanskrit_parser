@@ -48,7 +48,8 @@
 
 # ac sandhi
 
-# FIXME - create samhita adhikara
+# FIXME - create samhita adhikaras
+# Three 6.1.72, 6.3.115, 8.2.108
 -   sutra: इको यणचि
     id: 6.1.77
     condition:
@@ -73,6 +74,51 @@
       rp: ?pratyaya
     xform:
        l: ayavayav(l)
+
+# 64: धातोस्तन्निमित्तस्यैव (6-1-80) 
+-   sutra:  धातोस्तन्निमित्तस्यैव 
+    id: 6.1.80
+    overrides: 6.1.79   
+    condition:
+      l: [o, O]
+      lp:
+        - and
+        - ?DAtu
+        - ?!tannimitta
+      r: y
+      rp: ?pratyaya
+    xform: null
+    
+# 65: क्षय्यजय्यौ शक्यार्थे (6-1-81)
+-   sutra:  क्षय्यजय्यौ शक्यार्थे 
+    id: 6.1.81
+    overrides: 6.1.79
+    optional: true
+    condition:
+      l: et
+      lc:
+        - =kz
+        - =j
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+# 66: क्रय्यस्तदर्थे (6-1-82) 
+-   sutra:  क्रय्यस्तदर्थे 
+    id: 6.1.82
+    overrides: [6.1.79, 7.3.84]
+    optional: true
+    condition:
+      lc: =kr
+      l: et
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
 
 # FIXME PurvaparayoH needs a bit more thought
 -   sutra: आद्गुणः
@@ -240,6 +286,7 @@
 - sutra: लोपः शाकल्यस्य
   id: 8.3.19
   condition:
+     lp: ?pada
      l: y
      ll: a
      r: _aS
@@ -256,7 +303,6 @@
      l: null
 
 
-# Pada
 - sutra: अनुस्वारस्य ययि परसवर्णः
   id: 8.4.58
   condition:
@@ -321,7 +367,28 @@
      r: l
   xform:
      l: r
-     
+
+#  FIXME: Collect Pada adhikara from 8.1.16
+
+- sutra: संयोगान्तस्य लोपः
+  id: 8.2.23
+  condition:
+     lp: ?pada
+     ll: _hal
+     l:  _hal
+  xform:
+     l: null
+
+# Vartikam
+- sutra: यणः प्रतिषेधो वाच्यः 
+  id: 8.2.23.1
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: _hal
+     l:  _yaR
+  xform:
+
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
   id: 8.3.32
   condition:
@@ -331,6 +398,9 @@
      lp: ?pada
   xform:
      r: l+r
+
+
+# End Pada adhikara 8.3.54
 
 - sutra: झलां जश् झशि
   id: 8.4.53
@@ -556,20 +626,22 @@
 
 
 ## Rules added for pratyayas etc.
-# anga adhikara
+# aNga adhikara
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
-     lp: ?anga
+     lp: ?aNga
      l: _ac
      rp: [+R, +Y]
   xform:
      l: vriddhi(l)
+  update:
+     olp: +tannimitta
      
 - sutra: सार्वधातुकार्धधातुकयोः
   id: 7.3.84
   condition:
-     - lp: ?anga
+     - lp: ?aNga
        l: _ac
        rp:
          - ?ArDaDAtuka
@@ -577,12 +649,12 @@
   xform:
      l: guna(l)
 
-# TadDita aDikAra
+# TadDita adhikAra
 - sutra: ओर्गुणः
   id: 6.4.146
   overrides: 7.2.115
   condition:
-     lp: ?anga
+     lp: ?aNga
      l: u
      rp:
        - and
@@ -595,11 +667,11 @@
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117
   condition:
-   - lp: ?anga
+   - lp: ?aNga
      rp:
        - ?tadDita
        - +R
-   - lp: ?anga
+   - lp: ?aNga
      rp:
        - ?tadDita
        - +Y
@@ -607,7 +679,7 @@
      lc: adivriddhi(lc)
 
 # End taddhita adhikara
-# End anga adhikara
+# End aNga adhikara
 
 # FIXME get this working - need different Domains
 - sutra: यचि भम्
@@ -620,3 +692,13 @@
      r: [y, _ac]
   update:
      olp: +Ba
+
+# Skipping for now
+
+# In
+# अथ अच्सन्धिप्रकरणम्‌ ॥
+# 55: नादिन्याक्रोशे पुत्रस्य (8-4-48)
+# 56: त्रिप्रभृतिषु शाकटायनस्य (8-4-50)
+# 57: सर्वत्र शाकल्यस्य (8-4-51)
+# 58: दीर्घादाचार्याणाम् (8-4-52)
+

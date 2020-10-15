@@ -5,6 +5,7 @@ import sanskrit_parser.generator.sutra as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
+from sanskrit_parser.generator.dhatu import *
 
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -111,11 +112,21 @@ test_list_d = [
     ("नी*", tfc, "नेतृ"),
     ("भू*", Sap, "भव"),
     ("दोघ्*", "धुम्", "दोग्धुम्"),
+    ("विद्वान्स्", "अपठत्", "विद्वानपठत्"),
+    ("अपठन्त्", "बालकाः", "अपठन्बालकाः"), 
+    (lUY, Ryat, "लाव्य"),
+# FIXME - can't test this now
+# आ + वेञ् + यक् + त = ओयते
+    (kzI, yat, ["क्षेय", "क्षय्य"]),
+    (ji, yat, ["जेय", "जय्य"]),
+    (wukrIY, yat, ["क्रेय", "क्रय्य"]),
+    # Test version of veY
+    ("आ", veY_smp, yak, "ओय"),
 ]
 
 def test_prakriya(sutra_list):
     def _test(output, s, enc):
-        _s = s[2]
+        _s = s[-1]
         if not isinstance(_s, list):
             # Single element
             _s = [_s]
@@ -131,32 +142,32 @@ def test_prakriya(sutra_list):
             print(set(j), set(_s))
         return (set(j) == set(_s))
     def run_test(s, encoding=SLP1):
-        if (isinstance(s[0], str) and (s[0][-1] == "*")):
-            _pada = False
-            s0 = s[0][:-1]
-            s1 = s[1]
-        else:
-            s0 = s[0]
-            s1 = s[1]
-            _pada = True
-        if isinstance(s0, str):
-            l = PaninianObject(s0, encoding)
-            if _pada:
-                l.setTag("pada")
+        pl = []
+        # Assemble list of inputs
+        for i in range(len(s)-1):
+            if isinstance(s[i], str):
+                # Shortcuts for two input tests not using predefined objects
+                # If a string in the first place ends with * it's an anga
+                # Else it's a pada
+                # For everything else, use predefined objects
+                if (i==0) and (s[i][-1] == "*"):
+                    s0 =  s[0][:-1]
+                    l = PaninianObject(s0, encoding)
+                    l.setTag("aNga")
+                else:
+                    s0 =  s[i]
+                    l = PaninianObject(s[i], encoding)
+                    if i==0:
+                        l.setTag("pada")
             else:
-                l.setTag("anga")
-        else:
-            l = s0
-        if isinstance(s1, str):
-            r = PaninianObject(s1, encoding)
-        else:
-            r = s1
-        p = Prakriya(sutra_list,PrakriyaVakya((l, r)))
+                l = s[i]
+            pl.append(l)
+        p = Prakriya(sutra_list,PrakriyaVakya(pl))
         p.execute()
         p.describe()
         o = p.output()
         assert _test(o, s, encoding)
-        
+       
     for s in test_list:
         run_test(s, SLP1)
     for s in test_list_d:
