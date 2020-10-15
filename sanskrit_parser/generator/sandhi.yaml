@@ -151,6 +151,52 @@
     update:
       olp: -pada # for pUrvaparayoH
 
+
+# 73: एत्येधत्यूठ्सु (6-1-89) 
+-   sutra: एत्येधत्यूठ्सु
+    id: 6.1.89
+    overrides: 6.1.94
+    condition:
+     - l: a
+       rp:
+         - ?eti
+         - ?UW
+         - ?eDati
+    xform:
+       l: null
+       r: vriddhi(r)
+    trigger: null
+    update:
+       olp: -pada # for pUrvaparayoH
+   
+# 74: उपसर्गादृति धातौ (6-1-91)
+-   sutra: उपसर्गादृति धातौ 
+    id: 6.1.91
+    condition:
+     - l: a
+       lp: ?upasarga
+       r: f
+       rp: ?DAtu
+    xform:
+       l: null
+       r: vriddhi(r)
+    trigger: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 78: एङि पररूपम् (6-1-94)
+-   sutra:  एङि पररूपम् 
+    id: 6.1.94
+    condition:
+     - l: a
+       lp: ?upasarga
+       r: eN
+       rp: ?DAtu
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
 # Better handled as a paribhAshA
 # -   sutra: उरण् रपरः
 #     id: 1.1.51
@@ -702,3 +748,5 @@
 # 57: सर्वत्र शाकल्यस्य (8-4-51)
 # 58: दीर्घादाचार्याणाम् (8-4-52)
 
+# 75: अन्तादिवच्च (6-1-85)
+# 77: वासुप्यापिशलेः (6-1-92) 

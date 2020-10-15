@@ -1,4 +1,5 @@
 from paninian_object import PaninianObject
+from sanskrit_parser.base.sanskrit_base import SLP1
 
 class Pratyaya(PaninianObject):
     """ Sanskrit Object Class: Derived From SanskritString
@@ -6,7 +7,7 @@ class Pratyaya(PaninianObject):
      Attributes:
         
     """
-    def __init__(self, thing=None, its=[], other_tags=[], encoding=None,
+    def __init__(self, thing=None, its=[], other_tags=[], encoding=SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
             super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
@@ -21,19 +22,23 @@ class Pratyaya(PaninianObject):
 
 tuk = Pratyaya("t",its=["k"])
 
+tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
+Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
+
 
 Ryat = Pratyaya("ya",its=["t", "R"], other_tags=["ArDaDAtuka"])
 GaY = Pratyaya("a",its=["G", "Y"], other_tags=["ArDaDAtuka"])
 Ric = Pratyaya("i",its=["R", "c"], other_tags=["ArDaDAtuka"])
 tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
-Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 yat = Pratyaya("ya",its=["t"], other_tags=["ArDaDAtuka"])
 yak = Pratyaya("ya",its=["k"], other_tags=["ArDaDAtuka"])
 
 # nIpAtAs
-AN = Pratyaya("A",its=["N"], other_tags=["nipAta"])
-mAN = Pratyaya("mA",its=["N"], other_tags=["nipAta"])
+AN = Pratyaya("A",its=["N"], other_tags=["nipAta", "upasarga", "pada"])
+mAN = Pratyaya("mA",its=["N"], other_tags=["nipAta", "upasarga", "pada"])
+upa = Pratyaya("upa",other_tags=["nipAta", "upasarga", "pada"])
+pra = Pratyaya("pra",other_tags=["nipAta", "upasarga", "pada"])
 
 
 # bha when applied to prAtipadikas only!

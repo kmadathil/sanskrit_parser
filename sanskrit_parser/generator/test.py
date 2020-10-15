@@ -115,13 +115,15 @@ test_list_d = [
     ("विद्वान्स्", "अपठत्", "विद्वानपठत्"),
     ("अपठन्त्", "बालकाः", "अपठन्बालकाः"), 
     (lUY, Ryat, "लाव्य"),
-# FIXME - can't test this now
-# आ + वेञ् + यक् + त = ओयते
     (kzI, yat, ["क्षेय", "क्षय्य"]),
     (ji, yat, ["जेय", "जय्य"]),
     (wukrIY, yat, ["क्रेय", "क्रय्य"]),
+    # FIXME - can't test this now
+    # आ + वेञ् + यक् + त = ओयते
     # Test version of veY
     ("आ", veY_smp, yak, "ओय"),
+    (pra, fcCa, Sap, tip, "प्रार्च्छति"),
+    ("ब्रह्म", "ऋषि", "ब्रह्मर्षि"),
 ]
 
 def test_prakriya(sutra_list):
