@@ -99,7 +99,12 @@ class Prakriya(object):
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
-                hpo = PaninianObject.join_objects(hp.output())
+                hpo = hp.output()
+                # FIXME
+                if len(hpo)>1:
+                    logger.warning("Hierarchical > 1 length output not implemented")
+
+                hpo = PaninianObject.join_objects(hpo)
                 self.inputs.replace_at(ix, hpo)
         self.tree = PrakriyaTree()
         _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
@@ -269,19 +274,7 @@ class Prakriya(object):
         r = self.outputs
         logger.debug(f"Final Result: {r}\n")
         return r
-        # _r = self._exec_single()
-        # r = None
-        # while(_r):
-        #     r = _r
-        #     _r = self._exec_single()
-        # if r is None: # Nothing got triggered
-        #     self.outputs = self.inputs
-        # else:
-        #     self.outputs = self.stages[-1].outputs
-        # r = self.outputs
-        # logger.debug(f"Final Result: {r}\n")
-        # return r
-            
+             
     def output(self):
         return self.outputs
     

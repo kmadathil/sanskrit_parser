@@ -47,7 +47,8 @@ test_list = [
     ("kavis", "asti", "kavirasti"),
     ("havis", "vartate", ["havirvartate", "havirvvartate"]),
     ("brah*", "mA", ["brahmA", "brahmmA"]),
-    ((mud, Ric), Sap, tip, "modayati")
+    ((mud, Ric), Sap, tip, "modayati"),
+    (BU, Sap, tip, "Bavati"),
    ]
 
 test_list_d = [
@@ -88,6 +89,7 @@ test_list_d = [
      ("रामस्", "पातुः", "रामःपातुः"),
      ("वृक्षस्", "फलतु", "वृक्षःफलतु"),
      ("रामस्", "अस्ति", "रामोस्ति"),
+    (("राम", su), (as_dhatu, tip), "रामोस्ति"),
     ("रामस्", "गच्छति", "रामोगच्छति"),
     ('भोस्',  'देवाः', "भोदेवाः"),
     ('भगोस्',  'मनुष्याः', "भगोमनुष्याः"),

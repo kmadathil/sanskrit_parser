@@ -529,6 +529,7 @@
   overrides: 8.2.39
   condition:  
      l: s
+     lp: ?pada
   xform:
      l: str("r")
   update:

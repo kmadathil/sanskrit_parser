@@ -42,8 +42,6 @@ class PaninianObject(SanskritObject):
     @classmethod
     def join_objects(cls, objects):
         logger.debug(f"Joining Objects {objects} {type(objects)}")
-        if len(objects)>1:
-            logger.warning("Hierarchical > 1 length output not implemented")
         for o in objects[0]:
             logger.debug(f"{o} type {type(o)}")
             assert isinstance(o, SanskritObject), f"{o} type {type(o)}"

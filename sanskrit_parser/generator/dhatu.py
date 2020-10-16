@@ -33,6 +33,8 @@ Cad = Dhatu("Cad")
 mud = Dhatu("mud")
 vid = Dhatu("vid")
 gfj = Dhatu("gfj")
+BU  = Dhatu("BU")
+as_dhatu = Dhatu("as")
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp =  Dhatu("u",its=["Y"])
