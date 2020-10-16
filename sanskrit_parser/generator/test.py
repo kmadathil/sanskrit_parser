@@ -47,7 +47,8 @@ test_list = [
     ("kavis", "asti", "kavirasti"),
     ("havis", "vartate", ["havirvartate", "havirvvartate"]),
     ("brah*", "mA", ["brahmA", "brahmmA"]),
-    ]
+    ((mud, Ric), Sap, tip, "modayati")
+   ]
 
 test_list_d = [
     ("मरुत्", "टीकते", "मरुट्टीकते"),
@@ -92,13 +93,14 @@ test_list_d = [
     ('भगोस्',  'मनुष्याः', "भगोमनुष्याः"),
     ('अघोस्',  'राक्षसाः', "अघोराक्षसाः"),
     ('देवास्',  'गच्छन्ति', "देवागच्छन्ति"),
-    ("रामस्", "आसीत्", "रामआसीत्"),
+    ("रामस्", "आसीत्", "राम आसीत्"),
     ("रामस्", "ईशः", "रामईशः"),
     ("भवान्", "चरति", "भवांश्चरति"),
     ("सन्", "शम्भुः", ["सञ्च्छम्भुः", 'सञ्शम्भुः', 'सञ्च्शम्भुः']),
     ("स्व", "छाया", "स्वच्छाया"),
     (AN, "छाया", "आच्छाया"),
-    (AN, "छादयति", "आच्छादयति"),
+    (AN, ((Cad, Ric), Sap, tip), "आच्छादयति"),
+#    (AN, "छादयति", "आच्छादयति"),
     (mAN, "छिदत्", "माच्छिदत्"),
     ("सा", "छाया", ["साच्छाया", "साछाया"]),
     ("कार्*", "यम्", ["कार्य्यम्", "कार्यम्"]),
@@ -118,12 +120,17 @@ test_list_d = [
     (kzI, yat, ["क्षेय", "क्षय्य"]),
     (ji, yat, ["जेय", "जय्य"]),
     (wukrIY, yat, ["क्रेय", "क्रय्य"]),
-    # FIXME - can't test this now
+     # FIXME - can't test this now
     # आ + वेञ् + यक् + त = ओयते
-    # Test version of veY
-    ("आ", veY_smp, yak, "ओय"),
-    (pra, fcCa, Sap, tip, "प्रार्च्छति"),
+    ("आ", (veY_smp, yak), "ओय"),
+    ("प्र", (eDa, Sap, "te"), "प्रैधते"),
+    ("उप", (iR,  tip), "उपैति"),
+    (pra, (fcCa, Sap, tip), "प्रार्च्छति"),
     ("ब्रह्म", "ऋषि", "ब्रह्मर्षि"),
+    (AN, ((Cad, Ric), Sap, tip), "आच्छादयति"),
+    (("राम", su), "आसीत्", "राम आसीत्"),
+    (gfj, Sap, tip, "गर्जति"),
+    (vid, tip, "वेत्ति"),
 ]
 
 def test_prakriya(sutra_list):
@@ -143,30 +150,38 @@ def test_prakriya(sutra_list):
         if not  (set(j) == set(_s)):
             print(set(j), set(_s))
         return (set(j) == set(_s))
+
     def run_test(s, encoding=SLP1):
         pl = []
         # Assemble list of inputs
         for i in range(len(s)-1):
-            if isinstance(s[i], str):
-                # Shortcuts for two input tests not using predefined objects
-                # If a string in the first place ends with * it's an anga
-                # Else it's a pada
-                # For everything else, use predefined objects
-                if (i==0) and (s[i][-1] == "*"):
-                    s0 =  s[0][:-1]
-                    l = PaninianObject(s0, encoding)
-                    l.setTag("aNga")
+            def _gen_obj(s, i):
+                if isinstance(s[i], str):
+                    # Shortcuts for two input tests not using predefined objects
+                    # If a string in the first place ends with * it's an anga
+                    # Else it's a pada
+                    # For everything else, use predefined objects
+                    if (i==0) and (s[i][-1] == "*"):
+                        s0 =  s[0][:-1]
+                        l = PaninianObject(s0, encoding)
+                        l.setTag("aNga")
+                    else:
+                        s0 =  s[i]
+                        l = PaninianObject(s[i], encoding)
+                        if i==0:
+                            l.setTag("pada")
+                        return l
+                elif isinstance(s[i], tuple) or isinstance(s[i], list):
+                    l = [_gen_obj(s[i], ii) for (ii, ss) in enumerate(s[i])]
                 else:
-                    s0 =  s[i]
-                    l = PaninianObject(s[i], encoding)
-                    if i==0:
-                        l.setTag("pada")
-            else:
-                l = s[i]
+                    l = s[i]
+                return l
+            l = _gen_obj(s, i)
             pl.append(l)
         p = Prakriya(sutra_list,PrakriyaVakya(pl))
         p.execute()
         p.describe()
+        #print(p.dict())
         o = p.output()
         assert _test(o, s, encoding)
        

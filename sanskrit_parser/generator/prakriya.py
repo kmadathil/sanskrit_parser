@@ -17,7 +17,7 @@ import logging
 logger = logging.getLogger(__name__)
 from sanskrit_parser.generator.sutra import GlobalTriggers
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from copy import deepcopy
+from copy import deepcopy, copy
 
 class PrakriyaVakya(object):
     """
@@ -55,6 +55,16 @@ class PrakriyaVakya(object):
         vc.v.insert(ix, deepcopy(r))
         return vc
 
+    def replace_at(self, ix, r):
+        # As above, deepcopy to prevent predefined objects getting tags
+        self.v[ix] = deepcopy(r)
+        return self
+
+    def insert_at(self, ix, r):
+        # As above, deepcopy to prevent predefined objects getting tags
+        self.v.insert(ix, deepcopy(r))
+        return self
+
     def __getitem__(self, ix):
         return self.v[ix]
 
@@ -77,7 +87,20 @@ class Prakriya(object):
     """
     def __init__(self, sutra_list, inputs):
         self.sutra_list = sutra_list
-        self.inputs = inputs
+        self.pre_inputs = deepcopy(inputs)
+        self.inputs = copy(inputs)
+        self.hier_prakriyas = []
+        # Scan inputs for hierarchical prakriya needs
+        for ix in range(len(self.inputs)):
+            if self.inputs.need_hierarchy_at(ix):
+                # hierarchy needed here
+                hp = Prakriya(sutra_list,
+                              PrakriyaVakya(self.inputs[ix]))
+                self.hier_prakriyas.append(hp)
+                # This will execute hierarchically as needed
+                hp.execute()
+                hpo = PaninianObject.join_objects(hp.output())
+                self.inputs.replace_at(ix, hpo)
         self.tree = PrakriyaTree()
         _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
         self.tree.add_node(_n, root=True)
@@ -264,12 +287,20 @@ class Prakriya(object):
     
     def describe(self):
         print("\nPrakriya")
+        if self.hier_prakriyas != []:
+            print(f"Pre Input {self.pre_inputs}")
+        for h in self.hier_prakriyas:
+            print("Hierarchical Prakriya")
+            h.describe()
         print(f"Input {self.inputs}")
         #for s in self.stages:
         #    s.describe()
         self.tree.describe()
         print(f"Final Output {self.outputs}\n\n")
-            
+
+    def dict(self):
+        return self.tree.dict()
+    
 class PrakriyaNode(object):
     """ 
     Prakriya History Node
@@ -309,12 +340,13 @@ class PrakriyaNode(object):
                 print(str(s))
         print("End")
         
-    def __dict__(self):
+    def dict(self):
         return {
-            'sutra': self.sutra,
+            'sutra': str(self.sutra),
             'inputs': self.inputs,
             'outputs': self.outputs,
-            'window': self.index
+            'window': self.index,
+            'other_sutras': [str(s) for s in self.other_sutras]
             }
     
 class PrakriyaTree(object):
@@ -363,9 +395,9 @@ class PrakriyaTree(object):
             print("Root")
             _desc(r)
 
-    def __dict__(self):
+    def dict(self):
         def _dict(n):
-            d = dict(n)
+            d = n.dict()
             d['children'] = [_dict(c) for c in self.children[n]]
             return d
         return {

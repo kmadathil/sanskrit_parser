@@ -176,7 +176,7 @@
      - l: a
        lp: ?upasarga
        r: f
-       rp: ?DAtu
+       #rp: ?DAtu
     xform:
        l: null
        r: vriddhi(r)
@@ -191,7 +191,7 @@
      - l: a
        lp: ?upasarga
        r: eN
-       rp: ?DAtu
+       # rp: ?DAtu
     xform:
        l: null
     update:
@@ -684,6 +684,17 @@
   update:
      olp: +tannimitta
      
+- sutra: अत उपधायाः
+  id: 7.2.116
+  condition:
+     lp: ?aNga
+     ll: at
+     rp: [+R, +Y]
+  xform:
+     lc: lc[:-1]+str("A")
+  update:
+     olp: +tannimitta
+     
 - sutra: सार्वधातुकार्धधातुकयोः
   id: 7.3.84
   condition:
@@ -694,11 +705,33 @@
          - ?sArvaDAtuka
   xform:
      l: guna(l)
+     
+- sutra: पुगन्तलघूपधस्य च
+  id: 7.3.86
+  condition:
+     - lp: ?aNga
+       ll: [it, ut, ft, xt]
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
+  xform:
+     lc: lc[:-1]+guna(lc[-1])
+     
+- sutra: क्ङिति च
+  id: 1.1.5
+  overrides: [7.3.84, 7.3.86]
+  condition:
+     - lp: ?aNga
+       l: _ac
+       rp:
+         - +k
+         - +N
+  xform: null
 
 # TadDita adhikAra
 - sutra: ओर्गुणः
   id: 6.4.146
-  overrides: 7.2.115
+  overrides: [7.2.115, 7.2.116]
   condition:
      lp: ?aNga
      l: u
@@ -715,10 +748,12 @@
   condition:
    - lp: ?aNga
      rp:
+       - and
        - ?tadDita
        - +R
    - lp: ?aNga
      rp:
+       - and
        - ?tadDita
        - +Y
   xform:

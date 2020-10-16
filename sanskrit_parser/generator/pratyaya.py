@@ -30,9 +30,11 @@ Ryat = Pratyaya("ya",its=["t", "R"], other_tags=["ArDaDAtuka"])
 GaY = Pratyaya("a",its=["G", "Y"], other_tags=["ArDaDAtuka"])
 Ric = Pratyaya("i",its=["R", "c"], other_tags=["ArDaDAtuka"])
 tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
-tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 yat = Pratyaya("ya",its=["t"], other_tags=["ArDaDAtuka"])
 yak = Pratyaya("ya",its=["k"], other_tags=["ArDaDAtuka"])
+
+tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
+
 
 # nIpAtAs
 AN = Pratyaya("A",its=["N"], other_tags=["nipAta", "upasarga", "pada"])
@@ -47,3 +49,5 @@ yat_t = Pratyaya("ya",its=["t"], other_tags=["svAdi", "tadDita"])
 zyaY_t =  Pratyaya("ya",its=["z", "Y"], other_tags=["svAdi", "tadDita"])
 yaY_t =  Pratyaya("ya",its=["Y"], other_tags=["svAdi", "tadDita"])
 aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
+
+su = Pratyaya("s",its=["u"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])

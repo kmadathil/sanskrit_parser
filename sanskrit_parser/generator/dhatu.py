@@ -29,6 +29,10 @@ ji = Dhatu("ji")
 wukrIY = Dhatu("krI",its=["Y", "wu"])
 veY =  Dhatu("veY",its=["Y"])
 fcCa = Dhatu("fcC", its=["~a"])
+Cad = Dhatu("Cad")
+mud = Dhatu("mud")
+vid = Dhatu("vid")
+gfj = Dhatu("gfj")
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp =  Dhatu("u",its=["Y"])
