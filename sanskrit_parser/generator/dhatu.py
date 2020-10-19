@@ -35,6 +35,8 @@ vid = Dhatu("vid")
 gfj = Dhatu("gfj")
 BU  = Dhatu("BU")
 as_dhatu = Dhatu("as")
+qulaBaz = Dhatu("laB", its=["~a", "z", "qu"])
+guhU = Dhatu("guh", its=["~u"])
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp =  Dhatu("u",its=["Y"])

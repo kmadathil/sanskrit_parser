@@ -33,6 +33,7 @@ tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
 yat = Pratyaya("ya",its=["t"], other_tags=["ArDaDAtuka"])
 yak = Pratyaya("ya",its=["k"], other_tags=["ArDaDAtuka"])
 ktvA = Pratyaya("tvA",its=["k"], other_tags=["ArDaDAtuka", "avyaya"])
+kta = Pratyaya("ta",its=["k"], other_tags=["ArDaDAtuka"])
 
 #tiN
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])

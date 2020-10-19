@@ -129,7 +129,8 @@ class Prakriya(object):
             elif (s1.overrides is not None) and (s2.aps in s1.overrides):
                 logger.debug(f"{s1} overrides {s2}")
                 return s1
-            elif (s1._aps_num > 82000) and (s2._aps_num > 82000):
+            # Also handles if one sutra is spsp and one tp
+            elif (s1._aps_num > 82000) or (s2._aps_num > 82000):
                 logger.debug(f"Tripadi, lower of {s1} {s2}")
                 if s1._aps_num < s2._aps_num:
                     return s1
@@ -153,6 +154,17 @@ class Prakriya(object):
         Current view as seen by sutra s
 
         """
+        # Wrapper for special "siddha" situations
+        def _special_siddha(a1, a2):
+            # zqutva is siddha for q lopa
+            if (a1==84041) and (a2==83013):
+                return True
+            # q, r lopa siddha for purvadirgha
+            elif ((a1==83013) or (a1==83014)) and (a2==63111):
+                return True
+            else:
+                return False
+                
         if s is not None:
             aps_num = s._aps_num
         else:
@@ -167,14 +179,18 @@ class Prakriya(object):
             # Need to implement asiddhavat, zutvatokorasiddhaH
             # Can see the entire sapadasaptapadi
             _n = node
-            while (self.tree.parent[_n] is not None) and (_n.sutra._aps_num > 82000):
+            while (self.tree.parent[_n] is not None) and \
+                  ((_n.sutra._aps_num > 82000)
+                   and not _special_siddha(_n.sutra._aps_num, aps_num)):
                 _n = self.tree.parent[_n]
             l = _n.outputs
         else:
             # Asiddha
             # Can see all outputs of sutras less than oneself
             _n = node
-            while (self.tree.parent[_n] is not None) and (_n.sutra._aps_num > aps_num):
+            while (self.tree.parent[_n] is not None) and \
+                  ((_n.sutra._aps_num > aps_num)
+                   and not _special_siddha(_n.sutra._aps_num, aps_num)):
                 _n = self.tree.parent[_n]
             l = _n.outputs
         if ix > (len(l)-2):

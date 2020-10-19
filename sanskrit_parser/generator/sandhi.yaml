@@ -348,6 +348,37 @@
   xform:
      l: null
 
+# Pada disabled per kashika
+- sutra: ढो ढे लोपः
+  id: 8.3.13
+  condition:
+     #lp: ?pada
+     l: Q
+     r: Q
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+     
+- sutra: रो रि
+  id: 8.3.14
+  condition:
+     #lp: ?pada
+     l: r
+     r: r
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+
+# 8.3.13/14 are siddha for this sutra
+- sutra: ढ्रलोपे पूर्वस्य दीर्घोऽणः
+  id: 6.3.111
+  condition:
+     lp: ?qrlopa
+     l: _aR
+  xform:
+     l: dirgha(l)
 
 - sutra: अनुस्वारस्य ययि परसवर्णः
   id: 8.4.58
@@ -456,6 +487,29 @@
        r: _Jal
   xform:
      l: kutva(l)
+
+- sutra: हो ढः
+  id: 8.2.31
+  condition:
+     - lp: ?pada
+       l: h
+     - l: h
+       r: _Jal
+  xform:
+     l: str("Q")
+     
+- sutra: झषस्तथोर्धोऽधः
+  id: 8.2.40
+  condition:
+     - l: _Jaz
+       r: t
+       lp:
+        - and
+        - ?DAtu
+        - ?!DA
+  xform:
+     r: str("D")
+
 
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
   id: 8.3.32
@@ -746,7 +800,6 @@
   overrides: [7.3.84, 7.3.86]
   condition:
      - lp: ?aNga
-       l: _ac
        rp:
          - +k
          - +N
