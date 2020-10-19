@@ -144,7 +144,8 @@ test_list_d = [
     (qulaBaz, kta, "लब्ध"),
     (guhU, kta, "गूढ"),
     ("पुनर्", "रमते", "पुना रमते"),
-]
+    (("अग्नि", su), "रोचते", "अग्नी रोचते")
+    ]
 
 def test_prakriya(sutra_list):
     def _test(output, s, enc):
