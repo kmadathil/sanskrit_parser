@@ -390,9 +390,12 @@
 - sutra: झलां जशोऽन्ते
   id: 8.2.39
   condition:
-     lp: ?pada
+   - lp: ?pada
      l: _Jal
      r: _aS
+   - lp: ?pada
+     l: _Jal
+     rp: ?avasAna
   xform:
      l: jashtva(l)
 
@@ -401,6 +404,15 @@
   condition:
      l: _Jal
      r: _Kar
+  xform:
+     l: chartva(l)
+
+- sutra: वाऽवसाने
+  id: 8.4.56
+  optional: true
+  condition:
+     l: _Jal
+     rp: ?avasAna
   xform:
      l: chartva(l)
      
@@ -434,6 +446,16 @@
      ll: _hal
      l:  _yaR
   xform:
+
+- sutra: चोः कुः
+  id: 8.2.30
+  condition:
+     - lp: ?pada
+       l: cu
+     - l: cu
+       r: _Jal
+  xform:
+     l: kutva(l)
 
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
   id: 8.3.32
@@ -584,7 +606,8 @@
        r: _Kar
        lp: ?pada
      - l:  r
-       lp: ?avasAna
+       lp: ?pada
+       rp: ?avasAna
   xform:
      l: str("H")
      

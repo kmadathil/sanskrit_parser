@@ -65,6 +65,9 @@ def jashtva(s: str):
 def chartva(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "kkkkccccwwwwttttpppp")
 
+def kutva(s: str):
+    return adesha(s, "cCjJY", "kKgGN")
+
 def vargatritiya(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
 

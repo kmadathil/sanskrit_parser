@@ -32,7 +32,9 @@ Ric = Pratyaya("i",its=["R", "c"], other_tags=["ArDaDAtuka"])
 tfc = Pratyaya("tf",its=["c"], other_tags=["ArDaDAtuka"])
 yat = Pratyaya("ya",its=["t"], other_tags=["ArDaDAtuka"])
 yak = Pratyaya("ya",its=["k"], other_tags=["ArDaDAtuka"])
+ktvA = Pratyaya("tvA",its=["k"], other_tags=["ArDaDAtuka", "avyaya"])
 
+#tiN
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 
 
@@ -50,4 +52,11 @@ zyaY_t =  Pratyaya("ya",its=["z", "Y"], other_tags=["svAdi", "tadDita"])
 yaY_t =  Pratyaya("ya",its=["Y"], other_tags=["svAdi", "tadDita"])
 aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 
+# sup
 su = Pratyaya("s",its=["u"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+ByAm = Pratyaya("ByAm", other_tags=["svAdi", "sup"])
+
+
+# Anta
+avasAna = PaninianObject("।")
+avasAna.setTag("avasAna")
