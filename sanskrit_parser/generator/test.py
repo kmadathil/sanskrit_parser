@@ -49,6 +49,8 @@ test_list = [
     ("brah*", "mA", ["brahmA", "brahmmA"]),
     ((mud, Ric), Sap, tip, "modayati"),
     (BU, Sap, tip, "Bavati"),
+    (ava, (AN, "ihi"), "avehi"), # 6.1.95
+    ("SivAya", "om", "SivAyom"), # 6.1.95
    ]
 
 test_list_d = [
@@ -144,7 +146,9 @@ test_list_d = [
     (qulaBaz, kta, "लब्ध"),
     (guhU, kta, "गूढ"),
     ("पुनर्", "रमते", "पुना रमते"),
-    (("अग्नि", su), "रोचते", "अग्नी रोचते")
+    (("अग्नि", su), "रोचते", "अग्नी रोचते"),
+    # FIXME: correct when we can do uttizTati, move to utTAna
+    (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ]
 
 def test_prakriya(sutra_list):

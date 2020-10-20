@@ -417,3 +417,35 @@ class PrakriyaTree(object):
 def _isScalar(x):
     # We do not expect np arrays or other funky nonscalars here
     return not (isinstance(x, list) or isinstance(x, tuple))
+
+
+if __name__ == "__main__":
+    from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
+    import sanskrit_parser.generator.sutra as sutra
+    from sanskrit_parser.generator.pratyaya import *
+    from sanskrit_parser.generator.dhatu import *
+    from sanskrit_parser import enable_console_logger
+    from sandhi_yaml import sutra_list
+    from argparse import ArgumentParser
+
+    def getArgs():
+        """
+          Argparse routine.
+          Returns args variable
+        """
+        # Parser Setup
+        parser = ArgumentParser(description='Prakriya Utility')
+        # Input Encoding (autodetect by default)
+        parser.add_argument('inputs', type=str, nargs="*",
+                            default=None)
+        return parser.parse_args()
+
+
+    def main(args):
+        enable_console_logger()
+        p = Prakriya(sutra_list,PrakriyaVakya(args.inputs))
+        p.execute()
+        p.describe
+
+
+    main(getArgs())

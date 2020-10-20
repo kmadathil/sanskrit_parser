@@ -188,7 +188,7 @@
 -   sutra:  एङि पररूपम् 
     id: 6.1.94
     condition:
-     - l: a
+       l: a
        lp: ?upasarga
        r: eN
        # rp: ?DAtu
@@ -196,6 +196,51 @@
        l: null
     update:
       olp: -pada # for pUrvaparayoH
+
+# 80: ओमाङोश्च (6-1-95) 
+-   sutra:  ओमाङोश्च 
+    id: 6.1.95
+    condition:
+       rp:
+        - =om
+        - ?AN
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 90: प्लुतप्रगृह्या अचि नित्यम् (6-1-125)
+-   sutra:  प्लुतप्रगृह्या अचि नित्यम् 
+    id: 6.1.125
+    condition:
+       lp:
+        - ?pluta
+        - ?pragfhya
+       r: _aC
+    xform:
+       l: null
+
+# FIXME - test this once we do dvicacana
+# 100: ईदूदेद्द्विवचनं प्रगृह्यम् (1-1-11) 
+-   sutra:  ईदूदेद्द्विवचनं प्रगृह्यम्
+    id: 1.1.11
+    condition:
+      l: [It, Ut, et]
+      lp: ?dvivacana
+    update:
+      olp: +pragfhya
+      
+# FIXME - test this once we do adas
+# 101: अदसोमात् (1-1-12) 
+-   sutra: अदसोमात्
+    id: 1.1.12
+    condition:
+      l: [It, Ut, et]
+      ll: m
+      lp: ?adas
+    update:
+      olp: +pragfhya
+
 
 # Better handled as a paribhAshA
 # -   sutra: उरण् रपरः
@@ -457,8 +502,19 @@
   xform:
      l: r
 
-#  FIXME: Collect Pada adhikara from 8.1.16
+- sutra: उदः स्थास्तम्भोः पूर्वस्य सवर्णः
+  id: 8.4.61
+  #overrides: 8.2.39
+  condition:
+     lp: =ut
+     rp:
+       - ?sTA
+       - ?sTamB
+  xform:
+     r: str("T")
 
+
+#  FIXME: Collect Pada adhikara from 8.1.16
 - sutra: संयोगान्तस्य लोपः
   id: 8.2.23
   condition:
@@ -742,11 +798,20 @@
   id: 8.4.65
   optional: true
   condition:  
-     ll:  _hal
-     l: _Jar
-     r: $l
+     - ll:  _hal
+       l: _Jar
+       r: $l
   xform:
      l: null
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65.1
+  optional: true
+  condition:  
+     - l:  _hal
+       r: _Jar
+       rr: $r
+  xform:
+     r: null
 
 
 ## Rules added for pratyayas etc.
@@ -861,4 +926,38 @@
 # 58: दीर्घादाचार्याणाम् (8-4-52)
 
 # 75: अन्तादिवच्च (6-1-85)
-# 77: वासुप्यापिशलेः (6-1-92) 
+# 77: वासुप्यापिशलेः (6-1-92)
+# 81: अव्यक्तानुकरणस्यात इतौ (6-1-98)
+# 82: नाम्रेडितस्यान्त्यस्य तु वा (6-1-99)
+# 87: सर्वत्र विभाषा गोः (6-1-122)
+# 88: अवङ् स्फोटायनस्य (6-1-123)
+# 89: इन्द्रे च (6-1-124)
+
+# प्रकृतिभावप्रकरणम्‌
+# 90-110 barring 90,100,101
+
+# halsandhiप्रकरणम्‌
+# 127: हे मपरे वा (8-3-26)
+# 129: न परे नः (8-3-27) 
+# 130: ङ्णोः कुक् टुक् शरि (8-3-28) 
+# 131: डः सि धुट् (8-3-29)
+# 132: नश्च (8-3-30) 
+
+# विसर्गसन्धिप्रकरणम्‌
+# 8.3.38-42
+
+# For Later
+
+# kvip etc.
+# 126: मो राजि समः क्वौ (8-3-25)
+# ru
+# 135: समः सुटि (8-3-5)
+# 139: पुमः खय्यम्परे (8-3-6)
+# 141: नॄन्पे (8-3-10)
+# 143: कानाम्रेडिते (8-3-12)
+# 144: कस्कादिषु च (8-3-48)
+
+# Soon
+# viBakti - need for non adanta
+#164: प्रथमयोः पूर्वसवर्णः (6-1-102)
+#165: नादिचि (6-1-104) 

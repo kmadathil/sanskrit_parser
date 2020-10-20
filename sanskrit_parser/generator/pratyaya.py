@@ -44,6 +44,8 @@ AN = Pratyaya("A",its=["N"], other_tags=["nipAta", "upasarga", "pada"])
 mAN = Pratyaya("mA",its=["N"], other_tags=["nipAta", "upasarga", "pada"])
 upa = Pratyaya("upa",other_tags=["nipAta", "upasarga", "pada"])
 pra = Pratyaya("pra",other_tags=["nipAta", "upasarga", "pada"])
+ava = Pratyaya("ava",other_tags=["nipAta", "upasarga", "pada"])
+ud = Pratyaya("ud",other_tags=["nipAta", "upasarga", "pada"])
 
 
 # bha when applied to prAtipadikas only!
@@ -54,10 +56,49 @@ yaY_t =  Pratyaya("ya",its=["Y"], other_tags=["svAdi", "tadDita"])
 aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 
 # sup
-su = Pratyaya("s",its=["u"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+#स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
+su = Pratyaya("s",its=["~u"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+au  = Pratyaya("au", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+am  = Pratyaya("am", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+auw = Pratyaya("au",its=["w"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+Sas  = Pratyaya("as",its=["S"], other_tags=["svAdi", "sup"])
+wA  = Pratyaya("A",its=["w"], other_tags=["svAdi", "sup"])
 ByAm = Pratyaya("ByAm", other_tags=["svAdi", "sup"])
+Bis = Pratyaya("Bis", other_tags=["svAdi", "sup"])
+Ne = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
+ByAm2 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
+Byas = Pratyaya("Byas", other_tags=["svAdi", "sup"])
+Nasi = Pratyaya("as",its=["N", "~i"], other_tags=["svAdi", "sup"])
+ByAm3 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
+Byas2  = Pratyaya("Byas", other_tags=["svAdi", "sup"])
+Nas = Pratyaya("as",its=["N"], other_tags=["svAdi", "sup"])
+os  = Pratyaya("os", other_tags=["svAdi", "sup"])
+Am  = Pratyaya("As", other_tags=["svAdi", "sup"])
+Ni = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
+os2  = Pratyaya("os", other_tags=["svAdi", "sup"])
+sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
 
+sups = [[su, au, jas],
+        [am, auw, Sas],
+        [wA, ByAm, Bis],
+        [Ne, ByAm2, Byas],
+        [Nasi, ByAm3, Byas2],
+        [Nas, os, Am],
+        [Ni, os, sup]]
+
+for ix, v in enumerate(["ekavacana", "dvivacana", "bahuvacana"]):
+    for p in sups[:][ix]:
+        p.setTag(v)
+
+for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
+                        "pancamI", "zazWI", "saptamI"]):
+    for p in sups[ix][:]:
+        p.setTag(v)
+        p.setTag("viBakti")
+        
+    
 
 # Anta
-avasAna = PaninianObject("।")
+avasAna = PaninianObject(".")
 avasAna.setTag("avasAna")

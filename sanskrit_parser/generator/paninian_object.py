@@ -60,4 +60,14 @@ class PaninianObject(SanskritObject):
         # 1.2.46 krttaDitasamAsAsca
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
+
+        # Custom tag propagation for rule implementation
+        for t in ["eti", "eDati", "UW", "sTA", "sTamB"]:
+            if objects[0][0].hasTag(t) and  objects[0][0].hasTag("DAtu"):
+                so.setTag(t)
+        for t in ["AN"]:
+            if objects[0][0].hasTag(t) and  objects[0][0].hasTag("upasarga"):
+                so.setTag(t)
+            
+                
         return so
