@@ -208,5 +208,5 @@ def test_prakriya(sutra_list):
     for s in test_list_d:
         run_test(s, DEVANAGARI)
 
-from sandhi_yaml import sutra_list
+from sutras_yaml import sutra_list
 test_prakriya(sutra_list)

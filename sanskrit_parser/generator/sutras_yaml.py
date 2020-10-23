@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 sutra_list = []
 sutra_dict = {}
 
-f = open("sandhi.yaml", "r")
+f = open("sutras.yaml", "r")
 y = yaml.load(f, Loader=yaml.FullLoader)
 sutra_dict = process_yaml(y)    
 sutra_list = sutra_dict.values()

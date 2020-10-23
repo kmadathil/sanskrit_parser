@@ -55,9 +55,12 @@ class Sutra(object):
             _o = ""
         return f"{self.aps:7}: {str(self.name)} {_o}"
     
-class SandhiSutra(Sutra):
+class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, adhikara=None,
                  trig=None, update=None, optional=False, overrides=None):
+        '''
+        Sutra Class that expects a left and right input
+        '''
         super().__init__(name, aps, optional, overrides)
         self.adhikara = adhikara
         self.cond = cond

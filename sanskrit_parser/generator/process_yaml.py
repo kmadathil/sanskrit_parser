@@ -4,7 +4,7 @@ Sutra YAML Processor
 
 @author: kmadathil
 """
-from sanskrit_parser.generator.sutra import SandhiSutra
+from sanskrit_parser.generator.sutra import LRSutra
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
 from sanskrit_parser.generator.pratyaya import *
@@ -226,7 +226,8 @@ def process_yaml(y):
                                    env[k].setTag(sk[1:])
                                elif sk[0] == "-":
                                    logger.debug(f"Removing {k} tag {sk[1:]}")
-                                   env[k].deleteTag(sk[1:])
+                                   if env[k].hasTag(sk[1:]):
+                                       env[k].deleteTag(sk[1:])
                            # Possibly set/remove multiple tags         
                            if isinstance(s[k], list):
                                for sk in s[k]:
@@ -257,13 +258,13 @@ def process_yaml(y):
         if s["id"] in sutra_dict:
             logger.error(f"Duplicate Sutra {s['id']} - {sutra_dict[s['id']]} and {sname}")
             assert False
-        sutra_dict[s["id"]] = SandhiSutra(sname, s["id"],
-                                          cond=scond,
-                                          xform=sxform,
-                                          insert=sinsert,
-                                          trig=strig,
-                                          update=supdate,
-                                          optional=sopt,
-                                          overrides=soverrides)
+        sutra_dict[s["id"]] = LRSutra(sname, s["id"],
+                                      cond=scond,
+                                      xform=sxform,
+                                      insert=sinsert,
+                                      trig=strig,
+                                      update=supdate,
+                                      optional=sopt,
+                                      overrides=soverrides)
             
     return sutra_dict

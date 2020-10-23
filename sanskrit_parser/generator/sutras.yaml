@@ -208,6 +208,81 @@
        l: null
     update:
       olp: -pada # for pUrvaparayoH
+      
+#  191: अतो गुणे (6-1-97)
+-   sutra:  अतो गुणे
+    id: 6.1.97
+    overrides: 6.1.101
+    condition:
+       l: a
+       lp: ?!pada
+       r: [at, _eN]
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
+-   sutra:  प्रथमयोः पूर्वसवर्णः 
+    id: 6.1.102
+    overrides: 6.1.97
+    condition:
+       l: _ak
+       r: _ac
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+    xform:
+       r: l
+       
+ # 196: तस्माच्छसो नः पुंसि (6-1-103)
+-   sutra:  तस्माच्छसो नः पुंसि 
+    id: 6.1.103
+    overrides: 6.1.97
+    condition:
+       l: _ak
+       rp:
+         - and
+         - =as
+         - ?dvitIyA
+    xform:
+       r: l
+       rc: str("n")
+       
+# 193: एङ्ह्रस्वात्संबुद्धेः (6-1-69)
+-   sutra: एङ्ह्रस्वात्संबुद्धेः
+    id: 6.1.69
+    condition:
+       l: [at, it, ut, _eN]
+       r: _hal
+       rp:
+         - ?sambudDi
+    xform:
+       r: null
+       
+# 194: अमिपूर्वः (6-1-107) 
+-   sutra:  अमिपूर्वः
+    id: 6.1.107
+    condition:
+       l: _ak
+       rp:
+         - and
+         - =am
+         - ?pratyaya
+    xform:
+       r: null
+ 
+#165: नादिचि (6-1-104) 
+-   sutra: नादिचि
+    id: 6.1.104
+    overrides: 6.1.102
+    condition:
+       l: a
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+    xform: null
 
 # 90: प्लुतप्रगृह्या अचि नित्यम् (6-1-125)
 -   sutra:  प्लुतप्रगृह्या अचि नित्यम् 
@@ -959,5 +1034,5 @@
 
 # Soon
 # viBakti - need for non adanta
-#164: प्रथमयोः पूर्वसवर्णः (6-1-102)
-#165: नादिचि (6-1-104) 
+# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
+# 198: पदान्तस्य (8-4-37) 
