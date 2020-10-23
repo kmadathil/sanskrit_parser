@@ -38,7 +38,7 @@ class PaninianObject(SanskritObject):
 
     def isPada(self):
         return self.hasTag("pada")
-
+    
     @classmethod
     def join_objects(cls, objects):
         logger.debug(f"Joining Objects {objects} {type(objects)}")

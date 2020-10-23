@@ -6,6 +6,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
+from sanskrit_parser.generator.pratipadika import *
 
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -51,6 +52,9 @@ test_list = [
     (BU, Sap, tip, "Bavati"),
     (ava, (AN, "ihi"), "avehi"), # 6.1.95
     ("SivAya", "om", "SivAyom"), # 6.1.95
+    (kavi, O, "kavI"),
+    ("catur", "nAm", ['caturRAm', 'catur~RAm', 'caturRRAm']), #8.4.1
+    ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
    ]
 
 test_list_d = [
@@ -149,6 +153,15 @@ test_list_d = [
     (("अग्नि", su), "रोचते", "अग्नी रोचते"),
     # FIXME: correct when we can do uttizTati, move to utTAna
     (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
+    ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
+    ("तृंह्*", "अनीय", "तृंहणीय"), # 8.4.2
+    ((rAma, su), avasAna, "रामः ।"), 
+    (rAma, O, "रामौ"),
+    ((rAma, jas), avasAna, "रामाः ।"),
+    (rAma, su2, "राम"),
+    (rAma, am, "रामम्"),
+    (rAma, O2, "रामौ"),
+    (rAma, Sas, "रामान्"),
     ]
 
 def test_prakriya(sutra_list):

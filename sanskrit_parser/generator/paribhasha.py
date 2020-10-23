@@ -1,6 +1,6 @@
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from .operations import adesha
-from .maheshvara import ms, isInPratyahara
+from .maheshvara import ms, isInPratyahara, isSavarna
 
 
 def dirgha(s: str):
@@ -84,7 +84,46 @@ def adivriddhi(s: str):
 
 # Fixme - anunasika ZSs yrl
 def anunasika(s: str):
-    return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
+    if s in "yrlvSZs":
+        return s+"~"
+    else:
+        return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
+
+# vyavAya check for razAByAM noRaH samAnapade
+def rz_vyavaya_l(s: str):
+    i = len(s)-1
+    while(i>=0):
+        # ऋवर्णात् नस्य णत्वं वाच्यम्
+        if ((s[i] =="r") or (s[i] =="r") or (s[i] =="f")):
+            return True
+        elif awkupvaNnum(s[i]):
+            i = i-1
+        else:
+            return False
+    return False
+        
+def rz_vyavaya_r(s: str):
+    i = 0
+    while(i<len(s)):
+        if (s[i] =="n"):
+            # Na padAntasya
+            if s.hasTag("svAdi"):
+                return (i!=(len(s)-1))
+            else:
+                return True
+        elif awkupvaNnum(s[i]):
+            i = i+1
+        else:
+            return False
+    return False
+
+def awkupvaNnum(s):
+    # FIXME handle AN
+    return isInPratyahara("aw", s) or isSavarna("ku", s) or isSavarna("pu", s) \
+        or (s == "M")
+
+def Ratva(s):
+    return s.replace("n","R",1)
 
 # sUtra: adeN guRaH
 def is_guna(s: str):

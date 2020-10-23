@@ -120,7 +120,12 @@ class SanskritString(object):
     def __repr__(self):
         return str(self)
 
+    def __getitem__(self, i):
+        return self.canonical()[i]
 
+    def __len__(self):
+        return len(self.canonical())
+    
 class SanskritImmutableString(SanskritString):
     """ Immutable version of SanskritString
     """

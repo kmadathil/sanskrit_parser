@@ -57,7 +57,7 @@ aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 
 # sup
 #स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
-su = Pratyaya("s",its=["~u"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 O  = Pratyaya("O", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 am  = Pratyaya("am", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
@@ -69,7 +69,7 @@ Bis = Pratyaya("Bis", other_tags=["svAdi", "sup"])
 Ne = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
 ByAm2 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
 Byas = Pratyaya("Byas", other_tags=["svAdi", "sup"])
-Nasi = Pratyaya("as",its=["N", "~i"], other_tags=["svAdi", "sup"])
+Nasi = Pratyaya("as",its=["N", "i~"], other_tags=["svAdi", "sup"])
 ByAm3 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
 Byas2  = Pratyaya("Byas", other_tags=["svAdi", "sup"])
 Nas = Pratyaya("as",its=["N"], other_tags=["svAdi", "sup"])
@@ -78,7 +78,7 @@ Am  = Pratyaya("As", other_tags=["svAdi", "sup"])
 Ni = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
 os2  = Pratyaya("os", other_tags=["svAdi", "sup"])
 sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
-su2 = Pratyaya("s",its=["~u"], other_tags=["svAdi", "sup", "sarvanAmasTAna",
+su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "sarvanAmasTAna",
                                            "sambudDi"])
 O2  = Pratyaya("O", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 jas2  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])

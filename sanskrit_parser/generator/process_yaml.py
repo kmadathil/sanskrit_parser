@@ -65,6 +65,10 @@ def process_yaml(y):
                                     # Pratyahara
                                     logger.debug(f"Checking pratyahara {sk[1:]} {k}")
                                     _x = isInPratyahara(sk[1:], k)
+                                elif (sk[0:2] == "$$"):
+                                    # function call
+                                    logger.debug(f"Checking function {sk[2:]} {k}")
+                                    _x = eval(f"{sk[2:]}(k)")
                                 elif (sk[0] == "$"):
                                     # Variable
                                     logger.debug(f"Checking variable {sk[1:]} {k}")

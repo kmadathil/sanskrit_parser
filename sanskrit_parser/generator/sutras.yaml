@@ -534,6 +534,7 @@
   #overrides: 8.2.39
   condition:
      l: _yar
+     lp: ?pada
      r: [N,Y,R,n,m]
   xform:
      l: anunasika(l)
@@ -567,7 +568,7 @@
   xform:
      l: chartva(l)
      
-# Fixme: handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
+#  handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
 - sutra: तोर्लि
   id: 8.4.60
   overrides: 8.2.39
@@ -576,6 +577,14 @@
      r: l
   xform:
      l: r
+- sutra: तोर्लि
+  id: 8.4.60.1
+  overrides: [8.2.39, 8.4.60]
+  condition:
+     l: n
+     r: l
+  xform:
+     l: str("l~")
 
 - sutra: उदः स्थास्तम्भोः पूर्वस्य सवर्णः
   id: 8.4.61
@@ -587,6 +596,34 @@
        - ?sTamB
   xform:
      r: str("T")
+
+# Ratva
+# FIXME: Get samanapade right
+- sutra: रषाभ्यां नो णः समानपदे
+  id: 8.4.1
+  condition:
+     l: [r, z]
+     r: n
+  xform:
+     r: str("R")
+     
+- sutra: ऋवर्णात् नस्य णत्वं वाच्यम्
+  id: 8.4.1.1
+  condition:
+     l: f
+     r: n
+  xform:
+     r: str("R")
+     
+- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
+  id: 8.4.2
+  condition:
+     lp: $$rz_vyavaya_l 
+     rp: $$rz_vyavaya_r
+  xform:
+     r: null
+     rc: Ratva(r+rc)
+ 
 
 
 #  FIXME: Collect Pada adhikara from 8.1.16

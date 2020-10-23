@@ -8,7 +8,11 @@ ms = MaheshvaraSutras()
 def isInPratyahara(p, s):
     if s == "":
         return False
-    return ms.isInPratyahara(SanskritImmutableString(p, SLP1),s)
+    if isinstance(p, str):
+            p = SanskritImmutableString(p, SLP1)
+    if isinstance(s, str):
+            s = SanskritImmutableString(s, SLP1)
+    return ms.isInPratyahara(p,s)
 
 # Savarna check
 def isSavarna(p, s):
