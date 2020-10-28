@@ -63,20 +63,20 @@ jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 am  = Pratyaya("am", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 auw = Pratyaya("au",its=["w"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 Sas  = Pratyaya("as",its=["S"], other_tags=["svAdi", "sup"])
-wA  = Pratyaya("A",its=["w"], other_tags=["svAdi", "sup"])
-ByAm = Pratyaya("ByAm", other_tags=["svAdi", "sup"])
-Bis = Pratyaya("Bis", other_tags=["svAdi", "sup"])
-Ne = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
-ByAm2 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
-Byas = Pratyaya("Byas", other_tags=["svAdi", "sup"])
-Nasi = Pratyaya("as",its=["N", "i~"], other_tags=["svAdi", "sup"])
-ByAm3 =  Pratyaya("ByAm", other_tags=["svAdi", "sup"])
-Byas2  = Pratyaya("Byas", other_tags=["svAdi", "sup"])
-Nas = Pratyaya("as",its=["N"], other_tags=["svAdi", "sup"])
-os  = Pratyaya("os", other_tags=["svAdi", "sup"])
-Am  = Pratyaya("As", other_tags=["svAdi", "sup"])
+wA  = Pratyaya("A",its=["w"], other_tags=["svAdi", "wA", "sup"])
+ByAm = Pratyaya("ByAm", other_tags=["svAdi", "ByAm", "sup"])
+Bis = Pratyaya("Bis", other_tags=["svAdi", "Bis", "sup"])
+Ne = Pratyaya("e",its=["N"], other_tags=["svAdi", "Ne", "sup"])
+ByAm2 =  Pratyaya("ByAm", other_tags=["svAdi", "ByAm", "sup"])
+Byas = Pratyaya("Byas", other_tags=["svAdi", "Byas", "sup"])
+Nasi = Pratyaya("as",its=["N", "i~"], other_tags=["svAdi", "Nasi", "sup"])
+ByAm3 =  Pratyaya("ByAm", other_tags=["svAdi", "ByAm", "sup"])
+Byas2  = Pratyaya("Byas", other_tags=["svAdi",  "Byas", "sup"])
+Nas = Pratyaya("as",its=["N"], other_tags=["svAdi", "Nas", "sup"])
+os  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
+Am  = Pratyaya("Am", other_tags=["svAdi", "Am", "sup"])
 Ni = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
-os2  = Pratyaya("os", other_tags=["svAdi", "sup"])
+os2  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
 sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
 su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "sarvanAmasTAna",
                                            "sambudDi"])
@@ -93,9 +93,9 @@ sups = [[su, O, jas],
         [su2, O2, jas2]
 ]
 
-for ix, v in enumerate(["ekavacana", "dvivacana", "bahuvacana"]):
-    for p in sups[:][ix]:
-        p.setTag(v)
+for p in sups:
+    for ix, v in enumerate(["ekavacana", "dvivacana", "bahuvacana"]):
+        p[ix].setTag(v)
 
 for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
                         "pancamI", "zazWI", "saptamI", "samboDana"]):

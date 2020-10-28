@@ -30,6 +30,7 @@
 #    lp: ?pada - lp has tag pada
 #    lp: !pada - lp does not have tag pada
 #    rp: +Y   - rp is a pratyaya with it Y
+#    lp: $$fname - call fname on lp (paninian_object)
 #
 # Trigger: (list of) global triggers needed to enable this rule
 #
@@ -234,6 +235,8 @@
          - ?dvitIyA
     xform:
        r: l
+    update:
+       orp: +psavarRa
        
  # 196: तस्माच्छसो नः पुंसि (6-1-103)
 -   sutra:  तस्माच्छसो नः पुंसि 
@@ -245,6 +248,7 @@
          - and
          - =as
          - ?dvitIyA
+         - ?psavarRa
     xform:
        r: l
        rc: str("n")
@@ -270,7 +274,7 @@
          - =am
          - ?pratyaya
     xform:
-       r: null
+       l: null
  
 #165: नादिचि (6-1-104) 
 -   sutra: नादिचि
@@ -692,6 +696,31 @@
 
 # End Pada adhikara 8.3.54
 
+# mUrDanyAdeza adhikara
+#  210: अपदान्तस्य मूर्धन्यः (8-3-55) 
+# 211: इण्कोः (8-3-57) 
+#  212: आदेशप्रत्यययोः (8-3-59) 
+
+- sutra: आदेशप्रत्यययोः
+  id: 8.3.59
+  condition:
+     l:
+        - _iR
+        - ku
+     r: s
+     rc: _al
+     rp:
+        - ?pratyaya
+        - ?Adeza_s
+  xform:
+     r: str("z")
+     
+# FIXME Get apadAntasya done
+# FIXME नुम्विसर्जनीयशर्व्यवायेऽपि (8-3-58) 
+
+# end mUrDanyAdeza adhikara
+
+
 - sutra: झलां जश् झशि
   id: 8.4.53
   condition:
@@ -928,6 +957,74 @@
 
 ## Rules added for pratyayas etc.
 # aNga adhikara
+
+# 209: नामि (6-4-3) 
+- sutra: नामि 
+  id: 6.4.3
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: 7.3.102
+  condition:
+     lp: ?aNga
+     l: _ac
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
+# 203: अतो भिस ऐस् (7-1-9)
+- sutra: अतो भिस ऐस् 
+  id: 7.1.9
+  # FIXME : this needs proper priority
+  overrides: [7.3.102, 7.3.103]
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Bis
+  xform:
+     r: null
+     rc: str("Es")
+     
+# 201: टाङसिङसामिनात्स्याः (7-1-12)
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?wA
+  xform:
+     r: str("ina")
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.1
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nasi
+  xform:
+     r: null
+     rc: str("At")
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.2
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nas
+  xform:
+     r: null
+     rc: str("sya")
+
+# 204: ङेर्यः (7-1-13)
+- sutra: ङेर्यः 
+  id: 7.1.13
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Ne
+  xform:
+     r: str("ya")
+
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
@@ -972,6 +1069,42 @@
   xform:
      lc: lc[:-1]+guna(lc[-1])
      
+# 202: सुपि च (7-3-102) 
+- sutra:  सुपि च
+  id: 7.3.102
+  condition:
+     lp: ?aNga
+     l: at
+     r: _yaY
+     rp: ?sup
+  xform:
+     l: str("A")
+      
+# 205: बहुवचने झल्येत् (7-3-103)
+- sutra: बहुवचने झल्येत्
+  id: 7.3.103
+  condition:
+     lp: ?aNga
+     l: at
+     r: _Jal
+     rp:
+       - and
+       - ?bahuvacana
+       - ?sup
+  xform:
+     l: str("e")
+     
+# 207: ओसि च (7-3-104) 
+- sutra: ओसि च
+  id: 7.3.104
+  condition:
+     lp: ?aNga
+     l: at
+     rp:
+       - ?os
+  xform:
+     l: str("e")
+
 - sutra: क्ङिति च
   id: 1.1.5
   overrides: [7.3.84, 7.3.86]
@@ -1013,9 +1146,26 @@
   xform:
      lc: adivriddhi(lc)
 
+
 # End taddhita adhikara
 # End aNga adhikara
 
+# Agamas
+# Am
+# 208: ह्रस्वनद्यापो नुट् (7-1-54)
+- sutra: ह्रस्वनद्यापो नुट्
+  id: 7.1.54
+  condition:
+     - l: [at,it,ut,ft,xt]
+       rp: ?Am  
+     - lp: ?nadI
+       rp: ?Am  
+     - l: At
+       lp: ?Ap
+       rp: ?Am  
+  xform:
+     r: str("nA")
+ 
 # FIXME get this working - need different Domains
 - sutra: यचि भम्
   id: 1.4.18

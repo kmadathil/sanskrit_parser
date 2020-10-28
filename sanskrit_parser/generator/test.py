@@ -162,7 +162,7 @@ test_list_d = [
     (rAma, am, "रामम्"),
     (rAma, O2, "रामौ"),
     (rAma, Sas, "रामान्"),
-    ]
+     ]
 
 def test_prakriya(sutra_list):
     def _test(output, s, enc):
