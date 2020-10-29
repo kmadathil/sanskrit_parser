@@ -2,6 +2,7 @@ import pytest
 from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
+from sanskrit_parser.generator.pratyaya import *
 
 def _test(output, s, enc):
     _s = s[-1]
@@ -53,3 +54,29 @@ def run_test(s, sutra_list, encoding=SLP1):
     o = p.output()
     assert _test(o, s, encoding)
 
+
+
+def generate_vibhakti(pratipadika, vibhaktis):
+    t = []
+    for ix, pv in enumerate(vibhaktis):
+        #print(f"test vibakti {ix} {pv}")
+        for jx, pvv in enumerate(pv):
+            #print(f"test {jx} {pvv}")
+            if isinstance(pvv, str):
+                _pvv = pvv+avasAna.transcoded(DEVANAGARI)
+            else:
+                _pvv = [x+avasAna.transcoded(DEVANAGARI) for x in pvv]
+            t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
+    print(t)
+    return t
+
+# Manual test
+def check_vibhakti(t, sutra_list):
+    for s in t:
+        run_test(s, sutra_list, encoding=DEVANAGARI)
+
+def test_prakriya(sutra_list, test_list, test_list_d):
+    for s in test_list:
+        run_test(s, sutra_list, SLP1)
+    for s in test_list_d:
+        run_test(s, sutra_list, DEVANAGARI)

@@ -7,7 +7,7 @@ from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
 from sanskrit_parser.generator.pratipadika import *
-from conftest import run_test
+from conftest import run_test, check_vibhakti, generate_vibhakti, test_prakriya
 
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -15,39 +15,42 @@ enable_console_logger()
 enable_file_logger(level=logging.DEBUG)
 
 test_list = [
-    (rAma, "ina", "rAmeRa"),
 ]
 
 test_list_d = [
-    ((rAma, su), avasAna, "रामः ।"), 
-    (rAma, O, "रामौ"),
-    ((rAma, jas), avasAna, "रामाः ।"),
-    (rAma, su2, "राम"),
-    (rAma, am, "रामम्"),
-    (rAma, O2, "रामौ"),
-    (rAma, Sas, "रामान्"),
-    (rAma, wA, "रामेण"),
-    (rAma,  ByAm, "रामाभ्याम्"),
-    ((rAma,  Bis), avasAna, "रामैः ।"),
-    (rAma,  Ne, "रामाय"),
-    (rAma,  ByAm2, " रामाभ्याम्"),
-    ((rAma,  Byas), avasAna, "रामेभ्यः ।"),
-    ((rAma, Nasi), avasAna, ["रामात् ।", "रामाद् ।"]),
-    (rAma,  ByAm3, " रामाभ्याम्"),
-    ((rAma,  Byas2), avasAna, "रामेभ्यः ।"),
-    (rAma, Nas, "रामस्य"),
-    ((rAma,  os), avasAna, "रामयोः ।"),
-    (rAma, Am, "रामाणाम्"),
-    ((rAma,  os2), avasAna, "रामयोः ।"),
-    (rAma, sup, "रामेषु"),
-    ]
+]
 
-def test_prakriya(sutra_list):
-    for s in test_list:
-        run_test(s, sutra_list, SLP1)
-    for s in test_list_d:
-        run_test(s, sutra_list, DEVANAGARI)
-        
+
+viBakti = {}
+prAtipadika = {}
+
+prAtipadika["rAma"] = rAma
+viBakti["rAma"] = [
+    ["रामः", "रामौ", "रामाः"],
+    ["रामम्", "रामौ", "रामान्"],
+    ["रामेण", "रामाभ्याम्", "रामैः"],
+    ["रामाय", "रामाभ्याम्", "रामेभ्यः"],
+    [["रामात्", "रामाद्"], "रामाभ्याम्", "रामेभ्यः"],
+    ["रामस्य", "रामयोः", "रामाणाम्"],
+    ["रामे", "रामयोः", "रामेषु"],
+    ["राम", "रामौ", "रामाः"],
+]
+
+prAtipadika["sarva"] = sarva
+viBakti["sarva"] = [
+    ["सर्वः", "सर्वौ", "सर्वे"],
+    ["सर्वम्", "सर्वौ", "सर्वान्"],
+    ["सर्वेण", "सर्वाभ्याम्", "सर्वैः"],
+    ["सर्वस्मै", "सर्वाभ्याम्", "सर्वेभ्यः"],
+    [["सर्वस्मात्", "सर्वस्माद्"], "सर्वाभ्याम्", "सर्वेभ्यः"],
+    ["सर्वस्य", "सर्वयोः", "सर्वेषाम्"], 
+    ["सर्वस्मिन्", "सर्वयोः", "सर्वेषु "],
+]
+
+
 from sutras_yaml import sutra_list
-test_prakriya(sutra_list)
+
+for v in viBakti:
+    check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]), sutra_list)
+test_prakriya(sutra_list, test_list, test_list_d)
 

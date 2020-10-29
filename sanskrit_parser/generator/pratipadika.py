@@ -26,3 +26,4 @@ class Pratipadika(PaninianObject):
 rAma = Pratipadika("rAma", "pum")
 kavi = Pratipadika("kavi", "pum")
                 
+sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi", "sarvanAma"])

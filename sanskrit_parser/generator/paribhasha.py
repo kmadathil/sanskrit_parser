@@ -125,6 +125,9 @@ def awkupvaNnum(s):
 def Ratva(s):
     return s.replace("n","R",1)
 
+def notnull(s):
+    return ((s != None) and (s != ""))
+
 # sUtra: adeN guRaH
 def is_guna(s: str):
     so = SanskritImmutableString(s, encoding=SLP1)

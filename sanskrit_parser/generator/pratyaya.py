@@ -59,7 +59,8 @@ aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 #स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
 su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 O  = Pratyaya("O", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
-jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
+jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "jas",
+                                            "sarvanAmasTAna"])
 am  = Pratyaya("am", other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 auw = Pratyaya("O",its=["w"], other_tags=["svAdi", "sup", "sarvanAmasTAna"])
 Sas  = Pratyaya("as",its=["S"], other_tags=["svAdi", "sup"])
@@ -75,7 +76,7 @@ Byas2  = Pratyaya("Byas", other_tags=["svAdi",  "Byas", "sup"])
 Nas = Pratyaya("as",its=["N"], other_tags=["svAdi", "Nas", "sup"])
 os  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
 Am  = Pratyaya("Am", other_tags=["svAdi", "Am", "sup"])
-Ni = Pratyaya("e",its=["N"], other_tags=["svAdi", "sup"])
+Ni = Pratyaya("i",its=["N"], other_tags=["svAdi", "Ni", "sup"])
 os2  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
 sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
 su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "sarvanAmasTAna",
@@ -102,7 +103,10 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
     for p in sups[ix][:]:
         p.setTag(v)
         p.setTag("viBakti")
-        
+
+# SI - jasaH SI
+SI  = Pratyaya("I",its=["S"], other_tags=["svAdi", "sup", "SI",
+                                            "sarvanAmasTAna"])
     
 # Sambuddhi
 sambudDi = PaninianObject("")

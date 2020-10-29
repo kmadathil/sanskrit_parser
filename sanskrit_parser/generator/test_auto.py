@@ -4,12 +4,12 @@ from sanskrit_parser.generator.pratipadika import *
 from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 
 from sutras_yaml import sutra_list
-from conftest import run_test
+from conftest import run_test, generate_vibhakti
 
 import pytest
 import logging
 
-test_list = [
+test_list_slp1 = [
     ("kArt*", "tikaH", ["kArtikaH", "kArttikaH"]),
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
     ("rAma", "eti", "rAmEti"),
@@ -53,7 +53,7 @@ test_list = [
     ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
    ]
 
-test_list_d = [
+test_list_devanagari = [
     ("मरुत्", "टीकते", "मरुट्टीकते"),
     ("मधुलिट्", "तरति", "मधुलिट्तरति"),
     ("मरुत्", "षष्ठः", "मरुत्षष्ठः"),
@@ -154,8 +154,9 @@ test_list_d = [
      ]
 
 viBakti = {}
+prAtipadika = {}
 
-
+prAtipadika["rAma"] = rAma
 viBakti["rAma"] = [
     ["रामः", "रामौ", "रामाः"],
     ["रामम्", "रामौ", "रामान्"],
@@ -167,30 +168,22 @@ viBakti["rAma"] = [
     ["राम", "रामौ", "रामाः"],
 ]
 
+prAtipadika["sarva"] = sarva
+viBakti["sarva"] = [
+    ["सर्वः", "सर्वौ", "सर्वे"],
+    ["सर्वम्", "सर्वौ", "सर्वान्"],
+    ["सर्वेण", "सर्वाभ्याम्", "सर्वैः"],
+    ["सर्वस्मै", "सर्वाभ्याम्", "सर्वेभ्यः"],
+    [["सर्वस्मात्", "सर्वस्माद्"], "सर्वाभ्याम्", "सर्वेभ्यः"],
+    ["सर्वस्य", "सर्वयोः", "सर्वेषाम्"], 
+    ["सर्वस्मिन्", "सर्वयोः", "सर्वेषु "],
+]
+
+
 
 @pytest.fixture
 def sutra_fixture():
     return sutra_list
-
-
-def generate_vibhakti(pratipadika, vibhaktis):
-    t = []
-    for ix, pv in enumerate(vibhaktis):
-        #print(f"test vibakti {ix} {pv}")
-        for jx, pvv in enumerate(pv):
-            #print(f"test {jx} {pvv}")
-            if isinstance(pvv, str):
-                _pvv = pvv+avasAna.transcoded(DEVANAGARI)
-            else:
-                _pvv = [x+avasAna.transcoded(DEVANAGARI) for x in pvv]
-            t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
-    print(t)
-    return t
-
-# Manual test
-def check_vibhakti(t, sutra_list):
-    for s in t:
-        run_test(s, sutra_list, encoding=DEVANAGARI)
             
 def test_vibhakti(vibhakti, sutra_fixture, caplog):
     run_test(vibhakti, sutra_fixture, encoding=DEVANAGARI)
@@ -203,12 +196,14 @@ def test_manual(manual, sutra_fixture):
 
 def pytest_generate_tests(metafunc):
     if 'vibhakti' in metafunc.fixturenames:
-         vibhakti_list = generate_vibhakti(rAma, viBakti["rAma"])
-         metafunc.parametrize("vibhakti", vibhakti_list)
+        vibhakti_list = []
+        for v in viBakti:
+            vibhakti_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v]))
+        metafunc.parametrize("vibhakti", vibhakti_list)
     if 'manual_d' in metafunc.fixturenames:
-         metafunc.parametrize("manual_d", test_list_d)
+         metafunc.parametrize("manual_d", test_list_devanagari)
     if 'manual' in metafunc.fixturenames:
-         metafunc.parametrize("manual", test_list)
+         metafunc.parametrize("manual", test_list_slp1)
          
 
 if __name__ == "__main__":
