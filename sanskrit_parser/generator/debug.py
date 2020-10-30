@@ -50,7 +50,8 @@ viBakti["sarva"] = [
 
 from sutras_yaml import sutra_list
 
+test_prakriya(sutra_list, test_list, test_list_d)
 for v in viBakti:
     check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]), sutra_list)
-test_prakriya(sutra_list, test_list, test_list_d)
+
 

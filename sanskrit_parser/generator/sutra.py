@@ -9,9 +9,28 @@ from copy import deepcopy
 import logging
 logger = logging.getLogger(__name__)
 
-# Global Triggers
-class GlobalTriggers(object):
-    uran_trigger = False
+# Global Domains
+class GlobalDomains(object):
+    def __init__(self):
+        self.domains = {
+            "saMjYA": True,
+            "standard": False
+        }
+    def isdomain(self, d):
+        return self.domains[d]
+    
+    def set_domain(self, d):
+        for k in self.domains:
+            if k == d:
+                self.domains[k] = True
+            else:
+                self.domains[k] = False
+    def active_domain(self):
+        r = []
+        for k in self.domains:
+            if self.domains[k]:
+                r.append(k)
+        return r
     
 # Base class
 class Sutra(object):
@@ -56,29 +75,28 @@ class Sutra(object):
         return f"{self.aps:7}: {str(self.name)} {_o}"
     
 class LRSutra(Sutra):
-    def __init__(self, name, aps, cond, xform, insert=None, adhikara=None,
-                 trig=None, update=None, optional=False, overrides=None):
+    def __init__(self, name, aps, cond, xform, insert=None, domain=None,
+                 update=None, optional=False, overrides=None):
         '''
         Sutra Class that expects a left and right input
         '''
         super().__init__(name, aps, optional, overrides)
-        self.adhikara = adhikara
+        self.domain = domain
         self.cond = cond
         self.xform   = xform
         self.update_f = update
-        self.trig = trig
         self.insertx = insert
         
     def inAdhikara(self, context):
         return self.adhikara(context)
     
-    def isTriggered(self, s1, s2, triggers):
+    def isTriggered(self, s1, s2, domains):
         logger.debug(f"Checking {self} View: {s1} {s2}")
         env = _env(s1, s2)
-        if self.trig is not None:
-            t = self.trig(triggers)
+        if self.domain is not None:
+            t = self.domain(domains)
         else:
-            t = True
+            t = domains.isdomain("standard")
         if self.cond is not None:
             c = self.cond(env)
         else:
@@ -86,12 +104,12 @@ class LRSutra(Sutra):
         logger.debug(f"Check Result {c and t} for {self}")
         return c and t
 
-    def update(self, s1, s2, o1, o2, triggers):
+    def update(self, s1, s2, o1, o2, domains):
         env = _env(s1, s2)
         env["olp"] = o1
         env["orp"] = o2
         if self.update_f is not None:
-            self.update_f(env, triggers)
+            self.update_f(env, domains)
 
     def operate(self, s1, s2):
         if self.xform is not None:

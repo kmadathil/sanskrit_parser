@@ -15,7 +15,7 @@ produce a vakya.
 
 import logging
 logger = logging.getLogger(__name__)
-from sanskrit_parser.generator.sutra import GlobalTriggers
+from sanskrit_parser.generator.sutra import GlobalDomains
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from copy import deepcopy, copy
 
@@ -110,7 +110,7 @@ class Prakriya(object):
         _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
         self.tree.add_node(_n, root=True)
         self.outputs = []
-        self.triggers = GlobalTriggers() 
+        self.domains = GlobalDomains() 
         self.disabled_sutras = []
         # Sliding window counter
         self.windowIdx = 0
@@ -129,6 +129,13 @@ class Prakriya(object):
             elif (s1.overrides is not None) and (s2.aps in s1.overrides):
                 logger.debug(f"{s1} overrides {s2}")
                 return s1
+            # samjYA before 1.4.2 vipratizeDe param kAryam
+            elif (s1._aps_num < 14000) or  (s2._aps_num < 14000):
+                logger.debug(f"SaMjYA, lower of {s1} {s2}")
+                if s1._aps_num < s2._aps_num:
+                    return s1
+                else:
+                    return s2
             # Also handles if one sutra is spsp and one tp
             elif (s1._aps_num > 82000) or (s2._aps_num > 82000):
                 logger.debug(f"Tripadi, lower of {s1} {s2}")
@@ -206,7 +213,7 @@ class Prakriya(object):
             logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
             triggered = []
             triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
-                                          and s.isTriggered(*self.view(s, node, ix), self.triggers))]
+                                          and s.isTriggered(*self.view(s, node, ix), self.domains))]
             # Break at first index from left where trigger occurs
             if triggered:
                 _ix = ix
@@ -226,7 +233,7 @@ class Prakriya(object):
             r0 = r[0]
             v0 = v[0]
             # State update 
-            s.update(*v, *r, self.triggers)
+            s.update(*v, *r, self.domains)
             r = s.insert(*r)
             logger.debug(f"I (post update): {v}")
             # Using sutra id in the disabled list to get round paninian object deepcopy
@@ -261,21 +268,30 @@ class Prakriya(object):
             
             return r
         else:
-            logger.debug(f"Nothing triggered")
+            logger.debug(f"Domain {self.domains.active_domain()} - Nothing triggered")
             return False
 
+    def _exec_all_domains(self, node):
+        for d in ["saMjYA", "standard"]:
+            self.domains.set_domain(d)
+            r = self._exec_single(node)
+            if r:
+                return r
+        # Only if nothing ever triggered
+        return False
+            
     def execute(self):
         logger.debug(f"Input: {self.inputs}")
         done = []
         # Initial run on input
-        act = self._exec_single(self.tree.get_root())
+        act = self._exec_all_domains(self.tree.get_root())
         if (act):
             # Iterate over leaves if something triggered
             while (act):
                 act = False
                 for n in self.tree.get_leaves():
                     if n not in done:
-                        res = self._exec_single(n)
+                        res = self._exec_all_domains(n)
                         if not res:
                             done.append(n)
                         else:

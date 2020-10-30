@@ -7,13 +7,9 @@ from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
 from sanskrit_parser.generator.pratipadika import *
+from conftest import run_test, check_vibhakti, generate_vibhakti, test_prakriya
 
-import logging
-#logging.basicConfig(level=logging.INFO)
-enable_console_logger()
-enable_file_logger(level=logging.DEBUG)
-
-test_list = [
+test_list_slp1 = [
     ("kArt*", "tikaH", ["kArtikaH", "kArttikaH"]),
     ("gaRa", "upadeSaH", "gaRopadeSaH"),
     ("rAma", "eti", "rAmEti"),
@@ -57,7 +53,7 @@ test_list = [
     ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
    ]
 
-test_list_d = [
+test_list_devanagari = [
     ("मरुत्", "टीकते", "मरुट्टीकते"),
     ("मधुलिट्", "तरति", "मधुलिट्तरति"),
     ("मरुत्", "षष्ठः", "मरुत्षष्ठः"),
@@ -155,71 +151,45 @@ test_list_d = [
     (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
     ("तृंह्*", "अनीय", "तृंहणीय"), # 8.4.2
-    ((rAma, su), avasAna, "रामः ।"), 
-    (rAma, O, "रामौ"),
-    ((rAma, jas), avasAna, "रामाः ।"),
-    (rAma, su2, "राम"),
-    (rAma, am, "रामम्"),
-    (rAma, O2, "रामौ"),
-    (rAma, Sas, "रामान्"),
      ]
 
-def test_prakriya(sutra_list):
-    def _test(output, s, enc):
-        _s = s[-1]
-        if not isinstance(_s, list):
-            # Single element
-            _s = [_s]
-        # Remove spaces in reference
-        _s = [x.replace(' ',"") for x in _s]
-        j = [
-            PaninianObject("".join([
-                _o.transcoded(SLP1) for _o in list(o)
-            ]), encoding=SLP1).transcoded(enc)
-            for o in output
-        ]
-        if not  (set(j) == set(_s)):
-            print(set(j), set(_s))
-        return (set(j) == set(_s))
+viBakti = {}
+prAtipadika = {}
 
-    def run_test(s, encoding=SLP1):
-        pl = []
-        # Assemble list of inputs
-        for i in range(len(s)-1):
-            def _gen_obj(s, i):
-                if isinstance(s[i], str):
-                    # Shortcuts for two input tests not using predefined objects
-                    # If a string in the first place ends with * it's an anga
-                    # Else it's a pada
-                    # For everything else, use predefined objects
-                    if (i==0) and (s[i][-1] == "*"):
-                        s0 =  s[0][:-1]
-                        l = PaninianObject(s0, encoding)
-                        l.setTag("aNga")
-                    else:
-                        s0 =  s[i]
-                        l = PaninianObject(s[i], encoding)
-                        if i==0:
-                            l.setTag("pada")
-                        return l
-                elif isinstance(s[i], tuple) or isinstance(s[i], list):
-                    l = [_gen_obj(s[i], ii) for (ii, ss) in enumerate(s[i])]
-                else:
-                    l = s[i]
-                return l
-            l = _gen_obj(s, i)
-            pl.append(l)
-        p = Prakriya(sutra_list,PrakriyaVakya(pl))
-        p.execute()
-        p.describe()
-        #print(p.dict())
-        o = p.output()
-        assert _test(o, s, encoding)
-       
-    for s in test_list:
-        run_test(s, SLP1)
-    for s in test_list_d:
-        run_test(s, DEVANAGARI)
+prAtipadika["rAma"] = rAma
+viBakti["rAma"] = [
+    ["रामः", "रामौ", "रामाः"],
+    ["रामम्", "रामौ", "रामान्"],
+    ["रामेण", "रामाभ्याम्", "रामैः"],
+    ["रामाय", "रामाभ्याम्", "रामेभ्यः"],
+    [["रामात्", "रामाद्"], "रामाभ्याम्", "रामेभ्यः"],
+    ["रामस्य", "रामयोः", "रामाणाम्"],
+    ["रामे", "रामयोः", "रामेषु"],
+    ["राम", "रामौ", "रामाः"],
+]
 
-from sutras_yaml import sutra_list
-test_prakriya(sutra_list)
+prAtipadika["sarva"] = sarva
+viBakti["sarva"] = [
+    ["सर्वः", "सर्वौ", "सर्वे"],
+    ["सर्वम्", "सर्वौ", "सर्वान्"],
+    ["सर्वेण", "सर्वाभ्याम्", "सर्वैः"],
+    ["सर्वस्मै", "सर्वाभ्याम्", "सर्वेभ्यः"],
+    [["सर्वस्मात्", "सर्वस्माद्"], "सर्वाभ्याम्", "सर्वेभ्यः"],
+    ["सर्वस्य", "सर्वयोः", "सर्वेषाम्"], 
+    ["सर्वस्मिन्", "सर्वयोः", "सर्वेषु "],
+]
+
+
+if __name__ == "__main__":
+    import logging
+    #logging.basicConfig(level=logging.INFO)
+    enable_console_logger()
+    enable_file_logger(level=logging.DEBUG)
+    from sutras_yaml import sutra_list
+
+    test_prakriya(sutra_list, test_list_slp1, test_list_devanagari)
+    for v in viBakti:
+        check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]),
+                       sutra_list)
+
+

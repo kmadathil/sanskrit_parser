@@ -31,7 +31,7 @@ def process_yaml(y):
         if not "id" in s:
             logger.error("No sutra id")
             assert False
-        for c in ["condition", "trigger", "xform", "update", "insert"]:
+        for c in ["condition", "domain", "xform", "update", "insert"]:
             if not c in s:
                 s[c] = None
         svar = "sutra_"+s["id"].replace(".","_")
@@ -182,28 +182,28 @@ def process_yaml(y):
                 return _insert
             sinsert = _exec_insert(s["insert"])
             logger.debug(f"Insert def {sinsert}")
-        strig = None
-        if s["trigger"] is not None:
-            logger.debug("Processing trigger")
+        sdom = None
+        if s["domain"] is not None:
+            logger.debug("Processing domain")
             def _exec_trig(s):
                 logger.debug(f"Trig {s}")
-                def _trig(triggers):
-                    # list of triggers
-                    logger.debug(f"Trigger checks {s}")
+                def _trig(domains):
+                    # list of domains
+                    logger.debug(f"Domain checks {s}")
                     if isinstance(s, list):
                         x = True
                         for t in s:
-                            x = x and getattr(triggers, t)
+                            x = x and domains.isdomain(t)
                     else:
-                        return getattr(triggers, s)
+                        return domains.isdomain(s)
                 return _trig
-            strig =  _exec_trig(s["trigger"])
+            sdom =  _exec_trig(s["domain"])
         supdate= None
         if s["update"] is not None:
             logger.debug("Processing update")
             def _exec_update(s):
                 logger.debug(f"Update {s}")
-                def _update(env, triggers):
+                def _update(env, domains):
                     def _c(env):
                         # _s a dict
                         # LHS = variable
@@ -243,10 +243,10 @@ def process_yaml(y):
                            else:
                                _tag(k, s[k])
                                
-                    if "trigger" in s.keys():
-                        st = s["trigger"]
+                    if "domain" in s.keys():
+                        st = s["domain"]
                         for k in st:
-                            logger.debug(f"Updating trigger {k} {st[k]}")
+                            logger.debug(f"Updating domain {k} {st[k]}")
                             cond = True
                             if "condition" in st[k]:
                                 logger.debug(f"Update condition check {st[k]['condition']}")
@@ -260,7 +260,7 @@ def process_yaml(y):
                                     cond = _c(env) 
                                 logger.debug(f"Check got {cond}")
                             if cond:
-                                setattr(triggers, k, st[k]["value"])
+                                setattr(domains, k, st[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:
@@ -270,7 +270,7 @@ def process_yaml(y):
                                       cond=scond,
                                       xform=sxform,
                                       insert=sinsert,
-                                      trig=strig,
+                                      domain=sdom,
                                       update=supdate,
                                       optional=sopt,
                                       overrides=soverrides)

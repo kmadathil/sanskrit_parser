@@ -15,7 +15,7 @@ class Pratipadika(PaninianObject):
             self.linga = linga
             self.inPrakriya = True
             self.setTag("prAtipadika")
-            self.setTag("aNga")
+            #self.setTag("aNga")
             for t in other_tags:
                 self.setTag(t)
 

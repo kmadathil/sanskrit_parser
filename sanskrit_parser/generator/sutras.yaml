@@ -32,7 +32,7 @@
 #    rp: +Y   - rp is a pratyaya with it Y
 #    lp: $$fname - call fname on lp (paninian_object)
 #
-# Trigger: (list of) global triggers needed to enable this rule
+# Domain: (list of) global domains needed to enable this rule
 #
 # Xform: dict of transformations. Each transformation is a python expression
 #    l: dirgha(l)
@@ -41,8 +41,8 @@
 # Update:
 #   lp: +ru - sets tag "ru" on lp
 #   rp: -pada - removes "pada" tag from rp
-#   trigger: - sets triggers
-#     uran_trigger:   - sets trigger uran_trigger 
+#   domain: - sets domain triggers
+#     xxx_domain:   - sets domain trigger xxx_domain
 #         value: True - to True
 #           condition:  - if
 #              r: f       - r = "f"
@@ -130,15 +130,8 @@
     xform:
        l: null
        r: guna(r)
-    trigger: null
     update:
       olp: -pada # for pUrvaparayoH
-    # update:
-    #   trigger:
-    #     uran_trigger:
-    #       value: True
-    #       condition:
-    #          r: f
 
 -   sutra: वृद्धिरेचि
     id: 6.1.88
@@ -148,7 +141,6 @@
     xform:
        l: vriddhi(r)
        r: null
-    trigger: null
     update:
       olp: -pada # for pUrvaparayoH
 
@@ -166,7 +158,6 @@
     xform:
        l: null
        r: vriddhi(r)
-    trigger: null
     update:
        olp: -pada # for pUrvaparayoH
    
@@ -181,7 +172,6 @@
     xform:
        l: null
        r: vriddhi(r)
-    trigger: null
     update:
       olp: -pada # for pUrvaparayoH
 
@@ -1244,7 +1234,26 @@
 
 # saMjYA prakaraRam
 # FIXME get this working - need different Domains
+- sutra: सुडनपुंसकस्य
+  domain: saMjYA
+  id: 1.1.53
+  condition:
+     rp: ?suw
+     lp: ?!napumsaka
+  update:
+     orp: +sarvanAmasTAna
+
+- sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
+  domain: saMjYA
+  id: 1.4.13
+  condition:
+     rp: ?pratyaya
+     lp: ?!pratyaya
+  update:
+     olp: +aNga
+
 - sutra: यचि भम्
+  domain: saMjYA
   id: 1.4.18
   condition:
      rp:
@@ -1254,6 +1263,7 @@
      r: [y, _ac]
   update:
      olp: +Ba
+     
 # 213: सर्वादीनि सर्वनामानि (1-1-27)
 
 # Skipping for now
