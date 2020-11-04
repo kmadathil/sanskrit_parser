@@ -1252,6 +1252,17 @@
   update:
      olp: +aNga
 
+- sutra: स्वादिष्वसर्वनामस्थाने
+  domain: saMjYA
+  id: 1.4.17
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+  update:
+     olp: +pada
+
 - sutra: यचि भम्
   domain: saMjYA
   id: 1.4.18
@@ -1306,6 +1317,9 @@
 # 141: नॄन्पे (8-3-10)
 # 143: कानाम्रेडिते (8-3-12)
 # 144: कस्कादिषु च (8-3-48)
+
+# sarvanAma
+# 218-228
 
 # Soon
 # viBakti - need for non adanta
