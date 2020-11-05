@@ -65,7 +65,7 @@ class Tags(Resource):
 class Splits(Resource):
     def get(self, v):
         """ Get lexical tags for v """
-        vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
+        vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj)
         if g:
             splits = g.find_all_paths(10)
@@ -80,7 +80,7 @@ class Splits(Resource):
 class Morpho(Resource):
     def get(self, v):
         """ Get morphological tags for v """
-        vobj = SanskritObject(v, strict_io=False, replace_ending_visarga=None)
+        vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj, tag=True)
         if g:
             splits = g.find_all_paths(10, score=True)

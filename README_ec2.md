@@ -49,10 +49,17 @@ $ /home/ec2-user/venv3/bin/python run.py
 If the server doesn't start, install any packages it asks for. Test it with a few curl commands, then stop it.
 $ Edit nginx.conf to add your server name
 ```
-$ nano /var/www/sanskrit_parser/wsgi/nginx.conf
+$ nano /var/www/sanskrit_parser/web/nginx.conf
 ```
-Replace the name "skt_parser.madathil.org" with your server name. (Only if you're
+Replace the name "sktparserapi.madathil.org" with your server name. (Only if you're
 running a secondary service, not the default one)
+
+Under the TLS section, replace the certificate and the private key with one that you have
+generated. You can generate a self-certified key for testing, but we recommend generating
+a proper key using letsencrypt.org. This is if you want to enable https. If not, comment out this
+section. Beware that most browsers will not let you use this api with mixed https/http. Not enabling
+https means the UI must be served from an http (not https) server as well. 
+
 Edit `/var/www/sanskrit_parser/web/sanskrit_parser.service` to increase the
 number of workers if desired
 10. Copy config files
@@ -70,5 +77,5 @@ Now you should be good to. This instance is running nginx and gunicorn, and will
 respond to api queries on the address configured in nginx.conf.
 Check it out by running the following command
 ```
-$ curl http://<server name>/sanskrit_parser/api/v1/tags/rAmaH
+$ curl https://<server name>/sanskrit_parser/v1/tags/rAmaH
 ``
