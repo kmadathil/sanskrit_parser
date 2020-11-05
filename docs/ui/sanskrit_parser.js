@@ -45,7 +45,7 @@ $(document).ready( function () {
     "use strict;"
     $("#goButton").on("click", function () {
         var txt = $("#inputText").val();
-        var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://skt_parser_api.madathil.org/";
+        var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sktparserapi.madathil.org/";
         var option = {};
         var tsel = $("#analysisType").val();
         if (!txt) {
