@@ -352,7 +352,6 @@
   insert:
      1: tuk
 
-# Fixme - need to check for Nit
 - sutra: आङ्माङोश्च
   id: 6.1.74
   overrides: [6.1.75, 6.1.76]
@@ -1234,6 +1233,16 @@
 
 # saMjYA prakaraRam
 # FIXME get this working - need different Domains
+# 213: सर्वादीनि सर्वनामानि (1-1-27)
+- sutra: सर्वादीनि सर्वनामानि
+  domain: saMjYA
+  id: 1.1.27
+  condition:
+     lp:
+       - ?sarvAdi
+  update:
+     olp: +sarvanAma
+
 - sutra: सुडनपुंसकस्य
   domain: saMjYA
   id: 1.1.53
@@ -1242,15 +1251,6 @@
      lp: ?!napumsaka
   update:
      orp: +sarvanAmasTAna
-
-- sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
-  domain: saMjYA
-  id: 1.4.13
-  condition:
-     rp: ?pratyaya
-     lp: ?!pratyaya
-  update:
-     olp: +aNga
 
 - sutra: स्वादिष्वसर्वनामस्थाने
   domain: saMjYA
@@ -1266,6 +1266,7 @@
 - sutra: यचि भम्
   domain: saMjYA
   id: 1.4.18
+  overrides: 1.4.17
   condition:
      rp:
        - "and"
@@ -1274,8 +1275,16 @@
      r: [y, _ac]
   update:
      olp: +Ba
+
+- sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
+  domain: saMjYA
+  id: 1.4.13
+  condition:
+     rp: ?pratyaya
+     lp: ?!pratyaya
+  update:
+     olp: +aNga
      
-# 213: सर्वादीनि सर्वनामानि (1-1-27)
 
 # Skipping for now
 
@@ -1319,7 +1328,7 @@
 # 144: कस्कादिषु च (8-3-48)
 
 # sarvanAma
-# 218-228
+# 218-227
 
 # Soon
 # viBakti - need for non adanta
