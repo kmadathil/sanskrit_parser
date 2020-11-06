@@ -82,6 +82,15 @@ def adivriddhi(s: str):
             r = r + _s
     return r
 
+def pAdAdi_AdeSa(s: str):
+    d = {
+        "pAda": "pad" 
+        }
+    if s in d:
+        return d[s]
+    else:
+        return s
+
 # Fixme - anunasika ZSs yrl
 def anunasika(s: str):
     if s in "yrlvSZs":

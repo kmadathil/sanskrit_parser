@@ -47,6 +47,21 @@
 #           condition:  - if
 #              r: f       - r = "f"
 
+
+# upadeSe 
+# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
+-   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
+    domain: upadeSa
+    id: 6.1.63
+    optional: true
+    condition:
+      lp: ?pAdAdi
+      rp: ?!suw  # Sas praBfti
+    xform:
+      lc: pAdAdi_AdeSa(lc+l)
+      l: null
+
+
 # ac sandhi
 
 # FIXME - create samhita adhikaras

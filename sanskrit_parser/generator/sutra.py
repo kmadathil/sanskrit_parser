@@ -14,6 +14,7 @@ class GlobalDomains(object):
     def __init__(self):
         self.domains = {
             "saMjYA": True,
+            "upadeSa": False,
             "standard": False
         }
     def isdomain(self, d):

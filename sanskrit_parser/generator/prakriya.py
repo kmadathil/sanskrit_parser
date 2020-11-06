@@ -32,7 +32,7 @@ class PrakriyaVakya(object):
         Elements of v can be PaninianObjects or
             lists thereof
     Internal storage:
-       - List of lists of PaninianObject objects
+            - List of lists of PaninianObject objects
     """
     def __init__(self, v):
         # Deepcopy is required because we add tags to objects
@@ -90,9 +90,16 @@ class Prakriya(object):
         self.pre_inputs = deepcopy(inputs)
         self.inputs = copy(inputs)
         self.hier_prakriyas = []
+        self.need_hier = False
+        # List of alternatives
+        # Used only in hierarchy is needed
+        self.hier_inputs = [self.inputs]
+        # Assmeble hierarchical prakriya outputs into a single list
+        self.hier_outputs = [[] for x in self.inputs] 
         # Scan inputs for hierarchical prakriya needs
         for ix in range(len(self.inputs)):
             if self.inputs.need_hierarchy_at(ix):
+                self.need_hier = True
                 # hierarchy needed here
                 hp = Prakriya(sutra_list,
                               PrakriyaVakya(self.inputs[ix]))
@@ -101,14 +108,34 @@ class Prakriya(object):
                 hp.execute()
                 hpo = hp.output()
                 # FIXME
-                if len(hpo)>1:
-                    logger.warning("Hierarchical > 1 length output not implemented")
-
-                hpo = PaninianObject.join_objects(hpo)
-                self.inputs.replace_at(ix, hpo)
+                #if len(hpo)>1:
+                #    logger.warning("Hierarchical > 1 length output not implemented")
+                self.hier_outputs[ix] = hpo # accumulate hierarchical outputs
         self.tree = PrakriyaTree()
-        _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
-        self.tree.add_node(_n, root=True)
+        if self.need_hier:
+            for ix,ol in enumerate(self.hier_outputs):
+                if ol != []: # Hierarchy exists here
+                    tmpl = []
+                    # For each alternate output
+                    for o in ol: 
+                        hobj = PaninianObject.join_objects([o])
+                        # Assemble exploded list with each input
+                        # replaced by multiple alternates at this
+                        # index
+                        for i in self.hier_inputs:
+                            tmpl.append(i.copy_replace_at(ix, hobj))
+                    # Replace input list with exploded list
+                    # Explosion at position ix is now dealt with
+                    self.hier_inputs = tmpl
+                    logger.debug(f"Hier inputs after expl {ix} {self.hier_inputs}")
+            # At the end of the loop above self.hier_inputs has been fully exploded
+            for i in self.hier_inputs:
+                _n = PrakriyaNode(i, i, "Prakriya Hierarchical Start")
+                self.tree.add_node(_n, root=True)
+        else:
+            _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
+            self.tree.add_node(_n, root=True)
+ 
         self.outputs = []
         self.domains = GlobalDomains() 
         self.disabled_sutras = []
@@ -272,7 +299,7 @@ class Prakriya(object):
             return False
 
     def _exec_all_domains(self, node):
-        for d in ["saMjYA", "standard"]:
+        for d in ["saMjYA", "upadeSa", "standard"]:
             self.domains.set_domain(d)
             r = self._exec_single(node)
             if r:
@@ -281,10 +308,16 @@ class Prakriya(object):
         return False
             
     def execute(self):
-        logger.debug(f"Input: {self.inputs}")
+        if self.need_hier:
+            logger.debug(f"Input: {self.hier_inputs}")
+        else:
+            logger.debug(f"Input: {self.inputs}")
         done = []
+        act = False
         # Initial run on input
-        act = self._exec_all_domains(self.tree.get_root())
+        for r in self.tree.get_root():
+            _act = self._exec_all_domains(r)
+            act  = act or _act
         if (act):
             # Iterate over leaves if something triggered
             while (act):
@@ -302,7 +335,8 @@ class Prakriya(object):
         else:
             # Nothing triggered
             logger.debug("Nothing Triggered - Passthrough")
-            self.outputs.append(self.inputs)
+            for n in self.tree.get_root():
+                self.outputs.append(n.outputs)
         r = self.outputs
         logger.debug(f"Final Result: {r}\n")
         return r
@@ -397,7 +431,7 @@ class PrakriyaTree(object):
         return self.leaves
 
     def get_root(self):
-        return self.roots[0]
+        return self.roots
 
     def add_child(self, node, c, opt=False):
         self.children[node].append(c)
