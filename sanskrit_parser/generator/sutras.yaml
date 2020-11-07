@@ -64,7 +64,7 @@
 
 # ac sandhi
 
-# FIXME - create samhita adhikaras
+# FIXME - create samhita aDikAras
 # Three 6.1.72, 6.3.115, 8.2.108
 -   sutra: इको यणचि
     id: 6.1.77
@@ -633,10 +633,31 @@
   xform:
      r: null
      rc: Ratva(r+rc)
- 
+
+- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
+  id: 8.4.2.1
+  condition:
+     lp: $$rz_vyavaya_n
+     rp:
+       - and
+       - ?!avasAna
+       - $$notnull
+  xform:
+      l: str("R")
 
 
-#  FIXME: Collect Pada adhikara from 8.1.16
+#  FIXME: Collect Pada aDikAra from 8.1.16
+- sutra: नलोपः प्रातिपदिकान्तस्य
+  id: 8.2.7
+  condition:
+     lp:
+       - and
+       - ?prAtipadika
+       - ?pada
+     l:  n
+  xform:
+     l: null
+
 - sutra: संयोगान्तस्य लोपः
   id: 8.2.23
   condition:
@@ -700,9 +721,9 @@
      r: l+r
 
 
-# End Pada adhikara 8.3.54
+# End Pada aDikAra 8.3.54
 
-# mUrDanyAdeSa adhikara
+# mUrDanyAdeSa aDikAra
 #  210: अपदान्तस्य मूर्धन्यः (8-3-55) 
 # 211: इण्कोः (8-3-57) 
 #  212: आदेशप्रत्यययोः (8-3-59) 
@@ -724,7 +745,7 @@
 # FIXME Get apadAntasya done
 # FIXME नुम्विसर्जनीयशर्व्यवायेऽपि (8-3-58) 
 
-# end mUrDanyAdeza adhikara
+# end mUrDanyAdeza aDikAra
 
 
 - sutra: झलां जश् झशि
@@ -767,7 +788,7 @@
      1: tuk
 
 
-# Sutras in this adhikara set the ru_anu tag to backtrigger 8.3.2/3/4
+# Sutras in this aDikAra set the ru_anu tag to backtrigger 8.3.2/3/4
 # - sutra: अत्रानुनासिकः पूर्वस्य तु वा
 #   id: 8.3.2
 #   optional: True
@@ -800,7 +821,7 @@
      lp: [+ru, +ru_anu]
 
 
-# 8.3.12 - End of 8.3.2 adhikara
+# 8.3.12 - End of 8.3.2 aDikAra
 
 # "Visarga" Sandhi
 - sutra: ससजुषो रुः
@@ -962,7 +983,7 @@
 
 
 ## Rules added for pratyayas etc.
-# aNga adhikara
+# aNga aDikAra
 
 # 209: नामि (6-4-3) 
 - sutra: नामि 
@@ -980,6 +1001,57 @@
   xform:
      l: dirgha(l)
 
+# asidDavat aDikAra 6.4.22-6.4.175
+# FIXME Implement this priority correctly
+- sutra: अल्लोपोऽनः
+  id: 6.4.134
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     1: str("n")
+     
+- sutra: विभाषा ङिश्योः
+  id: 6.4.136
+  overrides: 6.4.134
+  optional: true
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+     rp:
+       - ?Ni
+       - ?SI
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     1: str("n")
+
+- sutra: ओर्गुणः
+  id: 6.4.146
+  overrides: [7.2.115, 7.2.116]
+  condition:
+     lp: ?aNga
+     l: u
+     rp:
+       - and
+       - ?tadDita
+       - ?svAdi
+       - ?!sarvanAmasTAna
+  xform:
+     l: guna(l)
+ 
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
   id: 7.1.9
@@ -1087,7 +1159,7 @@
   xform:
      r: str("I")
      rc: null
-
+     orp: +SI
 
 
 - sutra: अचो ञ्णिति
@@ -1174,27 +1246,30 @@
   id: 1.1.5
   overrides: [7.3.84, 7.3.86]
   condition:
-     - lp: ?aNga
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - +k
+         - +N
+  xform: null
+  
+- sutra: क्ङिति च
+  id: 1.1.5.1
+  overrides: [7.3.84, 7.3.86]
+  condition:
+     - lp:
+        - and
+        - ?aNga
+       ll: _ik
        rp:
          - +k
          - +N
   xform: null
 
-# TadDita adhikAra
-- sutra: ओर्गुणः
-  id: 6.4.146
-  overrides: [7.2.115, 7.2.116]
-  condition:
-     lp: ?aNga
-     l: u
-     rp:
-       - and
-       - ?tadDita
-       - ?svAdi
-       - ?!sarvanAmasTAna
-  xform:
-     l: guna(l)
-     
+# TadDita aDikAra
+    
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117
   condition:
@@ -1212,8 +1287,8 @@
      lc: adivriddhi(lc)
 
 
-# End taddhita adhikara
-# End aNga adhikara
+# End taddhita aDikAra
+# End aNga aDikAra
 
 # Agamas
 # Am

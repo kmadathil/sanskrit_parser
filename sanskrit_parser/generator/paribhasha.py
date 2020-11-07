@@ -84,7 +84,19 @@ def adivriddhi(s: str):
 
 def pAdAdi_AdeSa(s: str):
     d = {
-        "pAda": "pad" 
+        "pAda": "pad",
+        "danta": "dat",
+        "nAsikA": "nas",
+        "mAsa": "mAs",
+        "hfdaya": "hfd",
+        "niSA": "niS",
+        "asfj": "asan",
+        "yUza": "yUzan",
+        "doza": "dozan",
+        "yakft": "yakan",
+        "Sakft": "Sakan",
+        "udaka": "udan",
+        "Asya": "Asan",
         }
     if s in d:
         return d[s]
@@ -103,7 +115,7 @@ def rz_vyavaya_l(s: str):
     i = len(s)-1
     while(i>=0):
         # ऋवर्णात् नस्य णत्वं वाच्यम्
-        if ((s[i] =="r") or (s[i] =="r") or (s[i] =="f")):
+        if ((s[i] =="r") or (s[i] =="z") or (s[i] =="f")):
             return True
         elif awkupvaNnum(s[i]):
             i = i-1
@@ -122,6 +134,23 @@ def rz_vyavaya_r(s: str):
                 return True
         elif awkupvaNnum(s[i]):
             i = i+1
+        else:
+            return False
+    return False
+
+# For situations like yUzan + i yUzaRi
+def rz_vyavaya_n(s: str):
+    if len(s) == 0:
+        return False
+    if (s[-1] != "n"):
+        return False
+    i = len(s)-2
+    while(i>=0):
+        # ऋवर्णात् नस्य णत्वं वाच्यम्
+        if ((s[i] =="r") or (s[i] =="z") or (s[i] =="f")):
+            return True
+        elif awkupvaNnum(s[i]):
+            i = i-1
         else:
             return False
     return False

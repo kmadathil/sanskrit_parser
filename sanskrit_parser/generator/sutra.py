@@ -5,6 +5,7 @@ Operational Sutras
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from decimal import Decimal
 from copy import deepcopy
+from paninian_object import PaninianObject
 
 import logging
 logger = logging.getLogger(__name__)
@@ -131,6 +132,9 @@ class LRSutra(Sutra):
             itx = self.insertx(env)
             r = [s1, s2]
             for i in itx:
+                if not isinstance(itx[i], PaninianObject):
+                    assert isinstance(itx[i], str)
+                    itx[i] = PaninianObject(itx[i])
                 r.insert(i, itx[i])
             logger.debug(f"After insertion {r}")
             return r
