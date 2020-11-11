@@ -352,10 +352,8 @@ class Prakriya(object):
             print("Hierarchical Prakriya")
             h.describe()
         print(f"Input {self.inputs}")
-        #for s in self.stages:
-        #    s.describe()
         self.tree.describe()
-        print(f"Final Output {self.outputs}\n\n")
+        print(f"Final Output {self.outputs} = {[''.join([str(x) for x in y]) for y in self.outputs]}\n\n")
 
     def dict(self):
         return self.tree.dict()
