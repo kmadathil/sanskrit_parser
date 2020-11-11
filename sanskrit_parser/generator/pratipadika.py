@@ -25,8 +25,14 @@ class Pratipadika(PaninianObject):
 
 rAma = Pratipadika("rAma", "pum")
 kavi = Pratipadika("kavi", "pum")
-rAjan = Pratipadika("rAjan", "pum")
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
 yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
-                
 sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
+
+# क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति 
+viSvapA = Pratipadika("viSvapA", "pum", other_tags=["DAtu", "vic"])
+hAhA = Pratipadika("hAhA", "pum")
+
+rAjan = Pratipadika("rAjan", "pum")
+
+

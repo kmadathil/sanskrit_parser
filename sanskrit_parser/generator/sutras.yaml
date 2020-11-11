@@ -220,7 +220,7 @@
     id: 6.1.97
     overrides: 6.1.101
     condition:
-       l: a
+       l: at
        lp: ?!pada
        r: [at, _eN]
     xform:
@@ -232,6 +232,7 @@
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
     overrides: 6.1.97
+    bahiranga: 1
     condition:
        l: _ak
        r: _ac
@@ -252,8 +253,9 @@
        l: _ak
        rp:
          - and
-         - =as
-         - ?dvitIyA
+#         - =as
+#         - ?dvitIyA
+         - ?Sas
          - ?psavarRa
     xform:
        r: l
@@ -273,6 +275,9 @@
 # 194: अमिपूर्वः (6-1-107) 
 -   sutra:  अमिपूर्वः
     id: 6.1.107
+    # FIXME: This prevents 7.3.102 from triggering, but we need a proper
+    # fix for pUrvaparayOH
+    overrides: 7.3.102
     condition:
        l: _ak
        rp:
@@ -280,12 +285,13 @@
          - =am
          - ?pratyaya
     xform:
-       l: null
+       r: null
  
 #165: नादिचि (6-1-104) 
 -   sutra: नादिचि
     id: 6.1.104
     overrides: 6.1.102
+    bahiranga: 1
     condition:
        l: a
        r: _ic
@@ -294,6 +300,30 @@
          - ?dvitIyA
          - ?samboDana
     xform: null
+    
+#239: दीर्घाज्जसि च (6-1-105) 
+-   sutra: दीर्घाज्जसि च
+    id: 6.1.105
+    overrides: [6.1.102, 6.1.104]
+    bahiranga: 1
+    condition:
+       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform: null
+-   sutra: दीर्घाज्जसि च
+    id: 6.1.105.1
+    overrides: 6.1.102
+    bahiranga: 1
+    condition:
+       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       rp:
+         - ?jas
+    xform: null
+
 
 # 90: प्लुतप्रगृह्या अचि नित्यम् (6-1-125)
 -   sutra:  प्लुतप्रगृह्या अचि नित्यम् 
@@ -1037,6 +1067,20 @@
      l: null
   insert:
      1: str("n")
+     
+# 240: आतो धातोः (6-4-140) 
+- sutra: आतो धातोः
+  id: 6.4.140
+  bahiranga: 1
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?DAtu
+     l: At
+  xform:
+     l: null
 
 - sutra: ओर्गुणः
   id: 6.4.146
@@ -1419,6 +1463,8 @@
 
 # sarvanAma
 # 218-227
+
+# 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
 
 # Soon
 # viBakti - need for non adanta
