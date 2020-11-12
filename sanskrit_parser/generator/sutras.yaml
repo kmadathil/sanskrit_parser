@@ -265,7 +265,7 @@
 -   sutra: एङ्ह्रस्वात्संबुद्धेः
     id: 6.1.69
     condition:
-       l: [at, it, ut, _eN]
+       l: [at, it, ut, ft, xt, _eN]
        r: _hal
        rp:
          - ?sambudDi
@@ -385,6 +385,17 @@
       l: _eN
       r: at
       lp: ?pada
+    xform:
+      r: null
+
+# 246: ङसिङसोश्च (6-1-110) 
+-   sutra: ङसिङसोश्च
+    id: 6.1.110
+    condition:
+      l: _eN
+      rp:
+        - ?Nas
+        - ?Nasi
     xform:
       r: null
 
@@ -1285,6 +1296,69 @@
        - ?os
   xform:
      l: str("e")
+     
+# 242: ह्रस्वस्य गुणः (7-3-108) 
+-   sutra: ह्रस्वस्य गुणः
+    id: 7.3.108
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?sambudDi
+    xform:
+       l: guna(l)
+       
+# 241: जसि च (7-3-109) 
+-   sutra:  जसि च
+    id: 7.3.109
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?jas
+    xform:
+       l: guna(l)
+       
+#  245: घेर्ङिति (7-3-111) 
+-   sutra:  घेर्ङिति
+    id: 7.3.111
+    condition:
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp: +N
+    xform:
+       l: guna(l)
+       
+#  247: अच्च घेः (7-3-119) 
+-   sutra:  अच्च घेः 
+    id: 7.3.119
+    condition:
+       l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp: ?Ni
+    xform:
+       l: str("a")
+       r: str("O")
+       
+
+#  244: आङो नाऽस्त्रियाम् (7-3-120) 
+-   sutra:  आङो नाऽस्त्रियाम्
+    id: 7.3.120
+    condition:
+       lp:
+         - "and"
+         - ?Gi
+         - ?!strI
+       rp:
+         - ?wA
+    xform:
+       r: str("nA")
+
 
 - sutra: क्ङिति च
   id: 1.1.5
@@ -1366,7 +1440,7 @@
      r: str("nA")
 
 # saMjYA prakaraRam
-# FIXME get this working - need different Domains
+
 # 213: सर्वादीनि सर्वनामानि (1-1-27)
 - sutra: सर्वादीनि सर्वनामानि
   domain: saMjYA
@@ -1385,6 +1459,19 @@
      lp: ?!napumsaka
   update:
      orp: +sarvanAmasTAna
+     
+# 243: शेषो घ्यसखि (1-4-7) 
+- sutra: शेषो घ्यसखि
+  domain: saMjYA
+  id: 1.4.7
+  condition:
+     l: [it, ut]
+     lp:
+       - "and"
+       - ?!strI
+       - ?!saKi
+  update:
+     olp: +Gi
 
 - sutra: स्वादिष्वसर्वनामस्थाने
   domain: saMjYA

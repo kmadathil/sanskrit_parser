@@ -141,7 +141,7 @@ def cmd_line():
     enable_console_logger()
     args = get_args()
     if args.debug:
-        enable_file_logger()
+        enable_file_logger(level=logging.DEBUG)
     logger.info(f"Inputs {args.inputs}")
     for i in args.inputs:
         def _i(x):
