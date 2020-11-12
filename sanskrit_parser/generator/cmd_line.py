@@ -17,7 +17,7 @@ from sanskrit_parser import enable_file_logger, enable_console_logger
 
 logger = logging.getLogger(__name__)
 
-def run_pp(s):
+def run_pp(s, verbose=False):
     pl = []
     # Assemble list of inputs
     for i in range(len(s)):
@@ -31,9 +31,32 @@ def run_pp(s):
         pl.append(l)
     p = Prakriya(sutra_list,PrakriyaVakya(pl))
     p.execute()
-    p.describe()
+    if verbose:
+        p.describe()
     o = p.output()
     return o
+
+## Insert all sup vibhaktis one after the other, with avasAnas
+## Return results with avasAnas stripped as 8x3 list of lists
+def generate_vibhakti(pratipadika, verbose=False):
+    r = []
+    for ix, s in enumerate(sups):
+        if verbose:
+            logger.info(f"Vibhakti {ix+1} {s}")
+        else:
+            logger.debug(f"Vibhakti {ix+1} {s}")
+        r.append([])
+        for jx, ss in enumerate(s):
+            t = [(pratipadika, sups[ix][jx]), avasAna]
+            _r = run_pp(t, verbose)
+            r[-1].append(_r)
+            p = [''.join([str(x) for x in y]) for y in _r]
+            pp = ", ".join([x.strip('.') for x in p])
+            if verbose:
+                logger.info(f"Vacana {jx+1} {ss} {pp}")
+            else:
+                logger.debug(f"Vacana {jx+1} {ss} {pp}")
+    return r
 
 last_option = False
 
@@ -133,6 +156,8 @@ def get_args(argv=None):
     parser.add_argument('-o', nargs="?", dest="inputs",action=CustomAction, help="Open bracket") # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs",action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs",action=CustomAction, help="Avasana")
+    parser.add_argument("--vibhakti", action="store_true", help="generate all vibhaktis")
+    parser.add_argument("--verbose", action="store_true", help="verbose")
 
     return parser.parse_args(argv)
 
@@ -152,4 +177,13 @@ def cmd_line():
                 logger.info(f"{x} {x.tags}")
         _i(i)            
     logger.info("End Inputs")
-    run_pp(args.inputs)
+    if args.vibhakti:
+        assert ((len(args.inputs) ==1) and isinstance(args.inputs[0], Pratipadika)), \
+            f"Need a single pratipadika for generating vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}"
+        r = generate_vibhakti(args.inputs[0], args.verbose)
+        print("Output")
+        for ix, vi in enumerate(r):
+            print(f"{', '.join(['/'.join([''.join([str(x) for x in y]).strip('.') for y in va]) for va in vi])}")
+    else:
+        r = run_pp(args.inputs, args.verbose)
+        print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

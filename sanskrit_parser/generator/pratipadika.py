@@ -26,6 +26,8 @@ class Pratipadika(PaninianObject):
 rAma = Pratipadika("rAma", "pum")
 kavi = Pratipadika("kavi", "pum")
 hari = Pratipadika("hari", "pum")
+saKi = Pratipadika("saKi", "pum", other_tags=["saKi"])
+pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
 yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
 sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
