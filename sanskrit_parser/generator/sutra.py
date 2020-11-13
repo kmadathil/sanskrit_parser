@@ -147,11 +147,11 @@ def _env(s1, s2):
     env["lp"] = s1
     env["rp"] = s2
     if s1.canonical() == "":
-        env["l"] = ""
+        env["l"] = SanskritImmutableString("")
     else:
         env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
     if s2.canonical() == "":
-        env["r"] = ""
+        env["r"] = SanskritImmutableString("")
     else:
         env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
     if len(s1.canonical()) > 1:

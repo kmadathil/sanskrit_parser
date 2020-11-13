@@ -261,6 +261,27 @@
        r: l
        rc: str("n")
        
+# 252: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् (6-1-68)        
+-   sutra: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् 
+    id: 6.1.68
+    condition:
+      - l: _hal
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+      - lp: ?NyAp
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+    xform:
+       r: null
+    update:
+       olp: +pada
+       
 # 193: एङ्ह्रस्वात्संबुद्धेः (6-1-69)
 -   sutra: एङ्ह्रस्वात्संबुद्धेः
     id: 6.1.69
@@ -398,6 +419,20 @@
         - ?Nasi
     xform:
       r: null
+      
+# 255: ख्यत्यात्परस्य (6-1-112) 
+-   sutra: ख्यत्यात्परस्य
+    id: 6.1.112
+    condition:
+      l: =y
+      ll:
+       - =t
+       - =K
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: str("u")
 
 # hal sandhi
 - sutra: छे च
@@ -551,6 +586,20 @@
   xform:
      l: dirgha(l)
 
+#250: सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
+- sutra: सर्वनामस्थाने चासम्बुद्धौ
+  id: 6.4.8
+  condition:
+     l: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+
+
 - sutra: अनुस्वारस्य ययि परसवर्णः
   id: 8.4.58
   condition:
@@ -695,7 +744,7 @@
        - and
        - ?prAtipadika
        - ?pada
-     l:  n
+     l: n
   xform:
      l: null
 
@@ -1214,8 +1263,23 @@
   xform:
      r: str("I")
      rc: null
+  update:
      orp: +SI
 
+# 253: सख्युरसंबुद्धौ (7-1-92) 
+- sutra:  सख्युरसंबुद्धौ
+  id: 7.1.92
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?saKi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  update:
+     orp: ++R
 
 - sutra: अचो ञ्णिति
   id: 7.2.115
@@ -1331,6 +1395,20 @@
     xform:
        l: guna(l)
        
+#  256: औत् (7-3-118) 
+-   sutra:  औत्
+    id: 7.3.118
+    condition:
+       l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?!Gi
+        - ?!nadI
+       rp: ?Ni
+    xform:
+       r: str("O")
+       
 #  247: अच्च घेः (7-3-119) 
 -   sutra:  अच्च घेः 
     id: 7.3.119
@@ -1439,6 +1517,20 @@
   xform:
      r: str("nA")
 
+# saKi
+# 248: अनङ् सौ (7-1-93) 
+- sutra:  अनङ् सौ
+  id: 7.1.93
+  condition:
+     lp:
+      - ?saKi
+     rp:
+      - and
+      - ?su
+      - ?!sambudDi
+  xform:
+     l: str("an") # Nicca
+
 # saMjYA prakaraRam
 
 # 213: सर्वादीनि सर्वनामानि (1-1-27)
@@ -1472,6 +1564,30 @@
        - ?!saKi
   update:
      olp: +Gi
+
+# FIXME - remember to test this when samAsa is implemented
+# 257: पतिः समास एव (1-4-8)
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  id: 1.4.8
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?samAsa
+  update:
+     olp: +Gi
+     
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  id: 1.4.8.1
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?!samAsa
+  update: null
+
 
 - sutra: स्वादिष्वसर्वनामस्थाने
   domain: saMjYA
@@ -1552,6 +1668,7 @@
 # 218-227
 
 # 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
+
 
 # Soon
 # viBakti - need for non adanta

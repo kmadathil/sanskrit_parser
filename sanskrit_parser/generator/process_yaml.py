@@ -133,6 +133,10 @@ def process_yaml(y):
                 xdict = s
                 # FIXME Fix variables after fixing sutra_engine
                 def _xform(env):
+                    #Don't Remove - keep for debug
+                    #logger.debug(f"Env {env}")
+                    #for k in env:
+                    #    logger.debug(f"{k} {type(env[k])}")
                     _l = l = env["l"].canonical()
                     _r = r = env["r"].canonical()
                     _lc = lc = env["lc"].canonical()
@@ -229,7 +233,13 @@ def process_yaml(y):
                         if k in s.keys():
                            # Set or remove one tag
                            def _tag(k,sk):
-                               if sk[0] == "+":
+                               if sk[0:2] == "++":
+                                   logger.debug(f"Setting {k} it {sk[2:]}")
+                                   env[k].setIt(sk[2:])
+                               elif sk[0:2] == "--":
+                                   logger.debug(f"Removing {k} it {sk[1:]}")
+                                   env[k].deleteIt(sk[2:])
+                               elif sk[0] == "+":
                                    logger.debug(f"Setting {k} tag {sk[1:]}")
                                    env[k].setTag(sk[1:])
                                elif sk[0] == "-":

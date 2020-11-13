@@ -19,6 +19,15 @@ class Pratyaya(PaninianObject):
                 
     def hasIt(self, it):
         return it in self.its
+    
+    def setIt(self, it):
+        if it not in self.its:
+            self.its.append(it)
+            
+    def deleteIt(self,it):
+        return self.its.remove(t)
+
+    
 
 tuk = Pratyaya("t",its=["k"])
 
@@ -57,7 +66,7 @@ aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 
 # sup
 #स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
-su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "suw"])
+su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup",  "su", "suw"])
 O  = Pratyaya("O", other_tags=["svAdi", "sup", "suw"])
 jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "jas",
                                             "suw"])
@@ -79,7 +88,7 @@ Am  = Pratyaya("Am", other_tags=["svAdi", "Am", "sup"])
 Ni = Pratyaya("i",its=["N"], other_tags=["svAdi", "Ni", "sup"])
 os2  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
 sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
-su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "suw",
+su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "suw", "su",
                                            "sambudDi"])
 O2  = Pratyaya("O", other_tags=["svAdi", "sup", "suw"])
 jas2  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "suw", "jas"])

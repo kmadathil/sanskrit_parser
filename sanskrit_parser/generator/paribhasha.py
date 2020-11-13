@@ -166,6 +166,9 @@ def Ratva(s):
 def notnull(s):
     return ((s != None) and (s != ""))
 
+def null(s):
+    return ((s == None) or (s == ""))
+
 # sUtra: adeN guRaH
 def is_guna(s: str):
     so = SanskritImmutableString(s, encoding=SLP1)
