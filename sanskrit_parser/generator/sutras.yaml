@@ -39,8 +39,10 @@
 #    r: ""
 # 
 # Update:
-#   lp: +ru - sets tag "ru" on lp
-#   rp: -pada - removes "pada" tag from rp
+#   olp: +ru - sets tag "ru" on output lp 
+#   olp: ++R - sets it R on output lp 
+#   orp: -pada - removes "pada" tag from output rp
+#   olp: --Y - removes it Y on output lp 
 #   domain: - sets domain triggers
 #     xxx_domain:   - sets domain trigger xxx_domain
 #         value: True - to True
@@ -1266,6 +1268,22 @@
   update:
      orp: +SI
 
+# 261: षड्भ्यो लुक् (7-1-22) 
+- sutra: षड्भ्यो लुक् 
+  id: 7.1.22
+  overrides: 7.3.109 # FIXME: Nitya
+  condition:
+     lp:
+      - ?zaw
+     rp:
+      - ?jas
+      - ?Sas
+  xform:
+     r: null
+     rc: null
+  update:
+     orp: +luk
+
 # 253: सख्युरसंबुद्धौ (7-1-92) 
 - sutra:  सख्युरसंबुद्धौ
   id: 7.1.92
@@ -1533,6 +1551,26 @@
 
 # saMjYA prakaraRam
 
+- sutra: ष्णान्ता षट्
+  domain: saMjYA
+  id: 1.1.26
+  condition:
+     l: [z, n]
+     lp:
+       - ?saMKyA
+  update:
+     olp: +zaw
+
+# 259: डति च (1-1-25) 
+- sutra:  डति च
+  domain: saMjYA
+  id: 1.1.25
+  condition:
+     lp:
+       - ?qati
+  update:
+     olp: +zaw
+
 # 213: सर्वादीनि सर्वनामानि (1-1-27)
 - sutra: सर्वादीनि सर्वनामानि
   domain: saMjYA
@@ -1552,6 +1590,19 @@
   update:
      orp: +sarvanAmasTAna
      
+# 263: न लुमताङ्गस्य (1-1-63)
+- sutra: न लुमताङ्गस्य
+  domain: saMjYA
+  id: 1.1.63
+  condition:
+     rp:
+       - ?luk
+       - ?Slu
+       - ?lup
+     lp: ?aNga
+  update:
+     orp: _lu # Strip all tags, prevent pratyayalakzaRa
+ 
 # 243: शेषो घ्यसखि (1-4-7) 
 - sutra: शेषो घ्यसखि
   domain: saMjYA
@@ -1668,6 +1719,7 @@
 # 218-227
 
 # 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
+# 258: बहुगणवतुडति सङ्ख्या (1-1-23)
 
 
 # Soon

@@ -27,7 +27,14 @@ class Pratyaya(PaninianObject):
     def deleteIt(self,it):
         return self.its.remove(t)
 
-    
+    def luTags(self):
+        _l = []
+        for t in self.tags:
+            if not (t in ["luk", "Slu", "lup"]):
+                _l.append(t)
+        for t in _l:
+            self.tags.remove(t)
+
 
 tuk = Pratyaya("t",its=["k"])
 

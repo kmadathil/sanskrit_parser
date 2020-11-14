@@ -38,4 +38,6 @@ hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
 
+# FIXME - remove this, derive from qati
 
+kati = Pratipadika("kati", "pum", other_tags=["qati"])
