@@ -61,12 +61,19 @@ def generate_vibhakti(pratipadika, vibhaktis):
     for ix, pv in enumerate(vibhaktis):
         #print(f"test vibakti {ix} {pv}")
         for jx, pvv in enumerate(pv):
-            #print(f"test {jx} {pvv}")
-            if isinstance(pvv, str):
-                _pvv = pvv+avasAna.transcoded(DEVANAGARI)
-            else:
-                _pvv = [x+avasAna.transcoded(DEVANAGARI) for x in pvv]
-            t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
+            # For nitya eka/dvi/bahuvacana, generate only the appropriate
+            if (((jx==0) and pratipadika.hasTag("nityEkavacana")) or
+                ((jx==1) and pratipadika.hasTag("nityadvivacana")) or
+                ((jx==2) and pratipadika.hasTag("nityabahuvacana")) or
+                (not (pratipadika.hasTag("nityEkavacana") or
+                      pratipadika.hasTag("nityadvivacana") or
+                      pratipadika.hasTag("nityabahuvacana")))):
+                #print(f"test {jx} {pvv}")
+                if isinstance(pvv, str):
+                    _pvv = pvv+avasAna.transcoded(DEVANAGARI)
+                else:
+                    _pvv = [x+avasAna.transcoded(DEVANAGARI) for x in pvv]
+                t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
     print(t)
     return t
 

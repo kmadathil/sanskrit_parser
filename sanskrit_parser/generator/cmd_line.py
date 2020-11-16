@@ -47,15 +47,22 @@ def generate_vibhakti(pratipadika, verbose=False):
             logger.debug(f"Vibhakti {ix+1} {s}")
         r.append([])
         for jx, ss in enumerate(s):
-            t = [(pratipadika, sups[ix][jx]), avasAna]
-            _r = run_pp(t, verbose)
-            r[-1].append(_r)
-            p = [''.join([str(x) for x in y]) for y in _r]
-            pp = ", ".join([x.strip('.') for x in p])
-            if verbose:
-                logger.info(f"Vacana {jx+1} {ss} {pp}")
-            else:
-                logger.debug(f"Vacana {jx+1} {ss} {pp}")
+            # For nitya eka/dvi/bahuvacana, generate only the appropriate
+            if (((jx==0) and pratipadika.hasTag("nityEkavacana")) or
+                ((jx==1) and pratipadika.hasTag("nityadvivacana")) or
+                ((jx==2) and pratipadika.hasTag("nityabahuvacana")) or
+                (not (pratipadika.hasTag("nityEkavacana") or
+                      pratipadika.hasTag("nityadvivacana") or
+                      pratipadika.hasTag("nityabahuvacana")))):
+                t = [(pratipadika, ss), avasAna]
+                _r = run_pp(t, verbose)
+                r[-1].append(_r)
+                p = [''.join([str(x) for x in y]) for y in _r]
+                pp = ", ".join([x.strip('.') for x in p])
+                if verbose:
+                    logger.info(f"Vacana {jx+1} {ss} {pp}")
+                else:
+                    logger.debug(f"Vacana {jx+1} {ss} {pp}")
     return r
 
 last_option = False

@@ -40,4 +40,9 @@ rAjan = Pratipadika("rAjan", "pum")
 
 # FIXME - remove this, derive from qati
 
-kati = Pratipadika("kati", "pum", other_tags=["qati"])
+kati = Pratipadika("kati", "pum", other_tags=["qati", "nityabahuvacana"])
+
+# saMKyA
+tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
+
+

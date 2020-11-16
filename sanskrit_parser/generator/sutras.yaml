@@ -1283,6 +1283,21 @@
      rc: null
   update:
      orp: +luk
+     
+# 264: त्रेस्त्रयः (7-1-53) 
+- sutra:  त्रेस्त्रयः
+  id: 7.1.53
+  condition:
+     lp:
+      - and
+      - =tri
+      - ?saMKyA
+     rp:
+      - ?Am
+  xform:
+     l: str("traya")
+     lc: null
+
 
 # 253: सख्युरसंबुद्धौ (7-1-92) 
 - sutra:  सख्युरसंबुद्धौ
