@@ -15,6 +15,7 @@ class Pratipadika(PaninianObject):
             self.linga = linga
             self.inPrakriya = True
             self.setTag("prAtipadika")
+            self.setTag(linga)
             #self.setTag("aNga")
             for t in other_tags:
                 self.setTag(t)
@@ -31,6 +32,17 @@ pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
 yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
 sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
+krozwu = Pratipadika("krozwu", "pum")
+
+# f
+pitf = Pratipadika("pitf", "pum")
+tvazwf = Pratipadika("tvazwf", "pum", other_tags=["svasrAdi"])
+naptf = Pratipadika("naptf", "pum", other_tags=["svasrAdi"])
+nezwf = Pratipadika("nezwf", "pum", other_tags=["svasrAdi"])
+kzatf = Pratipadika("kzatf", "pum", other_tags=["svasrAdi"])
+hotf = Pratipadika("hotf", "pum", other_tags=["svasrAdi"])
+potf = Pratipadika("potf", "pum", other_tags=["svasrAdi"])
+praSAstf = Pratipadika("praSAstf", "pum", other_tags=["svasrAdi"])
 
 # क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति 
 viSvapA = Pratipadika("viSvapA", "pum", other_tags=["DAtu", "vic"])
@@ -44,5 +56,10 @@ kati = Pratipadika("kati", "pum", other_tags=["qati", "nityabahuvacana"])
 
 # saMKyA
 tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
-
+dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
+                                            'tyadAdi'])
+# Stri
+ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana"])
+mAtf = Pratipadika("mAtf", "strI")
+svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi"])
 

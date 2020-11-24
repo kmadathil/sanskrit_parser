@@ -89,30 +89,41 @@ prAtipadika = {}
 #     ["सख्यौ", "सख्योः", "सखिषु"],
 #     ["सखे", "सखायौ", "सखायः"],
 # ]
-
-prAtipadika["tri"] = tri
-viBakti["tri"] = [
-    [None, None, "त्रयः"],
-    [None, None, "त्रीन्"],
-    [None, None, "त्रिभिः"],
-    [None, None, "त्रिभ्यः"],
-    [None, None, "त्रिभ्यः"],
-    [None, None, "त्रयाणाम्"],
-    [None, None, "त्रिषु"],
-    [None, None, "त्रयः"],
+prAtipadika["dvi"] = dvi
+viBakti["dvi"] = [
+    [None,  "द्वौ", None],
+    [None,  "द्वौ", None],
+    [None,  "द्वाभ्याम्", None],
+    [None,  "द्वाभ्याम्", None],
+    [None,  "द्वाभ्याम्", None],
+    [None,  "द्वयोः", None],
+    [None,  "द्वयोः", None],
+    [None,  "द्वौ", None],
 ]
 
-prAtipadika["kati"] = kati
-viBakti["kati"] = [
-    [None, None, "कति"],
-    [None, None, "कति"],
-    [None, None, "कतिभिः"],
-    [None, None, "कतिभ्यः"],
-    [None, None, "कतिभ्यः"],
-    [None, None, "कतीनाम्"],
-    [None, None, "कतिषु"],
-    [None, None, "कति"],
-]
+# prAtipadika["tri"] = tri
+# viBakti["tri"] = [
+#     [None, None, "त्रयः"],
+#     [None, None, "त्रीन्"],
+#     [None, None, "त्रिभिः"],
+#     [None, None, "त्रिभ्यः"],
+#     [None, None, "त्रिभ्यः"],
+#     [None, None, "त्रयाणाम्"],
+#     [None, None, "त्रिषु"],
+#     [None, None, "त्रयः"],
+# ]
+
+# prAtipadika["kati"] = kati
+# viBakti["kati"] = [
+#     [None, None, "कति"],
+#     [None, None, "कति"],
+#     [None, None, "कतिभिः"],
+#     [None, None, "कतिभ्यः"],
+#     [None, None, "कतिभ्यः"],
+#     [None, None, "कतीनाम्"],
+#     [None, None, "कतिषु"],
+#     [None, None, "कति"],
+# ]
 
 from sutras_yaml import sutra_list
 

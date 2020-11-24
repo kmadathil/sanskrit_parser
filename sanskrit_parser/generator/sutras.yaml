@@ -253,6 +253,10 @@
     overrides: 6.1.97
     condition:
        l: _ak
+       lp:
+        - and
+        - ?aNga
+        - ?pum
        rp:
          - and
 #         - =as
@@ -421,6 +425,19 @@
         - ?Nasi
     xform:
       r: null
+      
+# 279: ऋत उत् (6-1-111) 
+-   sutra:  ऋत उत्
+    id: 6.1.111
+    overrides: 8.4.46 # FIXME: Why do we need this? pituH
+    condition:
+      l: ft
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: null
+      l: str("ur")  # Uran raparaH
       
 # 255: ख्यत्यात्परस्य (6-1-112) 
 -   sutra: ख्यत्यात्परस्य
@@ -704,19 +721,11 @@
 - sutra: रषाभ्यां नो णः समानपदे
   id: 8.4.1
   condition:
-     l: [r, z]
+     l: [r, z, f] # ऋवर्णात् नस्य णत्वं वाच्यम्
      r: n
   xform:
      r: str("R")
-     
-- sutra: ऋवर्णात् नस्य णत्वं वाच्यम्
-  id: 8.4.1.1
-  condition:
-     l: f
-     r: n
-  xform:
-     r: str("R")
-     
+
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2
   condition:
@@ -736,7 +745,15 @@
        - $$notnull
   xform:
       l: str("R")
-
+      
+- sutra: पदान्तस्य
+  id: 8.4.37
+  overrides: [8.4.1, 8.4.2] 
+  condition:
+     l: [r, z, f]
+     r: n
+     rr: $$null
+  xform: null
 
 #  FIXME: Collect Pada aDikAra from 8.1.16
 - sutra: नलोपः प्रातिपदिकान्तस्य
@@ -758,6 +775,24 @@
      l:  _hal
   xform:
      l: null
+     
+# 280: रात्सस्य (8-2-24)
+- sutra: रात्सस्य
+  id: 8.2.24
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: r
+     l:  s
+  xform:
+     l: null
+- sutra: रात्सस्य
+  id: 8.2.24.1
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: r
+  xform: null
 
 # Vartikam
 - sutra: यणः प्रतिषेधो वाच्यः 
@@ -1093,6 +1128,47 @@
   xform:
      l: dirgha(l)
 
+# FIXME simplify once we have and/or in condition
+
+# 277: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् (6-4-11)
+- sutra: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् 
+  id: 6.4.11
+  condition:
+   - lp:
+      - and
+      - ?aNga
+      - ?tfc
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?tfn
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =ap
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?svasrAdi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
 # asidDavat aDikAra 6.4.22-6.4.175
 # FIXME Implement this priority correctly
 - sutra: अल्लोपोऽनः
@@ -1314,6 +1390,90 @@
   update:
      orp: ++R
 
+# 276: ऋदुशनस्पुरुदंसोऽनेहसां च (7-1-94)      
+- sutra:  ऋदुशनस्पुरुदंसोऽनेहसां च
+  id: 7.1.94
+  overrides: 7.3.110
+  condition:
+     - l: ft
+       lp: ?aNga
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =uSanas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =purudaMsas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =anehas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+     l: str("an")
+
+# 274: तृज्वत्क्रोष्टुः (7-1-95) 
+- sutra:  तृज्वत्क्रोष्टुः
+  id: 7.1.95
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     l: str("f")
+  update:
+     olp: -Gi  # FIXME: Should need to do this specifically
+     
+# 278: विभाषा तृतीयादिष्वचि (7-1-97) 
+- sutra:  विभाषा तृतीयादिष्वचि
+  id: 7.1.97
+  optional: true
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+  xform:
+     l: str("f")
+  update:
+     olp: -Gi  # FIXME: Should need to do this specifically
+
+# 265: त्यदादीनामः (7-2-102) 
+- sutra:  त्यदादीनामः
+  id: 7.2.102
+  condition:
+     lp: ?tyadAdi
+     rp: ?sup
+  xform:
+     l: str("a")
+
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
@@ -1413,6 +1573,18 @@
        l: [at, it, ut, ft, xt]
        rp:
          - ?jas
+    xform:
+       l: guna(l)
+       
+#  275: ऋतो ङिसर्वनामस्थानयोः (7-3-110) 
+-   sutra:  ऋतो ङिसर्वनामस्थानयोः
+    id: 7.3.110
+    condition:
+       l: ft
+       lp: ?aNga
+       rp:
+        - ?Ni
+        - ?sarvanAmasTAna
     xform:
        l: guna(l)
        
@@ -1618,6 +1790,18 @@
   update:
      orp: _lu # Strip all tags, prevent pratyayalakzaRa
  
+# 266: यू स्त्र्याख्यौ नदी (1-4-3) 
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3
+  condition:
+     l: [It, Ut]
+     lp:
+       - ?strI
+       - ?purva_strI # प्रथमलिङ्गग्रहणं च 
+  update:
+     olp: +nadI
+
 # 243: शेषो घ्यसखि (1-4-7) 
 - sutra: शेषो घ्यसखि
   domain: saMjYA
@@ -1735,6 +1919,8 @@
 
 # 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
 # 258: बहुगणवतुडति सङ्ख्या (1-1-23)
+
+#266-272 - implement with strI`
 
 
 # Soon
