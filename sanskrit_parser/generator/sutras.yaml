@@ -1428,43 +1428,6 @@
   xform:
      l: str("an")
 
-# 274: तृज्वत्क्रोष्टुः (7-1-95) 
-- sutra:  तृज्वत्क्रोष्टुः
-  id: 7.1.95
-  condition:
-     lp:
-      - and
-      - =krozwu
-      - ?aNga
-     rp:
-      - and
-      - ?sarvanAmasTAna
-      - ?!sambudDi
-  xform:
-     l: str("f")
-  update:
-     olp: -Gi  # FIXME: Should need to do this specifically
-     
-# 278: विभाषा तृतीयादिष्वचि (7-1-97) 
-- sutra:  विभाषा तृतीयादिष्वचि
-  id: 7.1.97
-  optional: true
-  condition:
-     lp:
-      - and
-      - =krozwu
-      - ?aNga
-     r: _ac
-     rp:
-      - and
-      - ?!praTamA
-      - ?!dvitIyA
-      - ?!samboDana
-  xform:
-     l: str("f")
-  update:
-     olp: -Gi  # FIXME: Should need to do this specifically
-
 # 265: त्यदादीनामः (7-2-102) 
 - sutra:  त्यदादीनामः
   id: 7.2.102
@@ -1652,7 +1615,32 @@
         - ?aNga
        l: _ik
        rp:
+         - and
+         - ?sArvaDAtuka
          - +k
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?ArDaDAtuka
+         - +k
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?sArvaDAtuka
+         - +N
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?ArDaDAtuka
          - +N
   xform: null
   
@@ -1735,6 +1723,54 @@
       - ?!sambudDi
   xform:
      l: str("an") # Nicca
+
+# prakfti / pratyaya rUpAtideSa
+
+# FIXME: Create a separate domain for this
+# 274: तृज्वत्क्रोष्टुः (7-1-95) 
+- sutra:  तृज्वत्क्रोष्टुः
+  domain: saMjYA
+  id: 7.1.95
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+# 278: विभाषा तृतीयादिष्वचि (7-1-97) 
+- sutra:  विभाषा तृतीयादिष्वचि
+  id: 7.1.97
+  domain: saMjYA
+  optional: true
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+      - ?!Am   # vArtikam नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+
+
 
 # saMjYA prakaraRam
 
