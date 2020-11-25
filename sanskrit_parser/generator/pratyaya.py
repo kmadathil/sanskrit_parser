@@ -77,7 +77,7 @@ su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup",  "su", "suw"])
 O  = Pratyaya("O", other_tags=["svAdi", "sup", "suw"])
 jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "jas",
                                             "suw"])
-am  = Pratyaya("am", other_tags=["svAdi", "sup", "suw"])
+am  = Pratyaya("am", other_tags=["svAdi", "sup", "suw", "am"])
 Ow = Pratyaya("O",its=["w"], other_tags=["svAdi", "sup", "suw"])
 Sas  = Pratyaya("as",its=["S"], other_tags=["svAdi", "sup", "Sas"])
 wA  = Pratyaya("A",its=["w"], other_tags=["svAdi", "wA", "sup"])

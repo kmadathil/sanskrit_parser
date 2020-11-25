@@ -33,9 +33,14 @@ pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
 yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
 sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
 krozwu = Pratipadika("krozwu", "pum")
+suDI = Pratipadika("suDI", "pum")
+SamBu = Pratipadika("SamBu", "pum")
+go = Pratipadika("go", "pum")
+rE = Pratipadika("rE", "pum")
 
 # f
 pitf = Pratipadika("pitf", "pum")
+nf = Pratipadika("nf", "pum")
 tvazwf = Pratipadika("tvazwf", "pum", other_tags=["svasrAdi"])
 naptf = Pratipadika("naptf", "pum", other_tags=["svasrAdi"])
 nezwf = Pratipadika("nezwf", "pum", other_tags=["svasrAdi"])
@@ -44,8 +49,16 @@ hotf = Pratipadika("hotf", "pum", other_tags=["svasrAdi"])
 potf = Pratipadika("potf", "pum", other_tags=["svasrAdi"])
 praSAstf = Pratipadika("praSAstf", "pum", other_tags=["svasrAdi"])
 
+
 # क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति 
 viSvapA = Pratipadika("viSvapA", "pum", other_tags=["DAtu", "vic"])
+senAnI = Pratipadika("senAnI", "pum", other_tags=["DAtu", "kvip"])
+nI = Pratipadika("nI", "pum", other_tags=["DAtu", "kvip"])
+suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip"])
+KalapU = Pratipadika("KalapU", "pum", other_tags=["DAtu", "kvip"])
+varzABU =  Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
+svayamBU =  Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
+
 hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
@@ -62,4 +75,5 @@ dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
 ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana"])
 mAtf = Pratipadika("mAtf", "strI")
 svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi"])
+BrU = Pratipadika("BrU", "strI")
 

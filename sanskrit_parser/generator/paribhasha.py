@@ -163,6 +163,29 @@ def awkupvaNnum(s):
 def Ratva(s):
     return s.replace("n","R",1)
 
+def iyuvaN(s):
+    if isSavarna("i", s):
+        return "iy"
+    elif isSavarna("u", s):
+        return ("uv")
+    else:
+        return s
+
+def anekAc_asaMyogapUrva(s):
+    if ((len(s)>2) and 
+        (isInPratyahara("hal", s[-2]) and 
+        isInPratyahara("hal", s[-3]))):
+        return False
+    ac = 0
+    for sc in s:
+        if isInPratyahara("ac", sc):
+            ac = ac+1
+        if ac > 1:
+            return True
+    return False
+
+
+
 def notnull(s):
     return ((s != None) and (s != ""))
 

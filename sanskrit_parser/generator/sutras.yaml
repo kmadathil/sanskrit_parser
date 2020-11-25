@@ -192,6 +192,21 @@
     update:
       olp: -pada # for pUrvaparayoH
 
+# 285: औतोऽम्शसोः (6-1-93) 
+-   sutra:   औतोऽम्शसोः
+    id: 6.1.93
+    overrides: 7.1.90
+    condition:
+       l: o
+       lp: ?aNga
+       rp:
+         - ?am
+         - ?Sas
+    xform:
+       l: null
+       r: str('A')
+    # for pUrvaparayoH
+    
 # 78: एङि पररूपम् (6-1-94)
 -   sutra:  एङि पररूपम् 
     id: 6.1.94
@@ -1127,6 +1142,26 @@
       - ?Am
   xform:
      l: dirgha(l)
+     
+# 283: नृ च (6-4-6)
+- sutra: नृ च
+  id: 6.4.6
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: [6.4.3, 7.3.102]
+  optional: true
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =nf
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
 
 # FIXME simplify once we have and/or in condition
 
@@ -1171,6 +1206,80 @@
 
 # asidDavat aDikAra 6.4.22-6.4.175
 # FIXME Implement this priority correctly
+
+# 271: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ (6-4-77) 
+- sutra: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ 
+  id: 6.4.77
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+      - i
+      - u
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp: +iyuvaN
+     
+# 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
+- sutra: एरनेकाचोऽसंयोगपूर्वस्य
+  id: 6.4.82
+  condition:
+     l: i
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+  xform:
+     l: str("y")
+     
+# 281: ओः सुपि (6-4-83)
+- sutra: ओः सुपि
+  id: 6.4.83
+  condition:
+     l: u
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+
+# 282: वर्षाभ्वश्च (6-4-84)
+- sutra: वर्षाभ्वश्च
+  id: 6.4.84
+  overrides: 6.4.85
+  condition:
+     l: u
+     lp: =varzABU
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+
+
+# 273: न भूसुधियोः (6-4-85) 
+- sutra: न भूसुधियोः 
+  id: 6.4.85
+  overrides: 6.4.82
+  condition:
+     lp:
+      - ?BU
+      - =suDI
+     r: _ac
+     rp: ?sup
+  xform: null
+     
+## 281: ओः सुपि (6-4-83)
+
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   condition:
@@ -1374,6 +1483,17 @@
      l: str("traya")
      lc: null
 
+# 284: गोतो णित् (7-1-90) 
+- sutra:  गोतो णित् 
+  id: 7.1.90
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =go
+     rp: ?sarvanAmasTAna
+  update:
+     orp: ++R
 
 # 253: सख्युरसंबुद्धौ (7-1-92) 
 - sutra:  सख्युरसंबुद्धौ
@@ -1427,6 +1547,19 @@
         - ?!sambudDi
   xform:
      l: str("an")
+
+# 286: रायो हलि (7-2-85) 
+- sutra:   रायो हलि
+  id: 7.2.85
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =rE
+     r: _hal
+     rp: ?viBakti
+  xform:
+     l: str("A")
 
 # 265: त्यदादीनामः (7-2-102) 
 - sutra:  त्यदादीनामः
