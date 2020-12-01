@@ -155,6 +155,7 @@ test_list_devanagari = [
 
 viBakti = {}
 prAtipadika = {}
+encoding = {}
 
 prAtipadika["rAma"] = rAma
 viBakti["rAma"] = [
@@ -366,6 +367,69 @@ viBakti["rE"] = [
      ["राः", "रायौ", "रायः"],
 ]
 
+prAtipadika["varzABU"] = varzABU
+viBakti["varzABU"] = [
+     ["वर्षाभूः", "वर्षाभ्वौ", "वर्षाभ्वः"],
+     ["वर्षाभ्वम्", "वर्षाभ्वौ", "वर्षाभ्वः"],
+     ["वर्षाभ्वा", "वर्षाभूभ्याम्", "वर्षाभूभिः"],
+     ["वर्षाभ्वे", "वर्षाभूभ्याम्", "वर्षाभूभ्यः"],
+     ["वर्षाभ्वः", "वर्षाभूभ्याम्", "वर्षाभूभ्यः"],
+     ["वर्षाभ्वः", "वर्षाभ्वोः", "वर्षाभ्वाम्"],
+     ["वर्षाभ्वि", "वर्षाभ्वोः", "वर्षाभूषु"],
+     ["वर्षाभूः", "वर्षाभ्वौ", "वर्षाभ्वः"],
+]
+
+
+prAtipadika["svayamBU"] = svayamBU
+viBakti["svayamBU"] = [
+     ["svayamBUH", "svayamBuvO", "svayamBuvaH"],
+     ["svayamBuvam", "svayamBuvO", "svayamBuvaH"],
+     ["svayamBuvA", "svayamBUByAm", "svayamBUBiH"],
+     ["svayamBuve", "svayamBUByAm", "svayamBUByaH"],
+     ["svayamBuvaH", "svayamBUByAm", "svayamBUByaH"],
+     ["svayamBuvaH", "svayamBuvoH", "svayamBuvAm"],
+     ["svayamBuvi", "svayamBuvoH", "svayamBUzu"],
+     ["svayamBUH", "svayamBuvO", "svayamBuvaH"],
+]
+encoding["svayamBU"] = SLP1
+
+prAtipadika["KalapU"] = KalapU
+viBakti["KalapU"] = [
+     ["खलपूः", "खलप्वौ", "खलप्वः"],
+     ["खलप्वम्", "खलप्वौ", "खलप्वः"],
+     ["खलप्वा", "खलपूभ्याम्", "खलपूभिः"],
+     ["खलप्वे", "खलपूभ्याम्", "खलपूभ्यः"],
+     ["खलप्वः", "खलपूभ्याम्", "खलपूभ्यः"],
+     ["खलप्वः", "खलप्वोः", "खलप्वाम्"],
+     ["खलप्वि", "खलप्वोः", "खलपूषु"],
+     ["खलपूः", "खलप्वौ", "खलप्वः"],
+]
+
+prAtipadika["senAnI"] = senAnI
+viBakti["senAnI"] = [
+     ["senAnIH", "senAnyO", "senAnyaH"],
+     ["senAnyam", "senAnyO", "senAnyaH"],
+     ["senAnyA", "senAnIByAm", "senAnIBiH"],
+     ["senAnye", "senAnIByAm", "senAnIByaH"],
+     ["senAnyaH", "senAnIByAm", "senAnIByaH"],
+     ["senAnyaH", "senAnyoH", "senAnyAm"],
+     ["senAnyi", "senAnyoH", "senAnIzu"],
+     ["senAnIH", "senAnyO", "senAnyaH"],
+]
+encoding["senAnI"] = SLP1
+
+prAtipadika["nI"] = nI
+viBakti["nI"] = [
+     ["नीः", "नियौ", "नियः"],
+     ["नियम्", "नियौ", "नियः"],
+     ["निया", "नीभ्याम्", "नीभिः"],
+     ["निये", "नीभ्याम्", "नीभ्यः"],
+     ["नियः", "नीभ्याम्", "नीभ्यः"],
+     ["नियः", "नियोः", "नियाम्"],
+     ["नियि", "नियोः", "नीषु"],
+     ["नीः", "नियौ", "नियः"],
+]
+
 if __name__ == "__main__":
     import logging
     #logging.basicConfig(level=logging.INFO)
@@ -375,7 +439,11 @@ if __name__ == "__main__":
 
     test_prakriya(sutra_list, test_list_slp1, test_list_devanagari)
     for v in viBakti:
-        check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]),
-                       sutra_list)
+        if v in encoding:
+            check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v],
+                                             encoding[v]), sutra_list, encoding[v])
+        else:
+            check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]),
+                           sutra_list)
 
 

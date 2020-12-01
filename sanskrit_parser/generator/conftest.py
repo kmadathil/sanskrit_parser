@@ -56,7 +56,7 @@ def run_test(s, sutra_list, encoding=SLP1):
 
 
 
-def generate_vibhakti(pratipadika, vibhaktis):
+def generate_vibhakti(pratipadika, vibhaktis, encoding=DEVANAGARI):
     t = []
     for ix, pv in enumerate(vibhaktis):
         #print(f"test vibakti {ix} {pv}")
@@ -70,17 +70,17 @@ def generate_vibhakti(pratipadika, vibhaktis):
                       pratipadika.hasTag("nityabahuvacana")))):
                 #print(f"test {jx} {pvv}")
                 if isinstance(pvv, str):
-                    _pvv = pvv+avasAna.transcoded(DEVANAGARI)
+                    _pvv = pvv+avasAna.transcoded(encoding)
                 else:
-                    _pvv = [x+avasAna.transcoded(DEVANAGARI) for x in pvv]
+                    _pvv = [x+avasAna.transcoded(encoding) for x in pvv]
                 t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
     print(t)
     return t
 
 # Manual test
-def check_vibhakti(t, sutra_list):
+def check_vibhakti(t, sutra_list, encoding=DEVANAGARI):
     for s in t:
-        run_test(s, sutra_list, encoding=DEVANAGARI)
+        run_test(s, sutra_list, encoding=encoding)
 
 def test_prakriya(sutra_list, test_list, test_list_d):
     for s in test_list:

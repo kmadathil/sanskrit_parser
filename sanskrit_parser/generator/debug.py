@@ -30,6 +30,7 @@ test_list_d = [
 
 viBakti = {}
 prAtipadika = {}
+encoding = {}
 
 # prAtipadika["rAma"] = rAma
 # viBakti["rAma"] = [
@@ -114,22 +115,28 @@ prAtipadika = {}
 #     [None, None, "कति"],
 # ]
 
-prAtipadika["rE"] = rE
-viBakti["rE"] = [
-     ["राः", "रायौ", "रायः"],
-     ["रायम्", "रायौ", "रायः"],
-     ["राया", "राभ्याम्", "राभिः"],
-     ["राये", "राभ्याम्", "राभ्यः"],
-     ["रायः", "राभ्याम्", "राभ्यः"],
-     ["रायः", "रायोः", "रायाम्"],
-     ["रायि", "रायोः", "रासु"],
-     ["राः", "रायौ", "रायः"],
+
+prAtipadika["nI"] = nI
+viBakti["nI"] = [
+     ["नीः", "नियौ", "नियः"],
+     ["नियम्", "नियौ", "नियः"],
+     ["निया", "नीभ्याम्", "नीभिः"],
+     ["निये", "नीभ्याम्", "नीभ्यः"],
+     ["नियः", "नीभ्याम्", "नीभ्यः"],
+     ["नियः", "नियोः", "नियाम्"],
+     ["नियि", "नियोः", "नीषु"],
+     ["नीः", "नियौ", "नियः"],
 ]
 
 from sutras_yaml import sutra_list
 
 test_prakriya(sutra_list, test_list, test_list_d)
 for v in viBakti:
-    check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]), sutra_list)
+    if v in encoding:
+        check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v],
+                                         encoding[v]), sutra_list, encoding[v])
+    else:
+        check_vibhakti(generate_vibhakti(prAtipadika[v], viBakti[v]),
+                       sutra_list)
 
 
