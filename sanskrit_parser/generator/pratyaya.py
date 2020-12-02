@@ -38,6 +38,10 @@ class Pratyaya(PaninianObject):
 
 tuk = Pratyaya("t",its=["k"])
 
+# Aw (agama)
+Aw = Pratyaya("A", its=["w"], other_tags=["Aw"])
+yAw = Pratyaya("yA", its=["w"], other_tags=["yAw"])
+
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
 
@@ -74,11 +78,11 @@ aR_t =  Pratyaya("a",its=["R"], other_tags=["svAdi", "tadDita"])
 # sup
 #स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
 su = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup",  "su", "suw"])
-O  = Pratyaya("O", other_tags=["svAdi", "sup", "suw"])
+O  = Pratyaya("O", other_tags=["svAdi", "sup", "O", "suw"])
 jas  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "jas",
                                             "suw"])
 am  = Pratyaya("am", other_tags=["svAdi", "sup", "suw", "am"])
-Ow = Pratyaya("O",its=["w"], other_tags=["svAdi", "sup", "suw"])
+Ow = Pratyaya("O",its=["w"], other_tags=["svAdi", "Ow", "sup", "suw"])
 Sas  = Pratyaya("as",its=["S"], other_tags=["svAdi", "sup", "Sas"])
 wA  = Pratyaya("A",its=["w"], other_tags=["svAdi", "wA", "sup"])
 ByAm = Pratyaya("ByAm", other_tags=["svAdi", "ByAm", "sup"])
@@ -97,7 +101,7 @@ os2  = Pratyaya("os", other_tags=["svAdi", "os", "sup"])
 sup = Pratyaya("su",its=["p"], other_tags=["svAdi", "sup"])
 su2 = Pratyaya("s",its=["u~"], other_tags=["svAdi", "sup", "suw", "su",
                                            "sambudDi"])
-O2  = Pratyaya("O", other_tags=["svAdi", "sup", "suw"])
+O2  = Pratyaya("O", other_tags=["svAdi", "O", "sup", "suw"])
 jas2  = Pratyaya("as",its=["j"], other_tags=["svAdi", "sup", "suw", "jas"])
 
 sups = [[su, O, jas],

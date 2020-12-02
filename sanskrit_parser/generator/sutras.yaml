@@ -177,7 +177,19 @@
        r: vriddhi(r)
     update:
        olp: -pada # for pUrvaparayoH
-   
+       
+# 269: आटश्च (6-1-90) 
+-   sutra: आटश्च
+    id: 6.1.90
+    condition:
+     - lp: ?Aw
+       r: _ac
+    xform:
+       l: vriddhi(r)
+       r: null
+    update:
+       olp: -pada # for pUrvaparayoH
+       
 # 74: उपसर्गादृति धातौ (6-1-91)
 -   sutra: उपसर्गादृति धातौ 
     id: 6.1.91
@@ -292,7 +304,9 @@
           - ?su
           - ?tip
           - ?sip
-      - lp: ?NyAp
+      - lp:
+          - ?NI
+          - ?Ap
         rc: $$null
         rp:
           - ?su
@@ -1210,6 +1224,7 @@
 # 271: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ (6-4-77) 
 - sutra: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ 
   id: 6.4.77
+  overrides:  [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      lp:
        - ?Snu
@@ -1223,11 +1238,14 @@
   xform:
      l: iyuvaN(l)
   update:
-     olp: +iyuvaN
-     
+     olp:
+       - +iyuvaN
+       - -nadI
+       
 # 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
 - sutra: एरनेकाचोऽसंयोगपूर्वस्य
   id: 6.4.82
+  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: i
      lp:
@@ -1237,10 +1255,15 @@
      r: _ac
   xform:
      l: str("y")
+  update:
+     olp:
+       - +yaR
+       - -nadI
      
 # 281: ओः सुपि (6-4-83)
 - sutra: ओः सुपि
   id: 6.4.83
+  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: u
      lp:
@@ -1251,12 +1274,18 @@
      rp: ?sup
   xform:
      l: str("v")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+
 # FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
 
 # 282: वर्षाभ्वश्च (6-4-84)
 - sutra: वर्षाभ्वश्च
   id: 6.4.84
-  overrides: 6.4.85
+  overrides: [6.4.85, 7.3.116, 7.1.54, 7.3.112]  #FIXME: implement nitya test
+
   condition:
      l: u
      lp: =varzABU
@@ -1264,12 +1293,15 @@
      rp: ?sup
   xform:
      l: str("v")
-
-
+  update:
+     olp:
+       - +yaR
+       - -nadI
+ 
 # 273: न भूसुधियोः (6-4-85) 
 - sutra: न भूसुधियोः 
   id: 6.4.85
-  overrides: 6.4.82
+  overrides: [6.4.82, 7.1.54, 7.3.116, 7.3.112] #FIXME: implement nitya test
   condition:
      lp:
       - ?BU
@@ -1278,8 +1310,6 @@
      rp: ?sup
   xform: null
      
-## 281: ओः सुपि (6-4-83)
-
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   condition:
@@ -1447,6 +1477,23 @@
       - ?sarvanAma
      l: at
      rp: ?jas
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 287: औङ आपः (7-1-18)
+- sutra: औङ आपः
+  id: 7.1.18
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?O
+       - ?Ow
   xform:
      r: str("I")
      rc: null
@@ -1650,6 +1697,54 @@
   xform:
      l: str("e")
      
+
+# 289: आङि चापः (7-3-105)
+- sutra: आङि चापः 
+  id: 7.3.105
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?wA
+       - ?os
+  xform:
+     l: str("e")
+     
+# 288: संबुद्धौ च (7-3-106)
+- sutra: संबुद्धौ च
+  id: 7.3.106
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?sambudDi
+  xform:
+     l: str("e")
+ 
+# 267: अम्बार्थनद्योर्ह्रस्वः (7-3-107)
+-   sutra: अम्बार्थनद्योर्ह्रस्वः
+    id: 7.3.107
+    overrides: 7.3.108
+    condition:
+     - lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp:
+         - ?sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - ?ambArTa
+       rp:
+         - ?sambudDi
+    xform:
+       l: hrasva(l)
+
 # 242: ह्रस्वस्य गुणः (7-3-108) 
 -   sutra: ह्रस्वस्य गुणः
     id: 7.3.108
@@ -1695,7 +1790,68 @@
        rp: +N
     xform:
        l: guna(l)
+
+# 268: आण्नद्याः (7-3-112)
+-   sutra:  आण्नद्याः
+    id: 7.3.112
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: +N
+    insert:
+       1: Aw
+# 290: याडापः (7-3-113)
+-   sutra:  याडापः
+    id: 7.3.113
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+       rp: +N
+    insert:
+       1: yAw
+
+# 270: ङेराम्नद्याम्नीभ्यः (7-3-116)        
+-   sutra:  ङेराम्नद्याम्नीभ्यः
+    id: 7.3.116
+    overrides: 7.3.118
+    condition:
+       - lp:
+          - and
+          - ?aNga
+          - ?nadI
+         rp: ?Ni
+       - lp:
+          - and
+          - ?aNga
+          - ?Ap
+         rp: ?Ni
+       - lp:
+          - and
+          - ?aNga
+          - ?DAtu
+         l: It
+         ll: n
+         rp: ?Ni
+    xform:
+       r: str("Am")
        
+-   sutra:  इदुद्भ्याम्
+    id: 7.3.117
+    overrides: 7.3.118
+    condition:
+       l: [it, ut]
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: ?Ni
+    xform:
+       r: str("Am")
+        
 #  256: औत् (7-3-118) 
 -   sutra:  औत्
     id: 7.3.118
@@ -1879,6 +2035,7 @@
      olp:
       - -Gi  # FIXME: Should need to do this specifically
       - +tfc
+
 # 278: विभाषा तृतीयादिष्वचि (7-1-97) 
 - sutra:  विभाषा तृतीयादिष्वचि
   id: 7.1.97
@@ -1967,7 +2124,7 @@
      l: [It, Ut]
      lp:
        - ?strI
-       - ?purva_strI # प्रथमलिङ्गग्रहणं च 
+       - ?purvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
 

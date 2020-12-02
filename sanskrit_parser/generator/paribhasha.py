@@ -6,6 +6,9 @@ from .maheshvara import ms, isInPratyahara, isSavarna
 def dirgha(s: str):
     return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
 
+def hrasva(s: str):
+    return adesha(s, "aAiIuUfFxX", "aaiiuuffxx")
+
 def guna(s: str):
     if s in "fF":
         # Uran raparaH
