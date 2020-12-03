@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 # Sutras for ac sandhi
 #  @author: kmadathil
 
@@ -1787,7 +1787,10 @@
         - "and"
         - ?aNga
         - ?Gi
-       rp: +N
+       rp:
+        - and
+        - +N
+        - ?sup
     xform:
        l: guna(l)
 
@@ -1829,7 +1832,14 @@
           - ?aNga
           - ?Ap
          rp: ?Ni
-       - lp:
+    xform:
+       r: str("Am")
+# Seperated out so it does not get overriden by 6.4.77. FIXME: Ideally a proper nityatva check would work better.
+-   sutra:  ङेराम्नद्याम्नीभ्यः
+    id: 7.3.116.1
+    overrides: 7.3.118
+    condition:
+         lp:
           - and
           - ?aNga
           - ?DAtu

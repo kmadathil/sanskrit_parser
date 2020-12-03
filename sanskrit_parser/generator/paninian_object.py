@@ -71,6 +71,10 @@ class PaninianObject(SanskritObject):
         for t in ["trc", "trn"]:
             if objects[0][-1].hasTag(t) and  objects[0][0].hasTag("aNga"):
                 so.setTag(t)
-           
-                
+        for t in ["NI", "Ap"]:
+            if objects[0][-1].hasTag(t):
+                if objects[0][0].hasTag("aNga"):
+                    so.setTag(t)
+                if objects[0][0].hasTag("sarvanAma"):
+                    so.setTag("sarvanAma")
         return so

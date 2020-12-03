@@ -127,7 +127,13 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
 # SI - jasaH SI
 SI  = Pratyaya("I",its=["S"], other_tags=["svAdi", "sup", "SI",
                                             "sarvanAmasTAna"])
-    
+
+# StrI
+NIp  = Pratyaya("I",its=["N", "p"], other_tags=["NI", "strI"])
+NIz  = Pratyaya("I",its=["N", "z"], other_tags=["NI", "strI"])
+Ap  = Pratyaya("A",its=["p"], other_tags=["Ap", "strI"])
+
+
 # Sambuddhi
 sambudDi = PaninianObject("")
 sambudDi.setTag("sambudDi")
