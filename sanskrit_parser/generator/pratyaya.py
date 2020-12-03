@@ -41,6 +41,7 @@ tuk = Pratyaya("t",its=["k"])
 # Aw (agama)
 Aw = Pratyaya("A", its=["w"], other_tags=["Aw"])
 yAw = Pratyaya("yA", its=["w"], other_tags=["yAw"])
+syAw = Pratyaya("syA", its=["w"], other_tags=["syAw"])
 
 tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
 Sap = Pratyaya("a",its=["S", "p"], other_tags=["sArvaDAtuka"])
