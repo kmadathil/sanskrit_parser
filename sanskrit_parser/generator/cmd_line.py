@@ -164,6 +164,7 @@ def get_args(argv=None):
     parser.add_argument('-c', nargs="?", dest="inputs",action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs",action=CustomAction, help="Avasana")
     parser.add_argument("--vibhakti", action="store_true", help="generate all vibhaktis")
+    parser.add_argument("--gen-test", action="store_true", help="generate vibhakti test")
     parser.add_argument("--verbose", action="store_true", help="verbose")
 
     return parser.parse_args(argv)
@@ -196,8 +197,11 @@ def cmd_line():
             pp = args.inputs[0]
         r = generate_vibhakti(pp, args.verbose)
         print("Output")
-        for ix, vi in enumerate(r):
-            print(f"{', '.join(['/'.join([''.join([str(x) for x in y]).strip('.') for y in va]) for va in vi])}")
+        if args.gen_test:
+            print([[[y[0] for y in va] if len(va)>1 else va[0][0] for va in vi] for vi in r])
+        else:
+            for ix, vi in enumerate(r):
+                print(f"{', '.join(['/'.join([''.join([str(x) for x in y]).strip('.') for y in va]) for va in vi])}")
     else:
         r = run_pp(args.inputs, args.verbose)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

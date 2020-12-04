@@ -77,5 +77,7 @@ svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi"])
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
+niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
+nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
 
 
