@@ -57,7 +57,8 @@ ktvA = Pratyaya("tvA",its=["k"], other_tags=["ArDaDAtuka", "avyaya"])
 kta = Pratyaya("ta",its=["k"], other_tags=["ArDaDAtuka"])
 
 #tiN
-tip = Pratyaya("ti",its=["p"], other_tags=["sArvaDAtuka"])
+tip = Pratyaya("ti",its=["p"], other_tags=["tiN", "sArvaDAtuka"])
+sip = Pratyaya("si",its=["p"], other_tags=["tiN", "sArvaDAtuka"])
 
 
 # nIpAtAs

@@ -682,6 +682,14 @@
   xform:
      l: jashtva(l)
 
+# 295: षढोः कः सि (8-2-41) 
+- sutra: षढोः कः सि
+  id: 8.2.41
+  condition:
+     l: [z, Q]
+  xform:
+     l: str("k")
+
 - sutra: खरि च
   id: 8.4.55
   condition:
