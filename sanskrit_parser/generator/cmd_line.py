@@ -208,7 +208,7 @@ def cmd_line():
             print(f"]")
         else:
             for ix, vi in enumerate(r):
-                print(f"{', '.join(['/'.join([''.join([x.transcoded(DEVANAGARI) for x in y]).strip('.') for y in va]) for va in vi])}")
+                print(f"{', '.join(['/'.join([''.join([x.transcoded(DEVANAGARI) for x in y]).strip('।') for y in va]) for va in vi])}")
     else:
         r = run_pp(args.inputs, args.verbose)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

@@ -687,6 +687,7 @@
   id: 8.2.41
   condition:
      l: [z, Q]
+     r: s
   xform:
      l: str("k")
 
@@ -1872,7 +1873,7 @@
        
 -   sutra:  इदुद्भ्याम्
     id: 7.3.117
-    overrides: 7.3.118
+    overrides: [7.3.116, 7.3.118]
     condition:
        l: [it, ut]
        lp:
@@ -2172,17 +2173,46 @@
        - ?purvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
-
-# 243: शेषो घ्यसखि (1-4-7) 
+     
+# 296: ङिति ह्रस्वश्च (1-4-6)
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  optional: true
+  id: 1.4.6
+  condition:
+     l: [it, ut]
+     lp:
+       - ?strI
+       - ?purvastrI # प्रथमलिङ्गग्रहणं च
+     rp: +N
+  update:
+     olp: +nadI
+     lp:  +Niti_hrasva_seza
+     
+# 243: शेषो घ्यसखि (1-4-7)
+# sezaH - either
+#  a) not strI
+#  b) stri & it & ut but not Niti
+#  c) stri & it & ut & Niti and the not nadI arm.
 - sutra: शेषो घ्यसखि
   domain: saMjYA
   id: 1.4.7
   condition:
-     l: [it, ut]
-     lp:
-       - "and"
-       - ?!strI
-       - ?!saKi
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!strI
+        - ?!saKi
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - -N
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - ?Niti_hrasva_seza
   update:
      olp: +Gi
 

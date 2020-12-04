@@ -245,7 +245,7 @@ class Prakriya(object):
             if triggered:
                 _ix = ix
                 break
-        logger.debug(f"I: {node.outputs}")
+        logger.debug(f"I: {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
         if triggered:
             ix = _ix
             logger.debug(f"Triggered rules at window {ix}")
@@ -262,6 +262,7 @@ class Prakriya(object):
             # State update 
             s.update(*v, *r, self.domains)
             r = s.insert(*r)
+            logger.debug(f"I (post update): {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
             logger.debug(f"I (post update): {v}")
             # Using sutra id in the disabled list to get round paninian object deepcopy
             r0.disabled_sutras.append(s.aps)
@@ -287,6 +288,7 @@ class Prakriya(object):
                 for i in range(len(r)-2):
                     pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
             _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s])
+            logger.debug(f'O Node: {str(_ps)}')
             if node is not None:
                 self.tree.add_child(node, _ps, opt=s.optional)
             else:
@@ -357,7 +359,8 @@ class Prakriya(object):
 
     def dict(self):
         return self.tree.dict()
-    
+
+_node_id = 0
 class PrakriyaNode(object):
     """ 
     Prakriya History Node
@@ -369,6 +372,9 @@ class PrakriyaNode(object):
    other_sutras: sutras that were triggered, but did not win.    
     """
     def __init__(self, inputs, outputs, sutra, ix=0, other_sutras=[]):
+        global _node_id
+        self.id = _node_id
+        _node_id = _node_id+1
         self.inputs = inputs
         self.outputs = outputs
         self.sutra = sutra
@@ -376,10 +382,10 @@ class PrakriyaNode(object):
         self.index = ix
         
     def __str__(self):
-        return f"{self.sutra} {self.inputs} {self.index}-> {self.outputs}"
+        return f"{self.id} {self.sutra} {self.inputs} {self.index}-> {self.outputs}"
 
     def __hash__(self):
-        return hash(str(self))
+        return hash("{self.sutra} {self.inputs} {self.index}-> {self.outputs}")
 
     def __eq__(self, other):
         return str(self) == str(other)
@@ -399,6 +405,7 @@ class PrakriyaNode(object):
         
     def dict(self):
         return {
+            'id': self.id,
             'sutra': str(self.sutra),
             'inputs': self.inputs,
             'outputs': self.outputs,

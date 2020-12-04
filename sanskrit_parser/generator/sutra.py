@@ -114,17 +114,15 @@ class LRSutra(Sutra):
             self.update_f(env, domains)
 
     def operate(self, s1, s2):
+        # We take the string tuple returned, and update s1, s2
+        rs1 = deepcopy(s1)
+        rs2 = deepcopy(s2)
         if self.xform is not None:
             env = _env(s1, s2)
             ret = self.xform(env)
-            # We take the string tuple returned, and update s1, s2
-            rs1 = deepcopy(s1)
             rs1.update(ret[0], SLP1)
-            rs2 = deepcopy(s2)
             rs2.update(ret[1], SLP1)
-            return rs1, rs2
-        else:
-            return (s1, s2)
+        return rs1, rs2
 
     def insert(self, s1, s2):
         if self.insertx is not None:
