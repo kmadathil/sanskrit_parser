@@ -198,10 +198,17 @@ def cmd_line():
         r = generate_vibhakti(pp, args.verbose)
         print("Output")
         if args.gen_test:
-            print([[[y[0] for y in va] if len(va)>1 else va[0][0] for va in vi] for vi in r])
+            rr = [[[y[0].transcoded(DEVANAGARI) for y in va] if len(va)>1 else va[0][0].transcoded(DEVANAGARI) for va in vi] for vi in r]
+            print(f"prAtipadika[\"{str(pp)}\"] = {str(pp)}")
+            #print(f"encoding[\"{str(pp)}\"] = SLP1")
+            print(f"viBakti[\"{str(pp)}\"] = [")
+            for vi in rr:
+                #print(f"{[[str(ee) for ee in e] if isinstance(e,list) else str(e) for e in vi]},")
+                print(f"{vi},")
+            print(f"]")
         else:
             for ix, vi in enumerate(r):
-                print(f"{', '.join(['/'.join([''.join([str(x) for x in y]).strip('.') for y in va]) for va in vi])}")
+                print(f"{', '.join(['/'.join([''.join([x.transcoded(DEVANAGARI) for x in y]).strip('.') for y in va]) for va in vi])}")
     else:
         r = run_pp(args.inputs, args.verbose)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

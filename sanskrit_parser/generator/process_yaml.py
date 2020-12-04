@@ -249,7 +249,9 @@ def process_yaml(y):
                                elif sk == "_lu":
                                    logger.debug(f"Removing all tags ")
                                    env[k].luTags()
-
+                               elif sk[0]=="=": # Replace
+                                   env[k] = eval(sk[1:]) # Must be defined!
+                                   
                            # Possibly set/remove multiple tags         
                            if isinstance(s[k], list):
                                for sk in s[k]:

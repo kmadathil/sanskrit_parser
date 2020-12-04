@@ -42,26 +42,13 @@
 #   olp: +ru - sets tag "ru" on output lp 
 #   olp: ++R - sets it R on output lp 
 #   orp: -pada - removes "pada" tag from output rp
-#   olp: --Y - removes it Y on output lp 
+#   olp: --Y - removes it Y on output lp
+#   olp: =krozwf replaces output lp with krozwf (must be defined)
 #   domain: - sets domain triggers
 #     xxx_domain:   - sets domain trigger xxx_domain
 #         value: True - to True
 #           condition:  - if
 #              r: f       - r = "f"
-
-
-# upadeSe 
-# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
--   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
-    domain: upadeSa
-    id: 6.1.63
-    optional: true
-    condition:
-      lp: ?pAdAdi
-      rp: ?!suw  # Sas praBfti
-    xform:
-      lc: pAdAdi_AdeSa(lc+l)
-      l: null
 
 
 # ac sandhi
@@ -692,10 +679,6 @@
   condition:
    - lp: ?pada
      l: _Jal
-     r: _aS
-   - lp: ?pada
-     l: _Jal
-     rp: ?avasAna
   xform:
      l: jashtva(l)
 
@@ -853,6 +836,21 @@
   xform:
      l: str("Q")
      
+# 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
+- sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
+  id: 8.2.36
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?vraScAdi
+       r: _Jal
+     - lp: ?pada
+       l: [C, S]
+       r: _Jal
+  xform:
+     l: str("z")
+
 - sutra: झषस्तथोर्धोऽधः
   id: 8.2.40
   condition:
@@ -2039,11 +2037,25 @@
      l: str("an") # Nicca
 
 # prakfti / pratyaya rUpAtideSa
-
-# FIXME: Create a separate domain for this
+# upadeSe 
+# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
+-   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
+    domain: upadeSa
+    id: 6.1.63
+    optional: true
+    condition:
+      lp: ?pAdAdi
+      rp: ?!suw  # Sas praBfti
+    xform:
+      lc: pAdAdi_AdeSa(lc+l)
+      l: null
+    update:
+      olp: -Ap
+      # olp: padAdi_AdeSa_r(olp)
+       
 # 274: तृज्वत्क्रोष्टुः (7-1-95) 
 - sutra:  तृज्वत्क्रोष्टुः
-  domain: saMjYA
+  domain: upadeSa
   id: 7.1.95
   condition:
      lp:
@@ -2064,7 +2076,7 @@
 # 278: विभाषा तृतीयादिष्वचि (7-1-97) 
 - sutra:  विभाषा तृतीयादिष्वचि
   id: 7.1.97
-  domain: saMjYA
+  domain: upadeSa
   optional: true
   condition:
      lp:

@@ -115,20 +115,43 @@ encoding = {}
 #     [None, None, "कति"],
 # ]
 
-prAtipadika["ramA"] = ramA
-viBakti["ramA"] = [
-     ["रमा", "रमे", "रमाः"],
-     ["रमाम्", "रमे", "रमाः"],
-     ["रमया", "रमाभ्याम्", "रमाभिः"],
-     ["रमायै", "रमाभ्याम्", "रमाभ्यः"],
-     ["रमायाः", "रमाभ्याम्", "रमाभ्यः"],
-     ["रमायाः", "रमयोः", "रमाणाम्"],
-     ["रमायाम्", "रमयोः", "रमासु"],
-     ["रमे", "रमे", "रमाः"]
-]
+# prAtipadika["ramA"] = ramA
+# viBakti["ramA"] = [
+#      ["रमा", "रमे", "रमाः"],
+#      ["रमाम्", "रमे", "रमाः"],
+#      ["रमया", "रमाभ्याम्", "रमाभिः"],
+#      ["रमायै", "रमाभ्याम्", "रमाभ्यः"],
+#      ["रमायाः", "रमाभ्याम्", "रमाभ्यः"],
+#      ["रमायाः", "रमयोः", "रमाणाम्"],
+#      ["रमायाम्", "रमयोः", "रमासु"],
+#      ["रमे", "रमे", "रमाः"]
+# ]
+
+# prAtipadika["nAsikA"] = nAsikA
+# encoding["nAsikA"] = SLP1
+# viBakti["nAsikA"] = [
+# ['nAsikA', 'nAsike', 'nAsikAH'],
+# ['nAsikAm', 'nAsike', ['nasaH', 'nAsikAH']],
+# [['nasA', 'nAsikayA'], ['nAsikAByAm', 'noByAm'], ['nAsikABiH', 'noBiH']],
+# [['nase', 'nAsikAyE'], ['nAsikAByAm', 'noByAm'], ['nAsikAByaH', 'noByaH']],
+# [['nasaH', 'nAsikAyAH'], ['nAsikAByAm', 'noByAm'], ['nAsikAByaH', 'noByaH']],
+# [['nasaH', 'nAsikAyAH'], ['nasoH', 'nAsikayoH'], ['nasAm', 'nAsikAnAm']],
+# [['nAsikAyAm', 'nasi'], ['nasoH', 'nAsikayoH'], ['nAsikAsu', 'naHsu', 'nassu']],
+# ['nAsike', 'nAsike', 'nAsikAH'],
+# ]
 
 from sutras_yaml import sutra_list
-
+prAtipadika["svayamBU"] = svayamBU
+viBakti["svayamBU"] = [
+['स्वयम्भूः', 'स्वयम्भुवौ', 'स्वयम्भुवः'],
+['स्वयम्भुवम्', 'स्वयम्भुवौ', 'स्वयम्भुवः'],
+['स्वयम्भुवा', 'स्वयम्भूभ्याम्', 'स्वयम्भूभिः'],
+['स्वयम्भुवे', 'स्वयम्भूभ्याम्', 'स्वयम्भूभ्यः'],
+['स्वयम्भुवः', 'स्वयम्भूभ्याम्', 'स्वयम्भूभ्यः'],
+['स्वयम्भुवः', 'स्वयम्भुवोः', 'स्वयम्भुवाम्'],
+['स्वयम्भुवि', 'स्वयम्भुवोः', 'स्वयम्भूषु'],
+['स्वयम्भूः', 'स्वयम्भुवौ', 'स्वयम्भुवः'],
+]
 test_prakriya(sutra_list, test_list, test_list_d)
 for v in viBakti:
     if v in encoding:

@@ -105,6 +105,27 @@ def pAdAdi_AdeSa(s: str):
         return d[s]
     else:
         return s
+    
+def pAdAdi_AdeSa_r(s):
+    d = {
+        "pAda": pad,
+        "danta": dat,
+        "nAsikA": nas,
+        "mAsa": mAs,
+        "hfdaya": hfd,
+        "niSA": niS,
+        "asfj": asan,
+        "yUza": yUzan,
+        "doza": dozan,
+        "yakft": yakan,
+        "Sakft": Sakan,
+        "udaka": udan,
+        "Asya": Asan,
+        }
+    if str(s) in d:
+        return d[s]
+    else:
+        return s
 
 # Fixme - anunasika ZSs yrl
 def anunasika(s: str):
