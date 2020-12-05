@@ -16,6 +16,10 @@ class GlobalDomains(object):
         self.domains = {
             "saMjYA": True,
             "upadeSa": False,
+            "prakfti": False,
+            "pratyaya": False,
+            "aNga": False,
+            "samhitA": False,
             "standard": False
         }
     def isdomain(self, d):

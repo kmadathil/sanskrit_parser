@@ -2046,10 +2046,9 @@
      l: str("an") # Nicca
 
 # prakfti / pratyaya rUpAtideSa
-# upadeSe 
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
-    domain: upadeSa
+    domain: prakfti
     id: 6.1.63
     optional: true
     condition:
@@ -2060,11 +2059,11 @@
       l: null
     update:
       olp: -Ap
-      # olp: padAdi_AdeSa_r(olp)
+      # olp: =padAdi_AdeSa_r(olp)  # FIXME! this is cleaner, but needs testing 
        
 # 274: तृज्वत्क्रोष्टुः (7-1-95) 
 - sutra:  तृज्वत्क्रोष्टुः
-  domain: upadeSa
+  domain: prakfti
   id: 7.1.95
   condition:
      lp:
@@ -2085,7 +2084,7 @@
 # 278: विभाषा तृतीयादिष्वचि (7-1-97) 
 - sutra:  विभाषा तृतीयादिष्वचि
   id: 7.1.97
-  domain: upadeSa
+  domain: prakfti
   optional: true
   condition:
      lp:

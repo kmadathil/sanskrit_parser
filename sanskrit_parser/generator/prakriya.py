@@ -301,7 +301,7 @@ class Prakriya(object):
             return False
 
     def _exec_all_domains(self, node):
-        for d in ["saMjYA", "upadeSa", "standard"]:
+        for d in ["saMjYA", "prakfti", "pratyaya", "aNga", "samhitA", "standard"]:
             self.domains.set_domain(d)
             r = self._exec_single(node)
             if r:
