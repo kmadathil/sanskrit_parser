@@ -148,14 +148,18 @@ class Prakriya(object):
             logger.debug(f"{s1} overrides {s1.overrides}")
             logger.debug(f"{s2} overrides {s2.overrides}")
             # Apavada
-            # Antaranga
-            # Nitya
             if (s2.overrides is not None) and (s1.aps in s2.overrides):
                 logger.debug(f"{s2} overrides {s1}")
                 return s2
             elif (s1.overrides is not None) and (s2.aps in s1.overrides):
                 logger.debug(f"{s1} overrides {s2}")
                 return s1
+            # Nitya
+            # Antaranga
+            elif (s1.bahiranga < s2.bahiranga):
+                return s1
+            elif (s2.bahiranga < s1.bahiranga):
+                return s2
             # samjYA before 1.4.2 vipratizeDe param kAryam
             elif (s1._aps_num < 14000) or  (s2._aps_num < 14000):
                 logger.debug(f"SaMjYA, lower of {s1} {s2}")

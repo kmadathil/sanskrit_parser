@@ -82,7 +82,7 @@ class Sutra(object):
     
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
-                 update=None, optional=False, overrides=None):
+                 update=None, optional=False, bahiranga=1, overrides=None):
         '''
         Sutra Class that expects a left and right input
         '''
@@ -92,6 +92,7 @@ class LRSutra(Sutra):
         self.xform   = xform
         self.update_f = update
         self.insertx = insert
+        self.bahiranga = bahiranga # Bahiranga score. Smaller wins
         
     def inAdhikara(self, context):
         return self.adhikara(context)

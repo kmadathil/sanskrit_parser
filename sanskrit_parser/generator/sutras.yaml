@@ -248,7 +248,7 @@
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
     overrides: 6.1.97
-    bahiranga: 1
+    # bahiranga: 1
     condition:
        l: _ak
        r: _ac
@@ -334,7 +334,7 @@
 -   sutra: नादिचि
     id: 6.1.104
     overrides: 6.1.102
-    bahiranga: 1
+    # bahiranga: 1
     condition:
        l: a
        r: _ic
@@ -348,7 +348,7 @@
 -   sutra: दीर्घाज्जसि च
     id: 6.1.105
     overrides: [6.1.102, 6.1.104]
-    bahiranga: 1
+    # bahiranga: 1
     condition:
        l: [At, It, Ut, Ft, Xt, e, o, E, O]
        r: _ic
@@ -360,7 +360,7 @@
 -   sutra: दीर्घाज्जसि च
     id: 6.1.105.1
     overrides: 6.1.102
-    bahiranga: 1
+    # bahiranga: 1
     condition:
        l: [At, It, Ut, Ft, Xt, e, o, E, O]
        rp:
@@ -1163,7 +1163,29 @@
       - ?Am
   xform:
      l: dirgha(l)
-     
+
+# 300: न तिसृचतसृ (6-4-4)
+- sutra: न तिसृचतसृ 
+  id: 6.4.4
+  overrides: 6.4.3
+  condition:
+     - lp:
+       - and
+       - ?aNga
+       - =tisf
+       rp:
+       - and
+       - ?Am
+     - lp:
+       - and
+       - ?aNga
+       - =catasf
+       rp:
+       - and
+       - ?Am
+  xform: null
+
+
 # 283: नृ च (6-4-6)
 - sutra: नृ च
   id: 6.4.6
@@ -1355,7 +1377,7 @@
 # 240: आतो धातोः (6-4-140) 
 - sutra: आतो धातोः
   id: 6.4.140
-  bahiranga: 1
+  # bahiranga: 1
   condition:
      lp:
        - and
@@ -1614,6 +1636,54 @@
      rp: ?viBakti
   xform:
      l: str("A")
+
+# 298: त्रिचतुरोः स्त्रियां तिसृचतसृ (7-2-99)
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99
+  bahiranga: 0
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?strI
+      - =tri
+     rp: ?sup
+  xform:
+     l: str("tisf")
+     lc: null
+     
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99.1
+  bahiranga: 0
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?strI
+      - =catur
+     rp: ?sup
+  xform:
+     l: str("catasf")
+     lc: null
+    
+# 299: अचि र ऋतः (7-2-100) 
+- sutra: अचि र ऋतः
+  overrides: [7.3.109, 7.3.110]
+  id: 7.2.100
+  condition:
+     lp:
+      - =tisf
+      - =catasf
+     rp:
+      - and
+      - ?sup
+      - ?!Am # नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+     r:
+      - _ac
+  xform:
+     l: str("r")
 
 # 265: त्यदादीनामः (7-2-102) 
 - sutra:  त्यदादीनामः
@@ -2104,6 +2174,7 @@
      olp:
       - -Gi  # FIXME: Should need to do this specifically
       - +tfc
+
 
 
 

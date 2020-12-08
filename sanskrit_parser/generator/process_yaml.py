@@ -34,6 +34,8 @@ def process_yaml(y):
         for c in ["condition", "domain", "xform", "update", "insert"]:
             if not c in s:
                 s[c] = None
+        if "bahiranga" not in s:
+            s["bahiranga"] = 1
         svar = "sutra_"+s["id"].replace(".","_")
         sname = s["sutra"]
         soverrides = None
@@ -289,6 +291,7 @@ def process_yaml(y):
                                       domain=sdom,
                                       update=supdate,
                                       optional=sopt,
+                                      bahiranga=s["bahiranga"], 
                                       overrides=soverrides)
             
     return sutra_dict
