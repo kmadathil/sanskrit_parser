@@ -74,7 +74,7 @@ catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 dvi_s = Pratipadika("dvi", "strI", other_tags=["saMKyA", "nityadvivacana",
-                                            'tyadAdi'])
+                                               'tyadAdi', "Ap"])
 
 # Stri
 ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana"])
