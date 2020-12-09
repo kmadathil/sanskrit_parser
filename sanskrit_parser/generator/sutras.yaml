@@ -1253,7 +1253,6 @@
 # 271: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ (6-4-77) 
 - sutra: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ 
   id: 6.4.77
-  overrides:  [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      lp:
        - ?Snu
@@ -1269,8 +1268,42 @@
   update:
      olp:
        - +iyuvaN
-       - -nadI
        
+# 301: स्त्रियाः (6-4-79)        
+- sutra: स्त्रियाः
+  id: 6.4.79
+  condition:
+     lp:
+      - and
+      - ?strI_p
+      - ?strI
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+       
+# 302: वाम्शसोः (6-4-80)   
+- sutra: वाम्शसोः
+  id: 6.4.80
+  optional: true
+  overrides: 6.4.79
+  condition:
+     lp:
+      - and
+      - ?strI_p
+      - ?strI
+     rp:
+      - ?am
+      - ?Sas
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+
 # 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
 - sutra: एरनेकाचोऽसंयोगपूर्वस्य
   id: 6.4.82
@@ -1287,7 +1320,7 @@
   update:
      olp:
        - +yaR
-       - -nadI
+#       - -nadI
      
 # 281: ओः सुपि (6-4-83)
 - sutra: ओः सुपि
@@ -1306,7 +1339,7 @@
   update:
      olp:
        - +yaR
-       - -nadI
+#       - -nadI
 
 # FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
 
@@ -1325,12 +1358,13 @@
   update:
      olp:
        - +yaR
-       - -nadI
+ #      - -nadI
  
 # 273: न भूसुधियोः (6-4-85) 
 - sutra: न भूसुधियोः 
   id: 6.4.85
-  overrides: [6.4.82, 7.1.54, 7.3.116, 7.3.112] #FIXME: implement nitya test
+  overrides: 6.4.82
+  bahiranga: 0
   condition:
      lp:
       - ?BU
@@ -2243,7 +2277,43 @@
        - ?purvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
-     
+
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4)
+- sutra: नेयङुवङ्स्थानावस्त्री
+  domain: saMjYA
+  id: 1.4.4
+  overrides: 1.4.3
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     r: _ac
+     rp: ?sup
+  update:
+     olp: -nadI
+
+# 304: वामि (1-4-5) 
+- sutra: वामि
+  domain: saMjYA
+  id: 1.4.5
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: ?Am
+  update:
+     olp: +nadI
+
 # 296: ङिति ह्रस्वश्च (1-4-6)
 - sutra: ङिति ह्रस्वश्च
   domain: saMjYA
@@ -2258,6 +2328,22 @@
   update:
      olp: +nadI
      lp:  +Niti_hrasva_seza
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  id: 1.4.6.1
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: +N
+  update:
+     olp: +nadI
      
 # 243: शेषो घ्यसखि (1-4-7)
 # sezaH - either

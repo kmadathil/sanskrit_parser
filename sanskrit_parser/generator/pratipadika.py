@@ -86,5 +86,8 @@ nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
 mati = Pratipadika("mati", "strI")
+lakzmI = Pratipadika("lakzmI", "strI") # No NI
+strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
+SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 
 
