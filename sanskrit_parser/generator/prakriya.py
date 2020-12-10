@@ -157,8 +157,10 @@ class Prakriya(object):
             # Nitya
             # Antaranga
             elif (s1.bahiranga < s2.bahiranga):
+                logger.debug(f"{s1} antaranga {s2}")
                 return s1
             elif (s2.bahiranga < s1.bahiranga):
+                logger.debug(f"{s2} antaranga {s1}")
                 return s2
             # samjYA before 1.4.2 vipratizeDe param kAryam
             elif (s1._aps_num < 14000) or  (s2._aps_num < 14000):
@@ -282,6 +284,8 @@ class Prakriya(object):
                             # Prevent optional sutra's overridden sutras from executing on the same node again
                             v0.disabled_sutras.append(so.aps)
                         logger.debug(f"Disabling overriden {so}")
+            # FIXME: disable sutras for AkaqArAdekA saMjYA
+            
             logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
             # Update Prakriya Tree
             # Craft inputs and outputs based on viewed inputs

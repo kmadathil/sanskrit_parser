@@ -1307,7 +1307,7 @@
 # 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
 - sutra: एरनेकाचोऽसंयोगपूर्वस्य
   id: 6.4.82
-  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
+#  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: i
      lp:
@@ -1325,7 +1325,7 @@
 # 281: ओः सुपि (6-4-83)
 - sutra: ओः सुपि
   id: 6.4.83
-  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
+#  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: u
      lp:
@@ -1346,7 +1346,8 @@
 # 282: वर्षाभ्वश्च (6-4-84)
 - sutra: वर्षाभ्वश्च
   id: 6.4.84
-  overrides: [6.4.85, 7.3.116, 7.1.54, 7.3.112]  #FIXME: implement nitya test
+  overrides: 6.4.85
+#  overrides: [6.4.85, 7.3.116, 7.1.54, 7.3.112]  #FIXME: implement nitya test
 
   condition:
      l: u
@@ -2277,6 +2278,44 @@
        - ?purvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
+# Overrides for future yaR AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.1
+  overrides: [1.4.3, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+     l: [i, u]
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+  update: null     
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+# Override for future iyaN AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.2
+  overrides: [1.4.3, 1.4.3.1]
+  condition:
+     lp:
+      - ?BU
+      - =suDI
+     r: _ac
+     rp: ?sup
+  update: null
+# Overrides for future yaR AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.3
+  overrides: [1.4.3, 1.4.3.1, 1.4.3.2, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+     l: u
+     lp: =varzABU
+     r: _ac
+     rp: ?sup
+  update: null
 
 # 303: नेयङुवङ्स्थानावस्त्री (1-4-4)
 - sutra: नेयङुवङ्स्थानावस्त्री
@@ -2328,6 +2367,7 @@
   update:
      olp: +nadI
      lp:  +Niti_hrasva_seza
+     
 - sutra: ङिति ह्रस्वश्च
   domain: saMjYA
   id: 1.4.6.1

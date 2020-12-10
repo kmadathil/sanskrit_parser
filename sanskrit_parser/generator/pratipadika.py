@@ -89,5 +89,7 @@ mati = Pratipadika("mati", "strI")
 lakzmI = Pratipadika("lakzmI", "strI") # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
-
+# to test
+Denu = Pratipadika("Denu", "strI")
+suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 
