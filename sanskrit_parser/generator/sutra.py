@@ -117,7 +117,8 @@ class LRSutra(Sutra):
         env["orp"] = o2
         if self.update_f is not None:
             self.update_f(env, domains)
-
+        return env["olp"], env["orp"]
+        
     def operate(self, s1, s2):
         # We take the string tuple returned, and update s1, s2
         rs1 = deepcopy(s1)

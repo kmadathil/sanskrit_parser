@@ -1239,7 +1239,7 @@
    - lp:
       - and
       - ?aNga
-      - ?svasrAdi
+      - ?naptrAdi
      rp:
       - and
       - ?sarvanAmasTAna
@@ -1681,13 +1681,15 @@
      lp:
       - and
       - ?aNga
-      - ?strI
+#      - ?strI
       - =tri
-     rp: ?sup
+     rp: ?strI_abs # Was ?sup
   xform:
      l: str("tisf")
      lc: null
-     
+  update:
+     olp: =tisf
+
 - sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
   id: 7.2.99.1
   bahiranga: 0
@@ -1696,12 +1698,14 @@
      lp:
       - and
       - ?aNga
-      - ?strI
+#      - ?strI
       - =catur
-     rp: ?sup
+     rp: ?strI_abs # Was ?sup
   xform:
      l: str("catasf")
      lc: null
+  update:
+     olp: =catasf
     
 # 299: अचि र ऋतः (7-2-100) 
 - sutra: अचि र ऋतः
@@ -2151,6 +2155,32 @@
      l: str("an") # Nicca
 
 # prakfti / pratyaya rUpAtideSa
+
+# 306: ऋन्नेभ्यो ङीप् (4-1-5) 
+- sutra:  ऋन्नेभ्यो ङीप् 
+  domain: prakfti
+  id: 4.1.5
+  condition:
+     l:
+      - ft
+      - n
+     rp:
+      - ?strI_abs
+  update:
+     orp: =NIp 
+
+# 308: न षट्स्वस्रादिभ्यः (4-1-10) 
+- sutra:  न षट्स्वस्रादिभ्यः
+  domain: prakfti
+  id: 4.1.10
+  overrides: 4.1.5
+  condition:
+     lp:
+      - ?zaw 
+      - ?svasrAdi
+     rp: ?strI_abs
+  update: null
+
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
     domain: prakfti
@@ -2179,6 +2209,24 @@
       - and
       - ?sarvanAmasTAna
       - ?!sambudDi
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+      
+# 305: स्त्रियां च (7-1-96)
+- sutra:   स्त्रियां च 
+  domain: prakfti
+  id: 7.1.96
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - ?strI_abs
   xform:
      l: str("f")
   update:
@@ -2520,8 +2568,5 @@
 # 292: विभाषा दिक्समासे बहुव्रीहौ (1-1-28)
 # 293: विभाषा द्वितीयातृतीयाभ्याम् (7-3-115) 
 
-
-# Soon
-# viBakti - need for non adanta
-# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
-# 198: पदान्तस्य (8-4-37) 
+# Ratva
+# 307: एकाजुत्तरपदे णः (8-4-12) 

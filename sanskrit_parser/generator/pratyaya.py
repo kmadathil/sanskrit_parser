@@ -134,6 +134,7 @@ SI  = Pratyaya("I",its=["S"], other_tags=["svAdi", "sup", "SI",
 NIp  = Pratyaya("I",its=["N", "p"], other_tags=["NI", "strI"])
 NIz  = Pratyaya("I",its=["N", "z"], other_tags=["NI", "strI"])
 Ap  = Pratyaya("A",its=["p"], other_tags=["Ap", "strI"])
+strI_abs  = Pratyaya("",its=[], other_tags=["strI_abs", "strI"])
 
 
 # Sambuddhi

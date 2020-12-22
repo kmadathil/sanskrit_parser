@@ -265,8 +265,8 @@ class Prakriya(object):
             r = s.operate(*v)
             r0 = r[0]
             v0 = v[0]
-            # State update 
-            s.update(*v, *r, self.domains)
+            # State update
+            r = s.update(*v, *r, self.domains)
             r = s.insert(*r)
             logger.debug(f"I (post update): {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
             logger.debug(f"I (post update): {v}")

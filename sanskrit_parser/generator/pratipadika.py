@@ -40,13 +40,13 @@ rE = Pratipadika("rE", "pum")
 # f
 pitf = Pratipadika("pitf", "pum")
 nf = Pratipadika("nf", "pum")
-tvazwf = Pratipadika("tvazwf", "pum", other_tags=["svasrAdi"])
-naptf = Pratipadika("naptf", "pum", other_tags=["svasrAdi"])
-nezwf = Pratipadika("nezwf", "pum", other_tags=["svasrAdi"])
-kzatf = Pratipadika("kzatf", "pum", other_tags=["svasrAdi"])
-hotf = Pratipadika("hotf", "pum", other_tags=["svasrAdi"])
-potf = Pratipadika("potf", "pum", other_tags=["svasrAdi"])
-praSAstf = Pratipadika("praSAstf", "pum", other_tags=["svasrAdi"])
+tvazwf = Pratipadika("tvazwf", "pum", other_tags=["naptrAdi"])
+naptf = Pratipadika("naptf", "pum", other_tags=["naptrAdi"])
+nezwf = Pratipadika("nezwf", "pum", other_tags=["naptrAdi"])
+kzatf = Pratipadika("kzatf", "pum", other_tags=["naptrAdi"])
+hotf = Pratipadika("hotf", "pum", other_tags=["naptrAdi"])
+potf = Pratipadika("potf", "pum", other_tags=["naptrAdi"])
+praSAstf = Pratipadika("praSAstf", "pum", other_tags=["naptrAdi"])
 
 
 # क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति 
@@ -71,15 +71,23 @@ tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
                                             'tyadAdi'])
 catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana"])
-tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
-catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
+#tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
+#catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 dvi_s = Pratipadika("dvi", "strI", other_tags=["saMKyA", "nityadvivacana",
                                                'tyadAdi', "Ap"])
 
 # Stri
 ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana"])
-mAtf = Pratipadika("mAtf", "strI")
-svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi"])
+mAtf = Pratipadika("mAtf", "strI", other_tags=["svasrAdi"])
+svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi", "naptrAdi"])
+tisf = Pratipadika("tisf", "strI", other_tags=["svasrAdi", "saMKyA",
+                                               "nityabahuvacana"])
+catasf = Pratipadika("catasf", "strI", other_tags=["svasrAdi""saMKyA",
+                                                   "nityabahuvacana"])
+nanAndf = Pratipadika("nanAndf", "strI", other_tags=["svasrAdi"])
+duhitf = Pratipadika("duhitf", "strI", other_tags=["svasrAdi"])
+yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
+
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])

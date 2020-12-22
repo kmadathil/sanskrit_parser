@@ -187,12 +187,13 @@ def cmd_line():
     logger.info("End Inputs")
     if args.vibhakti:
         if ((len(args.inputs) !=1) or (not isinstance(args.inputs[0], Pratipadika))):
-            print(f"Need a single pratipadika for generating vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}")
-            print(f"Simplifying")
+            logger.info(f"Need a single pratipadika for generating vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}")
+            logger.info(f"Simplifying")
             r = run_pp(args.inputs, args.verbose)
-            print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")
+            logger.debug(f"Output: {[''.join([str(x) for x in y]) for y in r]}")
             assert len(r)==1, "Got multiple outputs"
             pp = PaninianObject.join_objects(r)
+            logger.info(f"Output {pp} {pp.tags}")
         else:
             pp = args.inputs[0]
         r = generate_vibhakti(pp, args.verbose)

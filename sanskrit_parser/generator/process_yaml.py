@@ -8,6 +8,7 @@ from sanskrit_parser.generator.sutra import LRSutra
 from sanskrit_parser.generator.maheshvara import * 
 from sanskrit_parser.generator.paribhasha import *
 from sanskrit_parser.generator.pratyaya import *
+from sanskrit_parser.generator.pratipadika import *
 
 import logging
 logger = logging.getLogger(__name__)
@@ -252,8 +253,9 @@ def process_yaml(y):
                                    logger.debug(f"Removing all tags ")
                                    env[k].luTags()
                                elif sk[0]=="=": # Replace
+                                   logger.debug(f"Replacing {k} with {sk[1:]} {eval(sk[1:])}")
                                    env[k] = eval(sk[1:]) # Must be defined!
-                                   
+
                            # Possibly set/remove multiple tags         
                            if isinstance(s[k], list):
                                for sk in s[k]:
