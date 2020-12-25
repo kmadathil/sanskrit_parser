@@ -19,7 +19,8 @@ class GlobalDomains(object):
             "prakfti": False,
             "pratyaya": False,
             "aNga": False,
-            "samhitA": False,
+            "pada": False,
+            "saMhitA": False,
             "standard": False
         }
     def isdomain(self, d):

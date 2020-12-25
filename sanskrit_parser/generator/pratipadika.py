@@ -101,3 +101,6 @@ SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 
+# Napum
+
+jYAna = Pratipadika("jYAna", "napum")

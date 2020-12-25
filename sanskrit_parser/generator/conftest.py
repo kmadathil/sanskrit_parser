@@ -20,8 +20,9 @@ def _test(output, s, enc):
     if not  (set(j) == set(_s)):
         print(set(j), set(_s))
     return (set(j) == set(_s))
-def run_test(s, sutra_list, encoding=SLP1):
+def run_test(s, sutra_list, encoding=SLP1, verbose=False):
     pl = []
+    print(f"Testing {s}")
     # Assemble list of inputs
     for i in range(len(s)-1):
         def _gen_obj(s, i):
@@ -49,7 +50,8 @@ def run_test(s, sutra_list, encoding=SLP1):
         pl.append(l)
     p = Prakriya(sutra_list,PrakriyaVakya(pl))
     p.execute()
-    p.describe()
+    if verbose: 
+        p.describe()
     #print(p.dict())
     o = p.output()
     assert _test(o, s, encoding)
@@ -78,12 +80,12 @@ def generate_vibhakti(pratipadika, vibhaktis, encoding=DEVANAGARI):
     return t
 
 # Manual test
-def check_vibhakti(t, sutra_list, encoding=DEVANAGARI):
+def check_vibhakti(t, sutra_list, encoding=DEVANAGARI, verbose=False):
     for s in t:
-        run_test(s, sutra_list, encoding=encoding)
+        run_test(s, sutra_list, encoding=encoding, verbose=verbose)
 
-def test_prakriya(sutra_list, test_list, test_list_d):
+def test_prakriya(sutra_list, test_list, test_list_d, verbose=False):
     for s in test_list:
-        run_test(s, sutra_list, SLP1)
+        run_test(s, sutra_list, SLP1, verbose=verbose)
     for s in test_list_d:
-        run_test(s, sutra_list, DEVANAGARI)
+        run_test(s, sutra_list, DEVANAGARI, verbose=verbose)

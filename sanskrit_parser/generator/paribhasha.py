@@ -208,7 +208,21 @@ def anekAc_asaMyogapUrva(s):
             return True
     return False
 
-
+def numAgama(s):
+    lastac = -1
+    lens = len(s)
+    for j in range(lens):
+        jj = -1*(j+1)
+        if isInPratyahara("ac", s[jj]): # Backwards
+            lastac = lens + jj
+            break
+    if lastac == lens-1:
+        r =  s+"n"
+    elif lastac > -1:
+        r =  s[:lastac+1]+"n"+s[lastac:]
+    else:
+        r =  s
+    return r
 
 def notnull(s):
     return ((s != None) and (s != ""))

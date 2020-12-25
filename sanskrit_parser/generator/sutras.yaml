@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 # Sutras for ac sandhi
 #  @author: kmadathil
 
@@ -135,8 +135,10 @@
        l: null
        r: guna(r)
     update:
-      olp: -pada # for pUrvaparayoH
-
+      olp:
+       - -pada # for pUrvaparayoH
+       - -aNga
+       - -Ba
 -   sutra: वृद्धिरेचि
     id: 6.1.88
     condition:
@@ -146,8 +148,10 @@
        l: vriddhi(r)
        r: null
     update:
-      olp: -pada # for pUrvaparayoH
-
+      olp:
+       - -pada # for pUrvaparayoH
+       - -aNga
+       - -Ba
 
 # 73: एत्येधत्यूठ्सु (6-1-89) 
 -   sutra: एत्येधत्यूठ्सु
@@ -163,8 +167,11 @@
        l: null
        r: vriddhi(r)
     update:
-       olp: -pada # for pUrvaparayoH
-       
+       olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+
 # 269: आटश्च (6-1-90) 
 -   sutra: आटश्च
     id: 6.1.90
@@ -175,8 +182,10 @@
        l: vriddhi(r)
        r: null
     update:
-       olp: -pada # for pUrvaparayoH
-       
+       olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
 # 74: उपसर्गादृति धातौ (6-1-91)
 -   sutra: उपसर्गादृति धातौ 
     id: 6.1.91
@@ -189,8 +198,11 @@
        l: null
        r: vriddhi(r)
     update:
-      olp: -pada # for pUrvaparayoH
-
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
 # 285: औतोऽम्शसोः (6-1-93) 
 -   sutra:   औतोऽम्शसोः
     id: 6.1.93
@@ -217,8 +229,10 @@
     xform:
        l: null
     update:
-      olp: -pada # for pUrvaparayoH
-
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
 # 80: ओमाङोश्च (6-1-95) 
 -   sutra:  ओमाङोश्च 
     id: 6.1.95
@@ -229,8 +243,10 @@
     xform:
        l: null
     update:
-      olp: -pada # for pUrvaparayoH
-      
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
 #  191: अतो गुणे (6-1-97)
 -   sutra:  अतो गुणे
     id: 6.1.97
@@ -242,8 +258,11 @@
     xform:
        l: null
     update:
-      olp: -pada # for pUrvaparayoH
-
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
 # 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
@@ -1436,7 +1455,24 @@
        - ?!sarvanAmasTAna
   xform:
      l: guna(l)
- 
+
+# 311: यस्येति च (6-4-148) 
+- sutra: यस्येति च 
+  id: 6.4.148
+  condition:
+    -  lp:
+        - and
+        - ?aNga
+        - ?Ba
+       l:
+        - a
+        - i
+       rp:
+        - ?tadDita
+        - ?NI  # औङः श्यां प्रतिषेधो वाच्यः rules out SI. That leaves only NIp/z/n
+  xform:
+     l: null
+
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
   id: 7.1.9
@@ -1563,6 +1599,39 @@
      rc: null
   update:
      orp: +SI
+     
+# 310: नपुंसकाच्च (7-1-19) 
+- sutra: नपुंसकाच्च 
+  id: 7.1.19
+  # domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?O
+       - ?Ow
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 312: जश्शसोः शिः (7-1-20) 
+- sutra: जश्शसोः शिः
+  id: 7.1.20
+  # domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?jas
+       - ?Sas
+  update:
+     orp: =Si
 
 # 261: षड्भ्यो लुक् (7-1-22) 
 - sutra: षड्भ्यो लुक् 
@@ -1579,7 +1648,23 @@
      rc: null
   update:
      orp: +luk
-     
+
+# 309: अतोऽम् (7-1-24) 
+- sutra: अतोऽम् 
+  id: 7.1.24
+  # domain: aNga
+  condition:
+     l: at
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =am
+          
 # 264: त्रेस्त्रयः (7-1-53) 
 - sutra:  त्रेस्त्रयः
   id: 7.1.53
@@ -2139,6 +2224,19 @@
        rp: ?Am  
   xform:
      r: str("nA")
+     
+# 314: नपुंसकस्य झलचः (7-1-72) 
+- sutra: नपुंसकस्य झलचः
+  id: 7.1.72
+  condition:
+      l:
+        - _Jal
+        - _ac
+      lp: ?napum
+      rp: ?sarvanAmasTAna
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
 
 # saKi
 # 248: अनङ् सौ (7-1-93) 
@@ -2293,12 +2391,25 @@
   update:
      olp: +sarvanAma
 
+# 313: शि सर्वनामस्थानम् (1-1-42) 
+- sutra:  शि सर्वनामस्थानम्
+  domain: saMjYA
+  id: 1.1.42
+  condition:
+     rp: ?Si
+  update:
+     orp:
+       - +sarvanAmasTAna
+     olp:
+       - -Ba
+       - -pada
+       
 - sutra: सुडनपुंसकस्य
   domain: saMjYA
-  id: 1.1.53
+  id: 1.1.43
   condition:
      rp: ?suw
-     lp: ?!napumsaka
+     lp: ?!napum
   update:
      orp: +sarvanAmasTAna
      

@@ -74,6 +74,7 @@ class PaninianObject(SanskritObject):
         for t in ["NI", "Ap", 'strI_abs']:
             if objects[0][-1].hasTag(t):
                 so.setTag("strI")
+                so.setTag(t)
                 for tt in objects[0][0].tags:
                     so.setTag(tt)
                 if so.hasTag("pum"):
