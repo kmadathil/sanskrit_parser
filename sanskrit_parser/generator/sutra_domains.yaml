@@ -1,0 +1,2760 @@
+ # -*- coding: utf-8 -*-
+# Sutras for ac sandhi
+#  @author: kmadathil
+
+# Preefined variables, can be used as lvalues and rvalues in xform and
+# lvalues in conditions. To use a variable as rvalue in a condition,
+# prefix with $ (eg l: $r checkes for savarnatva between l and r)
+#
+#   lp = left pada
+#   rp = right pada
+#   l = last varna of left pada
+#   r = first varna of right pada
+#  ll = second last varna of left pada
+#  rr = second varna of right pada
+#  lc = left pada except last varna
+#  rc = right pada except first varna
+#  olp = output left pada (Used only for tagging outputs)
+#  orp = output right pada (Used only for tagging outputs)
+
+# Sutra: Name
+# Id: <adhyAya.pAda.sutra>
+# Condition: boolean
+# Every boolean is a(n or reduced list of) var: <value> and conditions
+#     l: a - l is savarna of a varna
+#     l: ut - l is short u varna
+#     r: ku - l is kavarga
+#     r: _ac - r is in pratyahara "ac"
+#     r: $l  - r is savarna of l (variable)
+#    rp: =naam - rp is exactly the string "naam"
+#    lp: ?pada - lp has tag pada
+#    lp: !pada - lp does not have tag pada
+#    rp: +Y   - rp is a pratyaya with it Y
+#    lp: $$fname - call fname on lp (paninian_object)
+#
+# Domain: (list of) global domains needed to enable this rule
+#
+# Xform: dict of transformations. Each transformation is a python expression
+#    l: dirgha(l)
+#    r: ""
+# 
+# Update:
+#   olp: +ru - sets tag "ru" on output lp 
+#   olp: ++R - sets it R on output lp 
+#   orp: -pada - removes "pada" tag from output rp
+#   olp: --Y - removes it Y on output lp
+#   olp: =krozwf replaces output lp with krozwf (must be defined)
+#   domain: - sets domain triggers
+#     xxx_domain:   - sets domain trigger xxx_domain
+#         value: True - to True
+#           condition:  - if
+#              r: f       - r = "f"
+
+
+# saMjYA prakaraRam
+
+# FIXME - test this once we do dvicacana
+# 100: ईदूदेद्द्विवचनं प्रगृह्यम् (1-1-11) 
+-   sutra:  ईदूदेद्द्विवचनं प्रगृह्यम्
+    id: 1.1.11
+    domain: saMjYA
+    condition:
+      l: [It, Ut, et]
+      lp: ?dvivacana
+    update:
+      olp: +pragfhya
+
+# FIXME - test this once we do adas
+# 101: अदसोमात् (1-1-12) 
+-   sutra: अदसोमात्
+    id: 1.1.12
+    domain: saMjYA
+    condition:
+      l: [It, Ut, et]
+      ll: m
+      lp: ?adas
+    update:
+      olp: +pragfhya
+
+- sutra: ष्णान्ता षट्
+  domain: saMjYA
+  id: 1.1.26
+  condition:
+     l: [z, n]
+     lp:
+       - ?saMKyA
+  update:
+     olp: +zaw
+
+# 259: डति च (1-1-25) 
+- sutra:  डति च
+  domain: saMjYA
+  id: 1.1.25
+  condition:
+     lp:
+       - ?qati
+  update:
+     olp: +zaw
+
+# 213: सर्वादीनि सर्वनामानि (1-1-27)
+- sutra: सर्वादीनि सर्वनामानि
+  domain: saMjYA
+  id: 1.1.27
+  condition:
+     lp:
+       - ?sarvAdi
+  update:
+     olp: +sarvanAma
+
+- sutra: सुडनपुंसकस्य
+  domain: saMjYA
+  id: 1.1.53
+  condition:
+     rp: ?suw
+     lp: ?!napumsaka
+  update:
+     orp: +sarvanAmasTAna
+     
+# 263: न लुमताङ्गस्य (1-1-63)
+- sutra: न लुमताङ्गस्य
+  domain: saMjYA
+  id: 1.1.63
+  condition:
+     rp:
+       - ?luk
+       - ?Slu
+       - ?lup
+     lp: ?aNga
+  update:
+     orp: _lu # Strip all tags, prevent pratyayalakzaRa
+ 
+# 266: यू स्त्र्याख्यौ नदी (1-4-3) 
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3
+  condition:
+     l: [It, Ut]
+     lp:
+       - ?strI
+       - ?purvastrI # प्रथमलिङ्गग्रहणं च 
+  update:
+     olp: +nadI
+# Overrides for future yaR AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.1
+  overrides: [1.4.3, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+     l: [i, u]
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+  update: null     
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+# Override for future iyaN AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.2
+  overrides: [1.4.3, 1.4.3.1]
+  condition:
+     lp:
+      - ?BU
+      - =suDI
+     r: _ac
+     rp: ?sup
+  update: null
+# Overrides for future yaR AdeSa
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3.3
+  overrides: [1.4.3, 1.4.3.1, 1.4.3.2, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+     l: u
+     lp: =varzABU
+     r: _ac
+     rp: ?sup
+  update: null
+
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4)
+- sutra: नेयङुवङ्स्थानावस्त्री
+  domain: saMjYA
+  id: 1.4.4
+  overrides: 1.4.3
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     r: _ac
+     rp: ?sup
+  update:
+     olp: -nadI
+
+# 304: वामि (1-4-5) 
+- sutra: वामि
+  domain: saMjYA
+  id: 1.4.5
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: ?Am
+  update:
+     olp: +nadI
+
+# 296: ङिति ह्रस्वश्च (1-4-6)
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  optional: true
+  id: 1.4.6
+  condition:
+     l: [it, ut]
+     lp:
+       - ?strI
+       - ?purvastrI # प्रथमलिङ्गग्रहणं च
+     rp: +N
+  update:
+     olp: +nadI
+     lp:  +Niti_hrasva_seza
+     
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  id: 1.4.6.1
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: +N
+  update:
+     olp: +nadI
+     
+# 243: शेषो घ्यसखि (1-4-7)
+# sezaH - either
+#  a) not strI
+#  b) stri & it & ut but not Niti
+#  c) stri & it & ut & Niti and the not nadI arm.
+- sutra: शेषो घ्यसखि
+  domain: saMjYA
+  id: 1.4.7
+  condition:
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!strI
+        - ?!saKi
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - -N
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - ?Niti_hrasva_seza
+  update:
+     olp: +Gi
+
+# FIXME - remember to test this when samAsa is implemented
+# 257: पतिः समास एव (1-4-8)
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  id: 1.4.8
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?samAsa
+  update:
+     olp: +Gi
+     
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  id: 1.4.8.1
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?!samAsa
+  update: null
+
+
+- sutra: स्वादिष्वसर्वनामस्थाने
+  domain: saMjYA
+  id: 1.4.17
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+  update:
+     olp: +pada
+
+- sutra: यचि भम्
+  domain: saMjYA
+  id: 1.4.18
+  overrides: 1.4.17
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+     r: [y, _ac]
+  update:
+     olp: +Ba
+
+- sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
+  domain: saMjYA
+  id: 1.4.13
+  condition:
+     rp: ?pratyaya
+     lp: ?!pratyaya
+  update:
+     olp: +aNga
+
+
+
+# prakfti / pratyaya rUpAtideSa
+
+# 306: ऋन्नेभ्यो ङीप् (4-1-5) 
+- sutra:  ऋन्नेभ्यो ङीप् 
+  domain: pratyaya
+  id: 4.1.5
+  condition:
+     l:
+      - ft
+      - n
+     rp:
+      - ?strI_abs
+  update:
+     orp: =NIp 
+
+# 308: न षट्स्वस्रादिभ्यः (4-1-10) 
+- sutra:  न षट्स्वस्रादिभ्यः
+  domain: pratyaya
+  id: 4.1.10
+  overrides: 4.1.5
+  condition:
+     lp:
+      - ?zaw 
+      - ?svasrAdi
+     rp: ?strI_abs
+  update: null
+
+# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
+-   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
+    domain: prakfti
+    id: 6.1.63
+    optional: true
+    condition:
+      lp: ?pAdAdi
+      rp: ?!suw  # Sas praBfti
+    xform:
+      lc: pAdAdi_AdeSa(lc+l)
+      l: null
+    update:
+      olp: -Ap
+      # olp: =padAdi_AdeSa_r(olp)  # FIXME! this is cleaner, but needs testing 
+
+
+       
+# 252: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् (6-1-68)        
+-   sutra: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् 
+    id: 6.1.68
+    domain: standard
+    condition:
+      - l: _hal
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+      - lp:
+          - ?NI
+          - ?Ap
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+    xform:
+       r: null
+    update:
+       olp: +pada
+
+# 193: एङ्ह्रस्वात्संबुद्धेः (6-1-69)
+-   sutra: एङ्ह्रस्वात्संबुद्धेः
+    id: 6.1.69
+    domain: standard
+    condition:
+       l: [at, it, ut, ft, xt, _eN]
+       r: _hal
+       rp:
+         - ?sambudDi
+    xform:
+       r: null
+
+
+
+## Rules added for pratyayas etc.
+# aNga aDikAra
+
+# 209: नामि (6-4-3) 
+- sutra: नामि 
+  id: 6.4.3
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: 7.3.102
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: _ac
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
+# 300: न तिसृचतसृ (6-4-4)
+- sutra: न तिसृचतसृ 
+  id: 6.4.4
+  overrides: 6.4.3
+  domain: aNga
+  condition:
+     - lp:
+       - and
+       - ?aNga
+       - =tisf
+       rp:
+       - and
+       - ?Am
+     - lp:
+       - and
+       - ?aNga
+       - =catasf
+       rp:
+       - and
+       - ?Am
+  xform: null
+
+
+# 283: नृ च (6-4-6)
+- sutra: नृ च
+  id: 6.4.6
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: [6.4.3, 7.3.102]
+  domain: aNga
+  optional: true
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =nf
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
+
+#250: सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
+- sutra: सर्वनामस्थाने चासम्बुद्धौ
+  id: 6.4.8
+  domain: aNga
+  condition:
+     l: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+
+
+# FIXME simplify once we have and/or in condition
+
+# 277: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् (6-4-11)
+- sutra: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् 
+  id: 6.4.11
+  domain: aNga
+  condition:
+   - lp:
+      - and
+      - ?aNga
+      - ?tfc
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?tfn
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =ap
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?naptrAdi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+# asidDavat aDikAra 6.4.22-6.4.175
+# FIXME Implement this priority correctly
+
+# 271: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ (6-4-77) 
+- sutra: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ 
+  id: 6.4.77
+  domain: aNga
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+      - i
+      - u
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+       
+# 301: स्त्रियाः (6-4-79)        
+- sutra: स्त्रियाः
+  id: 6.4.79
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?strI_p
+      - ?strI
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+       
+# 302: वाम्शसोः (6-4-80)   
+- sutra: वाम्शसोः
+  id: 6.4.80
+  optional: true
+  overrides: 6.4.79
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?strI_p
+      - ?strI
+     rp:
+      - ?am
+      - ?Sas
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+
+# 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
+- sutra: एरनेकाचोऽसंयोगपूर्वस्य
+  id: 6.4.82
+  domain: aNga
+  condition:
+     l: i
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+  xform:
+     l: str("y")
+  update:
+     olp:
+       - +yaR
+     
+# 281: ओः सुपि (6-4-83)
+- sutra: ओः सुपि
+  id: 6.4.83
+  domain: aNga
+  condition:
+     l: u
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+
+# 282: वर्षाभ्वश्च (6-4-84)
+- sutra: वर्षाभ्वश्च
+  id: 6.4.84
+  overrides: 6.4.85
+  domain: aNga
+  condition:
+     l: u
+     lp: =varzABU
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+ 
+# 273: न भूसुधियोः (6-4-85) 
+- sutra: न भूसुधियोः 
+  id: 6.4.85
+  overrides: 6.4.82
+  bahiranga: 0
+  domain: aNga
+  condition:
+     lp:
+      - ?BU
+      - =suDI
+     r: _ac
+     rp: ?sup
+  xform: null
+     
+- sutra: अल्लोपोऽनः
+  id: 6.4.134
+  domain: aNga
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     1: str("n")
+     
+- sutra: विभाषा ङिश्योः
+  id: 6.4.136
+  overrides: 6.4.134
+  optional: true
+  domain: aNga
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+     rp:
+       - ?Ni
+       - ?SI
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     1: str("n")
+     
+# 240: आतो धातोः (6-4-140) 
+- sutra: आतो धातोः
+  id: 6.4.140
+  # bahiranga: 1
+  domain: aNga
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?DAtu
+     l: At
+  xform:
+     l: null
+
+- sutra: ओर्गुणः
+  id: 6.4.146
+  overrides: [7.2.115, 7.2.116]
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: u
+     rp:
+       - and
+       - ?tadDita
+       - ?svAdi
+       - ?!sarvanAmasTAna
+  xform:
+     l: guna(l)
+ 
+# 203: अतो भिस ऐस् (7-1-9)
+- sutra: अतो भिस ऐस् 
+  id: 7.1.9
+  # FIXME : this needs proper priority
+  overrides: [7.3.102, 7.3.103]
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Bis
+  xform:
+     r: null
+     rc: str("Es")
+     
+# 201: टाङसिङसामिनात्स्याः (7-1-12)
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?wA
+  xform:
+     r: str("ina")
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.1
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nasi
+  xform:
+     r: null
+     rc: str("At")
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.2
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nas
+  xform:
+     r: null
+     rc: str("sya")
+
+# 204: ङेर्यः (7-1-13)
+- sutra: ङेर्यः 
+  id: 7.1.13
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Ne
+  xform:
+     r: str("ya")
+     
+#215: सर्वनाम्नः स्मै (7-1-14)
+- sutra: सर्वनाम्नः स्मै
+  id: 7.1.14
+  domain: aNga
+  overrides: 7.1.13
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Ne
+  xform:
+     r: str("smE")
+     
+# 216: ङसिङ्योः स्मात्स्मिनौ (7-1-15)
+- sutra: ङसिङ्योः स्मात्स्मिनौ
+  id: 7.1.15
+  overrides: 7.1.12.1
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Nasi
+  xform:
+     rc: str("smAt")
+     r: null
+     
+- sutra: ङसिङ्योः स्मात्स्मिनौ
+  id: 7.1.15.1
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Ni
+  xform:
+     r: null
+     rc: str("smin")
+
+
+# 214: जसः शी (7-1-17) 
+- sutra:  जसः शी
+  id: 7.1.17
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?jas
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 287: औङ आपः (7-1-18)
+- sutra: औङ आपः
+  id: 7.1.18
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?O
+       - ?Ow
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 310: नपुंसकाच्च (7-1-19) 
+- sutra: नपुंसकाच्च 
+  id: 7.1.19
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?O
+       - ?Ow
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+
+# 261: षड्भ्यो लुक् (7-1-22) 
+- sutra: षड्भ्यो लुक् 
+  id: 7.1.22
+  overrides: 7.3.109 # FIXME: Nitya
+  domain: aNga
+  condition:
+     lp:
+      - ?zaw
+     rp:
+      - ?jas
+      - ?Sas
+  xform:
+     r: null
+     rc: null
+  update:
+     orp: +luk
+
+# 309: अतोऽम् (7-1-24) 
+- sutra: अतोऽम् 
+  id: 7.1.24
+  domain: aNga
+  condition:
+     l: at
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =am
+     
+# 264: त्रेस्त्रयः (7-1-53) 
+- sutra:  त्रेस्त्रयः
+  id: 7.1.53
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - =tri
+      - ?saMKyA
+     rp:
+      - ?Am
+  xform:
+     l: str("traya")
+     lc: null
+
+# 284: गोतो णित् (7-1-90) 
+- sutra:  गोतो णित् 
+  id: 7.1.90
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =go
+     rp: ?sarvanAmasTAna
+  update:
+     orp: ++R
+
+# 253: सख्युरसंबुद्धौ (7-1-92) 
+- sutra:  सख्युरसंबुद्धौ
+  id: 7.1.92
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?saKi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  update:
+     orp: ++R
+
+# 276: ऋदुशनस्पुरुदंसोऽनेहसां च (7-1-94)      
+- sutra:  ऋदुशनस्पुरुदंसोऽनेहसां च
+  id: 7.1.94
+  overrides: 7.3.110
+  domain: aNga
+  condition:
+     - l: ft
+       lp: ?aNga
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =uSanas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =purudaMsas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =anehas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+     l: str("an")
+       
+# 274: तृज्वत्क्रोष्टुः (7-1-95) 
+- sutra:  तृज्वत्क्रोष्टुः
+  domain: prakfti
+  id: 7.1.95
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+      
+# 305: स्त्रियां च (7-1-96)
+- sutra:   स्त्रियां च 
+  domain: prakfti
+  id: 7.1.96
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - ?strI_abs
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+
+# 278: विभाषा तृतीयादिष्वचि (7-1-97) 
+- sutra:  विभाषा तृतीयादिष्वचि
+  id: 7.1.97
+  domain: prakfti
+  optional: true
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+      - ?!Am   # vArtikam नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+
+
+# 286: रायो हलि (7-2-85) 
+- sutra:   रायो हलि
+  id: 7.2.85
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =rE
+     r: _hal
+     rp: ?viBakti
+  xform:
+     l: str("A")
+
+# 298: त्रिचतुरोः स्त्रियां तिसृचतसृ (7-2-99)
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99
+  bahiranga: 0
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+#      - ?strI
+      - =tri
+     rp: ?strI_abs # Was ?sup
+  xform:
+     l: str("tisf")
+     lc: null
+  update:
+     olp: =tisf
+
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99.1
+  bahiranga: 0
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+#      - ?strI
+      - =catur
+     rp: ?strI_abs # Was ?sup
+  xform:
+     l: str("catasf")
+     lc: null
+  update:
+     olp: =catasf
+    
+# 299: अचि र ऋतः (7-2-100) 
+- sutra: अचि र ऋतः
+  overrides: [7.3.109, 7.3.110]
+  id: 7.2.100
+  domain: aNga
+  condition:
+     lp:
+      - =tisf
+      - =catasf
+     rp:
+      - and
+      - ?sup
+      - ?!Am # नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+     r:
+      - _ac
+  xform:
+     l: str("r")
+
+# 265: त्यदादीनामः (7-2-102) 
+- sutra:  त्यदादीनामः
+  id: 7.2.102
+  domain: aNga
+  condition:
+     lp: ?tyadAdi
+     rp: ?sup
+  xform:
+     l: str("a")
+
+- sutra: अचो ञ्णिति
+  id: 7.2.115
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: _ac
+     rp: [+R, +Y]
+  xform:
+     l: vriddhi(l)
+  update:
+     olp: +tannimitta
+     
+- sutra: अत उपधायाः
+  id: 7.2.116
+  domain: aNga
+  condition:
+     lp: ?aNga
+     ll: at
+     rp: [+R, +Y]
+  xform:
+     lc: lc[:-1]+str("A")
+  update:
+     olp: +tannimitta
+     
+- sutra: सार्वधातुकार्धधातुकयोः
+  id: 7.3.84
+  domain: aNga
+  condition:
+     - lp: ?aNga
+       l: _ac
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
+  xform:
+     l: guna(l)
+     
+- sutra: पुगन्तलघूपधस्य च
+  id: 7.3.86
+  domain: aNga
+  condition:
+     - lp: ?aNga
+       ll: [it, ut, ft, xt]
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
+  xform:
+     lc: lc[:-1]+guna(lc[-1])
+     
+# 202: सुपि च (7-3-102) 
+- sutra:  सुपि च
+  id: 7.3.102
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     r: _yaY
+     rp: ?sup
+  xform:
+     l: str("A")
+      
+# 205: बहुवचने झल्येत् (7-3-103)
+- sutra: बहुवचने झल्येत्
+  id: 7.3.103
+  domain: aNga
+  condition:
+     lp: ?aNga
+     l: at
+     r: _Jal
+     rp:
+       - and
+       - ?bahuvacana
+       - ?sup
+  xform:
+     l: str("e")
+     
+# 207: ओसि च (7-3-104) 
+- sutra: ओसि च
+  domain: aNga
+  id: 7.3.104
+  condition:
+     lp: ?aNga
+     l: at
+     rp:
+       - ?os
+  xform:
+     l: str("e")
+     
+
+# 289: आङि चापः (7-3-105)
+- sutra: आङि चापः 
+  id: 7.3.105
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?wA
+       - ?os
+  xform:
+     l: str("e")
+     
+# 288: संबुद्धौ च (7-3-106)
+- sutra: संबुद्धौ च
+  id: 7.3.106
+  domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?sambudDi
+  xform:
+     l: str("e")
+ 
+# 267: अम्बार्थनद्योर्ह्रस्वः (7-3-107)
+-   sutra: अम्बार्थनद्योर्ह्रस्वः
+    id: 7.3.107
+    overrides: 7.3.108
+    domain: aNga
+    condition:
+     - lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp:
+         - ?sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - ?ambArTa
+       rp:
+         - ?sambudDi
+    xform:
+       l: hrasva(l)
+
+# 242: ह्रस्वस्य गुणः (7-3-108) 
+-   sutra: ह्रस्वस्य गुणः
+    id: 7.3.108
+    domain: aNga
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?sambudDi
+    xform:
+       l: guna(l)
+       
+# 241: जसि च (7-3-109) 
+-   sutra:  जसि च
+    id: 7.3.109
+    domain: aNga
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?jas
+    xform:
+       l: guna(l)
+       
+#  275: ऋतो ङिसर्वनामस्थानयोः (7-3-110) 
+-   sutra:  ऋतो ङिसर्वनामस्थानयोः
+    id: 7.3.110
+    domain: aNga
+    condition:
+       l: ft
+       lp: ?aNga
+       rp:
+        - ?Ni
+        - ?sarvanAmasTAna
+    xform:
+       l: guna(l)
+       
+#  245: घेर्ङिति (7-3-111) 
+-   sutra:  घेर्ङिति
+    id: 7.3.111
+    domain: aNga
+    condition:
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp:
+        - and
+        - +N
+        - ?sup
+    xform:
+       l: guna(l)
+
+# 268: आण्नद्याः (7-3-112)
+-   sutra:  आण्नद्याः
+    id: 7.3.112
+    domain: aNga
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: +N
+    insert:
+       1: Aw
+# 290: याडापः (7-3-113)
+-   sutra:  याडापः
+    id: 7.3.113
+    domain: aNga
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+       rp: +N
+    insert:
+       1: yAw
+       
+# 291: सर्वनाम्नः स्याड्ढ्रस्वश्च (7-3-114) 
+-   sutra:  सर्वनाम्नः स्याड्ढ्रस्वश्च
+    id: 7.3.114
+    domain: aNga
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+        - ?sarvanAma
+       rp: +N
+    insert:
+       1: syAw
+    xform:
+       l: hrasva(l)
+
+# 270: ङेराम्नद्याम्नीभ्यः (7-3-116)        
+-   sutra:  ङेराम्नद्याम्नीभ्यः
+    id: 7.3.116
+    overrides: 7.3.118
+    domain: aNga
+    condition:
+       - lp:
+          - and
+          - ?aNga
+          - ?nadI
+         rp: ?Ni
+       - lp:
+          - and
+          - ?aNga
+          - ?Ap
+         rp: ?Ni
+    xform:
+       r: str("Am")
+# Seperated out so it does not get overriden by 6.4.77. FIXME: Ideally a proper nityatva check would work better.
+-   sutra:  ङेराम्नद्याम्नीभ्यः
+    id: 7.3.116.1
+    overrides: 7.3.118
+    domain: aNga
+    condition:
+         lp:
+          - and
+          - ?aNga
+          - ?DAtu
+         l: It
+         ll: n
+         rp: ?Ni
+    xform:
+       r: str("Am")
+       
+-   sutra:  इदुद्भ्याम्
+    id: 7.3.117
+    overrides: [7.3.116, 7.3.118]
+    domain: aNga
+    condition:
+       l: [it, ut]
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: ?Ni
+    xform:
+       r: str("Am")
+        
+#  256: औत् (7-3-118) 
+-   sutra:  औत्
+    id: 7.3.118
+    domain: aNga
+    condition:
+       l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?!Gi
+        - ?!nadI
+       rp: ?Ni
+    xform:
+       r: str("O")
+       
+#  247: अच्च घेः (7-3-119) 
+-   sutra:  अच्च घेः 
+    id: 7.3.119
+    domain: aNga
+    condition:
+       l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp: ?Ni
+    xform:
+       l: str("a")
+       r: str("O")
+       
+
+#  244: आङो नाऽस्त्रियाम् (7-3-120) 
+-   sutra:  आङो नाऽस्त्रियाम्
+    id: 7.3.120
+    domain: aNga
+    condition:
+       lp:
+         - "and"
+         - ?Gi
+         - ?!strI
+       rp:
+         - ?wA
+    xform:
+       r: str("nA")
+
+
+- sutra: क्ङिति च
+  id: 1.1.5
+  overrides: [7.3.84, 7.3.86]
+  domain: aNga
+  condition:
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?sArvaDAtuka
+         - +k
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?ArDaDAtuka
+         - +k
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?sArvaDAtuka
+         - +N
+     - lp:
+        - and
+        - ?aNga
+       l: _ik
+       rp:
+         - and
+         - ?ArDaDAtuka
+         - +N
+  xform: null
+  
+- sutra: क्ङिति च
+  id: 1.1.5.1
+  overrides: [7.3.84, 7.3.86]
+  domain: aNga
+  condition:
+     - lp:
+        - and
+        - ?aNga
+       ll: _ik
+       rp:
+         - +k
+         - +N
+  xform: null
+
+# TadDita aDikAra
+    
+- sutra: तद्धितेष्वचामादेः
+  id: 7.2.117
+  domain: aNga
+  condition:
+   - lp: ?aNga
+     rp:
+       - and
+       - ?tadDita
+       - +R
+   - lp: ?aNga
+     rp:
+       - and
+       - ?tadDita
+       - +Y
+  xform:
+     lc: adivriddhi(lc)
+
+
+# End taddhita aDikAra
+
+# Agamas
+# Am
+# 217: आमि सर्वनाम्नः सुट् (7-1-52) 
+- sutra: आमि सर्वनाम्नः सुट्
+  id: 7.1.52
+  domain: aNga
+  overrides: 7.1.54
+  condition:
+      l: a
+      lp:
+        - and
+        - ?aNga
+        - ?sarvanAma
+      rp: ?Am  
+  xform:
+     r: str("s")+r
+     rp: +AdeSa_s
+
+# 208: ह्रस्वनद्यापो नुट् (7-1-54)
+- sutra: ह्रस्वनद्यापो नुट्
+  id: 7.1.54
+  domain: aNga
+  condition:
+     - l: [at,it,ut,ft,xt]
+       rp: ?Am  
+     - lp: ?nadI
+       rp: ?Am  
+     - l: At
+       lp: ?Ap
+       rp: ?Am  
+  xform:
+     r: str("nA")
+
+# saKi
+# 248: अनङ् सौ (7-1-93) 
+- sutra:  अनङ् सौ
+  id: 7.1.93
+  domain: aNga
+  condition:
+     lp:
+      - ?saKi
+     rp:
+      - and
+      - ?su
+      - ?!sambudDi
+  xform:
+     l: str("an") # Nicca
+
+# End aNga aDikAra
+
+
+
+# ac sandhi
+# FIXME - create samhita aDikAras
+# Three 6.1.72, 6.3.115, 8.2.108
+-   sutra: इको यणचि
+    id: 6.1.77
+    domain: saMhitA
+    condition:
+      l: _ik
+      r: _ac
+    xform:
+      l: ikoyan(l)
+       
+-   sutra: एचोऽयवायावः
+    id: 6.1.78
+    domain: saMhitA
+    condition:
+      l: _ec
+      r: _ac
+    xform:
+       l: ayavayav(l)
+       
+-   sutra: वान्तो यि प्रत्यये 
+    id: 6.1.79
+    domain: saMhitA
+    condition:
+      l: [o, O]
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+# 64: धातोस्तन्निमित्तस्यैव (6-1-80) 
+-   sutra:  धातोस्तन्निमित्तस्यैव 
+    id: 6.1.80
+    domain: saMhitA
+    overrides: 6.1.79   
+    condition:
+      l: [o, O]
+      lp:
+        - and
+        - ?DAtu
+        - ?!tannimitta
+      r: y
+      rp: ?pratyaya
+    xform: null
+    
+# 65: क्षय्यजय्यौ शक्यार्थे (6-1-81)
+-   sutra:  क्षय्यजय्यौ शक्यार्थे 
+    id: 6.1.81
+    domain: saMhitA
+    overrides: 6.1.79
+    optional: true
+    condition:
+      l: et
+      lc:
+        - =kz
+        - =j
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+# 66: क्रय्यस्तदर्थे (6-1-82) 
+-   sutra:  क्रय्यस्तदर्थे 
+    id: 6.1.82
+    domain: saMhitA
+    overrides: [6.1.79, 7.3.84]
+    optional: true
+    condition:
+      lc: =kr
+      l: et
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+
+# FIXME PurvaparayoH needs a bit more thought
+-   sutra: आद्गुणः
+    id: 6.1.87
+    domain: saMhitA
+    condition:
+       l: a
+       r: _ik
+    xform:
+       l: null
+       r: guna(r)
+    update:
+      olp: -pada # for pUrvaparayoH
+
+-   sutra: वृद्धिरेचि
+    id: 6.1.88
+    domain: saMhitA
+    condition:
+       l: a
+       r: _ec
+    xform:
+       l: vriddhi(r)
+       r: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+
+# 73: एत्येधत्यूठ्सु (6-1-89) 
+-   sutra: एत्येधत्यूठ्सु
+    id: 6.1.89
+    domain: saMhitA
+    overrides: 6.1.94
+    condition:
+     - l: a
+       rp:
+         - ?eti
+         - ?UW
+         - ?eDati
+    xform:
+       l: null
+       r: vriddhi(r)
+    update:
+       olp: -pada # for pUrvaparayoH
+       
+# 269: आटश्च (6-1-90) 
+-   sutra: आटश्च
+    id: 6.1.90
+    domain: saMhitA
+    condition:
+     - lp: ?Aw
+       r: _ac
+    xform:
+       l: vriddhi(r)
+       r: null
+    update:
+       olp: -pada # for pUrvaparayoH
+       
+# 74: उपसर्गादृति धातौ (6-1-91)
+-   sutra: उपसर्गादृति धातौ 
+    id: 6.1.91
+    domain: saMhitA
+    condition:
+     - l: a
+       lp: ?upasarga
+       r: f
+       #rp: ?DAtu
+    xform:
+       l: null
+       r: vriddhi(r)
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 285: औतोऽम्शसोः (6-1-93) 
+-   sutra:   औतोऽम्शसोः
+    id: 6.1.93
+    domain: aNga
+    overrides: 7.1.90
+    condition:
+       l: o
+       lp: ?aNga
+       rp:
+         - ?am
+         - ?Sas
+    xform:
+       l: null
+       r: str('A')
+    # for pUrvaparayoH
+    
+# 78: एङि पररूपम् (6-1-94)
+-   sutra:  एङि पररूपम् 
+    id: 6.1.94
+    domain: saMhitA
+    condition:
+       l: a
+       lp: ?upasarga
+       r: eN
+       # rp: ?DAtu
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 80: ओमाङोश्च (6-1-95) 
+-   sutra:  ओमाङोश्च 
+    id: 6.1.95
+    domain: saMhitA
+    condition:
+       rp:
+        - =om
+        - ?AN
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+      
+#  191: अतो गुणे (6-1-97)
+-   sutra:  अतो गुणे
+    id: 6.1.97
+    overrides: 6.1.101
+    domain: saMhitA
+    condition:
+       l: at
+       lp: ?!pada
+       r: [at, _eN]
+    xform:
+       l: null
+    update:
+      olp: -pada # for pUrvaparayoH
+
+# 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
+-   sutra:  प्रथमयोः पूर्वसवर्णः 
+    id: 6.1.102
+    domain: saMhitA
+    overrides: 6.1.97
+    # bahiranga: 1
+    condition:
+       l: _ak
+       r: _ac
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform:
+       r: l
+    update:
+       orp: +psavarRa
+       
+ # 196: तस्माच्छसो नः पुंसि (6-1-103)
+-   sutra:  तस्माच्छसो नः पुंसि 
+    id: 6.1.103
+    overrides: 6.1.97
+    domain: saMhitA
+    condition:
+       l: _ak
+       lp:
+        - and
+        - ?aNga
+        - ?pum
+       rp:
+         - and
+#         - =as
+#         - ?dvitIyA
+         - ?Sas
+         - ?psavarRa
+    xform:
+       r: l
+       rc: str("n")
+
+# 194: अमिपूर्वः (6-1-107) 
+-   sutra:  अमिपूर्वः
+    id: 6.1.107
+    domain: saMhitA
+    # FIXME: This prevents 7.3.102 from triggering, but we need a proper
+    # fix for pUrvaparayOH
+    overrides: 7.3.102
+    condition:
+       l: _ak
+       rp:
+         - and
+         - =am
+         - ?pratyaya
+    xform:
+       r: null
+ 
+#165: नादिचि (6-1-104) 
+-   sutra: नादिचि
+    id: 6.1.104
+    domain: saMhitA
+    overrides: 6.1.102
+    # bahiranga: 1
+    condition:
+       l: a
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform: null
+    
+#239: दीर्घाज्जसि च (6-1-105) 
+-   sutra: दीर्घाज्जसि च
+    id: 6.1.105
+    overrides: [6.1.102, 6.1.104]
+    domain: saMhitA
+    # bahiranga: 1
+    condition:
+       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform: null
+-   sutra: दीर्घाज्जसि च
+    id: 6.1.105.1
+    overrides: 6.1.102
+    # bahiranga: 1
+    condition:
+       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       rp:
+         - ?jas
+    xform: null
+
+# 90: प्लुतप्रगृह्या अचि नित्यम् (6-1-125)
+-   sutra:  प्लुतप्रगृह्या अचि नित्यम् 
+    id: 6.1.125
+    domain: saMhitA
+    condition:
+       lp:
+        - ?pluta
+        - ?pragfhya
+       r: _aC
+    xform:
+       l: null
+
+      
+
+# Better handled as a paribhAshA
+# -   sutra: उरण् रपरः
+#     id: 1.1.51
+#     condition: null
+#     xform:
+#        r: str("r")+r
+#     trigger: uran_trigger 
+#     update:
+#       trigger:
+#         uran_trigger:
+#           value: False
+       
+-   sutra: अकः सवर्णे दीर्घः
+    id: 6.1.101
+    domain: saMhitA
+    condition:
+      l: _ak
+      r: $l
+    xform:
+      l: dirgha(l)
+      r: null
+
+-   sutra: एङः पदान्तादति
+    id: 6.1.109
+    domain: saMhitA
+    condition:
+      l: _eN
+      r: at
+      lp: ?pada
+    xform:
+      r: null
+
+# 246: ङसिङसोश्च (6-1-110) 
+-   sutra: ङसिङसोश्च
+    id: 6.1.110
+    domain: saMhitA
+    condition:
+      l: _eN
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: null
+      
+# 279: ऋत उत् (6-1-111) 
+-   sutra:  ऋत उत्
+    id: 6.1.111
+    domain: saMhitA
+    overrides: 8.4.46 # FIXME: Why do we need this? pituH
+    condition:
+      l: ft
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: null
+      l: str("ur")  # Uran raparaH
+      
+# 255: ख्यत्यात्परस्य (6-1-112) 
+-   sutra: ख्यत्यात्परस्य
+    id: 6.1.112
+    domain: saMhitA
+    condition:
+      l: =y
+      ll:
+       - =t
+       - =K
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: str("u")
+
+# hal sandhi
+- sutra: छे च
+  id: 6.1.73
+  domain: saMhitA
+  condition:
+     l: [at,it,ut,ft,xt]
+     r: C
+  insert:
+     1: tuk
+
+- sutra: आङ्माङोश्च
+  id: 6.1.74
+  domain: saMhitA
+  overrides: [6.1.75, 6.1.76]
+  condition:
+     - lp:
+        - and
+        - =A
+        - +N
+       r: C
+     - lp:
+        - and
+        - =mA
+        - +N       
+       r: C
+  insert:
+     1: tuk
+     
+- sutra: दीर्घात्
+  id: 6.1.75
+  domain: saMhitA
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     r: C
+  insert:
+     1: tuk
+     
+- sutra: पदान्ताद्वा
+  id: 6.1.76
+  domain: saMhitA
+  overrides: 6.1.75
+  optional: true
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     lp: ?pada
+     r: C
+  insert:
+     1: tuk
+
+- sutra: स्तोः श्चुना श्चुः
+  id: 8.4.40
+  domain: saMhitA
+  condition:
+      - l: [s, tu]
+        r: [S, cu]
+      - l: [S, cu]
+        r: [s, tu]
+  xform:
+      r: shcutva(r)
+      l: shcutva(l)
+
+- sutra: ष्टुना ष्टुः
+  id: 8.4.41
+  domain: saMhitA
+  condition:
+      - l: [s, tu]
+        r: [z, wu]
+      - l: [z, wu]
+        r: [s, tu]
+  xform:
+      r: zwutva(r)
+      l: zwutva(l)
+
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.4.42
+  overrides: 8.4.41
+  domain: saMhitA
+  condition:
+        lp: ?pada
+        l: wu
+        r: [s, tu]
+  xform: null
+
+# Subsutra plus vArtikas
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.4.42.1
+  overrides: [8.4.42, 8.4.41]
+  domain: saMhitA
+  condition:
+        l: wu
+        rp: [=nAm, =navatis, =nagaris]
+  xform:
+        r: zwutva(r)
+        
+- sutra: तोः षि
+  id: 8.4.43
+  overrides: 8.4.41
+  domain: saMhitA
+  condition:
+        l: tu
+        r: z
+  xform:
+- sutra: शात्
+  id: 8.4.44
+  overrides: 8.4.40
+  domain: saMhitA
+  condition:
+        l: S
+        r: [s, tu]
+  xform:
+
+- sutra: लोपः शाकल्यस्य
+  id: 8.3.19
+  domain: saMhitA
+  condition:
+     lp: ?pada
+     l: y
+     ll: a
+     r: _aS
+  xform:
+     l: null
+
+- sutra: ओतो गार्ग्यस्य
+  id: 8.3.20
+  domain: saMhitA
+  condition:
+     l: y
+     ll: o
+     r: _aS
+  xform:
+     l: null
+
+# Pada disabled per kashika
+- sutra: ढो ढे लोपः
+  id: 8.3.13
+  domain: saMhitA
+  condition:
+     #lp: ?pada
+     l: Q
+     r: Q
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+     
+- sutra: रो रि
+  id: 8.3.14
+  domain: saMhitA
+  condition:
+     #lp: ?pada
+     l: r
+     r: r
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+
+# 8.3.13/14 are siddha for this sutra
+- sutra: ढ्रलोपे पूर्वस्य दीर्घोऽणः
+  id: 6.3.111
+  domain: saMhitA
+  condition:
+     lp: ?qrlopa
+     l: _aR
+  xform:
+     l: dirgha(l)
+
+- sutra: अनुस्वारस्य ययि परसवर्णः
+  id: 8.4.58
+  domain: saMhitA
+  condition:
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
+
+#optional at pada end
+- sutra: वा पदान्तस्य
+  id: 8.4.59
+  overrides: 8.4.58
+  domain: saMhitA
+  optional: True
+  condition:
+     lp: ?pada
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
+
+- sutra: मोऽनुस्वारः
+  id: 8.3.23
+  domain: saMhitA
+  condition:
+     l: m
+     r: _hal
+  xform:
+     l: str("M")
+
+- sutra: यरोऽनुनासिकेऽनुनासिको वा 
+  id: 8.4.45
+  optional: True
+  #overrides: 8.2.39
+  domain: saMhitA
+  condition:
+     l: _yar
+     lp: ?pada
+     r: [N,Y,R,n,m]
+  xform:
+     l: anunasika(l)
+
+- sutra: झलां जशोऽन्ते
+  id: 8.2.39
+  domain: saMhitA
+  condition:
+   - lp: ?pada
+     l: _Jal
+  xform:
+     l: jashtva(l)
+
+# 295: षढोः कः सि (8-2-41) 
+- sutra: षढोः कः सि
+  id: 8.2.41
+  domain: saMhitA
+  condition:
+     l: [z, Q]
+     r: s
+  xform:
+     l: str("k")
+
+- sutra: खरि च
+  id: 8.4.55
+  domain: saMhitA
+  condition:
+     l: _Jal
+     r: _Kar
+  xform:
+     l: chartva(l)
+
+- sutra: वाऽवसाने
+  id: 8.4.56
+  optional: true
+  domain: saMhitA
+  condition:
+     l: _Jal
+     rp: ?avasAna
+  xform:
+     l: chartva(l)
+     
+#  handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
+- sutra: तोर्लि
+  id: 8.4.60
+  overrides: 8.2.39
+  domain: saMhitA
+  condition:
+     l: tu
+     r: l
+  xform:
+     l: r
+- sutra: तोर्लि
+  id: 8.4.60.1
+  overrides: [8.2.39, 8.4.60]
+  domain: saMhitA
+  condition:
+     l: n
+     r: l
+  xform:
+     l: str("l~")
+
+- sutra: उदः स्थास्तम्भोः पूर्वस्य सवर्णः
+  id: 8.4.61
+  #overrides: 8.2.39
+  domain: saMhitA
+  condition:
+     lp: =ut
+     rp:
+       - ?sTA
+       - ?sTamB
+  xform:
+     r: str("T")
+
+# Ratva
+# FIXME: Get samanapade right
+- sutra: रषाभ्यां नो णः समानपदे
+  id: 8.4.1
+  domain: saMhitA
+  condition:
+     l: [r, z, f] # ऋवर्णात् नस्य णत्वं वाच्यम्
+     r: n
+  xform:
+     r: str("R")
+
+- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
+  id: 8.4.2
+  domain: saMhitA
+  condition:
+     lp: $$rz_vyavaya_l 
+     rp: $$rz_vyavaya_r
+  xform:
+     r: null
+     rc: Ratva(r+rc)
+
+- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
+  id: 8.4.2.1
+  domain: saMhitA
+  condition:
+     lp: $$rz_vyavaya_n
+     rp:
+       - and
+       - ?!avasAna
+       - $$notnull
+  xform:
+      l: str("R")
+      
+- sutra: पदान्तस्य
+  id: 8.4.37
+  overrides: [8.4.1, 8.4.2] 
+  domain: saMhitA
+  condition:
+     l: [r, z, f]
+     r: n
+     rr: $$null
+  xform: null
+
+#  FIXME: Collect Pada aDikAra from 8.1.16
+- sutra: नलोपः प्रातिपदिकान्तस्य
+  id: 8.2.7
+  domain: pada
+  condition:
+     lp:
+       - and
+       - ?prAtipadika
+       - ?pada
+     l: n
+  xform:
+     l: null
+
+- sutra: संयोगान्तस्य लोपः
+  id: 8.2.23
+  domain: pada
+  condition:
+     lp: ?pada
+     ll: _hal
+     l:  _hal
+  xform:
+     l: null
+     
+# 280: रात्सस्य (8-2-24)
+- sutra: रात्सस्य
+  id: 8.2.24
+  overrides: 8.2.23
+  domain: pada
+  condition:
+     lp: ?pada
+     ll: r
+     l:  s
+  xform:
+     l: null
+- sutra: रात्सस्य
+  id: 8.2.24.1
+  overrides: 8.2.23
+  domain: pada
+  condition:
+     lp: ?pada
+     ll: r
+  xform: null
+
+# Vartikam
+- sutra: यणः प्रतिषेधो वाच्यः 
+  id: 8.2.23.1
+  overrides: 8.2.23
+  domain: pada
+  condition:
+     lp: ?pada
+     ll: _hal
+     l:  _yaR
+  xform:
+
+- sutra: चोः कुः
+  id: 8.2.30
+  domain: pada
+  condition:
+     - lp: ?pada
+       l: cu
+     - l: cu
+       r: _Jal
+  xform:
+     l: kutva(l)
+
+- sutra: हो ढः
+  id: 8.2.31
+  domain: pada
+  condition:
+     - lp: ?pada
+       l: h
+     - l: h
+       r: _Jal
+  xform:
+     l: str("Q")
+     
+# 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
+- sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
+  id: 8.2.36
+  domain: pada
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?vraScAdi
+       r: _Jal
+     - lp: ?pada
+       l: [C, S]
+       r: _Jal
+  xform:
+     l: str("z")
+
+- sutra: झषस्तथोर्धोऽधः
+  id: 8.2.40
+  domain: pada
+  condition:
+     - l: _Jaz
+       r: t
+       lp:
+        - and
+        - ?DAtu
+        - ?!DA
+  xform:
+     r: str("D")
+
+
+- sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
+  id: 8.3.32
+  domain: saMhitA
+  condition:
+     ll: [at, it, ut, ft]
+     l: _Nam
+     r: _ac
+     lp: ?pada
+  xform:
+     r: l+r
+
+
+# End Pada aDikAra 8.3.54
+
+# mUrDanyAdeSa aDikAra
+#  210: अपदान्तस्य मूर्धन्यः (8-3-55) 
+# 211: इण्कोः (8-3-57) 
+#  212: आदेशप्रत्यययोः (8-3-59) 
+
+- sutra: आदेशप्रत्यययोः
+  id: 8.3.59
+  domain: saMhitA
+  condition:
+     l:
+        - _iR
+        - ku
+     r: s
+     rc: $$notnull
+     rp:
+        - ?pratyaya
+        - ?AdeSa_s
+  xform:
+     r: str("z")
+     
+# FIXME Get apadAntasya done
+# FIXME नुम्विसर्जनीयशर्व्यवायेऽपि (8-3-58) 
+
+# end mUrDanyAdeza aDikAra
+
+
+- sutra: झलां जश् झशि
+  id: 8.4.53
+  domain: saMhitA
+  condition:
+     l: _Jal
+     r: _JaS
+  xform:
+     l: jashtva(l)
+
+- sutra: झयो होऽन्यतरस्याम्
+  optional: True
+  id: 8.4.62
+  domain: saMhitA
+  condition:
+     l: _Jay
+     r: h
+  xform:
+     r: vargatritiya(l)
+
+
+# vartikam छत्वममि इति वक्तव्यम् incorprated
+- sutra: शश्छोऽटि
+  id: 8.4.63
+  optional: True
+  domain: saMhitA
+  condition:  
+     l: _Jay
+     r: S
+     rr: _am
+  xform:
+     r: str("C")
+
+- sutra: शि तुक्
+  id: 8.3.31
+  domain: saMhitA
+  condition:
+     l: n
+     r: S
+     lp: ?pada
+  optional: true
+  insert:
+     1: tuk
+
+
+# Sutras in this aDikAra set the ru_anu tag to backtrigger 8.3.2/3/4
+# - sutra: अत्रानुनासिकः पूर्वस्य तु वा
+#   id: 8.3.2
+#   optional: True
+#   condition:
+#       lp: ?ru_anu
+#   xform:
+#       l: str("~r")
+#   update:
+#       olp: -ru_anu
+
+- sutra: अनुनासिकात् परोऽनुस्वारः
+  id: 8.3.4
+  domain: saMhitA
+  condition:
+      lp: ?ru_anu
+  xform:
+      l: str("Mr")
+  update:
+      olp: -ru_anu
+      
+- sutra: नश्छव्यप्रशान्
+  id: 8.3.9
+  domain: saMhitA
+  condition:
+     l: n
+     r: _Cav
+     rr: _am
+  xform:
+     l: str("r")
+  update:
+     # Set on input to backtrigger 8.3.2/3/4
+     lp: [+ru, +ru_anu]
+
+
+# 8.3.12 - End of 8.3.2 aDikAra
+
+# "Visarga" Sandhi
+- sutra: ससजुषो रुः
+  id: 8.2.66
+  overrides: 8.2.39
+  domain: pada
+  condition:  
+     l: s
+     lp: ?pada
+  xform:
+     l: str("r")
+  update:
+     olp: +ru
+     # Have to do this to back-trigger 6.1.113
+     lp: +ru
+
+- sutra: अतो रोरप्लुतादप्लुते
+  id: 6.1.113
+  overrides: [8.3.17, 8.4.46]
+  domain: saMhitA
+  condition:  
+     lp: ?ru
+     #l: r
+     ll: at
+     r: at
+  xform:
+     # FIXME: change this to "u" when sliding windows are done
+     l: str("o")
+     lc: lc[:-1]
+
+- sutra: हशि च
+  id: 6.1.114
+  overrides: [8.3.17, 8.4.46]
+  domain: saMhitA
+  condition:  
+     lp: ?ru
+     #l: r
+     ll: at
+     r: _haS
+  xform:
+     # FIXME: change this to "u" when sliding windows are done
+     l: str("o")
+     lc: lc[:-1]
+
+- sutra: भोभगोअघोअपूर्वस्य योऽशि
+  id: 8.3.17
+  domain: saMhitA
+  condition:
+     - ll: a
+       #l:  r
+       lp: ?ru
+       r: _aS
+     - lc: [=Bo, =Bago, =aGo]
+       #l:  r
+       lp: ?ru
+       r: _aS
+  xform:
+     l: str("y")
+
+- sutra: खरवसानयोर्विसर्जनीयः
+  id: 8.3.15
+  domain: saMhitA
+  condition:
+     - l:  r
+       r: _Kar
+       lp: ?pada
+     - l:  r
+       lp: ?pada
+       rp: ?avasAna
+  xform:
+     l: str("H")
+     
+- sutra: विसर्जनीयस्य सः
+  id: 8.3.34
+  domain: saMhitA
+  condition:
+     l:  H
+     r: _Kar
+     lp: ?pada
+  xform:
+     l: str("s")
+     
+- sutra: शर्परे विसर्जनीयः
+  id: 8.3.35
+  overrides: 8.3.34
+  domain: saMhitA
+  condition:
+     l:  H
+     r: _Kar
+     rr: _Sar
+     lp: ?pada
+
+- sutra: वा शरि
+  id: 8.3.36
+  overrides: 8.3.34
+  domain: saMhitA
+  optional: True
+  condition:
+     l:  H
+     r: _Sar
+     lp: ?pada
+  xform:
+     l: str("s")
+
+# FIXME: Ignoring updaDmanIya and jihvAmUlIya as they're not seen in practice
+- sutra: कुप्वोः ≍क≍पौ च
+  id: 8.3.37
+  overrides: 8.3.34
+  domain: saMhitA
+  condition:
+     l:  H
+     r: [ku, pu]
+     lp: ?pada
+  xform:
+     l: l
+ 
+- sutra: अचो रहाभ्यां द्वे
+  id: 8.4.46
+  optional: true
+  domain: saMhitA
+  condition:  
+     ll:  _ac
+     l: [r, h]
+     r: _yar
+  xform:
+     r: r+r
+
+# FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this
+# Until we can fix this ;-)
+# - sutra: अनचि च
+#   id: 8.4.47
+#   optional: true
+#   condition:  
+#      ll: _ac
+#      l: _yar
+#      r: _hal
+#   xform:
+#      l: l+l
+
+- sutra: हलो यमां यमि लोपः
+  id: 8.4.64
+  optional: true
+  domain: saMhitA
+  condition:  
+     ll:  _hal
+     l: _yam
+     r: $l
+  xform:
+     l: null
+
+# FIXME - savarna of l
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65
+  optional: true
+  domain: saMhitA
+  condition:  
+     - ll:  _hal
+       l: _Jar
+       r: $l
+  xform:
+     l: null
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65.1
+  optional: true
+  domain: saMhitA
+  condition:  
+     - l:  _hal
+       r: _Jar
+       rr: $r
+  xform:
+     r: null
+
+
+
+# Skipping for now
+
+# In
+# अथ अच्सन्धिप्रकरणम्‌ ॥
+# 55: नादिन्याक्रोशे पुत्रस्य (8-4-48)
+# 56: त्रिप्रभृतिषु शाकटायनस्य (8-4-50)
+# 57: सर्वत्र शाकल्यस्य (8-4-51)
+# 58: दीर्घादाचार्याणाम् (8-4-52)
+
+# 75: अन्तादिवच्च (6-1-85)
+# 77: वासुप्यापिशलेः (6-1-92)
+# 81: अव्यक्तानुकरणस्यात इतौ (6-1-98)
+# 82: नाम्रेडितस्यान्त्यस्य तु वा (6-1-99)
+# 87: सर्वत्र विभाषा गोः (6-1-122)
+# 88: अवङ् स्फोटायनस्य (6-1-123)
+# 89: इन्द्रे च (6-1-124)
+
+# प्रकृतिभावप्रकरणम्‌
+# 90-110 barring 90,100,101
+
+# halsandhiप्रकरणम्‌
+# 127: हे मपरे वा (8-3-26)
+# 129: न परे नः (8-3-27) 
+# 130: ङ्णोः कुक् टुक् शरि (8-3-28) 
+# 131: डः सि धुट् (8-3-29)
+# 132: नश्च (8-3-30) 
+
+# विसर्गसन्धिप्रकरणम्‌
+# 8.3.38-42
+
+# For Later
+
+# kvip etc.
+# 126: मो राजि समः क्वौ (8-3-25)
+# ru
+# 135: समः सुटि (8-3-5)
+# 139: पुमः खय्यम्परे (8-3-6)
+# 141: नॄन्पे (8-3-10)
+# 143: कानाम्रेडिते (8-3-12)
+# 144: कस्कादिषु च (8-3-48)
+
+# sarvanAma
+# 218-227
+
+# 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
+# 258: बहुगणवतुडति सङ्ख्या (1-1-23)
+
+# 292: विभाषा दिक्समासे बहुव्रीहौ (1-1-28)
+# 293: विभाषा द्वितीयातृतीयाभ्याम् (7-3-115) 
+
+# Ratva
+# 307: एकाजुत्तरपदे णः (8-4-12) 
