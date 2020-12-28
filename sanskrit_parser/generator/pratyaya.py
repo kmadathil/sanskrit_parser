@@ -140,6 +140,8 @@ NIz  = Pratyaya("I",its=["N", "z"], other_tags=["svAdi", "NI", "strI"])
 Ap  = Pratyaya("A",its=["p"], other_tags=["svAdi", "Ap", "strI"])
 strI_abs  = Pratyaya("",its=[], other_tags=["strI_abs", "strI"])
 
+# Sup Luk
+luk_sup  = Pratyaya("",its=[], other_tags=["sup"])
 
 # Sambuddhi
 sambudDi = PaninianObject("")

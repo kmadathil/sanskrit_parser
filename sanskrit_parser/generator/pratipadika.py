@@ -109,3 +109,4 @@ anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"]
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
+vAri = Pratipadika("vAri", "napum")

@@ -1663,6 +1663,21 @@
   update:
      orp: +luk
 
+# 319: स्वमोर्नपुंसकात् (7-1-23) 
+- sutra: स्वमोर्नपुंसकात् 
+  id: 7.1.23
+  # domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =luk_sup
+
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
   id: 7.1.24
