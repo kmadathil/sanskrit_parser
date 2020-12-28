@@ -12,7 +12,7 @@ A web interface is available here - https://kmadathil.github.io/sanskrit_parser/
 
 ## Installation
 
-This project has been tested and developed using Python 3.6. 
+This project has been tested and developed using Python 3.7. 
 
 ```
 pip install sanskrit_parser
