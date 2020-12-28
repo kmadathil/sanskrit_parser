@@ -127,10 +127,12 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
         p.setTag("viBakti")
 
 # SI - jasaH SI
-SI  = Pratyaya("I",its=["S"], other_tags=[ "sup", "SI"])
+SI  = Pratyaya("I",its=["S"], other_tags=["svAdi", "sup", "SI"])
 # Si - jasSasaH Si
-Si  = Pratyaya("i",its=["S"], other_tags=[ "sup", "Si",
+Si  = Pratyaya("i",its=["S"], other_tags=["svAdi", "sup", "Si",
                                             "sarvanAmasTAna"])
+# adaw - for watarAdi
+adaq  = Pratyaya("ad",its=["q"], other_tags=["svAdi", "sup", "adaq"])
 
 # StrI
 NIp  = Pratyaya("I",its=["N", "p"], other_tags=["svAdi", "NI", "strI"])

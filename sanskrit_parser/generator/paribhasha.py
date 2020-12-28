@@ -224,6 +224,22 @@ def numAgama(s):
         r =  s
     return r
 
+# aco'ntyAdi wi
+def wilopa(s):
+    lastac = -1
+    lens = len(s)
+    for j in range(lens):
+        jj = -1*(j+1)
+        if isInPratyahara("ac", s[jj]): # Backwards
+            lastac = lens + jj
+            break
+    if lastac > -1:
+        r =  s[:lastac]
+    else:
+        r =  s
+    return r
+    
+
 def notnull(s):
     return ((s != None) and (s != ""))
 

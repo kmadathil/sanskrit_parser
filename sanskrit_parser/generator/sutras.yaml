@@ -1441,7 +1441,21 @@
      l: At
   xform:
      l: null
-
+     
+#316: टेः (6-4-143) 
+- sutra: टेः
+  id: 6.4.143
+  # bahiranga: 1
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     rp: +q
+  xform:
+     l: null
+     lc: wilopa(lc+l)
+     
 - sutra: ओर्गुणः
   id: 6.4.146
   overrides: [7.2.115, 7.2.116]
@@ -1664,6 +1678,23 @@
       - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
   update:
      orp: =am
+     
+# 315: अद्ड्डतरादिभ्यः पञ्चम्यः (7-1-25) 
+- sutra: अद्ड्डतरादिभ्यः पञ्चम्यः 
+  id: 7.1.25
+  # domain: aNga
+  overrides: 7.1.24
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+      - ?qatarAdi
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =adaq
           
 # 264: त्रेस्त्रयः (7-1-53) 
 - sutra:  त्रेस्त्रयः

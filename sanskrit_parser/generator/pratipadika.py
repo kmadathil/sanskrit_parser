@@ -104,3 +104,8 @@ suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 # Napum
 
 jYAna = Pratipadika("jYAna", "napum")
+anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
+anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
