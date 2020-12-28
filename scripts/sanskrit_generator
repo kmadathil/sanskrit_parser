@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+""" Sanskrit Parser Wrapper Script
+
+    Author: Karthik Madathil <kmadathil@gmail.com>
+"""
+from sanskrit_parser.generator.cmd_line import cmd_line
+
+cmd_line()

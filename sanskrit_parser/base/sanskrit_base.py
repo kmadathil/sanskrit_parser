@@ -103,6 +103,13 @@ class SanskritString(object):
         """
         return self.transcoded(DEVANAGARI, strict_io)
 
+    # Updates internal string, leaves everything else alone
+    # Not to be used in all cases, as this is very limited
+    def update(self, s, encoding=None):
+        self.thing = s
+        if encoding is not None:
+            self.encoding = encoding
+            
     def __str__(self):
         global denormalize
         s = self.transcoded(SLP1)
@@ -113,7 +120,12 @@ class SanskritString(object):
     def __repr__(self):
         return str(self)
 
+    def __getitem__(self, i):
+        return self.canonical()[i]
 
+    def __len__(self):
+        return len(self.canonical())
+    
 class SanskritImmutableString(SanskritString):
     """ Immutable version of SanskritString
     """
