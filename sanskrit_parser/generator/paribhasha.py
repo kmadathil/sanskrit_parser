@@ -7,7 +7,7 @@ def dirgha(s: str):
     return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
 
 def hrasva(s: str):
-    return adesha(s, "aAiIuUfFxX", "aaiiuuffxx")
+    return adesha(s, "aAiIuUfFxXeEoO", "aaiiuuffxxiiuu")
 
 def guna(s: str):
     if s in "fF":
@@ -219,7 +219,7 @@ def numAgama(s):
     if lastac == lens-1:
         r =  s+"n"
     elif lastac > -1:
-        r =  s[:lastac+1]+"n"+s[lastac:]
+        r =  s[:lastac+1]+"n"+s[lastac+1:]
     else:
         r =  s
     return r
