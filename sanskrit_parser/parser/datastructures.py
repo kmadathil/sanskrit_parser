@@ -533,10 +533,10 @@ class VakyaGraph(object):
                     for nn in nextset.union(prevset):
                         if nn.node_is_a(dvitiya) and (_get_base(n) in karmap_2):
                             logger.debug(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
-                            self.G.add_edge(n, nn, label="upapadadvitIya")
+                            self.G.add_edge(n, nn, label="upapadadvitIyA")
                         elif nn.node_is_a(pancami) and (_get_base(n) in karmap_5):
                             logger.debug(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
-                            self.G.add_edge(n, nn, label="upapadapancami")
+                            self.G.add_edge(n, nn, label="upapadapancamI")
 
     def add_bhavalakshana(self, krts, laks):
         ''' Add bhavalakshana edges from saptami krts to lakaras '''
@@ -754,6 +754,7 @@ class VakyaGraphNode(object):
         ''' Get Node puruza '''
         return self.getNodeTagset().intersection(puruzas)
 
+    # FIXME: not needed?
     def get_node_pos(self, node):
         return self.path.index(node.pada.canonical())
 
