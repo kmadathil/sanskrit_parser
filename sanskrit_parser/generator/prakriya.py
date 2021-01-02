@@ -351,8 +351,11 @@ class Prakriya(object):
         logger.debug(f"Final Result: {r}\n")
         return r
              
-    def output(self):
-        return self.outputs
+    def output(self, copy=False):
+        if copy:
+            return deepcopy(self.outputs)
+        else:
+            return self.outputs
     
     def describe(self):
         print("\nPrakriya")

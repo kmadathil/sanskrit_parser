@@ -140,7 +140,7 @@ encoding = {}
 # ['nAsike', 'nAsike', 'nAsikAH'],
 # ]
 
-from sutras_yaml import sutra_list
+from sanskrit_parser.generator.sutras_yaml import sutra_list
 test_prakriya(sutra_list, test_list, test_list_d)
 for v in viBakti:
     if v in encoding:

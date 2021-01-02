@@ -5,7 +5,7 @@ Operational Sutras
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
 from decimal import Decimal
 from copy import deepcopy
-from paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject
 
 import logging
 logger = logging.getLogger(__name__)

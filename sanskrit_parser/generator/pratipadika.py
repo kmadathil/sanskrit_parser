@@ -1,4 +1,4 @@
-from paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.base.sanskrit_base import SLP1
 
 class Pratipadika(PaninianObject):

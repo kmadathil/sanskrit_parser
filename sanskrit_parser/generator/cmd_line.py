@@ -12,7 +12,7 @@ from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
 from sanskrit_parser.generator.pratipadika import *
-from sutras_yaml import sutra_list
+from sanskrit_parser.generator.sutras_yaml import sutra_list
 from sanskrit_parser import enable_file_logger, enable_console_logger
 
 logger = logging.getLogger(__name__)
