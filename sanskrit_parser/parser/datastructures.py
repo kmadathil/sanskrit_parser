@@ -450,14 +450,14 @@ class VakyaGraph(object):
                         elif d.node_is_a(karmani) and match_linga_vacana(d, n):
                             logger.debug(f"Adding kartA edge to {n}")
                             self.G.add_edge(d, n, label="kartA")
-                    elif (n.node_is_a(karma) and
+                    if (n.node_is_a(karma) and
                           (d.node_is_a(lakaras) or not d.node_is_a(karmani))
                           and is_sak):
                         # Likewise, only Lakaras and kartari krts are allowed
                         # Karma
                         logger.debug(f"Adding karma edge to {n}")
                         self.G.add_edge(d, n, label="karma")
-                    elif n.node_is_a(tritiya):
+                    if n.node_is_a(tritiya):
                         logger.debug(f"Adding karana edge to {n}")
                         self.G.add_edge(d, n, label="karaRam")
                     elif n.node_is_a(chaturthi):

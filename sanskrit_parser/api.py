@@ -237,7 +237,8 @@ class Parse(Serializable):
             if preds:
                 pred = preds[0]  # Only one
                 # Multigraph
-                lbl = parse_graph.edges[pred, n, 0]['label']
+                # Ugh - surely this can be better
+                lbl = list(parse_graph[pred][n].values())[0]['label']
                 edge = ParseEdge(pred.pada.transcoded(encoding, strict_io),
                                  node,
                                  SanskritString(lbl, encoding=SLP1).transcoded(encoding, strict_io)
