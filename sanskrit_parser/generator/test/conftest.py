@@ -7,9 +7,9 @@ from sanskrit_parser.generator.sutras_yaml import sutra_list
 
 from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
 
-@pytest.fixture(scope="module")
-def sutra_fixture():
-    return sutra_list
+# @pytest.fixture(scope="module")
+# def sutra_fixture():
+#     return sutra_list
 
 def pytest_addoption(parser):
     """Custom options for pytest command line
@@ -117,7 +117,7 @@ def pytest_generate_tests(metafunc):
     if 'ajanta_pum' in metafunc.fixturenames:
         ajanta_pum_list = []
         for v in ajanta["pum"]:
-            if (v in encoding) and (encoding[v]=="SLP1"):
+            if (v in encoding) and (encoding[v]==SLP1):
                 pass
             else:
                 ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
@@ -126,7 +126,7 @@ def pytest_generate_tests(metafunc):
     if 'ajanta_stri' in metafunc.fixturenames:
         ajanta_stri_list = []
         for v in ajanta["strI"]:
-            if (v in encoding) and (encoding[v]=="SLP1"):
+            if (v in encoding) and (encoding[v]==SLP1):
                 pass
             else:
                 ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
@@ -135,7 +135,7 @@ def pytest_generate_tests(metafunc):
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
         for v in ajanta["napum"]:
-            if (v in encoding) and (encoding[v]=="SLP1"):
+            if (v in encoding) and (encoding[v]==SLP1):
                 pass
             else:
                 ajanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
@@ -144,7 +144,7 @@ def pytest_generate_tests(metafunc):
     if 'vibhakti' in metafunc.fixturenames:
         vibhakti_list = []
         for v in viBakti:
-            if (v in encoding) and (encoding[v]=="SLP1"):
+            if (v in encoding) and (encoding[v]==SLP1):
                 pass
             else:
                 vibhakti_list.extend(generate_vibhakti(prAtipadika[v],
@@ -153,7 +153,7 @@ def pytest_generate_tests(metafunc):
     if 'vibhakti_s' in metafunc.fixturenames:
         vibhakti_s_list = [] 
         for v in viBakti:
-            if (v in encoding) and (encoding[v]=="SLP1"):
+            if (v in encoding) and (encoding[v]==SLP1):
                 vibhakti_s_list.extend(generate_vibhakti(prAtipadika[v],
                                                          viBakti[v], SLP1))
         metafunc.parametrize("vibhakti_s", vibhakti_s_list)
