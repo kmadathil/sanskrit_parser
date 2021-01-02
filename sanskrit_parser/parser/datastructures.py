@@ -8,7 +8,7 @@
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString, SLP1
 import networkx as nx
-from itertools import islice
+from itertools import islice, product
 import logging
 import operator
 from copy import copy
@@ -265,8 +265,8 @@ class VakyaGraph(object):
         self.fast_merge = fast_merge
         self.roots = []
         self.isLocked = False
-#        self.G = nx.MultDiGraph() # Allow parallel edges
-        self.G = nx.DiGraph()
+        # Multigraph
+        self.G = nx.MultiDiGraph() # Allow parallel edges
         # Need this many nodes in the extracted subgraphs
         self.path_node_count = len(path)
         logger.debug(f"{self.path_node_count} sets of orthogonal nodes")
@@ -667,7 +667,8 @@ class VakyaGraph(object):
 
         partial_parses = _dc(0, self.path_node_count)
         logger.debug(f"Partial Parses Before Return {partial_parses}")
-        return set([self.G.edge_subgraph(p.edges) for p in partial_parses])
+        # Multigraph
+        return set([self.G.edge_subgraph(m) for p in partial_parses for m in multiedgesets(p, self.G)]) 
 
     def check_parse_validity(self):
         ''' Validity Check for parses
@@ -966,6 +967,7 @@ def _order_parses(pu):
     # Sigma abs(n1-n2)
     def _parse_cost(parse):
         w = 0
+        # Multigraph (keys=False)
         for (u, v, l) in parse.edges(data='label'):
             # Abs Edge length times edge_type cost
             _w = abs(u.index - v.index) * edge_cost[l]
@@ -990,6 +992,7 @@ def _check_parse(parse):
     sk = defaultdict(int)
     vsmbd = {}
     conj = defaultdict(lambda: {"from": 0, "to": 0})
+    # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
@@ -1034,6 +1037,7 @@ def _check_parse(parse):
             return False
     # Vakyasambabdha nodes - yadi/tarhi yatra/tatra etc cannot have links
     # beyond their partner
+    # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
         if u.index in vsmbd:
             if ((vsmbd[u.index] > u.index) and (v.index > vsmbd[u.index])) or \
@@ -1051,3 +1055,10 @@ def _check_parse(parse):
             logger.info(f"Samyojaka violation for {u.index} {conj[u]}")
             return False
     return r
+
+# Multigraph
+def multiedgesets(p, G):
+    medges = []
+    for e in p.edges:
+        medges.append([(e[0], e[1], k) for k in G[e[0]][e[1]]])
+    return [list(x) for x in product(*medges)]
