@@ -236,6 +236,7 @@ projlabels = karakas.union(kriyavisheshana)
 samplabels = {'sambadDa-'+l for l in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
 sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra",
+                         "yAvat": "tAvat", 
                          "yaTA": "taTA", "api": None, "cet": None, "yat": None,
                          "natu": None, "ca": None}
 conjunctions = set(sentence_conjunctions.keys())
