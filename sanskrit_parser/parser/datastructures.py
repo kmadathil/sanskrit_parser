@@ -560,8 +560,14 @@ class VakyaGraph(object):
                         if not _is_same_partition(n, b):
                             logger.debug(f"Adding karmapravacaniya karma edge: {n, b}")
                             self.G.add_edge(b, n, label="karma")
-                    nextset = self.partitions[i+1]
-                    prevset = self.partitions[i-1]
+                    if i  < (len(self.partitions)-1):
+                        nextset = self.partitions[i+1]
+                    else:
+                        nextset = set([])
+                    if i > 0:
+                        prevset = self.partitions[i-1]
+                    else:
+                        prevset = set([])
                     for nn in nextset.union(prevset):
                         if nn.node_is_a(dvitiya) and (_get_base(n) in karmap_2):
                             logger.debug(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
