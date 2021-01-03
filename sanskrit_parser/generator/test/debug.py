@@ -140,7 +140,20 @@ encoding = {}
 # ['nAsike', 'nAsike', 'nAsikAH'],
 # ]
 
-from sutras_yaml import sutra_list
+prAtipadika["senAnI"] = senAnI
+viBakti["senAnI"] = [
+     ["senAnIH", "senAnyO", "senAnyaH"],
+     ["senAnyam", "senAnyO", "senAnyaH"],
+     ["senAnyA", "senAnIByAm", "senAnIBiH"],
+     ["senAnye", "senAnIByAm", "senAnIByaH"],
+     ["senAnyaH", "senAnIByAm", "senAnIByaH"],
+     ["senAnyaH", "senAnyoH", "senAnyAm"],
+     ["senAnyAm", "senAnyoH", "senAnIzu"],
+     ["senAnIH", "senAnyO", "senAnyaH"],
+]
+encoding["senAnI"] = SLP1
+
+from sanskrit_parser.generator.sutras_yaml import sutra_list
 test_prakriya(sutra_list, test_list, test_list_d)
 for v in viBakti:
     if v in encoding:

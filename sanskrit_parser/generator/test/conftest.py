@@ -3,6 +3,28 @@ from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *
+from sanskrit_parser.generator.sutras_yaml import sutra_list
+
+from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
+
+# @pytest.fixture(scope="module")
+# def sutra_fixture():
+#     return sutra_list
+
+def pytest_addoption(parser):
+    """Custom options for pytest command line
+    """
+    # Add an option to limit number of tests generated.
+    parser.addoption("--test-count", action="store", default=0,
+                     help="Number of tests to generate")
+
+
+def get_testcount(config):
+    """Gets number of tests to generate.
+
+    :param config: pytest configuration
+    """
+    return int(config.getoption("--test-count"))
 
 def _test(output, s, enc):
     _s = s[-1]
@@ -53,9 +75,9 @@ def run_test(s, sutra_list, encoding=SLP1, verbose=False):
     if verbose: 
         p.describe()
     #print(p.dict())
-    o = p.output()
+    o = p.output(copy=True)
     assert _test(o, s, encoding)
-
+    return None
 
 
 def generate_vibhakti(pratipadika, vibhaktis, encoding=DEVANAGARI):
@@ -76,7 +98,7 @@ def generate_vibhakti(pratipadika, vibhaktis, encoding=DEVANAGARI):
                 else:
                     _pvv = [x+avasAna.transcoded(encoding) for x in pvv]
                 t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])
-    print(t)
+    #print(t)
     return t
 
 # Manual test
@@ -89,3 +111,50 @@ def test_prakriya(sutra_list, test_list, test_list_d, verbose=False):
         run_test(s, sutra_list, SLP1, verbose=verbose)
     for s in test_list_d:
         run_test(s, sutra_list, DEVANAGARI, verbose=verbose)
+
+
+def pytest_generate_tests(metafunc):
+    if 'ajanta_pum' in metafunc.fixturenames:
+        ajanta_pum_list = []
+        for v in ajanta["pum"]:
+            if (v in encoding) and (encoding[v]==SLP1):
+                pass
+            else:
+                ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
+                                                       viBakti[v]))
+        metafunc.parametrize("ajanta_pum", ajanta_pum_list)
+    if 'ajanta_stri' in metafunc.fixturenames:
+        ajanta_stri_list = []
+        for v in ajanta["strI"]:
+            if (v in encoding) and (encoding[v]==SLP1):
+                pass
+            else:
+                ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
+                                                       viBakti[v]))
+        metafunc.parametrize("ajanta_stri", ajanta_stri_list)
+    if 'ajanta_napum' in metafunc.fixturenames:
+        ajanta_napum_list = []
+        for v in ajanta["napum"]:
+            if (v in encoding) and (encoding[v]==SLP1):
+                pass
+            else:
+                ajanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
+                                                       viBakti[v]))
+        metafunc.parametrize("ajanta_napum", ajanta_napum_list)
+    if 'vibhakti' in metafunc.fixturenames:
+        vibhakti_list = []
+        for v in viBakti:
+            if (v in encoding) and (encoding[v]==SLP1):
+                pass
+            else:
+                vibhakti_list.extend(generate_vibhakti(prAtipadika[v],
+                                                       viBakti[v]))
+        metafunc.parametrize("vibhakti", vibhakti_list)
+    if 'vibhakti_s' in metafunc.fixturenames:
+        vibhakti_s_list = [] 
+        for v in viBakti:
+            if (v in encoding) and (encoding[v]==SLP1):
+                vibhakti_s_list.extend(generate_vibhakti(prAtipadika[v],
+                                                         viBakti[v], SLP1))
+        metafunc.parametrize("vibhakti_s", vibhakti_s_list)
+ 

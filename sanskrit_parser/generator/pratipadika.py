@@ -1,4 +1,4 @@
-from paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.base.sanskrit_base import SLP1
 
 class Pratipadika(PaninianObject):
@@ -61,6 +61,7 @@ suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
 hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
+mahat = Pratipadika("mahat", "pum")
 
 # FIXME - remove this, derive from qati
 
@@ -104,3 +105,18 @@ suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 # Napum
 
 jYAna = Pratipadika("jYAna", "napum")
+anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
+anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
+vAri = Pratipadika("vAri", "napum")
+mahat_n = Pratipadika("mahat", "napum")
+payas = Pratipadika("payas", "napum")
+SrIpA = Pratipadika("SrIpA", "napum", other_tags=["DAtu", "kvip"])
+asTi = Pratipadika("asTi", "napum")
+daDi = Pratipadika("daDi", "napum")
+sakTi = Pratipadika("sakTi", "napum")
+akzi = Pratipadika("akzi", "napum")
+atirE = Pratipadika("atirE", "napum")
+atinO = Pratipadika("atinO", "napum")

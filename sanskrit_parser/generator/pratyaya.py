@@ -1,4 +1,4 @@
-from paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.base.sanskrit_base import SLP1
 
 class Pratyaya(PaninianObject):
@@ -127,10 +127,12 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
         p.setTag("viBakti")
 
 # SI - jasaH SI
-SI  = Pratyaya("I",its=["S"], other_tags=[ "sup", "SI"])
+SI  = Pratyaya("I",its=["S"], other_tags=["svAdi", "sup", "SI"])
 # Si - jasSasaH Si
-Si  = Pratyaya("i",its=["S"], other_tags=[ "sup", "Si",
+Si  = Pratyaya("i",its=["S"], other_tags=["svAdi", "sup", "Si",
                                             "sarvanAmasTAna"])
+# adaw - for watarAdi
+adaq  = Pratyaya("ad",its=["q"], other_tags=["svAdi", "sup", "adaq"])
 
 # StrI
 NIp  = Pratyaya("I",its=["N", "p"], other_tags=["svAdi", "NI", "strI"])
@@ -138,6 +140,8 @@ NIz  = Pratyaya("I",its=["N", "z"], other_tags=["svAdi", "NI", "strI"])
 Ap  = Pratyaya("A",its=["p"], other_tags=["svAdi", "Ap", "strI"])
 strI_abs  = Pratyaya("",its=[], other_tags=["strI_abs", "strI"])
 
+# Sup Luk
+luk_sup  = Pratyaya("",its=[], other_tags=["sup"])
 
 # Sambuddhi
 sambudDi = PaninianObject("")

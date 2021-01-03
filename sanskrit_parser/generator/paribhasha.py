@@ -7,7 +7,7 @@ def dirgha(s: str):
     return adesha(s, "aAiIuUfFxX", "AAIIUUFFXX")
 
 def hrasva(s: str):
-    return adesha(s, "aAiIuUfFxX", "aaiiuuffxx")
+    return adesha(s, "aAiIuUfFxXeEoO", "aaiiuuffxxiiuu")
 
 def guna(s: str):
     if s in "fF":
@@ -219,10 +219,26 @@ def numAgama(s):
     if lastac == lens-1:
         r =  s+"n"
     elif lastac > -1:
-        r =  s[:lastac+1]+"n"+s[lastac:]
+        r =  s[:lastac+1]+"n"+s[lastac+1:]
     else:
         r =  s
     return r
+
+# aco'ntyAdi wi
+def wilopa(s):
+    lastac = -1
+    lens = len(s)
+    for j in range(lens):
+        jj = -1*(j+1)
+        if isInPratyahara("ac", s[jj]): # Backwards
+            lastac = lens + jj
+            break
+    if lastac > -1:
+        r =  s[:lastac]
+    else:
+        r =  s
+    return r
+    
 
 def notnull(s):
     return ((s != None) and (s != ""))

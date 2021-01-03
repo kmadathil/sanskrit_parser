@@ -1224,6 +1224,28 @@
   xform:
      l: dirgha(l)
 
+# 317: सान्तमहतः संयोगस्य (6-4-10) 
+- sutra: सान्तमहतः संयोगस्य 
+  id: 6.4.10
+  condition:
+   - lp: ?aNga
+     l: s
+     ll: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =mahant
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-2]+dirgha(lc[-2])+lc[-1]
+
 
 # FIXME simplify once we have and/or in condition
 
@@ -1441,7 +1463,21 @@
      l: At
   xform:
      l: null
-
+     
+#316: टेः (6-4-143) 
+- sutra: टेः
+  id: 6.4.143
+  # bahiranga: 1
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     rp: +q
+  xform:
+     l: null
+     lc: wilopa(lc+l)
+     
 - sutra: ओर्गुणः
   id: 6.4.146
   overrides: [7.2.115, 7.2.116]
@@ -1649,9 +1685,27 @@
   update:
      orp: +luk
 
+# 319: स्वमोर्नपुंसकात् (7-1-23) 
+- sutra: स्वमोर्नपुंसकात् 
+  id: 7.1.23
+  domain: pratyaya
+  #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  
+  update:
+     orp: =luk_sup
+
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
   id: 7.1.24
+  domain: pratyaya
+  overrides: 7.1.23
   # domain: aNga
   condition:
      l: at
@@ -1664,6 +1718,23 @@
       - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
   update:
      orp: =am
+     
+# 315: अद्ड्डतरादिभ्यः पञ्चम्यः (7-1-25) 
+- sutra: अद्ड्डतरादिभ्यः पञ्चम्यः 
+  id: 7.1.25
+  # domain: aNga
+  overrides: 7.1.24
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+      - ?qatarAdi
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =adaq
           
 # 264: त्रेस्त्रयः (7-1-53) 
 - sutra:  त्रेस्त्रयः
@@ -2214,6 +2285,8 @@
 # 208: ह्रस्वनद्यापो नुट् (7-1-54)
 - sutra: ह्रस्वनद्यापो नुट्
   id: 7.1.54
+  overrides: [7.1.73, 7.2.100] # नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  # Also, 7.1.95, 7.1.96, 7.1.97
   condition:
      - l: [at,it,ut,ft,xt]
        rp: ?Am  
@@ -2237,6 +2310,42 @@
   xform: 
       lc: numAgama(lc+l)
       l: null
+      
+# 320: इकोऽचि विभक्तौ (7-1-73) 
+- sutra: इकोऽचि विभक्तौ
+  id: 7.1.73
+  overrides: [7.1.72, 7.3.109, 7.3.111, 7.3.119]
+  # Vartikas: वृद्ध्यौत्त्वतृज्वद्भावगुणेभ्यो नुम्पूर्वविप्रतिषेधेन
+  #           नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  condition:
+      l: _ik
+      lp: ?napum
+      r: _ac
+      rp: ?viBakti
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
+      
+#322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75) 
+- sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
+  id: 7.1.75
+  domain: prakfti
+  condition:
+     lp:
+      - =asTi
+      - =daDi
+      - =sakTi
+      - =akzi
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+  update:
+     olp: -Gi
+  xform:
+     l: str("an") # Nicca
 
 # saKi
 # 248: अनङ् सौ (7-1-93) 
@@ -2425,7 +2534,21 @@
      lp: ?aNga
   update:
      orp: _lu # Strip all tags, prevent pratyayalakzaRa
- 
+
+# 318: ह्रस्वो नपुंसके प्रातिपदिकस्य (1-2-47)
+- sutra: ह्रस्वो नपुंसके प्रातिपदिकस्य
+  domain: prakfti
+  id: 1.2.47
+  overrides: 6.4.140 # sannipAtapariBAzA, according to SK
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+  xform:
+      l: hrasva(l)
+
+
 # 266: यू स्त्र्याख्यौ नदी (1-4-3) 
 - sutra: यू स्त्र्याख्यौ नदी
   domain: saMjYA
@@ -2680,4 +2803,6 @@
 # 293: विभाषा द्वितीयातृतीयाभ्याम् (7-3-115) 
 
 # Ratva
-# 307: एकाजुत्तरपदे णः (8-4-12) 
+# 307: एकाजुत्तरपदे णः (8-4-12)
+
+# 321: तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य (7-1-74) 
