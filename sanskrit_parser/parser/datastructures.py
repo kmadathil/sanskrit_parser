@@ -589,9 +589,11 @@ class VakyaGraph(object):
         if associated t* doesn't exist vAkyasambanDaH links from verbs
         '''
         def _is_vipsa(n):
-            for p, d in self.G.pred[n].items():
-                if d['label'] == 'vIpsA':
-                    return True
+            for p, kd in self.G.pred[n].items():
+                # Multigraph
+                for k, d in kd.items(): 
+                    if d['label'] == 'vIpsA':
+                        return True
             return False
         # Only prathama krts are needed here. The rest aren't relevant
         bases = []
@@ -603,9 +605,10 @@ class VakyaGraph(object):
             if nb in sentence_conjunctions_y:
                 if not _is_vipsa(n):
                     # Reverse edges, add sambadDa label
-                    for p, d in list(self.G.pred[n].items()):
-                        self.G.remove_edge(p, n)
-                        self.G.add_edge(n, p, label='sambadDa-'+d['label'])
+                    for p, kd in list(self.G.pred[n].items()):
+                        for k, d in list(kd.items()):
+                            self.G.remove_edge(p, n)
+                            self.G.add_edge(n, p, label='sambadDa-'+d['label'])
                     # Matching pair
                     s_t = sentence_conjunctions[nb]
                     for nn in self.G:
