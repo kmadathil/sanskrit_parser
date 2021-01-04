@@ -101,7 +101,7 @@ class Morpho(Resource):
                     preds = list(p.predecessors(n))
                     if preds:
                         pred = preds[0]  # Only one
-                        lbl = p.edges[pred, n]['label']
+                        lbl = list(p[pred][n].values())[0]['label']
                         t.append(jedge(pred, n, lbl))
                     else:
                         t.append(jnode(n))
