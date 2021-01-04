@@ -109,7 +109,7 @@ class SanskritString(object):
         self.thing = s
         if encoding is not None:
             self.encoding = encoding
-            
+
     def __str__(self):
         global denormalize
         s = self.transcoded(SLP1)
@@ -125,7 +125,8 @@ class SanskritString(object):
 
     def __len__(self):
         return len(self.canonical())
-    
+
+
 class SanskritImmutableString(SanskritString):
     """ Immutable version of SanskritString
     """

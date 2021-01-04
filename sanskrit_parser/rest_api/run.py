@@ -12,8 +12,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 logging.debug(sys.path)
 
 
-from sanskrit_parser.rest_api.flask_helper import app
-from sanskrit_parser.rest_api import api_v1
+from sanskrit_parser.rest_api.flask_helper import app  # noqa: E402
+from sanskrit_parser.rest_api import api_v1  # noqa: E402
 
 LOG_FILENAME = "SanskritParserApi.log"
 LOG_FORMAT = "%(levelname)s: %(asctime)s {%(filename)s:%(lineno)d}: %(message)s "
