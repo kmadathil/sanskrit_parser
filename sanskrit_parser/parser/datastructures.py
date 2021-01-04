@@ -427,16 +427,10 @@ class VakyaGraph(object):
             logger.debug(f"Dhatu: {dh} Sakarmaka {is_sak}")
             if d.node_is_a(karmani):
                 logger.debug("Karmani")
-                karta = tritiya
-                karma = prathama
             else:
                 logger.debug("Kartari")
                 if d.node_is_a(nijanta):
                     logger.info("Nijanta Dhatu")
-                    karta = tritiya
-                else:
-                    karta = prathama
-                karma = dvitiya
             for n in self.G:
                 if not _is_same_partition(d, n):
                     if d.node_is_a(karmani):
