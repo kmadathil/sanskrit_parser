@@ -14,7 +14,6 @@ import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI, SLP1
-import requests
 
 
 class SanskritDataWrapper(LexicalLookup):
@@ -22,7 +21,7 @@ class SanskritDataWrapper(LexicalLookup):
     db_file = 'sanskrit_data.db'
 
     def __init__(self, logger=None):
-        with importlib.resources.path('sanskrit_parser','data') as data_dir:
+        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
             self.db_file = os.path.join(data_dir, self.db_file)
         config = {
             "DATABASE_URI": 'sqlite:///' + self.db_file,

@@ -27,7 +27,7 @@ class Scorer(object):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        with importlib.resources.path('sanskrit_parser','data') as data_dir:
+        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
             self.sentencepiece_file = os.path.join(data_dir, self.sentencepiece_file)
             self.word2vec_file = os.path.join(data_dir, self.word2vec_file)
         self.sp = spm.SentencePieceProcessor()

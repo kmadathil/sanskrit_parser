@@ -49,22 +49,13 @@ Command line usage
 """
 
 from __future__ import print_function
-import requests
 import os
-import shutil
-import inspect
-from lxml import etree
-from collections import defaultdict
-from io import BytesIO
 import logging
-import time
-import datetime
 import importlib.resources
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper
-from sanskrit_parser import data
 
 try:
     import cPickle as pickle
@@ -78,7 +69,7 @@ class InriaXMLWrapper(LexicalLookup):
     by Prof. Gerard Huet
     https://gitlab.inria.fr/huet/Heritage_Resources
     """
-    
+
     def __init__(self, logger=None):
         self.pickle_file = "_all.pickle"
         self.logger = logger or logging.getLogger(__name__)
@@ -86,12 +77,12 @@ class InriaXMLWrapper(LexicalLookup):
 
     def _load_forms(self):
         """ Load/create dict of tags for forms """
-        with importlib.resources.path('sanskrit_parser','data') as base_dir:
+        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
             pickle_path = os.path.join(base_dir, self.pickle_file)
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
                 self.index = pickle.load(fd)
-                
+
     def _decode_tags(self, tag_index):
         tags = [self.index[x] for x in tag_index]
         return (tags[0], set(tags[1:]))
