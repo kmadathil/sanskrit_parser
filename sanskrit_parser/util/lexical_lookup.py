@@ -15,8 +15,6 @@ class LexicalLookup(object):
 
     __metaclass__ = abc.ABCMeta
 
-    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
-
     @abc.abstractmethod
     def valid(self, word):
         """ Return True if word is a valid pada """
