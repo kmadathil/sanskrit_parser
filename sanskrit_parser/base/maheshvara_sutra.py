@@ -143,8 +143,8 @@ class MaheshvaraSutras(object):
             v(SanskritImmutableString): Varna Indicator
             a(SanskritImmutableString): Varna
 
-        v can be a svara (in which case we return True irrespective of length 
-        of a) 
+        v can be a svara (in which case we return True irrespective of length
+        of a)
         v can be an udit, in which we return True for anything in the group
         v can be tapara in which we return true only for the right length
 
@@ -186,6 +186,7 @@ class MaheshvaraSutras(object):
         else:
             return ac in vc
 
+
 if __name__ == "__main__":
     import argparse
 
@@ -210,7 +211,6 @@ if __name__ == "__main__":
         parser.add_argument('--dirghas', action='store_true', default=False)
         parser.add_argument('--output-slp1', action='store_true')
 
-        
         return parser.parse_args()
 
     def main():
