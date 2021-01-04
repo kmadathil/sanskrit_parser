@@ -24,7 +24,8 @@ class DhatuWrapper(object):
     def __init__(self, logger=None):
         self.logger = logger or logging.getLogger(__name__)
         with importlib.resources.path('sanskrit_parser','data') as data_dir:
-            self.db = TinyDB(os.path.join(data_dir, self.db_file))
+            self.db = TinyDB(os.path.join(data_dir, self.db_file),
+                             access_mode='r')
         assert len(self.db.all()) != 0
 
     def _get_dhatus(self, d):
