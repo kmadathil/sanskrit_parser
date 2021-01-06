@@ -1,3 +1,4 @@
+# flake8: noqa
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
 from sanskrit_parser.generator.pratipadika import *

@@ -16,9 +16,9 @@ sutra_dict = {}
 
 f = open(os.path.join(os.path.dirname(__file__), "sutras.yaml"), "r")
 y = yaml.load(f, Loader=yaml.FullLoader)
-sutra_dict = process_yaml(y)    
+sutra_dict = process_yaml(y)
 sutra_list = sutra_dict.values()
-logger.info(sutra_dict)
+# logger.info(sutra_dict)
 f.close()
 
 __all__ = ["sutra_list", "sutra_dict"]

@@ -6,16 +6,15 @@ Derived from SanskritObject
 @author: kmadathil
 
 """
-
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 import logging
 logger = logging.getLogger(__name__)
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+
 
 class PaninianObject(SanskritObject):
     """ Paninian Object Class: Derived From SanskritObject
 
     Attributes:
-    
     """
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
@@ -25,27 +24,31 @@ class PaninianObject(SanskritObject):
         # FIXME: I don't like this being here
         self.disabled_sutras = []
         # Prakriya Related Tags are ephemeral
+
     def hasTag(self, t):
         return t in self.tags
-    def deleteTag(self,t):
+
+    def deleteTag(self, t):
         return self.tags.remove(t)
+
     def setTag(self, t):
         if t not in self.tags:
             self.tags.append(t)
         return t
+
     def fix(self):
-         self.inPrakriya = False
+        self.inPrakriya = False
 
     def isPada(self):
         return self.hasTag("pada")
-    
+
     @classmethod
     def join_objects(cls, objects):
         logger.debug(f"Joining Objects {objects} {type(objects)}")
         for o in objects[0]:
             logger.debug(f"{o} type {type(o)}")
             assert isinstance(o, SanskritObject), f"{o} type {type(o)}"
-        s = "".join([o.canonical() for o in objects[0]]) 
+        s = "".join([o.canonical() for o in objects[0]])
         so = PaninianObject(s, encoding=SLP1)
         # Tag rules
         # 1.4.14 suptiNantaM padam
@@ -63,13 +66,13 @@ class PaninianObject(SanskritObject):
 
         # Custom tag propagation for rule implementation
         for t in ["eti", "eDati", "UW", "sTA", "sTamB"]:
-            if objects[0][0].hasTag(t) and  objects[0][0].hasTag("DAtu"):
+            if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
                 so.setTag(t)
         for t in ["AN"]:
-            if objects[0][0].hasTag(t) and  objects[0][0].hasTag("upasarga"):
+            if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
                 so.setTag(t)
         for t in ["trc", "trn"]:
-            if objects[0][-1].hasTag(t) and  objects[0][0].hasTag("aNga"):
+            if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
                 so.setTag(t)
         for t in ["NI", "Ap", 'strI_abs']:
             if objects[0][-1].hasTag(t):
