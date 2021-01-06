@@ -2,7 +2,7 @@
 """
 Intro
 =====
-Experimental 
+Experimental
 
 Sanskrit pada generator
 
@@ -18,5 +18,3 @@ Process
 
 @author: Karthik Madathil (github: @kmadathil)
 """
-from .paninian_object import PaninianObject 
-
