@@ -422,9 +422,11 @@ class VakyaGraph(object):
                 dh = dh[:hpos]
             if d.node_is_a(lakaras) or d.node_is_a('avyayaDAturUpa'):
                 is_sak = dw.is_sakarmaka(dh)
+                is_dvik = dw.is_dvikarmaka(dh)
             else:
                 is_sak = True  # No way of knowing, set True
-            logger.debug(f"Dhatu: {dh} Sakarmaka {is_sak}")
+                is_dvik = False
+            logger.debug(f"Dhatu: {dh} Sakarmaka {is_sak} Dvikarmaka {is_dvik}")
             if d.node_is_a(karmani):
                 logger.debug("Karmani")
             else:
@@ -446,6 +448,10 @@ class VakyaGraph(object):
                             # Karma
                             logger.debug(f"Adding karma edge to {n}")
                             self.G.add_edge(d, n, label="karma")
+                            if is_dvik:
+                                logger.debug(f"Adding gauRakarma edge to {n}")
+                                self.G.add_edge(d, n, label="gauRa-karma")
+                               
                     else:
                         if n.node_is_a(prathama) and d.node_is_a(lakaras) and match_purusha_vacana(d, n):
                             if d.node_is_a(nijanta):
@@ -462,30 +468,9 @@ class VakyaGraph(object):
                             # Karma
                             logger.debug(f"Adding karma edge to {n}")
                             self.G.add_edge(d, n, label="karma")
-                    # if n.node_is_a(karta):
-                    #     # Only Lakaras and karmani krts are allowed kartA
-                    #     if d.node_is_a(lakaras):
-                    #         if match_purusha_vacana(d, n) or d.node_is_a(karmani):
-                    #             if d.node_is_a(nijanta):
-                    #                 logger.debug(f"Adding hetu-kartA edge to {n}")
-                    #                 self.G.add_edge(d, n, label="hetu-kartA")
-                    #             else:
-                    #                 logger.debug(f"Adding kartA edge to {n}")
-                    #                 self.G.add_edge(d, n, label="kartA")
-                    #         elif dh in predicative_verbs:
-                    #             logger.debug(f"Adding kartfsamAnADikaraRa edge to {n}")
-                    #             self.G.add_edge(d, n, label="kartfsamAnADikaraRa")
-                    #     elif d.node_is_a(karmani) and match_linga_vacana(d, n):
-                    #         logger.debug(f"Adding kartA edge to {n}")
-                    #         self.G.add_edge(d, n, label="kartA")
-                    # if (n.node_is_a(karma) and
-                    #       (match_purusha_vacana(d, n) or not d.node_is_a(karmani)) and
-                    #       (d.node_is_a(lakaras) or not d.node_is_a(karmani))
-                    #       and is_sak):
-                    #     # Likewise, only Lakaras and kartari krts are allowed
-                    #     # Karma
-                    #     logger.debug(f"Adding karma edge to {n}")
-                    #     self.G.add_edge(d, n, label="karma")
+                            if is_dvik:
+                                logger.debug(f"Adding gauRakarma edge to {n}")
+                                self.G.add_edge(d, n, label="gauRa-karma")
                     if n.node_is_a(tritiya):
                         logger.debug(f"Adding karana edge to {n}")
                         self.G.add_edge(d, n, label="karaRam")
