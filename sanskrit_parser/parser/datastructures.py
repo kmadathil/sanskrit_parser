@@ -226,8 +226,6 @@ napumsakam = _lingas[1]
 avyaya = set(['avyayam'])
 kriyavisheshana = set(['kriyAviSezaRam'])
 nishedha = set(['na'])
-karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'ati'])
-karmap_5 = set(['apa', 'pari', 'A', 'prati'])
 # FIXME - api and su (pUjAyaM) in here temporarily - need a better solution
 karmap_null = set(['su', 'api'])
 avyaya_kriyav = set(['kila', 'bata', 'aho', 'nanu', 'hanta', 'eva', 'tu'])
@@ -240,6 +238,17 @@ sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra",
                          "yaTA": "taTA", "api": None, "cet": None, "yat": None,
                          "natu": None, "ca": None}
 conjunctions = set(sentence_conjunctions.keys())
+
+# Non Karaka Vibhakti
+non_karaka_vibhaktis = {
+    2: ["antarA", "antareRa", "pfTak", "vinA", "nAnA"],
+    3: ["saha", "pfTak", "vinA", "nAnA"],
+    4: ["namaH", "svasti", "svAhA", "alam", "vazaw"],
+    5: ["anya", "Arat", "itara", "fte", "pfTak", "vinA", "nAnA"]  
+}
+# FIXME Merge these with above
+karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'ati'])
+karmap_5 = set(['apa', 'pari', 'A', 'prati'])
 
 # Edge costs used for ordering
 edge_cost = defaultdict(lambda: 1)
@@ -342,6 +351,7 @@ class VakyaGraph(object):
         self.add_kriya_kriya(laks, krts)
         self.add_avyayas(bases)
         self.add_bhavalakshana(krts, laks)
+        self.add_non_karaka_vibhaktis()
         self.add_vipsa()
         self.add_sentence_conjunctions(laks, krts)
 
@@ -537,8 +547,8 @@ class VakyaGraph(object):
                 elif n.node_is_a('karmapravacanIyaH') and not (_get_base(n) in avyaya_kriyav) and not(_get_base(n) in karmap_null):
                     for b in bases:
                         if not _is_same_partition(n, b):
-                            logger.debug(f"Adding karmapravacaniya karma edge: {n, b}")
-                            self.G.add_edge(b, n, label="karma")
+                            logger.debug(f"Adding karmapravacaniya edge: {n, b}")
+                            self.G.add_edge(b, n, label="karmapravacanIyaH")
                     if i < (len(self.partitions)-1):
                         nextset = self.partitions[i+1]
                     else:
@@ -550,10 +560,10 @@ class VakyaGraph(object):
                     for nn in nextset.union(prevset):
                         if nn.node_is_a(dvitiya) and (_get_base(n) in karmap_2):
                             logger.debug(f"Adding karmapravacaniya upapada 2 edge: {n,nn}")
-                            self.G.add_edge(n, nn, label="upapadadvitIyA")
+                            self.G.add_edge(n, nn, label="upapada-dvitIyA")
                         elif nn.node_is_a(pancami) and (_get_base(n) in karmap_5):
                             logger.debug(f"Adding karmapravacaniya upapada 5 edge: {n,nn}")
-                            self.G.add_edge(n, nn, label="upapadapancamI")
+                            self.G.add_edge(n, nn, label="upapada-pancamI")
 
     def add_bhavalakshana(self, krts, laks):
         ''' Add bhavalakshana edges from saptami krts to lakaras '''
@@ -564,6 +574,21 @@ class VakyaGraph(object):
                         logger.debug(f"Adding Bhavalakshana edge: {k, lak}")
                         self.G.add_edge(lak, k, label="BAvalakzaRam")
 
+    def add_non_karaka_vibhaktis(self):
+        ''' Add Non-Karaka Vibhaktis '''
+        for n in self.G:
+            nb = _get_base(n)
+            for ix in range(7):
+                if (ix+1 in non_karaka_vibhaktis) and \
+                   (nb in non_karaka_vibhaktis[ix+1]):
+                    for nn in self.G:
+                        vlabel = ("upapada-"+_vibhaktis[ix]).replace("viBakti","")
+                        if nn.node_is_a(_vibhaktis[ix]) and \
+                           (not _is_same_partition(nn, n)):
+                            logger.debug(f"Adding {vlabel} edge {nn, n}")
+                            self.G.add_edge(n, nn, label=vlabel)
+                           
+            
     def add_sentence_conjunctions(self, laks, krts):
         ''' Add sentence conjunction links
 
