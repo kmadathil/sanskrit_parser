@@ -76,6 +76,7 @@ class DhatuWrapper(object):
             self.logger.debug("Couldn't find dhatu {} in database".format(d))
             return False
 
+
 if __name__ == "__main__":
     from argparse import ArgumentParser
 

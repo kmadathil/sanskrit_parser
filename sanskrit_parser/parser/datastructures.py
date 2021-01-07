@@ -244,7 +244,7 @@ non_karaka_vibhaktis = {
     2: ["antarA", "antareRa", "pfTak", "vinA", "nAnA"],
     3: ["saha", "pfTak", "vinA", "nAnA"],
     4: ["namaH", "svasti", "svAhA", "alam", "vazaw"],
-    5: ["anya", "Arat", "itara", "fte", "pfTak", "vinA", "nAnA"]  
+    5: ["anya", "Arat", "itara", "fte", "pfTak", "vinA", "nAnA"],
 }
 # FIXME Merge these with above
 karmap_2 = set(['anu', 'upa',  'prati', 'aBi', 'aDi', 'ati'])
@@ -461,7 +461,6 @@ class VakyaGraph(object):
                             if is_dvik:
                                 logger.debug(f"Adding gauRakarma edge to {n}")
                                 self.G.add_edge(d, n, label="gauRa-karma")
-                               
                     else:
                         if n.node_is_a(prathama) and d.node_is_a(lakaras) and match_purusha_vacana(d, n):
                             if d.node_is_a(nijanta):
@@ -582,13 +581,12 @@ class VakyaGraph(object):
                 if (ix+1 in non_karaka_vibhaktis) and \
                    (nb in non_karaka_vibhaktis[ix+1]):
                     for nn in self.G:
-                        vlabel = ("upapada-"+_vibhaktis[ix]).replace("viBakti","")
+                        vlabel = ("upapada-"+_vibhaktis[ix]).replace("viBakti", "")
                         if nn.node_is_a(_vibhaktis[ix]) and \
                            (not _is_same_partition(nn, n)):
                             logger.debug(f"Adding {vlabel} edge {nn, n}")
                             self.G.add_edge(n, nn, label=vlabel)
-                           
-            
+
     def add_sentence_conjunctions(self, laks, krts):
         ''' Add sentence conjunction links
 
