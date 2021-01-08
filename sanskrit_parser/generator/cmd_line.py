@@ -90,26 +90,26 @@ class CustomAction(Action):
         if values is not None:
             if isinstance(values, str):
                 values = [values]
-                for v in values:
-                    assert v in globals(), f"{v} is not defined!"
-                    getattr(namespace, "pointer")[-1].append(globals()[v])
+            for v in values:
+                assert v in globals(), f"{v} is not defined!"
+                getattr(namespace, "pointer")[-1].append(globals()[v])
+        else:
+            if option_string == "-o":  # Open
+                _l = []
+                # Add a new level at the end of current list
+                getattr(namespace, "pointer")[-1].append(_l)
+                # Designate new list as current list
+                getattr(namespace, "pointer").append(_l)
+            elif option_string == "-c":  # Close
+                # Current is updated to previous
+                getattr(namespace, "pointer").pop()
+            elif option_string == "-a":  # AvasAna
+                # Add avasana
+                lav = getattr(namespace, self.dest)
+                setattr(namespace, self.dest, [lav, avasAna])  # noqa: F405
+                last_option = True
             else:
-                if option_string == "-o":  # Open
-                    _l = []
-                    # Add a new level at the end of current list
-                    getattr(namespace, "pointer")[-1].append(_l)
-                    # Designate new list as current list
-                    getattr(namespace, "pointer").append(_l)
-                elif option_string == "-c":  # Close
-                    # Current is updated to previous
-                    getattr(namespace, "pointer").pop()
-                elif option_string == "-a":  # AvasAna
-                    # Add avasana
-                    lav = getattr(namespace, self.dest)
-                    setattr(namespace, self.dest, [lav, avasAna])  # noqa: F405
-                    last_option = True
-                else:
-                    logger.error(f"Unrecognized Option {option_string}")
+                logger.error(f"Unrecognized Option {option_string}")
 
 
 class CustomActionString(Action):
@@ -143,17 +143,17 @@ class CustomActionString(Action):
                 getattr(namespace, "pointer")[-1].append(value)
 
             logger.info('%r %r %r' % (namespace, values, option_string))
-            if getattr(namespace, self.dest) is None:
-                _n = []
-                # This tracks the hierarchical input list
-                setattr(namespace, self.dest, _n)
-                # Last item of this is always the current level of the input
-                setattr(namespace, "pointer", [_n])
-            if isinstance(values, list):
-                for v in values:
-                    _exec(v)
-            else:
-                _exec(values)
+        if getattr(namespace, self.dest) is None:
+            _n = []
+            # This tracks the hierarchical input list
+            setattr(namespace, self.dest, _n)
+            # Last item of this is always the current level of the input
+            setattr(namespace, "pointer", [_n])
+        if isinstance(values, list):
+            for v in values:
+                _exec(v)
+        else:
+            _exec(values)
 
 
 def get_args(argv=None):
