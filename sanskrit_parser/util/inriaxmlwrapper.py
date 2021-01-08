@@ -71,7 +71,7 @@ class InriaXMLWrapper(LexicalLookup):
     """
 
     def __init__(self, logger=None):
-        self.pickle_file = "_all.pickle"
+        self.pickle_file = "inria_forms.pickle"
         self.logger = logger or logging.getLogger(__name__)
         self._load_forms()
 
