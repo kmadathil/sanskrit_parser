@@ -17,21 +17,19 @@ import gensim
 import logging
 import requests
 import sentencepiece as spm
+import importlib.resources
 
 
 class Scorer(object):
 
-    # TODO - Install the data in a different way
-    sentencepiece_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/master/data/sentencepiece.model?raw=true"
-    word2vec_file_url = "https://github.com/kmadathil/sanskrit_parser/blob/master/data/word2vec_model.dat?raw=true"
-    base_dir = os.path.expanduser("~/.sanskrit_parser/data/")
-    sentencepiece_file = os.path.join(base_dir, "sentencepiece.model")
-    word2vec_file = os.path.join(base_dir, "word2vec_model.dat")
+    sentencepiece_file = "sentencepiece.model"
+    word2vec_file = "word2vec_model.dat"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self._get_file(self.sentencepiece_file, self.sentencepiece_file_url)
-        self._get_file(self.word2vec_file, self.word2vec_file_url)
+        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
+            self.sentencepiece_file = os.path.join(data_dir, self.sentencepiece_file)
+            self.word2vec_file = os.path.join(data_dir, self.word2vec_file)
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(self.sentencepiece_file)
         self.model = gensim.models.Word2Vec.load(self.word2vec_file)

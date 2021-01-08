@@ -7,8 +7,7 @@ from __future__ import print_function
 
 import logging
 import os
-
-import requests
+import importlib.resources
 from tinydb import TinyDB, Query
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
@@ -19,33 +18,15 @@ class DhatuWrapper(object):
     Class to interface with the kRShNamAchArya dhAtupATha
     https://github.com/sanskrit-coders/stardict-sanskrit/tree/master/sa-vyAkaraNa/dhAtu-pATha-kRShNAchArya
     """
-    # Moved to our own repo
-    git_url = 'https://raw.githubusercontent.com/kmadathil/sanskrit_parser/master/data/dhAtu-pATha-kRShNAchArya.json'
-    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
     db_file = "dhAtu-pATha-kRShNAchArya.json"
     q = Query()
 
     def __init__(self, logger=None):
         self.logger = logger or logging.getLogger(__name__)
-        self._get_file()
-        self.db = TinyDB(os.path.join(self.base_dir, self.db_file))
-        # Check if db is empty
-        if len(self.db.all()) == 0:
-            self._generate_db()
-
-    def _get_file(self):
-        """ Download file if not present in cache """
-        if not os.path.exists(self.base_dir):
-            self.logger.debug("Data cache not found. Creating.")
-            os.makedirs(self.base_dir)
-        if not os.path.exists(os.path.join(self.base_dir, self.db_file)):
-            self.logger.debug("%s not found. Downloading it", self.db_file)
-            r = requests.get(self.git_url, stream=True)
-            assert r.status_code != 404, \
-                "Could not download file {}".format(self.git_url)
-            with open(os.path.join(self.base_dir, self.db_file), "wb") as fd:
-                for chunk in r.iter_content(chunk_size=128):
-                    fd.write(chunk)
+        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
+            self.db = TinyDB(os.path.join(data_dir, self.db_file),
+                             access_mode='r')
+        assert len(self.db.all()) != 0
 
     def _get_dhatus(self, d):
         """ Get all tags for a dhatu d """

@@ -8,22 +8,21 @@ Wrapper around data from Sanskrit data project
 from __future__ import print_function
 import logging
 import os
+import importlib.resources
 import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI, SLP1
-import requests
 
 
 class SanskritDataWrapper(LexicalLookup):
 
-    # TODO - Install the data in a different way
-    file_url = "https://github.com/kmadathil/sanskrit_parser/blob/master/data/sanskrit_data.db?raw=true"
-    db_file = os.path.join(LexicalLookup.base_dir, 'sanskrit_data.db')
+    db_file = 'sanskrit_data.db'
 
     def __init__(self, logger=None):
-        self._get_file()
+        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
+            self.db_file = os.path.join(data_dir, self.db_file)
         config = {
             "DATABASE_URI": 'sqlite:///' + self.db_file,
             "DATA_PATH": ""}
@@ -63,13 +62,6 @@ class SanskritDataWrapper(LexicalLookup):
             return tags
         else:
             return None
-
-    def _get_file(self):
-        if not os.path.exists(self.db_file):
-            r = requests.get(self.file_url, stream=True)
-            with open(os.path.join(self.db_file), "wb") as fd:
-                for chunk in r.iter_content(chunk_size=128):
-                    fd.write(chunk)
 
     vacanam = ['एकवचनम्', 'द्विवचनम्', 'बहुवचनम्']
     lingam = ['पुंल्लिङ्गम्', 'स्त्रीलिङ्गम्', 'नपुंसकलिङ्गम्', 'त्रिलिङ्गम्']

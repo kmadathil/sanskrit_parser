@@ -49,16 +49,10 @@ Command line usage
 """
 
 from __future__ import print_function
-import requests
 import os
-import shutil
-import inspect
-from lxml import etree
-from collections import defaultdict
-from io import BytesIO
 import logging
-import time
-import datetime
+import importlib.resources
+
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper
@@ -75,105 +69,31 @@ class InriaXMLWrapper(LexicalLookup):
     by Prof. Gerard Huet
     https://gitlab.inria.fr/huet/Heritage_Resources
     """
-    base_url = "https://raw.githubusercontent.com/drdhaval2785/inriaxmlwrapper/master/"
-    xml_files = ["roots", "nouns", "adverbs", "final", "parts", "pronouns", "upasargas", "all"]
-    old_base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    folder = "data"
-    old_dir = os.path.join(old_base_dir, folder)
 
-    def __init__(self, files_list=['all'], logger=None):
-        for f in files_list:
-            if f not in self.xml_files:
-                raise Exception(f + "is not a valid file name")
-        self.files = files_list
-        self.files.sort()
-        self.pickle_file = "_".join(self.files) + ".pickle"
-        if ["all"] == self.files:
-            self.files = self.xml_files[:-1]
-            self.pickle_file = "_all.pickle"
+    def __init__(self, logger=None):
+        self.pickle_file = "inria_forms.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._relocate_data()
         self._load_forms()
-
-    @staticmethod
-    def _relocate_data():
-        if os.path.exists(InriaXMLWrapper.old_dir):
-            shutil.move(InriaXMLWrapper.old_dir, InriaXMLWrapper.base_dir)
-
-    def _get_files(self):
-        """ Download files if not present in cache """
-        if not os.path.exists(self.base_dir):
-            self.logger.debug("Data cache not found. Creating.")
-            os.makedirs(self.base_dir)
-        for f in self.files:
-            filename = "SL_" + f + ".xml"
-            if not os.path.exists(os.path.join(self.base_dir, filename)):
-                self.logger.debug("%s not found. Downloading it", filename)
-                r = requests.get(self.base_url + filename, stream=True)
-                with open(os.path.join(self.base_dir, filename), "wb") as fd:
-                    for chunk in r.iter_content(chunk_size=128):
-                        fd.write(chunk)
-
-    def _generate_dict(self):
-        """ Create dict with mapping
-            form : set([<tag 1>, ... , <tag n>])
-            and pickle it
-        """
-        self._get_files()
-        self.logger.debug("Parsing files into dict for faster lookup")
-        self.forms = defaultdict(list)
-        for f in self.files:
-            filename = "SL_" + f + ".xml"
-            self.logger.debug("Parsing %s", filename)
-            tree = etree.parse(os.path.join(self.base_dir, filename))
-            for elem in tree.iterfind('f'):
-                form = elem.get('form')
-                self.forms[form].append(etree.tostring(elem).strip())
-        self.logger.debug("Pickling forms database for faster loads")
-        with open(os.path.join(self.base_dir, self.pickle_file), "wb") as fd:
-            pickle.dump(self.forms, fd, pickle.HIGHEST_PROTOCOL)
 
     def _load_forms(self):
         """ Load/create dict of tags for forms """
-        pickle_path = os.path.join(self.base_dir, self.pickle_file)
-        if os.path.exists(pickle_path):
-            self.logger.debug("Pickle file found, loading at %s", datetime.datetime.now())
-            start = time.time()
+        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+            pickle_path = os.path.join(base_dir, self.pickle_file)
             with open(pickle_path, "rb") as fd:
                 self.forms = pickle.load(fd)
-            self.logger.debug("Loading finished at %s, took %f s",
-                              datetime.datetime.now(),
-                              time.time() - start)
-        else:
-            self.logger.debug("Pickle file not found, creating ...")
-            self._generate_dict()
-        self.logger.debug("Cached %d forms for fast lookup", len(self.forms))
+                self.index = pickle.load(fd)
 
-    def _xml_to_tags(self, word):
-        # FIXME - This is currently from sanskritmark. Check if this can be simplified
+    def _decode_tags(self, tag_index):
+        tags = [self.index[x] for x in tag_index]
+        return (tags[0], set(tags[1:]))
+
+    def _get_tags(self, word):
         if word in self.forms:
-            tags = self.forms[word]
-            results = []
-            for tag in tags:
-                root = etree.parse(BytesIO(tag)).getroot()
-                # The next two steps require explanation. In Gerard's XML files,
-                # All possible attributes are given as children of 'f'. The last
-                # child is always 's' which stores the stem. All other children
-                # are the various possible word attributes. Given as 'na' or 'v'
-                # etc. Gio
-                children = root.getchildren()[:-1]  # attributes
-                baseword = root.getchildren()[-1].get('stem').strip()  # 's' stem
-                attributes = []
-                for child in children:
-                    taglist = child.xpath(
-                        './/*')  # Fetches all elements (abbreviations) of a particular verb / word characteristics.
-                    output = [child.tag]  # The first member of output list is the tag of element 'v', 'na' etc.
-                    output = output + [tagitem.tag for tagitem in
-                                       taglist]  # Other tags (abbreviations) and add it to output list.
-                    attributes.append(output)
-                for attrib in attributes:
-                    results.append((baseword, set(attrib)))
-            return results
+            tag_index_list = self.forms[word]
+            tags = []
+            for tag_index in tag_index_list:
+                tags.append(self._decode_tags(tag_index))
+            return tags
         else:
             return None
 
@@ -181,7 +101,7 @@ class InriaXMLWrapper(LexicalLookup):
         return word in self.forms
 
     def get_tags(self, word, tmap=True):
-        tags = self._xml_to_tags(word)
+        tags = self._get_tags(word)
         if tmap and (tags is not None):
             tags = inriaTagMapper(tags)
         return tags

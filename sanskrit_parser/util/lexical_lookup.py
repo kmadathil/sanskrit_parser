@@ -6,7 +6,6 @@ Base class + factory for lexical lookup classes
 
 from __future__ import print_function
 import abc
-import os
 from argparse import ArgumentParser
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 
@@ -14,8 +13,6 @@ from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 class LexicalLookup(object):
 
     __metaclass__ = abc.ABCMeta
-
-    base_dir = os.path.expanduser("~/.sanskrit_parser/data")
 
     @abc.abstractmethod
     def valid(self, word):
