@@ -31,12 +31,12 @@ def _dumpchars(sr):
     return s
 
 
-def process_line(lnum, l):
+def process_line(lnum, line_in):
     '''Process a single line'''
-    logging.info("Processing Line {}: {}".format(lnum, l))
+    logging.info("Processing Line {}: {}".format(lnum, line_in))
     r = None
     subsplitp = False
-    line = l.strip()
+    line = line_in.strip()
     if line and line[0] == '#':
         logging.info("Skipping Comment")
         return None

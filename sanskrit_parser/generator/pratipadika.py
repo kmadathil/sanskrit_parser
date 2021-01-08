@@ -1,24 +1,24 @@
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.base.sanskrit_base import SLP1
 
+
 class Pratipadika(PaninianObject):
     """ Sanskrit Object Class: Derived From SanskritString
 
      Attributes:
-        
     """
-    def __init__(self, thing=None, linga= "pum",
+    def __init__(self, thing=None, linga="pum",
                  other_tags=[], encoding=SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-            super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
-            self.linga = linga
-            self.inPrakriya = True
-            self.setTag("prAtipadika")
-            self.setTag(linga)
-            #self.setTag("aNga")
-            for t in other_tags:
-                self.setTag(t)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        self.linga = linga
+        self.inPrakriya = True
+        self.setTag("prAtipadika")
+        self.setTag(linga)
+        # self.setTag("aNga")
+        for t in other_tags:
+            self.setTag(t)
 
     def anta(self):
         return self.canonical()[-1]
@@ -49,13 +49,13 @@ potf = Pratipadika("potf", "pum", other_tags=["naptrAdi"])
 praSAstf = Pratipadika("praSAstf", "pum", other_tags=["naptrAdi"])
 
 
-# क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति 
+# क्विबन्ताः विजन्ताश्च प्रातिपदिकत्वं न. जहति, धातुत्वमपि न मुञ्चन्ति
 viSvapA = Pratipadika("viSvapA", "pum", other_tags=["DAtu", "vic"])
 senAnI = Pratipadika("senAnI", "pum", other_tags=["DAtu", "kvip"])
 nI = Pratipadika("nI", "pum", other_tags=["DAtu", "kvip"])
 KalapU = Pratipadika("KalapU", "pum", other_tags=["DAtu", "kvip"])
-varzABU =  Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
-svayamBU =  Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
+varzABU = Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
+svayamBU = Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
 suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
 
 hAhA = Pratipadika("hAhA", "pum")
@@ -72,8 +72,8 @@ tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
                                             'tyadAdi'])
 catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana"])
-#tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
-#catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
+# tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
+# catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 dvi_s = Pratipadika("dvi", "strI", other_tags=["saMKyA", "nityadvivacana",
                                                'tyadAdi', "Ap"])
 
@@ -95,7 +95,7 @@ nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
 mati = Pratipadika("mati", "strI")
-lakzmI = Pratipadika("lakzmI", "strI") # No NI
+lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 # to test

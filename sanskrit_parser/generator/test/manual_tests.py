@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 from sanskrit_parser import enable_console_logger, enable_file_logger
 from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 import sanskrit_parser.generator.sutra as sutra

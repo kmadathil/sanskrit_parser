@@ -10,6 +10,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject
 import logging
 logger = logging.getLogger(__name__)
 
+
 # Global Domains
 class GlobalDomains(object):
     def __init__(self):
@@ -23,22 +24,25 @@ class GlobalDomains(object):
             "saMhitA": False,
             "standard": False
         }
+
     def isdomain(self, d):
         return self.domains[d]
-    
+
     def set_domain(self, d):
         for k in self.domains:
             if k == d:
                 self.domains[k] = True
             else:
                 self.domains[k] = False
+
     def active_domain(self):
         r = []
         for k in self.domains:
             if self.domains[k]:
                 r.append(k)
         return r
-    
+
+
 # Base class
 class Sutra(object):
     def __init__(self, name, aps, optional=False, overrides=None):
@@ -47,10 +51,10 @@ class Sutra(object):
         else:
             self.name = name
         if isinstance(aps, str):
-            self.aps = aps  # Adhaya.pada.sutra
+            self.aps = aps   # Adhaya.pada.sutra
             aps_l = aps.split(".")
             aps_t = [int(_x) for _x in aps_l]
-            if len(aps_l) > 3: # Subsutra/Vartikam
+            if len(aps_l) > 3:  # Subsutra/Vartikam
                 aps_sub = Decimal("0."+str(aps_t[-1]))
             else:
                 aps_sub = 0
@@ -60,19 +64,9 @@ class Sutra(object):
             self._aps_tuple = aps_t
             self.aps = '.'.join([str(x) for x in list(aps_t)])
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000 + aps_sub
-        #self.enable()
         self.overrides = overrides
         self.optional = optional
         logger.info(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
-
-    # def enable(self):
-    #     self._enable = True
-
-    # def disable(self):
-    #     self._enable = False
-
-    # def isEnabled(self):
-    #     return self._enable
 
     def __str__(self):
         if self.optional:
@@ -80,7 +74,8 @@ class Sutra(object):
         else:
             _o = ""
         return f"{self.aps:7}: {str(self.name)} {_o}"
-    
+
+
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
                  update=None, optional=False, bahiranga=1, overrides=None):
@@ -90,14 +85,14 @@ class LRSutra(Sutra):
         super().__init__(name, aps, optional, overrides)
         self.domain = domain
         self.cond = cond
-        self.xform   = xform
+        self.xform = xform
         self.update_f = update
         self.insertx = insert
-        self.bahiranga = bahiranga # Bahiranga score. Smaller wins
-        
+        self.bahiranga = bahiranga  # Bahiranga score. Smaller wins
+
     def inAdhikara(self, context):
         return self.adhikara(context)
-    
+
     def isTriggered(self, s1, s2, domains):
         logger.debug(f"Checking {self} View: {s1} {s2}")
         env = _env(s1, s2)
@@ -119,7 +114,7 @@ class LRSutra(Sutra):
         if self.update_f is not None:
             self.update_f(env, domains)
         return env["olp"], env["orp"]
-        
+
     def operate(self, s1, s2):
         # We take the string tuple returned, and update s1, s2
         rs1 = deepcopy(s1)
@@ -146,8 +141,9 @@ class LRSutra(Sutra):
         else:
             return(s1, s2)
 
+
 def _env(s1, s2):
-    #Helper function to define execution environment
+    # Helper function to define execution environment
     env = {}
     env["lp"] = s1
     env["rp"] = s2

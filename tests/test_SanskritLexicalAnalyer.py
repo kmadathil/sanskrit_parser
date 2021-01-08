@@ -22,8 +22,8 @@ def get_splitstxt(test_count):
         inspect.getfile(inspect.currentframe())))
     data_dir = os.path.join(base_dir, "test_data_SanskritLexicalAnalyzer")
     with open(os.path.join(data_dir, "splits.txt")) as f:
-        for l in f:
-            line = l.strip()
+        for fline in f:
+            line = fline.strip()
             if line and line[0] != '#':
                 full, split = line.split('=')
                 full = six.u(full.strip())
@@ -31,16 +31,16 @@ def get_splitstxt(test_count):
                 splits = list(map(lambda x: six.u(x), split.split(' ')))
                 fs.append((full, splits))
     with open(os.path.join(data_dir, "uohd_passing.txt")) as f:
-        for l in f:
-            test = json.loads(l)
+        for fline in f:
+            test = json.loads(fline)
             fs.append((test["full"], test["split"]))
     with open(os.path.join(data_dir, "uohd_split_passing.txt")) as f:
-        for l in f:
-            test = json.loads(l)
+        for fline in f:
+            test = json.loads(fline)
             fs.append((test["full"], test["split"]))
     with open(os.path.join(data_dir, "uohd_failing.txt")) as f:
-        for l in f:
-            test = json.loads(l)
+        for fline in f:
+            test = json.loads(fline)
             fs.append(pytest.mark.xfail((test["full"], test["split"])))
     return fs[:test_count] if test_count > 0 else fs
 

@@ -46,6 +46,17 @@ class DhatuWrapper(object):
             self.logger.debug("Couldn't find dhatu {} in database".format(d))
             return False
 
+    def is_dvikarmaka(self, d):
+        """ Is d dvikarmaka? """
+        # Tags
+        tl = self._get_dhatus(d)
+        if len(tl) != 0:
+            supported_karmakas = {'dvikarmakaH'}
+            return any([t['karmakatvaM'] in supported_karmakas for t in tl])
+        else:
+            self.logger.debug("Couldn't find dhatu {} in database".format(d))
+            return False
+
 
 if __name__ == "__main__":
     from argparse import ArgumentParser

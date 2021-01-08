@@ -3,21 +3,21 @@ Prakriya Engine for Panini Sutras
 
 Takes in a list of Sutras, and executes them on a bunch of inputs
 
-Inputs are provided at prakRti + pratyayas level. A list of such combinations 
-is provided. (ie: this is post karaka assignment and pratyaya selection). 
-For each future pada (prakRti + pratyayas), rules are executed, and output 
+Inputs are provided at prakRti + pratyayas level. A list of such combinations
+is provided. (ie: this is post karaka assignment and pratyaya selection).
+For each future pada (prakRti + pratyayas), rules are executed, and output
 padas are generated. Then, further rules are run on the padas themselves to
-produce a vakya.  
+produce a vakya.
 
 @author: kmadathil
-
 """
 
-import logging
-logger = logging.getLogger(__name__)
 from sanskrit_parser.generator.sutra import GlobalDomains
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from copy import deepcopy, copy
+import logging
+logger = logging.getLogger(__name__)
+
 
 class PrakriyaVakya(object):
     """
@@ -26,9 +26,9 @@ class PrakriyaVakya(object):
     Start with associated prakriti + pratyayas
     Assemble into padas
     Handle Pratyaya/String Agama / Lopa
-    
+
     Inputs:
-        v = list. 
+        v = list.
         Elements of v can be PaninianObjects or
             lists thereof
     Internal storage:
@@ -37,7 +37,7 @@ class PrakriyaVakya(object):
     def __init__(self, v):
         # Deepcopy is required because we add tags to objects
         # during prakriya, and we do not want predefined objects getting
-        # tags. 
+        # tags.
         self.v = deepcopy(list(v))
 
     def need_hierarchy_at(self, ix):
@@ -76,11 +76,12 @@ class PrakriyaVakya(object):
 
     def __repr__(self):
         return str([str(x) for x in self.v])
-        
+
+
 class Prakriya(object):
     """
     Prakriya Class
-    
+
     Inputs:
        sutra_list: list of Sutra objects
        inputs    : PrakriyaVakya object
@@ -95,7 +96,7 @@ class Prakriya(object):
         # Used only in hierarchy is needed
         self.hier_inputs = [self.inputs]
         # Assmeble hierarchical prakriya outputs into a single list
-        self.hier_outputs = [[] for x in self.inputs] 
+        self.hier_outputs = [[] for x in self.inputs]
         # Scan inputs for hierarchical prakriya needs
         for ix in range(len(self.inputs)):
             if self.inputs.need_hierarchy_at(ix):
@@ -107,17 +108,14 @@ class Prakriya(object):
                 # This will execute hierarchically as needed
                 hp.execute()
                 hpo = hp.output()
-                # FIXME
-                #if len(hpo)>1:
-                #    logger.warning("Hierarchical > 1 length output not implemented")
-                self.hier_outputs[ix] = hpo # accumulate hierarchical outputs
+                self.hier_outputs[ix] = hpo  # accumulate hierarchical outputs
         self.tree = PrakriyaTree()
         if self.need_hier:
-            for ix,ol in enumerate(self.hier_outputs):
-                if ol != []: # Hierarchy exists here
+            for ix, ol in enumerate(self.hier_outputs):
+                if ol != []:  # Hierarchy exists here
                     tmpl = []
                     # For each alternate output
-                    for o in ol: 
+                    for o in ol:
                         hobj = PaninianObject.join_objects([o])
                         # Assemble exploded list with each input
                         # replaced by multiple alternates at this
@@ -135,13 +133,13 @@ class Prakriya(object):
         else:
             _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
             self.tree.add_node(_n, root=True)
- 
+
         self.outputs = []
-        self.domains = GlobalDomains() 
+        self.domains = GlobalDomains()
         self.disabled_sutras = []
         # Sliding window counter
         self.windowIdx = 0
-        
+
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list):
         def _winner(s1, s2):
@@ -163,7 +161,7 @@ class Prakriya(object):
                 logger.debug(f"{s2} antaranga {s1}")
                 return s2
             # samjYA before 1.4.2 vipratizeDe param kAryam
-            elif (s1._aps_num < 14000) or  (s2._aps_num < 14000):
+            elif (s1._aps_num < 14000) or (s2._aps_num < 14000):
                 logger.debug(f"SaMjYA, lower of {s1} {s2}")
                 if s1._aps_num < s2._aps_num:
                     return s1
@@ -188,7 +186,7 @@ class Prakriya(object):
         for s in _s[1:]:
             w = _winner(w, s)
         return w
-        
+
     def view(self, s, node, ix=0):
         """
         Current view as seen by sutra s
@@ -197,23 +195,23 @@ class Prakriya(object):
         # Wrapper for special "siddha" situations
         def _special_siddha(a1, a2):
             # zqutva is siddha for q lopa
-            if (a1==84041) and (a2==83013):
+            if (a1 == 84041) and (a2 == 83013):
                 return True
             # q, r lopa siddha for purvadirgha
-            elif ((a1==83013) or (a1==83014)) and (a2==63111):
+            elif ((a1 == 83013) or (a1 == 83014)) and (a2 == 63111):
                 return True
             else:
                 return False
-                
+
         if s is not None:
             aps_num = s._aps_num
         else:
             aps_num = 0
         # Default view
-        l = self.inputs
+        _l = self.inputs
         if node is None:
-            #logger.debug(f"View {l} {node}")
-            return l
+            # logger.debug(f"View {l} {node}")
+            return _l
         if aps_num < 82000:
             # FIXME: Only Sapadasaptapadi implemented.
             # Need to implement asiddhavat, zutvatokorasiddhaH
@@ -223,7 +221,7 @@ class Prakriya(object):
                   ((_n.sutra._aps_num > 82000)
                    and not _special_siddha(_n.sutra._aps_num, aps_num)):
                 _n = self.tree.parent[_n]
-            l = _n.outputs
+            _l = _n.outputs
         else:
             # Asiddha
             # Can see all outputs of sutras less than oneself
@@ -232,15 +230,15 @@ class Prakriya(object):
                   ((_n.sutra._aps_num > aps_num)
                    and not _special_siddha(_n.sutra._aps_num, aps_num)):
                 _n = self.tree.parent[_n]
-            l = _n.outputs
-        if ix > (len(l)-2):
+            _l = _n.outputs
+        if ix > (len(_l)-2):
             # Someone has inserted something this sutra can't see
-            logger.debug(f"Unseen insertion? {s} {l} {ix}") 
-            ix = len(l) - 2
-        return l[ix:ix+2]
-    
+            logger.debug(f"Unseen insertion? {s} {_l} {ix}")
+            ix = len(_l) - 2
+        return _l[ix:ix+2]
+
     def _exec_single(self, node):
-        l = self.sutra_list
+        l = self.sutra_list  # noqa: E741
         # Sliding window, check from left
         for ix in range(len(node.outputs)-1):
             logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
@@ -285,13 +283,13 @@ class Prakriya(object):
                             v0.disabled_sutras.append(so.aps)
                         logger.debug(f"Disabling overriden {so}")
             # FIXME: disable sutras for AkaqArAdekA saMjYA
-            
+
             logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
             # Update Prakriya Tree
             # Craft inputs and outputs based on viewed inputs
             # And generated outputs
-            pnv = node.outputs.copy_replace_at(ix,v[0]).copy_replace_at(ix+1,v[1])
-            pnr = node.outputs.copy_replace_at(ix,r[0]).copy_replace_at(ix+1,r[1])
+            pnv = node.outputs.copy_replace_at(ix, v[0]).copy_replace_at(ix+1, v[1])
+            pnr = node.outputs.copy_replace_at(ix, r[0]).copy_replace_at(ix+1, r[1])
             if len(r) > 2:
                 for i in range(len(r)-2):
                     pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
@@ -301,8 +299,6 @@ class Prakriya(object):
                 self.tree.add_child(node, _ps, opt=s.optional)
             else:
                 self.tree.add_node(_ps, root=True)
-            #self.stages.append(_ps)
-            
             return r
         else:
             logger.debug(f"Domain {self.domains.active_domain()} - Nothing triggered")
@@ -316,7 +312,7 @@ class Prakriya(object):
                 return r
         # Only if nothing ever triggered
         return False
-            
+
     def execute(self):
         if self.need_hier:
             logger.debug(f"Input: {self.hier_inputs}")
@@ -327,7 +323,7 @@ class Prakriya(object):
         # Initial run on input
         for r in self.tree.get_root():
             _act = self._exec_all_domains(r)
-            act  = act or _act
+            act = act or _act
         if (act):
             # Iterate over leaves if something triggered
             while (act):
@@ -350,13 +346,13 @@ class Prakriya(object):
         r = self.outputs
         logger.debug(f"Final Result: {r}\n")
         return r
-             
+
     def output(self, copy=False):
         if copy:
             return deepcopy(self.outputs)
         else:
             return self.outputs
-    
+
     def describe(self):
         print("\nPrakriya")
         if self.hier_prakriyas != []:
@@ -371,16 +367,19 @@ class Prakriya(object):
     def dict(self):
         return self.tree.dict()
 
+
 _node_id = 0
+
+
 class PrakriyaNode(object):
-    """ 
+    """
     Prakriya History Node
 
     Inputs
         inputs : list of Paninian Objects
         outputs: list of Paninian Objects
        sutra_id: id for triggered sutra
-   other_sutras: sutras that were triggered, but did not win.    
+    other_sutras: sutras that were triggered, but did not win.
     """
     def __init__(self, inputs, outputs, sutra, ix=0, other_sutras=[]):
         global _node_id
@@ -391,7 +390,7 @@ class PrakriyaNode(object):
         self.sutra = sutra
         self.other_sutras = other_sutras
         self.index = ix
-        
+
     def __str__(self):
         return f"{self.id} {self.sutra} {self.inputs} {self.index}-> {self.outputs}"
 
@@ -404,7 +403,6 @@ class PrakriyaNode(object):
     def __ne__(self, other):
         return str(self) != str(other)
 
-
     def describe(self):
         print("Prakriya Node")
         print(str(self))
@@ -413,7 +411,7 @@ class PrakriyaNode(object):
             for s in self.other_sutras:
                 print(str(s))
         print("End")
-        
+
     def dict(self):
         return {
             'id': self.id,
@@ -423,9 +421,10 @@ class PrakriyaNode(object):
             'window': self.index,
             'other_sutras': [str(s) for s in self.other_sutras]
             }
-    
+
+
 class PrakriyaTree(object):
-    """ 
+    """
     Prakriya Tree: Tree of PrakriyaNodes
     """
     def __init__(self, node=None):
@@ -453,11 +452,11 @@ class PrakriyaTree(object):
         self.children[node].append(c)
         assert (c not in self.parent), f"Duplicated {c}, hash{c}"
         self.parent[c] = node
-        if not c in self.children:
+        if c not in self.children:
             self.add_node(c)
         if (not opt) and (node in self.leaves):
-                self.leaves.remove(node)
-            
+            self.leaves.remove(node)
+
     def describe(self):
         def _desc(n):
             n.describe()
@@ -478,18 +477,16 @@ class PrakriyaTree(object):
         return {
             'root': _dict(self.roots[0])
             }
-        
-            
+
+
 def _isScalar(x):
     # We do not expect np arrays or other funky nonscalars here
     return not (isinstance(x, list) or isinstance(x, tuple))
 
 
 if __name__ == "__main__":
-    from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
-    import sanskrit_parser.generator.sutra as sutra
-    from sanskrit_parser.generator.pratyaya import *
-    from sanskrit_parser.generator.dhatu import *
+    from sanskrit_parser.generator.pratyaya import *   # noqa: F401, F403
+    from sanskrit_parser.generator.dhatu import *   # noqa: F401, F403
     from sanskrit_parser import enable_console_logger
     from sandhi_yaml import sutra_list
     from argparse import ArgumentParser
@@ -506,12 +503,10 @@ if __name__ == "__main__":
                             default=None)
         return parser.parse_args()
 
-
     def main(args):
         enable_console_logger()
-        p = Prakriya(sutra_list,PrakriyaVakya(args.inputs))
+        p = Prakriya(sutra_list, PrakriyaVakya(args.inputs))
         p.execute()
         p.describe
-
 
     main(getArgs())
