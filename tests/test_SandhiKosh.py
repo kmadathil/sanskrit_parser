@@ -7,6 +7,7 @@ from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, outputctx
 from tests.conftest import get_testcount
 import pandas as pd
+import inspect
 
 
 @pytest.fixture(scope="module")
@@ -16,7 +17,10 @@ def lexan():
 
 def get_kosh_entries(test_count):
     kosh_entries = []
-    kosh = pd.read_excel(os.path.join('SandhiKosh', "Result.xls"))[['S. No.', 'Word', 'Split', 'Status']]
+    base_dir = os.path.dirname(os.path.abspath(
+        inspect.getfile(inspect.currentframe())))
+    data_dir = os.path.join(base_dir, 'SandhiKosh')
+    kosh = pd.read_excel(os.path.join(data_dir, "Result.xls"))[['S. No.', 'Word', 'Split', 'Status']]
     kosh_entries.extend(kosh[kosh['Status'] == "Pass"].to_dict(orient='records'))
     return kosh_entries[:test_count] if test_count > 0 else kosh_entries
 
