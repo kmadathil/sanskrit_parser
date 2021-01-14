@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-import inspect
-import os
+# import inspect
+# import os
 import pytest
-import six
-import json
+# import six
+# import json
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, outputctx
-from tests.conftest import get_testcount
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1  # , outputctx
+# from tests.conftest import get_testcount
 
 
 @pytest.fixture(scope="module")
