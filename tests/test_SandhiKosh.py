@@ -16,17 +16,8 @@ def lexan():
 
 def get_kosh_entries(test_count):
     kosh_entries = []
-    bg_kosh = pd.read_excel(os.path.join('SandhiKosh', "Bhagvad_Gita Corpus.xls"))[['S. No.', 'Word', 'Split']]
-    bg_kosh['File'] = "Bhagvad_Gita Corpus.xls"
-    uoh_kosh = pd.read_excel(os.path.join('SandhiKosh', "UoH_Corpus.xls"))[['S. No.', 'Word', 'Split']]
-    uoh_kosh['File'] = "UoH_Corpus.xls"
-    lit_kosh_dict = pd.read_excel(os.path.join('SandhiKosh', "Rule-based Corpus and Literature Corpus.xls"), sheet_name=None)
-    for k in lit_kosh_dict:
-        t_kosh = lit_kosh_dict[k][['S. No.', 'Word', 'Split']]
-        t_kosh['File'] = f"Rule-based Corpus and Literature Corpus.xls:{k}"
-        # kosh_entries.extend(t_kosh.to_dict(orient='records'))
-    kosh_entries.extend(bg_kosh.to_dict(orient='records'))
-    # kosh_entries.extend(uoh_kosh.to_dict(orient='records'))
+    kosh = pd.read_excel(os.path.join('SandhiKosh', "Result.xls"))[['S. No.', 'Word', 'Split', 'Status']]
+    kosh_entries.extend(kosh[kosh['Status'] == "Pass"].to_dict(orient='records'))
     return kosh_entries[:test_count] if test_count > 0 else kosh_entries
 
 
