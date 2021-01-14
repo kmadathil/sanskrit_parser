@@ -4,7 +4,7 @@
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, outputctx
 import pandas as pd
-# import multiprocessing
+import multiprocessing
 
 
 le = LexicalSandhiAnalyzer()
@@ -36,7 +36,7 @@ def sort_file_splits(kosh_entry):
         i = SanskritObject(f, encoding=DEVANAGARI, strict_io=True, replace_ending_visarga=None)
         if not(isinstance(s, str)):
             # Bad input
-            return (0, 0, 1)
+            return "Bad_Input"
         if clean_input:
             sl = [SanskritObject(x, encoding=DEVANAGARI, strict_io=True,
                                  replace_ending_visarga=None).canonical()
@@ -49,28 +49,27 @@ def sort_file_splits(kosh_entry):
             if sl in [list(map(str, ss)) for ss in splits]:
                 # Pass
                 print("P", end='', flush=True)
-                kosh_entry['Status'] = "Pass"
-                return (1, 0, 0)
+                return "Pass"
             else:
                 print("F", end='', flush=True)
-                kosh_entry['Status'] = "Fail"
-                return (0, 1, 0)
+                return "Fail"
         else:
             print("S", end='', flush=True)
-            kosh_entry['Status'] = "Split_Fail"
-            return (0, 0, 1)
+            return "Split_Fail"
 
 
-entries = get_kosh_entries(1000)
-passcount = 0
-failcount = 0
-splitfailcount = 0
-# with multiprocessing.Pool(4) as p:
-#    result = p.map(sort_file_splits, entries)
-result = map(sort_file_splits, entries)
-(passcount, failcount, splitfailcount) = map(sum, zip(*result))
-
+entries = get_kosh_entries()
+print(f"Collected {len(entries)} tests")
+with multiprocessing.Pool(6) as p:
+    result = p.map(sort_file_splits, entries)
+# result = map(sort_file_splits, entries)
 print("")  # Newline
-print(f"{passcount} Passed, {failcount} Failed, {splitfailcount} No_split")
-pd.DataFrame.from_records(entries).to_excel("Result.xls")
+odf = pd.DataFrame.from_records(entries)
+odf['Status'] = result
+odf.to_excel("Result.xls")
 print("Wrote to Result.xls")
+passcount = result.count("Pass")
+failcount = result.count("Fail")
+splitfailcount = result.count("Split_Fail")
+badcount = result.count("Bad_Input")
+print(f"{passcount} Passed, {failcount} Failed, {splitfailcount} No_Split, {badcount} Bad tests")
