@@ -52,6 +52,7 @@ from __future__ import print_function
 import os
 import logging
 import importlib.resources
+from collections import namedtuple
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
@@ -61,6 +62,11 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
+
+import sqlite3
+
+
+_db = namedtuple('_db', ['cursor', 'tags', 'stems', 'buf'])
 
 
 class InriaXMLWrapper(LexicalLookup):
@@ -73,7 +79,10 @@ class InriaXMLWrapper(LexicalLookup):
     def __init__(self, logger=None):
         self.pickle_file = "inria_forms.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._load_forms()
+        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+            db_file = os.path.join(base_dir, "inria_forms_pos.db")
+            pkl_path = os.path.join(base_dir, "stems_tags_buf.pkl")
+        self.db = self._load_db(db_file, pkl_path)
 
     def _load_forms(self):
         """ Load/create dict of tags for forms """
@@ -83,22 +92,43 @@ class InriaXMLWrapper(LexicalLookup):
                 self.forms = pickle.load(fd)
                 self.index = pickle.load(fd)
 
+    @staticmethod
+    def _load_db(db_file, pkl_path):
+        conn = sqlite3.connect(db_file)
+        cursor = conn.cursor()
+        with open(pkl_path, 'rb') as f:
+            stems = pickle.load(f)
+            tags = pickle.load(f)
+            buf = f.read()
+        db = _db(cursor, tags, stems, buf)
+        return db
+
+    def _get_tags(self, word):
+        db = self.db
+        cursor = db.cursor
+        res = cursor.execute('SELECT * FROM forms WHERE form=?', (word,)).fetchone()
+        if res is None:
+            return None
+        pos = res[1]
+        tag_index_list = pickle.loads(db.buf[pos:])
+        tags = []
+        for tag_index in tag_index_list:
+            tags.append(self._decode_tags_ba(tag_index, db.tags, db.stems))
+        return tags
+
+    @staticmethod
+    def _decode_tags_ba(tag_index, tags, stems):
+        t = [tags[x] for x in tag_index[1]]
+        stem = stems[tag_index[0]]
+        return (stem, set(t))
+
     def _decode_tags(self, tag_index):
         tags = [self.index[x] for x in tag_index]
         return (tags[0], set(tags[1:]))
 
-    def _get_tags(self, word):
-        if word in self.forms:
-            tag_index_list = self.forms[word]
-            tags = []
-            for tag_index in tag_index_list:
-                tags.append(self._decode_tags(tag_index))
-            return tags
-        else:
-            return None
-
     def valid(self, word):
-        return word in self.forms
+        res = self.db.cursor.execute('SELECT COUNT(1) FROM forms WHERE form = ?', (word,)).fetchone()
+        return res[0] > 0
 
     def get_tags(self, word, tmap=True):
         tags = self._get_tags(word)
