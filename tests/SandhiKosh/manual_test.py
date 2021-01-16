@@ -12,17 +12,20 @@ le = LexicalSandhiAnalyzer()
 
 def get_kosh_entries(test_count=0):
     kosh_entries = []
+    aa_kosh = pd.read_excel("Astaadhyaayii Corpus.xls")[['S. No.', 'Word', 'Split']]
+    aa_kosh['File'] = "Astaadhyaayii Corpus.xls"
     bg_kosh = pd.read_excel("Bhagvad_Gita Corpus.xls")[['S. No.', 'Word', 'Split']]
     bg_kosh['File'] = "Bhagvad_Gita Corpus.xls"
     uoh_kosh = pd.read_excel("UoH_Corpus.xls")[['S. No.', 'Word', 'Split']]
     uoh_kosh['File'] = "UoH_Corpus.xls"
     lit_kosh_dict = pd.read_excel("Rule-based Corpus and Literature Corpus.xls", sheet_name=None)
-    for k in ['External', 'Literature']:
+    for k in ['Internal', 'External', 'Literature']:
         t_kosh = lit_kosh_dict[k].loc[:, ['S. No.', 'Word', 'Split']]
         t_kosh['File'] = f"Rule-based Corpus and Literature Corpus.xls:{k}"
         kosh_entries.extend(t_kosh.to_dict(orient='records'))
     kosh_entries.extend(bg_kosh.to_dict(orient='records'))
     kosh_entries.extend(uoh_kosh.to_dict(orient='records'))
+    kosh_entries.extend(aa_kosh.to_dict(orient='records'))
     return kosh_entries[:test_count] if test_count > 0 else kosh_entries
 
 
