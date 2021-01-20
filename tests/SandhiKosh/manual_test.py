@@ -5,20 +5,24 @@ from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, outputctx
 import pandas as pd
 import multiprocessing
-
+import os.path
+import inspect
 
 le = LexicalSandhiAnalyzer()
 
 
 def get_kosh_entries(test_count=0):
     kosh_entries = []
-    aa_kosh = pd.read_excel("Astaadhyaayii Corpus.xls")[['S. No.', 'Word', 'Split']]
+    base_dir = os.path.dirname(os.path.abspath(
+        inspect.getfile(inspect.currentframe())))
+    data_dir = os.path.join(base_dir, 'SandhiKosh')
+    aa_kosh = pd.read_excel(os.path.join(data_dir, "Astaadhyaayii Corpus.xls"))[['S. No.', 'Word', 'Split']]
     aa_kosh['File'] = "Astaadhyaayii Corpus.xls"
-    bg_kosh = pd.read_excel("Bhagvad_Gita Corpus.xls")[['S. No.', 'Word', 'Split']]
+    bg_kosh = pd.read_excel(os.path.join(data_dir, "Bhagvad_Gita Corpus.xls"))[['S. No.', 'Word', 'Split']]
     bg_kosh['File'] = "Bhagvad_Gita Corpus.xls"
-    uoh_kosh = pd.read_excel("UoH_Corpus.xls")[['S. No.', 'Word', 'Split']]
+    uoh_kosh = pd.read_excel(os.path.join(data_dir, "UoH_Corpus.xls"))[['S. No.', 'Word', 'Split']]
     uoh_kosh['File'] = "UoH_Corpus.xls"
-    lit_kosh_dict = pd.read_excel("Rule-based Corpus and Literature Corpus.xls", sheet_name=None)
+    lit_kosh_dict = pd.read_excel(os.path.join(data_dir, "Rule-based Corpus and Literature Corpus.xls"), sheet_name=None)
     for k in ['Internal', 'External', 'Literature']:
         t_kosh = lit_kosh_dict[k].loc[:, ['S. No.', 'Word', 'Split']]
         t_kosh['File'] = f"Rule-based Corpus and Literature Corpus.xls:{k}"
@@ -63,7 +67,7 @@ def sort_file_splits(kosh_entry):
 
 entries = get_kosh_entries()
 print(f"Collected {len(entries)} tests")
-with multiprocessing.Pool(6) as p:
+with multiprocessing.Pool(4) as p:
     result = p.map(sort_file_splits, entries)
 # result = map(sort_file_splits, entries)
 print("")  # Newline
