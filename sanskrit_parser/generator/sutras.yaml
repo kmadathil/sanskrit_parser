@@ -864,6 +864,26 @@
   xform:
      l: str("Q")
      
+#325: दादेर्धातोर्धः (8-2-32)      
+- sutra: दादेर्धातोर्धः
+  id: 8.2.32
+  overrides: 8.2.31
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$dAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$dAdi
+       r: _Jal
+  xform:
+     l: str("G")
+     
 # 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
 - sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
   id: 8.2.36
@@ -883,7 +903,7 @@
   id: 8.2.40
   condition:
      - l: _Jaz
-       r: t
+       r: [t, T]
        lp:
         - and
         - ?DAtu

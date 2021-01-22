@@ -3,7 +3,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 
-from vibhaktis_list import ajanta, viBakti, prAtipadika, encoding
+from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
 
 # @pytest.fixture(scope="module")
 # def sutra_fixture():
@@ -114,24 +114,33 @@ def test_prakriya(sutra_list, test_list, test_list_d, verbose=False):
 
 
 def pytest_generate_tests(metafunc):
-    if 'ajanta_pum' in metafunc.fixturenames:
-        ajanta_pum_list = []
-        for v in ajanta["pum"]:
+    if 'halanta_pum' in metafunc.fixturenames:
+        halanta_pum_list = []
+        for v in halanta["pum"]:
             if (v in encoding) and (encoding[v] == SLP1):
                 pass
             else:
-                ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
+                halanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
                                                          viBakti[v]))
-        metafunc.parametrize("ajanta_pum", ajanta_pum_list)
-    if 'ajanta_stri' in metafunc.fixturenames:
-        ajanta_stri_list = []
-        for v in ajanta["strI"]:
+        metafunc.parametrize("halanta_pum", halanta_pum_list)
+    if 'halanta_stri' in metafunc.fixturenames:
+        halanta_stri_list = []
+        for v in halanta["strI"]:
             if (v in encoding) and (encoding[v] == SLP1):
                 pass
             else:
-                ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
+                halanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
                                                           viBakti[v]))
-        metafunc.parametrize("ajanta_stri", ajanta_stri_list)
+        metafunc.parametrize("halanta_stri", halanta_stri_list)
+    if 'halanta_napum' in metafunc.fixturenames:
+        halanta_napum_list = []
+        for v in halanta["napum"]:
+            if (v in encoding) and (encoding[v] == SLP1):
+                pass
+            else:
+                halanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
+                                                           viBakti[v]))
+        metafunc.parametrize("halanta_napum", halanta_napum_list)
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
         for v in ajanta["napum"]:

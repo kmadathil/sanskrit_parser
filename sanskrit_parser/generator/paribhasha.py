@@ -264,6 +264,12 @@ def wilopa(s):
     return r
 
 
+def adi(s, x):
+    return s[0] == x
+
+def dAdi(s):
+    return adi(s, "d")
+
 def notnull(s):
     return ((s is not None) and (s != ""))
 
