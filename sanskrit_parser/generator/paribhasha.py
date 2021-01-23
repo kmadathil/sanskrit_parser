@@ -267,8 +267,27 @@ def wilopa(s):
 def adi(s, x):
     return s[0] == x
 
+
 def dAdi(s):
     return adi(s, "d")
+
+
+def ekAcDAtu(s):
+    ac_count = len([x for x in s if isInPratyahara("ac", x)])
+    return ac_count == 1
+
+
+def baSoBaz(s):
+    for j in range(len(s)):
+        if isInPratyahara("baS", s[j]):  # Backwards
+            break
+    return s[0:j]+adesha(s[j], "bgwd", "BGWD")+s[j+1:]
+
+
+def druhAdi(ss):
+    s = str(ss)
+    return ((s == "druh") or (s == "muh") or (s == "snih") or (s == "snuh"))
+
 
 def notnull(s):
     return ((s is not None) and (s != ""))

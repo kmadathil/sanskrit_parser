@@ -864,8 +864,8 @@
   xform:
      l: str("Q")
      
-#325: दादेर्धातोर्धः (8-2-32)      
-- sutra: दादेर्धातोर्धः
+#325: दादेर्धातोर्घः (8-2-32)      
+- sutra: दादेर्धातोर्घः
   id: 8.2.32
   overrides: 8.2.31
   condition:
@@ -883,7 +883,49 @@
        r: _Jal
   xform:
      l: str("G")
-     
+
+#  327: वा द्रुहमुहष्णुहष्णिहाम् (8-2-33) 
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् 
+  id: 8.2.33
+  overrides: [8.2.32, 8.2.31]
+  optional: true
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("G")
+# pakZe Qa. Because this relies on matching "druh" etc., it will not get
+# triggered if 8.2.33 doesn't. We cannot rely on 8.2.32 for this, since this
+# is tripAdi etc.
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् (पक्षे ढ)
+  id: 8.2.33.1
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("Q")
+
+
 # 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
 - sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
   id: 8.2.36
@@ -898,6 +940,35 @@
        r: _Jal
   xform:
      l: str("z")
+
+
+# 326: एकाचो बशो भष् झषन्तस्य स्ध्वोः (8-2-37) 
+- sutra: एकाचो बशो भष् झषन्तस्य स्ध्वोः
+  id: 8.2.37
+  condition:
+     - l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - ?pada
+        - $$ekAcDAtu
+     - r: s
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+     - r: D
+       rr: v
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+  xform:
+     lc: baSoBaz(lc)
+
+
 
 - sutra: झषस्तथोर्धोऽधः
   id: 8.2.40

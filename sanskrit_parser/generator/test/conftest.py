@@ -121,7 +121,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                         viBakti[v]))
+                                                          viBakti[v]))
         metafunc.parametrize("halanta_pum", halanta_pum_list)
     if 'halanta_stri' in metafunc.fixturenames:
         halanta_stri_list = []
@@ -130,7 +130,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
-                                                          viBakti[v]))
+                                                           viBakti[v]))
         metafunc.parametrize("halanta_stri", halanta_stri_list)
     if 'halanta_napum' in metafunc.fixturenames:
         halanta_napum_list = []
@@ -139,7 +139,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                           viBakti[v]))
+                                                            viBakti[v]))
         metafunc.parametrize("halanta_napum", halanta_napum_list)
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
