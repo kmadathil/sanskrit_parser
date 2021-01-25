@@ -141,6 +141,24 @@ def pytest_generate_tests(metafunc):
                 halanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
                                                             viBakti[v]))
         metafunc.parametrize("halanta_napum", halanta_napum_list)
+    if 'ajanta_pum' in metafunc.fixturenames:
+        ajanta_pum_list = []
+        for v in ajanta["pum"]:
+            if (v in encoding) and (encoding[v] == SLP1):
+                pass
+            else:
+                ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
+                                                          viBakti[v]))
+        metafunc.parametrize("ajanta_pum", ajanta_pum_list)
+    if 'ajanta_stri' in metafunc.fixturenames:
+        ajanta_stri_list = []
+        for v in ajanta["strI"]:
+            if (v in encoding) and (encoding[v] == SLP1):
+                pass
+            else:
+                ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
+                                                           viBakti[v]))
+        metafunc.parametrize("ajanta_stri", ajanta_stri_list)
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
         for v in ajanta["napum"]:

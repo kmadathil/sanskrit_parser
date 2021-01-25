@@ -520,7 +520,7 @@ viBakti["lih"] = [
     [['लिड्', 'लिट्'], 'लिहौ', 'लिहः'],
 ]
 
-prAtipadika["duh"] = duh  # noqa: F405
+prAtipadika["duh"] = duh_kvip  # noqa: F405
 viBakti["duh"] = [
     [['धुग्', 'धुक्'], 'दुहौ', 'दुहः'],
     ['दुहम्', 'दुहौ', 'दुहः'],
@@ -532,7 +532,7 @@ viBakti["duh"] = [
     [['धुग्', 'धुक्'], 'दुहौ', 'दुहः'],
 ]
 
-prAtipadika["druh"] = druh  # noqa: F405
+prAtipadika["druh"] = druh_kvip  # noqa: F405
 viBakti["druh"] = [
     [['ध्रुग्', 'ध्रुड्', 'ध्रुक्', 'ध्रुट्'], 'द्रुहौ', 'द्रुहः'],
     ['द्रुहम्', 'द्रुहौ', 'द्रुहः'],
