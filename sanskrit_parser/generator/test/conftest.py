@@ -148,7 +148,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                          viBakti[v]))
+                                                         viBakti[v]))
         metafunc.parametrize("ajanta_pum", ajanta_pum_list)
     if 'ajanta_stri' in metafunc.fixturenames:
         ajanta_stri_list = []
@@ -157,7 +157,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
-                                                           viBakti[v]))
+                                                          viBakti[v]))
         metafunc.parametrize("ajanta_stri", ajanta_stri_list)
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
