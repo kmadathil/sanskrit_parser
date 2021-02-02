@@ -61,9 +61,13 @@ Use `sanskrit_parser tags` on the command line
 * Taddhita forms  - forwards and backwards
 
 #### Current Status
-To be done.
+Bootstrapped using a lexical lookup module built from 
+1. inriaxmlwrapper + Prof. Gerard Huet's forms database 
+1. the sanskrit_data project, suitably wrapped
 
-However, we have a usable solution with inriaxmlwrapper + Prof. Gerard Huet's forms database to act as queriable form database. That gives us the bare minimum we need from Level 1, so Level 2 can work.  
+(Either or both of these can be enabled at runtime)
+
+That gives us the minimum we need from Level 1, so Level 2 can work.  As the generator sub-project matures, that will take over the role of this Level
 
 ### Level 2
 
