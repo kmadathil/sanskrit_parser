@@ -67,7 +67,7 @@ Bootstrapped using a lexical lookup module built from
 
 (Either or both of these can be enabled at runtime)
 
-That gives us the minimum we need from Level 1, so Level 2 can work.  As the generator sub-project matures, that will take over the role of this Level
+That gives us the minimum we need from Level 1, so Level 2 can work.  As the [generator sub-project](#sanskrit-generator) matures, that will take over the role of this Level
 
 ### Level 2
 
