@@ -115,7 +115,20 @@ Semantically valid sequence of tagged padas (output of Level 1)
 #### Current Status
 Module at `parser/vakya_analyer.py`
 
-Limited version available using `sanskrit_parser vakya`
+Use `sanskrit_parser vakya` on the command line 
+
+## Sanskrit Generator
+
+Generate any valid sanskrit pada using Ashtadhyayi rules, plus vartikas where necessary. 
+
+Rules are input in a high level meta-language (currently yaml with imposed semantics - this may change), and the internal rule engine executes rules till a valid pada form is output. Input may be
+
+1. prakriti + pratyaya
+1. prakriti + sentence semantics 
+
+subantas of ajanta prAtipadikas are currently implemented. Other features are being rolled in. 
+
+Use `sanskrit_generator` on the command line 
 
 ## Seq2Seq based Sanskrit Parser
 
