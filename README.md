@@ -50,7 +50,7 @@ Module that performs sandhi split/join and convenient rule definition is at `par
 
 Rule definitions (human readable!) are at `lexical_analyzer/sandhi_rules/*.txt`
 
-Use `sanskrit_parser tags` on the command line
+This is not accessed standalone from the command line.
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -68,6 +68,8 @@ Bootstrapped using a lexical lookup module built from
 (Either or both of these can be enabled at runtime)
 
 That gives us the minimum we need from Level 1, so Level 2 can work.  As the [generator sub-project](#sanskrit-generator) matures, that will take over the role of this Level
+
+Use `sanskrit_parser tags` on the command line to access this
 
 ### Level 2
 
