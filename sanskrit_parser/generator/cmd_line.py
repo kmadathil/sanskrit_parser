@@ -140,7 +140,7 @@ class CustomActionString(Action):
                 value.setTag("pada")
             else:
                 value = PaninianObject(value, encoding)  # noqa: F405
-                getattr(namespace, "pointer")[-1].append(value)
+            getattr(namespace, "pointer")[-1].append(value)
 
             logger.info('%r %r %r' % (namespace, values, option_string))
         if getattr(namespace, self.dest) is None:
