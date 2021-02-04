@@ -3,4 +3,4 @@
 	url = https://github.com/kmadathil/SandhiKosh.git
 [submodule "tests/KISS/KISS_Sanskrit_Parsing_Data"]
 	path = tests/KISS/KISS_Sanskrit_Parsing_Data
-	url = ssh://git@github.com/kmadathil/KISS_Sanskrit_Parsing_Data.git
+	url = git@github.com:kmadathil/KISS_Sanskrit_Parsing_Data.git
