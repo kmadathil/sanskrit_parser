@@ -199,6 +199,7 @@ class ParseNode(Serializable):
         self.parse_tag = ParseTag(tag[0].transcoded(encoding, strict_io),
                                   [t.transcoded(encoding, strict_io) for t in tag[1]]
                                   )
+        self.index = node.index
 
     def __str__(self):
         return f'{self.pada} => {self.parse_tag}'
@@ -211,12 +212,12 @@ class ParseNode(Serializable):
 
 @dataclass
 class ParseEdge(Serializable):
-    predecessor: str
+    predecessor: ParseNode
     node: ParseNode
     label: str
 
     def __str__(self):
-        return f'{self.node} : {self.label} of {self.predecessor}'
+        return f'{self.node} : {self.label} of {self.predecessor.pada}'
 
     def serializable(self):
         return {'node': self.node,
@@ -239,7 +240,8 @@ class Parse(Serializable):
                 # Multigraph
                 # Ugh - surely this can be better
                 lbl = list(parse_graph[pred][n].values())[0]['label']
-                edge = ParseEdge(pred.pada.transcoded(encoding, strict_io),
+                pred_node = ParseNode(pred, strict_io, encoding)
+                edge = ParseEdge(pred_node,
                                  node,
                                  SanskritString(lbl, encoding=SLP1).transcoded(encoding, strict_io)
                                  )
@@ -251,6 +253,18 @@ class Parse(Serializable):
 
     def __str__(self):
         return '\n'.join([str(t) for t in self.graph])
+
+    def to_conll(self):
+        r = []
+        for t in self.graph:
+            if isinstance(t, ParseNode):
+                r.append([str(t.index), str(t.pada), "_",
+                          str(t.parse_tag.tags), "0", "root"])
+            else:
+                r.append([str(t.node.index), str(t.node.pada), "_",
+                          str(t.node.parse_tag.tags),
+                          str(t.predecessor.index), str(t.label)])
+        return r
 
     def serializable(self):
         return {'graph': self.graph}

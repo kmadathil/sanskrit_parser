@@ -11,6 +11,7 @@ from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritNormalizedString
 from sanskrit_parser.base.sanskrit_base import outputctx
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser import enable_file_logger, enable_console_logger
+import csv
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,8 @@ def getVakyaArgs(argv=None):
                         help="Use the lexical scorer to score the splits and reorder them")
     parser.add_argument('--slow-merge', dest='fast_merge', action='store_false', help="Development Only: use if you see issues in divide and conquer")
     parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
+    parser.add_argument('--conll', action="store_true", help="display CONLL")
+    parser.add_argument('--conll-file', type=str, default=None, help='CONLL output file')
     return parser.parse_args(argv)
 
 
@@ -60,11 +63,27 @@ def vakya(argv=None):
         logger.debug('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
             logger.info(f'Lexical Split: {split}')
+            
             for pi, parse in enumerate(split.parses()):
                 logger.debug(f'Parse {pi}')
                 logger.debug(f'{parse}')
                 print(f'Parse {pi} : (Cost = {parse.cost})')
-                print(f'{parse}')
+                if args.conll:
+                    for l in parse.to_conll():
+                        print(l)
+                else:
+                    print(f'{parse}')
+                if args.conll_file is not None:
+                    path = args.conll_file
+                    d = dirname(path)
+                    be = basename(path)
+                    b, e = splitext(be)
+                    conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
+                    tfile = open(conllbase, "w")
+                    twriter = csv.writer(tfile, delimiter='\t')
+                    for l in parse.to_conll():
+                        twriter.writerow(l)
+                    tfile.close()
             # Write dot files
             if args.dot_file is not None:
                 path = args.dot_file
@@ -73,6 +92,8 @@ def vakya(argv=None):
                 b, e = splitext(be)
                 splitbase = join(d, b + f"_split{si}" + e)
                 split.write_dot(splitbase)
+               
+                 
     else:
         print('No splits found. Please check the input to ensure there are no typos.')
     return None
