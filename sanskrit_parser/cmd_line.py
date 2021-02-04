@@ -63,14 +63,13 @@ def vakya(argv=None):
         logger.debug('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
             logger.info(f'Lexical Split: {split}')
-            
             for pi, parse in enumerate(split.parses()):
                 logger.debug(f'Parse {pi}')
                 logger.debug(f'{parse}')
                 print(f'Parse {pi} : (Cost = {parse.cost})')
                 if args.conll:
-                    for l in parse.to_conll():
-                        print(l)
+                    for line in parse.to_conll():
+                        print(line)
                 else:
                     print(f'{parse}')
                 if args.conll_file is not None:
@@ -81,8 +80,8 @@ def vakya(argv=None):
                     conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
                     tfile = open(conllbase, "w")
                     twriter = csv.writer(tfile, delimiter='\t')
-                    for l in parse.to_conll():
-                        twriter.writerow(l)
+                    for line in parse.to_conll():
+                        twriter.writerow(line)
                     tfile.close()
             # Write dot files
             if args.dot_file is not None:
@@ -92,8 +91,6 @@ def vakya(argv=None):
                 b, e = splitext(be)
                 splitbase = join(d, b + f"_split{si}" + e)
                 split.write_dot(splitbase)
-               
-                 
     else:
         print('No splits found. Please check the input to ensure there are no typos.')
     return None
