@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>parser.sandhi_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parser.sandhi_analyzer &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -83,18 +84,18 @@ ending in visarga with an ‘s’ at the end)</p>
 <span class="go">(&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))</span>
 </pre></div>
 </div>
-<dl class="class">
+<dl class="py class">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">LexicalSandhiAnalyzer</code><span class="sig-paren">(</span><em class="sig-param">lexical_lookup='combined'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">LexicalSandhiAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lexical_lookup</span><span class="o">=</span><span class="default_value">'combined'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Singleton class to hold methods for Sanskrit lexical sandhi analysis.</p>
 <p>We define lexical sandhi analysis to be the process of taking an input sequence
 and transforming it to a collection (represented by a DAG) of potential sandhi
 splits of the sequence. Each member of a split is guaranteed to be a valid
 lexical form.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags">
-<code class="sig-name descname">getMorphologicalTags</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">tmap=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getMorphologicalTags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getMorphologicalTags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">tmap</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getMorphologicalTags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getMorphologicalTags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Morphological tags for a word</p>
 <dl>
 <dt>Params:</dt><dd><p>obj(SanskritString): word
@@ -108,9 +109,9 @@ tmap(Boolean=True): If True, maps</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">
-<code class="sig-name descname">getSandhiSplits</code><span class="sig-paren">(</span><em class="sig-param">o</em>, <em class="sig-param">tag=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getSandhiSplits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getSandhiSplits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em>, <em class="sig-param"><span class="n">tag</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getSandhiSplits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all valid Sandhi splits for a string</p>
 <dl>
 <dt>Params:</dt><dd><p>o(SanskritString): Input object
@@ -124,9 +125,9 @@ tag(Boolean)     : When True (def=False), return a</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag">
-<code class="sig-name descname">hasTag</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">name</em>, <em class="sig-param">tagset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.hasTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">hasTag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">tagset</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.hasTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.hasTag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if word matches morhphological tags</p>
 <dl class="simple">
 <dt>Params:</dt><dd><p>obj(SanskritString): word
@@ -141,14 +142,14 @@ tagset(set): set of tag elements</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.sandhi">
 <code class="sig-name descname">sandhi</code><em class="property"> = &lt;sanskrit_parser.parser.sandhi.Sandhi object&gt;</em><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.sandhi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph">
-<code class="sig-name descname">tagSandhiGraph</code><span class="sig-paren">(</span><em class="sig-param">g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.tagSandhiGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">tagSandhiGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.tagSandhiGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.tagSandhiGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tag a Sandhi Graph with morphological tags for each node</p>
 <dl class="simple">
 <dt>Params:</dt><dd><p>g (SandhiGraph) : input lexical sandhi graph</p>
@@ -158,16 +159,16 @@ tagset(set): set of tag elements</p>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.getArgs">
-<code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">getArgs</code><span class="sig-paren">(</span><em class="sig-param">argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#getArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.getArgs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">getArgs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#getArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.getArgs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Argparse routine.
 Returns args variable</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.main">
-<code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">argv=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sanskrit_parser.parser.sandhi_analyzer.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.main" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -262,10 +263,10 @@ Returns args variable</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

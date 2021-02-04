@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>base.maheshvara_sutra &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>base.maheshvara_sutra &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -62,17 +63,17 @@ aiuR fxk eoN EOc hayavaraw laR YamaNaRanam JaBaY GaQaDaz jabagaqadaS KaPaCaWaTac
 जबगडद
 </pre></div>
 </div>
-<dl class="class">
+<dl class="py class">
 <dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras">
 <em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.base.maheshvara_sutra.</code><code class="sig-name descname">MaheshvaraSutras</code><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Singleton MaheshvaraSutras class
 Attributes:
 MS(SanskritImmutableString) : Internal representation of mAheshvara sutras
 MSS(str)           : Canonical (SLP1) representation</p>
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara">
-<code class="sig-name descname">getPratyahara</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">longp=True</em>, <em class="sig-param">remove_a=False</em>, <em class="sig-param">dirghas=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras.getPratyahara"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getPratyahara</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">longp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">remove_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dirghas</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras.getPratyahara"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.getPratyahara" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of varnas covered by a pratyahara</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>p(:class:SanskritImmutableString): Pratyahara
@@ -85,9 +86,9 @@ dirghas(boolean :optional:) When True (default=False) adds dirgha vowels to the 
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara">
-<code class="sig-name descname">isInPratyahara</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">v</em>, <em class="sig-param">longp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras.isInPratyahara"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">isInPratyahara</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">longp</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras.isInPratyahara"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isInPratyahara" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a given varna is in a pratyahara</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>p(SanskritImmutableString): Pratyahara
@@ -95,6 +96,25 @@ v(SanskritImmutableString): Varna
 longp(boolean :optional:): When True (default), uses long pratyaharas</p>
 </dd>
 <dt>Returns</dt><dd><p>boolean: Is v in p?</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isSavarna">
+<code class="sig-name descname">isSavarna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">a</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/base/maheshvara_sutra.html#MaheshvaraSutras.isSavarna"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.base.maheshvara_sutra.MaheshvaraSutras.isSavarna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a given varna “a” is savarna to another “v”</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>v(SanskritImmutableString): Varna Indicator
+a(SanskritImmutableString): Varna</p>
+</dd>
+</dl>
+<p>v can be a svara (in which case we return True irrespective of length
+of a)
+v can be an udit, in which we return True for anything in the group
+v can be tapara in which we return true only for the right length</p>
+<dl class="simple">
+<dt>Returns</dt><dd><p>boolean: Is v savarna to p?</p>
 </dd>
 </dl>
 </dd></dl>
@@ -191,10 +211,10 @@ longp(boolean :optional:): When True (default), uses long pratyaharas</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

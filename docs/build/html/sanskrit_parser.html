@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>sanskrit_parser’s documentation &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sanskrit_parser’s documentation &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -40,7 +41,7 @@
 <dt>It provides three main levels of output, in order of increasing complexity:</dt><dd><ol class="arabic simple">
 <li><p><em>tags</em> - Morphological analysis of a word</p></li>
 <li><p><em>sandhi</em> - Sandhi Split of a phrase</p></li>
-<li><p><em>vakya</em> - Morphological Analysis of a sentence (after Sandhi split)</p></li>
+<li><p><em>vakya</em> - Morpho-syntactic Analysis of a sentence (after Sandhi split)</p></li>
 </ol>
 </dd>
 </dl>
@@ -54,19 +55,21 @@ or morphological tags as below.</p>
 all the possible morphologies as nodes, and possible relations as
 edges. The valid parses extracted from this graph are also written out
 as <code class="docutils literal notranslate"><span class="pre">_parse.dot</span></code> files</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya devadattogrAmaNgacCati --input SLP1 --dot vakya.dot
 ...
-Lexical Split: [asti, uttarasyAm, diSi]
-...
-Parse 0
-asti=&gt;[&#39;as#1&#39;, {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
-diSi=&gt;[&#39;diS#2&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
-uttarasyAm=&gt;[&#39;uttara#1&#39;, {ekavacanam, strIliNgam, saptamIviBaktiH}]
+Parse 0 : (Cost = 2.205)
+devadattaH =&gt; (devadatta, [&#39;ekavacanam&#39;, &#39;puMlliNgam&#39;, &#39;praTamAviBaktiH&#39;]) : kartA of gacCati
+grAmam =&gt; (grAma, [&#39;ekavacanam&#39;, &#39;dvitIyAviBaktiH&#39;, &#39;napuMsakaliNgam&#39;]) : karma of gacCati
+gacCati =&gt; (gam, [&#39;kartari&#39;, &#39;law&#39;, &#39;prATamikaH&#39;, &#39;ekavacanam&#39;, &#39;praTamapuruzaH&#39;, &#39;parasmEpadam&#39;])
+Parse 1 : (Cost = 2.205)
+devadattaH =&gt; (devadatta, [&#39;ekavacanam&#39;, &#39;puMlliNgam&#39;, &#39;praTamAviBaktiH&#39;]) : kartA of gacCati
+grAmam =&gt; (grAma, [&#39;ekavacanam&#39;, &#39;dvitIyAviBaktiH&#39;, &#39;puMlliNgam&#39;]) : karma of gacCati
+gacCati =&gt; (gam, [&#39;kartari&#39;, &#39;law&#39;, &#39;prATamikaH&#39;, &#39;ekavacanam&#39;, &#39;praTamapuruzaH&#39;, &#39;parasmEpadam&#39;])
 ...
 
-$ dot -Tpng vakya.dot -o vakya.png
+$ dot -Tpng vakya_split0.dot -o vakya_split0.png
 $ eog vakya.png
-$ dot -Tpng vakya_parse0.dot -o vakya.png
+$ dot -Tpng vakya_split0_parse0.dot -o vakya_split0_parse0.png
 $ eog vakya_parse0.png
 </pre></div>
 </div>
@@ -106,53 +109,13 @@ Morphological tags:
 (&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
 </pre></div>
 </div>
-<dl class="class">
+<dl class="py class">
 <dt id="sanskrit_parser.Parser">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.</code><code class="sig-name descname">Parser</code><span class="sig-paren">(</span><em class="sig-param">strict_io: bool = False</em>, <em class="sig-param">input_encoding: str = None</em>, <em class="sig-param">output_encoding: str = 'SLP1'</em>, <em class="sig-param">lexical_lookup: str = 'combined'</em>, <em class="sig-param">score: bool = True</em>, <em class="sig-param">split_above: int = 5</em>, <em class="sig-param">replace_ending_visarga: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.Parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.fast_merge">
-<code class="sig-name descname">fast_merge</code><em class="property"> = True</em><a class="headerlink" href="#sanskrit_parser.Parser.fast_merge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.input_encoding">
-<code class="sig-name descname">input_encoding</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.Parser.input_encoding" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.lexical_lookup">
-<code class="sig-name descname">lexical_lookup</code><em class="property">: str</em><em class="property"> = 'combined'</em><a class="headerlink" href="#sanskrit_parser.Parser.lexical_lookup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.output_encoding">
-<code class="sig-name descname">output_encoding</code><em class="property">: str</em><em class="property"> = 'SLP1'</em><a class="headerlink" href="#sanskrit_parser.Parser.output_encoding" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.</code><code class="sig-name descname">Parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strict_io</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">input_encoding</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_encoding</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'SLP1'</span></em>, <em class="sig-param"><span class="n">lexical_lookup</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'combined'</span></em>, <em class="sig-param"><span class="n">score</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">split_above</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">replace_ending_visarga</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fast_merge</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
 <dt id="sanskrit_parser.Parser.parse">
-<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.Parser.parse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.replace_ending_visarga">
-<code class="sig-name descname">replace_ending_visarga</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#sanskrit_parser.Parser.replace_ending_visarga" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.score">
-<code class="sig-name descname">score</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#sanskrit_parser.Parser.score" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.split_above">
-<code class="sig-name descname">split_above</code><em class="property">: int</em><em class="property"> = 5</em><a class="headerlink" href="#sanskrit_parser.Parser.split_above" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.Parser.strict_io">
-<code class="sig-name descname">strict_io</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#sanskrit_parser.Parser.strict_io" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_string</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.Parser.parse" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -309,10 +272,10 @@ Morphological tags:
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
