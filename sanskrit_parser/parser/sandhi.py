@@ -104,6 +104,7 @@ import os
 import pickle
 import logging
 import datetime
+import importlib.resources
 from zipfile import ZipFile
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SCHEMES, outputctx
 
@@ -128,24 +129,24 @@ class Sandhi(object):
 
     def _load_forward(self):
         if self.forward is None:
-            dir_path = os.path.dirname(__file__)
-            zip_path = os.path.join(dir_path, 'sandhi_rules.zip')
-            with ZipFile(zip_path) as myzip:
-                with myzip.open('sandhi_forward.pkl') as f:
-                    self.forward = pickle.load(f)
-            keys = self.forward.keys()
-            self.lc_len_max = max(len(k[0]) for k in keys)
-            self.rc_len_max = max(len(k[1]) for k in keys)
+            with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+                zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
+                with ZipFile(zip_path) as myzip:
+                    with myzip.open('sandhi_forward.pkl') as f:
+                        self.forward = pickle.load(f)
+                keys = self.forward.keys()
+                self.lc_len_max = max(len(k[0]) for k in keys)
+                self.rc_len_max = max(len(k[1]) for k in keys)
 
     def _load_backward(self):
         if self.backward is None:
-            dir_path = os.path.dirname(__file__)
-            zip_path = os.path.join(dir_path, 'sandhi_rules.zip')
-            with ZipFile(zip_path) as myzip:
-                with myzip.open('sandhi_backward.pkl') as f:
-                    self.backward = pickle.load(f)
-            keys = self.backward.keys()
-            self.after_len_max = max(len(k) for k in keys)
+            with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+                zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
+                with ZipFile(zip_path) as myzip:
+                    with myzip.open('sandhi_backward.pkl') as f:
+                        self.backward = pickle.load(f)
+                keys = self.backward.keys()
+                self.after_len_max = max(len(k) for k in keys)
 
     def join(self, first_in, second_in):
         """
