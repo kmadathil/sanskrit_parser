@@ -83,7 +83,7 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration!=1.9.5,!=1.9.6', 'lxml', 'networkx', 'tinydb',
-                    'requests', 'six', 'flask', 'flask_restx', 'flask_cors',
+                    'six', 'flask', 'flask_restx', 'flask_cors',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy',
                     'sentencepiece', 'gensim', 'pydot'],
 
