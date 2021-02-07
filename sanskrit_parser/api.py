@@ -100,16 +100,42 @@ class Parser():
 
     def parse(self,
               input_string: str,
+              pre_segmented: False,
               ):
-        s = SanskritNormalizedString(input_string,
-                                     encoding=self.input_encoding,
-                                     strict_io=self.strict_io,
-                                     replace_ending_visarga=self.replace_ending_visarga)
-        logger.info(f"Input String in SLP1: {s.canonical()}")
         sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup)
-        logger.debug("Start Split")
-        graph = sandhi_analyzer.getSandhiSplits(s, tag=True)
-        logger.debug("End DAG generation")
+        if pre_segmented:
+            logger.debug("Pre-Segmented")
+            s = []
+            for seg in input_string.split(" "):
+                o =  SanskritObject(seg,
+                                        encoding=self.input_encoding,
+                                        strict_io=self.strict_io,
+                                        replace_ending_visarga='r')
+                ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
+                if ts is None:
+                    # Possible sakaranta
+                    # Try by replacing end visarga with 's' instead
+                    o =  SanskritObject(seg,
+                                        encoding=self.input_encoding,
+                                        strict_io=self.strict_io,
+                                        replace_ending_visarga='s')
+                    ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
+                if ts is None:
+                    logger.error(f"Unknown pada {seg}")
+                s.append(o)
+            logger.info(f"Input String in SLP1: {' '.join([x.canonical() for x in s])}")
+                 
+            graph = sandhi_analyzer.preSegmented(s, tag=True)
+            logger.debug("End DAG generation")
+        else:
+            s = SanskritNormalizedString(input_string,
+                                         encoding=self.input_encoding,
+                                         strict_io=self.strict_io,
+                                         replace_ending_visarga=self.replace_ending_visarga)
+            logger.info(f"Input String in SLP1: {s.canonical()}")
+            logger.debug("Start Split")
+            graph = sandhi_analyzer.getSandhiSplits(s, tag=True)
+            logger.debug("End DAG generation")
         if graph is None:
             warnings.warn("No splits found. Please check the input to ensure there are no typos.")
             return None

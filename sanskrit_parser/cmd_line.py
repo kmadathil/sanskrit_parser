@@ -32,6 +32,8 @@ def getVakyaArgs(argv=None):
     parser.add_argument('--max-paths', type=int, default=1)
     parser.add_argument('--split-above', type=int, default=5)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--pre-segmented', action='store_true',
+                        help="Expect pre-segmented space separated string (Usually for test only)")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--score', dest="score", action='store_true',
@@ -57,7 +59,7 @@ def vakya(argv=None):
                     score=args.score,
                     split_above=args.split_above,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data)
+    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
     if parse_result is not None:
         print('Splits:')
         logger.debug('Splits:')
@@ -109,6 +111,8 @@ def getSandhiArgs(argv=None):
     parser.add_argument('--input-encoding', type=str, default=None)
     parser.add_argument('--max-paths', type=int, default=10)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--pre-segmented', action='store_true',
+                        help="Expect pre-segmented space separated string (Usually for test only)")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--no-score', dest="score", action='store_false',
@@ -130,7 +134,7 @@ def sandhi(argv=None):
                     replace_ending_visarga=None,
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data)
+    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
     if parse_result is not None:
         print('Splits:')
         logger.debug('Splits:')
