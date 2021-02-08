@@ -121,8 +121,15 @@ class Parser():
                                         replace_ending_visarga='s')
                     ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
                 if ts is None:
-                    logger.error(f"Unknown pada {seg}")
-                s.append(o)
+                    logger.warning(f"Unknown pada {seg} - will be split")
+                    _p = self.parse(o)
+                    _s = list(islice(_p.splits(), 1))[0]
+                    logger.info(f"Split {_s}")
+                    s.extend(_s)
+                    if _s is None:
+                        logger.warning(f"Unknown pada {seg} - cannot be split")
+                else:
+                    s.append(o)
             logger.info(f"Input String in SLP1: {' '.join([x.canonical() for x in s])}")
                  
             graph = sandhi_analyzer.preSegmented(s, tag=True)
