@@ -292,12 +292,12 @@ class Parse(Serializable):
         r = []
         for t in self.graph:
             if isinstance(t, ParseNode):
-                r.append([str(t.index), str(t.pada), "_",
+                r.append([str(t.index+1), str(t.pada), "_",
                           str(t.parse_tag.tags), "0", "root"])
             else:
-                r.append([str(t.node.index), str(t.node.pada), "_",
+                r.append([str(t.node.index+1), str(t.node.pada), "_",
                           str(t.node.parse_tag.tags),
-                          str(t.predecessor.index), str(t.label)])
+                          str(t.predecessor.index+1), str(t.label)])
         return r
 
     def serializable(self):

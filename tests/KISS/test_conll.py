@@ -22,7 +22,7 @@ def conll_tests(conll_file):
             yield tl
             tl = []
             
-def parse_test(test, max_splits=1, max_parses=1):
+def parse_test(test, conll_writer=None, max_splits=1, max_parses=1):
     parser = Parser(input_encoding="SLP1",
                     strict_io=False,
                     output_encoding="SLP1",
@@ -31,6 +31,7 @@ def parse_test(test, max_splits=1, max_parses=1):
                     split_above=5,
                     lexical_lookup="combined")
     parse_result = parser.parse(" ".join(test), pre_segmented=True)
+    written = False
     if parse_result is not None:
         print('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=max_splits)):
@@ -38,8 +39,18 @@ def parse_test(test, max_splits=1, max_parses=1):
             for pi, parse in islice(enumerate(split.parses()), max_parses):
                 print(f'Parse {pi} : (Cost = {parse.cost})')
                 print(f'{parse}')
+                if conll_writer is not None:
+                    for line in parse.to_conll():
+                        conll_writer.writerow(line)
+                    conll_writer.writerow([])
+                    written = True
                 if pi > 8:
                     break
+    if not written:
+        for i,t in enumerate(test):
+            conll_writer.writerow([i+1, t, "_",
+                                   ["unknown"], "0", "unknown"])
+        conll_writer.writerow([])
     return None
 
 
@@ -50,16 +61,19 @@ if __name__ == "__main__":
         parser = ArgumentParser(description='CONLL Reader')
         # String to encode
         parser.add_argument('files', nargs="+", type=str)
+        parser.add_argument('-o', '--output', type=str)
         args = parser.parse_args(argv)
         return args
 
     def main(args):
-        for fname in args.files:
-            print(fname)
-            with open(fname, "rt") as f:
-                for test in islice(conll_tests(f),5):
-                    print(f"Test: {test}")
-                    print("\n")
-                    parse_test(test)
+        with open(args.output, "wt") as of:
+            cwriter = csv.writer(of, delimiter='\t')
+            for fname in args.files:
+                print(fname)
+                with open(fname, "rt") as f:
+                    for test in islice(conll_tests(f),5):
+                        print(f"Test: {test}")
+                        print("\n")
+                        parse_test(test, conll_writer=cwriter)
 
     main(getArgs())
