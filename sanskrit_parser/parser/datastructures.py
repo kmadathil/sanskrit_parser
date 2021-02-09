@@ -621,11 +621,11 @@ class VakyaGraph(object):
                     # Matching pair
                     s_t = sentence_conjunctions[nb]
                     for nn in self.G:
-                        if (not _is_vipsa(nn)) and _get_base(nn) == s_t:
+                        if (not _is_vipsa(nn)) and (_get_base(nn) == s_t) and (not _is_same_partition(n, nn)):
                             if match_linga_vacana(n, nn):
                                 logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
-                        if n.node_is_a('saMyojakaH') and (nn in bases):
+                        if n.node_is_a('saMyojakaH') and (nn in bases) and (not _is_same_partition(n, nn)) :
                             logger.info(f"Adding saMbadDakriyA edge: {nn, n}")
                             self.G.add_edge(n, nn, label='saMbadDakriyA')
                             if s_t is None:

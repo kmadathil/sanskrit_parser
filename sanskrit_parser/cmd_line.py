@@ -42,6 +42,7 @@ def getVakyaArgs(argv=None):
     parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
     parser.add_argument('--conll', action="store_true", help="display CONLL")
     parser.add_argument('--conll-file', type=str, default=None, help='CONLL output file')
+    parser.add_argument('--conll-append', action="store_true", help="append to CONLL file rather than recreate")
     return parser.parse_args(argv)
 
 
@@ -80,10 +81,14 @@ def vakya(argv=None):
                     be = basename(path)
                     b, e = splitext(be)
                     conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
-                    tfile = open(conllbase, "w")
+                    if args.conll_append:
+                        tfile = open(conllbase, "a")
+                    else:
+                        tfile = open(conllbase, "w")
                     twriter = csv.writer(tfile, delimiter='\t')
                     for line in parse.to_conll():
                         twriter.writerow(line)
+                    twriter.writerow([])
                     tfile.close()
             # Write dot files
             if args.dot_file is not None:
