@@ -1,6 +1,6 @@
 """
-Intro
-======
+Introduction
+===========
 
 Sanskrit parser is a python library to help parse Sanskrit input
 

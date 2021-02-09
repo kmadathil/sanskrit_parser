@@ -23,7 +23,7 @@ def conll_tests(conll_file):
             tl = []
             
 def parse_test(test, max_splits=1, max_parses=1):
-    parser = Parser(input_encoding=None,
+    parser = Parser(input_encoding="SLP1",
                     strict_io=False,
                     output_encoding="SLP1",
                     replace_ending_visarga=None,

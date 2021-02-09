@@ -53,6 +53,7 @@ import abc
 import warnings
 from dataclasses import dataclass
 from typing import Sequence
+from itertools import islice
 from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
@@ -122,10 +123,10 @@ class Parser():
                     ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
                 if ts is None:
                     logger.warning(f"Unknown pada {seg} - will be split")
-                    _p = self.parse(o)
+                    _p = self.parse(seg, False)
                     _s = list(islice(_p.splits(), 1))[0]
                     logger.info(f"Split {_s}")
-                    s.extend(_s)
+                    s.extend(_s.split)
                     if _s is None:
                         logger.warning(f"Unknown pada {seg} - cannot be split")
                 else:
