@@ -256,7 +256,7 @@ for k in karakas:
     edge_cost[k] = 0.9
 edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
-
+edge_cost['samasta'] = 0.5
 
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
