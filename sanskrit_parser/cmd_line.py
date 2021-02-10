@@ -43,6 +43,7 @@ def getVakyaArgs(argv=None):
     parser.add_argument('--conll', action="store_true", help="display CONLL")
     parser.add_argument('--conll-file', type=str, default=None, help='CONLL output file')
     parser.add_argument('--conll-append', action="store_true", help="append to CONLL file rather than recreate")
+    parser.add_argument('--min-cost', action="store_true", help="Only return min-cost parses")
     return parser.parse_args(argv)
 
 
@@ -66,7 +67,7 @@ def vakya(argv=None):
         logger.debug('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
             logger.info(f'Lexical Split: {split}')
-            for pi, parse in enumerate(split.parses()):
+            for pi, parse in enumerate(split.parses(min_cost_only=args.min_cost)):
                 logger.debug(f'Parse {pi}')
                 logger.debug(f'{parse}')
                 print(f'Parse {pi} : (Cost = {parse.cost})')

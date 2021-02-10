@@ -258,6 +258,7 @@ edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
 edge_cost['samasta'] = 0.5
 
+
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -1018,7 +1019,7 @@ def _order_parses(pu):
                 # Lakaras are preferred
                 _w = 0.9 * _w
             w = w + _w
-        return w
+        return round(w, 3)
     t = sorted(pu, key=_parse_cost)
     return t, [_parse_cost(te) for te in t]
 

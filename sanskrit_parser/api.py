@@ -53,7 +53,7 @@ import abc
 import warnings
 from dataclasses import dataclass
 from typing import Sequence
-from itertools import islice
+import itertools
 from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
@@ -124,7 +124,7 @@ class Parser():
                 if ts is None:
                     logger.warning(f"Unknown pada {seg} - will be split")
                     _p = self.parse(seg, False)
-                    _s = list(islice(_p.splits(), 1))[0]
+                    _s = list(itertools.islice(_p.splits(), 1))[0]
                     logger.info(f"Split {_s}")
                     s.extend(_s.split)
                     if _s is None:
@@ -191,11 +191,17 @@ class Split(Serializable):
         out = [t.transcoded(encoding, strict_io) for t in self.split]
         return str(out)
 
-    def parses(self):
+    def parses(self, min_cost_only=False):
         self.vgraph = VakyaGraph(self.split,
                                  fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
-        for (ix, parse_graph) in enumerate(self.vgraph.parses):
+        min_cost = self.vgraph.parse_costs[0]
+        if min_cost_only:
+            it = enumerate(itertools.compress(self.vgraph.parses,
+                                              [x == min_cost for x in self.vgraph.parse_costs]))
+        else:
+            it = enumerate(self.vgraph.parses)
+        for (ix, parse_graph) in it:
             logger.debug(f"Parse {ix}, Cost {self.vgraph.parse_costs[ix]}")
             yield Parse(self, parse_graph, self.vgraph.parse_costs[ix])
 
@@ -287,15 +293,19 @@ class Parse(Serializable):
     def __str__(self):
         return '\n'.join([str(t) for t in self.graph])
 
+    def __iter__(self):
+        return iter(self.graph)
+
     def to_conll(self):
         r = []
         for t in self.graph:
             if isinstance(t, ParseNode):
                 r.append([str(t.index+1), str(t.pada), "_",
-                          str(t.parse_tag.tags), "0", "root"])
+                          str(t.parse_tag.root), str(t.parse_tag.tags),
+                          "0", "root"])
             else:
                 r.append([str(t.node.index+1), str(t.node.pada), "_",
-                          str(t.node.parse_tag.tags),
+                          str(t.node.parse_tag.root), str(t.node.parse_tag.tags),
                           str(t.predecessor.index+1), str(t.label)])
         return r
 
@@ -307,14 +317,13 @@ if __name__ == "__main__":
     start_time = time.time()
 
     def api_example(string, output_encoding):
-        from itertools import islice
         parser = Parser(output_encoding=output_encoding,
                         replace_ending_visarga='s')
         parse_result = parser.parse(string)
         print('Splits:')
         for split in parse_result.splits(max_splits=10):
             print(f'Lexical Split: {split}')
-            for i, parse in enumerate(islice(split.parses(), 2)):
+            for i, parse in enumerate(itertools.islice(split.parses(), 2)):
                 print(f'Parse {i}')
                 print(f'{parse}')
             break

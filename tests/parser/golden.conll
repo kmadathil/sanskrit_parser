@@ -1,0 +1,28 @@
+1	devadattaH	_	devadatta	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	kartA
+2	grAmam	_	grAma	['dvitIyAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	karma
+3	gacCati	_	gam	['praTamapuruzaH', 'prATamikaH', 'law', 'parasmEpadam', 'ekavacanam', 'kartari']	0	root
+
+1	rAmaH	_	rAma	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	5	kartA
+2	bAREH	_	bARa	['bahuvacanam', 'puMlliNgam', 'tftIyAviBaktiH']	5	karaRam
+3	laNkAyAm	_	laNkA	['strIliNgam', 'ekavacanam', 'saptamIviBaktiH']	5	aDikaraRam
+4	rAvaRam	_	rAvaRa	['dvitIyAviBaktiH', 'puMlliNgam', 'ekavacanam']	5	karma
+5	jaGAna	_	han	['parasmEpadam', 'praTamapuruzaH', 'liw', 'ekavacanam']	0	root
+
+1	vfkzAt	_	vfkza	['puMlliNgam', 'ekavacanam', 'paYcamIviBaktiH']	3	apAdanam
+2	PalAni	_	Pala	['praTamAviBaktiH', 'napuMsakaliNgam', 'bahuvacanam']	3	kartA
+3	patanti	_	pat#1	['prATamikaH', 'kartari', 'praTamapuruzaH', 'bahuvacanam', 'law', 'parasmEpadam']	0	root
+
+1	BikzAm	_	BikzA	['dvitIyAviBaktiH', 'strIliNgam', 'ekavacanam']	2	karma
+2	dehi	_	dA	['parasmEpadam', 'ekavacanam', 'low', 'maDyamapuruzaH']	0	root
+3	kfpA	_	kfpA	['strIliNgam', 'samAsapUrvapadanAmapadam']	4	samasta
+4	kari	_	kara#1	['strIliNgam', 'saMboDanaviBaktiH', 'ekavacanam']	2	samboDyam
+
+1	tasmE	_	tad	['ekavacanam', 'caturTIviBaktiH', 'puMlliNgam']	3	sampradAnam
+2	pustakam	_	pustaka	['ekavacanam', 'dvitIyAviBaktiH', 'puMlliNgam']	3	karma
+3	dehi	_	dA#1	['maDyamapuruzaH', 'ekavacanam', 'low', 'parasmEpadam', 'prATamikaH', 'kartari']	0	root
+
+1	yAvat	_	yAvat	['kriyAviSezaRam', 'avyayam']	3	vAkyasambanDaH
+2	gacCAmi	_	gam	['prATamikaH', 'uttamapuruzaH', 'ekavacanam', 'law', 'kartari', 'parasmEpadam']	1	sambadDa-kriyAviSezaRam
+3	tAvat	_	tAvat	['kriyAviSezaRam', 'avyayam']	4	kriyAviSezaRam
+4	tizWa	_	sTA	['maDyamapuruzaH', 'low', 'parasmEpadam', 'ekavacanam']	0	root
+
