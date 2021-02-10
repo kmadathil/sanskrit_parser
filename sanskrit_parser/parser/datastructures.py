@@ -625,7 +625,7 @@ class VakyaGraph(object):
                             if match_linga_vacana(n, nn):
                                 logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
-                        if n.node_is_a('saMyojakaH') and (nn in bases) and (not _is_same_partition(n, nn)) :
+                        if n.node_is_a('saMyojakaH') and (nn in bases) and (not _is_same_partition(n, nn)):
                             logger.info(f"Adding saMbadDakriyA edge: {nn, n}")
                             self.G.add_edge(n, nn, label='saMbadDakriyA')
                             if s_t is None:

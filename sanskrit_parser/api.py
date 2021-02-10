@@ -108,18 +108,18 @@ class Parser():
             logger.debug("Pre-Segmented")
             s = []
             for seg in input_string.split(" "):
-                o =  SanskritObject(seg,
-                                        encoding=self.input_encoding,
-                                        strict_io=self.strict_io,
-                                        replace_ending_visarga='r')
+                o = SanskritObject(seg,
+                                   encoding=self.input_encoding,
+                                   strict_io=self.strict_io,
+                                   replace_ending_visarga='r')
                 ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
                 if ts is None:
                     # Possible sakaranta
                     # Try by replacing end visarga with 's' instead
-                    o =  SanskritObject(seg,
-                                        encoding=self.input_encoding,
-                                        strict_io=self.strict_io,
-                                        replace_ending_visarga='s')
+                    o = SanskritObject(seg,
+                                       encoding=self.input_encoding,
+                                       strict_io=self.strict_io,
+                                       replace_ending_visarga='s')
                     ts = sandhi_analyzer.getMorphologicalTags(o, tmap=True)
                 if ts is None:
                     logger.warning(f"Unknown pada {seg} - will be split")
@@ -132,7 +132,6 @@ class Parser():
                 else:
                     s.append(o)
             logger.info(f"Input String in SLP1: {' '.join([x.canonical() for x in s])}")
-                 
             graph = sandhi_analyzer.preSegmented(s, tag=True)
             logger.debug("End DAG generation")
         else:
