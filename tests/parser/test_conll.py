@@ -8,7 +8,6 @@ from itertools import islice, zip_longest
 
 def conll_tests(conll_file):
     # CONLL files are treated as tsv
-    print(conll_file.name)
     treader = csv.reader(conll_file, delimiter='\t')
     tl = []
     for row in treader:
@@ -19,7 +18,8 @@ def conll_tests(conll_file):
             tl = []
 
 
-def parse_test(test, testpadas, max_splits=1, max_parses=100):
+def parse_test_f(test, testpadas, max_splits=1, max_parses=100,
+                 verbose=False):
     parser = Parser(input_encoding="SLP1",
                     strict_io=False,
                     output_encoding="SLP1",
@@ -30,18 +30,22 @@ def parse_test(test, testpadas, max_splits=1, max_parses=100):
     parse_result = parser.parse(" ".join(testpadas), pre_segmented=True)
     parse = None
     if parse_result is not None:
-        print('Splits:')
+        if verbose:
+            print('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=max_splits)):
-            print(f'Lexical Split: {split}')
+            if verbose:
+                print(f'Lexical Split: {split}')
             for pi, parse in islice(enumerate(split.parses(min_cost_only=True)), max_parses):
-                print(f'Parse {pi} : (Cost = {parse.cost})')
-                if check_parse(parse, test):
-                    print(f'{parse}')
+                if verbose:
+                    print(f'Parse {pi} : (Cost = {parse.cost})')
+                if check_parse(parse, test, verbose=verbose):
+                    if verbose:
+                        print(f'{parse}')
                     return True, parse
     return False, parse
 
 
-def check_parse(a, b):
+def check_parse(a, b, verbose=False):
     result = True
     for z in zip_longest(a, b):
         p = z[0]
@@ -53,7 +57,8 @@ def check_parse(a, b):
                 (p.label == t[6]) and \
                 (set(p.node.parse_tag.tags) == set(eval(t[4])))
             if not r:
-                print(f"{p.node.index+1} {t[0]} {p.node} {t[3]} {t[4]}  {p.predecessor.index+1} {t[5]} {p.label} {t[6]} {set(p.node.parse_tag.tags)} {set(eval(t[4]))}")  # noqa E501
+                if verbose:
+                    print(f"{p.node.index+1} {t[0]} {p.node} {t[3]} {t[4]}  {p.predecessor.index+1} {t[5]} {p.label} {t[6]} {set(p.node.parse_tag.tags)} {set(eval(t[4]))}")  # noqa E501
                 result = False
                 break
         else:
@@ -63,7 +68,8 @@ def check_parse(a, b):
                 (t[6] == "root") and \
                 (set(p.parse_tag.tags) == set(eval(t[4])))
             if not r:
-                print(f"{p.index+1} {p.parse_tag.root} {t[3]} {t[0]} _ {t[5]} _ {t[6]}  {set(p.parse_tag.tags)} {set(eval(t[4]))}")
+                if verbose:
+                    print(f"{p.index+1} {p.parse_tag.root} {t[3]} {t[0]} _ {t[5]} _ {t[6]}  {set(p.parse_tag.tags)} {set(eval(t[4]))}")
                 result = False
                 break
     return result
@@ -77,6 +83,7 @@ if __name__ == "__main__":
         parser.add_argument('files', nargs="+", type=str)
         parser.add_argument('-o', '--output', type=str, required=True)
         parser.add_argument('--max-tests', type=int, default=100000)
+        parser.add_argument('-v', '--verbose', action="store_true")
         args = parser.parse_args(argv)
         return args
 
@@ -91,7 +98,7 @@ if __name__ == "__main__":
                     for test in islice(conll_tests(f), args.max_tests):
                         testpadas = [t[1] for t in test]
                         print(f"Test: {testpadas}")
-                        status, parse = parse_test(test, testpadas)
+                        status, parse = parse_test_f(test, testpadas, verbose=args.verbose)
                         if status:
                             print(f"PASSED {testpadas}\n")
                             passed = passed + 1
