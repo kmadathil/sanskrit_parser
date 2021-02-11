@@ -519,7 +519,7 @@ class VakyaGraph(object):
                     elif n.node_is_a('tumun'):
                         logger.debug(f"Adding prayojanam edge to {n}")
                         self.G.add_edge(d, n, label="prayojanam")
-                    elif n.node_is_a(samanakala) and n.node_is_a(prathama):
+                    elif n.node_is_a(samanakala) and n.node_is_a(prathama) and match_purusha_vacana(d, n):
                         logger.debug(f"Adding samAnakAlaH edge to {n}")
                         self.G.add_edge(d, n, label="samAnakAlaH")
 
