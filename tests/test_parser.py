@@ -7,6 +7,7 @@ from tests.parser.test_conll import conll_tests, parse_test_f
 import itertools
 import inspect
 
+
 def test_parse(parse_entry):
     testpadas = [t[1] for t in parse_entry]
     status, parse = parse_test_f(parse_entry, testpadas)
