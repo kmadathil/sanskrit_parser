@@ -234,7 +234,7 @@ projlabels = karakas.union(kriyavisheshana)
 samplabels = {'sambadDa-'+lbl for lbl in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
 sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra",
-                         "yAvat": "tAvat",
+                         "yAvat": "tAvat", "yadA": "tadA",
                          "yaTA": "taTA", "api": None, "cet": None, "yat": None,
                          "natu": None, "ca": None}
 conjunctions = set(sentence_conjunctions.keys())
@@ -257,6 +257,10 @@ for k in karakas:
 edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
 edge_cost['samasta'] = 0.5
+# for k in karakas:
+#     edge_cost['sambadDa-'+k] = edge_cost[k]
+edge_cost['vAkyasambanDa'] = 0.75
+edge_cost['zazWI-sambanDa'] = 0.9
 
 
 class VakyaGraph(object):

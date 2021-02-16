@@ -26,3 +26,16 @@
 3	tAvat	_	tAvat	['kriyAviSezaRam', 'avyayam']	4	kriyAviSezaRam
 4	tizWa	_	sTA	['maDyamapuruzaH', 'low', 'parasmEpadam', 'ekavacanam']	0	root
 
+1	rAmas	_	rAma	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	4	kartA
+2	hastena	_	hasta	['ekavacanam', 'tftIyAviBaktiH', 'puMlliNgam']	4	karaRam
+3	kawam	_	kawa	['ekavacanam', 'dvitIyAviBaktiH', 'puMlliNgam']	4	karma
+4	karoti	_	kf	['praTamapuruzaH', 'ekavacanam', 'law', 'parasmEpadam']	0	root
+
+1	yatra	_	yatra	['avyayam', 'kriyAviSezaRam']	5	vAkyasambanDaH
+2	yogeSvaraH	_	yogeSvara	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	3	viSezaRam
+3	kfzRaH	_	kfzRa	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	4	kartA
+4	vartate	_	vft	['law', 'Atmanepadam', 'praTamapuruzaH', 'ekavacanam']	1	sambadDa-kriyAviSezaRam
+5	tatra	_	tatra	['avyayam', 'kriyAviSezaRam']	7	kriyAviSezaRam
+6	vijayaH	_	vijaya	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	7	kartA
+7	Bavati	_	BU#1	['law', 'ekavacanam', 'praTamapuruzaH', 'parasmEpadam', 'kartari', 'prATamikaH']	0	root
+

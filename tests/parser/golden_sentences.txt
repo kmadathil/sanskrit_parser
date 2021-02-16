@@ -4,3 +4,4 @@ vfkzAt PalAni patanti
 BikzAm dehi kfpA kari
 tasmE pustakam dehi
 yAvat gacCAmi tAvat tizWa
+../../scripts/sanskrit_parser vakya rAmo hastena kawaM karoti
