@@ -764,11 +764,38 @@ class VakyaGraphNode(object):
         to which edges cannot be created from this node
     """
     def __init__(self, sobj, index):
-        self.pada = sobj
-        self.index = index
+        self._pada = sobj
+        self._index = index
+        self._cache_str()
+
+    @property
+    def pada(self):
+        return self._pada
+
+    @pada.setter
+    def _set_pada(self, pada):
+        self._pada = pada
+        self._cache_str()
+
+    @property
+    def index(self):
+        return self._index
+
+    @index.setter
+    def _set_index(self, index):
+        self._index = index
+        self._cache_str()
+
+    def _cache_str(self):
+        ''' Cache the string representation for speedup.
+
+            See https://github.com/kmadathil/sanskrit_parser/issues/160
+        '''
+        self._str = str(self._pada) + " " + str(self._pada.getMorphologicalTags()) + \
+            " " + str(self._index)
 
     def getMorphologicalTags(self):
-        return self.pada.getMorphologicalTags()
+        return self._pada.getMorphologicalTags()
 
     def getNodeTagset(self):
         ''' Given a Node, extract the tagset '''
@@ -799,13 +826,8 @@ class VakyaGraphNode(object):
         ''' Get Node puruza '''
         return self.getNodeTagset().intersection(puruzas)
 
-    # FIXME: not needed?
-    def get_node_pos(self, node):
-        return self.path.index(node.pada.canonical())
-
     def __str__(self):
-        return str(self.pada) + " " + str(self.pada.getMorphologicalTags()) + \
-            " " + str(self.index)
+        return self._str
 
     def __repr__(self):
         return str(self)
