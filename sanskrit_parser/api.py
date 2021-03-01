@@ -101,7 +101,7 @@ class Parser():
 
     def parse(self,
               input_string: str,
-              pre_segmented: False,
+              pre_segmented: bool = False,
               ):
         sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup)
         if pre_segmented:
