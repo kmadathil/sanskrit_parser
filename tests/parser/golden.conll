@@ -39,3 +39,15 @@
 6	vijayaH	_	vijaya	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	7	kartA
 7	Bavati	_	BU#1	['law', 'ekavacanam', 'praTamapuruzaH', 'parasmEpadam', 'kartari', 'prATamikaH']	0	root
 
+1	suptasya	_	supta	['kfdantaH', 'puMlliNgam', 'prATamikaH', 'karmaRi', 'kta', 'ekavacanam', 'zazWIviBaktiH']	2	viSezaRam
+2	siMhasya	_	siMha	['puMlliNgam', 'ekavacanam', 'zazWIviBaktiH']	3	zazWI-sambanDa
+3	muKe	_	muKa	['dvivacanam', 'dvitIyAviBaktiH', 'napuMsakaliNgam']	5	karma
+4	pra	_	pra	['upasargaH']	5	upasargaH
+5	viSanti	_	viS	['praTamapuruzaH', 'bahuvacanam', 'law', 'parasmEpadam']	0	root
+6	mfgAH	_	mfga	['bahuvacanam', 'puMlliNgam', 'praTamAviBaktiH']	5	kartA
+
+1	sarve	_	sarva	['praTamAviBaktiH', 'bahuvacanam', 'puMlliNgam']	2	viSezaRam
+2	manuzyAH	_	manuzya	['praTamAviBaktiH', 'bahuvacanam', 'puMlliNgam']	4	kartA
+3	suKinaH	_	suKin	['bahuvacanam', 'dvitIyAviBaktiH', 'strIliNgam']	4	karma
+4	santu	_	as#1	['low', 'parasmEpadam', 'praTamapuruzaH', 'bahuvacanam', 'kartari', 'prATamikaH']	0	root
+

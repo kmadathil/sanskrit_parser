@@ -80,8 +80,8 @@ if __name__ == "__main__":
         # Parser Setup
         parser = ArgumentParser(description='CONLL Reader')
         # String to encode
-        parser.add_argument('files', nargs="+", type=str)
-        parser.add_argument('-o', '--output', type=str, required=True)
+        parser.add_argument('files', nargs="+", type=str, default=["golden.conll"])
+        parser.add_argument('-o', '--output', type=str, default="/tmp/out.conll")
         parser.add_argument('--max-tests', type=int, default=100000)
         parser.add_argument('-v', '--verbose', action="store_true")
         args = parser.parse_args(argv)

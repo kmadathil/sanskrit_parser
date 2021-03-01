@@ -233,10 +233,16 @@ projlabels = karakas.union(kriyavisheshana)
 # sambaddha links are projective
 samplabels = {'sambadDa-'+lbl for lbl in projlabels}.union({'saMbadDakriyA'})
 projlabels.update(samplabels)
-sentence_conjunctions = {"yad": "tad", "yadi": "tarhi", "yatra": "tatra",
-                         "yAvat": "tAvat", "yadA": "tadA",
-                         "yaTA": "taTA", "api": None, "cet": None, "yat": None,
-                         "natu": None, "ca": None}
+sentence_conjunctions = {"yad": {"tad", None},
+                         "yadi": {"tarhi"},
+                         "yatra": {"tatra"},
+                         "yAvat": {"tAvat"},
+                         "yadA": {"tadA"},
+                         "yaTA": {"taTA"},
+                         "api": {None},
+                         "cet": {None},
+                         "natu": {None},
+                         "ca": {None}}
 conjunctions = set(sentence_conjunctions.keys())
 
 # Non Karaka Vibhakti
@@ -256,11 +262,12 @@ for k in karakas:
     edge_cost[k] = 0.9
 edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
-edge_cost['samasta'] = 0.5
+edge_cost['samasta'] = 0.7
+edge_cost['upasargaH'] = 0.65
 # for k in karakas:
 #     edge_cost['sambadDa-'+k] = edge_cost[k]
-edge_cost['vAkyasambanDa'] = 0.75
-edge_cost['zazWI-sambanDa'] = 0.9
+edge_cost['vAkyasambanDaH'] = 0.3
+#edge_cost['zazWI-sambanDa'] = 1
 
 
 class VakyaGraph(object):
@@ -619,21 +626,30 @@ class VakyaGraph(object):
             if nb in sentence_conjunctions_y:
                 if not _is_vipsa(n):
                     # Reverse edges, add sambadDa label
+                    # for MG, G.pred[n].items() is an iterator of (node, edgeitem) pairs
                     for p, kd in list(self.G.pred[n].items()):
+                        # edgeitem.items() is an iterator of num, dict pairs
                         for k, d in list(kd.items()):
-                            self.G.remove_edge(p, n)
+                            #self.G.remove_edge(p, n)
+                            if d['label'] == 'viSezaRam':
+                                # Need to invert following edge as well
+                                for p_p, p_kd in list(self.G.pred[p].items()):
+                                    for p_k, p_d in list(p_kd.items()):
+                                        #self.G.remove_edge(p, n)
+                                        self.G.add_edge(p, p_p, label='sambadDa-'+p_d['label'])
                             self.G.add_edge(n, p, label='sambadDa-'+d['label'])
+
                     # Matching pair
                     s_t = sentence_conjunctions[nb]
                     for nn in self.G:
-                        if (not _is_vipsa(nn)) and (_get_base(nn) == s_t) and (not _is_same_partition(n, nn)):
+                        if (not _is_vipsa(nn)) and (_get_base(nn) in s_t) and (not _is_same_partition(n, nn)):
                             if match_linga_vacana(n, nn):
                                 logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
                         if n.node_is_a('saMyojakaH') and (nn in bases) and (not _is_same_partition(n, nn)):
                             logger.info(f"Adding saMbadDakriyA edge: {nn, n}")
                             self.G.add_edge(n, nn, label='saMbadDakriyA')
-                            if s_t is None:
+                            if None in s_t:
                                 logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
 
@@ -1044,6 +1060,13 @@ def _check_parse(parse):
     for (u, v, l) in parse.edges(data='label'):
         if l in karakas:
             count[u][l] = count[u][l]+1
+            toedge[v] = toedge[v]+1
+        if l in ['sambadDa-'+x for x in karakas]:
+            ll = l[9:]  # Strip off sambadDa-
+            ll = l.replace('sambadDa-', '')  # Strip off sambadDa-
+            # Cant have x and sambadDa-x to the same dhAturUpa
+            # Note that sambadDa-x arcs are reversed
+            count[v][ll] = count[v][ll]+1
             toedge[v] = toedge[v]+1
         if l in 'viSezaRam':
             fromv[u] = fromv[u] + 1
