@@ -88,7 +88,9 @@ class InriaXMLWrapper(LexicalLookup):
            of stems and tags for that form. An sqlite database
            is used to avoid having to build a huge dict in
            memory for the 600K forms that are present in this db,
-           which consumes a lot of memory.
+           which consumes a lot of memory. (See
+           https://github.com/kmadathil/sanskrit_parser/issues/151)
+
     To lookup the tag for a form, we use the sqlite db to find the
     position in the buffer, deserialize the data at that position,
     which gives us a list of the tag set for that form. For each
@@ -101,7 +103,7 @@ class InriaXMLWrapper(LexicalLookup):
         self.logger = logger or logging.getLogger(__name__)
         with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
             db_file = os.path.join(base_dir, "inria_forms_pos.db")
-            pkl_path = os.path.join(base_dir, "stems_tags_buf.pkl")
+            pkl_path = os.path.join(base_dir, "inria_stems_tags_buf.pkl")
         self.db = self._load_db(db_file, pkl_path)
 
     @staticmethod
