@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>sanskrit_parser.api &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sanskrit_parser.api &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -113,29 +114,32 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.Parser">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Parser</span><span class="p">():</span>
-    <span class="n">strict_io</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">input_encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">output_encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;SLP1&#39;</span>
-    <span class="n">lexical_lookup</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;combined&quot;</span>
-    <span class="n">score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">split_above</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="n">replace_ending_visarga</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">fast_merge</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../sanskrit_parser.html#sanskrit_parser.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">():</span>
 
-<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.Parser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strict_io</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">input_encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">output_encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;SLP1&#39;</span><span class="p">,</span> <span class="n">lexical_lookup</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;combined&quot;</span><span class="p">,</span>
+                 <span class="n">score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">split_above</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+                 <span class="n">replace_ending_visarga</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fast_merge</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_io</span> <span class="o">=</span> <span class="n">strict_io</span>
+        <span class="k">if</span> <span class="n">input_encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="n">input_encoding</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_encoding</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="n">output_encoding</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lexical_lookup</span> <span class="o">=</span> <span class="n">lexical_lookup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_above</span> <span class="o">=</span> <span class="n">split_above</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_ending_visarga</span> <span class="o">=</span> <span class="n">replace_ending_visarga</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fast_merge</span> <span class="o">=</span> <span class="n">fast_merge</span>
+
+<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../sanskrit_parser.html#sanskrit_parser.Parser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
               <span class="n">input_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
               <span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">output_encoding</span> <span class="o">=</span> <span class="n">SCHEMES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">output_encoding</span><span class="p">]</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">SanskritNormalizedString</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span>
                                      <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">,</span>
                                      <span class="n">strict_io</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
                                      <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_ending_visarga</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String in SLP1: {s.canonical()}&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String in SLP1: </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">sandhi_analyzer</span> <span class="o">=</span> <span class="n">LexicalSandhiAnalyzer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lexical_lookup</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Start Split&quot;</span><span class="p">)</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">sandhi_analyzer</span><span class="o">.</span><span class="n">getSandhiSplits</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -153,7 +157,7 @@
     <span class="n">sandhi_graph</span><span class="p">:</span> <span class="n">SandhiGraph</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ParseResult(&#39;</span><span class="si">{self.input_string}</span><span class="s2">&#39;)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ParseResult(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_string</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
 
 <div class="viewcode-block" id="ParseResult.splits"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.ParseResult.splits">[docs]</a>    <span class="k">def</span> <span class="nf">splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_splits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
         <span class="n">split_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sandhi_graph</span><span class="o">.</span><span class="n">find_all_paths</span><span class="p">(</span><span class="n">max_paths</span><span class="o">=</span><span class="n">max_splits</span><span class="p">,</span>
@@ -162,7 +166,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;End pathfinding&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Splits:&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">split_results</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{split}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lexical Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">yield</span> <span class="n">Split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_string</span><span class="p">,</span> <span class="n">split</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ParseResult.serializable"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.ParseResult.serializable">[docs]</a>    <span class="k">def</span> <span class="nf">serializable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -180,7 +184,7 @@
     <span class="n">vgraph</span><span class="p">:</span> <span class="n">VakyaGraph</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Split(</span><span class="si">{self.input_string}</span><span class="s1">) = </span><span class="si">{self.split}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Split(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_string</span><span class="si">}</span><span class="s1">) = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">strict_io</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">strict_io</span>
@@ -193,8 +197,8 @@
                                  <span class="n">fast_merge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">fast_merge</span><span class="p">,</span>
                                  <span class="n">max_parse_dc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">split_above</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">parse_graph</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parses</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse </span><span class="si">{ix}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="n">Parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parse_graph</span><span class="p">)</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse </span><span class="si">{</span><span class="n">ix</span><span class="si">}</span><span class="s2">, Cost </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parse_costs</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">Parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parse_graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vgraph</span><span class="o">.</span><span class="n">parse_costs</span><span class="p">[</span><span class="n">ix</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Split.write_dot"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.Split.write_dot">[docs]</a>    <span class="k">def</span> <span class="nf">write_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basepath</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vgraph</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">basepath</span><span class="p">)</span></div>
@@ -217,7 +221,7 @@
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;root&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{self.root}</span><span class="s1">, </span><span class="si">{self.tags}</span><span class="s1">)&#39;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
 <div class="viewcode-block" id="ParseNode"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.ParseNode">[docs]</a><span class="k">class</span> <span class="nc">ParseNode</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
@@ -231,7 +235,7 @@
                                   <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{self.pada}</span><span class="s1"> =&gt; </span><span class="si">{self.parse_tag}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="si">}</span><span class="s1"> =&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_tag</span><span class="si">}</span><span class="s1">&#39;</span>
 
 <div class="viewcode-block" id="ParseNode.serializable"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.ParseNode.serializable">[docs]</a>    <span class="k">def</span> <span class="nf">serializable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pada&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="p">}</span>
@@ -246,7 +250,7 @@
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{self.node}</span><span class="s1"> : </span><span class="si">{self.label}</span><span class="s1"> of </span><span class="si">{self.predecessor}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">predecessor</span><span class="si">}</span><span class="s1">&#39;</span>
 
 <div class="viewcode-block" id="ParseEdge.serializable"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.ParseEdge.serializable">[docs]</a>    <span class="k">def</span> <span class="nf">serializable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;node&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">,</span>
@@ -257,7 +261,7 @@
 
 <div class="viewcode-block" id="Parse"><a class="viewcode-back" href="../../sanskrit_parser_api.html#sanskrit_parser.Parse">[docs]</a><span class="k">class</span> <span class="nc">Parse</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="n">Split</span><span class="p">,</span> <span class="n">parse_graph</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="n">Split</span><span class="p">,</span> <span class="n">parse_graph</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
         <span class="n">strict_io</span> <span class="o">=</span> <span class="n">split</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">strict_io</span>
         <span class="n">encoding</span> <span class="o">=</span> <span class="n">split</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">output_encoding</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="p">[]</span>
@@ -266,7 +270,9 @@
             <span class="n">preds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parse_graph</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">preds</span><span class="p">:</span>
                 <span class="n">pred</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Only one</span>
-                <span class="n">lbl</span> <span class="o">=</span> <span class="n">parse_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">pred</span><span class="p">,</span> <span class="n">n</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+                <span class="c1"># Multigraph</span>
+                <span class="c1"># Ugh - surely this can be better</span>
+                <span class="n">lbl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parse_graph</span><span class="p">[</span><span class="n">pred</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
                 <span class="n">edge</span> <span class="o">=</span> <span class="n">ParseEdge</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">strict_io</span><span class="p">),</span>
                                  <span class="n">node</span><span class="p">,</span>
                                  <span class="n">SanskritString</span><span class="p">(</span><span class="n">lbl</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">SLP1</span><span class="p">)</span><span class="o">.</span><span class="n">transcoded</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">strict_io</span><span class="p">)</span>
@@ -275,6 +281,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">])</span>
@@ -293,10 +300,10 @@
         <span class="n">parse_result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{i}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">break</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">split</span><span class="p">,</span>
                          <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -312,7 +319,7 @@
             <span class="n">api_example</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
 
     <span class="n">main</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Took {time.time() - start_time} s&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Took </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -371,10 +378,10 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

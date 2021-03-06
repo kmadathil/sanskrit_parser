@@ -11,6 +11,7 @@ from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritNormalizedString
 from sanskrit_parser.base.sanskrit_base import outputctx
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser import enable_file_logger, enable_console_logger
+import csv
 
 logger = logging.getLogger(__name__)
 
@@ -31,12 +32,18 @@ def getVakyaArgs(argv=None):
     parser.add_argument('--max-paths', type=int, default=1)
     parser.add_argument('--split-above', type=int, default=5)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--pre-segmented', action='store_true',
+                        help="Expect pre-segmented space separated string (Usually for test only)")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--score', dest="score", action='store_true',
                         help="Use the lexical scorer to score the splits and reorder them")
     parser.add_argument('--slow-merge', dest='fast_merge', action='store_false', help="Development Only: use if you see issues in divide and conquer")
     parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
+    parser.add_argument('--conll', action="store_true", help="display CONLL")
+    parser.add_argument('--conll-file', type=str, default=None, help='CONLL output file')
+    parser.add_argument('--conll-append', action="store_true", help="append to CONLL file rather than recreate")
+    parser.add_argument('--min-cost', action="store_true", help="Only return min-cost parses")
     return parser.parse_args(argv)
 
 
@@ -54,17 +61,36 @@ def vakya(argv=None):
                     score=args.score,
                     split_above=args.split_above,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data)
+    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
     if parse_result is not None:
         print('Splits:')
         logger.debug('Splits:')
         for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
             logger.info(f'Lexical Split: {split}')
-            for pi, parse in enumerate(split.parses()):
+            for pi, parse in enumerate(split.parses(min_cost_only=args.min_cost)):
                 logger.debug(f'Parse {pi}')
                 logger.debug(f'{parse}')
                 print(f'Parse {pi} : (Cost = {parse.cost})')
-                print(f'{parse}')
+                if args.conll:
+                    for line in parse.to_conll():
+                        print(line)
+                else:
+                    print(f'{parse}')
+                if args.conll_file is not None:
+                    path = args.conll_file
+                    d = dirname(path)
+                    be = basename(path)
+                    b, e = splitext(be)
+                    conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
+                    if args.conll_append:
+                        tfile = open(conllbase, "a")
+                    else:
+                        tfile = open(conllbase, "w")
+                    twriter = csv.writer(tfile, delimiter='\t')
+                    for line in parse.to_conll():
+                        twriter.writerow(line)
+                    twriter.writerow([])
+                    tfile.close()
             # Write dot files
             if args.dot_file is not None:
                 path = args.dot_file
@@ -91,6 +117,8 @@ def getSandhiArgs(argv=None):
     parser.add_argument('--input-encoding', type=str, default=None)
     parser.add_argument('--max-paths', type=int, default=10)
     parser.add_argument('--lexical-lookup', type=str, default="combined")
+    parser.add_argument('--pre-segmented', action='store_true',
+                        help="Expect pre-segmented space separated string (Usually for test only)")
     parser.add_argument('--strict-io', action='store_true',
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--no-score', dest="score", action='store_false',
@@ -112,7 +140,7 @@ def sandhi(argv=None):
                     replace_ending_visarga=None,
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data)
+    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
     if parse_result is not None:
         print('Splits:')
         logger.debug('Splits:')

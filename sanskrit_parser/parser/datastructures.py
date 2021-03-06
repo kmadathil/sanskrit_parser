@@ -256,6 +256,7 @@ for k in karakas:
     edge_cost[k] = 0.9
 edge_cost['karma'] = 0.85
 edge_cost['kartA'] = 0.8
+edge_cost['samasta'] = 0.5
 
 
 class VakyaGraph(object):
@@ -518,7 +519,7 @@ class VakyaGraph(object):
                     elif n.node_is_a('tumun'):
                         logger.debug(f"Adding prayojanam edge to {n}")
                         self.G.add_edge(d, n, label="prayojanam")
-                    elif n.node_is_a(samanakala) and n.node_is_a(prathama):
+                    elif n.node_is_a(samanakala) and n.node_is_a(prathama) and match_purusha_vacana(d, n):
                         logger.debug(f"Adding samAnakAlaH edge to {n}")
                         self.G.add_edge(d, n, label="samAnakAlaH")
 
@@ -621,11 +622,11 @@ class VakyaGraph(object):
                     # Matching pair
                     s_t = sentence_conjunctions[nb]
                     for nn in self.G:
-                        if (not _is_vipsa(nn)) and _get_base(nn) == s_t:
+                        if (not _is_vipsa(nn)) and (_get_base(nn) == s_t) and (not _is_same_partition(n, nn)):
                             if match_linga_vacana(n, nn):
                                 logger.info(f"Adding vAkyasambanDaH edge: {nn, n}")
                                 self.G.add_edge(nn, n, label="vAkyasambanDaH")
-                        if n.node_is_a('saMyojakaH') and (nn in bases):
+                        if n.node_is_a('saMyojakaH') and (nn in bases) and (not _is_same_partition(n, nn)):
                             logger.info(f"Adding saMbadDakriyA edge: {nn, n}")
                             self.G.add_edge(n, nn, label='saMbadDakriyA')
                             if s_t is None:
@@ -763,11 +764,38 @@ class VakyaGraphNode(object):
         to which edges cannot be created from this node
     """
     def __init__(self, sobj, index):
-        self.pada = sobj
-        self.index = index
+        self._pada = sobj
+        self._index = index
+        self._cache_str()
+
+    @property
+    def pada(self):
+        return self._pada
+
+    @pada.setter
+    def _set_pada(self, pada):
+        self._pada = pada
+        self._cache_str()
+
+    @property
+    def index(self):
+        return self._index
+
+    @index.setter
+    def _set_index(self, index):
+        self._index = index
+        self._cache_str()
+
+    def _cache_str(self):
+        ''' Cache the string representation for speedup.
+
+            See https://github.com/kmadathil/sanskrit_parser/issues/160
+        '''
+        self._str = str(self._pada) + " " + str(self._pada.getMorphologicalTags()) + \
+            " " + str(self._index)
 
     def getMorphologicalTags(self):
-        return self.pada.getMorphologicalTags()
+        return self._pada.getMorphologicalTags()
 
     def getNodeTagset(self):
         ''' Given a Node, extract the tagset '''
@@ -798,13 +826,8 @@ class VakyaGraphNode(object):
         ''' Get Node puruza '''
         return self.getNodeTagset().intersection(puruzas)
 
-    # FIXME: not needed?
-    def get_node_pos(self, node):
-        return self.path.index(node.pada.canonical())
-
     def __str__(self):
-        return str(self.pada) + " " + str(self.pada.getMorphologicalTags()) + \
-            " " + str(self.index)
+        return self._str
 
     def __repr__(self):
         return str(self)
@@ -1018,7 +1041,7 @@ def _order_parses(pu):
                 # Lakaras are preferred
                 _w = 0.9 * _w
             w = w + _w
-        return w
+        return round(w, 3)
     t = sorted(pu, key=_parse_cost)
     return t, [_parse_cost(te) for te in t]
 

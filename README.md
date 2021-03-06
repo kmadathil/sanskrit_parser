@@ -49,7 +49,7 @@ Module that performs sandhi split/join and convenient rule definition is at `par
 
 Rule definitions (human readable!) are at `lexical_analyzer/sandhi_rules/*.txt`
 
-Use `sanskrit_parser tags` on the command line
+This is not accessed standalone from the command line.
 
 ### Level 1
 * From dhatu + lakAra + puruSha + vachana to pada and vice versa
@@ -60,9 +60,15 @@ Use `sanskrit_parser tags` on the command line
 * Taddhita forms  - forwards and backwards
 
 #### Current Status
-To be done.
+Bootstrapped using a lexical lookup module built from 
+1. inriaxmlwrapper + Prof. Gerard Huet's forms database 
+1. the sanskrit_data project, suitably wrapped
 
-However, we have a usable solution with inriaxmlwrapper + Prof. Gerard Huet's forms database to act as queriable form database. That gives us the bare minimum we need from Level 1, so Level 2 can work.  
+(Either or both of these can be enabled at runtime)
+
+That gives us the minimum we need from Level 1, so Level 2 can work.  As the [generator sub-project](#sanskrit-generator) matures, that will take over the role of this Level
+
+Use `sanskrit_parser tags` on the command line to access this
 
 ### Level 2
 
@@ -110,7 +116,20 @@ Semantically valid sequence of tagged padas (output of Level 1)
 #### Current Status
 Module at `parser/vakya_analyer.py`
 
-Limited version available using `sanskrit_parser vakya`
+Use `sanskrit_parser vakya` on the command line 
+
+## Sanskrit Generator
+
+Generate any valid sanskrit pada using Ashtadhyayi rules, plus vartikas where necessary. 
+
+Rules are input in a high level meta-language (currently yaml with imposed semantics - this may change), and the internal rule engine executes rules till a valid pada form is output. Input may be
+
+1. prakriti + pratyaya
+1. prakriti + sentence semantics 
+
+subantas of ajanta prAtipadikas are currently implemented. Other features are being rolled in. 
+
+Use `sanskrit_generator` on the command line 
 
 ## Seq2Seq based Sanskrit Parser
 

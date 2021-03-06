@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>parser.sandhi &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parser.sandhi &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -118,15 +119,15 @@ set([(u&#39;t&#39;, u&#39;aeva&#39;), (u&#39;tar&#39;, u&#39;eva&#39;), (u&#39;t
 (u&#39;taeva&#39;, u&#39;&#39;), (u&#39;tas&#39;, u&#39;eva&#39;)])
 </pre></div>
 </div>
-<dl class="class">
+<dl class="py class">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.parser.sandhi.</code><code class="sig-name descname">Sandhi</code><span class="sig-paren">(</span><em class="sig-param">rules_dir=None</em>, <em class="sig-param">use_default_rules=True</em>, <em class="sig-param">logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.parser.sandhi.</code><code class="sig-name descname">Sandhi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rules_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_default_rules</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">logger</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to hold all the sandhi rules and methods for joining and splitting.
 Uses SLP1 encoding for all internal operations.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.add_rule">
-<code class="sig-name descname">add_rule</code><span class="sig-paren">(</span><em class="sig-param">before</em>, <em class="sig-param">after</em>, <em class="sig-param">annotation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rule" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_rule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">before</span></em>, <em class="sig-param"><span class="n">after</span></em>, <em class="sig-param"><span class="n">annotation</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a single sandhi rule to the rule database</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -138,9 +139,9 @@ Uses SLP1 encoding for all internal operations.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_dir">
-<code class="sig-name descname">add_rules_from_dir</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rules_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_rules_from_dir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rules_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add sandhi rules from an entire directory.
 Reads all .txt files from the given directory and adds rules from them</p>
 <dl class="field-list simple">
@@ -151,9 +152,9 @@ Reads all .txt files from the given directory and adds rules from them</p>
 <p>See also add_rules_from_file</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_file">
-<code class="sig-name descname">add_rules_from_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rules_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_rules_from_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.add_rules_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.add_rules_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add sandhi rules from file.
 Each line of the input file should contain one rule. E.g. अ + अ = आ
 Lines starting with a # are treated as comments and skipped.
@@ -166,9 +167,9 @@ Empty lines are ignored as well.</p>
 <p>See also add_rules_from_dir</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.expand_rule">
-<code class="sig-name descname">expand_rule</code><span class="sig-paren">(</span><em class="sig-param">rule</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.expand_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.expand_rule" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">expand_rule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rule</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.expand_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.expand_rule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Expands a given sandhi rule from the rules file to generate all possible combinations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -180,9 +181,9 @@ Empty lines are ignored as well.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.join">
-<code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param">first_in</em>, <em class="sig-param">second_in</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.join" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first_in</span></em>, <em class="sig-param"><span class="n">second_in</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.join" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs sandhi.
 <strong>Warning</strong>: May generate forms that are not lexically valid.</p>
 <dl class="field-list simple">
@@ -198,9 +199,9 @@ Empty lines are ignored as well.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.split_all">
-<code class="sig-name descname">split_all</code><span class="sig-paren">(</span><em class="sig-param">word_in</em>, <em class="sig-param">start=None</em>, <em class="sig-param">stop=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.split_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.split_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_in</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.split_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.split_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split word at all possible locations and return splits.
 <strong>Warning</strong>: Will generate splits that are not lexically valid.</p>
 <dl class="field-list simple">
@@ -213,9 +214,9 @@ Empty lines are ignored as well.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi.Sandhi.split_at">
-<code class="sig-name descname">split_at</code><span class="sig-paren">(</span><em class="sig-param">word_in</em>, <em class="sig-param">idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.split_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.split_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split_at</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_in</span></em>, <em class="sig-param"><span class="n">idx</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi.html#Sandhi.split_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi.Sandhi.split_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split sandhi at the given index of word.
 <strong>Warning</strong>: Will generate splits that are not lexically valid.</p>
 <dl class="field-list simple">
@@ -326,10 +327,10 @@ Empty lines are ignored as well.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

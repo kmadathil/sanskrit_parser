@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>sanskrit_parser.cmd_line &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sanskrit_parser.cmd_line &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -79,7 +80,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">input_encoding</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">,</span>
                     <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
                     <span class="n">output_encoding</span><span class="o">=</span><span class="s2">&quot;SLP1&quot;</span><span class="p">,</span>
@@ -92,19 +93,19 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">)):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">pi</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">()):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{pi}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{pi}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{parse}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s1"> : (Cost = </span><span class="si">{</span><span class="n">parse</span><span class="o">.</span><span class="n">cost</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="c1"># Write dot files</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
                 <span class="n">be</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
                 <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">be</span><span class="p">)</span>
-                <span class="n">splitbase</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;_split</span><span class="si">{si}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">splitbase</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;_split</span><span class="si">{</span><span class="n">si</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
                 <span class="n">split</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">splitbase</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No splits found. Please check the input to ensure there are no typos.&#39;</span><span class="p">)</span>
@@ -138,7 +139,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">input_encoding</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span><span class="p">,</span>
                     <span class="n">strict_io</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">,</span>
                     <span class="n">output_encoding</span><span class="o">=</span><span class="s2">&quot;SLP1&quot;</span><span class="p">,</span>
@@ -150,7 +151,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">)):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Split: </span><span class="si">{split}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="c1"># Write dot files</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dot_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parse_result</span><span class="o">.</span><span class="n">write_dot</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dot_file</span><span class="p">)</span>
@@ -189,7 +190,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input loosely (strict_io set to false)&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{args.data}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input String: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input_encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ie</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
@@ -231,7 +232,9 @@
 <div class="viewcode-block" id="cmd_line"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.cmd_line">[docs]</a><span class="k">def</span> <span class="nf">cmd_line</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Command Line Wrapper Function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sanskrit Parser&#39;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sanskrit Parser&#39;</span><span class="p">,</span>
+                            <span class="n">usage</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(prog)s</span><span class="s1"> [sandhi|vakya|tag]  [options] </span><span class="se">\n\n</span><span class="s1"> Use </span><span class="si">%(prog)s</span><span class="s1"> [sandhi|vakya|tag] --help for further options&#39;</span><span class="p">,</span>
+                            <span class="n">add_help</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Subcommand to run&#39;</span><span class="p">,</span>
                         <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sandhi&quot;</span><span class="p">,</span> <span class="s2">&quot;vakya&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">])</span>
@@ -312,10 +315,10 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

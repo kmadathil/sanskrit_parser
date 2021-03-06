@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>inriaxmlwrapper &#8212; sanskrit_parser 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>inriaxmlwrapper &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -72,49 +73,24 @@ Getting tags for hares
 (&#39;hari#2&#39;, set([&#39;na&#39;, &#39;fem&#39;, &#39;abl&#39;, &#39;sg&#39;]))
 </pre></div>
 </div>
-<dl class="class">
+<dl class="py class">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.util.inriaxmlwrapper.</code><code class="sig-name descname">InriaXMLWrapper</code><span class="sig-paren">(</span><em class="sig-param">files_list=['all'], logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.util.inriaxmlwrapper.</code><code class="sig-name descname">InriaXMLWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logger</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.util.lexical_lookup.LexicalLookup</span></code></p>
 <p>Class to interface with the INRIA XML database released
 by Prof. Gerard Huet
 <a class="reference external" href="https://gitlab.inria.fr/huet/Heritage_Resources">https://gitlab.inria.fr/huet/Heritage_Resources</a></p>
-<dl class="attribute">
-<dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.base_url">
-<code class="sig-name descname">base_url</code><em class="property"> = 'https://raw.githubusercontent.com/drdhaval2785/inriaxmlwrapper/master/'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.base_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder">
-<code class="sig-name descname">folder</code><em class="property"> = 'data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.folder" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags">
-<code class="sig-name descname">get_tags</code><span class="sig-paren">(</span><em class="sig-param">word</em>, <em class="sig-param">tmap=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.get_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">tmap</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.get_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return lexical tags of word</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir">
-<code class="sig-name descname">old_base_dir</code><em class="property"> = 'C:\\Users\\ALVARNA\\Documents\\personal\\samskritam\\research\\sanskrit_parser\\sanskrit_parser\\util'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_base_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir">
-<code class="sig-name descname">old_dir</code><em class="property"> = 'C:\\Users\\ALVARNA\\Documents\\personal\\samskritam\\research\\sanskrit_parser\\sanskrit_parser\\util\\data'</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.old_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid">
-<code class="sig-name descname">valid</code><span class="sig-paren">(</span><em class="sig-param">word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/util/inriaxmlwrapper.html#InriaXMLWrapper.valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if word is a valid pada</p>
 </dd></dl>
-
-<dl class="attribute">
-<dt id="sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.xml_files">
-<code class="sig-name descname">xml_files</code><em class="property"> = ['roots', 'nouns', 'adverbs', 'final', 'parts', 'pronouns', 'upasargas', 'all']</em><a class="headerlink" href="#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.xml_files" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -208,10 +184,10 @@ by Prof. Gerard Huet
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
