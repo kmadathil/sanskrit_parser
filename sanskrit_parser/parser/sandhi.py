@@ -127,26 +127,26 @@ class Sandhi(object):
         self.backward = None
         self.logger = logger or logging.getLogger(__name__)
 
+    @staticmethod
+    def _load_rules_pickle(filename):
+        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+            zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
+            with ZipFile(zip_path) as myzip:
+                with myzip.open(filename) as f:
+                    return pickle.load(f)
+
     def _load_forward(self):
         if self.forward is None:
-            with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
-                zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
-                with ZipFile(zip_path) as myzip:
-                    with myzip.open('sandhi_forward.pkl') as f:
-                        self.forward = pickle.load(f)
-                keys = self.forward.keys()
-                self.lc_len_max = max(len(k[0]) for k in keys)
-                self.rc_len_max = max(len(k[1]) for k in keys)
+            self.forward = self._load_rules_pickle('sandhi_forward.pkl')
+            keys = self.forward.keys()
+            self.lc_len_max = max(len(k[0]) for k in keys)
+            self.rc_len_max = max(len(k[1]) for k in keys)
 
     def _load_backward(self):
         if self.backward is None:
-            with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
-                zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
-                with ZipFile(zip_path) as myzip:
-                    with myzip.open('sandhi_backward.pkl') as f:
-                        self.backward = pickle.load(f)
-                keys = self.backward.keys()
-                self.after_len_max = max(len(k) for k in keys)
+            self.backward = self._load_rules_pickle('sandhi_backward.pkl')
+            keys = self.backward.keys()
+            self.after_len_max = max(len(k) for k in keys)
 
     def join(self, first_in, second_in):
         """
