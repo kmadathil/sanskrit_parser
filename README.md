@@ -8,8 +8,7 @@ Parsers for Sanskrit / संस्कृतम्
 Please feel free to ping us if you would like to collaborate on this project.
 
 ## Try it out!
-
-A web interface is available on request, but is **currently disabled** - https://kmadathil.github.io/sanskrit_parser/ui/index.html
+A web interface is available at https://sanskrit-parser.appspot.com/
 
 ## Installation
 

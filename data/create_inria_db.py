@@ -6,14 +6,16 @@ with package
 
 """
 
-import requests
 import os
-from lxml import etree
 from collections import defaultdict
 from io import BytesIO
-import logging
-from tqdm import tqdm
 import pickle
+import logging
+import sqlite3
+
+from tqdm import tqdm
+from lxml import etree
+import requests
 
 
 class InriaXMLWrapper():
@@ -98,42 +100,92 @@ class InriaXMLWrapper():
             return None
 
     def create_mapped_db(self, output_path):
-        """ Quick and dirty function to map each tag/stem to
-            an integer and store the integers along with an
-            index of the mapping
-        """
-        # Index list of each tag/form we encounter
-        index = []
-        # A dict to map a given tag/form to its index entry
-        index_dict = {}
+        """ Create the custom database """
 
-        def get_index_val(k):
-            if k not in index_dict:
-                index.append(k)
-                index_dict[k] = len(index) - 1
-            return index_dict[k]
+        '''
+        The custom database format has two parts:
+            1. A pickle file that contains a list of stems,
+               a list of tags, and a serialized buffer of the
+               indices of stems and tags for each form. The indices
+               are used as it is more efficient to store such integers
+               instead of the string for each tag.
+            2. An sqlite file that maps each form to the position
+               within the buffer that contains the serialized tuple
+               of stems and tags for that form. An sqlite database
+               is used to avoid having to build a huge dict in
+               memory for the 600K forms that are present in this db,
+               which consumes a lot of memory. (See
+               https://github.com/kmadathil/sanskrit_parser/issues/151)
 
-        new_forms = defaultdict(tuple)
+        To lookup the tag for a form, we use the sqlite db to find the
+        position in the buffer, deserialize the data at that position,
+        which gives us a list of the tag set for that form. For each
+        item in that list, we then lookup the right stem and tag in
+        the list of stems and tags loaded from the pickle file
+        '''
 
+        # List + dict to map tags/stem to an int index
+        tag_list = []
+        tag_dict = {}
+        stem_list = []
+        stem_dict = {}
+
+        pos_dict = {}
+        buf = BytesIO()
+
+        def get_index_val(k, f_list, f_dict):
+            if k not in f_dict:
+                f_list.append(k)
+                f_dict[k] = len(f_list) - 1
+            return f_dict[k]
+
+        # Just to print some statistics
+        num_tags = 0
         for form in tqdm(self.forms):
             tags = self._xml_to_tags(form)
+            num_tags += len(tags)
             new_tags = []
             for stem, tag_set in tags:
-                s = get_index_val(stem)
-                t = [s]
+                s = get_index_val(stem, stem_list, stem_dict)
+                t = []
                 for tag in tag_set:
-                    s = get_index_val(tag)
-                    t.append(s)
-                new_tags.append(t)
-            new_forms[form] += tuple(new_tags)
+                    t_index = get_index_val(tag, tag_list, tag_dict)
+                    t.append(t_index)
+                new_tags.append((s, bytes(t)))
 
-        with open(output_path, 'wb') as f:
-            pickle.dump(new_forms, f)
-            pickle.dump(tuple(index), f)
+            pos = buf.tell()
+            pos_dict[form] = pos
+            pickle.dump(tuple(new_tags), buf)
+
+        print(f'Len(tags) = {len(tag_list)}, len(stems) = {len(stem_list)}')
+        print(f'Number of tags = {num_tags}')
+
+        db_file = os.path.join(output_path, 'inria_forms_pos.db')
+        pkl_path = os.path.join(output_path, 'inria_stems_tags_buf.pkl')
+        if os.path.exists(db_file):
+            os.remove(db_file)
+
+        conn = sqlite3.connect(db_file)
+        cursor = conn.cursor()
+
+        cursor.execute('Create table forms(form text primary key, pos integer)')
+
+        cursor.executemany('INSERT into forms (form, pos) values (?, ?)',
+                           pos_dict.items())
+        conn.commit()
+        conn.execute('VACUUM')
+        conn.commit()
+        conn.close()
+
+        with open(pkl_path, 'wb') as f:
+            pickle.dump(tuple(stem_list), f)
+            pickle.dump(tuple(tag_list), f)
+            f.write(buf.getbuffer())
+
 
 if __name__ == "__main__":
     root_dir = os.path.dirname(os.path.dirname(__file__))
     output_path = os.path.join(root_dir, 'sanskrit_parser',
-                               'data', 'inria_forms.pickle')
+                               'data')
     print(f'Saving INRIA database to {output_path}')
     InriaXMLWrapper().create_mapped_db(output_path)
