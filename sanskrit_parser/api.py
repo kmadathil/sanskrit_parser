@@ -16,17 +16,14 @@ The ``Parser`` class can be used to generate vakya parses thus:
         parser = Parser(input_encoding=input_encoding,
                         output_encoding=output_encoding,
                         replace_ending_visarga='s')
-        parse_result = parser.parse(string)
-        if parse_result is not None:
-            print('Splits:')
-            for split in parse_result.splits(max_splits=10):
-                print(f'Lexical Split: {split}')
-                for i, parse in enumerate(islice(split.parses(), 3)):
-                    print(f'Parse {i}')
-                    print(f'{parse}')
-        else:
-            print('No splits found.  Please check the input to ensure there are no typos.')
-
+        print('Splits:')
+        for split in parser.split(string, limit=10):
+            print(f'Lexical Split: {split}')
+            for i, parse in enumerate(split.parse(limit=2)):
+                print(f'Parse {i}')
+                print(f'{parse}')
+            break
+ 
 
 This produces the output::
 

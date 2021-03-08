@@ -61,46 +61,44 @@ def vakya(argv=None):
                     score=args.score,
                     split_above=args.split_above,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
-    if parse_result is not None:
-        print('Splits:')
-        logger.debug('Splits:')
-        for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
-            logger.info(f'Lexical Split: {split}')
-            for pi, parse in enumerate(split.parses(min_cost_only=args.min_cost)):
-                logger.debug(f'Parse {pi}')
-                logger.debug(f'{parse}')
-                print(f'Parse {pi} : (Cost = {parse.cost})')
-                if args.conll:
-                    for line in parse.to_conll():
-                        print(line)
-                else:
-                    print(f'{parse}')
-                if args.conll_file is not None:
-                    path = args.conll_file
-                    d = dirname(path)
-                    be = basename(path)
-                    b, e = splitext(be)
-                    conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
-                    if args.conll_append:
-                        tfile = open(conllbase, "a")
-                    else:
-                        tfile = open(conllbase, "w")
-                    twriter = csv.writer(tfile, delimiter='\t')
-                    for line in parse.to_conll():
-                        twriter.writerow(line)
-                    twriter.writerow([])
-                    tfile.close()
-            # Write dot files
-            if args.dot_file is not None:
-                path = args.dot_file
+    logger.debug('Splits:')
+    for si, split in enumerate(parser.split(args.data,
+                                            limit=args.max_paths,
+                                            pre_segmented=args.pre_segmented)):
+        logger.info(f'Sandhi Split: {split}')
+        for pi, parse in enumerate(split.parse(min_cost_only=args.min_cost)):
+            logger.debug(f'Parse {pi}')
+            logger.debug(f'{parse}')
+            print(f'Parse {pi} : (Cost = {parse.cost})')
+            if args.conll:
+                for line in parse.to_conll():
+                    print(line)
+            else:
+                print(f'{parse}')
+            if args.conll_file is not None:
+                path = args.conll_file
                 d = dirname(path)
                 be = basename(path)
                 b, e = splitext(be)
-                splitbase = join(d, b + f"_split{si}" + e)
-                split.write_dot(splitbase)
-    else:
-        print('No splits found. Please check the input to ensure there are no typos.')
+                conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
+                if args.conll_append:
+                    tfile = open(conllbase, "a")
+                else:
+                    tfile = open(conllbase, "w")
+                twriter = csv.writer(tfile, delimiter='\t')
+                for line in parse.to_conll():
+                    twriter.writerow(line)
+                twriter.writerow([])
+                tfile.close()
+        # Write dot files
+        if args.dot_file is not None:
+            path = args.dot_file
+            d = dirname(path)
+            be = basename(path)
+            b, e = splitext(be)
+            splitbase = join(d, b + f"_split{si}" + e)
+            split.write_dot(splitbase)
+
     return None
 
 
@@ -123,7 +121,6 @@ def getSandhiArgs(argv=None):
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--no-score', dest="score", action='store_false',
                         help="Use the lexical scorer to score the splits and reorder them")
-    parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
     return parser.parse_args(argv)
 
 
@@ -140,17 +137,11 @@ def sandhi(argv=None):
                     replace_ending_visarga=None,
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
-    parse_result = parser.parse(args.data, pre_segmented=args.pre_segmented)
-    if parse_result is not None:
-        print('Splits:')
-        logger.debug('Splits:')
-        for si, split in enumerate(parse_result.splits(max_splits=args.max_paths)):
-            logger.info(f'Split: {split}')
-        # Write dot files
-        if args.dot_file is not None:
-            parse_result.write_dot(args.dot_file)
-    else:
-        print('No splits found. Please check the input to ensure there are no typos.')
+    logger.debug('Splits:')
+    for si, split in enumerate(parser.split(args.data,
+                                            limit=args.max_paths,
+                                            pre_segmented=args.pre_segmented)):
+        logger.info(f'Split: {split}')
     return None
 
 

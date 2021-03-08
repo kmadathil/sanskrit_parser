@@ -6,13 +6,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sanskrit_parser.parser.datastructures &#8212; sanskrit_parser 0.1.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -290,6 +289,7 @@
     <span class="n">edge_cost</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.9</span>
 <span class="n">edge_cost</span><span class="p">[</span><span class="s1">&#39;karma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.85</span>
 <span class="n">edge_cost</span><span class="p">[</span><span class="s1">&#39;kartA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">edge_cost</span><span class="p">[</span><span class="s1">&#39;samasta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 
 
 <div class="viewcode-block" id="VakyaGraph"><a class="viewcode-back" href="../../../sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.VakyaGraph">[docs]</a><span class="k">class</span> <span class="nc">VakyaGraph</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -552,7 +552,7 @@
                     <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;tumun&#39;</span><span class="p">):</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding prayojanam edge to </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;prayojanam&quot;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">samanakala</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">prathama</span><span class="p">):</span>
+                    <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">samanakala</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="n">prathama</span><span class="p">)</span> <span class="ow">and</span> <span class="n">match_purusha_vacana</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding samAnakAlaH edge to </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;samAnakAlaH&quot;</span><span class="p">)</span></div>
 
@@ -655,11 +655,11 @@
                     <span class="c1"># Matching pair</span>
                     <span class="n">s_t</span> <span class="o">=</span> <span class="n">sentence_conjunctions</span><span class="p">[</span><span class="n">nb</span><span class="p">]</span>
                     <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_vipsa</span><span class="p">(</span><span class="n">nn</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_get_base</span><span class="p">(</span><span class="n">nn</span><span class="p">)</span> <span class="o">==</span> <span class="n">s_t</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_vipsa</span><span class="p">(</span><span class="n">nn</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">_get_base</span><span class="p">(</span><span class="n">nn</span><span class="p">)</span> <span class="o">==</span> <span class="n">s_t</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">)):</span>
                             <span class="k">if</span> <span class="n">match_linga_vacana</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">):</span>
                                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding vAkyasambanDaH edge: </span><span class="si">{</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;vAkyasambanDaH&quot;</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;saMyojakaH&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nn</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">node_is_a</span><span class="p">(</span><span class="s1">&#39;saMyojakaH&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nn</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_same_partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">)):</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding saMbadDakriyA edge: </span><span class="si">{</span><span class="n">nn</span><span class="p">,</span> <span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;saMbadDakriyA&#39;</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">s_t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -797,11 +797,38 @@
 <span class="sd">        to which edges cannot be created from this node</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sobj</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pada</span> <span class="o">=</span> <span class="n">sobj</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pada</span> <span class="o">=</span> <span class="n">sobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_str</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pada</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pada</span>
+
+    <span class="nd">@pada</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_set_pada</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pada</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pada</span> <span class="o">=</span> <span class="n">pada</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_str</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index</span>
+
+    <span class="nd">@index</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_set_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_str</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_cache_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Cache the string representation for speedup.</span>
+
+<span class="sd">            See https://github.com/kmadathil/sanskrit_parser/issues/160</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pada</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pada</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">())</span> <span class="o">+</span> \
+            <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">getMorphologicalTags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pada</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">getNodeTagset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Given a Node, extract the tagset &#39;&#39;&#39;</span>
@@ -832,13 +859,8 @@
         <span class="sd">&#39;&#39;&#39; Get Node puruza &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNodeTagset</span><span class="p">()</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">puruzas</span><span class="p">)</span>
 
-    <span class="c1"># FIXME: not needed?</span>
-    <span class="k">def</span> <span class="nf">get_node_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">canonical</span><span class="p">())</span>
-
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pada</span><span class="o">.</span><span class="n">getMorphologicalTags</span><span class="p">())</span> <span class="o">+</span> \
-            <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -1052,7 +1074,7 @@
                 <span class="c1"># Lakaras are preferred</span>
                 <span class="n">_w</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">_w</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">_w</span>
-        <span class="k">return</span> <span class="n">w</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pu</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">_parse_cost</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="n">_parse_cost</span><span class="p">(</span><span class="n">te</span><span class="p">)</span> <span class="k">for</span> <span class="n">te</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
 
@@ -1201,7 +1223,7 @@
       &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

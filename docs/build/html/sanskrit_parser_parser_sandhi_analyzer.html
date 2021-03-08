@@ -6,13 +6,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>parser.sandhi_analyzer &#8212; sanskrit_parser 0.1.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="parser.datastructures" href="sanskrit_parser_parser_datastructures.html" />
@@ -111,7 +110,7 @@ tmap(Boolean=True): If True, maps</p>
 
 <dl class="py method">
 <dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">
-<code class="sig-name descname">getSandhiSplits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em>, <em class="sig-param"><span class="n">tag</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getSandhiSplits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getSandhiSplits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o</span></em>, <em class="sig-param"><span class="n">tag</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">pre_segmented</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.getSandhiSplits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all valid Sandhi splits for a string</p>
 <dl>
 <dt>Params:</dt><dd><p>o(SanskritString): Input object
@@ -138,6 +137,22 @@ tagset(set): set of tag elements</p>
 <dt>list: List of (base, tagset) pairs for obj that</dt><dd><p>match (name,tagset), or None</p>
 </dd>
 </dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.preSegmented">
+<code class="sig-name descname">preSegmented</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sl</span></em>, <em class="sig-param"><span class="n">tag</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/parser/sandhi_analyzer.html#LexicalSandhiAnalyzer.preSegmented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.preSegmented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a SandhiGraph for a pre-segmented sentence</p>
+<dl>
+<dt>Params:</dt><dd><p>sl (list of SanskritString): Input object
+tag(Boolean)     : When True (def=False), return a</p>
+<blockquote>
+<div><p>morphologically tagged graph</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>SandhiGraph : DAG all possible splits</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,7 +281,7 @@ Returns args variable</p>
       &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
