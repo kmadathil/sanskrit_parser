@@ -52,6 +52,7 @@ from __future__ import print_function
 import os
 import logging
 import importlib.resources
+from collections import namedtuple
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
@@ -62,6 +63,11 @@ try:
 except ImportError:
     import pickle
 
+import sqlite3
+
+
+_db = namedtuple('_db', ['db_file', 'tags', 'stems', 'buf'])
+
 
 class InriaXMLWrapper(LexicalLookup):
     """
@@ -70,35 +76,70 @@ class InriaXMLWrapper(LexicalLookup):
     https://gitlab.inria.fr/huet/Heritage_Resources
     """
 
+    '''
+    The custom database format has two parts:
+        1. A pickle file that contains a list of stems,
+           a list of tags, and a serialized buffer of the
+           indices of stems and tags for each form. The indices
+           are used as it is more efficient to store such integers
+           instead of the string for each tag.
+        2. An sqlite file that maps each form to the position
+           within the buffer that contains the serialized tuple
+           of stems and tags for that form. An sqlite database
+           is used to avoid having to build a huge dict in
+           memory for the 600K forms that are present in this db,
+           which consumes a lot of memory. (See
+           https://github.com/kmadathil/sanskrit_parser/issues/151)
+
+    To lookup the tag for a form, we use the sqlite db to find the
+    position in the buffer, deserialize the data at that position,
+    which gives us a list of the tag set for that form. For each
+    item in that list, we then lookup the right stem and tag in
+    the list of stems and tags loaded from the pickle file
+    '''
+
     def __init__(self, logger=None):
         self.pickle_file = "inria_forms.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        self._load_forms()
-
-    def _load_forms(self):
-        """ Load/create dict of tags for forms """
         with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
-            pickle_path = os.path.join(base_dir, self.pickle_file)
-            with open(pickle_path, "rb") as fd:
-                self.forms = pickle.load(fd)
-                self.index = pickle.load(fd)
+            db_file = os.path.join(base_dir, "inria_forms_pos.db")
+            pkl_path = os.path.join(base_dir, "inria_stems_tags_buf.pkl")
+        self.db = self._load_db(db_file, pkl_path)
 
-    def _decode_tags(self, tag_index):
-        tags = [self.index[x] for x in tag_index]
-        return (tags[0], set(tags[1:]))
+    @staticmethod
+    def _load_db(db_file, pkl_path):
+        with open(pkl_path, 'rb') as f:
+            stems = pickle.load(f)
+            tags = pickle.load(f)
+            buf = f.read()
+        db = _db(db_file, tags, stems, buf)
+        return db
 
     def _get_tags(self, word):
-        if word in self.forms:
-            tag_index_list = self.forms[word]
-            tags = []
-            for tag_index in tag_index_list:
-                tags.append(self._decode_tags(tag_index))
-            return tags
-        else:
+        db = self.db
+        conn = sqlite3.connect(db.db_file)
+        cursor = conn.cursor()
+        res = cursor.execute('SELECT * FROM forms WHERE form=?', (word,)).fetchone()
+        if res is None:
             return None
+        pos = res[1]
+        tag_index_list = pickle.loads(db.buf[pos:])
+        tags = []
+        for tag_index in tag_index_list:
+            tags.append(self._decode_tags(tag_index, db.tags, db.stems))
+        return tags
+
+    @staticmethod
+    def _decode_tags(tag_index, tags, stems):
+        t = [tags[x] for x in tag_index[1]]
+        stem = stems[tag_index[0]]
+        return (stem, set(t))
 
     def valid(self, word):
-        return word in self.forms
+        conn = sqlite3.connect(self.db.db_file)
+        cursor = conn.cursor()
+        res = cursor.execute('SELECT COUNT(1) FROM forms WHERE form = ?', (word,)).fetchone()
+        return res[0] > 0
 
     def get_tags(self, word, tmap=True):
         tags = self._get_tags(word)
