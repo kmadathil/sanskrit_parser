@@ -23,7 +23,7 @@ The ``Parser`` class can be used to generate vakya parses thus:
                 print(f'Parse {i}')
                 print(f'{parse}')
             break
- 
+
 
 This produces the output::
 

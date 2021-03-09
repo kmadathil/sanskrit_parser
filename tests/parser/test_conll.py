@@ -30,12 +30,12 @@ def parse_test_f(test, testpadas, max_splits=1, max_parses=100,
     parse = None
 
     for si, split in enumerate(parser.split(" ".join(testpadas),
-                                                   pre_segmented=True,
-                                                   limit=max_splits)):
+                                            pre_segmented=True,
+                                            limit=max_splits)):
         if verbose:
             print(f'Lexical Split: {split}')
         for pi, parse in enumerate(split.parse(min_cost_only=True,
-                                                limit=max_parses)):
+                                               limit=max_parses)):
             if verbose:
                 print(f'Parse {pi} : (Cost = {parse.cost})')
             if check_parse(parse, test, verbose=verbose):
