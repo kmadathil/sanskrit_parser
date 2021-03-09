@@ -6,13 +6,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sanskrit_parser.util.inriaxmlwrapper &#8212; sanskrit_parser 0.1.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -86,6 +85,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">importlib.resources</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritImmutableString</span><span class="p">,</span> <span class="n">SCHEMES</span>
 <span class="kn">from</span> <span class="nn">sanskrit_parser.util.lexical_lookup</span> <span class="kn">import</span> <span class="n">LexicalLookup</span>
@@ -96,6 +96,11 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">pickle</span>
 
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+
+<span class="n">_db</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;_db&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;db_file&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;stems&#39;</span><span class="p">,</span> <span class="s1">&#39;buf&#39;</span><span class="p">])</span>
+
 
 <div class="viewcode-block" id="InriaXMLWrapper"><a class="viewcode-back" href="../../../sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper">[docs]</a><span class="k">class</span> <span class="nc">InriaXMLWrapper</span><span class="p">(</span><span class="n">LexicalLookup</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -104,35 +109,70 @@
 <span class="sd">    https://gitlab.inria.fr/huet/Heritage_Resources</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The custom database format has two parts:</span>
+<span class="sd">        1. A pickle file that contains a list of stems,</span>
+<span class="sd">           a list of tags, and a serialized buffer of the</span>
+<span class="sd">           indices of stems and tags for each form. The indices</span>
+<span class="sd">           are used as it is more efficient to store such integers</span>
+<span class="sd">           instead of the string for each tag.</span>
+<span class="sd">        2. An sqlite file that maps each form to the position</span>
+<span class="sd">           within the buffer that contains the serialized tuple</span>
+<span class="sd">           of stems and tags for that form. An sqlite database</span>
+<span class="sd">           is used to avoid having to build a huge dict in</span>
+<span class="sd">           memory for the 600K forms that are present in this db,</span>
+<span class="sd">           which consumes a lot of memory. (See</span>
+<span class="sd">           https://github.com/kmadathil/sanskrit_parser/issues/151)</span>
+
+<span class="sd">    To lookup the tag for a form, we use the sqlite db to find the</span>
+<span class="sd">    position in the buffer, deserialize the data at that position,</span>
+<span class="sd">    which gives us a list of the tag set for that form. For each</span>
+<span class="sd">    item in that list, we then lookup the right stem and tag in</span>
+<span class="sd">    the list of stems and tags loaded from the pickle file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pickle_file</span> <span class="o">=</span> <span class="s2">&quot;inria_forms.pickle&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span> <span class="ow">or</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_load_forms</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_load_forms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load/create dict of tags for forms &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">importlib</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s1">&#39;sanskrit_parser&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">base_dir</span><span class="p">:</span>
-            <span class="n">pickle_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickle_file</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickle_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">forms</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+            <span class="n">db_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">&quot;inria_forms_pos.db&quot;</span><span class="p">)</span>
+            <span class="n">pkl_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">&quot;inria_stems_tags_buf.pkl&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_db</span><span class="p">(</span><span class="n">db_file</span><span class="p">,</span> <span class="n">pkl_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_decode_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_index</span><span class="p">):</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tag_index</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">set</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_load_db</span><span class="p">(</span><span class="n">db_file</span><span class="p">,</span> <span class="n">pkl_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">stems</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">tags</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">_db</span><span class="p">(</span><span class="n">db_file</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">stems</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">db</span>
 
     <span class="k">def</span> <span class="nf">_get_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
-            <span class="n">tag_index_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
-            <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">tag_index</span> <span class="ow">in</span> <span class="n">tag_index_list</span><span class="p">:</span>
-                <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decode_tags</span><span class="p">(</span><span class="n">tag_index</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">tags</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">db_file</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM forms WHERE form=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">word</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">tag_index_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">buf</span><span class="p">[</span><span class="n">pos</span><span class="p">:])</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tag_index</span> <span class="ow">in</span> <span class="n">tag_index_list</span><span class="p">:</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decode_tags</span><span class="p">(</span><span class="n">tag_index</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">stems</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tags</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_decode_tags</span><span class="p">(</span><span class="n">tag_index</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">stems</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">tags</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tag_index</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">stem</span> <span class="o">=</span> <span class="n">stems</span><span class="p">[</span><span class="n">tag_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">stem</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 
 <div class="viewcode-block" id="InriaXMLWrapper.valid"><a class="viewcode-back" href="../../../sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.valid">[docs]</a>    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span></div>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">db_file</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT COUNT(1) FROM forms WHERE form = ?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">word</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="InriaXMLWrapper.get_tags"><a class="viewcode-back" href="../../../sanskrit_parser_util_inriaxmlwrapper.html#sanskrit_parser.util.inriaxmlwrapper.InriaXMLWrapper.get_tags">[docs]</a>    <span class="k">def</span> <span class="nf">get_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">tmap</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_tags</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
@@ -246,7 +286,7 @@
       &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
