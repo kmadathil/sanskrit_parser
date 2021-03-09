@@ -1,20 +1,34 @@
+
+function escapeAll(str) {
+    var r =  encodeURI(escapeHash(str))
+    return r
+}
+
+function escapeHash(str) {
+    var r = str.replace(/#/g,"_");
+    return r
+}
+
 function createPanel(heading, row, dot, urlbase, id) {
     "use strict;"
     var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
     var expanded = id === 0 ? "show" : "";
     var h = "<div class=\"card " + cardClass + " \"><div class=\"card-header " + cardClass + "\">";
     h += "<a class=\"text-white\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
-    h += heading + "</a><p class=\"alignright\"> <a target=\"_blank\" class=\"text-white\" href=\"";
+    h += heading + "</a>";
+/*    h += heading + "</a><p class=\"alignright\"> <a target=\"_blank\" class=\"text-white\" href=\""; */
 /*    h += urlbase + "static/" + imgbase + ".dot.png\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
 /*    h += urlbase + "sanskrit_parser/v1/graph/" + imgbase + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
-    h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot["split"]) + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>";
+/*    h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot["split"]) + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
+    h += "<button type=\"button\" class=\"btn btn-primary alignright\" data-toggle=\"modal\" data-target=\"#graphModal\" data-graph=\"" +  escapeAll(dot["split"]) + "\" data-title=\"Sandhi Graph\">View Graph</button><div style=\"clear: both;\"></div></div>";
     h += "<div id=\"collapse" + id + "\" class=\"collapse " + expanded + "\"><div class=\"card-block\">";
     h += "<ol class=\"list-group\">";
     row.forEach(function (sitem, index) {
         h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
-	h += "<p class=\"alignright\"> <a target=\"_blank\" href=\"";
+//	h += "<p class=\"alignright\"> <a target=\"_blank\" href=\"";
 //	h += urlbase + "static/" + imgbase + "_parse" + index + ".dot.png\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
-	h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot[index]) + "\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
+//	h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot[index]) + "\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
+	h += "<button type=\"button\" class=\"btn btn-light alignright\" data-toggle=\"modal\" data-target=\"#graphModal\"\ data-graph=\"" +escapeAll(dot[index]) +  "\" data-title=\"Parse Graph\">View Parse Graph</button><div style=\"clear: both;\"></div></div>";
         h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
         sitem.forEach(function (item) {
             h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
@@ -41,6 +55,18 @@ $.fn.enterKey = function (fnc) {
         });
     });
 };
+
+$('#graphModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var graph = button.data('graph') // Extract info from data-* attributes
+    var title = button.data('title')
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text(title)
+    modal.find('img').attr("src", "https://image-charts.com/chart?cht=gv:dot&chl=" + graph)
+    modal.modal('handleUpdate')
+})
 
 $(document).ready( function () {
     "use strict;"
