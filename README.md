@@ -9,7 +9,7 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 ## Try it out!
 - A simple web interface is available at https://sanskrit-parser.appspot.com/
-- Launch the [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/main/examples/simple_example.ipynb) on Binder - [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb)
+- Launch the [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb) on Binder - [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb)
 
 ## Installation
 
@@ -20,7 +20,7 @@ pip install sanskrit_parser
 ```
 
 ## Usage
-- For a tour of the basic features, check out the [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/main/examples/simple_example.ipynb).
+- For a tour of the basic features, check out the [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb).
 - For more detailed documentation, see [generated sphynx docs](https://kmadathil.github.io/sanskrit_parser/build/html/).
 - PS: Command line usage is also documented there.
 
