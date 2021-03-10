@@ -174,7 +174,7 @@ class LexicalSandhiAnalyzer(object):
         self.sentence.lock_start()
         return self.sentence
 
-    def getSandhiSplits(self, o, tag=False):
+    def getSandhiSplits(self, o, tag=False, pre_segmented=False):
         ''' Get all valid Sandhi splits for a string
 
             Params:
@@ -184,6 +184,8 @@ class LexicalSandhiAnalyzer(object):
             Returns:
               SandhiGraph : DAG all possible splits
         '''
+        if pre_segmented:
+            return self.preSegmented(o, tag)
         self.dynamic_scoreboard = {}
         # Transform to internal canonical form
         s = o.canonical()

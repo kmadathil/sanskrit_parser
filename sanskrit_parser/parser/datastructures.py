@@ -756,6 +756,18 @@ class VakyaGraph(object):
             pt = join(d, b+f"_parse{i}"+e)
             nx.drawing.nx_pydot.write_dot(p, pt)
 
+    def get_dot_dict(self):
+        from io import StringIO
+        s = StringIO()
+        r = {}
+        nx.drawing.nx_pydot.write_dot(self.G, s)
+        r["split"] = s.getvalue()
+        for i, p in enumerate(self.parses):
+            s = StringIO()
+            nx.drawing.nx_pydot.write_dot(p, s)
+            r[i] = s.getvalue()
+        return r
+
 
 class VakyaGraphNode(object):
     """ Class for VakyaGraph nodes

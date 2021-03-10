@@ -6,13 +6,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>api &#8212; sanskrit_parser 0.1.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="cmd_line" href="sanskrit_parser_cmd_line.html" />
@@ -46,16 +45,13 @@
 <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">input_encoding</span><span class="o">=</span><span class="n">input_encoding</span><span class="p">,</span>
                 <span class="n">output_encoding</span><span class="o">=</span><span class="n">output_encoding</span><span class="p">,</span>
                 <span class="n">replace_ending_visarga</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-<span class="n">parse_result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">parse_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">parse_result</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span><span class="n">max_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parses</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No splits found.  Please check the input to ensure there are no typos.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Lexical Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">break</span>
 </pre></div>
 </div>
 <p>This produces the output:</p>
@@ -112,11 +108,21 @@ implement default like this:</p>
 <dd><p>Return an object that can be serialized by json.JSONEncoder</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="sanskrit_parser.api.Parse.to_conll">
+<code class="sig-name descname">to_conll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parse.to_conll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parse.to_conll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sanskrit_parser.api.Parse.to_dot">
+<code class="sig-name descname">to_dot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parse.to_dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parse.to_dot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt id="sanskrit_parser.api.ParseEdge">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predecessor</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">node</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#sanskrit_parser.api.ParseNode" title="sanskrit_parser.api.ParseNode">sanskrit_parser.api.ParseNode</a></span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseEdge" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predecessor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#sanskrit_parser.api.ParseNode" title="sanskrit_parser.api.ParseNode">sanskrit_parser.api.ParseNode</a></span></em>, <em class="sig-param"><span class="n">node</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#sanskrit_parser.api.ParseNode" title="sanskrit_parser.api.ParseNode">sanskrit_parser.api.ParseNode</a></span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseEdge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
 <dl class="py attribute">
 <dt id="sanskrit_parser.api.ParseEdge.label">
@@ -130,7 +136,7 @@ implement default like this:</p>
 
 <dl class="py attribute">
 <dt id="sanskrit_parser.api.ParseEdge.predecessor">
-<code class="sig-name descname">predecessor</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.predecessor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predecessor</code><em class="property">: <a class="reference internal" href="#sanskrit_parser.api.ParseNode" title="sanskrit_parser.api.ParseNode">sanskrit_parser.api.ParseNode</a></em><a class="headerlink" href="#sanskrit_parser.api.ParseEdge.predecessor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -150,43 +156,6 @@ implement default like this:</p>
 <code class="sig-name descname">serializable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseNode.serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseNode.serializable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an object that can be serialized by json.JSONEncoder</p>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="sanskrit_parser.api.ParseResult">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">ParseResult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parser</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#sanskrit_parser.api.Parser" title="sanskrit_parser.api.Parser">sanskrit_parser.api.Parser</a></span></em>, <em class="sig-param"><span class="n">input_string</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">sandhi_graph</span><span class="p">:</span> <span class="n"><a class="reference internal" href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph" title="sanskrit_parser.parser.datastructures.SandhiGraph">sanskrit_parser.parser.datastructures.SandhiGraph</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sanskrit_parser.api.Serializable" title="sanskrit_parser.api.Serializable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sanskrit_parser.api.Serializable</span></code></a></p>
-<dl class="py attribute">
-<dt id="sanskrit_parser.api.ParseResult.input_string">
-<code class="sig-name descname">input_string</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.input_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="sanskrit_parser.api.ParseResult.parser">
-<code class="sig-name descname">parser</code><em class="property">: <a class="reference internal" href="#sanskrit_parser.api.Parser" title="sanskrit_parser.api.Parser">sanskrit_parser.api.Parser</a></em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.parser" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="sanskrit_parser.api.ParseResult.sandhi_graph">
-<code class="sig-name descname">sandhi_graph</code><em class="property">: <a class="reference internal" href="sanskrit_parser_parser_datastructures.html#sanskrit_parser.parser.datastructures.SandhiGraph" title="sanskrit_parser.parser.datastructures.SandhiGraph">sanskrit_parser.parser.datastructures.SandhiGraph</a></em><a class="headerlink" href="#sanskrit_parser.api.ParseResult.sandhi_graph" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="sanskrit_parser.api.ParseResult.serializable">
-<code class="sig-name descname">serializable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult.serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult.serializable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an object that can be serialized by json.JSONEncoder</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="sanskrit_parser.api.ParseResult.splits">
-<code class="sig-name descname">splits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_splits</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult.splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult.splits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="sanskrit_parser.api.ParseResult.write_dot">
-<code class="sig-name descname">write_dot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basepath</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#ParseResult.write_dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.ParseResult.write_dot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -214,11 +183,11 @@ implement default like this:</p>
 
 <dl class="py class">
 <dt id="sanskrit_parser.api.Parser">
-<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">Parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strict_io</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">input_encoding</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_encoding</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'SLP1'</span></em>, <em class="sig-param"><span class="n">lexical_lookup</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'combined'</span></em>, <em class="sig-param"><span class="n">score</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">split_above</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">replace_ending_visarga</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fast_merge</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parser" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sanskrit_parser.api.</code><code class="sig-name descname">Parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strict_io</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">input_encoding</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_encoding</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'SLP1'</span></em>, <em class="sig-param"><span class="n">lexical_lookup</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'combined'</span></em>, <em class="sig-param"><span class="n">score</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">split_above</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">replace_ending_visarga</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fast_merge</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py method">
-<dt id="sanskrit_parser.api.Parser.parse">
-<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_string</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parser.parse" title="Permalink to this definition">¶</a></dt>
+<dt id="sanskrit_parser.api.Parser.split">
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_string</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">limit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">pre_segmented</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Parser.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Parser.split" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -245,14 +214,14 @@ implement default like this:</p>
 <code class="sig-name descname">input_string</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#sanskrit_parser.api.Split.input_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt id="sanskrit_parser.api.Split.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">limit</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">min_cost_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Split.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Split.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="sanskrit_parser.api.Split.parser">
 <code class="sig-name descname">parser</code><em class="property">: <a class="reference internal" href="#sanskrit_parser.api.Parser" title="sanskrit_parser.api.Parser">sanskrit_parser.api.Parser</a></em><a class="headerlink" href="#sanskrit_parser.api.Split.parser" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="sanskrit_parser.api.Split.parses">
-<code class="sig-name descname">parses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sanskrit_parser/api.html#Split.parses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sanskrit_parser.api.Split.parses" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -353,7 +322,7 @@ implement default like this:</p>
       &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

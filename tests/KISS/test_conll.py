@@ -30,22 +30,21 @@ def parse_test(test, conll_writer=None, max_splits=1, max_parses=1):
                     score=False,
                     split_above=5,
                     lexical_lookup="combined")
-    parse_result = parser.parse(" ".join(test), pre_segmented=True)
     written = False
-    if parse_result is not None:
-        print('Splits:')
-        for si, split in enumerate(parse_result.splits(max_splits=max_splits)):
-            print(f'Lexical Split: {split}')
-            for pi, parse in islice(enumerate(split.parses()), max_parses):
-                print(f'Parse {pi} : (Cost = {parse.cost})')
-                print(f'{parse}')
-                if conll_writer is not None:
-                    for line in parse.to_conll():
-                        conll_writer.writerow(line)
-                    conll_writer.writerow([])
-                    written = True
-                if pi > 8:
-                    break
+    for si, split in enumerate(parser.split(" ".join(test),
+                                                  limit=max_splits,
+                                                  pre_segmented=True)):
+        print(f'Lexical Split: {split}')
+        for pi, parse in enumerate(split.parse(limit=max_parses)):
+            print(f'Parse {pi} : (Cost = {parse.cost})')
+            print(f'{parse}')
+            if conll_writer is not None:
+                for line in parse.to_conll():
+                    conll_writer.writerow(line)
+                conll_writer.writerow([])
+                written = True
+            if pi > 8:
+                break
     if not written:
         for i,t in enumerate(test):
             conll_writer.writerow([i+1, t, "_",
