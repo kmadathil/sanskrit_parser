@@ -72,7 +72,7 @@ $(document).ready( function () {
     "use strict;"
     $("#goButton").on("click", function () {
         var txt = $("#inputText").val();
-        var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sktparserapi.madathil.org/";
+        var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
         var option = {};
         var tsel = $("#analysisType").val();
         if (!txt) {
