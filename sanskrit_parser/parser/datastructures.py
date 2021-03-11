@@ -273,6 +273,7 @@ edge_cost['vAkyasambanDaH'] = 0.3
 # edge_cost['zazWI-sambanDa'] = 1
 edge_cost_const = ['vAkyasambanDaH', 'samuccitam']
 
+
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -612,8 +613,8 @@ class VakyaGraph(object):
             for n in s:
                 if n.node_is_a(avyaya) and ((_get_base(n) in conjunctions) or (_get_base(n) in disjunctions)):
                     # We would have set a vibhakti or lakara string
-                    v = n.get_vibhakti()  
-                    l = n.get_lakara()  
+                    v = n.get_vibhakti()
+                    lk = n.get_lakara()
                     vc = n.get_vacana()
                     p = n.get_purusha()
                     for e in self.G.in_edges(n, data=True):  # Note: keys=False
@@ -622,17 +623,17 @@ class VakyaGraph(object):
                                 logger.debug(f'removing vibhakti {v} from {n}')
                                 n.deleteTags(v)
                                 logger.debug(f'removed  vibhakti {v} from {n}')
-                            if l:
-                                logger.debug(f'removing lakara {l | vc | p} from {n}')
-                                n.deleteTags(l | vc | p)
-                                logger.debug(f'removed  lakara {l | vc | p} from {n}')
+                            if lk:
+                                logger.debug(f'removing lakara {lk | vc | p} from {n}')
+                                n.deleteTags(lk | vc | p)
+                                logger.debug(f'removed  lakara {lk | vc | p} from {n}')
                     # Still there!
-                    if l and n.node_is_a(l):  # Lakara need not be set
+                    if lk and n.node_is_a(lk):  # Lakara need not be set
                         # logger.info(f'Node before lakara locked {n}')
-                        n.deleteTags(l | vc | p | v)
-                        # n.setTags(set([SanskritObject(_v, SLP1) for _v in list(l | vc | p)]))
+                        n.deleteTags(lk | vc | p | v)
+                        # n.setTags(set([SanskritObject(_v, SLP1) for _v in list(lk | vc | p)]))
                         logger.info(f'Node with lakara removed {n}')
-                    elif v and n.node_is_a(v):  
+                    elif v and n.node_is_a(v):
                         n.deleteTags(v)
                         n.setTags(set([SanskritObject(_v, SLP1) for _v in list(v)]))
                         logger.info(f'Node with vibhakti locked {n}')
@@ -1253,7 +1254,7 @@ def _check_parse(parse):
     sk = defaultdict(int)
     vsmbd = {}
     conj = defaultdict(lambda: {"from": 0, "to": 0})
-    sckeys = set(sentence_conjunctions.keys()) 
+    sckeys = set(sentence_conjunctions.keys())
 
     # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
