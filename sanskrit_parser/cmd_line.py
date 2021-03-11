@@ -66,7 +66,9 @@ def vakya(argv=None):
                                             limit=args.max_paths,
                                             pre_segmented=args.pre_segmented)):
         logger.info(f'Sandhi Split: {split}')
-        for pi, parse in enumerate(split.parse(min_cost_only=args.min_cost)):
+        logger.info(f'Min cost only {args.min_cost}')
+        for pi, parse in enumerate(split.parse(limit=999,
+                                               min_cost_only=args.min_cost)):
             logger.debug(f'Parse {pi}')
             logger.debug(f'{parse}')
             print(f'Parse {pi} : (Cost = {parse.cost})')

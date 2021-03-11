@@ -125,8 +125,7 @@ class Parser():
                     ts = self.sandhi_analyzer.getMorphologicalTags(o, tmap=True)
                 if ts is None:
                     logger.warning(f"Unknown pada {seg} - will be split")
-                    _p = self.parse(seg, False)
-                    _s = list(itertools.islice(_p.splits(), 1))[0]
+                    _s = list(self.split(seg, pre_segmented=False, limit=1))[0]
                     logger.info(f"Split {_s}")
                     s.extend(_s.split)
                     if _s is None:
@@ -179,7 +178,7 @@ class Split(Serializable):
                                  max_parse_dc=self.parser.split_above)
         parses = self.vgraph.parses[:limit]
         costs = self.vgraph.parse_costs[:limit]
-        min_cost = costs[0]
+        min_cost = costs[0] if len(costs) else 0
         if min_cost_only:
             parses = [x for x, cost in zip(parses, costs) if cost == min_cost]
         return [Parse(self, parse, cost) for parse, cost in zip(parses, costs)]
