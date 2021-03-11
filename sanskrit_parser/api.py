@@ -50,7 +50,6 @@ import abc
 import warnings
 from dataclasses import dataclass
 from typing import Sequence
-import itertools
 from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
@@ -178,7 +177,7 @@ class Split(Serializable):
                                  max_parse_dc=self.parser.split_above)
         parses = self.vgraph.parses[:limit]
         costs = self.vgraph.parse_costs[:limit]
-        min_cost = costs[0] if len(costs) else 0
+        min_cost = min(costs) if len(costs) else 0
         if min_cost_only:
             parses = [x for x, cost in zip(parses, costs) if cost == min_cost]
         return [Parse(self, parse, cost) for parse, cost in zip(parses, costs)]

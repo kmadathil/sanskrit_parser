@@ -51,3 +51,25 @@
 3	suKinaH	_	suKin	['bahuvacanam', 'dvitIyAviBaktiH', 'strIliNgam']	4	karma
 4	santu	_	as#1	['low', 'parasmEpadam', 'praTamapuruzaH', 'bahuvacanam', 'kartari', 'prATamikaH']	0	root
 
+1	arjunaH	_	arjuna	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	2	samuccitam
+2	vA	_	vA	['avyayam']	3	samuccitam
+3	kfzRaH	_	kfzRa	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	4	samuccitam
+4	vA	_	vA	['avyayam']	5	samuccitam
+5	sahadevaH	_	sahadeva	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	6	samuccitam
+6	vA	_	vA	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH', 'avyayam']	7	kartA
+7	gacCatu	_	gam	['prATamikaH', 'low', 'praTamapuruzaH', 'ekavacanam', 'kartari', 'parasmEpadam']	0	root
+
+1	arjunaH	_	arjuna	['praTamAviBaktiH', 'puMlliNgam', 'ekavacanam']	2	samuccitam
+2	ca	_	ca	['saMyojakaH', 'avyayam']	3	samuccitam
+3	kfzRaH	_	kfzRa	['praTamAviBaktiH', 'puMlliNgam', 'ekavacanam']	4	samuccitam
+4	ca	_	ca	['saMyojakaH', 'avyayam']	5	samuccitam
+5	sahadevaH	_	sahadeva	['praTamAviBaktiH', 'puMlliNgam', 'ekavacanam']	6	samuccitam
+6	ca	_	ca	['bahuvacanam', 'puMlliNgam', 'praTamAviBaktiH', 'avyayam', 'saMyojakaH']	7	kartA
+7	gacCantu	_	gam	['prATamikaH', 'praTamapuruzaH', 'low', 'kartari', 'parasmEpadam', 'bahuvacanam']	0	root
+
+1	rAGavaH	_	rAGava	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	2	samuccitam
+2	ca	_	ca	['avyayam', 'saMyojakaH']	3	samuccitam
+3	sOmitriH	_	sOmitri	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	4	samuccitam
+4	ca	_	ca	['avyayam', 'dvivacanam', 'saMyojakaH', 'praTamAviBaktiH', 'puMlliNgam']	5	kartA
+5	gacCataH	_	gam	['dvivacanam', 'law', 'praTamapuruzaH', 'parasmEpadam', 'prATamikaH', 'kartari']	0	root
+
