@@ -67,9 +67,27 @@
 6	ca	_	ca	['bahuvacanam', 'puMlliNgam', 'praTamAviBaktiH', 'avyayam', 'saMyojakaH']	7	kartA
 7	gacCantu	_	gam	['prATamikaH', 'praTamapuruzaH', 'low', 'kartari', 'parasmEpadam', 'bahuvacanam']	0	root
 
-1	rAGavaH	_	rAGava	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	2	samuccitam
+1	arjunaH	_	arjuna	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	3	samuccitam
+2	kfzRaH	_	kfzRa	['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']	3	samuccitam
+3	ca	_	ca	['praTamAviBaktiH', 'puMlliNgam', 'dvivacanam', 'saMyojakaH', 'avyayam']	4	kartA
+4	gacCataH	_	gam	['prATamikaH', 'law', 'praTamapuruzaH', 'parasmEpadam', 'kartari', 'dvivacanam']	0	root
+
+1	arjunaH	_	arjuna	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	2	samuccitam
 2	ca	_	ca	['avyayam', 'saMyojakaH']	3	samuccitam
-3	sOmitriH	_	sOmitri	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	4	samuccitam
-4	ca	_	ca	['avyayam', 'dvivacanam', 'saMyojakaH', 'praTamAviBaktiH', 'puMlliNgam']	5	kartA
-5	gacCataH	_	gam	['dvivacanam', 'law', 'praTamapuruzaH', 'parasmEpadam', 'prATamikaH', 'kartari']	0	root
+3	BImaH	_	BIma	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	4	samuccitam
+4	ca	_	ca	['avyayam', 'saMyojakaH']	5	samuccitam
+5	kfzRaH	_	kfzRa	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	6	samuccitam
+6	ca	_	ca	['praTamAviBaktiH', 'saMyojakaH', 'bahuvacanam', 'puMlliNgam', 'avyayam']	7	kartA
+7	gacCanti	_	gam	['prATamikaH', 'parasmEpadam', 'bahuvacanam', 'kartari', 'praTamapuruzaH', 'law']	0	root
+
+1	devadattaH	_	devadatta	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	2	kartA
+2	liKati	_	liK	['kartari', 'prATamikaH', 'ekavacanam', 'law', 'parasmEpadam', 'praTamapuruzaH']	3	samuccitam
+3	ca	_	ca	['saMyojakaH', 'avyayam']	4	samuccitam
+4	paWati	_	paW	['kartari', 'prATamikaH', 'ekavacanam', 'law', 'parasmEpadam', 'praTamapuruzaH']	5	samuccitam
+5	ca	_	ca	['saMyojakaH', 'avyayam']	0	root
+
+1	arjunaH	_	arjuna	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	samuccitam
+2	kfzRaH	_	kfzRa	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	samuccitam
+3	ca	_	ca	['saMyojakaH', 'dvivacanam', 'puMlliNgam', 'avyayam', 'praTamAviBaktiH']	4	kartA
+4	gacCataH	_	gam	['dvivacanam', 'parasmEpadam', 'prATamikaH', 'kartari', 'praTamapuruzaH', 'law']	0	root
 
