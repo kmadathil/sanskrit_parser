@@ -271,6 +271,7 @@ edge_cost['upasargaH'] = 0.65
 #     edge_cost['sambadDa-'+k] = edge_cost[k]
 edge_cost['vAkyasambanDaH'] = 0.3
 # edge_cost['zazWI-sambanDa'] = 1
+edge_cost_const = ['vAkyasambanDaH', 'samuccitam']
 
 
 class VakyaGraph(object):
@@ -357,8 +358,9 @@ class VakyaGraph(object):
         bases = []
         bases.extend(laks)
         bases.extend(krts)
-        logger.debug("Adding Edges")
+        logger.debug("Processing Conjuctions")
         self.add_conjunctions(bases)  # Needs to happen before kAraka
+        logger.debug("Adding Edges")
         self.add_karakas(bases)
         self.add_samastas()
         self.add_shashthi()
@@ -539,6 +541,7 @@ class VakyaGraph(object):
                         self.G.add_edge(d, n, label="samAnakAlaH")
 
     def add_conjunctions(self, bases):
+        ''' Add samuccita links for conjunctions/disjunctions '''
         # First pass, add samuccitam edges
         for (i, s) in enumerate(self.partitions):
             for n in s:
@@ -550,7 +553,6 @@ class VakyaGraph(object):
                             logger.info(f"Adding samuccitam edge: {n,nn}")
                             self.G.add_edge(n, nn, label="samuccitam")
                             vibhakti = nn.get_vibhakti()
-                            # vacanam = nn.get_vacanam()
                             n.setTags(vibhakti)  # Keep as strings for now since we may delete this
                             logger.debug(f'Node with temporary vibhakti {n}')
                             ni = i-2
@@ -575,24 +577,69 @@ class VakyaGraph(object):
                                     break
                                 else:
                                     ni = ni - 1
+                        elif nn.node_is_a(lakaras):
+                            logger.info(f"Adding samuccitam edge: {n,nn}")
+                            self.G.add_edge(n, nn, label="samuccitam")
+                            lakara = nn.get_lakara()
+                            puruza = nn.get_purusha()
+                            vacana = nn.get_vacana()
+                            n.setTags(lakara | puruza | vacana)  # Keep as strings for now since we may delete this
+                            logger.debug(f'Node with temporary lakara {n}')
+                            ni = i-2
+                            while ni >= 0:
+                                ppset = self.partitions[ni]
+                                isconj = False
+                                for nnn in ppset:
+                                    # logger.info(f'Node in partition {ni} {nnn}')
+                                    if (nnn.get_lakara() == lakara) and match_purusha_vacana(nnn, nn):
+                                        # if further previous node is the same conjunction, add samuccitam to that and stop
+                                        if (ni == (i-2)) and nnn.node_is_a(avyaya) and _get_base(n) == _get_base(nnn):
+                                            logger.info(f"Adding samuccitam edge to conj/disjunction: {nn,nnn}")
+                                            self.G.add_edge(nn, nnn, label="samuccitam")
+                                            isconj = True
+                                        elif not ((_get_base(nnn) in conjunctions) or (_get_base(nnn) in disjunctions)):
+                                            # Else, If further previous nodes are the same vibhakti, add samuccitam to those
+                                            logger.info(f"Adding samuccitam edge to similar lakara: {n,nnn}")
+                                            self.G.add_edge(n, nnn, label="samuccitam")
+                                # Force exit from while loop if we hit another conjuction/disjunction
+                                # FIXME: unclear how to handle the case where ca/uta/vA can refer to objects (sattva), ignoring
+                                if isconj:
+                                    break
+                                else:
+                                    ni = ni - 1
 
         # Second pass, remove vibhaktis
         for (i, s) in enumerate(self.partitions):
             for n in s:
                 if n.node_is_a(avyaya) and ((_get_base(n) in conjunctions) or (_get_base(n) in disjunctions)):
-                    v = n.get_vibhakti()  # We would have set a vibhakti string
+                    # We would have set a vibhakti or lakara string
+                    v = n.get_vibhakti()
+                    lk = n.get_lakara()
+                    vc = n.get_vacana()
+                    p = n.get_purusha()
                     for e in self.G.in_edges(n, data=True):  # Note: keys=False
                         if e[2]['label'] == 'samuccitam':
-                            logger.debug(f'removing vibhakti {v} from {n}')
-                            n.deleteTags(v)
-                            logger.debug(f'removed  vibhakti {v} from {n}')
-                    if n.node_is_a(v):  # Still there!
+                            if v:
+                                logger.debug(f'removing vibhakti {v} from {n}')
+                                n.deleteTags(v)
+                                logger.debug(f'removed  vibhakti {v} from {n}')
+                            if lk:
+                                logger.debug(f'removing lakara {lk | vc | p} from {n}')
+                                n.deleteTags(lk | vc | p)
+                                logger.debug(f'removed  lakara {lk | vc | p} from {n}')
+                    # Still there!
+                    if lk and n.node_is_a(lk):  # Lakara need not be set
+                        # logger.info(f'Node before lakara locked {n}')
+                        n.deleteTags(lk | vc | p | v)
+                        # n.setTags(set([SanskritObject(_v, SLP1) for _v in list(lk | vc | p)]))
+                        logger.info(f'Node with lakara removed {n}')
+                    elif v and n.node_is_a(v):
                         n.deleteTags(v)
                         n.setTags(set([SanskritObject(_v, SLP1) for _v in list(v)]))
                         logger.info(f'Node with vibhakti locked {n}')
                         # Compute vacanam and lingam: Conjunctions
                         is_conj = (_get_base(n) in conjunctions)
-                        vacana = 'ekavacanam'
+                        vacana = ''
                         linga = 'strIliNgam'
 
                         def _vacana(v1, v2, is_conj=True):
@@ -620,13 +667,17 @@ class VakyaGraph(object):
                                 return 'strIliNgam'
 
                         # Depth first (we only get samuccitam edges)
-                        for s in nx.dfs_successors(self.G, source=n):
-                            _v = s.get_vacana()
-                            _l = s.get_linga()
-                            if _v:
-                                vacana = _vacana(vacana, list(_v)[0], is_conj)
-                            if _l:
-                                linga = _linga(linga, list(_l)[0])
+                        for (nn, sl) in nx.dfs_successors(self.G, source=n).items():
+                            for s in sl:
+                                logger.info(f'DFS {s} from {nn} root {n}')
+                                _v = s.get_vacana()
+                                _l = s.get_linga()
+                                if vacana == '':
+                                    vacana = list(_v)[0]
+                                elif _v:
+                                    vacana = _vacana(vacana, list(_v)[0], is_conj)
+                                if _l:
+                                    linga = _linga(linga, list(_l)[0])
                         n.setTags({SanskritObject(vacana, SLP1), SanskritObject(linga, SLP1)})
                         logger.info(f'Node with vacana/linga locked {n}')
 
@@ -952,6 +1003,10 @@ class VakyaGraphNode(object):
         ''' Get Node vacana '''
         return self.getNodeTagset().intersection(vibhaktis)
 
+    def get_lakara(self):
+        ''' Get Node vacana '''
+        return self.getNodeTagset().intersection(lakaras)
+
     def get_vacana(self):
         ''' Get Node vacana '''
         return self.getNodeTagset().intersection(vacanas)
@@ -1173,8 +1228,11 @@ def _order_parses(pu):
         w = 0
         # Multigraph (keys=False)
         for (u, v, l) in parse.edges(data='label'):
-            # Abs Edge length times edge_type cost
-            _w = abs(u.index - v.index) * edge_cost[l]
+            if l in edge_cost_const:
+                _w = edge_cost[l]
+            else:
+                # Abs Edge length times edge_type cost
+                _w = abs(u.index - v.index) * edge_cost[l]
             if u.node_is_a(lakaras):
                 # Lakaras are preferred
                 _w = 0.9 * _w
@@ -1196,7 +1254,7 @@ def _check_parse(parse):
     sk = defaultdict(int)
     vsmbd = {}
     conj = defaultdict(lambda: {"from": 0, "to": 0})
-    sckeys = set(sentence_conjunctions.keys()) | conjunctions | disjunctions
+    sckeys = set(sentence_conjunctions.keys())
 
     # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
@@ -1265,7 +1323,7 @@ def _check_parse(parse):
     # Conjugations have to have one to and from edge
     for u in conj:
         if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
-            logger.info(f"Samyojaka violation for {u.index} {conj[u]}")
+            logger.debug(f"Samyojaka violation for {u.index} {conj[u]}")
             return False
     return r
 
