@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 
-Usage
-======
+Code Usage
+----------
 
 The ``Parser`` class can be used to generate vakya parses thus:
 
 .. code-block:: python
 
-        from itertools import islice
         from sanskrit_parser import Parser
         string = "astyuttarasyAMdiSi"
         input_encoding = "SLP1"
@@ -41,7 +40,6 @@ This produces the output::
     uttarasyAm => (uttara#2, ['saptamIviBaktiH', 'strIliNgam', 'ekavacanam']) : viSezaRa of diSi
     diSi => (diS, ['saptamIviBaktiH', 'ekavacanam', 'strIliNgam']) : aDikaraRam of asti
 
-@author: avinashvarna
 """
 
 import time

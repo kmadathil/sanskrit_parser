@@ -99,7 +99,9 @@
                                             <span class="n">limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span>
                                             <span class="n">pre_segmented</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">pre_segmented</span><span class="p">)):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sandhi Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">pi</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">min_cost_only</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">min_cost</span><span class="p">)):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Min cost only </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">min_cost</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pi</span><span class="p">,</span> <span class="n">parse</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">999</span><span class="p">,</span>
+                                               <span class="n">min_cost_only</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">min_cost</span><span class="p">)):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parse </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s1"> : (Cost = </span><span class="si">{</span><span class="n">parse</span><span class="o">.</span><span class="n">cost</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
@@ -294,11 +296,10 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_api.html">api</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_cmd_line.html">cmd_line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_parser.html">parser</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_base.html">base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_util.html">util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_doc.html">Documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sanskrit_parser_code.html">Code</a></li>
 </ul>
 
 <div class="relations">

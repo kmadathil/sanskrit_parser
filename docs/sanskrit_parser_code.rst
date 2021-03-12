@@ -1,10 +1,12 @@
-api
-=========================================
+Code
+========================================
+
+.. automodule:: sanskrit_parser
 
 .. automodule:: sanskrit_parser.api
   :members:
-  :undoc-members:
   :show-inheritance:
+
 
 Indices and tables
 ------------------

@@ -1,6 +1,6 @@
 """
-Introduction
-===========
+Parser
+==========
 
 Sanskrit parser is a python library to help parse Sanskrit input
 
@@ -9,11 +9,13 @@ It provides three main levels of output, in order of increasing complexity:
   2. *sandhi* - Sandhi Split of a phrase
   3. *vakya* - Morpho-syntactic Analysis of a sentence (after Sandhi split)
 
-This project is still under development. Please report any issues `here
-<https://github.com/kmadathil/sanskrit_parser/issues>`_.
+
+Code resides at: https://github.com/kmadathil/sanskrit_parser/
+
+Please report any issues at: https://github.com/kmadathil/sanskrit_parser/issues
 
 Command line usage
-==================
+------------------
 
 The ``sanskrit_parser`` script can be used to view parses, sandhi splits,
 or morphological tags as below.
@@ -81,6 +83,11 @@ as ``_parse.dot`` files
     ('hari', {ekavacanam, strIliNgam, paYcamIviBaktiH})
     ('hari', {zazWIviBaktiH, ekavacanam, puMlliNgam})
     ('hari', {zazWIviBaktiH, ekavacanam, strIliNgam})
+
+Use as a Library
+-----------------
+
+An `example python notebook <https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb>`_ is available, which can be launched on `Binder <https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb>`_ 
 
 """
 from .api import Parser
