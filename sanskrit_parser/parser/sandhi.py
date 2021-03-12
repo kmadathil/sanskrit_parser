@@ -99,18 +99,14 @@ Command line usage
 
 """
 
-from __future__ import print_function
-from collections import defaultdict
 import itertools
-import codecs
 import os
-import re
-import inspect
+import pickle
 import logging
 import datetime
-import six
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SanskritNormalizedString, SLP1, SCHEMES, outputctx
-from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
+import importlib.resources
+from zipfile import ZipFile
+from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SCHEMES, outputctx
 
 
 class Sandhi(object):
@@ -127,36 +123,30 @@ class Sandhi(object):
         :param use_default_rules: reads pre-built-rules from sandhi_rules dir under module directory
         :param logger: instance of python logger to use
         """
-        self.forward = defaultdict(set)
-        self.backward = defaultdict(set)
-        self.lc_len_max = 0
-        self.rc_len_max = 0
-        self.after_len_max = 0
+        self.forward = None
+        self.backward = None
         self.logger = logger or logging.getLogger(__name__)
-        if rules_dir:
-            self.add_rules_from_dir(rules_dir)
-        if use_default_rules:
-            base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-            self.add_rules_from_dir(os.path.join(base_dir, "sandhi_rules"))
 
-    def add_rule(self, before, after, annotation=None):
-        """
-        Adds a single sandhi rule to the rule database
+    @staticmethod
+    def _load_rules_pickle(filename):
+        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
+            zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
+            with ZipFile(zip_path) as myzip:
+                with myzip.open(filename) as f:
+                    return pickle.load(f)
 
-        :param before: tuple of length two of the varNas involved in the sandhi
-        :param after: result of the sandhi
-        """
-        self.forward[before].add((after, annotation))
-        self.backward[after].add((before, annotation))
-        if len(before[0]) > self.lc_len_max:
-            self.logger.debug("Setting lc_len_max to %d", len(before[0]))
-        if len(before[1]) > self.rc_len_max:
-            self.logger.debug("Setting rc_len_max to %d", len(before[1]))
-        if len(after) > self.after_len_max:
-            self.logger.debug("Setting after_len_max to %d", len(after))
-        self.lc_len_max = max(self.lc_len_max, len(before[0]))
-        self.rc_len_max = max(self.rc_len_max, len(before[1]))
-        self.after_len_max = max(self.after_len_max, len(after))
+    def _load_forward(self):
+        if self.forward is None:
+            self.forward = self._load_rules_pickle('sandhi_forward.pkl')
+            keys = self.forward.keys()
+            self.lc_len_max = max(len(k[0]) for k in keys)
+            self.rc_len_max = max(len(k[1]) for k in keys)
+
+    def _load_backward(self):
+        if self.backward is None:
+            self.backward = self._load_rules_pickle('sandhi_backward.pkl')
+            keys = self.backward.keys()
+            self.after_len_max = max(len(k) for k in keys)
 
     def join(self, first_in, second_in):
         """
@@ -167,6 +157,7 @@ class Sandhi(object):
         :param second_in: SanskritImmutableString word of the sandhi
         :return: list of strings of possible sandhi forms, or None if no sandhi can be performed
         """
+        self._load_forward()
         first = first_in.canonical()
         second = second_in.canonical()
         self.logger.debug("Join: {}, {}".format(first, second))
@@ -200,6 +191,7 @@ class Sandhi(object):
         :param idx: position within word at which to try the split
         :return: set of tuple of strings of possible split forms, or None if no split can be performed
         """
+        self._load_backward()
         word = word_in.canonical()
         self.logger.debug("Split: %s, %d", word, idx)
         splits = set()
@@ -242,7 +234,7 @@ class Sandhi(object):
         word = word_in.canonical()
         start = start or 0
         stop = stop or len(word)
-        for idx in six.moves.range(start, stop):
+        for idx in range(start, stop):
             split = self.split_at(word_in, idx)
             if split:
                 splits |= split
@@ -251,124 +243,6 @@ class Sandhi(object):
             return None
         else:
             return splits
-
-    def expand_rule(self, rule):
-        """
-        Expands a given sandhi rule from the rules file to generate all possible combinations
-
-        :param rule: Rule to expand
-        :return: A generator of all possible expanded rules
-        """
-        self.logger.debug("Expanding rule %s", rule)
-
-        ms = MaheshvaraSutras()
-
-        b, afters = map(six.text_type.strip, rule.split("="))
-        before = list(map(six.text_type.strip, b.split("+", 1)))
-        left_classes = re.split(r'\[(.*?)\]', before[0])
-        self.logger.debug("Left classes = %s", left_classes)
-
-        # Split after forms into individual forms
-        afters = map(six.text_type.strip, afters.split("/"))
-
-        before_left = []
-        for c in left_classes:
-            if c != '':
-                if c.startswith("*"):
-                    # This is a mAheswara sUtra pratyAhAra
-                    splits = list(map(six.text_type.strip, c.split('-')))
-                    varnas = set(ms.getPratyahara(
-                        SanskritImmutableString(splits[0][1:], encoding=SLP1),
-                        longp=False, remove_a=True, dirghas=True).canonical())
-                    if len(splits) == 2:
-                        varnas -= set(splits[1])
-                    self.logger.debug("Found pratyAhAra %s = %s", c, varnas)
-                    before_left.append(varnas)
-                else:
-                    before_left.append(map(six.text_type.strip, c.split(",")))
-        self.logger.debug("before_left iterator = %s", before_left)
-
-        right_classes = re.split(r'\[(.*?)\]', before[1])
-        # Could have used list comprehension, but this is easier to read
-        self.logger.debug("right_classes = %s", right_classes)
-        if right_classes:
-            before_right = []
-            for c in right_classes:
-                if c != '':
-                    if c.startswith("*"):
-                        # This is a mAheswara sUtra pratyAhAra
-                        splits = list(map(six.text_type.strip,
-                                          re.split('([+-])', c)))
-                        varnas = set(
-                            ms.getPratyahara(
-                                SanskritImmutableString(splits[0][1:], encoding=SLP1),
-                                longp=False, remove_a=True, dirghas=True)
-                            .canonical()
-                        )
-                        if len(splits) == 3:
-                            if splits[1] == '-':
-                                varnas -= set(splits[2])
-                            elif splits[1] == '+':
-                                varnas |= set(splits[2])
-                        self.logger.debug("Found pratyAhAra %s (%s) = %s", c, splits[0][1:], varnas)
-                        before_right.append(varnas)
-                    else:
-                        before_right.append(map(six.text_type.strip, c.split(",")))
-        else:
-            before_right = [before[1].strip()]
-        self.logger.debug("before_right iterator = %s", before_right)
-
-        for after, before_l, before_r in itertools.product(afters,
-                                                           itertools.product(*before_left),
-                                                           itertools.product(*before_right)):
-            left = ''.join(before_l)
-            right = ''.join(before_r)
-            list_before_r = list(before_r)
-            left_right = (left, right)
-            a = after.format(*(list(before_l) + list_before_r))
-            # The below is just too much logging - should be silenced in production:
-            # self.logger.debug("Final rule = %s -> %s", left_right, a)
-            yield (left_right, a)
-
-    def add_rules_from_file(self, path):
-        """
-        Add sandhi rules from file.
-        Each line of the input file should contain one rule. E.g. अ + अ = आ
-        Lines starting with a # are treated as comments and skipped.
-        Empty lines are ignored as well.
-
-        :param path: file to read rules from
-
-        See also add_rules_from_dir
-        """
-        filename = os.path.basename(path)
-        with codecs.open(path, "rb", 'utf-8') as f:
-            for linenum, line in enumerate(f):
-                line = line.strip()
-                if line.startswith('#') or line == '':
-                    continue
-                self.logger.debug("Processing rule %s", line)
-                rule = SanskritImmutableString(line).canonical()
-                for r in self.expand_rule(rule):
-                    self.add_rule(*r, annotation="%s:%d" % (filename, linenum+1))
-
-    def add_rules_from_dir(self, directory):
-        """
-        Add sandhi rules from an entire directory.
-        Reads all .txt files from the given directory and adds rules from them
-
-
-        :param directory: path to directory with rules files
-
-        See also add_rules_from_file
-        """
-        self.logger.debug("Adding rules from directory %s", directory)
-        for filename in os.listdir(directory):
-            if filename.endswith(".txt"):
-                self.logger.debug("Processing rules from file %s", filename)
-                self.add_rules_from_file(os.path.join(directory, filename))
-            else:
-                continue
 
 
 if __name__ == "__main__":

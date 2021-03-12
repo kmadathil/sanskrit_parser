@@ -1,12 +1,13 @@
-"""Intro
-======
+"""
+Introduction
+===========
 
 Sanskrit parser is a python library to help parse Sanskrit input
 
 It provides three main levels of output, in order of increasing complexity:
   1. *tags* - Morphological analysis of a word
   2. *sandhi* - Sandhi Split of a phrase
-  3. *vakya* - Morphological Analysis of a sentence (after Sandhi split)
+  3. *vakya* - Morpho-syntactic Analysis of a sentence (after Sandhi split)
 
 This project is still under development. Please report any issues `here
 <https://github.com/kmadathil/sanskrit_parser/issues>`_.
@@ -25,14 +26,16 @@ as ``_parse.dot`` files
 
 ::
 
-    $ sanskrit_parser vakya astyuttarasyAMdiSi --input SLP1 --dot vakya.dot
+    $ sanskrit_parser vakya devadattogrAmaNgacCati --input SLP1 --dot vakya.dot
     ...
-    Lexical Split: [asti, uttarasyAm, diSi]
-    ...
-    Parse 0
-    asti=>['as#1', {prATamikaH, praTamapuruzaH, kartari, ekavacanam, law}]
-    diSi=>['diS#2', {ekavacanam, strIliNgam, saptamIviBaktiH}]
-    uttarasyAm=>['uttara#1', {ekavacanam, strIliNgam, saptamIviBaktiH}]
+    Parse 0 : (Cost = 2.205)
+    devadattaH => (devadatta, ['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']) : kartA of gacCati
+    grAmam => (grAma, ['ekavacanam', 'dvitIyAviBaktiH', 'napuMsakaliNgam']) : karma of gacCati
+    gacCati => (gam, ['kartari', 'law', 'prATamikaH', 'ekavacanam', 'praTamapuruzaH', 'parasmEpadam'])
+    Parse 1 : (Cost = 2.205)
+    devadattaH => (devadatta, ['ekavacanam', 'puMlliNgam', 'praTamAviBaktiH']) : kartA of gacCati
+    grAmam => (grAma, ['ekavacanam', 'dvitIyAviBaktiH', 'puMlliNgam']) : karma of gacCati
+    gacCati => (gam, ['kartari', 'law', 'prATamikaH', 'ekavacanam', 'praTamapuruzaH', 'parasmEpadam'])
     ...
 
     $ dot -Tpng vakya_split0.dot -o vakya_split0.png

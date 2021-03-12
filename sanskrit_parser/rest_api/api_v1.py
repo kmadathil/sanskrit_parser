@@ -1,9 +1,9 @@
-from flask import Blueprint, redirect
+from flask import Blueprint
 import flask_restx
 from flask_restx import Resource
-from random import randint
-import subprocess
-from os import path
+# import subprocess
+# from os import path
+# from flask import redirect
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
@@ -87,9 +87,9 @@ class Morpho(Resource):
         else:
             splits = []
         mres = {}
-        plotbase = {}
+        dots = {}
         for sp in splits:
-            bn = f"{randint(0,9999):4}"
+            # bn = f"{randint(0,9999):4}"
             vg = VakyaGraph(sp, max_parse_dc=5)
             sl = "_".join([n.devanagari(strict_io=False)
                            for n in sp])
@@ -106,18 +106,19 @@ class Morpho(Resource):
                     else:
                         t.append(jnode(n))
                 mres[sl].append(t)
-            plotbase[sl] = bn
+            dots[sl] = {}
             try:
-                vg.write_dot(f"static/{bn}.dot")
+                dots[sl] = vg.get_dot_dict()
             except Exception:
                 pass
-        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres, "plotbase": plotbase}
+        r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres,
+             "dot": dots}
         return r
 
-    @api.route('/graph/<string:v>')
-    class Graph(Resource):
-        def get(self, v):
-            """ Get graph for v """
-            if not path.exists(f"static/{v}.dot.png"):
-                subprocess.run(f"dot -Tpng static/{v}.dot -O", shell=True)
-            return redirect(f"/static/{v}.dot.png")
+    # @api.route('/graph/<string:v>')
+    # class Graph(Resource):
+    #     def get(self, v):
+    #         """ Get graph for v """
+    #         if not path.exists(f"static/{v}.dot.png"):
+    #             subprocess.run(f"dot -Tpng static/{v}.dot -O", shell=True)
+    #         return redirect(f"/static/{v}.dot.png")

@@ -15,7 +15,6 @@ import sys
 import six
 import gensim
 import logging
-import requests
 import sentencepiece as spm
 import importlib.resources
 
@@ -45,14 +44,6 @@ class Scorer(object):
         scores = self.model.score(pieces, total_sentences=len(sentences))
         self.logger.debug("Score = %s", scores)
         return scores
-
-    def _get_file(self, local, url):
-        if not os.path.exists(local):
-            self.logger.debug("%s not found. Fetching from %s", local, url)
-            r = requests.get(url, stream=True)
-            with open(local, "wb") as fd:
-                for chunk in r.iter_content(chunk_size=128):
-                    fd.write(chunk)
 
 
 if __name__ == "__main__":

@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>sanskrit_parser.parser.sandhi_analyzer &#8212; sanskrit_parser 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sanskrit_parser.parser.sandhi_analyzer &#8212; sanskrit_parser 0.1.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -182,7 +182,32 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Got tags </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
                 <span class="n">n</span><span class="o">.</span><span class="n">setMorphologicalTags</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LexicalSandhiAnalyzer.getSandhiSplits"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">[docs]</a>    <span class="k">def</span> <span class="nf">getSandhiSplits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.preSegmented"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.preSegmented">[docs]</a>    <span class="k">def</span> <span class="nf">preSegmented</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Get a SandhiGraph for a pre-segmented sentence</span>
+
+<span class="sd">            Params:</span>
+<span class="sd">              sl (list of SanskritString): Input object</span>
+<span class="sd">              tag(Boolean)     : When True (def=False), return a</span>
+<span class="sd">                                 morphologically tagged graph</span>
+<span class="sd">            Returns:</span>
+<span class="sd">              SandhiGraph : DAG all possible splits</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="n">SandhiGraph</span><span class="p">()</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sl</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="o">.</span><span class="n">add_end_edge</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="o">.</span><span class="n">append_to_node</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">prev</span><span class="p">])</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="o">.</span><span class="n">add_roots</span><span class="p">([</span><span class="n">prev</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tagSandhiGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="o">.</span><span class="n">lock_start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span></div>
+
+<div class="viewcode-block" id="LexicalSandhiAnalyzer.getSandhiSplits"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi_analyzer.html#sanskrit_parser.parser.sandhi_analyzer.LexicalSandhiAnalyzer.getSandhiSplits">[docs]</a>    <span class="k">def</span> <span class="nf">getSandhiSplits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pre_segmented</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Get all valid Sandhi splits for a string</span>
 
 <span class="sd">            Params:</span>
@@ -192,6 +217,8 @@
 <span class="sd">            Returns:</span>
 <span class="sd">              SandhiGraph : DAG all possible splits</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">pre_segmented</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">preSegmented</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_scoreboard</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># Transform to internal canonical form</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">canonical</span><span class="p">()</span>
@@ -465,10 +492,10 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017-2019, sanskrit-programmers.
+      &copy;2017-2021, sanskrit-programmers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

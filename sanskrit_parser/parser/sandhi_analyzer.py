@@ -149,7 +149,32 @@ class LexicalSandhiAnalyzer(object):
                 logger.debug("Got tags %s for %s", t, n)
                 n.setMorphologicalTags(t)
 
-    def getSandhiSplits(self, o, tag=False):
+    def preSegmented(self, sl, tag=False):
+        ''' Get a SandhiGraph for a pre-segmented sentence
+
+            Params:
+              sl (list of SanskritString): Input object
+              tag(Boolean)     : When True (def=False), return a
+                                 morphologically tagged graph
+            Returns:
+              SandhiGraph : DAG all possible splits
+        '''
+        self.sentence = SandhiGraph()
+        prev = None
+        for s in sl[::-1]:
+            self.sentence.add_node(s)
+            if prev is None:
+                self.sentence.add_end_edge(s)
+            else:
+                self.sentence.append_to_node(s, [prev])
+            prev = s
+        self.sentence.add_roots([prev])
+        if tag:
+            self.tagSandhiGraph(self.sentence)
+        self.sentence.lock_start()
+        return self.sentence
+
+    def getSandhiSplits(self, o, tag=False, pre_segmented=False):
         ''' Get all valid Sandhi splits for a string
 
             Params:
@@ -159,6 +184,8 @@ class LexicalSandhiAnalyzer(object):
             Returns:
               SandhiGraph : DAG all possible splits
         '''
+        if pre_segmented:
+            return self.preSegmented(o, tag)
         self.dynamic_scoreboard = {}
         # Transform to internal canonical form
         s = o.canonical()

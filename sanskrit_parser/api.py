@@ -16,16 +16,13 @@ The ``Parser`` class can be used to generate vakya parses thus:
         parser = Parser(input_encoding=input_encoding,
                         output_encoding=output_encoding,
                         replace_ending_visarga='s')
-        parse_result = parser.parse(string)
-        if parse_result is not None:
-            print('Splits:')
-            for split in parse_result.splits(max_splits=10):
-                print(f'Lexical Split: {split}')
-                for i, parse in enumerate(islice(split.parses(), 3)):
-                    print(f'Parse {i}')
-                    print(f'{parse}')
-        else:
-            print('No splits found.  Please check the input to ensure there are no typos.')
+        print('Splits:')
+        for split in parser.split(string, limit=10):
+            print(f'Lexical Split: {split}')
+            for i, parse in enumerate(split.parse(limit=2)):
+                print(f'Parse {i}')
+                print(f'{parse}')
+            break
 
 
 This produces the output::
@@ -57,7 +54,6 @@ from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph, VakyaGraphNode
-from sanskrit_parser.parser.datastructures import SandhiGraph
 import logging
 
 logger = logging.getLogger(__name__)
@@ -97,49 +93,66 @@ class Parser():
         self.split_above = split_above
         self.replace_ending_visarga = replace_ending_visarga
         self.fast_merge = fast_merge
+        self.sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup)
 
-    def parse(self,
+    def _maybe_pre_segment(self, input_string: str, pre_segmented: bool
+                           ):
+        ''' Pre-process pre-segmented input if necessary '''
+        if not pre_segmented:
+            s = SanskritNormalizedString(input_string,
+                                         encoding=self.input_encoding,
+                                         strict_io=self.strict_io,
+                                         replace_ending_visarga=self.replace_ending_visarga)
+            logger.info(f"Input String in SLP1: {s.canonical()}")
+            return s
+        else:
+            logger.debug("Pre-Segmented")
+            s = []
+            for seg in input_string.split(" "):
+                o = SanskritObject(seg,
+                                   encoding=self.input_encoding,
+                                   strict_io=self.strict_io,
+                                   replace_ending_visarga='r')
+                ts = self.sandhi_analyzer.getMorphologicalTags(o, tmap=True)
+                if ts is None:
+                    # Possible sakaranta
+                    # Try by replacing end visarga with 's' instead
+                    o = SanskritObject(seg,
+                                       encoding=self.input_encoding,
+                                       strict_io=self.strict_io,
+                                       replace_ending_visarga='s')
+                    ts = self.sandhi_analyzer.getMorphologicalTags(o, tmap=True)
+                if ts is None:
+                    logger.warning(f"Unknown pada {seg} - will be split")
+                    _s = list(self.split(seg, pre_segmented=False, limit=1))[0]
+                    logger.info(f"Split {_s}")
+                    s.extend(_s.split)
+                    if _s is None:
+                        logger.warning(f"Unknown pada {seg} - cannot be split")
+                else:
+                    s.append(o)
+            logger.info(f"Input String in SLP1: {' '.join([x.canonical() for x in s])}")
+            return s
+
+    def split(self,
               input_string: str,
+              limit: int = 10,
+              pre_segmented: bool = False,
               ):
-        s = SanskritNormalizedString(input_string,
-                                     encoding=self.input_encoding,
-                                     strict_io=self.strict_io,
-                                     replace_ending_visarga=self.replace_ending_visarga)
-        logger.info(f"Input String in SLP1: {s.canonical()}")
-        sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup)
+        s = self._maybe_pre_segment(input_string, pre_segmented)
         logger.debug("Start Split")
-        graph = sandhi_analyzer.getSandhiSplits(s, tag=True)
+        graph = self.sandhi_analyzer.getSandhiSplits(s, tag=True,
+                                                     pre_segmented=pre_segmented)
         logger.debug("End DAG generation")
         if graph is None:
             warnings.warn("No splits found. Please check the input to ensure there are no typos.")
             return None
-        return ParseResult(self, input_string, graph)
-
-
-@dataclass
-class ParseResult(Serializable):
-    parser: Parser
-    input_string: str
-    sandhi_graph: SandhiGraph
-
-    def __str__(self):
-        return f"ParseResult('{self.input_string}')"
-
-    def splits(self, max_splits: int = 10):
-        split_results = self.sandhi_graph.find_all_paths(max_paths=max_splits,
-                                                         sort=True,
-                                                         score=self.parser.score)
-        logger.debug("End pathfinding")
-        logger.debug("Splits:")
-        for split in split_results:
-            logger.debug(f"Lexical Split: {split}")
-            yield Split(self.parser, self.input_string, split)
-
-    def serializable(self):
-        return list(self.splits(10))
-
-    def write_dot(self, basepath):
-        self.sandhi_graph.write_dot(basepath)
+        else:
+            splits = graph.find_all_paths(max_paths=limit,
+                                          sort=True,
+                                          score=self.score)
+            return [Split(self, input_string, split)
+                    for split in splits]
 
 
 @dataclass
@@ -158,13 +171,16 @@ class Split(Serializable):
         out = [t.transcoded(encoding, strict_io) for t in self.split]
         return str(out)
 
-    def parses(self):
+    def parse(self, limit=10, min_cost_only=False):
         self.vgraph = VakyaGraph(self.split,
                                  fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
-        for (ix, parse_graph) in enumerate(self.vgraph.parses):
-            logger.debug(f"Parse {ix}, Cost {self.vgraph.parse_costs[ix]}")
-            yield Parse(self, parse_graph, self.vgraph.parse_costs[ix])
+        parses = self.vgraph.parses[:limit]
+        costs = self.vgraph.parse_costs[:limit]
+        min_cost = min(costs) if len(costs) else 0
+        if min_cost_only:
+            parses = [x for x, cost in zip(parses, costs) if cost == min_cost]
+        return [Parse(self, parse, cost) for parse, cost in zip(parses, costs)]
 
     def write_dot(self, basepath):
         self.vgraph.write_dot(basepath)
@@ -174,7 +190,7 @@ class Split(Serializable):
         encoding = self.parser.output_encoding
         out = [t.transcoded(encoding, strict_io) for t in self.split]
         return {'split': out,
-                'parses': list(self.parses())
+                'parses': list(self.parse())
                 }
 
 
@@ -199,6 +215,7 @@ class ParseNode(Serializable):
         self.parse_tag = ParseTag(tag[0].transcoded(encoding, strict_io),
                                   [t.transcoded(encoding, strict_io) for t in tag[1]]
                                   )
+        self.index = node.index
 
     def __str__(self):
         return f'{self.pada} => {self.parse_tag}'
@@ -211,12 +228,12 @@ class ParseNode(Serializable):
 
 @dataclass
 class ParseEdge(Serializable):
-    predecessor: str
+    predecessor: ParseNode
     node: ParseNode
     label: str
 
     def __str__(self):
-        return f'{self.node} : {self.label} of {self.predecessor}'
+        return f'{self.node} : {self.label} of {self.predecessor.pada}'
 
     def serializable(self):
         return {'node': self.node,
@@ -239,7 +256,8 @@ class Parse(Serializable):
                 # Multigraph
                 # Ugh - surely this can be better
                 lbl = list(parse_graph[pred][n].values())[0]['label']
-                edge = ParseEdge(pred.pada.transcoded(encoding, strict_io),
+                pred_node = ParseNode(pred, strict_io, encoding)
+                edge = ParseEdge(pred_node,
                                  node,
                                  SanskritString(lbl, encoding=SLP1).transcoded(encoding, strict_io)
                                  )
@@ -248,9 +266,33 @@ class Parse(Serializable):
                 graph.append(node)
         self.graph = graph
         self.cost = cost
+        self.parse_graph = parse_graph
 
     def __str__(self):
         return '\n'.join([str(t) for t in self.graph])
+
+    def __iter__(self):
+        return iter(self.graph)
+
+    def to_conll(self):
+        r = []
+        for t in self.graph:
+            if isinstance(t, ParseNode):
+                r.append([str(t.index+1), str(t.pada), "_",
+                          str(t.parse_tag.root), str(t.parse_tag.tags),
+                          "0", "root"])
+            else:
+                r.append([str(t.node.index+1), str(t.node.pada), "_",
+                          str(t.node.parse_tag.root), str(t.node.parse_tag.tags),
+                          str(t.predecessor.index+1), str(t.label)])
+        return r
+
+    def to_dot(self):
+        from io import StringIO
+        import networkx as nx
+        s = StringIO()
+        nx.drawing.nx_pydot.write_dot(self.parse_graph, s)
+        return s.getvalue()
 
     def serializable(self):
         return {'graph': self.graph}
@@ -260,14 +302,12 @@ if __name__ == "__main__":
     start_time = time.time()
 
     def api_example(string, output_encoding):
-        from itertools import islice
         parser = Parser(output_encoding=output_encoding,
                         replace_ending_visarga='s')
-        parse_result = parser.parse(string)
         print('Splits:')
-        for split in parse_result.splits(max_splits=10):
+        for split in parser.split(string, limit=10):
             print(f'Lexical Split: {split}')
-            for i, parse in enumerate(islice(split.parses(), 2)):
+            for i, parse in enumerate(split.parse(limit=2)):
                 print(f'Parse {i}')
                 print(f'{parse}')
             break

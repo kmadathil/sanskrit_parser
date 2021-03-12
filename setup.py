@@ -27,7 +27,7 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='0.1.1',
+  version='0.2.2',
 
   description='Tools for lexical and morphological analysis of Sanskrit',
   long_description=long_description,
@@ -83,18 +83,18 @@ setup(
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
   install_requires=['indic_transliteration!=1.9.5,!=1.9.6', 'lxml', 'networkx', 'tinydb',
-                    'requests', 'six', 'flask', 'flask_restx', 'flask_cors',
+                    'six', 'flask', 'flask_restx', 'flask_cors',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy',
-                    'sentencepiece', 'gensim', 'pydot'],
+                    'sentencepiece', 'gensim', 'pydot', 'pandas', 'xlrd'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,
   # for example:
   # $ pip install -e .[dev,test]
-  # extras_require={
+  extras_require={
   #     'dev': ['check-manifest'],
-  #     'test': ['coverage'],
-  # },
+  #     'test': ['pandas', 'xlrd'],
+  },
 
   # If there are data files included in your packages that need to be
   # installed, specify them here.  If using Python 2.6 or less, then these
