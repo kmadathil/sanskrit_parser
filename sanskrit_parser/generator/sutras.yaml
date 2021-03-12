@@ -854,6 +854,7 @@
   xform:
      l: kutva(l)
 
+#324: हो ढः (8-2-31)
 - sutra: हो ढः
   id: 8.2.31
   condition:
@@ -2841,7 +2842,11 @@
      lp: ?!pratyaya
   update:
      olp: +aNga
-     
+
+# Handled elsewhere
+
+# 323: एच इग्घ्रस्वादेशे (1-1-48) - hrasva() of paribhasha.py
+
 
 # Skipping for now
 
