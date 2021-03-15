@@ -8,7 +8,22 @@ https://github.com/pypa/sampleproject
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
+
 from os import path
+import codecs
+
+def read(rel_path):
+    here = path.abspath(path.dirname(__file__))
+    with codecs.open(path.join(here, rel_path), 'r') as fp:
+        return fp.read()
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
 here = path.abspath(path.dirname(__file__))
 
@@ -27,8 +42,8 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='0.2.2-post0',
-
+  # version='0.2.2-post0',
+    version=get_version("sanskrit_parser/__init__.py"),
   description='Tools for lexical and morphological analysis of Sanskrit',
   long_description=long_description,
 
