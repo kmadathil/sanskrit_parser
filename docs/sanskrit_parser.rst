@@ -5,7 +5,7 @@ Contents
 ------------------------
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 3
 
   sanskrit_parser_doc
 

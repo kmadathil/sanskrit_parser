@@ -88,7 +88,9 @@ as ``_parse.dot`` files
 Use as a Library
 -----------------
 
-An `example python notebook <https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb>`_ is available, which can be launched on `Binder <https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb>`_ 
+An `example python notebook <https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb>`_ is available.
+
+It can be directly launched on `Binder <https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb>`_
 
 """
 from .api import Parser

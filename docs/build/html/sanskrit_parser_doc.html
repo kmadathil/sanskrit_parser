@@ -61,12 +61,34 @@ combination of open source data from the <a class="reference external" href="htt
 the <a class="reference external" href="https://gitlab.inria.fr/huet/Heritage_Resources">Sanskrit Heritage project of INRIA</a>.</p>
 <p>This will be eventually replaced by our own Paninian Pada generator when that
 is complete.</p>
+<div class="section" id="sandhi-rules">
+<h3>Sandhi Rules<a class="headerlink" href="#sandhi-rules" title="Permalink to this headline">¶</a></h3>
+<p>Paninian Sandhi rules have been implemented as a set of matching rules
+which define how sandhi transformations work.</p>
+<p>For example the famous इको यणचि (६.१.७७) rule is implemented thus</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># यण्-सन्धिः
+# इको यणचि (६.१.७७)
+[*हल्][इ, ई] + [*अच् - इई][*हल्+ं] = {0}य्{2}{3}
+[*हल्][उ, ऊ] + [*अच् - उऊ][*हल्+ं] = {0}व्{2}{3}
+[*हल्][ऋ, ॠ] + [*अच् -ऋॠऌ][*हल्+ं] = {0}र्{2}{3}
+[*हल्][ऌ]+ [*अच् -ऋॠऌ][*हल्+ं] = {0}ल्{2}{3}
+</pre></div>
+</div>
+<p>Since these rules are defined in terms of Paninian pratyaharas such as
+<code class="docutils literal notranslate"><span class="pre">[*हल्]</span></code>, these are internally expanded into multiple sub-rules. Each
+subrule will end up with a defined sequence of characters on its right
+hand side.</p>
+<p>If a substring match with exactly that sequence is found,
+then the left hand side of the same subrule, suitably extended by the
+substring prefix and suffix is output as a possible split.</p>
+<p>At this stage, we do not worry about whether the strings output are valid.</p>
+</div>
 <div class="section" id="algorithm-for-sandhi-split">
 <h3>Algorithm for Sandhi Split<a class="headerlink" href="#algorithm-for-sandhi-split" title="Permalink to this headline">¶</a></h3>
 <p>We use a dynamic programming (memoized) algorithm to determine all possible
-valid sandhi splits for a string.</p>
+<strong>valid</strong> sandhi splits for a string.</p>
 <ol class="arabic simple">
-<li><p>Given a string, we scan it from left to right, and generate a list of all possible splits at each point as determined by our library of sandhi rules.</p></li>
+<li><p>Given a string, we scan it from left to right, and generate a list of all possible splits at each point (as defined in the previous section) as determined by our library of sandhi rules.</p></li>
 <li><p>If the left hand split is a valid sanskrit word, we recursively split the right hand split using the same algorithm.</p>
 <ol class="arabic simple">
 <li><p>This split is memoized as is expected in a dynamic programming algorithm</p></li>
@@ -76,7 +98,7 @@ valid sandhi splits for a string.</p>
 </ol>
 <p>For example, the string “अहङ्गच्छामि” results in the following DAG</p>
 <img alt="_images/aham_gacCAmi.png" src="_images/aham_gacCAmi.png" />
-<p><em>all graphs in this document have Sanskrit text encoded in SLP1_ format except if otherwise stated</em></p>
+<p>All graphs in this document have Sanskrit text encoded in <a class="reference external" href="https://en.wikipedia.org/wiki/SLP1">SLP1</a> format except if otherwise stated</p>
 <p>From this graph, each path between the beginning and the end nodes is a valid segmentation. When enumerating segmentations, we have two options</p>
 <ol class="arabic simple">
 <li><p>Prioritize paths with fewer number of words</p></li>
@@ -106,7 +128,11 @@ valid sandhi splits for a string.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sandhi-split-segmentation">Sandhi Split / Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sandhi-split-segmentation">Sandhi Split / Segmentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sandhi-rules">Sandhi Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-for-sandhi-split">Algorithm for Sandhi Split</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

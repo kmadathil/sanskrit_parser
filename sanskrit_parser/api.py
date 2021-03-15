@@ -136,7 +136,7 @@ class Parser():
               input_string: str,
               limit: int = 10,
               pre_segmented: bool = False,
-              dot_file = None,
+              dot_file=None,
               ):
         s = self._maybe_pre_segment(input_string, pre_segmented)
         logger.debug("Start Split")
