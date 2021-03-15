@@ -64,6 +64,7 @@ def vakya(argv=None):
     logger.debug('Splits:')
     for si, split in enumerate(parser.split(args.data,
                                             limit=args.max_paths,
+                                            dot_file=args.dot_file,
                                             pre_segmented=args.pre_segmented)):
         logger.info(f'Sandhi Split: {split}')
         logger.info(f'Min cost only {args.min_cost}')
@@ -123,6 +124,7 @@ def getSandhiArgs(argv=None):
                         help="Do not modify the input/output string to match conventions", default=False)
     parser.add_argument('--no-score', dest="score", action='store_false',
                         help="Use the lexical scorer to score the splits and reorder them")
+    parser.add_argument('--dot-file', type=str, default=None, help='Dotfile')
     return parser.parse_args(argv)
 
 
@@ -142,6 +144,7 @@ def sandhi(argv=None):
     logger.debug('Splits:')
     for si, split in enumerate(parser.split(args.data,
                                             limit=args.max_paths,
+                                            dot_file=args.dot_file,
                                             pre_segmented=args.pre_segmented)):
         logger.info(f'Split: {split}')
     return None

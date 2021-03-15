@@ -136,6 +136,7 @@ class Parser():
               input_string: str,
               limit: int = 10,
               pre_segmented: bool = False,
+              dot_file = None,
               ):
         s = self._maybe_pre_segment(input_string, pre_segmented)
         logger.debug("Start Split")
@@ -146,6 +147,8 @@ class Parser():
             warnings.warn("No splits found. Please check the input to ensure there are no typos.")
             return None
         else:
+            if dot_file is not None:
+                graph.write_dot(dot_file)
             splits = graph.find_all_paths(max_paths=limit,
                                           sort=True,
                                           score=self.score)

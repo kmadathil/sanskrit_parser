@@ -750,8 +750,7 @@ class VakyaGraph(object):
         ''' Add sentence conjunction links
 
         For all nodes which match sentence_conjuction keys
-        add vAkyasambanDaH link between y-t pair
-              - if vibhakti matches where relevant
+        add vAkyasambanDaH link between y-t pair (if vibhakti matches where relevant)
         Reverse all edges to node, add sambadDa- to link label (eg sambadDa-karma, if node is not vIpsa
         if node is saMyojakaH, and not vIpsA add saMbadDakriyA links to verbs
         if associated t* doesn't exist vAkyasambanDaH links from verbs

@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Code" href="sanskrit_parser_code.html" />
-    <link rel="prev" title="sanskrit_parser’s documentation" href="sanskrit_parser.html" />
+    <link rel="prev" title="sanskrit_parser documentation" href="sanskrit_parser.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -51,6 +51,39 @@ well as providing basic command line and web user interfaces for basic tasks.</p
 </li>
 </ul>
 </div>
+<div class="section" id="sandhi-split-segmentation">
+<h2>Sandhi Split / Segmentation<a class="headerlink" href="#sandhi-split-segmentation" title="Permalink to this headline">¶</a></h2>
+<p>Given a phrase, the goal is to be able to generate all valid
+segmentations (sandhi splits) such that each segment is a valid
+Sanskrit word (pada).</p>
+<p>For this, we first need a pada dictionary. We currently use a
+combination of open source data from the <a class="reference external" href="https://github.com/avinashvarna/sanskrit_forms">sanskrit_data</a> project and
+the <a class="reference external" href="https://gitlab.inria.fr/huet/Heritage_Resources">Sanskrit Heritage project of INRIA</a>.</p>
+<p>This will be eventually replaced by our own Paninian Pada generator when that
+is complete.</p>
+<div class="section" id="algorithm-for-sandhi-split">
+<h3>Algorithm for Sandhi Split<a class="headerlink" href="#algorithm-for-sandhi-split" title="Permalink to this headline">¶</a></h3>
+<p>We use a dynamic programming (memoized) algorithm to determine all possible
+valid sandhi splits for a string.</p>
+<ol class="arabic simple">
+<li><p>Given a string, we scan it from left to right, and generate a list of all possible splits at each point as determined by our library of sandhi rules.</p></li>
+<li><p>If the left hand split is a valid sanskrit word, we recursively split the right hand split using the same algorithm.</p>
+<ol class="arabic simple">
+<li><p>This split is memoized as is expected in a dynamic programming algorithm</p></li>
+</ol>
+</li>
+<li><p>The result of this algorithm is a DAG (Directed Acyclic Graph) that represents all sandhi splits of the input string into valid words. <em>Note that each split does not need to correspond to a valid sentence (vAkya) at this stage</em>.</p></li>
+</ol>
+<p>For example, the string “अहङ्गच्छामि” results in the following DAG</p>
+<img alt="_images/aham_gacCAmi.png" src="_images/aham_gacCAmi.png" />
+<p><em>all graphs in this document have Sanskrit text encoded in SLP1_ format except if otherwise stated</em></p>
+<p>From this graph, each path between the beginning and the end nodes is a valid segmentation. When enumerating segmentations, we have two options</p>
+<ol class="arabic simple">
+<li><p>Prioritize paths with fewer number of words</p></li>
+<li><p>Prioritize paths with a lower score (default). This uses a word2vec based scoring approach</p></li>
+</ol>
+</div>
+</div>
 </div>
 
 
@@ -73,6 +106,7 @@ well as providing basic command line and web user interfaces for basic tasks.</p
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sandhi-split-segmentation">Sandhi Split / Segmentation</a></li>
 </ul>
 </li>
 </ul>
@@ -84,7 +118,7 @@ well as providing basic command line and web user interfaces for basic tasks.</p
 <h3>Related Topics</h3>
 <ul>
   <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
-      <li>Previous: <a href="sanskrit_parser.html" title="previous chapter">sanskrit_parser’s documentation</a></li>
+      <li>Previous: <a href="sanskrit_parser.html" title="previous chapter">sanskrit_parser documentation</a></li>
       <li>Next: <a href="sanskrit_parser_code.html" title="next chapter">Code</a></li>
   </ul></li>
 </ul>
