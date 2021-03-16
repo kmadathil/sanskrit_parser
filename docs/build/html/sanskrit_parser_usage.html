@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage &#8212; sanskrit_parser 0.1.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tests" href="sanskrit_parser_tests.html" />
+    <link rel="prev" title="Documentation" href="sanskrit_parser_doc.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="command-line-usage">
+<h2>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sanskrit_parser</span></code> script can be used to view parses, sandhi splits,
+or morphological tags as below.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">--dot</span></code> option is provided, a graph is output in <code class="docutils literal notranslate"><span class="pre">.dot</span></code> fomat with
+all the possible morphologies as nodes, and possible relations as
+edges. The valid parses extracted from this graph are also written out
+as <code class="docutils literal notranslate"><span class="pre">_parse.dot</span></code> files</p>
+<dl class="simple">
+<dt>It provides three main levels of output, in order of increasing complexity:</dt><dd><ol class="arabic simple">
+<li><p><em>tags</em> - Morphological analysis of a word</p></li>
+<li><p><em>sandhi</em> - Sandhi Split of a phrase</p></li>
+<li><p><em>vakya</em> - Morpho-syntactic Analysis of a sentence (after Sandhi split)</p></li>
+</ol>
+</dd>
+</dl>
+<div class="section" id="vakya-analysis">
+<h3>Vakya Analysis<a class="headerlink" href="#vakya-analysis" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser vakya devadattogrAmaNgacCati --input SLP1 --dot vakya.dot
+...
+Parse 0 : (Cost = 2.205)
+devadattaH =&gt; (devadatta, [&#39;ekavacanam&#39;, &#39;puMlliNgam&#39;, &#39;praTamAviBaktiH&#39;]) : kartA of gacCati
+grAmam =&gt; (grAma, [&#39;ekavacanam&#39;, &#39;dvitIyAviBaktiH&#39;, &#39;napuMsakaliNgam&#39;]) : karma of gacCati
+gacCati =&gt; (gam, [&#39;kartari&#39;, &#39;law&#39;, &#39;prATamikaH&#39;, &#39;ekavacanam&#39;, &#39;praTamapuruzaH&#39;, &#39;parasmEpadam&#39;])
+Parse 1 : (Cost = 2.205)
+devadattaH =&gt; (devadatta, [&#39;ekavacanam&#39;, &#39;puMlliNgam&#39;, &#39;praTamAviBaktiH&#39;]) : kartA of gacCati
+grAmam =&gt; (grAma, [&#39;ekavacanam&#39;, &#39;dvitIyAviBaktiH&#39;, &#39;puMlliNgam&#39;]) : karma of gacCati
+gacCati =&gt; (gam, [&#39;kartari&#39;, &#39;law&#39;, &#39;prATamikaH&#39;, &#39;ekavacanam&#39;, &#39;praTamapuruzaH&#39;, &#39;parasmEpadam&#39;])
+...
+</pre></div>
+</div>
+<p>To view the generated dot files, convert them into png first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dot -Tpng -O vakya*.dot
+$ eog vakya_split0.png
+$ eog vakya_split0_parse0.png
+</pre></div>
+</div>
+</div>
+<div class="section" id="sandhi-split">
+<h3>Sandhi Split<a class="headerlink" href="#sandhi-split" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sanskrit_parser sandhi astyuttarasyAMdishidevatAtmA
+...
+Splits:
+[asti, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttara, syAm, diSi, devatA, AtmA]
+[astI, uttarasyAm, diSi, devatA, AtmA]
+[asti, uttarasyAm, diSi, devatAt, mA]
+[asti, uttarasyAm, diSi, devata, AtmA]
+[asti, uttarasyAm, diSi, devat, AtmA]
+[asti, uttarasyAm, diSi, devatAtmA]
+[asti, uttarasyAm, diSi, devatA, at, mA]
+[asti, uttara, syAm, diSi, devat, AtmA]
+[asti, uttarasyAm, di, Si, devatA, AtmA]
+-----------
+..
+</pre></div>
+</div>
+</div>
+<div class="section" id="morphological-tags-for-a-word">
+<h3>Morphological Tags for a Word<a class="headerlink" href="#morphological-tags-for-a-word" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ scripts/sanskrit_parser tags hares
+...
+Morphological tags:
+(&#39;hf#1&#39;, {ekavacanam, viDiliN, prATamikaH, kartari, maDyamapuruzaH})
+(&#39;hari#1&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#1&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#1&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hari#2&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari#2&#39;, {ekavacanam, paYcamIviBaktiH, strIliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari#2&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+(&#39;hf&#39;, {ekavacanam, parasmEpadam, viDiliN, maDyamapuruzaH})
+(&#39;hari&#39;, {ekavacanam, puMlliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {ekavacanam, strIliNgam, paYcamIviBaktiH})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, puMlliNgam})
+(&#39;hari&#39;, {zazWIviBaktiH, ekavacanam, strIliNgam})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="use-as-a-library">
+<h2>Use as a Library<a class="headerlink" href="#use-as-a-library" title="Permalink to this headline">¶</a></h2>
+<p>An <a class="reference external" href="https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb">example python notebook</a> is available, which can also be directly launched on <a class="reference external" href="https://mybinder.org/v2/gh/kmadathil/sanskrit_parser/HEAD?filepath=examples%2Fbasic_example.ipynb">Binder</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="sanskrit_parser.html">sanskrit_parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_doc.html">Documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-usage">Command line usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vakya-analysis">Vakya Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sandhi-split">Sandhi Split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morphological-tags-for-a-word">Morphological Tags for a Word</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#use-as-a-library">Use as a Library</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_tests.html">Tests</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_code.html">Code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
+      <li>Previous: <a href="sanskrit_parser_doc.html" title="previous chapter">Documentation</a></li>
+      <li>Next: <a href="sanskrit_parser_tests.html" title="next chapter">Tests</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017-2021, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/sanskrit_parser_usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

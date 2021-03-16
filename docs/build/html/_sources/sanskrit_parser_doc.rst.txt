@@ -59,7 +59,8 @@ If a substring match with exactly that sequence is found,
 then the left hand side of the same subrule, suitably extended by the
 substring prefix and suffix is output as a possible split.
 
-At this stage, we do not worry about whether the strings output are valid.
+At this stage, have a valid split as per sandhi rules, but not
+necessarily valid words in both halves. This is handled by the next stage.
 
 
 Algorithm for Sandhi Split
@@ -72,7 +73,7 @@ We use a dynamic programming (memoized) algorithm to determine all possible
 #. If the left hand split is a valid sanskrit word, we recursively split the right hand split using the same algorithm.
    
    #. This split is memoized as is expected in a dynamic programming algorithm
-#. The result of this algorithm is a DAG (Directed Acyclic Graph) that represents all sandhi splits of the input string into valid words. *Note that each split does not need to correspond to a valid sentence (vAkya) at this stage*.
+#. The result of this algorithm is a DAG (Directed Acyclic Graph) that represents all sandhi splits of the input string into valid words. *Each split does not need to correspond to a valid sentence (vAkya) at this stage. That constraint is handled by the next stage*.
 
 For example, the string "अहङ्गच्छामि" results in the following DAG
 
@@ -86,3 +87,62 @@ From this graph, each path between the beginning and the end nodes is a valid se
 
 #. Prioritize paths with fewer number of words
 #. Prioritize paths with a lower score (default). This uses a word2vec based scoring approach
+
+
+Vakya Analysis / Dependency Parsing
+-----------------------------------
+
+The task of Vakya Analysis (Dependency Parsing) is to interpret a
+sandhi split (segmentation) as a valid Sanskrit sentence if
+possible. Each possible morpholgical interpretation of a word is
+considered, and valid sentence interpretations are output. 
+
+Algorithm for Vakya Analysis
+.............................
+
+Given a sandhi split of the input phrase into valid words, we
+
+#. Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचन form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.
+#. The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: :ref:`kpgraph`
+#. Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.
+#. A modified version of Kruskal's algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.
+#. A global constraint checker checks consistency of each GST against a set of rules.
+#. Each such GST will be a valid parse of the sentence. For example: :ref:`parsegraph`
+
+Graphs
++++++++
+
+.. _kpgraph:
+
+.. figure:: static/rama_split0.dot.png
+   :width: 800
+	      
+   k-partite graph for रामः ग्रामम् याति 
+
+.. _parsegraph:
+
+.. figure:: static/rama_split0_parse0.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for रामः ग्रामम् याति
+
+.. _parsegraph2:
+
+.. figure:: static/pustakam_split0_parse20.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
+
+Edges
+......
+
+We add the following set of edges
+
+
+
+Modified Kruskal Algorithm
+--------------------------
+
+
+GST Constraint Checks
+----------------------

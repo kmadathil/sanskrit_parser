@@ -14,7 +14,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code" href="sanskrit_parser_code.html" />
+    <link rel="next" title="Usage" href="sanskrit_parser_usage.html" />
     <link rel="prev" title="sanskrit_parser documentation" href="sanskrit_parser.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -81,7 +81,8 @@ hand side.</p>
 <p>If a substring match with exactly that sequence is found,
 then the left hand side of the same subrule, suitably extended by the
 substring prefix and suffix is output as a possible split.</p>
-<p>At this stage, we do not worry about whether the strings output are valid.</p>
+<p>At this stage, have a valid split as per sandhi rules, but not
+necessarily valid words in both halves. This is handled by the next stage.</p>
 </div>
 <div class="section" id="algorithm-for-sandhi-split">
 <h3>Algorithm for Sandhi Split<a class="headerlink" href="#algorithm-for-sandhi-split" title="Permalink to this headline">¶</a></h3>
@@ -94,7 +95,7 @@ substring prefix and suffix is output as a possible split.</p>
 <li><p>This split is memoized as is expected in a dynamic programming algorithm</p></li>
 </ol>
 </li>
-<li><p>The result of this algorithm is a DAG (Directed Acyclic Graph) that represents all sandhi splits of the input string into valid words. <em>Note that each split does not need to correspond to a valid sentence (vAkya) at this stage</em>.</p></li>
+<li><p>The result of this algorithm is a DAG (Directed Acyclic Graph) that represents all sandhi splits of the input string into valid words. <em>Each split does not need to correspond to a valid sentence (vAkya) at this stage. That constraint is handled by the next stage</em>.</p></li>
 </ol>
 <p>For example, the string “अहङ्गच्छामि” results in the following DAG</p>
 <img alt="_images/aham_gacCAmi.png" src="_images/aham_gacCAmi.png" />
@@ -105,6 +106,50 @@ substring prefix and suffix is output as a possible split.</p>
 <li><p>Prioritize paths with a lower score (default). This uses a word2vec based scoring approach</p></li>
 </ol>
 </div>
+</div>
+<div class="section" id="vakya-analysis-dependency-parsing">
+<h2>Vakya Analysis / Dependency Parsing<a class="headerlink" href="#vakya-analysis-dependency-parsing" title="Permalink to this headline">¶</a></h2>
+<p>The task of Vakya Analysis (Dependency Parsing) is to interpret a
+sandhi split (segmentation) as a valid Sanskrit sentence if
+possible. Each possible morpholgical interpretation of a word is
+considered, and valid sentence interpretations are output.</p>
+<div class="section" id="algorithm-for-vakya-analysis">
+<h3>Algorithm for Vakya Analysis<a class="headerlink" href="#algorithm-for-vakya-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Given a sandhi split of the input phrase into valid words, we</p>
+<ol class="arabic simple">
+<li><p>Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचन form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.</p></li>
+<li><p>The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: <a class="reference internal" href="#kpgraph"><span class="std std-ref">k-partite graph for रामः ग्रामम् याति</span></a></p></li>
+<li><p>Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.</p></li>
+<li><p>A modified version of Kruskal’s algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.</p></li>
+<li><p>A global constraint checker checks consistency of each GST against a set of rules.</p></li>
+<li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">A minimum Cost Parse Graph for रामः ग्रामम् याति</span></a></p></li>
+</ol>
+<div class="section" id="graphs">
+<h4>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-default" id="id1">
+<span id="kpgraph"></span><a class="reference internal image-reference" href="_images/rama_split0.dot.png"><img alt="_images/rama_split0.dot.png" src="_images/rama_split0.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">k-partite graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id2">
+<span id="parsegraph"></span><a class="reference internal image-reference" href="_images/rama_split0_parse0.dot.png"><img alt="_images/rama_split0_parse0.dot.png" src="_images/rama_split0_parse0.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id3">
+<span id="parsegraph2"></span><a class="reference internal image-reference" href="_images/pustakam_split0_parse20.dot.png"><img alt="_images/pustakam_split0_parse20.dot.png" src="_images/pustakam_split0_parse20.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “अहम् तस्मै पुस्तकम् अददम्”</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="edges">
+<h3>Edges<a class="headerlink" href="#edges" title="Permalink to this headline">¶</a></h3>
+<p>We add the following set of edges</p>
+</div>
+</div>
+<div class="section" id="modified-kruskal-algorithm">
+<h2>Modified Kruskal Algorithm<a class="headerlink" href="#modified-kruskal-algorithm" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="gst-constraint-checks">
+<h2>GST Constraint Checks<a class="headerlink" href="#gst-constraint-checks" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -133,8 +178,21 @@ substring prefix and suffix is output as a possible split.</p>
 <li class="toctree-l3"><a class="reference internal" href="#algorithm-for-sandhi-split">Algorithm for Sandhi Split</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#vakya-analysis-dependency-parsing">Vakya Analysis / Dependency Parsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-for-vakya-analysis">Algorithm for Vakya Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#edges">Edges</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#modified-kruskal-algorithm">Modified Kruskal Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gst-constraint-checks">GST Constraint Checks</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_tests.html">Tests</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sanskrit_parser_code.html">Code</a></li>
@@ -145,7 +203,7 @@ substring prefix and suffix is output as a possible split.</p>
 <ul>
   <li><a href="sanskrit_parser.html">Documentation overview</a><ul>
       <li>Previous: <a href="sanskrit_parser.html" title="previous chapter">sanskrit_parser documentation</a></li>
-      <li>Next: <a href="sanskrit_parser_code.html" title="next chapter">Code</a></li>
+      <li>Next: <a href="sanskrit_parser_usage.html" title="next chapter">Usage</a></li>
   </ul></li>
 </ul>
 </div>
