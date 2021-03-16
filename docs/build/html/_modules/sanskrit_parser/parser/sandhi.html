@@ -142,7 +142,7 @@
 <span class="kn">from</span> <span class="nn">sanskrit_parser.base.sanskrit_base</span> <span class="kn">import</span> <span class="n">SanskritNormalizedString</span><span class="p">,</span> <span class="n">SCHEMES</span><span class="p">,</span> <span class="n">outputctx</span>
 
 
-<div class="viewcode-block" id="Sandhi"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi">[docs]</a><span class="k">class</span> <span class="nc">Sandhi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Sandhi"><a class="viewcode-back" href="../../../sanskrit_parser_code.html#sanskrit_parser.parser.sandhi.Sandhi">[docs]</a><span class="k">class</span> <span class="nc">Sandhi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to hold all the sandhi rules and methods for joining and splitting.</span>
 <span class="sd">    Uses SLP1 encoding for all internal operations.</span>
@@ -181,7 +181,7 @@
             <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">after_len_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Sandhi.join"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">):</span>
+<div class="viewcode-block" id="Sandhi.join"><a class="viewcode-back" href="../../../sanskrit_parser_code.html#sanskrit_parser.parser.sandhi.Sandhi.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs sandhi.</span>
 <span class="sd">        **Warning**: May generate forms that are not lexically valid.</span>
@@ -215,7 +215,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">joins</span></div>
 
-<div class="viewcode-block" id="Sandhi.split_at"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.split_at">[docs]</a>    <span class="k">def</span> <span class="nf">split_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<div class="viewcode-block" id="Sandhi.split_at"><a class="viewcode-back" href="../../../sanskrit_parser_code.html#sanskrit_parser.parser.sandhi.Sandhi.split_at">[docs]</a>    <span class="k">def</span> <span class="nf">split_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Split sandhi at the given index of word.</span>
 <span class="sd">        **Warning**: Will generate splits that are not lexically valid.</span>
@@ -255,7 +255,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">splits</span></div>
 
-<div class="viewcode-block" id="Sandhi.split_all"><a class="viewcode-back" href="../../../sanskrit_parser_parser_sandhi.html#sanskrit_parser.parser.sandhi.Sandhi.split_all">[docs]</a>    <span class="k">def</span> <span class="nf">split_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Sandhi.split_all"><a class="viewcode-back" href="../../../sanskrit_parser_code.html#sanskrit_parser.parser.sandhi.Sandhi.split_all">[docs]</a>    <span class="k">def</span> <span class="nf">split_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_in</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Split word at all possible locations and return splits.</span>
 <span class="sd">        **Warning**: Will generate splits that are not lexically valid.</span>

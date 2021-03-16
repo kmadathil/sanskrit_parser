@@ -1,0 +1,7 @@
+digraph  {
+"laNkAm [laNkA, {dvitIyAviBaktiH, ekavacanam, strIliNgam}] 1";
+"rAmas [rAma, {praTamAviBaktiH, ekavacanam, puMlliNgam}] 0";
+"yAti [yA, {law, parasmEpadam, praTamapuruzaH, ekavacanam}] 2";
+"yAti [yA, {law, parasmEpadam, praTamapuruzaH, ekavacanam}] 2" -> "rAmas [rAma, {praTamAviBaktiH, ekavacanam, puMlliNgam}] 0"  [key=0, label=kartA];
+"yAti [yA, {law, parasmEpadam, praTamapuruzaH, ekavacanam}] 2" -> "laNkAm [laNkA, {dvitIyAviBaktiH, ekavacanam, strIliNgam}] 1"  [key=0, label=karma];
+}

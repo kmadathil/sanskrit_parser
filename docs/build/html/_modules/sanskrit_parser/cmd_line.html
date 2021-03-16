@@ -49,7 +49,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="getVakyaArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getVakyaArgs">[docs]</a><span class="k">def</span> <span class="nf">getVakyaArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="getVakyaArgs"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.getVakyaArgs">[docs]</a><span class="k">def</span> <span class="nf">getVakyaArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">      Argparse routine.</span>
 <span class="sd">      Returns args variable</span>
@@ -80,7 +80,7 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="vakya"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.vakya">[docs]</a><span class="k">def</span> <span class="nf">vakya</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="vakya"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.vakya">[docs]</a><span class="k">def</span> <span class="nf">vakya</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">getVakyaArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
@@ -97,6 +97,7 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
                                             <span class="n">limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span>
+                                            <span class="n">dot_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dot_file</span><span class="p">,</span>
                                             <span class="n">pre_segmented</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">pre_segmented</span><span class="p">)):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sandhi Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Min cost only </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">min_cost</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -137,7 +138,7 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="getSandhiArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getSandhiArgs">[docs]</a><span class="k">def</span> <span class="nf">getSandhiArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="getSandhiArgs"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.getSandhiArgs">[docs]</a><span class="k">def</span> <span class="nf">getSandhiArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">      Argparse routine.</span>
 <span class="sd">      Returns args variable</span>
@@ -156,10 +157,11 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the input/output string to match conventions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-score&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use the lexical scorer to score the splits and reorder them&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dot-file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Dotfile&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sandhi"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.sandhi">[docs]</a><span class="k">def</span> <span class="nf">sandhi</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sandhi"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.sandhi">[docs]</a><span class="k">def</span> <span class="nf">sandhi</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">getSandhiArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
@@ -175,12 +177,13 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Splits:&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
                                             <span class="n">limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_paths</span><span class="p">,</span>
+                                            <span class="n">dot_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dot_file</span><span class="p">,</span>
                                             <span class="n">pre_segmented</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">pre_segmented</span><span class="p">)):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="getTagsArgs"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.getTagsArgs">[docs]</a><span class="k">def</span> <span class="nf">getTagsArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="getTagsArgs"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.getTagsArgs">[docs]</a><span class="k">def</span> <span class="nf">getTagsArgs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">      Argparse routine.</span>
 <span class="sd">      Returns args variable</span>
@@ -204,7 +207,7 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tags"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.tags">[docs]</a><span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="tags"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.tags">[docs]</a><span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">getTagsArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">strict_io</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpreting input strictly&quot;</span><span class="p">)</span>
@@ -249,7 +252,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">hasTag</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="cmd_line"><a class="viewcode-back" href="../../sanskrit_parser_cmd_line.html#sanskrit_parser.cmd_line.cmd_line">[docs]</a><span class="k">def</span> <span class="nf">cmd_line</span><span class="p">():</span>
+<div class="viewcode-block" id="cmd_line"><a class="viewcode-back" href="../../sanskrit_parser_code.html#sanskrit_parser.cmd_line.cmd_line">[docs]</a><span class="k">def</span> <span class="nf">cmd_line</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Command Line Wrapper Function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sanskrit Parser&#39;</span><span class="p">,</span>
