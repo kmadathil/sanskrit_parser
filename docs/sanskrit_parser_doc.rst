@@ -112,6 +112,8 @@ Given a sandhi split of the input phrase into valid words, we
 Graphs
 +++++++
 
+Some sample k-partite VakyaGraph and parse graphs generated
+
 .. _kpgraph:
 
 .. figure:: static/rama_split0.dot.png
@@ -133,11 +135,32 @@ Graphs
 
    A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
 
+.. _parsegraph3:
+
+.. figure:: static/ds_split0_parse0.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत"
+
 Edges
 ......
 
 We add the following set of edges
 
+**Karaka Edges**
+
+These edges are added between verb forms and others based on vibhakti
+(note that these names are SLP1 encoded)
+
+#. kartA
+#. hetu-kartA
+#. karma
+#. gauRa-karma
+#. karaRam
+#. saMpradAnam
+#. apAdAnam
+#. aDikaraRam
+#. samboDyam
 
 
 Modified Kruskal Algorithm

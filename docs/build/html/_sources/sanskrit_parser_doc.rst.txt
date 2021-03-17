@@ -133,6 +133,13 @@ Graphs
 
    A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
 
+.. _parsegraph3:
+
+.. figure:: static/ds_split0_parse0.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत"
+
 Edges
 ......
 
