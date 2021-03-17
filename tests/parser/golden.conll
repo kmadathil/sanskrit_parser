@@ -86,8 +86,18 @@
 4	paWati	_	paW	['kartari', 'prATamikaH', 'ekavacanam', 'law', 'parasmEpadam', 'praTamapuruzaH']	5	samuccitam
 5	ca	_	ca	['saMyojakaH', 'avyayam']	0	root
 
-1	arjunaH	_	arjuna	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	samuccitam
-2	kfzRaH	_	kfzRa	['praTamAviBaktiH', 'ekavacanam', 'puMlliNgam']	3	samuccitam
-3	ca	_	ca	['saMyojakaH', 'dvivacanam', 'puMlliNgam', 'avyayam', 'praTamAviBaktiH']	4	kartA
-4	gacCataH	_	gam	['dvivacanam', 'parasmEpadam', 'prATamikaH', 'kartari', 'praTamapuruzaH', 'law']	0	root
+1	arjunaH	_	arjuna	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	4	samuccitam
+2	BImaH	_	BIma	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	4	samuccitam
+3	kfzRaH	_	kfzRa	['ekavacanam', 'praTamAviBaktiH', 'puMlliNgam']	4	samuccitam
+4	ca	_	ca	['saMyojakaH', 'bahuvacanam', 'puMlliNgam', 'avyayam', 'praTamAviBaktiH']	5	kartA
+5	gacCanti	_	gam	['law', 'kartari', 'prATamikaH', 'parasmEpadam', 'bahuvacanam', 'praTamapuruzaH']	0	root
+
+1	Darmakzetre	_	Darmakzetra	['ekavacanam', 'napuMsakaliNgam', 'saptamIviBaktiH']	2	viSezaRam
+2	kurukzetre	_	kurukzetra	['ekavacanam', 'napuMsakaliNgam', 'saptamIviBaktiH']	5	aDikaraRam
+3	sam	_	sam	['upasargaH']	4	upasargaH
+4	A	_	A	['upasargaH']	5	upasargaH
+5	vetAH	_	veta	['strIliNgam', 'kta', 'bahuvacanam', 'karmaRi', 'kfdantaH', 'praTamAviBaktiH', 'prATamikaH']	6	viSezaRam
+6	yuyutsavaH	_	yuyutsu	['strIliNgam', 'bahuvacanam', 'praTamAviBaktiH']	8	kartA
+7	kim	_	kim	['dvitIyAviBaktiH', 'ekavacanam', 'napuMsakaliNgam']	8	karma
+8	akurvata	_	kf	['laN', 'bahuvacanam', 'praTamapuruzaH', 'Atmanepadam']	0	root
 
