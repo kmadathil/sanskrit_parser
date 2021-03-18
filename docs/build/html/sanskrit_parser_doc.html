@@ -126,6 +126,7 @@ considered, and valid sentence interpretations are output.</p>
 </ol>
 <div class="section" id="graphs">
 <h4>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h4>
+<p>Some sample k-partite VakyaGraph and parse graphs generated</p>
 <div class="figure align-default" id="id1">
 <span id="kpgraph"></span><a class="reference internal image-reference" href="_images/rama_split0.dot.png"><img alt="_images/rama_split0.dot.png" src="_images/rama_split0.dot.png" style="width: 800px;" /></a>
 <p class="caption"><span class="caption-text">k-partite graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
@@ -135,18 +136,76 @@ considered, and valid sentence interpretations are output.</p>
 <p class="caption"><span class="caption-text">A minimum Cost Parse Graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id3">
-<span id="parsegraph2"></span><a class="reference internal image-reference" href="_images/pustakam_split0_parse20.dot.png"><img alt="_images/pustakam_split0_parse20.dot.png" src="_images/pustakam_split0_parse20.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “अहम् तस्मै पुस्तकम् अददम्”</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-<div class="figure align-default" id="id4">
 <span id="parsegraph3"></span><a class="reference internal image-reference" href="_images/ds_split0_parse0.dot.png"><img alt="_images/ds_split0_parse0.dot.png" src="_images/ds_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत”</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत”</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
 <div class="section" id="edges">
 <h3>Edges<a class="headerlink" href="#edges" title="Permalink to this headline">¶</a></h3>
 <p>We add the following set of edges</p>
+<p><strong>Karaka Edges</strong></p>
+<p>These edges are added between verb forms and others based on vibhakti
+(note that these names are SLP1 encoded)</p>
+<ol class="arabic simple">
+<li><p>kartA</p></li>
+<li><p>hetu-kartA</p></li>
+<li><p>karma</p></li>
+<li><p>gauRa-karma</p></li>
+<li><p>karaRam</p></li>
+<li><p>saMpradAnam</p></li>
+<li><p>apAdAnam</p></li>
+<li><p>aDikaraRam</p></li>
+<li><p>samboDyam</p></li>
+</ol>
+<div class="figure align-default" id="id4">
+<span id="parsegraph-karaka"></span><a class="reference internal image-reference" href="_images/karaka_split0_parse0.dot.png"><img alt="_images/karaka_split0_parse0.dot.png" src="_images/karaka_split0_parse0.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “राघवः रावणम् बाणैः रणभूमौ जघान”</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id5">
+<span id="parsegraph-karaka2"></span><a class="reference internal image-reference" href="_images/pustakam_split0_parse20.dot.png"><img alt="_images/pustakam_split0_parse20.dot.png" src="_images/pustakam_split0_parse20.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “अहम् तस्मै पुस्तकम् अददम्”</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id6">
+<span id="parsegraph-gauna"></span><a class="reference internal image-reference" href="_images/gauna_split0_parse0.dot.png"><img alt="_images/gauna_split0_parse0.dot.png" src="_images/gauna_split0_parse0.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “गां दोग्धि पयः”</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<p><strong>Non-kAraka Vibhakti-based Edges</strong></p>
+<ol class="arabic simple">
+<li><p>zazWI-sambanDa</p></li>
+<li><p>upapada-dvitIyA</p></li>
+<li><p>upapada-tftIyA</p></li>
+<li><p>upapada-caturTI</p></li>
+<li><p>upapada-pancamI</p></li>
+<li><p>viSezaRam</p></li>
+</ol>
+<p><strong>Non-Vibhakti-Based Verb Edges</strong></p>
+<ol class="arabic simple">
+<li><p>kriyAviSezaRam</p></li>
+<li><p>upasargaH (verbal prefixes)</p></li>
+<li><p>karmapravacanIyaH</p></li>
+<li><p>BAvalakzaRam</p></li>
+<li><p>nizeDa</p></li>
+</ol>
+<div class="figure align-default" id="id7">
+<span id="parsegraph-bana"></span><a class="reference internal image-reference" href="_images/bana_split0_parse1.dot.png"><img alt="_images/bana_split0_parse1.dot.png" src="_images/bana_split0_parse1.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप”</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+<p><strong>Other Non-Vibhakti Edges</strong></p>
+<ol class="arabic simple">
+<li><p>vIpsA (repeated words)</p></li>
+<li><p>samasta (for samAsa constituents except the last)</p></li>
+</ol>
+<p><strong>Conjunctions</strong></p>
+<ol class="arabic simple">
+<li><p>samuccitam</p></li>
+</ol>
+<p><strong>Sentence Conjunctions</strong></p>
+<ol class="arabic simple">
+<li><p>vAkyasambanDaH (from yat to tat, for example)</p></li>
+<li><p>sambaDakriyA   (in the absence of tat, from yat to the dependent verb)</p></li>
+<li><p>sambadDa-kartA etc. (where a kAraka for a main and dependent verb are paired, the dependent verb’s kAraka arc is reversed with a sambaDa arc)</p></li>
+</ol>
 </div>
 </div>
 <div class="section" id="modified-kruskal-algorithm">

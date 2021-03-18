@@ -128,13 +128,6 @@ Some sample k-partite VakyaGraph and parse graphs generated
 
    A minimum Cost Parse Graph for रामः ग्रामम् याति
 
-.. _parsegraph2:
-
-.. figure:: static/pustakam_split0_parse20.dot.png
-   :width: 800
-
-   A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
-
 .. _parsegraph3:
 
 .. figure:: static/ds_split0_parse0.dot.png
@@ -161,6 +154,71 @@ These edges are added between verb forms and others based on vibhakti
 #. apAdAnam
 #. aDikaraRam
 #. samboDyam
+
+
+.. _parsegraph_karaka:
+
+.. figure:: static/karaka_split0_parse0.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "राघवः रावणम् बाणैः रणभूमौ जघान"
+
+.. _parsegraph_karaka2:
+
+.. figure:: static/pustakam_split0_parse20.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
+
+.. _parsegraph_gauna:
+
+.. figure:: static/gauna_split0_parse0.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "गां दोग्धि पयः"
+
+   
+**Non-kAraka Vibhakti-based Edges**
+
+#. zazWI-sambanDa
+#. upapada-dvitIyA
+#. upapada-tftIyA
+#. upapada-caturTI
+#. upapada-pancamI
+#. viSezaRam
+
+**Non-Vibhakti-Based Verb Edges**
+
+#. kriyAviSezaRam
+#. upasargaH (verbal prefixes)
+#. karmapravacanIyaH
+#. BAvalakzaRam
+#. nizeDa
+
+
+.. _parsegraph_bana:
+
+.. figure:: static/bana_split0_parse1.dot.png
+   :width: 800
+
+   A minimum Cost Parse Graph for "रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप"
+
+
+   
+**Other Non-Vibhakti Edges**
+
+#. vIpsA (repeated words)
+#. samasta (for samAsa constituents except the last)
+   
+**Conjunctions**
+
+#. samuccitam
+
+**Sentence Conjunctions**
+
+#. vAkyasambanDaH (from yat to tat, for example)
+#. sambaDakriyA   (in the absence of tat, from yat to the dependent verb)
+#. sambadDa-kartA etc. (where a kAraka for a main and dependent verb are paired, the dependent verb's kAraka arc is reversed with a sambaDa arc)
 
 
 Modified Kruskal Algorithm
