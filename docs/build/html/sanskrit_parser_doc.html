@@ -122,7 +122,7 @@ considered, and valid sentence interpretations are output.</p>
 <li><p>Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.</p></li>
 <li><p>A modified version of Kruskal’s algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.</p></li>
 <li><p>A global constraint checker checks consistency of each GST against a set of rules.</p></li>
-<li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">A minimum Cost Parse Graph for रामः ग्रामम् याति</span></a></p></li>
+<li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">Parse Graph for रामः ग्रामम् याति</span></a></p></li>
 </ol>
 <div class="section" id="graphs">
 <h4>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h4>
@@ -133,11 +133,11 @@ considered, and valid sentence interpretations are output.</p>
 </div>
 <div class="figure align-default" id="id2">
 <span id="parsegraph"></span><a class="reference internal image-reference" href="_images/rama_split0_parse0.dot.png"><img alt="_images/rama_split0_parse0.dot.png" src="_images/rama_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id3">
 <span id="parsegraph3"></span><a class="reference internal image-reference" href="_images/ds_split0_parse0.dot.png"><img alt="_images/ds_split0_parse0.dot.png" src="_images/ds_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत”</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for “धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत”</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -160,15 +160,15 @@ considered, and valid sentence interpretations are output.</p>
 </ol>
 <div class="figure align-default" id="id4">
 <span id="parsegraph-karaka"></span><a class="reference internal image-reference" href="_images/karaka_split0_parse0.dot.png"><img alt="_images/karaka_split0_parse0.dot.png" src="_images/karaka_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “राघवः रावणम् बाणैः रणभूमौ जघान”</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for “राघवः रावणम् बाणैः रणभूमौ जघान”</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id5">
 <span id="parsegraph-karaka2"></span><a class="reference internal image-reference" href="_images/pustakam_split0_parse20.dot.png"><img alt="_images/pustakam_split0_parse20.dot.png" src="_images/pustakam_split0_parse20.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “अहम् तस्मै पुस्तकम् अददम्”</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for “अहम् तस्मै पुस्तकम् अददम्”</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id6">
 <span id="parsegraph-gauna"></span><a class="reference internal image-reference" href="_images/gauna_split0_parse0.dot.png"><img alt="_images/gauna_split0_parse0.dot.png" src="_images/gauna_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “गां दोग्धि पयः”</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for “गां दोग्धि पयः”</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 <p><strong>Non-kAraka Vibhakti-based Edges</strong></p>
 <ol class="arabic simple">
@@ -186,10 +186,29 @@ considered, and valid sentence interpretations are output.</p>
 <li><p>karmapravacanIyaH</p></li>
 <li><p>BAvalakzaRam</p></li>
 <li><p>nizeDa</p></li>
+<li><p>pUrvakAlaH</p></li>
+<li><p>samAnakAlaH</p></li>
+<li><p>prayojanam</p></li>
 </ol>
 <div class="figure align-default" id="id7">
 <span id="parsegraph-bana"></span><a class="reference internal image-reference" href="_images/bana_split0_parse1.dot.png"><img alt="_images/bana_split0_parse1.dot.png" src="_images/bana_split0_parse1.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">A minimum Cost Parse Graph for “रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप”</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for “रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप”</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id8">
+<span id="parsegraph-bhava"></span><a class="reference internal image-reference" href="_images/bhavalakshanam_split0_parse5.dot.png"><img alt="_images/bhavalakshanam_split0_parse5.dot.png" src="_images/bhavalakshanam_split0_parse5.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Parse Graph for “गोषु दुह्यमानासु अगच्छत्”</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id9">
+<span id="parsegraph-nishedha"></span><a class="reference internal image-reference" href="_images/nishedha_split0_parse6.dot.png"><img alt="_images/nishedha_split0_parse6.dot.png" src="_images/nishedha_split0_parse6.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Parse Graph for “शनैः न गच्छति”</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id10">
+<span id="parsegraph-upasarga"></span><a class="reference internal image-reference" href="_images/upasarga_split0_parse2.dot.png"><img alt="_images/upasarga_split0_parse2.dot.png" src="_images/upasarga_split0_parse2.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Parse Graph for “उत्तिष्ठ नरशार्दूल”</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id11">
+<span id="parsegraph-rnam"></span><a class="reference internal image-reference" href="_images/rnam_split0_parse9.dot.png"><img alt="_images/rnam_split0_parse9.dot.png" src="_images/rnam_split0_parse9.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Parse Graph for “ऋणम् कृत्वा घृतम् पिबेत्”</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
 <p><strong>Other Non-Vibhakti Edges</strong></p>
 <ol class="arabic simple">
@@ -200,6 +219,10 @@ considered, and valid sentence interpretations are output.</p>
 <ol class="arabic simple">
 <li><p>samuccitam</p></li>
 </ol>
+<div class="figure align-default" id="id12">
+<span id="parsegraph-arjuna"></span><a class="reference internal image-reference" href="_images/arjuna_split0_parse0.dot.png"><img alt="_images/arjuna_split0_parse0.dot.png" src="_images/arjuna_split0_parse0.dot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Parse Graph for “अर्जुनः कर्णम् जरासन्धम् च जघान”</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>Sentence Conjunctions</strong></p>
 <ol class="arabic simple">
 <li><p>vAkyasambanDaH (from yat to tat, for example)</p></li>

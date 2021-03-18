@@ -126,14 +126,14 @@ Some sample k-partite VakyaGraph and parse graphs generated
 .. figure:: static/rama_split0_parse0.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for रामः ग्रामम् याति
+   Parse Graph for रामः ग्रामम् याति
 
 .. _parsegraph3:
 
 .. figure:: static/ds_split0_parse0.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for "धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत"
+   Parse Graph for "धर्मक्षेत्रे कुरुक्षेत्रे समावेता युयुत्सवः किमकुर्वत"
 
 Edges
 ......
@@ -161,21 +161,21 @@ These edges are added between verb forms and others based on vibhakti
 .. figure:: static/karaka_split0_parse0.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for "राघवः रावणम् बाणैः रणभूमौ जघान"
+   Parse Graph for "राघवः रावणम् बाणैः रणभूमौ जघान"
 
 .. _parsegraph_karaka2:
 
 .. figure:: static/pustakam_split0_parse20.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
+   Parse Graph for "अहम् तस्मै पुस्तकम् अददम्"
 
 .. _parsegraph_gauna:
 
 .. figure:: static/gauna_split0_parse0.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for "गां दोग्धि पयः"
+   Parse Graph for "गां दोग्धि पयः"
 
    
 **Non-kAraka Vibhakti-based Edges**
@@ -194,17 +194,50 @@ These edges are added between verb forms and others based on vibhakti
 #. karmapravacanIyaH
 #. BAvalakzaRam
 #. nizeDa
-
+#. pUrvakAlaH
+#. samAnakAlaH
+#. prayojanam
 
 .. _parsegraph_bana:
 
 .. figure:: static/bana_split0_parse1.dot.png
    :width: 800
 
-   A minimum Cost Parse Graph for "रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप"
+   Parse Graph for "रामः रावणस्य शिरांसि प्रति तीक्ष्णान् बाणान् चिक्षेप"
 
+
+
+.. _parsegraph_bhava:
+
+.. figure:: static/bhavalakshanam_split0_parse5.dot.png
+   :width: 800
+
+   Parse Graph for "गोषु दुह्यमानासु अगच्छत्"
+
+
+.. _parsegraph_nishedha:
+
+.. figure:: static/nishedha_split0_parse6.dot.png
+   :width: 800
+
+   Parse Graph for "शनैः न गच्छति"
+
+.. _parsegraph_upasarga:
+
+.. figure:: static/upasarga_split0_parse2.dot.png
+   :width: 800
+
+   Parse Graph for "उत्तिष्ठ नरशार्दूल"
 
    
+
+.. _parsegraph_rnam:
+
+.. figure:: static/rnam_split0_parse9.dot.png
+   :width: 800
+
+   Parse Graph for "ऋणम् कृत्वा घृतम् पिबेत्"
+
 **Other Non-Vibhakti Edges**
 
 #. vIpsA (repeated words)
@@ -214,6 +247,15 @@ These edges are added between verb forms and others based on vibhakti
 
 #. samuccitam
 
+
+.. _parsegraph_arjuna:
+
+.. figure:: static/arjuna_split0_parse0.dot.png
+   :width: 800
+
+   Parse Graph for "अर्जुनः कर्णम् जरासन्धम् च जघान"
+
+   
 **Sentence Conjunctions**
 
 #. vAkyasambanDaH (from yat to tat, for example)

@@ -193,7 +193,7 @@ class SandhiGraph(object):
 
 lakaras = set(['law', 'liw', 'luw', 'lrw', 'low', 'laN', 'liN', 'luN', 'lfN',
                'viDiliN', 'ASIrliN'])
-krtverbs = set(['ktvA', 'Satf', 'Sanac', 'tumun', 'kta', 'ktavatu', 'lyap'])
+krtverbs = set(['ktvA', 'Satf', 'SAnac', 'tumun', 'kta', 'ktavatu', 'lyap'])
 purvakala = set(['ktvA', 'lyap'])
 samanakala = set(['Satf', 'Sanac'])
 nishta = set(['kta', 'ktavatu'])
@@ -271,7 +271,7 @@ edge_cost['upasargaH'] = 0.65
 #     edge_cost['sambadDa-'+k] = edge_cost[k]
 edge_cost['vAkyasambanDaH'] = 0.3
 # edge_cost['zazWI-sambanDa'] = 1
-edge_cost_const = ['vAkyasambanDaH', 'samuccitam']
+edge_cost_const = ['vAkyasambanDaH', 'samuccitam', 'BAvalakzaRam']
 
 
 class VakyaGraph(object):
