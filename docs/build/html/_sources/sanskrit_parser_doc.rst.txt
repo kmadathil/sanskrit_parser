@@ -4,7 +4,7 @@ Documentation
 Introduction
 ------------
 
-The goal of the sanskrit_parser project is to create a freely reusable open
+The goal of the `sanskrit_parser` project is to create a freely reusable open
 source sanskrit parser and generator. This is intended to be usable as a
 python library for other tools that need sanskrit parsing and generation, as
 well as providing basic command line and web user interfaces for basic tasks.
@@ -295,13 +295,17 @@ Our implementation of the Modified Kruskal Algorithm works thus:
 
       #. Neither node of the edge is in the partial parse's extinguished list
       #. Adding the edge will not cause a loop
-      #. Adding the edge will not violate an on-the-fly constraint
+      #. Adding the edge will not violate `On-The-Fly Constraints`_
+	 
 #. Note that the current set of partial parses are retained in the partial parse set, the extensions in the previous step are added to the set. This is because a GMST with `n` nodes will have only `n-1` edges, and hence we need to account for the possibility of a partial parse being unmodified in one iteration. 
 #. Once we have added all possible edges to all possible partial parses and extended the partial parse set, we prune "small parses". As indicated, we expect a GMST to have `n-1` edges. A small parse is one with less than `m-1` edges, where `m` is the number of iterations so far. We know that these cannot result in a parse with `n-1` edges, given that there are only `n-m` iterations left.
 #. Once all partitions have been seen, the set of partial parses is now our set of candidate parses
-#. All candidate parses are taken through Final Constraint Checks, and all that pass become our list of valid parses.
+#. All candidate parses are taken through checks of `Final Constraints`_, and all that pass become our list of valid parses.
    
-      
+Divide and Conquer
+..................
+
+To control runtime, we use the divide-and-conquer approach. We maintain a maximum number of partitions, below which the algorithm divides the partition set into two. Once partial parses for each subset is created as above, a cross-product merge of the sets of partial parses is performed. Merging two partial parses is conceptually equal to adding all edges in a partial parse to another after performing the requisite checks of `On-The-Fly Constraints`_. However, this can be accelerated using set operations on the edge, active and extinguished sets. 
 
 GST Constraint Checks
 ----------------------

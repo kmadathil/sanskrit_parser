@@ -1,4 +1,4 @@
-sanskrit_parser documentation
+`sanskrit_parser` documentation
 =========================================
 
 Contents
