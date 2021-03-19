@@ -262,6 +262,15 @@ These edges are added between verb forms and others based on vibhakti
 #. sambaDakriyA   (in the absence of tat, from yat to the dependent verb)
 #. sambadDa-kartA etc. (where a kAraka for a main and dependent verb are paired, the dependent verb's kAraka arc is reversed with a sambaDa arc)
 
+   
+.. _parsegraph_vidya:
+
+.. figure:: static/vidya_split0_parse0.dot.png
+   :width: 800
+
+   Parse Graph for "सा विद्या वर्तते या मुक्तिम् ददाति"
+
+   
 
 Modified Kruskal Algorithm
 --------------------------

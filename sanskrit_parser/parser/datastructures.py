@@ -782,7 +782,8 @@ class VakyaGraph(object):
                                 for p_p, p_kd in list(self.G.pred[p].items()):
                                     for p_k, p_d in list(p_kd.items()):
                                         # self.G.remove_edge(p, n)
-                                        self.G.add_edge(p, p_p, label='sambadDa-'+p_d['label'])
+                                        if p_d['label'][:9] != 'sambadDa-':
+                                            self.G.add_edge(p, p_p, label='sambadDa-'+p_d['label'])
                             self.G.add_edge(n, p, label='sambadDa-'+d['label'])
 
                     # Matching pair
@@ -1319,6 +1320,10 @@ def _check_parse(parse):
                ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
                 logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
                 return False
+        if (u.index not in vsmbd) and l[:9] == 'sambadDa-':
+               logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
+               return False
+             
     # Conjugations have to have one to and from edge
     for u in conj:
         if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
