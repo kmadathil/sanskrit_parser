@@ -1321,9 +1321,9 @@ def _check_parse(parse):
                 logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
                 return False
         if (u.index not in vsmbd) and l[:9] == 'sambadDa-':
-               logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
-               return False
-             
+            logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
+            return False
+
     # Conjugations have to have one to and from edge
     for u in conj:
         if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
