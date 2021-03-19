@@ -118,22 +118,22 @@ considered, and valid sentence interpretations are output.</p>
 <p>Given a sandhi split of the input phrase into valid words, we</p>
 <ol class="arabic simple">
 <li><p>Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचनम् form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.</p></li>
-<li><p>The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: <a class="reference internal" href="#kpgraph"><span class="std std-ref">k-partite graph for रामः ग्रामम् याति</span></a></p></li>
+<li><p>The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो लङ्कां याति, which is split as रामः लङ्काम् याति results in this: <a class="reference internal" href="#kpgraph"><span class="std std-ref">k-partite graph for रामः लङ्काम् याति</span></a></p></li>
 <li><p>Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.</p></li>
 <li><p>A modified version of Kruskal’s algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.</p></li>
 <li><p>A Constraint checker checks consistency of each GST against a set of rules.</p></li>
-<li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">Parse Graph for रामः ग्रामम् याति</span></a></p></li>
+<li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">Parse Graph for रामः लङ्काम् याति</span></a></p></li>
 </ol>
 <div class="section" id="graphs">
 <h4>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h4>
 <p>Some sample k-partite VakyaGraph and parse graphs generated</p>
 <div class="figure align-default" id="id1">
 <span id="kpgraph"></span><a class="reference internal image-reference" href="_images/rama_split0.dot.png"><img alt="_images/rama_split0.dot.png" src="_images/rama_split0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">k-partite graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">k-partite graph for रामः लङ्काम् याति</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id2">
 <span id="parsegraph"></span><a class="reference internal image-reference" href="_images/rama_split0_parse0.dot.png"><img alt="_images/rama_split0_parse0.dot.png" src="_images/rama_split0_parse0.dot.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">Parse Graph for रामः ग्रामम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Parse Graph for रामः लङ्काम् याति</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <div class="figure align-default" id="id3">
 <span id="parsegraph3"></span><a class="reference internal image-reference" href="_images/ds_split0_parse0.dot.png"><img alt="_images/ds_split0_parse0.dot.png" src="_images/ds_split0_parse0.dot.png" style="width: 800px;" /></a>

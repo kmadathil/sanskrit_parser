@@ -103,9 +103,10 @@ Algorithm for Vakya Analysis
 Given a sandhi split of the input phrase into valid words, we
 
 #. Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचनम् form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.
-#. The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: :ref:`kpgraph`
+#. The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो लङ्कां याति, which is split as रामः लङ्काम् याति results in this: :ref:`kpgraph`
 #. Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.
 #. A modified version of Kruskal's algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.
+
 #. A Constraint checker checks consistency of each GST against a set of rules.
 #. Each such GST will be a valid parse of the sentence. For example: :ref:`parsegraph`
 
@@ -119,14 +120,14 @@ Some sample k-partite VakyaGraph and parse graphs generated
 .. figure:: static/rama_split0.dot.png
    :width: 800
 	      
-   k-partite graph for रामः ग्रामम् याति 
+   k-partite graph for रामः लङ्काम् याति
 
 .. _parsegraph:
 
 .. figure:: static/rama_split0_parse0.dot.png
    :width: 800
 
-   Parse Graph for रामः ग्रामम् याति
+   Parse Graph for रामः लङ्काम् याति
 
 .. _parsegraph3:
 
