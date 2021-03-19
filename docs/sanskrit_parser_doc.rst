@@ -102,11 +102,11 @@ Algorithm for Vakya Analysis
 
 Given a sandhi split of the input phrase into valid words, we
 
-#. Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचन form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.
+#. Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचनम् form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.
 #. The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: :ref:`kpgraph`
 #. Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.
 #. A modified version of Kruskal's algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.
-#. A global constraint checker checks consistency of each GST against a set of rules.
+#. A Constraint checker checks consistency of each GST against a set of rules.
 #. Each such GST will be a valid parse of the sentence. For example: :ref:`parsegraph`
 
 Graphs
@@ -275,6 +275,88 @@ These edges are added between verb forms and others based on vibhakti
 Modified Kruskal Algorithm
 --------------------------
 
+Several algorithms are available to compute Spanning Trees (ST), and specifically Minimum Cost Spanning Trees (MST) for connected graphs.
+Our VakyaGraphs are k-partite, and we need to fint a GST rather than an ST. We extend one of the standard algorithms - `Kruskal's Algorithm <https://en.wikipedia.org/wiki/Kruskal%27s_algorithm>`_ - to:
+
+* Work with k-partite graphs
+* Generate all GSTs instead of only a MST.
+
+Our implementation of the Modified Kruskal Algorithm works thus:
+
+#. We start with a k-partite Vakya Graph
+#. Our main datastructure is called a VakyaParse. Each VakyaParse data structure incorporates
+
+   #. A `DisjointSet data-structure <https://en.wikipedia.org/wiki/Disjoint-set_data_structure>`_ similar to Kruskal's Algorithm
+   #. A set of edges in the parse
+   #. A set of active nodes in the partial parse (which is identical to the nodes in the set of edges) but maintained separately to limit computation
+   #. A set of extinguished nodes: all nodes that are in the same partitions as the active nodes, and hence cannot be part of the parse.
+#. We initialize the set of candidate parses with a VakyaParse initialized to a null partial parse. A VakyaParse is called a partial parse while this algorithm is running, a candidate parse before Final Constraint Check, and a parse afterwards.
+#. We iterate over each partition. At each partition, all input edges to any node in the partition are examined. If an edge is safe to add to a partial parse, a *new* partial parse is created by adding that edge, and the new partial parse is added to the set of partial parses. When an edge is added to a partial parse, all nodes in the same partitions as the two nodes of the edge are moved to the extinguised list of that partial parse.  An edge is safe to add to a partial parse when
+
+      #. Neither node of the edge is in the partial parse's extinguished list
+      #. Adding the edge will not cause a loop
+      #. Adding the edge will not violate an on-the-fly constraint
+#. Note that the current set of partial parses are retained in the partial parse set, the extensions in the previous step are added to the set. This is because a GMST with `n` nodes will have only `n-1` edges, and hence we need to account for the possibility of a partial parse being unmodified in one iteration. 
+#. Once we have added all possible edges to all possible partial parses and extended the partial parse set, we prune "small parses". As indicated, we expect a GMST to have `n-1` edges. A small parse is one with less than `m-1` edges, where `m` is the number of iterations so far. We know that these cannot result in a parse with `n-1` edges, given that there are only `n-m` iterations left.
+#. Once all partitions have been seen, the set of partial parses is now our set of candidate parses
+#. All candidate parses are taken through Final Constraint Checks, and all that pass become our list of valid parses.
+   
+      
 
 GST Constraint Checks
 ----------------------
+
+Not all outputs of a tree-finding algorithm are valid parse
+graphs. Therefore, two sets of constraints are applied in the process
+to reject incorrect parses. These incorporate grammatical knowledge
+about what constitutes a valid parse.
+
+Constraints are applied in two stages
+
+#. On the fly, when partial parses are being assembled
+#. Once a full candidate parse has been assembed
+
+On-The-Fly Constraints
+......................
+
+We refer to constraints checked during parse assembly as On-The-Fly
+Constraints. Any constraint that is fully applicable to any subset of
+a valid parse falls in this category.
+
+Obvious examples are
+
+#. No loops are allowed
+#. There can be only one node that satisfies a particular kAraka relation with a verb form
+#. A word can perform only one grammatical function - that is to say, it can have only a single incoming node (strictly speaking, this is not applied as a constraint, but baked into the sequence of edge picking in the algorithm)
+   #. For reversed edges (sambadDa-kartA, etc.), there can be only one such edge going *out* of a node. 
+#. A viSezaRa cannot have another viSezaRa.
+      
+These are checked before any partial parse is added to the list of current partial parses is the algorithm. 
+
+   
+Final Constraints
+..................
+
+As opposed to an On-The-Fly constraint, a final constraint requires a
+full candidate parse, and hence can be checked only when a candidate
+parse is fully assembled.
+
+
+#. Sannidhi check: A GST must be projective to be a valid graph - that is to say, most kinds of edges may not cross each other when the nodes in a graph are laid out linearly, and all edges are marked to one side of the nodes.
+
+   * This excludes viSezaRa edges and zazWI-sambanDa edges (we currently do not allow the latter to cross either)
+#. Every conjunction must have exactly one from and to edge.
+#. Sentence conjunction checks
+
+   #. We do not allow edges "across" from either of a pair of nodes that form a sentence conjuntion to a node "beyond" the other.
+   #. A reversed ("sambadDa-") edge must be from a node with a sentence conjunction relationship (ie: must have a vAkyasambanDa edge coming in)
+
+A candidate parse that satisfies final constraints is considered a valid parse and is output.
+
+
+Output Formats
+--------------
+
+#. :Text: Standard output is provided in human readable text form
+#. :Dot: The dot format for graphs is supported (using the `--dot-file` option). This can be further converted into png or other image formats using the `graphviz` framework. Graphs shown in this document have been created in this manner.
+#. :Conll: CONLL format is used by the NLP research community, and is provided as an output option mainly for interoperability and test purposes. 

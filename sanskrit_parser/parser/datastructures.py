@@ -1324,7 +1324,7 @@ def _check_parse(parse):
             logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
             return False
 
-    # Conjugations have to have one to and from edge
+    # Conjunctions have to have one to and from edge
     for u in conj:
         if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
             logger.debug(f"Samyojaka violation for {u.index} {conj[u]}")

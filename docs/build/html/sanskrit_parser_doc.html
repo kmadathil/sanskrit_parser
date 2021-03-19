@@ -117,11 +117,11 @@ considered, and valid sentence interpretations are output.</p>
 <h3>Algorithm for Vakya Analysis<a class="headerlink" href="#algorithm-for-vakya-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Given a sandhi split of the input phrase into valid words, we</p>
 <ol class="arabic simple">
-<li><p>Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचन form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.</p></li>
+<li><p>Determine all valid morphologies of each pada. For example, रामः could be the प्रथमा एकवचनम् form of राम, or the लट् उत्तमपुरुषबहुवचनम् form of the verb रा. Only dependency parsing will tell us which form is relevant to the current sentence.</p></li>
 <li><p>The Sandhi Graph from the previous stage is transformed into a Vakya Graph, which is a k-partite graph with each partition containing the possible morphologies of each word. For example, the input रामो ग्रामं याति, which is split as रामः ग्रामम् याति results in this: <a class="reference internal" href="#kpgraph"><span class="std std-ref">k-partite graph for रामः ग्रामम् याति</span></a></p></li>
 <li><p>Edges are added between nodes in different partitions, so that each edge describes a possible grammatical relationship.</p></li>
 <li><p>A modified version of Kruskal’s algorithm is used to extract all Generalized Spanning Trees (GST) of the k-partite Vakya Graph. A GST is defined as a tree that contains exactly one node of each partition in the k-partite Vakya Graph.</p></li>
-<li><p>A global constraint checker checks consistency of each GST against a set of rules.</p></li>
+<li><p>A Constraint checker checks consistency of each GST against a set of rules.</p></li>
 <li><p>Each such GST will be a valid parse of the sentence. For example: <a class="reference internal" href="#parsegraph"><span class="std std-ref">Parse Graph for रामः ग्रामम् याति</span></a></p></li>
 </ol>
 <div class="section" id="graphs">
@@ -237,9 +237,109 @@ considered, and valid sentence interpretations are output.</p>
 </div>
 <div class="section" id="modified-kruskal-algorithm">
 <h2>Modified Kruskal Algorithm<a class="headerlink" href="#modified-kruskal-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Several algorithms are available to compute Spanning Trees (ST), and specifically Minimum Cost Spanning Trees (MST) for connected graphs.
+Our VakyaGraphs are k-partite, and we need to fint a GST rather than an ST. We extend one of the standard algorithms - <a class="reference external" href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm">Kruskal’s Algorithm</a> - to:</p>
+<ul class="simple">
+<li><p>Work with k-partite graphs</p></li>
+<li><p>Generate all GSTs instead of only a MST.</p></li>
+</ul>
+<p>Our implementation of the Modified Kruskal Algorithm works thus:</p>
+<ol class="arabic">
+<li><p>We start with a k-partite Vakya Graph</p></li>
+<li><p>Our main datastructure is called a VakyaParse. Each VakyaParse data structure incorporates</p>
+<ol class="arabic simple">
+<li><p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">DisjointSet data-structure</a> similar to Kruskal’s Algorithm</p></li>
+<li><p>A set of edges in the parse</p></li>
+<li><p>A set of active nodes in the partial parse (which is identical to the nodes in the set of edges) but maintained separately to limit computation</p></li>
+<li><p>A set of extinguished nodes: all nodes that are in the same partitions as the active nodes, and hence cannot be part of the parse.</p></li>
+</ol>
+</li>
+<li><p>We initialize the set of candidate parses with a VakyaParse initialized to a null partial parse. A VakyaParse is called a partial parse while this algorithm is running, a candidate parse before Final Constraint Check, and a parse afterwards.</p></li>
+<li><p>We iterate over each partition. At each partition, all input edges to any node in the partition are examined. If an edge is safe to add to a partial parse, a <em>new</em> partial parse is created by adding that edge, and the new partial parse is added to the set of partial parses. When an edge is added to a partial parse, all nodes in the same partitions as the two nodes of the edge are moved to the extinguised list of that partial parse.  An edge is safe to add to a partial parse when</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Neither node of the edge is in the partial parse’s extinguished list</p></li>
+<li><p>Adding the edge will not cause a loop</p></li>
+<li><p>Adding the edge will not violate an on-the-fly constraint</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>Note that the current set of partial parses are retained in the partial parse set, the extensions in the previous step are added to the set. This is because a GMST with <cite>n</cite> nodes will have only <cite>n-1</cite> edges, and hence we need to account for the possibility of a partial parse being unmodified in one iteration.</p></li>
+<li><p>Once we have added all possible edges to all possible partial parses and extended the partial parse set, we prune “small parses”. As indicated, we expect a GMST to have <cite>n-1</cite> edges. A small parse is one with less than <cite>m-1</cite> edges, where <cite>m</cite> is the number of iterations so far. We know that these cannot result in a parse with <cite>n-1</cite> edges, given that there are only <cite>n-m</cite> iterations left.</p></li>
+<li><p>Once all partitions have been seen, the set of partial parses is now our set of candidate parses</p></li>
+<li><p>All candidate parses are taken through Final Constraint Checks, and all that pass become our list of valid parses.</p></li>
+</ol>
 </div>
 <div class="section" id="gst-constraint-checks">
 <h2>GST Constraint Checks<a class="headerlink" href="#gst-constraint-checks" title="Permalink to this headline">¶</a></h2>
+<p>Not all outputs of a tree-finding algorithm are valid parse
+graphs. Therefore, two sets of constraints are applied in the process
+to reject incorrect parses. These incorporate grammatical knowledge
+about what constitutes a valid parse.</p>
+<p>Constraints are applied in two stages</p>
+<ol class="arabic simple">
+<li><p>On the fly, when partial parses are being assembled</p></li>
+<li><p>Once a full candidate parse has been assembed</p></li>
+</ol>
+<div class="section" id="on-the-fly-constraints">
+<h3>On-The-Fly Constraints<a class="headerlink" href="#on-the-fly-constraints" title="Permalink to this headline">¶</a></h3>
+<p>We refer to constraints checked during parse assembly as On-The-Fly
+Constraints. Any constraint that is fully applicable to any subset of
+a valid parse falls in this category.</p>
+<p>Obvious examples are</p>
+<ol class="arabic simple">
+<li><p>No loops are allowed</p></li>
+<li><p>There can be only one node that satisfies a particular kAraka relation with a verb form</p></li>
+<li><p>A word can perform only one grammatical function - that is to say, it can have only a single incoming node (strictly speaking, this is not applied as a constraint, but baked into the sequence of edge picking in the algorithm)
+#. For reversed edges (sambadDa-kartA, etc.), there can be only one such edge going <em>out</em> of a node.</p></li>
+<li><p>A viSezaRa cannot have another viSezaRa.</p></li>
+</ol>
+<p>These are checked before any partial parse is added to the list of current partial parses is the algorithm.</p>
+</div>
+<div class="section" id="final-constraints">
+<h3>Final Constraints<a class="headerlink" href="#final-constraints" title="Permalink to this headline">¶</a></h3>
+<p>As opposed to an On-The-Fly constraint, a final constraint requires a
+full candidate parse, and hence can be checked only when a candidate
+parse is fully assembled.</p>
+<ol class="arabic simple">
+<li><p>Sannidhi check: A GST must be projective to be a valid graph - that is to say, most kinds of edges may not cross each other when the nodes in a graph are laid out linearly, and all edges are marked to one side of the nodes.</p>
+<ul class="simple">
+<li><p>This excludes viSezaRa edges and zazWI-sambanDa edges (we currently do not allow the latter to cross either)</p></li>
+</ul>
+</li>
+<li><p>Every conjunction must have exactly one from and to edge.</p></li>
+<li><p>Sentence conjunction checks</p>
+<ol class="arabic simple">
+<li><p>We do not allow edges “across” from either of a pair of nodes that form a sentence conjuntion to a node “beyond” the other.</p></li>
+<li><p>A reversed (“sambadDa-“) edge must be from a node with a sentence conjunction relationship (ie: must have a vAkyasambanDa edge coming in)</p></li>
+</ol>
+</li>
+</ol>
+<p>A candidate parse that satisfies final constraints is considered a valid parse and is output.</p>
+</div>
+</div>
+<div class="section" id="output-formats">
+<h2>Output Formats<a class="headerlink" href="#output-formats" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">Text</dt>
+<dd class="field-odd"><p>Standard output is provided in human readable text form</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">Dot</dt>
+<dd class="field-odd"><p>The dot format for graphs is supported (using the <cite>–dot-file</cite> option). This can be further converted into png or other image formats using the <cite>graphviz</cite> framework. Graphs shown in this document have been created in this manner.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">Conll</dt>
+<dd class="field-odd"><p>CONLL format is used by the NLP research community, and is provided as an output option mainly for interoperability and test purposes.</p>
+</dd>
+</dl>
+</li>
+</ol>
 </div>
 </div>
 
@@ -274,7 +374,12 @@ considered, and valid sentence interpretations are output.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#modified-kruskal-algorithm">Modified Kruskal Algorithm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gst-constraint-checks">GST Constraint Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gst-constraint-checks">GST Constraint Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-the-fly-constraints">On-The-Fly Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#final-constraints">Final Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#output-formats">Output Formats</a></li>
 </ul>
 </li>
 </ul>
