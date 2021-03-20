@@ -1338,7 +1338,7 @@ def _check_parse(parse, on_the_fly=False):
                ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
                 logger.debug(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} {l} : {v} {vsmbd[v.index]}")
                 return False
-        if  (not on_the_fly) and (u.index not in vsmbd_t) and l[:9] == 'sambadDa-':
+        if (not on_the_fly) and (u.index not in vsmbd_t) and l[:9] == 'sambadDa-':
             logger.debug(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: {l}")
             return False
 
