@@ -910,8 +910,9 @@ class VakyaGraph(object):
             Remove parses with cycles
         '''
         # Have to convert VakyaParse to subgraph before checking
+        # Note: could be multiple subgraphs for the same edge-set (parallel edges)
         parses = set([self.G.edge_subgraph(m) for m in multiedgesets(p, self.G)])
-        return reduce(lambda x, y: x and _check_parse(y, on_the_fly=True), parses, True)
+        return reduce(lambda x, y: x or _check_parse(y, on_the_fly=True), parses, False)
 
     def draw(self, *args, **kwargs):
         _ncache = {}
@@ -1268,6 +1269,7 @@ def _check_parse(parse, on_the_fly=False):
     tov = defaultdict(int)
     sk = defaultdict(int)
     vsmbd = {}
+    vsmbd_t = {}
     conj = defaultdict(lambda: {"from": 0, "to": 0})
     sckeys = set(sentence_conjunctions.keys())
 
@@ -1293,6 +1295,7 @@ def _check_parse(parse, on_the_fly=False):
         if l in 'vAkyasambanDaH':
             vsmbd[u.index] = v.index
             vsmbd[v.index] = u.index
+            vsmbd_t[v.index] = True
         # Conjuction nodes must have in and out edges
         if _get_base(u) in sckeys:
             conj[u]["from"] = conj[u]["from"] + 1
@@ -1328,15 +1331,15 @@ def _check_parse(parse, on_the_fly=False):
         if u.index in vsmbd:
             if ((vsmbd[u.index] > u.index) and (v.index > vsmbd[u.index])) or \
                ((vsmbd[u.index] < u.index) and (v.index < vsmbd[u.index])):
-                logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {u} {vsmbd[u.index]}")
+                logger.debug(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} {l} : {u} {vsmbd[u.index]}")
                 return False
         if v.index in vsmbd:
             if ((vsmbd[v.index] > v.index) and (u.index > vsmbd[v.index])) or \
                ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
-                logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
+                logger.debug(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} {l} : {v} {vsmbd[v.index]}")
                 return False
-        if (not on_the_fly) and (u.index not in vsmbd) and l[:9] == 'sambadDa-':
-            logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
+        if  (not on_the_fly) and (u.index not in vsmbd_t) and l[:9] == 'sambadDa-':
+            logger.debug(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: {l}")
             return False
 
     # Conjunctions have to have one to and from edge
