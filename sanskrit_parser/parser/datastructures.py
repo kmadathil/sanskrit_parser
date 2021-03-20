@@ -19,6 +19,7 @@ from os.path import dirname, basename, splitext, join
 from sanskrit_parser.util import lexical_scorer
 from sanskrit_parser.util.disjoint_set import DisjointSet
 from sanskrit_parser.util.DhatuWrapper import DhatuWrapper
+from functools import reduce
 
 __all__ = ['SandhiGraph', 'VakyaGraph', 'VakyaParse', 'getSLP1Tagset']
 
@@ -838,7 +839,8 @@ class VakyaGraph(object):
                                     logger.debug(f"{pred} - {n} is safe for {ps}")
                                     psc = ps.copy()  # Copy the nodeset and DisjointSet structures
                                     psc.extend(pred, n)
-                                    store_parses.add(psc)
+                                    if self.on_the_fly(psc):
+                                        store_parses.add(psc)
                     partial_parses.difference_update(small_parses)
                     partial_parses.update(store_parses)
                 logger.debug("Partial Parses")
@@ -865,10 +867,12 @@ class VakyaGraph(object):
                 for ppb in pp2:
                     if self.fast_merge:
                         if ppa.can_merge(ppb, mx-mn-1):
-                            ppmt.add(ppa.merge_f(ppb))
+                            merged = ppa.merge_f(ppb)
+                            if merged and self.on_the_fly(merged):
+                                ppmt.add(merged)
                     else:  # Slow Merge
                         merged = ppa.merge_s(ppb, mx-mn-1)
-                        if merged:
+                        if merged and self.on_the_fly(merged):
                             ppmt.add(merged)
             logger.debug(f"{len(ppmt)} parses")
             logger.debug(f"Merged {ppmt}")
@@ -878,11 +882,11 @@ class VakyaGraph(object):
 
         partial_parses = _dc(0, self.path_node_count)
         logger.debug(f"Partial Parses Before Return {partial_parses}")
-        # Multigraph
+        # Multigraph: convert VakyaParse to subgraph
         return set([self.G.edge_subgraph(m) for p in partial_parses for m in multiedgesets(p, self.G)])
 
     def check_parse_validity(self):
-        ''' Validity Check for parses
+        ''' Final Validity Check for parses
 
             Remove parses with double kArakas
             Remove parses with multiple to edges into a node
@@ -897,6 +901,17 @@ class VakyaGraph(object):
         # Remove them
         self.parses.difference_update(iv)
         logger.info(f"Parses after validity check {len(self.parses)}")
+
+    def on_the_fly(self, p):
+        ''' On-the-fly Validity Check for parses
+
+            Remove parses with double kArakas
+            Remove parses with multiple to edges into a node
+            Remove parses with cycles
+        '''
+        # Have to convert VakyaParse to subgraph before checking
+        parses = set([self.G.edge_subgraph(m) for m in multiedgesets(p, self.G)])
+        return reduce(lambda x, y: x and _check_parse(y, on_the_fly=True), parses, True)
 
     def draw(self, *args, **kwargs):
         _ncache = {}
@@ -1243,7 +1258,7 @@ def _order_parses(pu):
 
 
 # Check a parse for validity
-def _check_parse(parse):
+def _check_parse(parse, on_the_fly=False):
     r = True
     smbds = samplabels
     count = defaultdict(lambda: defaultdict(int))
@@ -1287,7 +1302,7 @@ def _check_parse(parse):
     for u in count:  # Dhatu
         for k in count[u]:  # Each karaka should count only once
             if count[u][k] > 1:
-                logger.debug(f"Count for {u} {k} is {count[u][k]} - violates global constraint")
+                logger.debug(f"Count for {u} {k} is {count[u][k]} - violates constraint")
                 return False
     for (ui, vi) in edges:
         for (wi, xi) in edges:
@@ -1296,15 +1311,15 @@ def _check_parse(parse):
                 return False
     for v in toedge:
         if toedge[v] > 1:
-            logger.debug(f"Toedges for {v} is {toedge[v]} - violates global constraint")
+            logger.debug(f"Toedges for {v} is {toedge[v]} - violates constraint")
             return False
     for u in sk:   # Sambaddhakaraka = only one allowed from node
         if sk[u] > 1:
-            logger.debug(f"Sambaddha karaka edges for {u} is {sk[u]} - violates global constraint")
+            logger.debug(f"Sambaddha karaka edges for {u} is {sk[u]} - violates  constraint")
             return False
     for v in tov:
         if v in fromv:
-            logger.debug(f"Viseshana has visheshana {v} - violates global constraint")
+            logger.debug(f"Viseshana has visheshana {v} - violates constraint")
             return False
     # Vakyasambabdha nodes - yadi/tarhi yatra/tatra etc cannot have links
     # beyond their partner
@@ -1320,15 +1335,16 @@ def _check_parse(parse):
                ((vsmbd[v.index] < v.index) and (u.index < vsmbd[v.index])):
                 logger.info(f"Sannidhi violation for vAkyasambadDa {u.index} - {v.index} : {v} {vsmbd[v.index]}")
                 return False
-        if (u.index not in vsmbd) and l[:9] == 'sambadDa-':
+        if (not on_the_fly) and (u.index not in vsmbd) and l[:9] == 'sambadDa-':
             logger.info(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: l")
             return False
 
     # Conjunctions have to have one to and from edge
-    for u in conj:
-        if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
-            logger.debug(f"Samyojaka violation for {u.index} {conj[u]}")
-            return False
+    if (not on_the_fly):
+        for u in conj:
+            if (conj[u]["from"] != 1) or (conj[u]["to"] != 1):
+                logger.debug(f"Samyojaka violation for {u.index} {conj[u]}")
+                return False
     return r
 
 
