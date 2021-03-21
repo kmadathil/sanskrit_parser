@@ -8,6 +8,7 @@ from flask_restx import Resource
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph
+from sanskrit_parser import __version__
 
 URL_PREFIX = '/v1'
 api_blueprint = Blueprint(
@@ -46,6 +47,13 @@ def jtags(tags):
     """ Helper to translate tags to serializable format"""
     return [jtag(x) for x in tags]
 
+
+@api.route('/version/')
+class Tags(Resource):
+    def get(self):
+        """Library Version"""
+        r = {"version": str(__version__)}
+        return r
 
 @api.route('/tags/<string:p>')
 class Tags(Resource):

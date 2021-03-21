@@ -70,11 +70,42 @@ $('#graphModal').on('show.bs.modal', function (event) {
 
 $(document).ready( function () {
     "use strict;"
+    var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
+    var vurl = urlbase + "sanskrit_parser/v1/version/"
+    // Get library version and change message to connected
+    var heartbeat = null
+    $.getJSON(vurl, function (result) {
+		 $("#statusmsg").html("Library version: " + result.version + "&nbsp;")
+		 $("#status").text("Connected")
+		 $("#status").attr("class", "text-success")
+    })
+    $(window).focus(function() {
+	 heartbeat = setInterval(function () {
+	     $("#status").text("Disconnected")
+	     $("#status").attr("class", "text-danger")
+ 	     $.getJSON(vurl, function (result) {
+		 $("#statusmsg").html("Library version: " + result.version + "&nbsp;")
+		 $("#status").text("Connected")
+		 $("#status").attr("class", "text-success")
+    })}, 300000);
+    }).blur(function() {
+	clearInterval(heartbeat);
+    });
+
+    $(window).focus();
+    $("[name='vakyaRadio']").on("change", function () {
+	var radioValue = $("input[name='vakyaRadio']:checked").val();
+	if (radioValue == "vakya") {
+	    $("#SplitCheck").attr("disabled", null)
+	} else {
+	    $("#SplitCheck").attr("disabled", true)
+	}
+    })
     $("#goButton").on("click", function () {
         var txt = $("#inputText").val();
-        var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
+        //var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
         var option = {};
-        var tsel = $("#analysisType").val();
+        var tsel = null // $("#analysisType").val();
         if (!txt) {
             alert("Please enter input text");
             return;
@@ -87,7 +118,15 @@ $(document).ready( function () {
         btn.removeClass("btn-primary").addClass("btn-secondary");
         btn.text("Loading ...");
         $("#issueButton").addClass("d-none");
-        var url = urlbase + option[tsel] + txt;
+	var radioValue = $("input[name='vakyaRadio']:checked").val();
+        var url = urlbase +  "sanskrit_parser/v1/" // urlbase + option[tsel] + txt;
+	if (radioValue == "vakya") {
+	    url = url + "splits/" + txt
+	    tsel = "Split"
+	} else {
+	    url = url + "tags/" + txt
+	    tsel = "Tags"
+	}
         $.getJSON(url, function (result) {
             var panelID;
             var keys;
@@ -112,7 +151,7 @@ $(document).ready( function () {
                 restable += "</table>";
                 break;
             case "Split":
-                $("#reshead").text("Sandhi Splits");
+                $("#reshead").text("Possible Sandhi Splits");
                 restable += "<table class=\"table table-striped\">";
                 result.splits.forEach(function (res) {
                     var item = res.join(" ");
