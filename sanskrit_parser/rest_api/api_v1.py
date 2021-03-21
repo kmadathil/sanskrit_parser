@@ -7,8 +7,8 @@ from flask_restx import Resource
 
 from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.parser.datastructures import VakyaGraph
 from sanskrit_parser import __version__
+from sanskrit_parser import Parser
 
 URL_PREFIX = '/v1'
 api_blueprint = Blueprint(
@@ -49,11 +49,12 @@ def jtags(tags):
 
 
 @api.route('/version/')
-class Tags(Resource):
+class Version(Resource):
     def get(self):
         """Library Version"""
         r = {"version": str(__version__)}
         return r
+
 
 @api.route('/tags/<string:p>')
 class Tags(Resource):
@@ -84,49 +85,35 @@ class Splits(Resource):
         return r
 
 
-@api.route('/analyses/<string:v>')
-class Morpho(Resource):
+@api.route('/parse-presegmented/<string:v>')
+class Parse_Presegmented(Resource):
     def get(self, v):
-        """ Get morphological tags for v """
+        """ Parse a presegmented sentence """
         vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
-        g = analyzer.getSandhiSplits(vobj, tag=True)
-        if g:
-            splits = g.find_all_paths(10, score=True)
-        else:
-            splits = []
-        mres = {}
-        dots = {}
-        for sp in splits:
-            # bn = f"{randint(0,9999):4}"
-            vg = VakyaGraph(sp, max_parse_dc=5)
-            sl = "_".join([n.devanagari(strict_io=False)
-                           for n in sp])
-            for (ix, p) in enumerate(vg.parses):
-                if sl not in mres:
-                    mres[sl] = []
-                t = []
-                for n in p:
-                    preds = list(p.predecessors(n))
-                    if preds:
-                        pred = preds[0]  # Only one
-                        lbl = list(p[pred][n].values())[0]['label']
-                        t.append(jedge(pred, n, lbl))
-                    else:
-                        t.append(jnode(n))
-                mres[sl].append(t)
-            dots[sl] = {}
-            try:
-                dots[sl] = vg.get_dot_dict()
-            except Exception:
-                pass
+        parser = Parser(input_encoding="SLP1",
+                        output_encoding="Devanagari",
+                        replace_ending_visarga='s')
+        mres = []
+        print(v)
+        for split in parser.split(vobj.canonical(), limit=10, pre_segmented=True):
+            parses = list(split.parse(limit=10))
+            sdot = split.to_dot()
+            mres = [x.serializable() for x in parses]
+            pdots = [x.to_dot() for x in parses]
         r = {"input": v, "devanagari": vobj.devanagari(), "analysis": mres,
-             "dot": dots}
+             "split_dot": sdot,
+             "parse_dots": pdots}
         return r
 
-    # @api.route('/graph/<string:v>')
-    # class Graph(Resource):
-    #     def get(self, v):
-    #         """ Get graph for v """
-    #         if not path.exists(f"static/{v}.dot.png"):
-    #             subprocess.run(f"dot -Tpng static/{v}.dot -O", shell=True)
-    #         return redirect(f"/static/{v}.dot.png")
+
+@api.route('/presegmented/<string:v>')
+class Presegmented(Resource):
+    def get(self, v):
+        """ Presegmented Split """
+        vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
+        parser = Parser(input_encoding="SLP1",
+                        output_encoding="Devanagari",
+                        replace_ending_visarga='s')
+        splits = parser.split(vobj.canonical(), limit=10, pre_segmented=True)
+        r = {"input": v, "devanagari": vobj.devanagari(), "splits": [x.serializable()['split'] for x in splits]}
+        return r

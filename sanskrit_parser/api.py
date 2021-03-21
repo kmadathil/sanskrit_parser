@@ -186,6 +186,13 @@ class Split(Serializable):
     def write_dot(self, basepath):
         self.vgraph.write_dot(basepath)
 
+    def to_dot(self):
+        from io import StringIO
+        import networkx as nx
+        s = StringIO()
+        nx.drawing.nx_pydot.write_dot(self.vgraph.G, s)
+        return s.getvalue()
+   
     def serializable(self):
         strict_io = self.parser.strict_io
         encoding = self.parser.output_encoding
@@ -237,8 +244,8 @@ class ParseEdge(Serializable):
         return f'{self.node} : {self.label} of {self.predecessor.pada}'
 
     def serializable(self):
-        return {'node': self.node,
-                'predecessor': self.predecessor,
+        return {'node': self.node.serializable(),
+                'predecessor': self.predecessor.serializable(),
                 'sambandha': self.label
                 }
 
@@ -296,7 +303,7 @@ class Parse(Serializable):
         return s.getvalue()
 
     def serializable(self):
-        return {'graph': self.graph}
+        return {'graph': [x.serializable() for x in self.graph]}
 
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 
+var urlbase = null
+
 function escapeAll(str) {
     var r =  encodeURI(escapeHash(str))
     return r
@@ -7,6 +9,73 @@ function escapeAll(str) {
 function escapeHash(str) {
     var r = str.replace(/#/g,"_");
     return r
+}
+
+function reject_split(id) {
+    $("#card"+id).addClass("d-none")
+}
+
+function parse_split(id) {
+    split = $("#header"+id).text()
+    url = urlbase + "sanskrit_parser/v1/parse-presegmented/" + split
+    var btn = $(this);
+    var btxt = btn.text();
+    btn.removeClass("btn-primary").addClass("btn-secondary");
+    btn.text("Loading ...");
+    $("#issueButton").addClass("d-none");
+    $.getJSON(url, function (result) {
+	var s = JSON.stringify(result);
+        $("#sgraph"+id).removeClass("d-none");
+	$("#sgraph"+id).attr("data-graph", escapeAll(result.split_dot))
+        $("#jsonbox").text(s);
+        $("#jsonButton").removeClass("d-none");
+        $("#issueButton").removeClass("d-none");
+        btn.removeClass("btn-secondary").addClass("btn-primary");
+        btn.text(btxt);
+	var h = "<h5>Sabdabodha Interpretations</h5>"
+	h += "<ol class=\"list-group\">";
+	result.analysis.forEach(function(aitem, index) {
+            h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
+	    h += "<button type=\"button\" class=\"btn btn-light alignright\" data-toggle=\"modal\" data-target=\"#graphModal\"\ data-graph=\"" +escapeAll(result.parse_dots[index]) +  "\" data-title=\"Sabdabodha Parse Graph\">View As Graph</button><div style=\"clear: both;\"></div></div>";
+            h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
+	    aitem.graph.forEach(function(gitem) {
+		console.log(gitem)
+		if ('node' in gitem) {
+		    h += "<tr><th scope=\"row\">" + gitem.node.pada + "</th><td>";
+		    h += gitem.node.root + " - " + gitem.node.tags + "</td><td>";
+		    h += gitem.sambandha + "</td><td>";
+		    h += gitem.predecessor.pada + "</td></tr>";
+		} else {
+		    h += "<tr><th scope=\"row\">" + gitem.pada + "</th><td>";
+		    h += gitem.root + " - " + gitem.tags + "</td><td>";
+		    h += "" + "</td><td>";
+		    h += "" + "</td></tr>";
+		}
+	    })
+            h += "</tbody></table></li>";
+	})
+	h += "</ol>";
+	$("#collapse"+id).html(h);
+	$("#collapse"+id).addClass("show");
+    })
+ }
+
+function createSplitPanel(heading, urlbase, id) {
+    "use strict;"
+    // var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
+    var cardClass =  "border-dark mb-3";
+    var expanded = id === 0 ? "show" : "";
+    var h = "<div  id=\"card" + id + "\" class=\"text-dark\" class=\"card " + cardClass + " \"><div class=\"card-header text-dark\">";
+    h += "<a class=\"text-dark\" id=\"header" + id + "\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
+    h += heading + "</a>";
+    h += "<button type=\"button\" id=\"reject" + id + "\" class=\"btn btn-primary alignright\" onclick=\"reject_split(" + id + ")\" >Reject</button>"
+    h += "<button type=\"button\" id=\"analyze" + id + "\" class=\"btn btn-primary alignright\" onclick=\"parse_split(" + id + ")\" >Sabdabodha</button>"
+    h += "<button type=\"button\" id=\"sgraph" + id + "\" class=\"d-none btn btn-primary alignright\" data-toggle=\"modal\" data-target=\"#graphModal\" data-title=\"Possible Sabdabodha Relationships\">Full Graph</button>";
+    h += "<div style=\"clear: both;\"></div></div>";
+    h += "<div id=\"collapse" + id + "\" class=\"collapse" +  "\"><div id=\"body" + id + "\"class=\"card-block\">";
+    h += "Please click on Reject to remove, or Sabdabodha to see the interpretations of this vakya"
+    h += "</div></div></div>";
+    return h;
 }
 
 function createPanel(heading, row, dot, urlbase, id) {
@@ -70,7 +139,7 @@ $('#graphModal').on('show.bs.modal', function (event) {
 
 $(document).ready( function () {
     "use strict;"
-    var urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
+    urlbase = $.query.get("api_url_base") !== ""? $.query.get("api_url_base") : "https://sanskrit-parser.appspot.com/";
     var vurl = urlbase + "sanskrit_parser/v1/version/"
     // Get library version and change message to connected
     var heartbeat = null
@@ -119,24 +188,58 @@ $(document).ready( function () {
         btn.text("Loading ...");
         $("#issueButton").addClass("d-none");
 	var radioValue = $("input[name='vakyaRadio']:checked").val();
+	var needSplit = $("#SplitCheck").is(':checked');
         var url = urlbase +  "sanskrit_parser/v1/" // urlbase + option[tsel] + txt;
 	if (radioValue == "vakya") {
-	    url = url + "splits/" + txt
-	    tsel = "Split"
+	    if (needSplit) {
+		url = url + "splits/" + txt
+	    } else {
+		url = url + "presegmented/" + txt
+	    }
+	    tsel = "Sandhi"
+	    $.getJSON(url, function (result) {
+		var panelID;
+		var keys;
+		var s = JSON.stringify(result);
+		$("#devinp").text(result.devanagari);
+		$("#jsonbox").text(s);
+		$("#restable").html("");
+		var restable = "";
+		panelID = 0;
+                if (needSplit) {
+		    $("#reshead").text("Possible Sandhi Splits");
+		} else {
+		    $("#reshead").text("");
+		}
+		splits = result.splits
+		// Sort by size
+		splits.sort(function (a, b) {
+		    return a.length > b.length;
+                });
+		splits.forEach(function (res) {
+		    var item = res.join(" ");
+		    restable += createSplitPanel(item, urlbase, panelID);
+		    panelID += 1;
+                });
+		$("#restable").append(restable);
+		$("#jsonButton").removeClass("d-none");
+		$("#devtab").removeClass("d-none");
+		$("#restab").removeClass("d-none");
+		$("#issueButton").removeClass("d-none");
+		btn.removeClass("btn-secondary").addClass("btn-primary");
+		btn.text(btxt);
+            });
 	} else {
 	    url = url + "tags/" + txt
 	    tsel = "Tags"
-	}
-        $.getJSON(url, function (result) {
-            var panelID;
-            var keys;
-            var s = JSON.stringify(result);
-            $("#devinp").text(result.devanagari);
-            $("#jsonbox").text(s);
-            $("#restable").html("");
-            var restable = "";
-            switch (tsel) {
-            case "Tags":
+	    $.getJSON(url, function (result) {
+		var panelID;
+		var keys;
+		var s = JSON.stringify(result);
+		$("#devinp").text(result.devanagari);
+		$("#jsonbox").text(s);
+		$("#restable").html("");
+		var restable = "";
                 if (result.tags.length > 0) {
                     $("#reshead").text("Tags");
                 } else {
@@ -149,42 +252,15 @@ $(document).ready( function () {
                     restable += "<tr><th scope=\"row\">" + item + "</th><td>" + itags + "</td></tr>";
                 });
                 restable += "</table>";
-                break;
-            case "Split":
-                $("#reshead").text("Possible Sandhi Splits");
-                restable += "<table class=\"table table-striped\">";
-                result.splits.forEach(function (res) {
-                    var item = res.join(" ");
-                    restable += "<tr><td>" + item + "</td></tr>";
-                });
-                restable += "</table>";
-                break;
-            case "Analyze":
-                $("#reshead").text("Sentence Analysis");
-                panelID = 0;
-                keys = Object.keys(result.analysis);
-                restable += "<strong>Found " + keys.length + " valid morphologies</strong>";
-                restable += "<br>Please click on a result below to expand/collapse";
-                // Shorter splits should come first
-                keys.sort(function (a, b) {
-                    return a.split("_").length > b.split("_").length;
-                });
-                keys.forEach(function (key) {
-                    var item = key.split("_").join(" ");
-                    console.log(key);
-                    restable += createPanel(item, result.analysis[key], result.dot[key], urlbase, panelID);
-                    panelID += 1;
-                });
-                break;
-            }
-            $("#restable").append(restable);
-            $("#jsonButton").removeClass("d-none");
-            $("#devtab").removeClass("d-none");
-            $("#restab").removeClass("d-none");
-            $("#issueButton").removeClass("d-none");
-            btn.removeClass("btn-secondary").addClass("btn-primary");
-            btn.text(btxt);
-        });
+		$("#restable").append(restable);
+		$("#jsonButton").removeClass("d-none");
+		$("#devtab").removeClass("d-none");
+		$("#restab").removeClass("d-none");
+		$("#issueButton").removeClass("d-none");
+		btn.removeClass("btn-secondary").addClass("btn-primary");
+		btn.text(btxt);
+            });
+	}
     });
 
     $("#issueButtonButton").on("click", function () {
