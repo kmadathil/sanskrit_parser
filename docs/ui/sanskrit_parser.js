@@ -33,6 +33,9 @@ function parse_split(id) {
         btn.removeClass("btn-secondary").addClass("btn-primary");
         btn.text(btxt);
 	var h = "<h5>Sabdabodha Interpretations</h5>"
+	if (result.analysis.length == 0) {
+	     h = "<p>No sabdabodha Interpretations</p>"
+	}
 	h += "<ol class=\"list-group\">";
 	result.analysis.forEach(function(aitem, index) {
             h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
@@ -98,7 +101,7 @@ function createPanel(heading, row, dot, urlbase, id) {
 //	h += urlbase + "static/" + imgbase + "_parse" + index + ".dot.png\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
 //	h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot[index]) + "\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
 	h += "<button type=\"button\" class=\"btn btn-light alignright\" data-toggle=\"modal\" data-target=\"#graphModal\"\ data-graph=\"" +escapeAll(dot[index]) +  "\" data-title=\"Parse Graph\">View Parse Graph</button><div style=\"clear: both;\"></div></div>";
-        h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Tags</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
+        h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Possible Interpretations</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
         sitem.forEach(function (item) {
             h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
             h += item[1][0] + " - " + item[1][1] + "</td><td>";

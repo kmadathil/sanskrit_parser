@@ -192,7 +192,7 @@ class Split(Serializable):
         s = StringIO()
         nx.drawing.nx_pydot.write_dot(self.vgraph.G, s)
         return s.getvalue()
-   
+
     def serializable(self):
         strict_io = self.parser.strict_io
         encoding = self.parser.output_encoding
