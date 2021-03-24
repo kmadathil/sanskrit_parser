@@ -26,7 +26,7 @@ def app_fixture(request):
 
 
 def test_analyses(app_fixture):
-    url = "/sanskrit_parser/v1/analyses/astyuttarasyAm"
+    url = "/sanskrit_parser/v1/parse-presegmented/astyuttarasyAm"
     response = app_fixture.get(url)
     analysis = json.loads(response.data)
     logging.debug(str(analysis))
