@@ -100,7 +100,7 @@ setup(
   install_requires=['indic_transliteration!=1.9.5,!=1.9.6', 'lxml', 'networkx', 'tinydb',
                     'six', 'flask', 'flask_restx', 'flask_cors',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy<1.4',
-                    'sentencepiece', 'gensim', 'pydot', 'pandas', 'xlrd'],
+                    'sentencepiece', 'gensim<4', 'pydot', 'pandas', 'xlrd'],
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,

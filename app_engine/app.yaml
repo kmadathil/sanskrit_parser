@@ -1,0 +1,14 @@
+runtime: python38
+instance_class: F4_1G
+entrypoint: gunicorn -b :$PORT -w 4 main:app
+handlers:
+  # This configures App Engine to serve the files in the app's static
+  # directory.
+- url: /ui
+  static_dir: ui
+  
+  # This handler routes all requests not caught above to your main app. It is
+  # required when static routes are defined, but can be omitted (along with
+  # the entire handlers section) when there are no static files defined.
+- url: /.*
+  script: auto
