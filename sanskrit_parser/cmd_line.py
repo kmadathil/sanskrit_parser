@@ -69,7 +69,7 @@ def vakya(argv=None):
                                                 pre_segmented=args.pre_segmented)):
             logger.info(f'Sandhi Split: {split}')
             logger.info(f'Min cost only {args.min_cost}')
-            try: 
+            try:
                 for pi, parse in enumerate(split.parse(limit=999,
                                                        min_cost_only=args.min_cost)):
                     logger.debug(f'Parse {pi}')
@@ -108,7 +108,6 @@ def vakya(argv=None):
                 split.write_dot(splitbase)
     except TypeError:
         logger.info('Split: No Splits Found')
-
 
     return None
 
