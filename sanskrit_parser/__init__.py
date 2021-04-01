@@ -60,5 +60,5 @@ def enable_file_logger(log_file_name='SanskritParser.log',
     logger.addHandler(fh)
 
 
-__version__ = '0.2.3-post0'
+__version__ = '0.2.3-post1'
 __all__ = ['Parser', '__version__']
