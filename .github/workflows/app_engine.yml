@@ -1,0 +1,28 @@
+# Deploy to appengine on release
+
+name: App Engine
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  app-engine:
+    name: Deploy to App Engine
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy UI folder and update requirements
+        run: |
+            cp -r docs/ui app_engine/
+            cd app_engine/
+            echo "gunicorn" > requirements.txt
+            echo "git+https://github.com/kmadathil/sanskrit_parser.git@${GITHUB_SHA}" >> requirements.txt
+
+      - name: App engine action
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: app_engine
+          project_id: ${{ secrets.GCP_PROJECT }}
+          credentials: ${{ secrets.GCP_SA_KEY }}
