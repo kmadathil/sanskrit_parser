@@ -62,45 +62,53 @@ def vakya(argv=None):
                     split_above=args.split_above,
                     lexical_lookup=args.lexical_lookup)
     logger.debug('Splits:')
-    for si, split in enumerate(parser.split(args.data,
-                                            limit=args.max_paths,
-                                            dot_file=args.dot_file,
-                                            pre_segmented=args.pre_segmented)):
-        logger.info(f'Sandhi Split: {split}')
-        logger.info(f'Min cost only {args.min_cost}')
-        for pi, parse in enumerate(split.parse(limit=999,
-                                               min_cost_only=args.min_cost)):
-            logger.debug(f'Parse {pi}')
-            logger.debug(f'{parse}')
-            print(f'Parse {pi} : (Cost = {parse.cost})')
-            if args.conll:
-                for line in parse.to_conll():
-                    print(line)
-            else:
-                print(f'{parse}')
-            if args.conll_file is not None:
-                path = args.conll_file
+    try:
+        for si, split in enumerate(parser.split(args.data,
+                                                limit=args.max_paths,
+                                                dot_file=args.dot_file,
+                                                pre_segmented=args.pre_segmented)):
+            logger.info(f'Sandhi Split: {split}')
+            logger.info(f'Min cost only {args.min_cost}')
+            try: 
+                for pi, parse in enumerate(split.parse(limit=999,
+                                                       min_cost_only=args.min_cost)):
+                    logger.debug(f'Parse {pi}')
+                    logger.debug(f'{parse}')
+                    print(f'Parse {pi} : (Cost = {parse.cost})')
+                    if args.conll:
+                        for line in parse.to_conll():
+                            print(line)
+                    else:
+                        print(f'{parse}')
+                    if args.conll_file is not None:
+                        path = args.conll_file
+                        d = dirname(path)
+                        be = basename(path)
+                        b, e = splitext(be)
+                        conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
+                        if args.conll_append:
+                            tfile = open(conllbase, "a")
+                        else:
+                            tfile = open(conllbase, "w")
+                        twriter = csv.writer(tfile, delimiter='\t')
+                        for line in parse.to_conll():
+                            twriter.writerow(line)
+                        twriter.writerow([])
+                        tfile.close()
+            except TypeError:
+                logger.info('Parse: No Parses Found')
+
+            # Write dot files
+            if args.dot_file is not None:
+                path = args.dot_file
                 d = dirname(path)
                 be = basename(path)
                 b, e = splitext(be)
-                conllbase = join(d, b + f"_split{si}_parse{pi}" + e)
-                if args.conll_append:
-                    tfile = open(conllbase, "a")
-                else:
-                    tfile = open(conllbase, "w")
-                twriter = csv.writer(tfile, delimiter='\t')
-                for line in parse.to_conll():
-                    twriter.writerow(line)
-                twriter.writerow([])
-                tfile.close()
-        # Write dot files
-        if args.dot_file is not None:
-            path = args.dot_file
-            d = dirname(path)
-            be = basename(path)
-            b, e = splitext(be)
-            splitbase = join(d, b + f"_split{si}" + e)
-            split.write_dot(splitbase)
+                splitbase = join(d, b + f"_split{si}" + e)
+                split.write_dot(splitbase)
+    except TypeError:
+        logger.info('Split: No Splits Found')
+
 
     return None
 
@@ -142,11 +150,15 @@ def sandhi(argv=None):
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
     logger.debug('Splits:')
-    for si, split in enumerate(parser.split(args.data,
-                                            limit=args.max_paths,
-                                            dot_file=args.dot_file,
-                                            pre_segmented=args.pre_segmented)):
-        logger.info(f'Split: {split}')
+    try:
+        for si, split in enumerate(parser.split(args.data,
+                                                limit=args.max_paths,
+                                                dot_file=args.dot_file,
+                                                pre_segmented=args.pre_segmented)):
+            logger.info(f'Split: {split}')
+    except TypeError:
+        logger.info('Split: No Splits Found')
+
     return None
 
 
