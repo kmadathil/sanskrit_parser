@@ -30,6 +30,12 @@ def normalize(s):
     if s[-1] == 'o':
         logger.debug("Detected o at end of string. Replacing with aH")
         s = s[:-1] + 'aH'
+    # FIXME - temporary changes to handle ISO5519 as pseudo-IAST
+    # Remove once we have a full ISO5519 implementation in indic_transliterate
+    s = s.replace('ṁ', 'M')
+    s = s.replace('r̥', 'f')
+    s = s.replace('r̥̄', 'F')
+    s = s.replace('l̥', 'x')
     return s
 
 
