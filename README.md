@@ -19,6 +19,13 @@ This project has been tested and developed using Python 3.7.
 pip install sanskrit_parser
 ```
 
+### Gensim installation notes
+Note that `sanskrit_parser` depends on [`gensim`](https://radimrehurek.com/gensim/) for scoring, which requires the capability to [build C extensions for Python](https://docs.python.org/3/extending/building.html). On Windows, this typically requires the installation of Microsoft build tools for Visual studio 2019 as documented [here](https://wiki.python.org/moin/WindowsCompilers). If you cannot, or do not want to install MS build tools to compile extensions, some alternate options are:
+1. Install the pre-built Windows library from https://www.lfd.uci.edu/~gohlke/pythonlibs/. (Please follow the instructions on the website to install the dependencies first.)
+2. Use Binder notebooks to run your code in the cloud - [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb)
+3. Use the REST API of sanskrit-parser.appspot.com documented here - https://sanskrit-parser.appspot.com/sanskrit_parser/docs. You can use the try it out option under the default version -> splits -> Try it out. It will show you the sample commands for CURL or the URL itself, as well as the response.
+
+
 ## Usage
 - For a tour of the basic features, check out the [example notebook](https://github.com/kmadathil/sanskrit_parser/blob/master/examples/basic_example.ipynb).
 - For more detailed documentation, see [generated sphynx docs](https://kmadathil.github.io/sanskrit_parser/build/html/).
