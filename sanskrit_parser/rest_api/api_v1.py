@@ -1,6 +1,7 @@
 from flask import Blueprint
 import flask_restx
 from flask_restx import Resource
+from flask import request
 # import subprocess
 # from os import path
 # from flask import redirect
@@ -74,7 +75,10 @@ class Tags(Resource):
 class Splits(Resource):
     def get(self, v):
         """ Get lexical tags for v """
-        vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
+        strict_p = True
+        if request.args.get("strict") == "false":
+            strict_p = False
+        vobj = SanskritObject(v, strict_io=strict_p, replace_ending_visarga=None)
         g = analyzer.getSandhiSplits(vobj)
         if g:
             splits = g.find_all_paths(10)
@@ -89,7 +93,10 @@ class Splits(Resource):
 class Parse_Presegmented(Resource):
     def get(self, v):
         """ Parse a presegmented sentence """
-        vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
+        strict_p = True
+        if request.args.get("strict") == "false":
+            strict_p = False
+        vobj = SanskritObject(v, strict_io=strict_p, replace_ending_visarga=None)
         parser = Parser(input_encoding="SLP1",
                         output_encoding="Devanagari",
                         replace_ending_visarga='s')

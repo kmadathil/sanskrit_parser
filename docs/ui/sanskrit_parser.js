@@ -192,12 +192,18 @@ $(document).ready( function () {
         $("#issueButton").addClass("d-none");
 	var radioValue = $("input[name='vakyaRadio']:checked").val();
 	var needSplit = $("#SplitCheck").is(':checked');
+	var strict = $("#StrictCheck").is(':checked');
         var url = urlbase +  "sanskrit_parser/v1/" // urlbase + option[tsel] + txt;
 	if (radioValue == "vakya") {
 	    if (needSplit) {
 		url = url + "splits/" + txt
 	    } else {
 		url = url + "presegmented/" + txt
+	    }
+	    if (strict) {
+		url = url + "?strict=true"
+	    } else {
+		url = url + "?strict=false"
 	    }
 	    tsel = "Sandhi"
 	    $.getJSON(url, function (result) {
