@@ -13,14 +13,19 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 ## Installation
 
-This project has been tested and developed using Python 3.7/3.8. We are aware of issues with Python 3.9 at present. 
-
+This project has been tested and developed using Python 3.7 - 3.9. To install the package:
 ```
 pip install sanskrit_parser
 ```
+To enable statistical scoring based on DCS, please also install gensim<4 and sentencepiece:
+```
+pip install gensim sentencepiece
+```
+See next section for some options if gensim installation fails, and you need the scoring feature.
 
 ### Gensim installation: Alternate options if `pip install` fails
-Note that `sanskrit_parser` depends on [`gensim`](https://radimrehurek.com/gensim/) for scoring, which requires the capability to [build C extensions for Python](https://docs.python.org/3/extending/building.html). If you have an appropriate C compiler for your system, `gensim` should be installed automatically during `pip install`. We have seen some cases where `pip install` is unable to install `gensim` on Windows, and the following instructions are for those situations.
+The scoring implementation in `sanskrit_parser` depends on [`gensim`](https://radimrehurek.com/gensim/) for scoring,
+which requires the capability to [build C extensions for Python](https://docs.python.org/3/extending/building.html). If you have an appropriate C compiler for your system, `gensim` should be installed automatically during `pip install`. We have seen some cases where `pip install` is unable to install `gensim` on Windows, and the following instructions are for those situations.
 
 On Windows, `gensim` typically requires the installation of Microsoft build tools for Visual studio 2019 as documented [here](https://wiki.python.org/moin/WindowsCompilers). If you cannot, or do not want to install MS build tools to compile extensions, some alternate options are:
 1. Install the pre-built Windows library from https://www.lfd.uci.edu/~gohlke/pythonlibs/. (Please follow the instructions on the website to install the dependencies first.)
