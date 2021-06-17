@@ -3,14 +3,12 @@
 Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 @author: Karthikeyan Madathil (@kmadathil)
 """
-from __future__ import print_function
 
 import logging
-import os
-import importlib.resources
 from tinydb import TinyDB, Query
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
+from sanskrit_parser.util.data_manager import data_file_path
 
 
 class DhatuWrapper(object):
@@ -23,9 +21,8 @@ class DhatuWrapper(object):
 
     def __init__(self, logger=None):
         self.logger = logger or logging.getLogger(__name__)
-        with importlib.resources.path('sanskrit_parser', 'data') as data_dir:
-            self.db = TinyDB(os.path.join(data_dir, self.db_file),
-                             access_mode='r')
+        db_path = data_file_path(self.db_file)
+        self.db = TinyDB(db_path, access_mode='r')
         assert len(self.db.all()) != 0
 
     def _get_dhatus(self, d):

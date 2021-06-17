@@ -48,23 +48,15 @@ Command line usage
 
 """
 
-from __future__ import print_function
-import os
+import pickle
+import sqlite3
 import logging
-import importlib.resources
 from collections import namedtuple
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
-import sqlite3
-
+from sanskrit_parser.util.data_manager import data_file_path
 
 _db = namedtuple('_db', ['db_file', 'tags', 'stems', 'buf'])
 
@@ -101,9 +93,8 @@ class InriaXMLWrapper(LexicalLookup):
     def __init__(self, logger=None):
         self.pickle_file = "inria_forms.pickle"
         self.logger = logger or logging.getLogger(__name__)
-        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
-            db_file = os.path.join(base_dir, "inria_forms_pos.db")
-            pkl_path = os.path.join(base_dir, "inria_stems_tags_buf.pkl")
+        db_file = data_file_path("inria_forms_pos.db")
+        pkl_path = data_file_path("inria_stems_tags_buf.pkl")
         self.db = self._load_db(db_file, pkl_path)
 
     @staticmethod

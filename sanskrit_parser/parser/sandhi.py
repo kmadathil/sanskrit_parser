@@ -100,13 +100,12 @@ Command line usage
 """
 
 import itertools
-import os
 import pickle
 import logging
 import datetime
-import importlib.resources
 from zipfile import ZipFile
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SCHEMES, outputctx
+from sanskrit_parser.util.data_manager import data_file_path
 
 
 class Sandhi(object):
@@ -129,11 +128,10 @@ class Sandhi(object):
 
     @staticmethod
     def _load_rules_pickle(filename):
-        with importlib.resources.path('sanskrit_parser', 'data') as base_dir:
-            zip_path = os.path.join(base_dir, 'sandhi_rules.zip')
-            with ZipFile(zip_path) as myzip:
-                with myzip.open(filename) as f:
-                    return pickle.load(f)
+        zip_path = data_file_path('sandhi_rules.zip')
+        with ZipFile(zip_path) as myzip:
+            with myzip.open(filename) as f:
+                return pickle.load(f)
 
     def _load_forward(self):
         if self.forward is None:
