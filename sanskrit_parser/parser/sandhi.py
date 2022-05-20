@@ -104,7 +104,8 @@ import pickle
 import logging
 import datetime
 from zipfile import ZipFile
-from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SCHEMES, outputctx
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, outputctx
 from sanskrit_parser.util.data_manager import data_file_path
 
 
@@ -277,7 +278,7 @@ if __name__ == "__main__":
         if args.input_encoding is None:
             ie = None
         else:
-            ie = SCHEMES[args.input_encoding]
+            ie = args.input_encoding
 
         # Setup logging
         if args.loglevel:

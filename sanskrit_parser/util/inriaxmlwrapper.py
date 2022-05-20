@@ -53,7 +53,8 @@ import sqlite3
 import logging
 from collections import namedtuple
 
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper
 from sanskrit_parser.util.data_manager import data_file_path
@@ -166,7 +167,7 @@ if __name__ == "__main__":
         if args.input_encoding is None:
             ie = None
         else:
-            ie = SCHEMES[args.input_encoding]
+            ie = args.input_encoding
 
         if args.loglevel:
             numeric_level = getattr(logging, args.loglevel.upper(), None)

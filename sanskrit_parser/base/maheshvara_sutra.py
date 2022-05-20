@@ -220,7 +220,8 @@ if __name__ == "__main__":
         m = MaheshvaraSutras()
         print(m)
         if args.encoding is not None:
-            e = sanskrit_base.SCHEMES[args.encoding]
+            from indic_transliteration.sanscript import SCHEMES
+            e = args.encoding
         else:
             e = None
         p = sanskrit_base.SanskritImmutableString(args.pratyahara, e)

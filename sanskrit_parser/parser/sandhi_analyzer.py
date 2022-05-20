@@ -335,7 +335,8 @@ def main(argv=None):
     if args.input_encoding is None:
         ie = None
     else:
-        ie = SanskritBase.SCHEMES[args.input_encoding]
+        from indic_transliteration.sanscript import SCHEMES
+        ie = args.input_encoding
     with SanskritBase.outputctx(args.strict_io):
         if not args.split:
             i = SanskritBase.SanskritNormalizedString(args.data, encoding=ie,

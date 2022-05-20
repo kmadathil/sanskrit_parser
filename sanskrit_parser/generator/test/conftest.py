@@ -14,8 +14,10 @@ def pytest_addoption(parser):
     """Custom options for pytest command line
     """
     # Add an option to limit number of tests generated.
-    parser.addoption("--test-count", action="store", default=0,
-                     help="Number of tests to generate")
+    ## TODO: Solve "ValueError: option names {'--test-count'} already added" below
+    #parser.addoption("--test-count", action="store", default=0,
+    #                help="Number of tests to generate")
+    pass
 
 
 def get_testcount(config):

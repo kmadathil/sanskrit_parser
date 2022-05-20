@@ -7,7 +7,8 @@ Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 import logging
 from tinydb import TinyDB, Query
 
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.data_manager import data_file_path
 
 
@@ -88,7 +89,7 @@ if __name__ == "__main__":
         if args.input_encoding is None:
             ie = None
         else:
-            ie = SCHEMES[args.input_encoding]
+            ie = args.input_encoding
         i = SanskritImmutableString(args.dhatu, encoding=ie)
         it = i.canonical()
         print("Input String in SLP1:", it)

@@ -48,7 +48,10 @@ import abc
 import warnings
 from dataclasses import dataclass
 from typing import Sequence
-from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritObject, SLP1
+
+from indic_transliteration import sanscript
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser.parser.datastructures import VakyaGraph, VakyaGraphNode
@@ -77,15 +80,15 @@ class JSONEncoder(json.JSONEncoder):
 class Parser():
 
     def __init__(self, strict_io: bool = False, input_encoding: str = None,
-                 output_encoding: str = 'SLP1', lexical_lookup: str = "combined",
+                 output_encoding: str = sanscript.SLP1, lexical_lookup: str = "combined",
                  score: bool = True, split_above: int = 5,
                  replace_ending_visarga: str = None, fast_merge: bool = True):
         self.strict_io = strict_io
         if input_encoding is not None:
-            self.input_encoding = SCHEMES[input_encoding]
+            self.input_encoding = input_encoding
         else:
             self.input_encoding = None
-        self.output_encoding = SCHEMES[output_encoding]
+        self.output_encoding = output_encoding
         self.lexical_lookup = lexical_lookup
         self.score = score
         self.split_above = split_above
@@ -327,7 +330,7 @@ if __name__ == "__main__":
 
     def main():
         examples = [('devadattogrAmaMgacCati', 'SLP1'),
-                    ('astyuttarasyAMdishidevatAtmA', 'Devanagari')
+                    ('astyuttarasyAMdishidevatAtmA', sanscript.DEVANAGARI)
                     ]
         for string, encoding in examples:
             api_example(string, encoding)

@@ -7,7 +7,8 @@ Base class + factory for lexical lookup classes
 from __future__ import print_function
 import abc
 from argparse import ArgumentParser
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SCHEMES
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 
 
 class LexicalLookup(object):
@@ -47,7 +48,7 @@ class LexicalLookup(object):
         if args.input_encoding is None:
             ie = None
         else:
-            ie = SCHEMES[args.input_encoding]
+            ie = args.input_encoding
 
         word_in = SanskritImmutableString(args.word,
                                           encoding=ie).canonical()

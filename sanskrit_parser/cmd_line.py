@@ -7,7 +7,8 @@ from os.path import dirname, basename, splitext, join
 from argparse import ArgumentParser
 import logging
 from sanskrit_parser import Parser
-from sanskrit_parser.base.sanskrit_base import SCHEMES, SanskritNormalizedString
+from indic_transliteration.sanscript import SCHEMES
+from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString
 from sanskrit_parser.base.sanskrit_base import outputctx
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 from sanskrit_parser import enable_file_logger, enable_console_logger
@@ -195,7 +196,7 @@ def tags(argv=None):
     if args.input_encoding is None:
         ie = None
     else:
-        ie = SCHEMES[args.input_encoding]
+        ie = args.input_encoding
     s = LexicalSandhiAnalyzer(args.lexical_lookup)
     with outputctx(args.strict_io):
         i = SanskritNormalizedString(args.data, encoding=ie,
