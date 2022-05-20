@@ -54,8 +54,10 @@ import progressbar
 from openpyxl import Workbook
 from dcs_wrapper import DCS
 from dcs_wrapper import DCSTagMapper
+
+from indic_transliteration import sanscript
 from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
-from sanskrit_parser.base.sanskrit_base import SanskritObject, IAST
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 from joblib import Parallel, delayed
 
 
@@ -125,7 +127,7 @@ def process(sentences, tag_mapper, ws):
     for sent in sentences:
         if sent is None:
             continue
-        text_obj = SanskritObject(sent.text, encoding=IAST,
+        text_obj = SanskritObject(sent.text, encoding=sanscript.IAST,
                                   strict_io=False)
         words = text_obj.canonical().strip().split(" ")
         if len(words) != len(sent.dcsAnalysisDecomposition):
@@ -136,11 +138,11 @@ def process(sentences, tag_mapper, ws):
             word_analysis = analysis[0]
             if word_analysis.dcsGrammarHint == []:
                 continue
-            word_slp = SanskritObject(w, encoding=IAST,
+            word_slp = SanskritObject(w, encoding=sanscript.IAST,
                                       strict_io=False).canonical()
             tags = tag_mapper(word_analysis.dcsGrammarHint)
             root = SanskritObject(word_analysis.root,
-                                  encoding=IAST,
+                                  encoding=sanscript.IAST,
                                   strict_io=False).canonical()
             i_valid = inria_metrics.update(word_slp, root, tags)
             s_valid = sdata_metrics.update(word_slp, root, tags)

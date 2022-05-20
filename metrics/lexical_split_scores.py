@@ -21,7 +21,11 @@ import operator
 import itertools
 import subprocess
 import progressbar
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1, outputctx
+
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject, outputctx
+
+## TODO: Fix missing import below.
 from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 
 
@@ -120,7 +124,7 @@ def main(count=None, start=0):
     bar = progressbar.ProgressBar(max_value=max_value)
     with outputctx(strict_io=False):
         for line in bar(inputs):
-            s = SanskritObject(line.strip(), encoding=SLP1, replace_ending_visarga=None)
+            s = SanskritObject(line.strip(), encoding=sanscript.SLP1, replace_ending_visarga=None)
             logger.debug("Input in SLP1 = %s", s.canonical())
             # Compute splits
             inria.update(s)

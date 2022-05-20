@@ -18,7 +18,8 @@ Use the ``LexicalSandhiAnalyzer`` to split a sentence (wrapped in a
 
     >>> from __future__ import print_function
     >>> from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+    >>> from indic_transliteration import sanscript
+    >>> from sanskrit_parser.base.sanskrit_base import SanskritObject
     >>> sentence = SanskritObject("astyuttarasyAMdishidevatAtmA")
     >>> analyzer = LexicalSandhiAnalyzer()
     >>> splits = analyzer.getSandhiSplits(sentence).findAllPaths(10)
@@ -62,6 +63,8 @@ ending in visarga with an 's' at the end)
 """
 
 from __future__ import print_function
+
+from indic_transliteration import sanscript
 from sanskrit_parser.util.lexical_lookup_factory import LexicalLookupFactory
 import sanskrit_parser.base.sanskrit_base as SanskritBase
 
@@ -220,7 +223,7 @@ class LexicalSandhiAnalyzer(object):
             return r
 
         def _sandhi_splits_all(s, start=None, stop=None):
-            obj = SanskritBase.SanskritImmutableString(s, encoding=SanskritBase.SLP1)
+            obj = SanskritBase.SanskritImmutableString(s, encoding=sanscript.SLP1)
             splits = self.sandhi.split_all(obj, start, stop)
             return splits
 
@@ -260,7 +263,7 @@ class LexicalSandhiAnalyzer(object):
                         if s_c_left not in node_cache:
                             # Extend splits list with s_c_left appended with
                             # possible splits of s_c_right
-                            t = SanskritBase.SanskritObject(s_c_left, encoding=SanskritBase.SLP1)
+                            t = SanskritBase.SanskritObject(s_c_left, encoding=sanscript.SLP1)
                             node_cache[s_c_left] = t
                         else:
                             t = node_cache[s_c_left]
@@ -273,7 +276,7 @@ class LexicalSandhiAnalyzer(object):
                     # where the same s_c_left appears with a null and non-null
                     # right side.
                     if s_c_left not in node_cache:
-                        t = SanskritBase.SanskritObject(s_c_left, encoding=SanskritBase.SLP1)
+                        t = SanskritBase.SanskritObject(s_c_left, encoding=sanscript.SLP1)
                         node_cache[s_c_left] = t
                     else:
                         t = node_cache[s_c_left]

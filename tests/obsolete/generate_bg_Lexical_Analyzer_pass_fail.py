@@ -10,7 +10,8 @@ import os
 import re
 import progressbar
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, ITRANS
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 
 logger = logging.getLogger(__name__)
@@ -146,8 +147,8 @@ def test_splits(lexan, bg_refs):
         return s in [list(map(str, ss)) for ss in splits]
 
     f = bg_refs[0]
-    s = [re.sub('H$', 's', SanskritObject(sx, encoding=ITRANS).canonical()) for sx in bg_refs[1]]
-    i = SanskritObject(f, encoding=ITRANS)
+    s = [re.sub('H$', 's', SanskritObject(sx, encoding=sanscript.ITRANS).canonical()) for sx in bg_refs[1]]
+    i = SanskritObject(f, encoding=sanscript.ITRANS)
     try:
         # for sss in s:
         #   if not lexan.forms.valid(sss):

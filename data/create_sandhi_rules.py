@@ -16,7 +16,8 @@ import pickle
 from zipfile import ZipFile, ZIP_DEFLATED
 from collections import defaultdict
 
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.base.maheshvara_sutra import MaheshvaraSutras
 
 
@@ -74,7 +75,7 @@ class Sandhi(object):
                     # This is a mAheswara sUtra pratyAhAra
                     splits = list(map(str.strip, c.split('-')))
                     varnas = set(ms.getPratyahara(
-                        SanskritImmutableString(splits[0][1:], encoding=SLP1),
+                        SanskritImmutableString(splits[0][1:], encoding=sanscript.SLP1),
                         longp=False, remove_a=True, dirghas=True).canonical())
                     if len(splits) == 2:
                         varnas -= set(splits[1])
@@ -97,7 +98,7 @@ class Sandhi(object):
                                           re.split('([+-])', c)))
                         varnas = set(
                             ms.getPratyahara(
-                                SanskritImmutableString(splits[0][1:], encoding=SLP1),
+                                SanskritImmutableString(splits[0][1:], encoding=sanscript.SLP1),
                                 longp=False, remove_a=True, dirghas=True)
                             .canonical()
                         )

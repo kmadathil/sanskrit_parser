@@ -5,8 +5,8 @@
 
     @author: Karthik Madathil (github: @kmadathil)
 """
-
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject, SanskritImmutableString
 import networkx as nx
 from itertools import islice, product
 import logging
@@ -303,7 +303,7 @@ class VakyaGraph(object):
             mtags = sobj.getMorphologicalTags()
             for mtag in mtags:
                 ncopy = SanskritObject(sobj.canonical(),
-                                       encoding=SLP1,
+                                       encoding=sanscript.SLP1,
                                        replace_ending_visarga=None)
                 ncopy.setMorphologicalTags(mtag)
                 pn = VakyaGraphNode(ncopy, ix)
@@ -632,11 +632,11 @@ class VakyaGraph(object):
                     if lk and n.node_is_a(lk):  # Lakara need not be set
                         # logger.info(f'Node before lakara locked {n}')
                         n.deleteTags(lk | vc | p | v)
-                        # n.setTags(set([SanskritObject(_v, SLP1) for _v in list(lk | vc | p)]))
+                        # n.setTags(set([SanskritObject(_v, sanscript.SLP1) for _v in list(lk | vc | p)]))
                         logger.info(f'Node with lakara removed {n}')
                     elif v and n.node_is_a(v):
                         n.deleteTags(v)
-                        n.setTags(set([SanskritObject(_v, SLP1) for _v in list(v)]))
+                        n.setTags(set([SanskritObject(_v, sanscript.SLP1) for _v in list(v)]))
                         logger.info(f'Node with vibhakti locked {n}')
                         # Compute vacanam and lingam: Conjunctions
                         is_conj = (_get_base(n) in conjunctions)
@@ -679,7 +679,7 @@ class VakyaGraph(object):
                                     vacana = _vacana(vacana, list(_v)[0], is_conj)
                                 if _l:
                                     linga = _linga(linga, list(_l)[0])
-                        n.setTags({SanskritObject(vacana, SLP1), SanskritObject(linga, SLP1)})
+                        n.setTags({SanskritObject(vacana, sanscript.SLP1), SanskritObject(linga, sanscript.SLP1)})
                         logger.info(f'Node with vacana/linga locked {n}')
 
     def add_avyayas(self, bases):
@@ -1199,7 +1199,7 @@ def check_sambodhya(d, n):
 def jedge(pred, node, label, strict_io=False):
     return (node.pada.canonical(strict_io=strict_io),
             jtag(node.getMorphologicalTags(), strict_io),
-            SanskritImmutableString(label, encoding=SLP1).canonical(strict_io=strict_io),
+            SanskritImmutableString(label, encoding=sanscript.SLP1).canonical(strict_io=strict_io),
             pred.pada.canonical(strict_io=strict_io))
 
 

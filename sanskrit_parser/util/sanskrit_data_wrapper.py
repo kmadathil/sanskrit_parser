@@ -11,7 +11,8 @@ import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI, SLP1
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
+from indic_transliteration import sanscript
 from sanskrit_parser.util.data_manager import data_file_path
 
 
@@ -93,28 +94,28 @@ class SanskritDataWrapper(LexicalLookup):
         tagset = set()
         obj = self.refresh(obj)
 #         self.logger.debug("%s, gender_id = %d", obj, obj.gender_id)
-        tagset.add(SanskritImmutableString(self.lingam[obj.gender_id - 1], DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.lingam[obj.gender_id - 1], sanscript.DEVANAGARI))
         if obj.compounded:
-            tagset.add(SanskritImmutableString("समासपूर्वपदनामपदम्", DEVANAGARI))
+            tagset.add(SanskritImmutableString("समासपूर्वपदनामपदम्", sanscript.DEVANAGARI))
         else:
-            tagset.add(SanskritImmutableString(self.vacanam[obj.number_id - 1], DEVANAGARI))
-            tagset.add(SanskritImmutableString(self.vibhakti[obj.case_id - 1], DEVANAGARI))
+            tagset.add(SanskritImmutableString(self.vacanam[obj.number_id - 1], sanscript.DEVANAGARI))
+            tagset.add(SanskritImmutableString(self.vibhakti[obj.case_id - 1], sanscript.DEVANAGARI))
         stem = obj.stem
         if type(stem) == ParticipleStem:
             mode = stem.mode.abbr
             voice = stem.voice.abbr
             for t in self.kRdanta[(mode, voice)]:
-                tagset.add(SanskritImmutableString(t, SLP1))
-        return (SanskritImmutableString(stem.name, SLP1), tagset)
+                tagset.add(SanskritImmutableString(t, sanscript.SLP1))
+        return (SanskritImmutableString(stem.name, sanscript.SLP1), tagset)
 
     def map_verb(self, obj):
         tagset = set()
         newobj = self.refresh(obj)
-        tagset.add(SanskritImmutableString(self.lakAra[newobj.mode.id - 1], DEVANAGARI))
-        tagset.add(SanskritImmutableString(self.pada_prayoga[newobj.voice.id - 1], DEVANAGARI))
-        tagset.add(SanskritImmutableString(self.puruSha[newobj.person.id - 1], DEVANAGARI))
-        tagset.add(SanskritImmutableString(self.vacanam[newobj.number.id - 1], DEVANAGARI))
-        return (SanskritImmutableString(newobj.root.name, SLP1), tagset)
+        tagset.add(SanskritImmutableString(self.lakAra[newobj.mode.id - 1], sanscript.DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.pada_prayoga[newobj.voice.id - 1], sanscript.DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.puruSha[newobj.person.id - 1], sanscript.DEVANAGARI))
+        tagset.add(SanskritImmutableString(self.vacanam[newobj.number.id - 1], sanscript.DEVANAGARI))
+        return (SanskritImmutableString(newobj.root.name, sanscript.SLP1), tagset)
 
     def map_tags(self, tags):
         out = []
@@ -126,16 +127,16 @@ class SanskritDataWrapper(LexicalLookup):
             elif type(t) == Verb:
                 out.append(self.map_verb(t))
             elif type(t) == Indeclinable:
-                out.append((SanskritImmutableString(t.name, SLP1),
-                            set([SanskritImmutableString('avyayam', SLP1)])))
+                out.append((SanskritImmutableString(t.name, sanscript.SLP1),
+                            set([SanskritImmutableString('avyayam', sanscript.SLP1)])))
             elif type(t) == Gerund:
                 newobj = self.refresh(t)
-                out.append((SanskritImmutableString(newobj.root.name, SLP1),
-                            set([SanskritImmutableString('ktvA', SLP1)])))
+                out.append((SanskritImmutableString(newobj.root.name, sanscript.SLP1),
+                            set([SanskritImmutableString('ktvA', sanscript.SLP1)])))
             elif type(t) == Infinitive:
                 newobj = self.refresh(t)
-                out.append((SanskritImmutableString(newobj.root.name, SLP1),
-                            set([SanskritImmutableString('tumun', SLP1)])))
+                out.append((SanskritImmutableString(newobj.root.name, sanscript.SLP1),
+                            set([SanskritImmutableString('tumun', sanscript.SLP1)])))
             else:
                 out.append(t)
         return out

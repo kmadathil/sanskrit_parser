@@ -9,8 +9,10 @@ import os
 import inspect
 import logging
 import json
+
+from indic_transliteration import sanscript
 from sanskrit_parser.parser.sandhi import Sandhi
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, DEVANAGARI
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from tests.conftest import get_testcount
 
 logger = logging.getLogger(__name__)
@@ -22,16 +24,16 @@ def sandhiobj():
 
 
 def test_sandhi_join(sandhiobj, join_reference):
-    objs = map(lambda x: SanskritImmutableString(x, encoding=DEVANAGARI), (join_reference[0]))
+    objs = map(lambda x: SanskritImmutableString(x, encoding=sanscript.DEVANAGARI), (join_reference[0]))
     joins = sandhiobj.join(*objs)
-    expected = SanskritImmutableString(join_reference[1], encoding=DEVANAGARI).canonical()
+    expected = SanskritImmutableString(join_reference[1], encoding=sanscript.DEVANAGARI).canonical()
     assert expected in joins, u"Join, {}, {}, {}, {}".format(*join_reference)
 
 
 def test_sandhi_split(sandhiobj, split_reference):
-    obj = SanskritImmutableString(split_reference[0], encoding=DEVANAGARI)
+    obj = SanskritImmutableString(split_reference[0], encoding=sanscript.DEVANAGARI)
     splits = sandhiobj.split_all(obj)
-    expected = tuple(map(lambda x: SanskritImmutableString(x, encoding=DEVANAGARI).canonical(), split_reference[1]))
+    expected = tuple(map(lambda x: SanskritImmutableString(x, encoding=sanscript.DEVANAGARI).canonical(), split_reference[1]))
     assert expected in splits, u"Split, {}, {}, {}, {}".format(*split_reference)
 
 

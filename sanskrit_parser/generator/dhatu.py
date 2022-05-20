@@ -1,5 +1,5 @@
+from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.base.sanskrit_base import SLP1
 
 
 class Dhatu(PaninianObject):
@@ -7,7 +7,7 @@ class Dhatu(PaninianObject):
 
      Attributes:
     """
-    def __init__(self, thing=None, its=[], other_tags=[], encoding=SLP1,
+    def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
         super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)

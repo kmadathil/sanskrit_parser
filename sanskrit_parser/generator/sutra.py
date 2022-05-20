@@ -2,7 +2,8 @@
 Operational Sutras
 
 """
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from decimal import Decimal
 from copy import deepcopy
 from sanskrit_parser.generator.paninian_object import PaninianObject
@@ -122,8 +123,8 @@ class LRSutra(Sutra):
         if self.xform is not None:
             env = _env(s1, s2)
             ret = self.xform(env)
-            rs1.update(ret[0], SLP1)
-            rs2.update(ret[1], SLP1)
+            rs1.update(ret[0], sanscript.SLP1)
+            rs2.update(ret[1], sanscript.SLP1)
         return rs1, rs2
 
     def insert(self, s1, s2):
@@ -150,21 +151,21 @@ def _env(s1, s2):
     if s1.canonical() == "":
         env["l"] = SanskritImmutableString("")
     else:
-        env["l"] = SanskritImmutableString(s1.canonical()[-1], SLP1)
+        env["l"] = SanskritImmutableString(s1.canonical()[-1], sanscript.SLP1)
     if s2.canonical() == "":
         env["r"] = SanskritImmutableString("")
     else:
-        env["r"] = SanskritImmutableString(s2.canonical()[0], SLP1)
+        env["r"] = SanskritImmutableString(s2.canonical()[0], sanscript.SLP1)
     if len(s1.canonical()) > 1:
-        env["ll"] = SanskritImmutableString(s1.canonical()[-2], SLP1)
-        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], SLP1)
+        env["ll"] = SanskritImmutableString(s1.canonical()[-2], sanscript.SLP1)
+        env["lc"] = SanskritImmutableString(s1.canonical()[:-1], sanscript.SLP1)
     else:
         env["ll"] = SanskritImmutableString("")
         env["lc"] = SanskritImmutableString("")
     if len(s2.canonical()) > 1:
-        env["rr"] = SanskritImmutableString(s2.canonical()[1], SLP1)
-        env["rc"] = SanskritImmutableString(s2.canonical()[1:], SLP1)
+        env["rr"] = SanskritImmutableString(s2.canonical()[1], sanscript.SLP1)
+        env["rc"] = SanskritImmutableString(s2.canonical()[1:], sanscript.SLP1)
     else:
-        env["rr"] = SanskritImmutableString("", SLP1)
-        env["rc"] = SanskritImmutableString("", SLP1)
+        env["rr"] = SanskritImmutableString("", sanscript.SLP1)
+        env["rc"] = SanskritImmutableString("", sanscript.SLP1)
     return env

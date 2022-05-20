@@ -5,7 +5,8 @@
 """
 from argparse import ArgumentParser, Action
 import logging
-from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
+
+from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
@@ -113,7 +114,7 @@ class CustomAction(Action):
 
 
 class CustomActionString(Action):
-    def __init__(self, option_strings, dest, nargs=None, encoding=SLP1, **kwargs):
+    def __init__(self, option_strings, dest, nargs=None, encoding=sanscript.SLP1, **kwargs):
         # if nargs is not None:
         #   raise ValueError("nargs not allowed")
         self.encoding = encoding
@@ -168,7 +169,7 @@ def get_args(argv=None):
     parser.add_argument('-p', '--pratyaya', nargs="+", dest="inputs", action=CustomAction)
     parser.add_argument('-d', '--dhatu', dest="inputs", action=CustomAction)
     parser.add_argument('-t', '--pratipadika', dest="inputs", action=CustomAction)
-    parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=SLP1, action=CustomActionString)
+    parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=sanscript.SLP1, action=CustomActionString)
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -209,7 +210,7 @@ def cmd_line():
         r = generate_vibhakti(pp, args.verbose)
         print("Output")
         if args.gen_test:
-            rr = [[[y[0].transcoded(DEVANAGARI) for y in va] if len(va) > 1 else va[0][0].transcoded(DEVANAGARI) for va in vi] for vi in r]
+            rr = [[[y[0].transcoded(sanscript.DEVANAGARI) for y in va] if len(va) > 1 else va[0][0].transcoded(sanscript.DEVANAGARI) for va in vi] for vi in r]
             print(f"prAtipadika[\"{str(pp)}\"] = {str(pp)}")
             print(f"viBakti[\"{str(pp)}\"] = [")
             for vi in rr:
@@ -217,7 +218,7 @@ def cmd_line():
             print("]")
         else:
             for ix, vi in enumerate(r):
-                print(f"{', '.join(['/'.join([''.join([x.transcoded(DEVANAGARI) for x in y]).strip('।') for y in va]) for va in vi])}")
+                print(f"{', '.join(['/'.join([''.join([x.transcoded(sanscript.DEVANAGARI) for x in y]).strip('।') for y in va]) for va in vi])}")
     else:
         r = run_pp(args.inputs, args.verbose)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

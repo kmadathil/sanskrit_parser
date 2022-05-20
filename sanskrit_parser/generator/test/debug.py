@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 from sanskrit_parser import enable_console_logger, enable_file_logger
-from sanskrit_parser.base.sanskrit_base import SLP1, DEVANAGARI
 import sanskrit_parser.generator.sutra as sutra
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
@@ -129,7 +128,7 @@ encoding = {}
 # ]
 
 # prAtipadika["nAsikA"] = nAsikA
-# encoding["nAsikA"] = SLP1
+# encoding["nAsikA"] = sanscript.SLP1
 # viBakti["nAsikA"] = [
 # ['nAsikA', 'nAsike', 'nAsikAH'],
 # ['nAsikAm', 'nAsike', ['nasaH', 'nAsikAH']],
@@ -152,7 +151,7 @@ viBakti["senAnI"] = [
      ["senAnyAm", "senAnyoH", "senAnIzu"],
      ["senAnIH", "senAnyO", "senAnyaH"],
 ]
-encoding["senAnI"] = SLP1
+encoding["senAnI"] = sanscript.SLP1
 
 from sanskrit_parser.generator.sutras_yaml import sutra_list
 test_prakriya(sutra_list, test_list, test_list_d)

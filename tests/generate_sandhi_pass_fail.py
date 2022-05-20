@@ -8,7 +8,8 @@ import codecs
 import os
 import inspect
 from sanskrit_parser.lexical_analyzer.sandhi import Sandhi
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 import logging
 import re
 import six
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def sandhi_join_pass(sandhiobj, split, join):
-    objs = map(lambda x: SanskritObject(x, encoding=SLP1), split)
+    objs = map(lambda x: SanskritObject(x, encoding=sanscript.SLP1), split)
     joins = sandhiobj.join(*objs)
     d = {
         "input": map(to_devanagari, split),
@@ -35,7 +36,7 @@ def sandhi_join_pass(sandhiobj, split, join):
 
 
 def sandhi_split_pass(sandhiobj, split, join):
-    splits = sandhiobj.split_all(SanskritObject(join, encoding=SLP1))
+    splits = sandhiobj.split_all(SanskritObject(join, encoding=sanscript.SLP1))
     d = {
         "input": to_devanagari(join),
         "expected": map(to_devanagari, split),
@@ -137,7 +138,7 @@ def load_reference_data_from_file(filename):
             line = line.strip()
             if line.startswith('#') or line == '':
                 continue
-            ref = SanskritObject(line).transcoded(SLP1)
+            ref = SanskritObject(line).transcoded(sanscript.SLP1)
             if "=>" in line:
                 joined, splits = map(six.text_type.strip, ref.split("=>"))
             elif "=" in line:
@@ -154,7 +155,7 @@ def load_reference_data_from_file(filename):
 
 def to_devanagari(obj):
     if isinstance(obj, (six.text_type, six.string_types)):
-        obj = SanskritObject(obj, encoding=SLP1)
+        obj = SanskritObject(obj, encoding=sanscript.SLP1)
     if isinstance(obj, SanskritObject):
         return obj.devanagari()
     else:

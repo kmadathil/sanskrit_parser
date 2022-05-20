@@ -42,20 +42,19 @@ This produces the output::
 
 """
 
-import time
-import json
 import abc
+import json
+import logging
+import time
 import warnings
 from dataclasses import dataclass
 from typing import Sequence
 
 from indic_transliteration import sanscript
-from indic_transliteration.sanscript import SCHEMES
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, SanskritString
-from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 from sanskrit_parser.parser.datastructures import VakyaGraph, VakyaGraphNode
-import logging
+from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -270,7 +269,7 @@ class Parse(Serializable):
                 pred_node = ParseNode(pred, strict_io, encoding)
                 edge = ParseEdge(pred_node,
                                  node,
-                                 SanskritString(lbl, encoding=SLP1).transcoded(encoding, strict_io)
+                                 SanskritString(lbl, encoding=sanscript.SLP1).transcoded(encoding, strict_io)
                                  )
                 graph.append(edge)
             else:
@@ -329,7 +328,7 @@ if __name__ == "__main__":
               )
 
     def main():
-        examples = [('devadattogrAmaMgacCati', 'SLP1'),
+        examples = [('devadattogrAmaMgacCati', sanscript.SLP1),
                     ('astyuttarasyAMdishidevatAtmA', sanscript.DEVANAGARI)
                     ]
         for string, encoding in examples:

@@ -7,7 +7,8 @@ import pytest
 # import six
 # import json
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1  # , outputctx
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject  # , outputctx
 # from tests.conftest import get_testcount
 
 
@@ -50,7 +51,7 @@ def test_simple_tag(lexan):
         return (t[0], set(map(str, t[1])))
 
     # gaNeshaH
-    i = SanskritObject("gaReSas", encoding=SLP1)
+    i = SanskritObject("gaReSas", encoding=sanscript.SLP1)
     ts = lexan.getMorphologicalTags(i)
     assert [_mapt(tss) for tss in ts][0] == \
         ('gaReSa', set(['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']))
@@ -58,14 +59,14 @@ def test_simple_tag(lexan):
 
 def test_simple_split(lexan):
     # gaNeshannamAmi
-    i = SanskritObject("gaReSannamAmi", encoding=SLP1)
+    i = SanskritObject("gaReSannamAmi", encoding=sanscript.SLP1)
     graph = lexan.getSandhiSplits(i)
     splits = graph.find_all_paths()
     assert [u'gaReSam', u'namAmi'] in [list(map(str, ss)) for ss in splits]
 
 
 def test_medium_split(lexan):
-    i = SanskritObject("budDaMSaraRaNgacCAmi", encoding=SLP1)
+    i = SanskritObject("budDaMSaraRaNgacCAmi", encoding=sanscript.SLP1)
     graph = lexan.getSandhiSplits(i)
     splits = graph.find_all_paths()
     assert [u'budDam', u'SaraRam', u'gacCAmi'] in \
@@ -76,7 +77,7 @@ def test_medium_split(lexan):
 #     f = splittext_refs[0]
 #     s = splittext_refs[1]
 #     with outputctx(False):
-#         i = SanskritObject(f, encoding=SLP1, strict_io=True, replace_ending_visarga=None)
+#         i = SanskritObject(f, encoding=sanscript.SLP1, strict_io=True, replace_ending_visarga=None)
 #         graph = lexan.getSandhiSplits(i)
 #         assert graph is not None
 #         splits = graph.find_all_paths(max_paths=300, sort=False)

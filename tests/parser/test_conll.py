@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 import csv
 from argparse import ArgumentParser
+
+from indic_transliteration import sanscript
 from sanskrit_parser import Parser
 from sanskrit_parser.api import ParseEdge
 from itertools import islice, zip_longest
@@ -20,9 +22,9 @@ def conll_tests(conll_file):
 
 def parse_test_f(test, testpadas, max_splits=1, max_parses=100,
                  verbose=False):
-    parser = Parser(input_encoding="SLP1",
+    parser = Parser(input_encoding=sanscript.SLP1,
                     strict_io=False,
-                    output_encoding="SLP1",
+                    output_encoding=sanscript.SLP1,
                     replace_ending_visarga=None,
                     score=False,
                     split_above=5,

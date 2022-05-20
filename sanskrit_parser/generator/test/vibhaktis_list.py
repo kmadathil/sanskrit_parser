@@ -373,7 +373,7 @@ viBakti["senAnI"] = [
      ["senAnyAm", "senAnyoH", "senAnIzu"],
      ["senAnIH", "senAnyO", "senAnyaH"],
 ]
-encoding["senAnI"] = SLP1   # noqa: F405
+encoding["senAnI"] = sanscript.SLP1   # noqa: F405
 
 prAtipadika["nI"] = nI   # noqa: F405
 viBakti["nI"] = [

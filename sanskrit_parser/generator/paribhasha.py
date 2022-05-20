@@ -1,4 +1,5 @@
-from sanskrit_parser.base.sanskrit_base import SanskritImmutableString, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from .operations import adesha
 from .maheshvara import ms, isInPratyahara, isSavarna
 from sanskrit_parser.generator.pratipadika import *  # noqa: F403
@@ -36,17 +37,17 @@ def vriddhi(s: str):
 
 def ikoyan(s: str):
     return adesha(s.lower(),
-                  ms.getPratyahara(SanskritImmutableString("ik", SLP1)),
-                  ms.getPratyahara(SanskritImmutableString("yaR", SLP1),
+                  ms.getPratyahara(SanskritImmutableString("ik", sanscript.SLP1)),
+                  ms.getPratyahara(SanskritImmutableString("yaR", sanscript.SLP1),
                                    remove_a=True)
                   )
 
 
 def samprasaranam(s: str):
     return adesha(s,
-                  ms.getPratyahara(SanskritImmutableString("yaR", SLP1),
+                  ms.getPratyahara(SanskritImmutableString("yaR", sanscript.SLP1),
                                    remove_a=True),
-                  ms.getPratyahara(SanskritImmutableString("ik", SLP1))
+                  ms.getPratyahara(SanskritImmutableString("ik", sanscript.SLP1))
                   )
 
 
@@ -91,7 +92,7 @@ def adivriddhi(s: str):
     r = ""
     av = False
     for _s in s:
-        if (not av) and isInPratyahara("ac", SanskritImmutableString(_s, encoding=SLP1)):
+        if (not av) and isInPratyahara("ac", SanskritImmutableString(_s, encoding=sanscript.SLP1)):
             r = r + vriddhi(_s)
             av = True
         else:
@@ -299,15 +300,15 @@ def null(s):
 
 # sUtra: adeN guRaH
 def is_guna(s: str):
-    so = SanskritImmutableString(s, encoding=SLP1)
+    so = SanskritImmutableString(s, encoding=sanscript.SLP1)
     at = "a"
-    eng = SanskritImmutableString("eN", encoding=SLP1)
+    eng = SanskritImmutableString("eN", encoding=sanscript.SLP1)
     return (s == at) or ms.isInPratyahara(eng, so)
 
 
 # sUtra: vRdDirAdEc
 def is_vriddhi(s: str):
-    so = SanskritImmutableString(s, encoding=SLP1)
+    so = SanskritImmutableString(s, encoding=sanscript.SLP1)
     aat = "A"
-    aich = SanskritImmutableString("Ec", encoding=SLP1)
+    aich = SanskritImmutableString("Ec", encoding=sanscript.SLP1)
     return (s == aat) or ms.isInPratyahara(aich, so)

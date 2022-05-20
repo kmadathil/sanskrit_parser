@@ -10,7 +10,8 @@ import os
 import re
 import progressbar
 
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 from sanskrit_parser.lexical_analyzer.sanskrit_lexical_analyzer import SanskritLexicalAnalyzer
 
 logger = logging.getLogger(__name__)
@@ -50,14 +51,14 @@ def process_line(lnum, line_in):
     full = full.replace(u"\u200c", "")
     full = full.replace(u"\u200d", "")
     ofull = full  # Save
-    full = _dumpchars(SanskritObject(full).transcoded(SLP1))
+    full = _dumpchars(SanskritObject(full).transcoded(sanscript.SLP1))
     split = split.strip()
     split = split.replace(u'|', '')
     # Zero width joiner/nonjoiner
     split = split.replace(u"\u200c", "")
     split = split.replace(u"\u200d", "")
     osplit = split  # Save
-    splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(SLP1).strip()), split.split('+')))
+    splits = list(map(lambda x: _dumpchars(SanskritObject(x).transcoded(sanscript.SLP1).strip()), split.split('+')))
     if splits[-1] == '':
         splits.pop()
     # Empty full string
@@ -103,7 +104,7 @@ def process_line(lnum, line_in):
         else:
             # If not, treat it as a word to be split
             try:
-                graph = lexan.getSandhiSplits(SanskritObject(ss, encoding=SLP1))
+                graph = lexan.getSandhiSplits(SanskritObject(ss, encoding=sanscript.SLP1))
                 if graph is None:
                     # Catch stray unicode symbols with the encode
                     logger.warning("Skipping: {} is not in db".format(ss.encode('utf-8')))
@@ -193,7 +194,7 @@ def test_splits(lexan, uohd_refs):
 
     f = uohd_refs[0]
     s = uohd_refs[1]
-    i = SanskritObject(f, encoding=SLP1)
+    i = SanskritObject(f, encoding=sanscript.SLP1)
     try:
         # for sss in s:
         #    if not lexan.forms.valid(sss):

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-
+from indic_transliteration import sanscript
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
-from sanskrit_parser.base.sanskrit_base import SanskritObject, DEVANAGARI, outputctx
+from sanskrit_parser.base.sanskrit_base import SanskritObject, outputctx
 import pandas as pd
 import multiprocessing
 import os.path
@@ -40,16 +40,16 @@ def sort_file_splits(kosh_entry):
     s = kosh_entry['Split']
     clean_input = True
     with outputctx(False):
-        i = SanskritObject(f, encoding=DEVANAGARI, strict_io=True, replace_ending_visarga=None)
+        i = SanskritObject(f, encoding=sanscript.DEVANAGARI, strict_io=True, replace_ending_visarga=None)
         if not(isinstance(s, str)):
             # Bad input
             return "Bad_Input"
         if clean_input:
-            sl = [SanskritObject(x, encoding=DEVANAGARI, strict_io=True,
+            sl = [SanskritObject(x, encoding=sanscript.DEVANAGARI, strict_io=True,
                                  replace_ending_visarga=None).canonical()
                   for x in s.strip().replace(" ", "+").split('+')]
         else:
-            sl = [SanskritObject(x, encoding=DEVANAGARI, strict_io=True, replace_ending_visarga=None).canonical() for x in s.split('+')]
+            sl = [SanskritObject(x, encoding=sanscript.DEVANAGARI, strict_io=True, replace_ending_visarga=None).canonical() for x in s.split('+')]
         graph = le.getSandhiSplits(i)
         if graph is not None:
             splits = graph.find_all_paths(max_paths=300, sort=False)

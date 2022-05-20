@@ -6,7 +6,8 @@ Derived from SanskritObject
 @author: kmadathil
 
 """
-from sanskrit_parser.base.sanskrit_base import SanskritObject, SLP1
+from indic_transliteration import sanscript
+from sanskrit_parser.base.sanskrit_base import SanskritObject
 import logging
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class PaninianObject(SanskritObject):
             logger.debug(f"{o} type {type(o)}")
             assert isinstance(o, SanskritObject), f"{o} type {type(o)}"
         s = "".join([o.canonical() for o in objects[0]])
-        so = PaninianObject(s, encoding=SLP1)
+        so = PaninianObject(s, encoding=sanscript.SLP1)
         # Tag rules
         # 1.4.14 suptiNantaM padam
         if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN"):

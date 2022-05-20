@@ -39,6 +39,8 @@ Command line usage
 """
 
 from __future__ import print_function
+
+from indic_transliteration import sanscript
 from . import sanskrit_base
 import re
 import six
@@ -60,7 +62,7 @@ class MaheshvaraSutras(object):
         # demarcating them.
         self.MS = sanskrit_base.SanskritImmutableString(
             u'अइउण् ऋऌक् एओङ् ऐऔच् हयवरट् लण् ञमङणनम् झभञ् घढधष् जबगडदश् खफछठथचटतव् कपय् शषसर् हल् ',
-            sanskrit_base.DEVANAGARI)
+            sanscript.DEVANAGARI)
         # SLP1 version for internal operations
         self.MSS = self.MS.canonical()
 
@@ -107,7 +109,7 @@ class MaheshvaraSutras(object):
         # Add dIrgha vowels if requested
         if dirghas:
             ts = ts.replace('a', 'aA').replace('i', 'iI').replace('u', 'uU').replace('f', 'fF').replace('x', 'xX')
-        return sanskrit_base.SanskritImmutableString(ts, sanskrit_base.SLP1)
+        return sanskrit_base.SanskritImmutableString(ts, sanscript.SLP1)
 
     def isInPratyahara(self, p, v, longp=True):
         """
