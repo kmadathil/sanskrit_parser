@@ -141,7 +141,7 @@ class SanskritNormalizedString(SanskritString):
                 self.thing = tmp
             # Lazy Anusvaras (see issue #103)
             try:
-                self.thing = sanscript.sanscript.SLP1.fix_lazy_anusvaara(self.thing)
+                self.thing = sanscript.SLP1.fix_lazy_anusvaara(self.thing)
             except (NameError, AttributeError):
                 print("Not fixing lazy anusvaras, you probably have an older version of indic_transliteration")
             logger.debug("After normalization: %s", self.thing)
@@ -207,9 +207,9 @@ if __name__ == "__main__":
         if args.input_encoding is None:
             ie = None
         else:
-            ie = sanscript.args.input_encoding
+            ie = args.input_encoding
 
-        oe = sanscript.args.output_encoding
+        oe = args.output_encoding
 
         s = SanskritObject(args.data, ie)
         print(s.transcoded(oe))
