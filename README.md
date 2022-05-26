@@ -1,7 +1,7 @@
 # sanskrit_parser
 Parsers for Sanskrit / संस्कृतम्
 
-[![CI Build Status](https://api.travis-ci.com/kmadathil/sanskrit_parser.svg?branch=master)](https://travis-ci.com/kmadathil/sanskrit_parser)
+![example workflow](https://github.com/kmadathil/sanskrit_parser/actions/workflows/build_and_test.yml/badge.svg)
 
 **NOTE:** This project is still under development. Both over-generation (invalid forms/splits) and under-generation (missing valid forms/splits) are quite likely. Please see the Sanskrit Parser Stack section below for detailed status. Report any issues [here](https://github.com/kmadathil/sanskrit_parser/issues).
 
