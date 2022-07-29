@@ -7,7 +7,7 @@ from os.path import dirname, basename, splitext, join
 from argparse import ArgumentParser
 import logging
 from sanskrit_parser import Parser
-from indic_transliteration.sanscript import SCHEMES
+from indic_transliteration import sanscript
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString
 from sanskrit_parser.base.sanskrit_base import outputctx
 from sanskrit_parser.parser.sandhi_analyzer import LexicalSandhiAnalyzer
@@ -57,7 +57,7 @@ def vakya(argv=None):
     logger.info(f"Input String: {args.data}")
     parser = Parser(input_encoding=args.input_encoding,
                     strict_io=args.strict_io,
-                    output_encoding="SLP1",
+                    output_encoding=sanscript.SLP1,
                     replace_ending_visarga=None,
                     score=args.score,
                     split_above=args.split_above,
@@ -145,7 +145,7 @@ def sandhi(argv=None):
     logger.info(f"Input String: {args.data}")
     parser = Parser(input_encoding=args.input_encoding,
                     strict_io=args.strict_io,
-                    output_encoding="SLP1",
+                    output_encoding=sanscript.SLP1,
                     replace_ending_visarga=None,
                     score=args.score,
                     lexical_lookup=args.lexical_lookup)
