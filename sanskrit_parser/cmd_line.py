@@ -247,12 +247,20 @@ def cmd_line():
     args, rest = parser.parse_known_args()
 
     # Logging
+    # In a regular app, we would let propagate handle everything
+    # Here, we just turn on the default loggers for the library
+    # First we disable the root logger handlers
+    rootlogger = logging.getLogger()
+    for h in rootlogger.handlers:
+        rootlogger.removeHandler(h)
+    rootlogger.addHandler(logging.NullHandler())
+    # Now we enable the console and possibly the file logger
     enable_console_logger(level=logging.INFO)
     if args.debug:
         enable_file_logger(level=logging.DEBUG)
     # else:
     #    enable_file_logger(level=logging.INFO)
-
+ 
     if not hasattr(args, 'command'):
         print('Unrecognized command')
         parser.print_help()
