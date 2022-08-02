@@ -7,6 +7,7 @@ import pandas as pd
 import multiprocessing
 import os.path
 import inspect
+import sys
 
 le = LexicalSandhiAnalyzer()
 
@@ -65,18 +66,27 @@ def sort_file_splits(kosh_entry):
             return "Split_Fail"
 
 
-entries = get_kosh_entries()
-print(f"Collected {len(entries)} tests")
-with multiprocessing.Pool(4) as p:
-    result = p.map(sort_file_splits, entries)
-# result = map(sort_file_splits, entries)
-print("")  # Newline
-odf = pd.DataFrame.from_records(entries)
-odf['Status'] = result
-odf.to_excel("Result.xls")
-print("Wrote to Result.xls")
-passcount = result.count("Pass")
-failcount = result.count("Fail")
-splitfailcount = result.count("Split_Fail")
-badcount = result.count("Bad_Input")
-print(f"{passcount} Passed, {failcount} Failed, {splitfailcount} No_Split, {badcount} Bad tests")
+if __name__ == '__main__':
+    import logging
+    rootlogger = logging.getLogger()
+    for h in rootlogger.handlers:
+        rootlogger.removeHandler(h)
+    rootlogger.addHandler(logging.NullHandler())
+    
+    entries = get_kosh_entries()
+    print(f"Collected {len(entries)} tests")
+    if sys.platform == 'linux':
+        with multiprocessing.Pool(4) as p:
+            result = p.map(sort_file_splits, entries)
+    else:
+        result = list(map(sort_file_splits, entries))
+    print("")  # Newline
+    odf = pd.DataFrame.from_records(entries)
+    odf['Status'] = result
+    odf.to_excel("Result.xls")
+    print("Wrote to Result.xls")
+    passcount = result.count("Pass")
+    failcount = result.count("Fail")
+    splitfailcount = result.count("Split_Fail")
+    badcount = result.count("Bad_Input")
+    print(f"{passcount} Passed, {failcount} Failed, {splitfailcount} No_Split, {badcount} Bad tests")
