@@ -82,7 +82,10 @@ class Splits(Resource):
         g = analyzer.getSandhiSplits(vobj)
         if g:
             splits = g.find_all_paths(10)
-            jsplits = [[ss.devanagari(strict_io=False) for ss in s] for s in splits]
+            # We don't get output with visargas here.
+            # Why? Because this will need to be parsed later, and we need to distinguish s/r
+            # We rely on the UI to handle display correctly
+            jsplits = [[ss.devanagari(strict_io=True) for ss in s] for s in splits]
         else:
             jsplits = []
         r = {"input": v, "devanagari": vobj.devanagari(), "splits": jsplits}
@@ -97,11 +100,14 @@ class Parse_Presegmented(Resource):
         if request.args.get("strict") == "false":
             strict_p = False
         vobj = SanskritObject(v, strict_io=strict_p, replace_ending_visarga=None)
+        # We set strict_io to False so we get output with visargas
+        # If further processing is desired, this needs to be set to True
+        # And the UI must handle display
         parser = Parser(input_encoding=sanscript.SLP1,
-                        output_encoding="Devanagari",
+                        output_encoding=sanscript.DEVANAGARI,
+                        strict_io=False,   
                         replace_ending_visarga='s')
         mres = []
-        print(v)
         for split in parser.split(vobj.canonical(), limit=10, pre_segmented=True):
             parses = list(split.parse(limit=10))
             sdot = split.to_dot()
@@ -119,7 +125,7 @@ class Presegmented(Resource):
         """ Presegmented Split """
         vobj = SanskritObject(v, strict_io=True, replace_ending_visarga=None)
         parser = Parser(input_encoding=sanscript.SLP1,
-                        output_encoding="Devanagari",
+                        output_encoding=sanscript.DEVANAGARI,
                         replace_ending_visarga='s')
         splits = parser.split(vobj.canonical(), limit=10, pre_segmented=True)
         r = {"input": v, "devanagari": vobj.devanagari(), "splits": [x.serializable()['split'] for x in splits]}

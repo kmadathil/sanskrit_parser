@@ -15,8 +15,14 @@ function reject_split(id) {
     $("#card"+id).addClass("d-none")
 }
 
+function end_s_visarga(s) {
+    sr = s.replace(/स्$/,"ः").replace(/र्$/,"ः(र्)")
+    return sr
+}
+
 function parse_split(id) {
-    split = $("#header"+id).text()
+    //split = $("#header"+id).text()
+    split = $("#header"+id).attr("rawtext")
     url = urlbase + "sanskrit_parser/v1/parse-presegmented/" + split
     var btn = $(this);
     var btxt = btn.text();
@@ -63,13 +69,13 @@ function parse_split(id) {
     })
  }
 
-function createSplitPanel(heading, urlbase, id) {
+function createSplitPanel(heading, urlbase, id, rawtext) {
     "use strict;"
     // var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
     var cardClass =  "border-dark mb-3";
     var expanded = id === 0 ? "show" : "";
     var h = "<div  id=\"card" + id + "\" class=\"text-dark\" class=\"card " + cardClass + " \"><div class=\"card-header text-dark\">";
-    h += "<a class=\"text-dark\" id=\"header" + id + "\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
+    h += "<a class=\"text-dark\" id=\"header" + id + "\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\" rawtext=\"" + rawtext + "\">";
     h += heading + "</a>";
     h += "<button type=\"button\" id=\"reject" + id + "\" class=\"btn btn-primary alignright\" onclick=\"reject_split(" + id + ")\" >Reject</button>"
     h += "<button type=\"button\" id=\"analyze" + id + "\" class=\"btn btn-primary alignright\" onclick=\"parse_split(" + id + ")\" >Sabdabodha</button>"
@@ -81,39 +87,39 @@ function createSplitPanel(heading, urlbase, id) {
     return h;
 }
 
-function createPanel(heading, row, dot, urlbase, id) {
-    "use strict;"
-    var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
-    var expanded = id === 0 ? "show" : "";
-    var h = "<div class=\"card " + cardClass + " \"><div class=\"card-header " + cardClass + "\">";
-    h += "<a class=\"text-white\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
-    h += heading + "</a>";
-/*    h += heading + "</a><p class=\"alignright\"> <a target=\"_blank\" class=\"text-white\" href=\""; */
-/*    h += urlbase + "static/" + imgbase + ".dot.png\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
-/*    h += urlbase + "sanskrit_parser/v1/graph/" + imgbase + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
-/*    h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot["split"]) + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
-    h += "<button type=\"button\" class=\"btn btn-primary alignright\" data-toggle=\"modal\" data-target=\"#graphModal\" data-graph=\"" +  escapeAll(dot["split"]) + "\" data-title=\"Sandhi Graph\">View Graph</button><div style=\"clear: both;\"></div></div>";
-    h += "<div id=\"collapse" + id + "\" class=\"collapse " + expanded + "\"><div class=\"card-block\">";
-    h += "<ol class=\"list-group\">";
-    row.forEach(function (sitem, index) {
-        h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
-//	h += "<p class=\"alignright\"> <a target=\"_blank\" href=\"";
-//	h += urlbase + "static/" + imgbase + "_parse" + index + ".dot.png\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
-//	h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot[index]) + "\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
-	h += "<button type=\"button\" class=\"btn btn-light alignright\" data-toggle=\"modal\" data-target=\"#graphModal\"\ data-graph=\"" +escapeAll(dot[index]) +  "\" data-title=\"Parse Graph\">View Parse Graph</button><div style=\"clear: both;\"></div></div>";
-        h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Possible Interpretations</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
-        sitem.forEach(function (item) {
-            h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
-            h += item[1][0] + " - " + item[1][1] + "</td><td>";
-            h += item[2] + "</td><td>";
-            h += item[3] + "</td></tr>";
-        });
-        h += "</tbody></table></li>";
-    });
-    h += "</ol>";
-    h += "</div></div></div>";
-    return h;
-}
+// function createPanel(heading, row, dot, urlbase, id) {
+//     "use strict;"
+//     var cardClass = id % 2 ? "bg-secondary" : "bg-primary";
+//     var expanded = id === 0 ? "show" : "";
+//     var h = "<div class=\"card " + cardClass + " \"><div class=\"card-header " + cardClass + "\">";
+//     h += "<a class=\"text-white\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">";
+//     h += heading + "</a>";
+// /*    h += heading + "</a><p class=\"alignright\"> <a target=\"_blank\" class=\"text-white\" href=\""; */
+// /*    h += urlbase + "static/" + imgbase + ".dot.png\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
+// /*    h += urlbase + "sanskrit_parser/v1/graph/" + imgbase + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
+// /*    h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot["split"]) + "\">(View Graph)</a></p><div style=\"clear: both;\"></div></div>"; */
+//     h += "<button type=\"button\" class=\"btn btn-primary alignright\" data-toggle=\"modal\" data-target=\"#graphModal\" data-graph=\"" +  escapeAll(dot["split"]) + "\" data-title=\"Sandhi Graph\">View Graph</button><div style=\"clear: both;\"></div></div>";
+//     h += "<div id=\"collapse" + id + "\" class=\"collapse " + expanded + "\"><div class=\"card-block\">";
+//     h += "<ol class=\"list-group\">";
+//     row.forEach(function (sitem, index) {
+//         h += "<li class=\"list-group-item\"><table class=\"table table-striped\">";
+// //	h += "<p class=\"alignright\"> <a target=\"_blank\" href=\"";
+// //	h += urlbase + "static/" + imgbase + "_parse" + index + ".dot.png\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
+// //	h += encodeURI("https://image-charts.com/chart?cht=gv:dot&chl=" + dot[index]) + "\">(View Parse Graph)</a></p><div style=\"clear: both;\"></div>"
+// 	h += "<button type=\"button\" class=\"btn btn-light alignright\" data-toggle=\"modal\" data-target=\"#graphModal\"\ data-graph=\"" +escapeAll(dot[index]) +  "\" data-title=\"Parse Graph\">View Parse Graph</button><div style=\"clear: both;\"></div></div>";
+//         h += "<thead><th scope=\"col\">Word</th><th scope=\"col\">Possible Interpretations</th><th scope=\"col\">Role</th><th scope=\"col\">Linked To</th></thead><tbody>";
+//         sitem.forEach(function (item) {
+//             h += "<tr><th scope=\"row\">" + item[0] + "</th><td>";
+//             h += item[1][0] + " - " + item[1][1] + "</td><td>";
+//             h += item[2] + "</td><td>";
+//             h += item[3] + "</td></tr>";
+//         });
+//         h += "</tbody></table></li>";
+//     });
+//     h += "</ol>";
+//     h += "</div></div></div>";
+//     return h;
+// }
 
 // write small plugin for keypress enter detection
 $.fn.enterKey = function (fnc) {
@@ -226,8 +232,9 @@ $(document).ready( function () {
 		    return a.length > b.length;
                 });
 		splits.forEach(function (res) {
-		    var item = res.join(" ");
-		    restable += createSplitPanel(item, urlbase, panelID);
+		    var rawtext = res.join(" ")
+		    var item = res.map(end_s_visarga).join(" ");
+		    restable += createSplitPanel(item, urlbase, panelID, rawtext);
 		    panelID += 1;
                 });
 		$("#restable").append(restable);
