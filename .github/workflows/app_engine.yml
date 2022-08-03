@@ -5,6 +5,8 @@ name: App Engine
 on:
   release:
     types: [created]
+  push:
+    tags: v*
 
 jobs:
   app-engine:
