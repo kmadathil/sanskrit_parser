@@ -285,7 +285,7 @@ if __name__ == "__main__":
             numeric_level = getattr(logging, args.loglevel.upper(), None)
             if not isinstance(numeric_level, int):
                 raise ValueError('Invalid log level: %s' % args.loglevel)
-            logging.basicConfig(filename="sandhi.log", filemode="wb", level=numeric_level)
+            logging.basicConfig(filename="sandhi.log", filemode="w", level=numeric_level)
 
         logging.info("---------------------------------------------------")
         logging.info("Started processing at %s", datetime.datetime.now())
