@@ -219,6 +219,8 @@ vacanas = set(['ekavacanam', 'dvivacanam', 'bahuvacanam'])
 # Puruzas
 puruzas = 'praTamapuruzaH', 'maDyamapuruzaH', 'uttamapuruzaH'
 karakas = set(['kartA', 'karma', 'karaRam', 'apAdAnam', 'sampradAnam', 'aDikaraRam', 'hetu-kartA'])
+sambodhya = 'samboDyam'
+
 predicative_verbs = set(['as', 'BU', 'vft'])
 _lingas = ['puMlliNgam', 'napuMsakaliNgam', 'strIliNgam', 'triliNgam']
 lingas = set(_lingas)
@@ -510,9 +512,9 @@ class VakyaGraph(object):
                     elif n.node_is_a(saptami):
                         logger.debug(f"Adding adhikarana edge to {n}")
                         self.G.add_edge(d, n, label="aDikaraRam")
-                    elif n.node_is_a(sambodhana):
+                    elif n.node_is_a(sambodhana) and check_sambodhya(d, n):
                         logger.debug(f"Adding sambodhya edge to {n}")
-                        self.G.add_edge(d, n, label="samboDyam")
+                        self.G.add_edge(d, n, label=sambodhya)
 
     def add_kriyavisheshana(self, bases):
         ''' Add kriyaviSezaRa edges from base node (dhatu) base '''
@@ -1191,8 +1193,14 @@ def match_linga_vacana_vibhakti(n1, n2):
 
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
-    return (d.get_vacana() == n.get_vacana()) and \
-        (d.get_purusha() == set([puruzas[1]]))
+    return (d.get_purusha() != set([puruzas[1]])) or \
+        (d.get_vacana() == n.get_vacana()) 
+
+def sambodhya_cost(d, n):
+    if  (d.get_purusha() == set([puruzas[1]])):
+        return 1
+    else:
+        return 3
 
 
 def jedge(pred, node, label, strict_io=False):
@@ -1251,9 +1259,9 @@ def _order_parses(pu):
             if u.node_is_a(lakaras):
                 # Lakaras are preferred
                 _w = 0.9 * _w
-            # Discourage miscellaneous samboDyas
-            if (l == 'samboDyam') and (not check_sambodhya(u, v)):
-                _w *=2
+            # Higher cost for samboDyas from non madhaymapuruza verbs
+            if (l == sambodhya):
+                _w * sambodhya_cost(u, v)
             w = w + _w
         return round(w, 3)
     t = sorted(pu, key=_parse_cost)
@@ -1277,7 +1285,7 @@ def _check_parse(parse, on_the_fly=False):
 
     # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
-        if (l in karakas) or (l == 'samboDyam'):
+        if (l in karakas) or (l == sambodhya):
             count[u][l] = count[u][l]+1
             toedge[v] = toedge[v]+1
         if l in ['sambadDa-'+x for x in karakas]:
@@ -1343,7 +1351,11 @@ def _check_parse(parse, on_the_fly=False):
         if (not on_the_fly) and (u.index not in vsmbd_t) and l[:9] == 'sambadDa-':
             logger.debug(f"SambadDa edge from non vAkyasambanDa node {u.index} - {v.index}: {l}")
             return False
-
+        if l == sambodhya:
+            if toedge[u] > 0:  # No sambodhya from non-verb
+                logger.debug(f"SamboDyam from non-verb edge {u.index} - {v.index} {l} : {u} : {v}")
+                return False
+            
     # Conjunctions have to have one to and from edge
     if (not on_the_fly):
         for u in conj:
