@@ -260,7 +260,7 @@ def cmd_line():
         enable_file_logger(level=logging.DEBUG)
     # else:
     #    enable_file_logger(level=logging.INFO)
- 
+
     if not hasattr(args, 'command'):
         print('Unrecognized command')
         parser.print_help()

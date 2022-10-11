@@ -104,7 +104,6 @@ import pickle
 import logging
 import datetime
 from zipfile import ZipFile
-from indic_transliteration.sanscript import SCHEMES
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, outputctx
 from sanskrit_parser.util.data_manager import data_file_path
 

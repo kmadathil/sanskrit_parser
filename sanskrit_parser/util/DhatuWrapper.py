@@ -7,7 +7,6 @@ Wrapper around  kRShNamAchArya dhAtupATha to extract simple dhAtu attributes
 import logging
 from tinydb import TinyDB, Query
 
-from indic_transliteration.sanscript import SCHEMES
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.data_manager import data_file_path
 

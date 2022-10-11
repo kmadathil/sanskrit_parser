@@ -210,7 +210,8 @@ def cmd_line():
         r = generate_vibhakti(pp, args.verbose)
         print("Output")
         if args.gen_test:
-            rr = [[[y[0].transcoded(sanscript.DEVANAGARI) for y in va] if len(va) > 1 else va[0][0].transcoded(sanscript.DEVANAGARI) for va in vi] for vi in r]
+            rr = [[[y[0].transcoded(sanscript.DEVANAGARI) for y in va] if len(va) > 1
+                   else va[0][0].transcoded(sanscript.DEVANAGARI) for va in vi] for vi in r]
             print(f"prAtipadika[\"{str(pp)}\"] = {str(pp)}")
             print(f"viBakti[\"{str(pp)}\"] = [")
             for vi in rr:

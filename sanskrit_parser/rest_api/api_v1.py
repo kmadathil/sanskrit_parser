@@ -105,7 +105,7 @@ class Parse_Presegmented(Resource):
         # And the UI must handle display
         parser = Parser(input_encoding=sanscript.SLP1,
                         output_encoding=sanscript.DEVANAGARI,
-                        strict_io=False,   
+                        strict_io=False,
                         replace_ending_visarga='s')
         mres = []
         for split in parser.split(vobj.canonical(), limit=10, pre_segmented=True):

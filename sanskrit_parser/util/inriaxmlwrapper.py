@@ -53,7 +53,6 @@ import sqlite3
 import logging
 from collections import namedtuple
 
-from indic_transliteration.sanscript import SCHEMES
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 from sanskrit_parser.util.inriatagmapper import inriaTagMapper

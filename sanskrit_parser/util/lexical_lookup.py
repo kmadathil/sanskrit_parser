@@ -7,7 +7,6 @@ Base class + factory for lexical lookup classes
 from __future__ import print_function
 import abc
 from argparse import ArgumentParser
-from indic_transliteration.sanscript import SCHEMES
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 
 

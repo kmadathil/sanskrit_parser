@@ -1192,8 +1192,13 @@ def match_linga_vacana_vibhakti(n1, n2):
 
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
-    return (d.get_vacana() == n.get_vacana()) and \
-        (d.get_purusha() == set([puruzas[1]]))
+    return True
+    # Removing this 2022/10/11
+    # ISSUE: (te) kimakurvata saMjaya
+    # Retaining the skeleton for further use
+
+    # return (d.get_vacana() == n.get_vacana()) and \
+    #    (d.get_purusha() == set([puruzas[1]]))
 
 
 def jedge(pred, node, label, strict_io=False):
@@ -1275,7 +1280,7 @@ def _check_parse(parse, on_the_fly=False):
 
     # Multigraph (keys=False)
     for (u, v, l) in parse.edges(data='label'):
-        if l in karakas:
+        if (l in karakas) or (l == 'samboDyam'):
             count[u][l] = count[u][l]+1
             toedge[v] = toedge[v]+1
         if l in ['sambadDa-'+x for x in karakas]:

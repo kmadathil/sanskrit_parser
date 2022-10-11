@@ -1,6 +1,7 @@
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
+from indic_transliteration import sanscript
 
 from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
 
@@ -13,8 +14,8 @@ def pytest_addoption(parser):
     """Custom options for pytest command line
     """
     # Add an option to limit number of tests generated.
-    ## TODO: Solve "ValueError: option names {'--test-count'} already added" below
-    #parser.addoption("--test-count", action="store", default=0,
+    # # TODO: Solve "ValueError: option names {'--test-count'} already added" below
+    # parser.addoption("--test-count", action="store", default=0,
     #                help="Number of tests to generate")
     pass
 
