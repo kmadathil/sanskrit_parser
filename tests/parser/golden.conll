@@ -8,7 +8,7 @@
 4	rAvaRam	_	rAvaRa	['dvitIyAviBaktiH', 'puMlliNgam', 'ekavacanam']	5	karma
 5	jaGAna	_	han	['parasmEpadam', 'praTamapuruzaH', 'liw', 'ekavacanam']	0	root
 
-1	vfkzAt	_	vfkza	['puMlliNgam', 'ekavacanam', 'paYcamIviBaktiH']	3	apAdanam
+1	vfkzAt	_	vfkza	['puMlliNgam', 'ekavacanam', 'paYcamIviBaktiH']	3	apAdAnam
 2	PalAni	_	Pala	['praTamAviBaktiH', 'napuMsakaliNgam', 'bahuvacanam']	3	kartA
 3	patanti	_	pat#1	['prATamikaH', 'kartari', 'praTamapuruzaH', 'bahuvacanam', 'law', 'parasmEpadam']	0	root
 
@@ -92,14 +92,12 @@
 4	ca	_	ca	['saMyojakaH', 'bahuvacanam', 'puMlliNgam', 'avyayam', 'praTamAviBaktiH']	5	kartA
 5	gacCanti	_	gam	['law', 'kartari', 'prATamikaH', 'parasmEpadam', 'bahuvacanam', 'praTamapuruzaH']	0	root
 
-1	Darmakzetre	_	Darmakzetra	['ekavacanam', 'napuMsakaliNgam', 'saptamIviBaktiH']	2	viSezaRam
-2	kurukzetre	_	kurukzetra	['ekavacanam', 'napuMsakaliNgam', 'saptamIviBaktiH']	5	aDikaraRam
-3	sam	_	sam	['upasargaH']	4	upasargaH
-4	A	_	A	['upasargaH']	5	upasargaH
-5	vetAH	_	veta	['strIliNgam', 'kta', 'bahuvacanam', 'karmaRi', 'kfdantaH', 'praTamAviBaktiH', 'prATamikaH']	6	viSezaRam
-6	yuyutsavaH	_	yuyutsu	['strIliNgam', 'bahuvacanam', 'praTamAviBaktiH']	8	kartA
-7	kim	_	kim	['dvitIyAviBaktiH', 'ekavacanam', 'napuMsakaliNgam']	8	karma
-8	akurvata	_	kf	['laN', 'bahuvacanam', 'praTamapuruzaH', 'Atmanepadam']	0	root
+1	Darmakzetre	_	Darmakzetra	['napuMsakaliNgam', 'ekavacanam', 'saptamIviBaktiH']	2	viSezaRam
+2	kurukzetre	_	kurukzetra	['napuMsakaliNgam', 'ekavacanam', 'saptamIviBaktiH']	6	aDikaraRam
+3	samavetAH	_	samaveta	['bahuvacanam', 'praTamAviBaktiH', 'strIliNgam']	4	viSezaRam
+4	yuyutsavaH	_	yuyutsu	['bahuvacanam', 'praTamAviBaktiH', 'strIliNgam']	6	kartA
+5	kim	_	kim	['napuMsakaliNgam', 'dvitIyAviBaktiH', 'ekavacanam']	6	karma
+6	akurvata	_	kf	['Atmanepadam', 'bahuvacanam', 'laN', 'praTamapuruzaH']	0	root
 
 1	rAmaH	_	rAma	['puMlliNgam', 'praTamAviBaktiH', 'ekavacanam']	7	kartA
 2	rAvaRasya	_	rAvaRa	['zazWIviBaktiH', 'napuMsakaliNgam', 'ekavacanam']	3	zazWI-sambanDa
@@ -121,4 +119,3 @@
 4	yA	_	yad	['praTamAviBaktiH', 'ekavacanam', 'strIliNgam']	1	vAkyasambanDaH
 5	muktim	_	mukti	['dvitIyAviBaktiH', 'ekavacanam', 'strIliNgam']	6	karma
 6	dadAti	_	dA#1	['parasmEpadam', 'praTamapuruzaH', 'law', 'prATamikaH', 'ekavacanam', 'kartari']	4	sambadDa-kartA
-

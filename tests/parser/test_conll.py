@@ -6,6 +6,7 @@ from indic_transliteration import sanscript
 from sanskrit_parser import Parser
 from sanskrit_parser.api import ParseEdge
 from itertools import islice, zip_longest
+import logging
 
 
 def conll_tests(conll_file):
@@ -90,6 +91,12 @@ if __name__ == "__main__":
         return args
 
     def main(args):
+        # First we disable the root logger handlers
+        rootlogger = logging.getLogger()
+        for h in rootlogger.handlers:
+            rootlogger.removeHandler(h)
+        rootlogger.addHandler(logging.NullHandler())
+
         with open(args.output, "wt") as of:
             conll_writer = csv.writer(of, delimiter='\t')
             passed = 0

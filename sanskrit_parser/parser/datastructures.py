@@ -274,7 +274,6 @@ edge_cost['vAkyasambanDaH'] = 0.3
 # edge_cost['zazWI-sambanDa'] = 1
 edge_cost_const = ['vAkyasambanDaH', 'samuccitam', 'BAvalakzaRam']
 
-
 class VakyaGraph(object):
     """ DAG class for Sanskrit Vakya Analysis
 
@@ -507,11 +506,11 @@ class VakyaGraph(object):
                         self.G.add_edge(d, n, label="sampradAnam")
                     elif n.node_is_a(pancami):
                         logger.debug(f"Adding apadana edge to {n}")
-                        self.G.add_edge(d, n, label="apAdanam")
+                        self.G.add_edge(d, n, label="apAdAnam")
                     elif n.node_is_a(saptami):
                         logger.debug(f"Adding adhikarana edge to {n}")
                         self.G.add_edge(d, n, label="aDikaraRam")
-                    elif n.node_is_a(sambodhana) and check_sambodhya(d, n):
+                    elif n.node_is_a(sambodhana):
                         logger.debug(f"Adding sambodhya edge to {n}")
                         self.G.add_edge(d, n, label="samboDyam")
 
@@ -1192,13 +1191,8 @@ def match_linga_vacana_vibhakti(n1, n2):
 
 def check_sambodhya(d, n):
     ''' Check sambodhya compatibility for dhatu d and node n '''
-    return True
-    # Removing this 2022/10/11
-    # ISSUE: (te) kimakurvata saMjaya
-    # Retaining the skeleton for further use
-
-    # return (d.get_vacana() == n.get_vacana()) and \
-    #    (d.get_purusha() == set([puruzas[1]]))
+    return (d.get_vacana() == n.get_vacana()) and \
+        (d.get_purusha() == set([puruzas[1]]))
 
 
 def jedge(pred, node, label, strict_io=False):
@@ -1257,6 +1251,9 @@ def _order_parses(pu):
             if u.node_is_a(lakaras):
                 # Lakaras are preferred
                 _w = 0.9 * _w
+            # Discourage miscellaneous samboDyas
+            if (l == 'samboDyam') and (not check_sambodhya(u, v)):
+                _w *=2
             w = w + _w
         return round(w, 3)
     t = sorted(pu, key=_parse_cost)
