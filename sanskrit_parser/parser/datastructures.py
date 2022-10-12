@@ -1261,7 +1261,7 @@ def _order_parses(pu):
                 _w = 0.9 * _w
             # Higher cost for samboDyas from non madhaymapuruza verbs
             if (l == sambodhya):
-                _w * sambodhya_cost(u, v)
+                _w *= sambodhya_cost(u, v)
             w = w + _w
         return round(w, 3)
     t = sorted(pu, key=_parse_cost)
