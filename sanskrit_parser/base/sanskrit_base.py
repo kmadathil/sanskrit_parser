@@ -41,7 +41,8 @@ class SanskritString(object):
             self.thing = sanscript.transliterate(self.thing, encoding, sanscript.SLP1)
             # At this point, we are guaranteed that internal
             # representation is in SLP1
-
+        self._canonical = None
+        
     def transcoded(self, encoding=None, strict_io=True):
         """ Return a transcoded version of self
 
@@ -58,8 +59,10 @@ class SanskritString(object):
     def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self
         """
-        return self.transcoded(sanscript.SLP1, strict_io)
-
+        if self._canonical is None:
+            self._canonical = self.transcoded(sanscript.SLP1, strict_io)
+        return self._canonical
+    
     def devanagari(self, strict_io=True):
         """ Return devanagari transcoding of self
         """
@@ -67,17 +70,22 @@ class SanskritString(object):
 
     # Updates internal string, leaves everything else alone
     # Not to be used in all cases, as this is very limited
-    def update(self, s, encoding=None):
-        self.thing = s
-        if encoding is not None:
-            self.encoding = encoding
-
+    # def update(self, s, encoding=None):
+    #    self.thing = s
+    #    if encoding is not None:
+    #        self.encoding = encoding
+    #    self._canonical = None
+        
     def __str__(self):
-        global denormalize
-        s = self.transcoded(sanscript.SLP1)
-        if denormalize:
-            s = normalization.denormalize(s)
-        return s
+        if self._canonical is not None:
+            return self._canonical
+        else:
+            global denormalize
+            s = self.transcoded(sanscript.SLP1)
+            if denormalize:
+                s = normalization.denormalize(s)
+            self._canonical = s
+            return s
 
     def __repr__(self):
         return str(self)
