@@ -98,7 +98,7 @@ class MaheshvaraSutras(object):
         else:  # Find first occurence of it
             pitpos = self.MSS.find(pit + ' ', pnpos)
         if pitpos == -1:
-            raise ValueError('pratyaahaara not found. Please recheck input')
+            raise ValueError(f'pratyaahaara {ps} not found in "{self.MSS}". Please recheck input')
         # Substring. This includes intermediate its and spaces
         ts = self.MSS[pnpos:pitpos]
         # Replace its and spaces

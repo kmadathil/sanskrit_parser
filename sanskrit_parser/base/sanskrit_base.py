@@ -70,11 +70,11 @@ class SanskritString(object):
 
     # Updates internal string, leaves everything else alone
     # Not to be used in all cases, as this is very limited
-    # def update(self, s, encoding=None):
-    #    self.thing = s
-    #    if encoding is not None:
-    #        self.encoding = encoding
-    #    self._canonical = None
+    def update(self, s, encoding=None):
+        self.thing = s
+        if encoding is not None:
+            self.encoding = encoding
+        self._canonical = None
         
     def __str__(self):
         if self._canonical is not None:

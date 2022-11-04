@@ -1,4 +1,4 @@
-  # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Sutras for ac sandhi
 #  @author: kmadathil
 
@@ -394,7 +394,7 @@
        lp:
         - ?pluta
         - ?pragfhya
-       r: _aC
+       r: _ac
     xform:
        l: null
 

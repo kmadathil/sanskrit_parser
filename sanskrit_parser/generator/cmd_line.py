@@ -4,7 +4,17 @@
 
 """
 from argparse import ArgumentParser, Action
+
 import logging
+# First we disable the root logger handlers
+rootlogger = logging.getLogger()
+for h in rootlogger.handlers:
+    rootlogger.removeHandler(h)
+rootlogger.addHandler(logging.NullHandler())
+
+
+import sys
+import codecs
 
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
@@ -181,6 +191,8 @@ def get_args(argv=None):
 
 
 def cmd_line():
+    # Windows doesn't work correctly without this
+    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
     # Logging
     enable_console_logger()
     args = get_args()
