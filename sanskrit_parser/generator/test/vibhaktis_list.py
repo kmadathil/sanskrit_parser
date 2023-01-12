@@ -135,6 +135,19 @@ viBakti["dvi"] = [
     [None,  "द्वयोः", None],
     [None,  "द्वौ", None],
 ]
+
+prAtipadika["dvi_s"] = dvi_s
+viBakti["dvi_s"] = [
+    [None,  'द्वे', None],
+    [None,  'द्वे', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वयोः', None],
+    [None,  'द्वयोः', None],
+    [None,  'द्वे', None],
+]
+
 prAtipadika["pitf"] = pitf    # noqa: F405
 viBakti["pitf"] = [
      ["पिता", "पितरौ", "पितरः"],

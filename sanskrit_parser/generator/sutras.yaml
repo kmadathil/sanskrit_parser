@@ -1440,6 +1440,8 @@
 # 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
 - sutra: एरनेकाचोऽसंयोगपूर्वस्य
   id: 6.4.82
+  # Below override is not necessary because we explicitly don't no nadI for yaR-sthAnI
+  # Alternative is to do nityatva
 #  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: i
@@ -2211,14 +2213,7 @@
           - ?aNga
           - ?Ap
          rp: ?Ni
-    xform:
-       r: str("Am")
-# Seperated out so it does not get overriden by 6.4.77. FIXME: Ideally a proper nityatva check would work better.
--   sutra:  ङेराम्नद्याम्नीभ्यः
-    id: 7.3.116.1
-    overrides: 7.3.118
-    condition:
-         lp:
+       - lp:
           - and
           - ?aNga
           - ?DAtu
@@ -2226,8 +2221,9 @@
          ll: n
          rp: ?Ni
     xform:
-       r: str("Am")
-       
+         rc: str("Am")
+	 r: null
+
 -   sutra:  इदुद्भ्याम्
     id: 7.3.117
     overrides: [7.3.116, 7.3.118]
@@ -2239,8 +2235,9 @@
         - ?nadI
        rp: ?Ni
     xform:
-       r: str("Am")
-        
+       rc: str("Am")
+       r: null
+       
 #  256: औत् (7-3-118) 
 -   sutra:  औत्
     id: 7.3.118

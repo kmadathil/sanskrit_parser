@@ -54,7 +54,7 @@ def enable_file_logger(log_file_name='SanskritParser.log',
     logger = logging.getLogger(__name__)
     # create file handler which logs even debug messages
     formatter = logging.Formatter(fmt)
-    fh = logging.FileHandler(log_file_name)
+    fh = logging.FileHandler(log_file_name, encoding='utf-8')
     fh.setLevel(level)
     fh.setFormatter(formatter)
     logger.addHandler(fh)

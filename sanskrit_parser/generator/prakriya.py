@@ -307,6 +307,7 @@ class Prakriya(object):
     def _exec_all_domains(self, node):
         for d in ["saMjYA", "prakfti", "pratyaya", "aNga", "standard", "pada", "saMhitA"]:
             self.domains.set_domain(d)
+            logger.debug(f'Global Domain Set to: {d}')
             r = self._exec_single(node)
             if r:
                 return r
