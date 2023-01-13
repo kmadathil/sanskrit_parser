@@ -244,7 +244,7 @@ class Prakriya(object):
             logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
             triggered = []
             triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
-                                          and s.isTriggered(*self.view(s, node, ix), self.domains))]
+                                          and s.isInDomain(self.domains) and s.isTriggered(*self.view(s, node, ix)))]
             # Break at first index from left where trigger occurs
             if triggered:
                 _ix = ix

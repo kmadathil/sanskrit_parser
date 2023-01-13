@@ -94,19 +94,23 @@ class LRSutra(Sutra):
     def inAdhikara(self, context):
         return self.adhikara(context)
 
-    def isTriggered(self, s1, s2, domains):
-        logger.debug(f"Checking {self} View: {s1} {s2}")
-        env = _env(s1, s2)
+    def isInDomain(self, domains):
         if self.domain is not None:
             t = self.domain(domains)
         else:
             t = domains.isdomain("standard")
+        logger.debug(f"Can {self} run in Domain: {domains}: {t}")
+        return t
+    
+    def isTriggered(self, s1, s2):
+        logger.debug(f"Checking {self} View: {s1} {s2}")
+        env = _env(s1, s2)
         if self.cond is not None:
             c = self.cond(env)
         else:
             c = True
-        logger.debug(f"Check Result {c and t} for {self}")
-        return c and t
+        logger.debug(f"Check Result {c} for {self}")
+        return c
 
     def update(self, s1, s2, o1, o2, domains):
         env = _env(s1, s2)
