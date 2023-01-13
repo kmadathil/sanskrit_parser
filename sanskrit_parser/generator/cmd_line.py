@@ -18,14 +18,16 @@ import codecs
 
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
+from sanskrit_parser.generator.prakriya import PrakriyaFactory, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from sanskrit_parser.generator.dhatu import *  # noqa: F403
 from sanskrit_parser.generator.pratipadika import *  # noqa: F403
-from sanskrit_parser.generator.sutras_yaml import sutra_list
+from sanskrit_parser.generator.sutras_yaml import SutraFactory
 from sanskrit_parser import enable_file_logger, enable_console_logger
 
 logger = logging.getLogger(__name__)
+
+sutra_list = SutraFactory()
 
 
 def run_pp(s, verbose=False):
@@ -40,7 +42,7 @@ def run_pp(s, verbose=False):
             return lelem
         lelem = _gen_obj(s, i)
         pl.append(lelem)
-    p = Prakriya(sutra_list, PrakriyaVakya(pl))
+    p = PrakriyaFactory(None, sutra_list, PrakriyaVakya(pl))
     p.execute()
     if verbose:
         p.describe()

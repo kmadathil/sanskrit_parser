@@ -1,5 +1,5 @@
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
+from sanskrit_parser.generator.prakriya import PrakriyaFactory, PrakriyaVakya
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from indic_transliteration import sanscript
 
@@ -74,7 +74,7 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
             return l
         l = _gen_obj(s, i)  # noqa: E741
         pl.append(l)
-    p = Prakriya(sutra_list, PrakriyaVakya(pl))
+    p = PrakriyaFactory(None, sutra_list, PrakriyaVakya(pl))
     p.execute()
     if verbose:
         p.describe()

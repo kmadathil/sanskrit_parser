@@ -12,6 +12,7 @@ produce a vakya.
 @author: kmadathil
 """
 
+from abc import abstractmethod
 from sanskrit_parser.generator.sutra import GlobalDomains
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from copy import deepcopy, copy
@@ -78,9 +79,9 @@ class PrakriyaVakya(object):
         return str([str(x) for x in self.v])
 
 
-class Prakriya(object):
+class PrakriyaBase(object):
     """
-    Prakriya Class
+    Prakriya Base Class
 
     Inputs:
        sutra_list: list of Sutra objects
@@ -90,6 +91,40 @@ class Prakriya(object):
         self.sutra_list = sutra_list
         self.pre_inputs = deepcopy(inputs)
         self.inputs = copy(inputs)
+        self.outputs = None
+        self.tree = PrakriyaTree()
+
+    def output(self, copy=False):
+        if copy:
+            return deepcopy(self.outputs)
+        else:
+            return self.outputs
+
+    def dict(self):
+        return self.tree.dict()
+
+    @abstractmethod
+    def execute(self):
+        pass
+
+    @abstractmethod
+    def describe(self):
+        pass
+
+    @abstractmethod
+    def name(self):
+        pass
+    
+class HierPrakriya(PrakriyaBase):
+    """
+    Prakriya Class
+
+    Inputs:
+       sutra_list: list of Sutra objects
+       inputs    : PrakriyaVakya object
+    """
+    def __init__(self, sutra_list, inputs):
+        super().__init__(sutra_list, inputs)
         self.hier_prakriyas = []
         self.need_hier = False
         # List of alternatives
@@ -102,14 +137,13 @@ class Prakriya(object):
             if self.inputs.need_hierarchy_at(ix):
                 self.need_hier = True
                 # hierarchy needed here
-                hp = Prakriya(sutra_list,
+                hp = PrakriyaFactory(None, sutra_list,
                               PrakriyaVakya(self.inputs[ix]))
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
                 hpo = hp.output()
                 self.hier_outputs[ix] = hpo  # accumulate hierarchical outputs
-        self.tree = PrakriyaTree()
         if self.need_hier:
             for ix, ol in enumerate(self.hier_outputs):
                 if ol != []:  # Hierarchy exists here
@@ -348,12 +382,6 @@ class Prakriya(object):
         logger.debug(f"Final Result: {r}\n")
         return r
 
-    def output(self, copy=False):
-        if copy:
-            return deepcopy(self.outputs)
-        else:
-            return self.outputs
-
     def describe(self):
         print("\nPrakriya")
         if self.hier_prakriyas != []:
@@ -365,8 +393,26 @@ class Prakriya(object):
         self.tree.describe()
         print(f"Final Output {self.outputs} = {[''.join([str(x) for x in y]) for y in self.outputs]}\n\n")
 
-    def dict(self):
-        return self.tree.dict()
+
+    def name(self):
+        return "Hierarchical Prakriya"
+
+
+def PrakriyaFactory(name, sutra_list, inputs):
+    ''' Factory Method for Prakriya '''
+    PrakriyaDict = {
+        "HierPrakriya": HierPrakriya
+    }
+    default = "HierPrakriya"
+    if name in PrakriyaDict:
+        p = PrakriyaDict[name](sutra_list, inputs)
+        logger.debug(f"Returning Prakriya: {p.name()}")
+        return p
+    else:
+        p = PrakriyaDict[default](sutra_list, inputs)
+        logger.debug(f"Returning Default Prakriya matching {p.name()}")
+        return p
+
 
 
 _node_id = 0
