@@ -302,6 +302,10 @@ class HierPrakriya(PrakriyaBase):
             r = s.insert(*r)
             logger.debug(f"I (post update): {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
             logger.debug(f"I (post update): {v}")
+            
+            # Sutras that run disable not only themselves but the utsargas they override  from running again by the
+            # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam
+
             # Using sutra id in the disabled list to get round paninian object deepcopy
             r0.disabled_sutras.append(s.aps)
             if s.optional:

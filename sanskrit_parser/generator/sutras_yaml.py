@@ -15,7 +15,7 @@ def SutraFactory(filename="sutras.yaml"):
     sutra_list = []
     sutra_dict = {}
     
-    f = open(os.path.join(os.path.dirname(__file__), "sutras.yaml"), "r", encoding="utf-8")
+    f = open(os.path.join(os.path.dirname(__file__), "sutras_test.yaml"), "r", encoding="utf-8")
     y = yaml.load(f, Loader=yaml.FullLoader)
     sutra_dict = process_yaml(y)
     sutra_list = sutra_dict.values()
