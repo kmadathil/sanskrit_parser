@@ -1,5 +1,5 @@
 """
-Prakriya Engine for Panini Sutras
+Prakriya Engine Base Class for Panini Sutras
 
 Takes in a list of Sutras, and executes them on a bunch of inputs
 

@@ -1562,8 +1562,6 @@
      l: n
   xform:
      lc: lc[:-1]
-     l: null
-  insert:
      1: str("n")
      
 - sutra: विभाषा ङिश्योः
@@ -1582,8 +1580,6 @@
        - ?SI
   xform:
      lc: lc[:-1]
-     l: null
-  insert:
      1: str("n")
      
 # 240: आतो धातोः (6-4-140) 
@@ -2324,45 +2320,6 @@
          - ?wA
     xform:
        r: str("nA")
-
-
-# - sutra: क्ङिति च
-#   id: 1.1.5
-#   overrides: [7.3.84, 7.3.86]
-#   condition:
-#      - lp:
-#         - and
-#         - ?aNga
-#        l: _ik
-#        rp:
-#          - and
-#          - ?sArvaDAtuka
-#          - +k
-#      - lp:
-#         - and
-#         - ?aNga
-#        l: _ik
-#        rp:
-#          - and
-#          - ?ArDaDAtuka
-#          - +k
-#      - lp:
-#         - and
-#         - ?aNga
-#        l: _ik
-#        rp:
-#          - and
-#          - ?sArvaDAtuka
-#          - +N
-#      - lp:
-#         - and
-#         - ?aNga
-#        l: _ik
-#        rp:
-#          - and
-#          - ?ArDaDAtuka
-#          - +N
-#   xform: null
   
 - sutra: क्ङिति च
   id: 1.1.5
