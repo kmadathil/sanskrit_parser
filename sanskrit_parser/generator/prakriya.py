@@ -137,7 +137,7 @@ class HierPrakriya(PrakriyaBase):
             if self.inputs.need_hierarchy_at(ix):
                 self.need_hier = True
                 # hierarchy needed here
-                hp = PrakriyaFactory(None, sutra_list,
+                hp = PrakriyaFactory("HierPrakriya", sutra_list,
                               PrakriyaVakya(self.inputs[ix]))
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
@@ -229,7 +229,7 @@ class HierPrakriya(PrakriyaBase):
         # Wrapper for special "siddha" situations
         def _special_siddha(a1, a2):
             # zqutva is siddha for q lopa
-            if (a1 == 84041) and (a2 == 83013):
+            if (int(a1) == 84041) and (a2 == 83013):
                 return True
             # q, r lopa siddha for purvadirgha
             elif ((a1 == 83013) or (a1 == 83014)) and (a2 == 63111):
@@ -299,9 +299,28 @@ class HierPrakriya(PrakriyaBase):
             v0 = v[0]
             # State update
             r = s.update(*v, *r, self.domains)
-            r = s.insert(*r)
-            logger.debug(f"I (post update): {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
-            logger.debug(f"I (post update): {v}")
+            r = s.insert(*v, *r)
+            # Insertion - hierarchical prakriya
+            for i in [0, 1]:
+                if not _isScalar(r[i]):
+                    logger.info(f"Insertion hier prakriya for {r[i]}")
+                    # need hierarchy here if we get list back
+                    # hierarchy needed here
+                    hp = PrakriyaFactory("HierPrakriya", self.sutra_list,
+                                         PrakriyaVakya(r[i]))
+                    # This will execute hierarchically as needed
+                    hp.execute()
+                    hpo = hp.output()
+                    logger.info(f"Hier output for r[{i}] {hpo}")
+                    assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
+                    # Don't use join_object, since this is not a promotion but a replacement
+                    r[i] = r[i][i]  # Appropriate sub-object for insertion
+                    r[i].update("".join([o.canonical() for o in hpo[0]]))
+                    
+            logger.debug(f"I (post update): Node {node.id} Outputs {node.outputs} {[_r.tags for _r in node.outputs]} ")
+            logger.debug(f"I (post update): View {v}")
+            logger.debug(f"I (post update): Op/Update/Insert/Hier Result {r}")
+            
             
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
             # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam
@@ -323,6 +342,8 @@ class HierPrakriya(PrakriyaBase):
             # FIXME: disable sutras for AkaqArAdekA saMjYA
 
             logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
+
+                    
             # Update Prakriya Tree
             # Craft inputs and outputs based on viewed inputs
             # And generated outputs
