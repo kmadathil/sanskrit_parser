@@ -135,20 +135,33 @@ class LRSutra(Sutra):
             rs2.update(ret[1], sanscript.SLP1)
         return rs1, rs2
 
-    def insert(self, s1, s2):
+    def insert(self, s1, s2, o1, o2):
         if self.insertx is not None:
             env = _env(s1, s2)
             itx = self.insertx(env)
-            r = [s1, s2]
+            r = [o1, o2]
             for i in itx:
                 if not isinstance(itx[i], PaninianObject):
                     assert isinstance(itx[i], str)
-                    itx[i] = PaninianObject(itx[i])
-                r.insert(i, itx[i])
+                    itx[i] = PaninianObject(itx[i], encoding=sanscript.SLP1)
+
+                # A "middle" insert is handled based on it
+                # kit => append to left context
+                # wit => prepend to right context
+                # A list being returned in one of the contexts
+                # will trigger a hier prakriya
+                # left and right inserts are hierarchically merged
+                # with the correct operand
+                if ((i=="m") and itx[i].hasIt("k")) or i=="l":
+                    r[0] = [r[0], itx[i]]
+                elif ((i=="m") and itx[i].hasIt("w")) or i=="r":
+                    r[1] = [itx[i], r[1]]
+                else:
+                    r.insert(i, itx[i])
             logger.debug(f"After insertion {r}")
             return r
         else:
-            return(s1, s2)
+            return(o1, o2)
 
 
 def _env(s1, s2):

@@ -189,11 +189,15 @@ def process_yaml(y):
                 idict = s
 
                 def _insert(env):
-                    _r = {}
+                    _rv = {}
+                    _l = l = env["l"].canonical()  # noqa: E741, F841
+                    _r = r = env["r"].canonical()  # noqa: E741, F841
+                    _lc = lc = env["lc"].canonical()  # noqa: E741, F841
+                    _rc = rc = env["rc"].canonical()  # noqa: E741, F841
                     for i in idict:
-                        logger.debug(f"Insert {i} {idict[i]}")
-                        _r[i] = eval(idict[i])
-                    return _r
+                        logger.debug(f"Insert {i} {idict[i]} {eval(idict[i])} {env}")
+                        _rv[i] = eval(idict[i])
+                    return _rv
                 return _insert
             sinsert = _exec_insert(s["insert"])
             logger.debug(f"Insert def {sinsert}")
