@@ -226,7 +226,7 @@ def process_yaml(y):
             def _exec_update(s):
                 logger.debug(f"Update {s}")
 
-                def _update(env, domains):
+                def _update(env):
                     def _c(env):
                         # _s a dict
                         # LHS = variable
@@ -279,24 +279,6 @@ def process_yaml(y):
                             else:
                                 _tag(k, s[k])
 
-                    if "domain" in s.keys():
-                        st = s["domain"]
-                        for k in st:
-                            logger.debug(f"Updating domain {k} {st[k]}")
-                            cond = True
-                            if "condition" in st[k]:
-                                logger.debug(f"Update condition check {st[k]['condition']}")
-                                # List implies an or in condition
-                                if isinstance(st[k]['condition'], list):
-                                    cond = False
-                                    for _s in st[k]['condition']:
-                                        cond = cond or _c(env)
-                                else:
-                                    _s = st[k]['condition']
-                                    cond = _c(env)
-                                logger.debug(f"Check got {cond}")
-                            if cond:
-                                setattr(domains, k, st[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:

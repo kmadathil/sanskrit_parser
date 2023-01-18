@@ -116,12 +116,12 @@ class LRSutra(Sutra):
         logger.debug(f"{n} Check Result {c} for {self}")
         return c
 
-    def update(self, s1, s2, o1, o2, domains):
+    def update(self, s1, s2, o1, o2):
         env = _env(s1, s2)
         env["olp"] = o1
         env["orp"] = o2
         if self.update_f is not None:
-            self.update_f(env, domains)
+            self.update_f(env)
         return env["olp"], env["orp"]
 
     def operate(self, s1, s2):

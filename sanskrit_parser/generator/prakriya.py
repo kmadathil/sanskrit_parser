@@ -298,7 +298,7 @@ class HierPrakriya(PrakriyaBase):
             r0 = r[0]
             v0 = v[0]
             # State update
-            r = s.update(*v, *r, self.domains)
+            r = s.update(*v, *r)
             r = s.insert(*v, *r)
             # Insertion - hierarchical prakriya
             for i in [0, 1]:
