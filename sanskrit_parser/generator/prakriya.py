@@ -229,7 +229,7 @@ class HierPrakriya(PrakriyaBase):
         # Wrapper for special "siddha" situations
         def _special_siddha(a1, a2):
             # zqutva is siddha for q lopa
-            if (int(a1) == 84041) and (a2 == 83013):
+            if (int(a1) == 84041) and (a2 == 83013):   # Int gets both the branches
                 return True
             # q, r lopa siddha for purvadirgha
             elif ((a1 == 83013) or (a1 == 83014)) and (a2 == 63111):
@@ -303,7 +303,7 @@ class HierPrakriya(PrakriyaBase):
             # Insertion - hierarchical prakriya
             for i in [0, 1]:
                 if not _isScalar(r[i]):
-                    logger.info(f"Insertion hier prakriya for {r[i]}")
+                    logger.debug(f"Insertion hier prakriya for {r[i]}")
                     # need hierarchy here if we get list back
                     # hierarchy needed here
                     hp = PrakriyaFactory("HierPrakriya", self.sutra_list,
@@ -311,7 +311,7 @@ class HierPrakriya(PrakriyaBase):
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = hp.output()
-                    logger.info(f"Hier output for r[{i}] {hpo}")
+                    logger.debug(f"Hier output for r[{i}] {hpo}")
                     assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
                     # Don't use join_object, since this is not a promotion but a replacement
                     r[i] = r[i][i]  # Appropriate sub-object for insertion
