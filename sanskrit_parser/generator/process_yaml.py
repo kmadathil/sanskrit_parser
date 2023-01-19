@@ -37,7 +37,7 @@ def process_yaml(y):
             if c not in s:
                 s[c] = None
         if "bahiranga" not in s:
-            s["bahiranga"] = 1
+            s["bahiranga"] = 9    # Class 9 - other sutras
         # svar = "sutra_"+s["id"].replace(".", "_")
         sname = s["sutra"]
         soverrides = None

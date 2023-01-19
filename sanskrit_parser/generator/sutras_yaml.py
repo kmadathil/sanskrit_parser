@@ -9,17 +9,16 @@ import yaml
 import os.path
 
 import logging
-#logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-def SutraFactory(filename="sutras.yaml"):
+def SutraFactory(filename="sutras_test.yaml"):
     sutra_list = []
     sutra_dict = {}
     
-    f = open(os.path.join(os.path.dirname(__file__), "sutras_test.yaml"), "r", encoding="utf-8")
+    f = open(os.path.join(os.path.dirname(__file__), filename), "r", encoding="utf-8")
     y = yaml.load(f, Loader=yaml.FullLoader)
     sutra_dict = process_yaml(y)
     sutra_list = sutra_dict.values()
-    # logger.info(sutra_dict)
     f.close()
     return sutra_list
 

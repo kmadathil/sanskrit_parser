@@ -67,7 +67,7 @@ class Sutra(object):
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000 + aps_sub
         self.overrides = overrides
         self.optional = optional
-        logger.info(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
+        logger.debug(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
 
     def __str__(self):
         if self.optional:
@@ -79,7 +79,7 @@ class Sutra(object):
 
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
-                 update=None, optional=False, bahiranga=1, overrides=None):
+                 update=None, optional=False, bahiranga=99, overrides=None):
         '''
         Sutra Class that expects a left and right input
         '''

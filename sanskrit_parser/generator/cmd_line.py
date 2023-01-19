@@ -28,10 +28,8 @@ from sanskrit_parser import enable_file_logger, enable_console_logger
 
 logger = logging.getLogger(__name__)
 
-sutra_list = SutraFactory()
 
-
-def run_pp(s, verbose=False):
+def run_pp(s, prakriya, sutra_list, verbose=False):
     pl = []
     # Assemble list of inputs
     for i in range(len(s)):
@@ -43,7 +41,7 @@ def run_pp(s, verbose=False):
             return lelem
         lelem = _gen_obj(s, i)
         pl.append(lelem)
-    p = PrakriyaFactory(None, sutra_list, PrakriyaVakya(pl))
+    p = PrakriyaFactory(prakriya, sutra_list, PrakriyaVakya(pl))
     p.execute()
     if verbose:
         p.describe()
@@ -53,7 +51,7 @@ def run_pp(s, verbose=False):
 
 # Insert all sup vibhaktis one after the other, with avasAnas
 # Return results with avasAnas stripped as 8x3 list of lists
-def generate_vibhakti(pratipadika, verbose=False):
+def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
     r = []
     for ix, s in enumerate(sups):  # noqa: F405
         if verbose:
@@ -70,7 +68,7 @@ def generate_vibhakti(pratipadika, verbose=False):
                       pratipadika.hasTag("nityadvivacana") or
                       pratipadika.hasTag("nityabahuvacana")))):
                 t = [(pratipadika, ss), avasAna]  # noqa: F405
-                _r = run_pp(t, verbose)
+                _r = run_pp(t, prakriya, sutra_list, verbose)
                 r[-1].append(_r)
                 p = [''.join([str(x) for x in y]) for y in _r]
                 pp = ", ".join([x.strip('.') for x in p])
@@ -156,7 +154,7 @@ class CustomActionString(Action):
                 value = PaninianObject(value, encoding)  # noqa: F405
             getattr(namespace, "pointer")[-1].append(value)
 
-            logger.info('%r %r %r' % (namespace, values, option_string))
+            logger.debug('%r %r %r' % (namespace, values, option_string))
         if getattr(namespace, self.dest) is None:
             _n = []
             # This tracks the hierarchical input list
@@ -188,6 +186,8 @@ def get_args(argv=None):
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
     parser.add_argument("--vibhakti", action="store_true", help="generate all vibhaktis")
     parser.add_argument("--gen-test", action="store_true", help="generate vibhakti test")
+    parser.add_argument("--prakriya", default="HierPrakriya", help="Prakriya type")
+    parser.add_argument("--sutra-file", default="sutras_test.yaml", help="Sutra File Name")
     parser.add_argument("--verbose", action="store_true", help="verbose")
 
     return parser.parse_args(argv)
@@ -199,6 +199,7 @@ def cmd_line():
     # Logging
     enable_console_logger()
     args = get_args()
+    sutra_list = SutraFactory(args.sutra_file)
     if args.debug:
         enable_file_logger(level=logging.DEBUG)
     logger.info(f"Inputs {args.inputs}")
@@ -215,7 +216,7 @@ def cmd_line():
         if ((len(args.inputs) != 1) or (not isinstance(args.inputs[0], Pratipadika))):  # noqa: F405
             logger.info(f"Need a single pratipadika for vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}")
             logger.info("Simplifying")
-            r = run_pp(args.inputs, args.verbose)
+            r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose)
             logger.debug(f"Output: {[''.join([str(x) for x in y]) for y in r]}")
             assert len(r) == 1, "Got multiple outputs"
             pp = PaninianObject.join_objects(r)
@@ -236,5 +237,5 @@ def cmd_line():
             for ix, vi in enumerate(r):
                 print(f"{', '.join(['/'.join([''.join([x.transcoded(sanscript.DEVANAGARI) for x in y]).strip('।') for y in va]) for va in vi])}")
     else:
-        r = run_pp(args.inputs, args.verbose)
+        r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")

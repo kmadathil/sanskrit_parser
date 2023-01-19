@@ -49,6 +49,9 @@ class PaninianObject(SanskritObject):
         for o in objects[0]:
             logger.debug(f"{o} type {type(o)}")
             assert isinstance(o, SanskritObject), f"{o} type {type(o)}"
+        # Passthrough
+        if len(objects[0]) == 1:
+            return objects[0][0]
         s = "".join([o.canonical() for o in objects[0]])
         so = PaninianObject(s, encoding=sanscript.SLP1)
         # Tag rules
