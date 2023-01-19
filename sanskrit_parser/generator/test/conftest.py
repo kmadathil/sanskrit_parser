@@ -1,5 +1,6 @@
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.generator.prakriya import PrakriyaFactory, PrakriyaVakya
+from sanskrit_parser.generator.prakriya import PrakriyaVakya
+from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from indic_transliteration import sanscript
 

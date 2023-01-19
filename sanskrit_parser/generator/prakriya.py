@@ -65,7 +65,11 @@ class PrakriyaVakya(object):
         # As above, deepcopy to prevent predefined objects getting tags
         self.v.insert(ix, deepcopy(r))
         return self
-
+    
+    def delete_at(self, ix):
+        self.v.pop(ix)
+        return self
+    
     def __getitem__(self, ix):
         return self.v[ix]
 
@@ -137,8 +141,8 @@ class HierPrakriya(PrakriyaBase):
             if self.inputs.need_hierarchy_at(ix):
                 self.need_hier = True
                 # hierarchy needed here
-                hp = PrakriyaFactory("HierPrakriya", sutra_list,
-                              PrakriyaVakya(self.inputs[ix]))
+                hp = HierPrakriya(sutra_list,
+                                  PrakriyaVakya(self.inputs[ix]))
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
@@ -306,8 +310,8 @@ class HierPrakriya(PrakriyaBase):
                     logger.debug(f"Insertion hier prakriya for {r[i]}")
                     # need hierarchy here if we get list back
                     # hierarchy needed here
-                    hp = PrakriyaFactory("HierPrakriya", self.sutra_list,
-                                         PrakriyaVakya(r[i]))
+                    hp = HierPrakriya(self.sutra_list,
+                                      PrakriyaVakya(r[i]))
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = hp.output()
@@ -421,23 +425,6 @@ class HierPrakriya(PrakriyaBase):
 
     def name(self):
         return "Hierarchical Prakriya"
-
-
-def PrakriyaFactory(name, sutra_list, inputs):
-    ''' Factory Method for Prakriya '''
-    PrakriyaDict = {
-        "HierPrakriya": HierPrakriya
-    }
-    default = "HierPrakriya"
-    if name in PrakriyaDict:
-        p = PrakriyaDict[name](sutra_list, inputs)
-        logger.debug(f"Returning Prakriya: {p.name()}")
-        return p
-    else:
-        p = PrakriyaDict[default](sutra_list, inputs)
-        logger.debug(f"Returning Default Prakriya matching {p.name()}")
-        return p
-
 
 
 _node_id = 0

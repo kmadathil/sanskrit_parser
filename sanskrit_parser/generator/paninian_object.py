@@ -53,7 +53,7 @@ class PaninianObject(SanskritObject):
         so = PaninianObject(s, encoding=sanscript.SLP1)
         # Tag rules
         # 1.4.14 suptiNantaM padam
-        if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN"):
+        if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN") or objects[0][-1].hasTag("pada"):
             so.setTag("pada")
         # 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam
         elif objects[0][0].hasTag("aNga"):

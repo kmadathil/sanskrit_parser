@@ -40,6 +40,7 @@ qulaBaz = Dhatu("laB", its=["~a", "z", "qu"])
 guhU = Dhatu("guh", its=["~u"])
 sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
+dfS = Dhatu("dfS", its=[])
 
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
