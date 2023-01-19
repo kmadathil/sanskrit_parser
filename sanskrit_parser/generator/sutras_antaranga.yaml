@@ -279,7 +279,7 @@
 # 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
-    overrides: 6.1.97
+    overrides: [6.1.97, 6.1.77, 6.1.101]
     # bahiranga: 1
     condition:
        l: _ak
@@ -289,7 +289,8 @@
          - ?dvitIyA
          - ?samboDana
     xform:
-       r: l  # This is a pUrvaparayoH hack. 
+       l: dirgha(l)  # This is a pUrvaparayoH hack.
+       r: null
     update:
        orp: +psavarRa
        
@@ -310,8 +311,9 @@
          - ?Sas
          - ?psavarRa
     xform:
-       r: l
-       rc: str("n")
+       #r: l
+       #rc: str("n")
+       r: str("n")
        
 # 252: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् (6-1-68)        
 -   sutra: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् 
@@ -1767,6 +1769,8 @@
 # 214: जसः शी (7-1-17) 
 - sutra:  जसः शी
   id: 7.1.17
+  # pratyaya class - so it wins by bahiranga against 6.1.102 praTamayoH pUrvasavarRaH
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -1902,6 +1906,9 @@
 # 264: त्रेस्त्रयः (7-1-53) 
 - sutra:  त्रेस्त्रयः
   id: 7.1.53
+  # So that this (prakriti karya) wins against the nitya nAmi
+  # Can't use override since that needs to run too. 
+  bahiranga: 1    
   condition:
      lp:
       - and
@@ -1916,6 +1923,8 @@
 # 284: गोतो णित् (7-1-90) 
 - sutra:  गोतो णित् 
   id: 7.1.90
+  # Bahiranga class set to 2, since this is not varRakAryam 
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -2269,6 +2278,8 @@
 
 # 270: ङेराम्नद्याम्नीभ्यः (7-3-116)        
 -   sutra:  ङेराम्नद्याम्नीभ्यः
+    # So this wins over varRakAryas
+    bahiranga: 2
     id: 7.3.116
     overrides: 7.3.118
     condition:
@@ -2325,7 +2336,9 @@
 -   sutra:  अच्च घेः 
     id: 7.3.119
     condition:
-       l: [it, ut]
+       # Commenting this out - this is covered by Gi, and that lets this be
+       # nitya against 7.3.111
+       # l: [it, ut]
        lp:
         - "and"
         - ?aNga

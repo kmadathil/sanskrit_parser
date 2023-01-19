@@ -128,7 +128,8 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
 # SI - jasaH SI
 SI = Pratyaya("I", its=["S"], other_tags=["svAdi", "sup", "SI"])
 # Si - jasSasaH Si
-Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si",
+Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si", "viBakti",
+                                          "praTamA",
                                           "sarvanAmasTAna"])
 # adaw - for watarAdi
 adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])

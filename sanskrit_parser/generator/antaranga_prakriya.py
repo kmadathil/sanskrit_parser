@@ -86,7 +86,46 @@ class AntarangaPrakriya(PrakriyaBase):
         self.windowIdx = 0
 
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
-    def sutra_priority(self, sutras: list):
+    def sutra_priority(self, sutras: list, v):
+        def _nitya(s1, s):     # S1 is still triggered after S applied
+            if s not in _o:
+                # New copy of prev node outputs
+                # We assume both sutras can see it, since that's the only case
+                # which matters for nitya test.
+                # FIXME - check if this holds for asiddhavat and zutvatokorasiddhaH
+                # Transformation
+                logger.debug(f"Nitya check: Hypothetical execution of {s}")
+                r = s.operate(*v)
+                r0 = r[0]
+                v0 = v[0]
+                # State update
+                vc = deepcopy(v)
+                r = s.update(*vc, *r)
+                r = s.insert(*v, *r)
+                # Insertion - hierarchical prakriya
+                for i in [0, 1]:
+                    if not _isScalar(r[i]):
+                        logger.debug(f"Nitya check: Hypothetical insertion hier prakriya for {r[i]}")
+                        # need hierarchy here if we get list back
+                        # hierarchy needed here
+                        hp = AntarangaPrakriya(self.sutra_list,
+                                               PrakriyaVakya(r[i]))
+                        # This will execute hierarchically as needed
+                        hp.execute()
+                        hpo = hp.output()
+                        logger.debug(f"Nitya check: Hypothetical Hier output for r[{i}] {hpo}")
+                        assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
+                        # Don't use join_object, since this is not a promotion but a replacement
+                        r[i] = r[i][i]  # Appropriate sub-object for insertion
+                        r[i].update("".join([o.canonical() for o in hpo[0]]))
+                        logger.debug(f"Nitya Check: Hypothetical  Result {r}")
+                _o[s] = r    # Cache output
+            # We have the output of s in cache _o[s]
+            # Check if s1 is still triggered
+            nit = (s1.aps not in v[0].disabled_sutras) and \
+                s1.isTriggered(*_o[s])
+            logger.debug(f"Nitya check {s1} against {s}: {nit}")
+            return nit 
         def _winner(s1, s2):
             logger.debug(f"{s1} bahiranga {s1.bahiranga} overrides {s1.overrides}")
             logger.debug(f"{s2} bahiranga {s2.bahiranga} overrides {s2.overrides}")
@@ -118,8 +157,18 @@ class AntarangaPrakriya(PrakriyaBase):
                 if s1._aps_num < s2._aps_num:
                     return s1
                 else:
-                    return s2
+                    return s2          
             else:
+                n1 = _nitya(s1, s2)
+                n2 = _nitya(s2, s1)
+                assert ((s1._aps_num < 82000) and (s2._aps_num < 82000)), \
+                    "Unexpected Nitya Check in SPSP {s1} {s2}"
+                if n1 and not n2:
+                    logger.debug(f"{s1} nitya against {s2}")
+                    return s1
+                if n2 and not n1:
+                    logger.debug(f"{s2} nitya against {s1}")
+                    return s2
                 # Para > purva
                 logger.debug(f"Sapadasaptapadi, higher of {s1} {s2}")
                 if s1._aps_num > s2._aps_num:
@@ -127,6 +176,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 else:
                     return s2
         _s = sutras
+        _o = {}    # Will be filled in if needed
         w = _s[0]
         for s in _s[1:]:
             w = _winner(w, s)
@@ -226,7 +276,7 @@ class AntarangaPrakriya(PrakriyaBase):
             logger.debug(f"Triggered rules at window {ix}")
             for t in triggered:
                 logger.debug(t)
-            s = self.sutra_priority(triggered)
+            s = self.sutra_priority(triggered, node.outputs[ix:ix+2])
             v = self.view(s, node, ix)
             logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
             assert s.aps not in v[0].disabled_sutras
