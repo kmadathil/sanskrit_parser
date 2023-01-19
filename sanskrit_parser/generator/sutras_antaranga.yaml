@@ -1154,7 +1154,7 @@
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
   # FIXME: 8.4.46 can be removed by nityatvam
-  overrides: [8.3.17, 8.4.46]
+  overrides: 8.3.17
   condition:  
      lp: ?ru
      #l: r
@@ -1167,7 +1167,7 @@
 
 - sutra: हशि च
   id: 6.1.114
-  overrides: [8.3.17, 8.4.46]
+  overrides: 8.3.17
   condition:  
      lp: ?ru
      #l: r
@@ -1837,24 +1837,21 @@
 # 261: षड्भ्यो लुक् (7-1-22) 
 - sutra: षड्भ्यो लुक् 
   id: 7.1.22
-  overrides: 7.3.109 # FIXME: Nitya
+  #overrides: 7.3.109 # FIXME: Nitya
   condition:
      lp:
       - ?zaw
      rp:
       - ?jas
       - ?Sas
-  xform:
-     r: null
-     rc: null
   update:
-     orp: +luk
+     orp: =luk
 
 # 319: स्वमोर्नपुंसकात् (7-1-23) 
 - sutra: स्वमोर्नपुंसकात् 
   id: 7.1.23
-  domain: pratyaya
-  bahiranga: 2
+  #domain: pratyaya
+  #bahiranga: 2
   #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya - will go with nitya as well
   condition:
      lp:
@@ -1870,8 +1867,8 @@
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
   id: 7.1.24
-  domain: pratyaya
-  bahiranga: 2
+  #domain: pratyaya
+  #bahiranga: 2
   overrides: 7.1.23
   # domain: aNga
   condition:

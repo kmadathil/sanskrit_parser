@@ -142,6 +142,7 @@ strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
 
 # Sup Luk
 luk_sup = Pratyaya("", its=[], other_tags=["sup"])
+luk = Pratyaya("", its=[], other_tags=[""])
 
 # Sambuddhi
 sambudDi = PaninianObject("")
