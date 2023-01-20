@@ -223,11 +223,11 @@ def cmd_line():
             logger.info(f"Output {pp} {pp.tags}")
         else:
             pp = args.inputs[0]
-        r = generate_vibhakti(pp, args.verbose)
+        r = generate_vibhakti(pp,  args.prakriya, sutra_list, args.verbose)
         print("Output")
         if args.gen_test:
-            rr = [[[y[0].transcoded(sanscript.DEVANAGARI) for y in va] if len(va) > 1
-                   else va[0][0].transcoded(sanscript.DEVANAGARI) for va in vi] for vi in r]
+            rr = [[[y[0].transcoded(sanscript.DEVANAGARI).strip('।') for y in va] if len(va) > 1
+                   else va[0][0].transcoded(sanscript.DEVANAGARI).strip('।') for va in vi] for vi in r]
             print(f"prAtipadika[\"{str(pp)}\"] = {str(pp)}")
             print(f"viBakti[\"{str(pp)}\"] = [")
             for vi in rr:

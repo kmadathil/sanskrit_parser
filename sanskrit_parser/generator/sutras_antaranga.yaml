@@ -289,7 +289,7 @@
          - ?dvitIyA
          - ?samboDana
     xform:
-       l: dirgha(l)  # This is a pUrvaparayoH hack.
+       l: dirgha(l)  # pUrvaparayoH
        r: null
     update:
        orp: +psavarRa
@@ -311,8 +311,6 @@
          - ?Sas
          - ?psavarRa
     xform:
-       #r: l
-       #rc: str("n")
        r: str("n")
        
 # 252: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् (6-1-68)        
@@ -1153,7 +1151,6 @@
 
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
-  # FIXME: 8.4.46 can be removed by nityatvam
   overrides: 8.3.17
   condition:  
      lp: ?ru
@@ -1509,9 +1506,6 @@
 # 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
 - sutra: एरनेकाचोऽसंयोगपूर्वस्य
   id: 6.4.82
-  # Below override is not necessary because we explicitly don't no nadI for yaR-sthAnI
-  # Alternative is to do nityatva
-#  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: i
      lp:
@@ -1524,12 +1518,11 @@
   update:
      olp:
        - +yaR
-#       - -nadI
+       - -nadI
      
 # 281: ओः सुपि (6-4-83)
 - sutra: ओः सुपि
   id: 6.4.83
-#  overrides: [7.1.54, 7.3.116, 7.3.112]  #FIXME: implement nitya test
   condition:
      l: u
      lp:
@@ -1543,7 +1536,7 @@
   update:
      olp:
        - +yaR
-#       - -nadI
+       - -nadI
 
 # FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
 
@@ -1551,8 +1544,6 @@
 - sutra: वर्षाभ्वश्च
   id: 6.4.84
   overrides: 6.4.85
-#  overrides: [6.4.85, 7.3.116, 7.1.54, 7.3.112]  #FIXME: implement nitya test
-
   condition:
      l: u
      lp: =varzABU
@@ -1563,7 +1554,7 @@
   update:
      olp:
        - +yaR
- #      - -nadI
+       - -nadI
  
 # 273: न भूसुधियोः (6-4-85) 
 - sutra: न भूसुधियोः 
@@ -1837,7 +1828,6 @@
 # 261: षड्भ्यो लुक् (7-1-22) 
 - sutra: षड्भ्यो लुक् 
   id: 7.1.22
-  #overrides: 7.3.109 # FIXME: Nitya
   condition:
      lp:
       - ?zaw
@@ -1850,9 +1840,6 @@
 # 319: स्वमोर्नपुंसकात् (7-1-23) 
 - sutra: स्वमोर्नपुंसकात् 
   id: 7.1.23
-  #domain: pratyaya
-  #bahiranga: 2
-  #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya - will go with nitya as well
   condition:
      lp:
       - and
@@ -2368,11 +2355,13 @@
        rp:
          - +k
          - +N
+         - +g
      - lp: ?aNga
        ll: [it, ut, ft]
        rp:
          - +k
          - +N
+         - +g
   xform: null
 
 # TadDita aDikAra
@@ -2708,47 +2697,6 @@
        - ?purvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
-# Overrides for future yaR AdeSa
-- sutra: यू स्त्र्याख्यौ नदी
-  domain: saMjYA
-  bahiranga: 0 
-  id: 1.4.3.1
-  overrides: [1.4.3, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
-  condition:
-     l: [i, u]
-     lp:
-      - and
-      - ?DAtu
-      - $$anekAc_asaMyogapUrva
-     r: _ac
-  update: null     
-
-# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
-# Override for future iyaN AdeSa
-- sutra: यू स्त्र्याख्यौ नदी
-  domain: saMjYA
-  bahiranga: 0 
-  id: 1.4.3.2
-  overrides: [1.4.3, 1.4.3.1]
-  condition:
-     lp:
-      - ?BU
-      - =suDI
-     r: _ac
-     rp: ?sup
-  update: null
-# Overrides for future yaR AdeSa
-- sutra: यू स्त्र्याख्यौ नदी
-  domain: saMjYA
-  bahiranga: 0 
-  id: 1.4.3.3
-  overrides: [1.4.3, 1.4.3.1, 1.4.3.2, 1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
-  condition:
-     l: u
-     lp: =varzABU
-     r: _ac
-     rp: ?sup
-  update: null
 
 # 303: नेयङुवङ्स्थानावस्त्री (1-4-4)
 - sutra: नेयङुवङ्स्थानावस्त्री
@@ -2769,6 +2717,49 @@
   update:
      olp: -nadI
 
+# Overrides for future yaR AdeSa
+- sutra: नेयङुवङ्स्थानावस्त्री (yaR sTAnI)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.1
+  overrides: [1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+      l: [i, u]
+      lp:
+       - and
+       - ?DAtu
+       - $$anekAc_asaMyogapUrva
+      r: _ac
+  update: null     
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+# Override for future iyaN AdeSa
+- sutra: नेयङुवङ्स्थानावस्त्री (na BU suDiyO)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.2
+  overrides: 1.4.4.1
+  condition:
+      lp:
+        - ?BU
+        - =suDI
+      r: _ac
+      rp: ?sup
+  update: null
+
+# Overrides for future yaR AdeSa
+- sutra: नेयङुवङ्स्थानावस्त्री (varzABU)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.3
+  overrides: [1.4.4, 1.4.4.1, 1.4.4.2, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+      l: u
+      lp: =varzABU
+      r: _ac
+      rp: ?sup
+  update: null
+
 # 304: वामि (1-4-5) 
 - sutra: वामि
   domain: saMjYA
@@ -2787,6 +2778,7 @@
      rp: ?Am
   update:
      olp: +nadI
+
 
 # 296: ङिति ह्रस्वश्च (1-4-6)
 - sutra: ङिति ह्रस्वश्च

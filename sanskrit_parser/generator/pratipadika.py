@@ -57,6 +57,7 @@ KalapU = Pratipadika("KalapU", "pum", other_tags=["DAtu", "kvip"])
 varzABU = Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
 svayamBU = Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
 suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
+praDI = Pratipadika("praDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
 
 hAhA = Pratipadika("hAhA", "pum")
 
@@ -98,9 +99,12 @@ mati = Pratipadika("mati", "strI")
 lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
+kumArI =  Pratipadika("kumArI", "strI", other_tags=["NI"])
+
 # to test
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
+
 
 # Napum
 

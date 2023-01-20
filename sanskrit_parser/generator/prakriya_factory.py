@@ -16,10 +16,10 @@ def PrakriyaFactory(name, sutra_list, inputs):
     #default = "HierPrakriya"
     if name in PrakriyaDict:
         p = PrakriyaDict[name](sutra_list, inputs)
-        logger.info(f"Using Prakriya: {p.name()}")
+        logger.debug(f"Using Prakriya: {p.name()}")
         return p
     else:
         p = PrakriyaDict[default](sutra_list, inputs)
-        logger.info(f"Using Default Prakriya: {p.name()}")
+        logger.debug(f"Using Default Prakriya: {p.name()}")
         return p
 
