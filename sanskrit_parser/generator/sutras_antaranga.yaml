@@ -1158,9 +1158,11 @@
      ll: at
      r: at
   xform:
-     # FIXME: change this to "u" when sliding windows are done
-     l: str("o")
-     lc: lc[:-1]
+     l: null
+  insert:
+     l: str("u")
+  update:
+    olp: -ru
 
 - sutra: हशि च
   id: 6.1.114
@@ -1171,9 +1173,11 @@
      ll: at
      r: _haS
   xform:
-     # FIXME: change this to "u" when sliding windows are done
-     l: str("o")
-     lc: lc[:-1]
+     l: null
+  insert:
+     l: str("u")
+  update:
+    olp: -ru
 
 - sutra: भोभगोअघोअपूर्वस्य योऽशि
   id: 8.3.17

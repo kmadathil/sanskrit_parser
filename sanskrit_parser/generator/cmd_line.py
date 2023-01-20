@@ -186,8 +186,8 @@ def get_args(argv=None):
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
     parser.add_argument("--vibhakti", action="store_true", help="generate all vibhaktis")
     parser.add_argument("--gen-test", action="store_true", help="generate vibhakti test")
-    parser.add_argument("--prakriya", default="HierPrakriya", help="Prakriya type")
-    parser.add_argument("--sutra-file", default="sutras_test.yaml", help="Sutra File Name")
+    parser.add_argument("--prakriya", default="AntarangaPrakriya", help="Prakriya type")
+    parser.add_argument("--sutra-file", default="sutras_antaranga.yaml", help="Sutra File Name")
     parser.add_argument("--verbose", action="store_true", help="verbose")
 
     return parser.parse_args(argv)

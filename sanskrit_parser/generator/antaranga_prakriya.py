@@ -298,6 +298,7 @@ class AntarangaPrakriya(PrakriyaBase):
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = hp.output()
+                    self.hier_prakriyas.append(hp)
                     logger.debug(f"Hier output for r[{i}] {hpo}")
                     assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
                     # Don't use join_object, since this is not a promotion but a replacement

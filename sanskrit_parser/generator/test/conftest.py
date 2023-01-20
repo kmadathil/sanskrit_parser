@@ -16,7 +16,7 @@ from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
 import pytest
 
 from sanskrit_parser.generator.sutras_yaml import SutraFactory
-#sutra_list = SutraFactory("sutras_test.yaml")
+#sutra_list = SutraFactory("sutras_hier.yaml")
 #prakriya_name = "HierPrakriya"
 sutra_list = SutraFactory("sutras_antaranga.yaml")
 prakriya_name = "AntarangaPrakriya"
