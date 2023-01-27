@@ -280,7 +280,6 @@
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
     overrides: [6.1.97, 6.1.77, 6.1.101]
-    # bahiranga: 1
     condition:
        l: _ak
        r: _ac
@@ -367,7 +366,6 @@
     id: 6.1.104
     # Need apavada here to disable 6.1.102 so vfdDireci or AdguRaH can run
     overrides: 6.1.102
-    # bahiranga: 1
     condition:
        l: a
        r: _ic
@@ -381,7 +379,6 @@
 -   sutra: दीर्घाज्जसि च
     id: 6.1.105
     overrides: [6.1.102, 6.1.104]
-    # bahiranga: 1
     condition:
      - l: [At, It, Ut, Ft, Xt, e, o, E, O]
        r: _ic
@@ -389,12 +386,6 @@
          - ?praTamA
          - ?dvitIyA
          - ?samboDana
-#     xform: null
-# -   sutra: दीर्घाज्जसि च
-#     id: 6.1.105.1
-#     overrides: 6.1.102
-#     # bahiranga: 1
-#     condition:
      - l: [At, It, Ut, Ft, Xt, e, o, E, O]
        rp:
          - ?jas
@@ -1559,12 +1550,30 @@
      olp:
        - +yaR
        - -nadI
- 
+
+- sutra: वर्षाभ्वश्च (दृन्करपुनःपूर्वस्य भुवो यण्वक्तव्यः)
+  id: 6.4.84.1
+  overrides: 6.4.85
+  condition:
+     l: u
+     lp:
+       - =dfnBU
+       - =karaBU
+       - =punarBU
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+
+
 # 273: न भूसुधियोः (6-4-85) 
 - sutra: न भूसुधियोः 
   id: 6.4.85
   overrides: 6.4.82
-#  bahiranga: 0
   condition:
      lp:
       - ?BU
@@ -1607,7 +1616,6 @@
 # 240: आतो धातोः (6-4-140) 
 - sutra: आतो धातोः
   id: 6.4.140
-  # bahiranga: 1
   condition:
      lp:
        - and
@@ -1621,7 +1629,6 @@
 #316: टेः (6-4-143) 
 - sutra: टेः
   id: 6.4.143
-  # bahiranga: 1
   condition:
      lp:
        - and
@@ -1858,10 +1865,7 @@
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
   id: 7.1.24
-  #domain: pratyaya
-  #bahiranga: 2
   overrides: 7.1.23
-  # domain: aNga
   condition:
      l: at
      lp:
