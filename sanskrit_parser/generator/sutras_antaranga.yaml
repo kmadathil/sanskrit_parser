@@ -1467,10 +1467,7 @@
 - sutra: स्त्रियाः
   id: 6.4.79
   condition:
-     lp:
-      - and
-      - ?strI_p
-      - ?strI
+     lp: ?strI_p   #  Not looking at ?strI because of atistri atistriyaU etc.
      r: _ac
      rp: ?pratyaya     
   xform:
@@ -1485,10 +1482,7 @@
   optional: true
   overrides: 6.4.79
   condition:
-     lp:
-      - and
-      - ?strI_p
-      - ?strI
+     lp: ?strI_p
      rp:
       - ?am
       - ?Sas
@@ -2001,12 +1995,12 @@
      lp:
       - and
       - ?aNga
-#      - ?strI
+#     - ?strI
       - =tri
      rp: ?strI_abs # Was ?sup
-  xform:
-     l: str("tisf")
-     lc: null
+#  xform:
+#      l: str("tisf")
+#      lc: null
   update:
      olp: =tisf
 
@@ -2018,12 +2012,12 @@
      lp:
       - and
       - ?aNga
-#      - ?strI
+#     - ?strI
       - =catur
      rp: ?strI_abs # Was ?sup
-  xform:
-     l: str("catasf")
-     lc: null
+#  xform:
+#     l: str("catasf")
+#     lc: null
   update:
      olp: =catasf
     
@@ -2685,10 +2679,37 @@
   id: 1.2.47
   overrides: 6.4.140 # sannipAtapariBAzA, according to SK
   condition:
-     lp:
-      - and
-      - ?aNga
-      - ?napum
+    - lp:
+       - and
+       - ?aNga
+       - ?napum
+    - lp: anga
+      rp: ?napum_abs
+  xform:
+      l: hrasva(l)
+
+# FIXME - implement upasarjana instead of pum_abs
+# 318: गोस्त्रियोरुपसर्जनस्य (1-2-48)
+- sutra: गोस्त्रियोरुपसर्जनस्य
+  domain: prakfti
+  bahiranga: 1
+  id: 1.2.48
+  condition:
+    - lp:
+       - and
+       - ?aNga
+       - ?NI
+      rp: ?pum_abs
+    - lp:
+       - and
+       - ?aNga
+       - ?Ap
+      rp: ?pum_abs
+    - lp:
+       - and
+       - ?aNga
+       - ?go_p
+      rp: ?pum_abs
   xform:
       l: hrasva(l)
 
@@ -2702,7 +2723,7 @@
      l: [It, Ut]
      lp:
        - ?strI
-       - ?purvastrI # प्रथमलिङ्गग्रहणं च 
+       - ?pUrvastrI # प्रथमलिङ्गग्रहणं च 
   update:
      olp: +nadI
 
@@ -2763,7 +2784,11 @@
   overrides: [1.4.4, 1.4.4.1, 1.4.4.2, 1.4.5, 1.4.6, 1.4.6.1]
   condition:
       l: u
-      lp: =varzABU
+      lp:
+        - =varzABU
+        - =dfnBU       # 6.4.84.1 दृन्करपुनःपूर्वस्य भुवो यण्वक्तव्यः
+        - =karaBU
+        - =punarBU
       r: _ac
       rp: ?sup
   update: null
@@ -2798,7 +2823,7 @@
      l: [it, ut]
      lp:
        - ?strI
-       - ?purvastrI # प्रथमलिङ्गग्रहणं च
+       - ?pUrvastrI # प्रथमलिङ्गग्रहणं च
      rp: +N
   update:
      olp: +nadI

@@ -26,6 +26,10 @@ class PaninianObject(SanskritObject):
         self.disabled_sutras = []
         # Prakriya Related Tags are ephemeral
 
+    # Dummy
+    def hasIt(self, it):
+        return False 
+
     def hasTag(self, t):
         return t in self.tags
 
@@ -88,4 +92,16 @@ class PaninianObject(SanskritObject):
                     so.deleteTag("pum")
                 if so.hasTag("napum"):
                     so.deleteTag("napum")
+        for t in ['pum_abs']:
+            if objects[0][-1].hasTag(t):
+                so.setTag("pum")
+                for tt in objects[0][-2].tags:
+                    so.setTag(tt)
+                for tt in ["NI", "Ap", 'strI_abs', "strI"]:
+                    if so.hasTag(tt):
+                        so.deleteTag(tt)
+                    so.setTag("pUrvastrI")
+                if so.hasTag("napum"):
+                    so.deleteTag("napum")
+                    
         return so

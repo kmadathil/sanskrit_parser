@@ -68,6 +68,7 @@ upa = Pratyaya("upa", other_tags=["nipAta", "upasarga", "pada"])
 pra = Pratyaya("pra", other_tags=["nipAta", "upasarga", "pada"])
 ava = Pratyaya("ava", other_tags=["nipAta", "upasarga", "pada"])
 ud = Pratyaya("ud", other_tags=["nipAta", "upasarga", "pada"])
+ati = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 
 
 # bha when applied to prAtipadikas only!
@@ -147,6 +148,12 @@ luk = Pratyaya("", its=[], other_tags=[""])
 # Sambuddhi
 sambudDi = PaninianObject("")
 sambudDi.setTag("sambudDi")
+
+# Pum / Napum
+pum_abs = Pratyaya("", its=[], other_tags=["pum_abs", "pum"])
+napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "pum"])
+
+
 
 # Anta
 avasAna = PaninianObject(".")

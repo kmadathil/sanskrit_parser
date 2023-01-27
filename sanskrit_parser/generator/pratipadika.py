@@ -55,9 +55,12 @@ senAnI = Pratipadika("senAnI", "pum", other_tags=["DAtu", "kvip"])
 nI = Pratipadika("nI", "pum", other_tags=["DAtu", "kvip"])
 KalapU = Pratipadika("KalapU", "pum", other_tags=["DAtu", "kvip"])
 varzABU = Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
+dfnBU = Pratipadika("dfnBU", "pum", other_tags=["DAtu", "BU", "kvip"])
+karaBU = Pratipadika("karaBU", "pum", other_tags=["DAtu", "BU", "kvip"])
+punarBU = Pratipadika("punarBU", "pum", other_tags=["DAtu", "BU", "kvip"])
 svayamBU = Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
-suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
-praDI = Pratipadika("praDI", "pum", other_tags=["DAtu", "kvip", "purvastrI"])
+suDI = Pratipadika("suDI", "pum", other_tags=["DAtu", "kvip", "pUrvastrI"])
+praDI = Pratipadika("praDI", "pum", other_tags=["DAtu", "kvip", "pUrvastrI"])
 
 hAhA = Pratipadika("hAhA", "pum")
 
@@ -84,7 +87,7 @@ mAtf = Pratipadika("mAtf", "strI", other_tags=["svasrAdi"])
 svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi", "naptrAdi"])
 tisf = Pratipadika("tisf", "strI", other_tags=["svasrAdi", "saMKyA",
                                                "nityabahuvacana"])
-catasf = Pratipadika("catasf", "strI", other_tags=["svasrAdi""saMKyA",
+catasf = Pratipadika("catasf", "strI", other_tags=["svasrAdi", "saMKyA",
                                                    "nityabahuvacana"])
 nanAndf = Pratipadika("nanAndf", "strI", other_tags=["svasrAdi"])
 duhitf = Pratipadika("duhitf", "strI", other_tags=["svasrAdi"])

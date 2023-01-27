@@ -53,6 +53,10 @@ def run_pp(s, prakriya, sutra_list, verbose=False):
 # Return results with avasAnas stripped as 8x3 list of lists
 def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
     r = []
+    if isinstance(pratipadika, list):
+        pratipadikax = pratipadika [-1]
+    else:
+        pratipadikax = pratipadika
     for ix, s in enumerate(sups):  # noqa: F405
         if verbose:
             logger.info(f"Vibhakti {ix+1} {s}")
@@ -61,13 +65,16 @@ def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
         r.append([])
         for jx, ss in enumerate(s):
             # For nitya eka/dvi/bahuvacana, generate only the appropriate
-            if (((jx == 0) and pratipadika.hasTag("nityEkavacana")) or
-                ((jx == 1) and pratipadika.hasTag("nityadvivacana")) or
-                ((jx == 2) and pratipadika.hasTag("nityabahuvacana")) or
-                (not (pratipadika.hasTag("nityEkavacana") or
-                      pratipadika.hasTag("nityadvivacana") or
-                      pratipadika.hasTag("nityabahuvacana")))):
-                t = [(pratipadika, ss), avasAna]  # noqa: F405
+            if (((jx == 0) and pratipadikax.hasTag("nityEkavacana")) or
+                ((jx == 1) and pratipadikax.hasTag("nityadvivacana")) or
+                ((jx == 2) and pratipadikax.hasTag("nityabahuvacana")) or
+                (not (pratipadikax.hasTag("nityEkavacana") or
+                      pratipadikax.hasTag("nityadvivacana") or
+                      pratipadikax.hasTag("nityabahuvacana")))):
+                if prakriya=="AntarangaPrakriya":
+                    t = [*pratipadika, ss, avasAna]  # noqa: F405
+                else:
+                    t = [(pratipadika, ss), avasAna]  # noqa: F405
                 _r = run_pp(t, prakriya, sutra_list, verbose)
                 r[-1].append(_r)
                 p = [''.join([str(x) for x in y]) for y in _r]
@@ -77,6 +84,7 @@ def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
                 else:
                     logger.debug(f"Vacana {jx+1} {ss} {pp}")
     return r
+
 
 
 last_option = False
@@ -213,7 +221,9 @@ def cmd_line():
         _i(i)
     logger.info("End Inputs")
     if args.vibhakti:
-        if ((len(args.inputs) != 1) or (not isinstance(args.inputs[0], Pratipadika))):  # noqa: F405
+        if args.prakriya=="AntarangaPrakriya":    # We can handle multiple inputs
+            pp = args.inputs
+        elif ((len(args.inputs) != 1) or (not isinstance(args.inputs[0], Pratipadika))):  # noqa: F405
             logger.info(f"Need a single pratipadika for vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}")
             logger.info("Simplifying")
             r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose)
