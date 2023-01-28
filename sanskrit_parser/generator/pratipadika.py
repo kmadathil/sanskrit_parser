@@ -67,6 +67,9 @@ hAhA = Pratipadika("hAhA", "pum")
 rAjan = Pratipadika("rAjan", "pum")
 mahat = Pratipadika("mahat", "pum")
 
+atistri = Pratipadika("atistri", "pum", other_tags=["strI_p", "pUrvastrI"])
+
+
 # FIXME - remove this, derive from qati
 
 kati = Pratipadika("kati", "pum", other_tags=["qati", "nityabahuvacana"])

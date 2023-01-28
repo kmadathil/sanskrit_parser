@@ -262,6 +262,8 @@ class AntarangaPrakriya(PrakriyaBase):
                     break
         if not (found_pratyaya or found_samasa):
             _ix = 0
+            ix = _ix
+            logger.debug(f"No pratyaya or samAsa. Checking for rule triggers at window 0")
             if len(node.outputs) != 1:
                 triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)  and s.isTriggered(*self.view(s, node, ix)))]
 
@@ -348,6 +350,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 self.tree.add_node(_ps, root=True)
             return r
         else:
+            ix = _ix
             logger.debug(f"Nothing triggered")
             if len(node.outputs) == 1:
                 return False

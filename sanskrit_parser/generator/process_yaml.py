@@ -80,14 +80,14 @@ def process_yaml(y):
                                     # Variable
                                     logger.debug(f"Checking variable {sk[1:]} {k}")
                                     _x = isSavarna(env[sk[1:]], k)  # noqa: F405
+                                elif (sk[0:2] == "=!"):
+                                    # Raw inequality
+                                    logger.debug(f"Checking raw inequality {sk[2:]} {k}")
+                                    _x = (sk[2:] != k.canonical())
                                 elif (sk[0] == "="):
                                     # Raw equality
                                     logger.debug(f"Checking raw {sk[1:]} {k}")
                                     _x = (sk[1:] == k.canonical())
-                                elif (sk[0:2] == "!="):
-                                    # Raw inequality
-                                    logger.debug(f"Checking raw inequality {sk[2:]} {k}")
-                                    _x = (sk[2:] != k.canonical())
                                 elif (sk[0:2] == "?!"):  # Tag false check
                                     logger.debug(f"Checking tag false {sk[2:]} {k}")
                                     _x = not k.hasTag(sk[2:])

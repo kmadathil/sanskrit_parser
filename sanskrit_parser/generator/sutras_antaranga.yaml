@@ -27,6 +27,7 @@
 #     r: _ac - r is in pratyahara "ac"
 #     r: $l  - r is savarna of l (variable)
 #    rp: =naam - rp is exactly the string "naam"
+#    rp: !=strI - rp is not exactly the string "strI"
 #    lp: ?pada - lp has tag pada
 #    lp: !pada - lp does not have tag pada
 #    rp: +Y   - rp is a pratyaya with it Y
@@ -1467,7 +1468,8 @@
 - sutra: स्त्रियाः
   id: 6.4.79
   condition:
-     lp: ?strI_p   #  Not looking at ?strI because of atistri atistriyaU etc.
+     l: i          # atistrayaH jas requires guna by jasi ca - this has to be anitya
+     lp: ?strI_p   # Not looking at ?strI because of atistri atistriyaU etc.
      r: _ac
      rp: ?pratyaya     
   xform:
@@ -2734,17 +2736,24 @@
   id: 1.4.4
   overrides: 1.4.3
   condition:
-     lp:
+    - lp:
        - ?Snu
        - ?DAtu
        - ?BrU
-     l:
+      l:
        - It
        - Ut
-     r: _ac
-     rp: ?sup
+      r: _ac
+      rp: ?sup
+    - lp:
+       - and
+       - ?strI_p     # astrI is only for actual strI - this handles atistrI etc
+       - ?!strI      # which are not nitya-nadI
+      r: _ac
+      rp: ?sup
   update:
      olp: -nadI
+
 
 # Overrides for future yaR AdeSa
 - sutra: नेयङुवङ्स्थानावस्त्री (yaR sTAnI)
