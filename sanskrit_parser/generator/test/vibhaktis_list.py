@@ -656,11 +656,27 @@ viBakti["druh"] = [
     [['ध्रुग्', 'ध्रुड्', 'ध्रुक्', 'ध्रुट्'], 'द्रुहौ', 'द्रुहः'],
 ]
 
+prAtipadika["pra_vAh"] = [pra, vAh_kvip]
+viBakti["pra_vAh"] = [
+    [['प्रवाट्', 'प्रवाड्'], 'प्रवाहौ', 'प्रवाहः'],
+    ['प्रवाहम्', 'प्रवाहौ', 'प्रौहः'],
+    ['प्रौहा', 'प्रवाड्भ्याम्', 'प्रवाड्भिः'],
+    ['प्रौहे', 'प्रवाड्भ्याम्', 'प्रवाड्भ्यः'],
+    ['प्रौहः', 'प्रवाड्भ्याम्', 'प्रवाड्भ्यः'],
+    ['प्रौहः', 'प्रौहोः', 'प्रौहाम्'],
+    ['प्रौहि', 'प्रौहोः', 'प्रवाट्सु'],
+    [['प्रवाट्', 'प्रवाड्'], 'प्रवाहौ', 'प्रवाहः'],
+]
+
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
 for p in prAtipadika:
-    linga[p] = prAtipadika[p].linga
+    if isinstance(prAtipadika[p], list):
+            linga[p] = prAtipadika[p][-1].linga
+    else:
+            linga[p] = prAtipadika[p].linga
     if p[-1].lower() in "aeioufx":
         ajanta[linga[p]].append(p)
     else:

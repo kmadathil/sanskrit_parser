@@ -103,8 +103,17 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
     return None
 
 
-def generate_vibhakti(pratipadika, vibhaktis, encoding=sanscript.DEVANAGARI):
+def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI):
     t = []
+    
+    # If we get alist, treat as prefixes + prAtipadika
+    if isinstance(pratipadika_i, list):
+        plist = pratipadika_i
+        pratipadika = pratipadika_i[-1]
+    else:
+        plist = [pratipadika_i]
+        pratipadika = pratipadika_i
+  
     for ix, pv in enumerate(vibhaktis):
         for jx, pvv in enumerate(pv):
             # For nitya eka/dvi/bahuvacana, generate only the appropriate
@@ -118,7 +127,7 @@ def generate_vibhakti(pratipadika, vibhaktis, encoding=sanscript.DEVANAGARI):
                     _pvv = pvv+avasAna.transcoded(encoding)  # noqa: F405
                 else:
                     _pvv = [x+avasAna.transcoded(encoding) for x in pvv]  # noqa: F405
-                t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])  # noqa: F405
+                t.append([(*plist, sups[ix][jx]), avasAna, _pvv])  # noqa: F405
     return t
 
 
