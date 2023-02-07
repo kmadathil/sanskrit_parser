@@ -361,6 +361,15 @@
          - ?pratyaya
     xform:
        r: null
+
+# 330: संप्रसारणाच्च (6-1-108)
+-   sutra:  संप्रसारणाच्च
+    id: 6.1.108
+    condition:
+       lp: ?samprasAraRam
+       r: _ac 
+    xform:
+       r: null
  
 #165: नादिचि (6-1-104) 
 -   sutra: नादिचि
@@ -1577,7 +1586,22 @@
      r: _ac
      rp: ?sup
   xform: null
-     
+
+# 329: वाह ऊठ् (6-4-132) 
+- sutra: वाह ऊठ्
+  id: 6.4.132
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - =vAh
+  xform:
+     lc: lc[1:]
+  insert:
+     0: UW
+    
+
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   condition:

@@ -304,7 +304,10 @@ class AntarangaPrakriya(PrakriyaBase):
                     logger.debug(f"Hier output for r[{i}] {hpo}")
                     assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
                     # Don't use join_object, since this is not a promotion but a replacement
-                    r[i] = r[i][i]  # Appropriate sub-object for insertion
+                    if (i==0) and r[0][0].hasTag("samprasAraRam"):
+                        r[0] = hpo[0][0]  # Appropriate sub-object for replacement
+                    else:
+                        r[i] = r[i][i]  # Appropriate sub-object for replacement
                     r[i].update("".join([o.canonical() for o in hpo[0]]))
                     
             logger.debug(f"I (post update): Node {node.id} Outputs {node.outputs} {[_r.tags for _r in node.outputs]} ")

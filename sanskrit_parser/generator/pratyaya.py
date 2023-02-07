@@ -132,7 +132,7 @@ SI = Pratyaya("I", its=["S"], other_tags=["svAdi", "sup", "SI"])
 Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si", "viBakti",
                                           "praTamA",
                                           "sarvanAmasTAna"])
-# adaw - for watarAdi
+# adaq - for qatarAdi - 
 adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])
 
 # StrI
@@ -153,7 +153,11 @@ sambudDi.setTag("sambudDi")
 pum_abs = Pratyaya("", its=[], other_tags=["pum_abs", "pum"])
 napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "pum"])
 
+# kvip
+kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip"])
 
+# UW
+UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 
 # Anta
 avasAna = PaninianObject(".")

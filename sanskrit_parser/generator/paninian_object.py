@@ -72,6 +72,12 @@ class PaninianObject(SanskritObject):
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
 
+        if objects[0][0].hasTag("samprasAraRam"):
+            for tt in objects[0][1].tags:
+                    so.setTag(tt)
+            if objects[0][0].hasTag("UW"):
+                 so.setTag("UW")
+            
         # Custom tag propagation for rule implementation
         for t in ["eti", "eDati", "UW", "sTA", "sTamB"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):

@@ -157,7 +157,7 @@ class LRSutra(Sutra):
                 elif ((i=="m") and itx[i].hasIt("w")) or i=="r":
                     r[1] = [itx[i], r[1]]
                 else:
-                    r.insert(i, itx[i])
+                    r[i] = [itx[i], r[i]]
             logger.debug(f"After insertion {r}")
             return r
         else:
