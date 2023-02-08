@@ -46,6 +46,8 @@ test_list_slp1 = [
     ("catur", "nAm", ['caturRAm', 'catur~RAm', 'caturRRAm']), #8.4.1
     ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
     ("dviz*", sip, "dvekzi"), #8.2.41
+    ("Dvas*", kta, "Dvasta"),
+    ("sras*", kta, "srasta"),
     (duh, kta, "dugDa"),
    ]
 

@@ -138,3 +138,7 @@ duh_kvip = Pratipadika("duh", "pum", other_tags=["DAtu", "kvip"])
 druh_kvip = Pratipadika("druh", "pum", other_tags=["DAtu", "kvip"])
 muh_kvip = Pratipadika("muh", "pum", other_tags=["DAtu", "kvip"])
 vAh_kvip = Pratipadika("vAh", "pum", other_tags=["DAtu", "kvip"])
+sraMs_kvip = Pratipadika("sras", "pum", other_tags=["DAtu", "kvip"])
+DvaMs_kvip = Pratipadika("Dvas", "pum", other_tags=["DAtu", "kvip"])
+
+anaquh = Pratipadika("anaquh", "pum", other_tags=["anaquh"])

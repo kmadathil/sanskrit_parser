@@ -1150,6 +1150,39 @@
      # Have to do this to back-trigger 6.1.113
      lp: +ru
 
+# 334: वसुस्रंसुध्वंस्वनडुहां दः (8-2-72)
+- sutra: वसुस्रंसुध्वंस्वनडुहां 
+  id: 8.2.72
+  overrides: 8.2.66
+  # sarvanAmasTAna not explicitly in the sutra, but implied by vacanasamarthya of
+  # num in 7.1.82 etc
+  condition:  
+    -  lp:
+         - and
+         - ?pada
+         - ?anaquh
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - ?vasu
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - =Dvas
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - =sras
+       rp: ?!sarvanAmasTAna  
+  xform:
+     l: str("d")
+
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
   overrides: 8.3.17
@@ -1932,6 +1965,17 @@
      l: str("traya")
      lc: null
 
+
+# 332: सावनडुहः (7-1-82) 
+- sutra: सावनडुहः
+  id: 7.1.82
+  condition:
+     lp: ?anaquh
+     rp: ?su
+  xform:
+     l: str("n")+l
+ 
+
 # 284: गोतो णित् (7-1-90) 
 - sutra:  गोतो णित् 
   id: 7.1.90
@@ -1998,6 +2042,33 @@
         - ?!sambudDi
   xform:
      l: str("an")
+
+
+# 331: चतुरनडुहोरामुदात्तः (7-1-98) 
+- sutra: चतुरनडुहोरामुदात्तः
+  id: 7.1.98
+  condition:
+     lp:
+       - =catur
+       - ?anaquh
+     rp: ?sarvanAmasTAna
+  xform:
+     l: null
+  insert:
+     l: str("A")+l
+
+# 333: अम् संबुद्धौ (7-1-99) 
+- sutra: अम् संबुद्धौ  
+  id: 7.1.99
+  overrides: 7.1.98
+  condition:
+     lp: ?anaquh
+     rp: ?sambudDi
+  xform:
+     l: null
+  insert:
+     l: str("a")+l
+ 
 
 # 286: रायो हलि (7-2-85) 
 - sutra:   रायो हलि
