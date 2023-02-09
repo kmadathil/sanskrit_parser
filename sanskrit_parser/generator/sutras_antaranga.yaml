@@ -1213,6 +1213,19 @@
   update:
     olp: -ru
 
+#  337: दिव उत् (6-1-131) 
+- sutra: दिव उत्
+  id: 6.1.131
+  condition:
+     lp:
+      - and
+      - =div
+      - ?pada
+  xform:
+     l: null
+  insert:
+     l: str("u")
+ 
 - sutra: भोभगोअघोअपूर्वस्य योऽशि
   id: 8.3.17
   condition:
@@ -1288,6 +1301,19 @@
      r: _yar
   xform:
      r: r+r
+
+# 335: सहेः साडः सः (8-3-56) 
+- sutra: सहेः साडः सः
+  id: 8.3.56
+  condition:  
+     lp:
+       - and
+       - ?sah
+       - ?pada
+     l: q
+     ll: A
+  xform:
+     lc: lc[:-2] + str("zA")
 
 # FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this
 # Until we can fix this ;-)
@@ -1974,7 +2000,19 @@
      rp: ?su
   xform:
      l: str("n")+l
- 
+
+# 336: दिव औत् (7-1-84)
+- sutra: दिव औत्
+  id: 7.1.84
+  condition:
+     lp: =div
+     rp: ?su
+  xform:
+     l: null
+  insert:
+     l: str("O")
+
+
 
 # 284: गोतो णित् (7-1-90) 
 - sutra:  गोतो णित् 

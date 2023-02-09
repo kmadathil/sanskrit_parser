@@ -15,6 +15,7 @@ class Dhatu(PaninianObject):
         self.its = its
         self.setTag("DAtu")
         self.setTag("aNga")
+        self.setTag(self.canonical())
         for t in other_tags:
             self.setTag(t)
 
