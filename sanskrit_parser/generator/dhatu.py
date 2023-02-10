@@ -43,7 +43,7 @@ sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
 dfS = Dhatu("dfS", its=[])
 vah = Dhatu("vah", its=[])
-
+Sam = Dhatu("Sam", its=[])
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp = Dhatu("u", its=["Y"])

@@ -794,6 +794,9 @@
   xform:
      r: str("T")
 
+
+
+
 # Ratva
 # FIXME: Get samanapade right
 - sutra: रषाभ्यां नो णः समानपदे
@@ -1022,6 +1025,17 @@
   xform:
      r: str("D")
 
+# 341: मो नो धातोः (8-2-64)
+- sutra: मो नो धातोः
+  id: 8.2.64
+  condition:
+     lp:
+      - and
+      - ?DAtu
+      - ?pada
+     l: m
+  xform:
+     l: str("n")
 
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
   id: 8.3.32
