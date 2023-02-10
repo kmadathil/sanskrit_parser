@@ -29,7 +29,7 @@
 #    rp: =naam - rp is exactly the string "naam"
 #    rp: !=strI - rp is not exactly the string "strI"
 #    lp: ?pada - lp has tag pada
-#    lp: !pada - lp does not have tag pada
+#    lp: ?!pada - lp does not have tag pada
 #    rp: +Y   - rp is a pratyaya with it Y
 #    lp: $$fname - call fname on lp (paninian_object)
 #
@@ -1251,7 +1251,35 @@
        rp: ?avasAna
   xform:
      l: str("H")
-     
+
+#339: रोः सुपि (8-3-16) 
+- sutra: रोः सुपि
+  id: 8.3.16
+  overrides: 8.3.15
+  condition:
+     - l:  r
+       rp:
+        - and
+        - =su
+        - +p
+       lp: ?ru
+  xform:
+     l: str("H")
+
+- sutra: रोः सुपि
+  id: 8.3.16.1
+  overrides: 8.3.15
+  condition:
+     - l:  r
+       rp:
+        - and
+        - =su
+        - +p
+       lp: ?!ru   #  Only ru
+  xform:
+     null
+
+
 - sutra: विसर्जनीयस्य सः
   id: 8.3.34
   condition:
@@ -1302,18 +1330,6 @@
   xform:
      r: r+r
 
-# 335: सहेः साडः सः (8-3-56) 
-- sutra: सहेः साडः सः
-  id: 8.3.56
-  condition:  
-     lp:
-       - and
-       - ?sah
-       - ?pada
-     l: q
-     ll: A
-  xform:
-     lc: lc[:-2] + str("zA")
 
 # FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this
 # Until we can fix this ;-)
@@ -1327,6 +1343,7 @@
 #   xform:
 #      l: l+l
 
+# 340: शरोऽचि (8-4-49) 
 - sutra: शरोऽचि
   id: 8.4.49
   overrides: 8.4.46
@@ -1354,6 +1371,19 @@
 #      rr: _hal
 #   xform: 
 #      r: r+r
+
+# 335: सहेः साडः सः (8-3-56) 
+- sutra: सहेः साडः सः
+  id: 8.3.56
+  condition:  
+     lp:
+       - and
+       - ?sah
+       - ?pada
+     l: q
+     ll: A
+  xform:
+     lc: lc[:-2] + str("zA")
 
 - sutra: हलो यमां यमि लोपः
   id: 8.4.64
@@ -2556,7 +2586,20 @@
        rp: ?Am  
   xform:
      r: str("nA")
-     
+
+# 338: षट्चतुर्भ्यश्च (7-1-55) 
+- sutra: षट्चतुर्भ्यश्च
+  id: 7.1.55
+  overrides: [7.1.54, 7.1.73, 7.2.100] # नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  condition:
+     - lp:
+        - =catur
+        - ?zaw
+       rp: ?Am  
+  xform:
+     r: str("nA")
+
+
 # 314: नपुंसकस्य झलचः (7-1-72) 
 - sutra: नपुंसकस्य झलचः
   id: 7.1.72
