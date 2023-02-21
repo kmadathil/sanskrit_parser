@@ -2222,9 +2222,20 @@
   id: 7.2.102
   condition:
      lp: ?tyadAdi
-     rp: ?sup
+     rp: ?viBakti
   xform:
      l: str("a")
+
+# 342: किमः कः (7-2-103) 
+- sutra:  किमः कः
+  id: 7.2.103
+  overrides: 7.2.102
+  condition:
+     lp: ?kim
+     rp: ?viBakti
+  xform:
+     lc: str("ka")
+     l: null
 
 - sutra: अचो ञ्णिति
   id: 7.2.115
