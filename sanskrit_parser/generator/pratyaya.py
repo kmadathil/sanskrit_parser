@@ -151,7 +151,7 @@ sambudDi.setTag("sambudDi")
 
 # Pum / Napum
 pum_abs = Pratyaya("", its=[], other_tags=["pum_abs", "pum"])
-napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "pum"])
+napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "napum"])
 
 # kvip
 kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip"])

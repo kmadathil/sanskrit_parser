@@ -312,3 +312,7 @@ def is_vriddhi(s: str):
     aat = "A"
     aich = SanskritImmutableString("Ec", encoding=sanscript.SLP1)
     return (s == aat) or ms.isInPratyahara(aich, so)
+
+# daSca d check
+def idam_d_p(s):
+    return ("d" in s)

@@ -155,8 +155,8 @@
        l: a
        r: _ec
     xform:
-       l: vriddhi(r)
-       r: null
+       r: vriddhi(r)
+       l: null
     update:
       olp:
        - -pada # for pUrvaparayoH
@@ -352,16 +352,21 @@
     id: 6.1.107
     # FIXME: This prevents 7.3.102 supi ca from triggering, but we need a proper
     # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack 
-    overrides: 7.3.102
+    overrides: [6.1.101,  6.1.102, 7.3.102]
     condition:
        l: _ak
-       rp:
-         - and
-         - =am
-         - ?pratyaya
+       rp: ?am
+#         - and
+#         - =am
+#         - ?pratyaya
     xform:
-       r: null
-
+       l: null
+       r: l
+    update:
+       olp:
+         - -Ba
+         - -pada
+    
 # 330: संप्रसारणाच्च (6-1-108)
 -   sutra:  संप्रसारणाच्च
     id: 6.1.108
@@ -1809,7 +1814,19 @@
   xform:
      r: null
      rc: str("Es")
-     
+
+# 349: नेदमदसोरकोः (7-1-11) 
+- sutra: नेदमदसोरकोः
+  id: 7.1.11
+  overrides: 7.1.9
+  domain: pratyaya
+  bahiranga: 2
+  condition:
+     lp:
+       - ?idam
+       - ?adas
+     rp: ?Bis
+
 # 201: टाङसिङसामिनात्स्याः (7-1-12)
 - sutra: टाङसिङसामिनात्स्याः 
   id: 7.1.12
@@ -1852,6 +1869,8 @@
 - sutra: सर्वनाम्नः स्मै
   id: 7.1.14
   overrides: 7.1.13
+# FIXME - remove after resolving 3-way tie problem	 
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -1866,6 +1885,8 @@
 - sutra: ङसिङ्योः स्मात्स्मिनौ
   id: 7.1.15
   overrides: 7.1.12.1
+# FIXME - remove after resolving 3-way tie problem	 
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -1879,6 +1900,8 @@
      
 - sutra: ङसिङ्योः स्मात्स्मिनौ
   id: 7.1.15.1
+# FIXME - remove after resolving 3-way tie problem	 
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -2210,7 +2233,8 @@
       - =catasf
      rp:
       - and
-      - ?sup
+#      - ?sup
+      - ?viBakti
       - ?!Am # नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
      r:
       - _ac
@@ -2220,22 +2244,105 @@
 # 265: त्यदादीनामः (7-2-102) 
 - sutra:  त्यदादीनामः
   id: 7.2.102
+  # FIXME: this needs to happen first, before daSca but unclear how. using this for now
+  bahiranga: 1
   condition:
      lp: ?tyadAdi
      rp: ?viBakti
   xform:
+     l: null
+  insert:
      l: str("a")
 
 # 342: किमः कः (7-2-103) 
 - sutra:  किमः कः
   id: 7.2.103
-  overrides: 7.2.102
   condition:
      lp: ?kim
      rp: ?viBakti
   xform:
      lc: str("ka")
      l: null
+
+#  343: इदमो मः (7-2-108) 
+- sutra:  इदमो मः 
+  id: 7.2.108
+  overrides: 7.2.102
+#  bahiranga: 1    
+  condition:
+     lp: ?idam
+     rp: ?su
+  xform:
+     l: str("m")
+
+# 345: दश्च (7-2-109) 
+- sutra:  दश्च
+  id: 7.2.109
+  # we use a general d check instead of specific position to maintain nityatva
+  # wrt 6.1.107 ami pUrvaH
+  condition:
+     lp:
+       - and
+       - ?idam
+       - $$idam_d_p   # check for d
+     rp: ?viBakti
+  xform:
+     lc: str("im")
+     l: null
+  insert:
+     l: l
+     
+#  344: इदोऽय् पुंसि (7-2-111) 
+- sutra:  इदोऽय् पुंसि
+  id: 7.2.111
+  condition:
+     lp:
+         - and
+         - ?idam
+         - ?pum
+     rp: ?su
+  xform:
+     lc: str("aya")
+
+#  346: अनाप्यकः (7-2-112)
+- sutra:  अनाप्यकः
+  id: 7.2.112
+  overrides: 7.2.109
+  condition:
+     lp:
+         - and
+         - ?idam
+     lc: =id
+     r: _ac
+     rp:
+         - ?tftIyA
+         - ?caturTi
+         - ?pancamI
+         - ?zazWI
+         - ?saptamI
+  xform:
+     lc: str("an")
+
+# 347: हलि लोपः (7-2-113)
+- sutra:  हलि लोपः
+  id: 7.2.113
+  condition:
+     lp:
+         - and
+         - ?idam
+     lc: 
+         - =id
+         - =an
+     r: _hal
+     rp:
+         - ?tftIyA
+         - ?caturTi
+         - ?pancamI
+         - ?zazWI
+         - ?saptamI
+  xform:
+     lc: null
+
 
 - sutra: अचो ञ्णिति
   id: 7.2.115
@@ -2425,6 +2532,7 @@
        rp: +N
     insert:
        m: Aw
+       
 # 290: याडापः (7-3-113)
 -   sutra:  याडापः
     id: 7.3.113
@@ -2440,6 +2548,7 @@
 # 291: सर्वनाम्नः स्याड्ढ्रस्वश्च (7-3-114) 
 -   sutra:  सर्वनाम्नः स्याड्ढ्रस्वश्च
     id: 7.3.114
+    overrides: [7.3.113, 7.1.12.1, 7.1.12.2, 7.1.13, 7.1.14, 7.1.15, 7.1.15.1]
     condition:
        lp:
         - and
@@ -3137,7 +3246,9 @@
        - ?!sarvanAmasTAna
      r: [y, _ac]
   update:
-     olp: +Ba
+     olp:
+       - +Ba
+       - pada
 
 - sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
   domain: saMjYA
@@ -3150,9 +3261,8 @@
      olp: +aNga
 
 # Handled elsewhere
-
 # 323: एच इग्घ्रस्वादेशे (1-1-48) - hrasva() of paribhasha.py
-
+# 348: आद्यन्तवदेकस्मिन् (1-1-21) - natural
 
 # Skipping for now
 

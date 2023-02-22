@@ -280,6 +280,18 @@ viBakti["ramA"] = [
      ["रमे", "रमे", "रमाः"]
 ]
 
+prAtipadika["sarva_A"] = [sarva, Ap]
+viBakti["sarva_A"] = [
+    ['सर्वा', 'सर्वे', 'सर्वाः'],
+    ['सर्वाम्', 'सर्वे', 'सर्वाः'],
+    ['सर्वया', 'सर्वाभ्याम्', 'सर्वाभिः'],
+    ['सर्वस्यै', 'सर्वाभ्याम्', 'सर्वाभ्यः'],
+    ['सर्वस्याः', 'सर्वाभ्याम्', 'सर्वाभ्यः'],
+    ['सर्वस्याः', 'सर्वयोः', 'सर्वासाम्'],
+    ['सर्वस्याम्', 'सर्वयोः', 'सर्वासु'],
+    ['सर्वे', 'सर्वे', 'सर्वाः'],
+]
+
 prAtipadika["nAsikA"] = nAsikA    # noqa: F405
 viBakti["nAsikA"] = [
     ['नासिका', 'नासिके', 'नासिकाः'],
@@ -740,13 +752,31 @@ viBakti["kim"] = [
     ['क', 'कौ', 'के'],
 ]
 
+prAtipadika["idam"] = idam
+viBakti["idam"] = [
+    ['अयम्', 'इमौ', 'इमे'],
+    ['इमम्', 'इमौ', 'इमान्'],
+    ['अनेन', 'आभ्याम्', 'एभिः'],
+    ['अस्मै', 'आभ्याम्', 'एभ्यः'],
+    [['अस्मात्', 'अस्माद्'], 'आभ्याम्', 'एभ्यः'],
+    ['अस्य', 'अनयोः', 'एषाम्'],
+    ['अस्मिन्', 'अनयोः', 'एषु'],
+    ['अयम्', 'इमौ', 'इमे'],
+]
 
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
 for p in prAtipadika:
     if isinstance(prAtipadika[p], list):
+        if hasattr(prAtipadika[p][-1], "linga"):
             linga[p] = prAtipadika[p][-1].linga
+        elif prAtipadika[p][-1].hasTag("strI"):
+            linga[p] = "strI"
+        elif prAtipadika[p][-1].hasTag("napum"):
+            linga[p] = "napum"
+        else:
+            linga[p] = "pum"
     else:
             linga[p] = prAtipadika[p].linga
     if p[-1].lower() in "aeioufx":

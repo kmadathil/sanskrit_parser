@@ -292,7 +292,13 @@ class AntarangaPrakriya(PrakriyaBase):
             # Insertion - hierarchical prakriya
             for i in [0, 1]:
                 if not _isScalar(r[i]):
-                    logger.debug(f"Insertion hier prakriya for {r[i]}")
+                    logger.debug(f"Insertion hier prakriya for {r[i]} {[_r.tags for _r in r[i]]}")
+                    pada_p = False
+                    # Temporarily remove pada tag (not relevant here)
+                    if r[i][0].isPada():
+                        pada_p = True
+                        r[i][0].deleteTag("pada")
+                        logger.debug(f"Temporary pada deletion {r[i]} {[_r.tags for _r in r[i]]}")
                     # need hierarchy here if we get list back
                     # hierarchy needed here
                     hp = AntarangaPrakriya(self.sutra_list,
@@ -308,8 +314,13 @@ class AntarangaPrakriya(PrakriyaBase):
                         r[0] = hpo[0][0]  # Appropriate sub-object for replacement
                     else:
                         r[i] = r[i][i]  # Appropriate sub-object for replacement
-                    r[i].update("".join([o.canonical() for o in hpo[0]]))
-                    
+                    r[i].update("".
+                                join([o.canonical() for o in hpo[0]]))
+                    # Restore pada
+                    if pada_p:
+                        r[i].setTag("pada")
+                        logger.debug(f"Restored pada {r[i]} {r[i].tags}")
+
             logger.debug(f"I (post update): Node {node.id} Outputs {node.outputs} {[_r.tags for _r in node.outputs]} ")
             logger.debug(f"I (post update): View {v}")
             logger.debug(f"I (post update): Op/Update/Insert/Hier Result {r}")
