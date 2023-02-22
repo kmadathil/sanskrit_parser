@@ -176,6 +176,17 @@ class AntarangaPrakriya(PrakriyaBase):
                 else:
                     return s2
         _s = sutras
+        # First level, strip out apavada-overriden sutras to avoid 3-way problems
+        overrides = []
+        for s in _s:
+            if s.overrides is not None:
+                overrides.extend(s.overrides)
+        logger.debug(f"Apavada overridden sutras {overrides}")
+        for so in _s:
+            if so.aps in overrides:
+                logger.debug(f"Removing {so} as it is overriden")
+                _s.remove(so)
+        logger.debug(f"After apavada deletion: {[str(s) for s in _s]}")
         _o = {}    # Will be filled in if needed
         w = _s[0]
         for s in _s[1:]:

@@ -1869,8 +1869,6 @@
 - sutra: सर्वनाम्नः स्मै
   id: 7.1.14
   overrides: 7.1.13
-# FIXME - remove after resolving 3-way tie problem	 
-  bahiranga: 2
   condition:
      lp:
       - and
@@ -1885,8 +1883,6 @@
 - sutra: ङसिङ्योः स्मात्स्मिनौ
   id: 7.1.15
   overrides: 7.1.12.1
-# FIXME - remove after resolving 3-way tie problem	 
-  bahiranga: 2
   condition:
      lp:
       - and
@@ -1900,8 +1896,6 @@
      
 - sutra: ङसिङ्योः स्मात्स्मिनौ
   id: 7.1.15.1
-# FIXME - remove after resolving 3-way tie problem	 
-  bahiranga: 2
   condition:
      lp:
       - and
@@ -1971,6 +1965,8 @@
 - sutra: जश्शसोः शिः
   id: 7.1.20
   # domain: aNga
+  # So it wins against 7.1.17, which is also at 2
+  bahiranga: 2
   condition:
      lp:
       - and
@@ -2312,7 +2308,9 @@
      lp:
          - and
          - ?idam
-     lc: =id
+         - $$idam_d_p
+     # not using =id for nityatvam
+     # lc: =id
      r: _ac
      rp:
          - ?tftIyA
@@ -2332,7 +2330,6 @@
          - ?idam
      lc: 
          - =id
-         - =an
      r: _hal
      rp:
          - ?tftIyA
