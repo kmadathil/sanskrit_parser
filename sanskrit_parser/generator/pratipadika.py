@@ -148,3 +148,4 @@ turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
+idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])

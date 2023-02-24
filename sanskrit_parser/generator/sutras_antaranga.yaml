@@ -2229,7 +2229,6 @@
       - =catasf
      rp:
       - and
-#      - ?sup
       - ?viBakti
       - ?!Am # नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
      r:
@@ -3256,6 +3255,60 @@
      lp: ?!pratyaya
   update:
      olp: +aNga
+
+#  350: इदमोऽन्वादेशेऽशनुदात्तस्तृतीयादौ (2-4-32) 
+- sutra:  इदमोऽन्वादेशेऽशनुदात्तस्तृतीयादौ
+  id: 2.4.32
+  bahiranga: 1
+  condition:
+     lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+     rp:
+        - and
+        - ?sup
+        - ?!praTamA
+        - ?!dvitIyA
+        - ?!samboDana
+  xform:
+     lc: null
+     l: str("a")
+
+#   351: द्वितीयाटौस्स्वेनः (2-4-34) 
+- sutra: द्वितीयाटौस्स्वेनः 
+  id: 2.4.34
+  bahiranga: 1
+  overrides: 2.4.32
+  condition:
+     - lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+       rp:      
+        - and
+        - ?viBakti
+        - ?dvitIyA
+     - lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+       rp:      
+        - and
+        - ?viBakti
+        - ?wA
+     - lp:
+        - and
+        - ?anvAdeSa
+        - ?idam
+       rp:      
+        - and
+        - ?viBakti
+        - ?os
+  xform:
+     lc: str("ena")
+     l: null
+
 
 # Handled elsewhere
 # 323: एच इग्घ्रस्वादेशे (1-1-48) - hrasva() of paribhasha.py
