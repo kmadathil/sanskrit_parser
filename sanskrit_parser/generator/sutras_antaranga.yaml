@@ -853,6 +853,20 @@
   xform:
      l: null
 
+# 352 न ङिसम्बुद्ध्योः (8-2-8)
+- sutra: न ङिसम्बुद्ध्योः
+  id: 8.2.8
+  overrides: 8.2.7
+  condition:
+     lp:
+       - and
+       - ?prAtipadika
+       - ?pada
+     l: n
+     rp:
+       - ?Ni
+       - ?sambudDi
+
 - sutra: संयोगान्तस्य लोपः
   id: 8.2.23
   condition:
@@ -1709,7 +1723,7 @@
   insert:
      0: UW
     
-
+# 234 : अल्लोपोऽनः (6-4-134) 
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   condition:
@@ -1721,8 +1735,10 @@
      l: n
   xform:
      lc: lc[:-1]
-     1: str("n")
-     
+     l: null
+  insert:
+     l:  str("n")
+
 - sutra: विभाषा ङिश्योः
   id: 6.4.136
   overrides: 6.4.134
