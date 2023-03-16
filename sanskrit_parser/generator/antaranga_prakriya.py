@@ -206,6 +206,10 @@ class AntarangaPrakriya(PrakriyaBase):
             # q, r lopa siddha for purvadirgha
             elif ((a1 == 83013) or (a1 == 83014)) and (a2 == 63111):
                 return True
+            # n lopa siddha for inter pada (happens naturally)
+            # also for 7.4.33, 7.4.25 rAjIyati, rAjAyate
+            elif ((a1 == 82007) or (a1 == 74033)) and (a2 == 74025):
+                return True            
             else:
                 return False
 
