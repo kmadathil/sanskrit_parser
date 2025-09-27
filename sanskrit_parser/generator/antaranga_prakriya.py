@@ -162,7 +162,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 n1 = _nitya(s1, s2)
                 n2 = _nitya(s2, s1)
                 assert ((s1._aps_num < 82000) and (s2._aps_num < 82000)), \
-                    "Unexpected Nitya Check in SPSP {s1} {s2}"
+                    "Unexpected Nitya Check, not in SPSP {s1} {s2}"
                 if n1 and not n2:
                     logger.debug(f"{s1} nitya against {s2}")
                     return s1

@@ -121,7 +121,7 @@ test_list_devanagari = [
     (lUY, Ryat, "लाव्य"),
     (kzI, yat, ["क्षेय", "क्षय्य"]),
     (ji, yat, ["जेय", "जय्य"]),
-    (wukrIY, yat, ["क्रेय", "क्रय्य"]),
+    (qukrIY, yat, ["क्रेय", "क्रय्य"]),
      # FIXME - can't test this now
     # आ + वेञ् + यक् + त = ओयते
     ("आ", (veY_smp, yak), "ओय"),
