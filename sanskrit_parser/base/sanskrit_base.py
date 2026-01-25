@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+from functools import lru_cache
 from indic_transliteration import sanscript
 from indic_transliteration import detect
 from sanskrit_parser.util import normalization
@@ -10,6 +11,12 @@ import six
 
 logger = logging.getLogger(__name__)
 denormalize = False
+
+# Cache transliteration calls for performance (Phase 2 optimization)
+@lru_cache(maxsize=50000)
+def _transliterate_cached(text, from_scheme, to_scheme):
+    """Cached wrapper around sanscript.transliterate"""
+    return sanscript.transliterate(text, from_scheme, to_scheme)
 
 
 class SanskritString(object):
@@ -37,12 +44,17 @@ class SanskritString(object):
             # Autodetect Encoding
             encoding = detect.detect(self.thing)
         if encoding != sanscript.SLP1:
-            # Convert to SLP1
-            self.thing = sanscript.transliterate(self.thing, encoding, sanscript.SLP1)
+            # Convert to SLP1 using cached transliteration
+            self.thing = _transliterate_cached(self.thing, encoding, sanscript.SLP1)
             # At this point, we are guaranteed that internal
             # representation is in SLP1
         self._canonical = None
         
+    @lru_cache(maxsize=10000)
+    def _transcoded_cached(self, text, encoding):
+        """Cached version of transcoding"""
+        return _transliterate_cached(text, sanscript.SLP1, encoding)
+    
     def transcoded(self, encoding=None, strict_io=True):
         """ Return a transcoded version of self
 
@@ -54,7 +66,8 @@ class SanskritString(object):
         s = self.thing
         if not strict_io:
             s = normalization.denormalize(s)
-        return sanscript.transliterate(s, sanscript.SLP1, encoding)
+        # Use cached transliteration for performance
+        return _transliterate_cached(s, sanscript.SLP1, encoding)
 
     def canonical(self, strict_io=True):
         """ Return canonical transcoding (SLP1) of self

@@ -71,7 +71,9 @@ class CombinedWrapper(LexicalLookup):
     def valid(self, word):
         return self.inria.valid(word) or self.sanskrit_data.valid(word)
 
-    def get_tags(self, word, tmap=True):
+    @lru_cache(maxsize=50000)
+    def _get_tags_cached(self, word, tmap):
+        """Cached version of get_tags for CombinedWrapper"""
         tags = self.inria.get_tags(word, tmap) or []
         sanskrit_data_tags = self.sanskrit_data.get_tags(word, tmap)
         if sanskrit_data_tags is not None:
@@ -80,7 +82,11 @@ class CombinedWrapper(LexicalLookup):
         if tags == []:
             return None
         else:
-            return tags
+            return tuple(tags)  # Return tuple for hashability
+    
+    def get_tags(self, word, tmap=True):
+        result = self._get_tags_cached(word, tmap)
+        return list(result) if result else None
 
 
 class LexicalLookupFactory(object):
