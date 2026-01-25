@@ -27,6 +27,9 @@ dw = DhatuWrapper()
 
 
 logger = logging.getLogger(__name__)
+# Disable debug logging by default for performance (Phase 2 optimization)
+# This module has 80+ logger.debug() calls that severely impact performance
+logger.setLevel(logging.WARNING)
 
 
 class SandhiGraph(object):
