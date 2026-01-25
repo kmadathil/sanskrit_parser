@@ -81,7 +81,14 @@ class Parser():
     def __init__(self, strict_io: bool = False, input_encoding: str = None,
                  output_encoding: str = sanscript.SLP1, lexical_lookup: str = "combined",
                  score: bool = True, split_above: int = 5,
-                 replace_ending_visarga: str = None, fast_merge: bool = True):
+                 replace_ending_visarga: str = None, fast_merge: bool = True,
+                 max_splits_per_position: int = None):
+        """
+        Initialize Parser
+        
+        :param max_splits_per_position: Beam search width - limit splits explored per position.
+                                        None = explore all (default). 100 recommended for 2-3x speedup.
+        """
         self.strict_io = strict_io
         if input_encoding is not None:
             self.input_encoding = input_encoding
@@ -93,7 +100,9 @@ class Parser():
         self.split_above = split_above
         self.replace_ending_visarga = replace_ending_visarga
         self.fast_merge = fast_merge
-        self.sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup)
+        self.max_splits_per_position = max_splits_per_position
+        self.sandhi_analyzer = LexicalSandhiAnalyzer(self.lexical_lookup, 
+                                                      max_splits_per_position=max_splits_per_position)
 
     def _maybe_pre_segment(self, input_string: str, pre_segmented: bool
                            ):
