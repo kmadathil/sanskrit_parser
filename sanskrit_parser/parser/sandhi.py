@@ -103,6 +103,7 @@ import itertools
 import pickle
 import logging
 import datetime
+from functools import lru_cache
 from zipfile import ZipFile
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, outputctx
 from sanskrit_parser.util.data_manager import data_file_path
@@ -114,17 +115,21 @@ class Sandhi(object):
     Uses SLP1 encoding for all internal operations.
     """
 
-    def __init__(self, rules_dir=None, use_default_rules=True, logger=None):
+    def __init__(self, rules_dir=None, use_default_rules=True, logger=None, enable_debug=False):
         """
         Sandhi class constructor
 
         :param rules_dir: directory to read rules from
         :param use_default_rules: reads pre-built-rules from sandhi_rules dir under module directory
         :param logger: instance of python logger to use
+        :param enable_debug: Enable debug logging (disabled by default for performance)
         """
         self.forward = None
         self.backward = None
         self.logger = logger or logging.getLogger(__name__)
+        # Disable debug logging by default for better performance
+        if not enable_debug:
+            self.logger.setLevel(logging.WARNING)
 
     @staticmethod
     def _load_rules_pickle(filename):
@@ -180,6 +185,36 @@ class Sandhi(object):
         else:
             return joins
 
+    @lru_cache(maxsize=10000)
+    def _split_at_cached(self, word_str, idx):
+        """Cached version of split_at for performance"""
+        # Work with string directly for caching
+        self._load_backward()
+        splits = set()
+        # Figure out how may chars we can extract for the afters
+        stop = min(idx+self.after_len_max, len(word_str))
+        afters = [word_str[idx:i] for i in range(idx+1, stop+1)]
+        for after in afters:
+            befores = self.backward[after]
+            if befores:
+                for before, annotation in befores:
+                    # Do we have a beginning-of-line match rule
+                    if before[0][0] == "^":
+                        if idx != 0:
+                            # Can't allow matches at any other position
+                            continue
+                        else:
+                            # drop the ^ in the result
+                            before = (before[0][1:], before[1])
+                    left = word_str[:idx] + before[0]
+                    right = before[1] + word_str[idx+len(after):]
+                    splits.add((left, right))
+
+        if len(splits) == 0:
+            return None
+        else:
+            return frozenset(splits)  # Return frozen for caching
+
     def split_at(self, word_in, idx):
         """
         Split sandhi at the given index of word.
@@ -189,36 +224,9 @@ class Sandhi(object):
         :param idx: position within word at which to try the split
         :return: set of tuple of strings of possible split forms, or None if no split can be performed
         """
-        self._load_backward()
         word = word_in.canonical()
-        self.logger.debug("Split: %s, %d", word, idx)
-        splits = set()
-        # Figure out how may chars we can extract for the afters
-        stop = min(idx+self.after_len_max, len(word))
-        afters = [word[idx:i] for i in range(idx+1, stop+1)]
-        for after in afters:
-            self.logger.debug("Trying after %s", after)
-            befores = self.backward[after]
-            if befores:
-                for before, annotation in befores:
-                    self.logger.debug("Found split %s -> %s (%s)", after, before, annotation)
-                    # Do we have a beginning-of-line match rule
-                    if before[0][0] == "^":
-                        if idx != 0:
-                            # Can't allow matches at any other position
-                            continue
-                        else:
-                            # drop the ^ in the result
-                            before = (before[0][1:], before[1])
-                    left = word[:idx] + before[0]
-                    right = before[1] + word[idx+len(after):]
-                    splits.add((left, right))
-
-        if len(splits) == 0:
-            self.logger.debug("No split found")
-            return None
-        else:
-            return splits
+        result = self._split_at_cached(str(word), idx)
+        return set(result) if result else None
 
     def split_all(self, word_in, start=None, stop=None):
         """
