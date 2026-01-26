@@ -71,7 +71,7 @@ class CombinedWrapper(LexicalLookup):
     def valid(self, word):
         return self.inria.valid(word) or self.sanskrit_data.valid(word)
 
-    @lru_cache(maxsize=50000)
+    #@lru_cache(maxsize=50000)
     def _get_tags_cached(self, word, tmap):
         """Cached version of get_tags for CombinedWrapper"""
         tags = self.inria.get_tags(word, tmap) or []
