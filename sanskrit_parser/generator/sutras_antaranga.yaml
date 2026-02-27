@@ -59,6 +59,7 @@
 
 # FIXME - create samhita aDikAras
 # Three 6.1.72, 6.3.115, 8.2.108
+# 47: इको यणचि (6-1-77)
 -   sutra: इको यणचि
     id: 6.1.77
     condition:
@@ -67,6 +68,7 @@
     xform:
       l: ikoyan(l)
        
+# 61: एचोऽयवायावः (6-1-78)
 -   sutra: एचोऽयवायावः
     id: 6.1.78
     condition:
@@ -75,6 +77,7 @@
     xform:
        l: ayavayav(l)
        
+# 63: वान्तो यि प्रत्यये (6-1-79)
 -   sutra: वान्तो यि प्रत्यये 
     id: 6.1.79
     condition:
@@ -136,6 +139,7 @@
 #     - Remove pada tag on left after lumping PurvaparayoH on rp
 #     - Where possible, make l=r=hrasva and let savarna dIrgha work (technically wrong prakriya which gives the right result)
 #     - Specifically override sutras
+# 69: आद् गुणः (6-1-87)
 -   sutra: आद्गुणः
     id: 6.1.87
     condition:
@@ -149,6 +153,7 @@
        - -pada # for pUrvaparayoH
        - -aNga
        - -Ba
+# 72: वृद्धिरेचि (6-1-88)
 -   sutra: वृद्धिरेचि
     id: 6.1.88
     condition:
@@ -295,6 +300,7 @@
        orp: +psavarRa
        
  # 196: तस्माच्छसो नः पुंसि (6-1-103)
+# 196: तस्माच्छसो नः पुंसि (6-1-103)
 -   sutra:  तस्माच्छसो नः पुंसि 
     id: 6.1.103
     overrides: 6.1.97
@@ -452,6 +458,7 @@
 #         uran_trigger:
 #           value: False
        
+# 85: अकः सवर्णे दीर्घः (6-1-101)
 -   sutra: अकः सवर्णे दीर्घः
     id: 6.1.101
     condition:
@@ -461,6 +468,7 @@
       l: dirgha(l)
       r: null
 
+# 86: एङः पदान्तादति (6-1-109)
 -   sutra: एङः पदान्तादति
     id: 6.1.109
     condition:
@@ -511,6 +519,7 @@
       r: str("u")
 
 # hal sandhi
+# 146: छे च (6-1-73)
 - sutra: छे च
   id: 6.1.73
   condition:
@@ -519,6 +528,7 @@
   insert:
      m: tuk
 
+# 147: आङ्माङोश्च (6-1-74)
 - sutra: आङ्माङोश्च
   id: 6.1.74
   overrides: [6.1.75, 6.1.76]
@@ -536,6 +546,7 @@
   insert:
      m: tuk
      
+# 148: दीर्घात् (6-1-75)
 - sutra: दीर्घात्
   id: 6.1.75
   condition:
@@ -544,6 +555,7 @@
   insert:
      m: tuk
      
+# 149: पदान्ताद्वा (6-1-76)
 - sutra: पदान्ताद्वा
   id: 6.1.76
   overrides: 6.1.75
@@ -555,6 +567,7 @@
   insert:
      m: tuk
 
+# 111: स्तोः श्चुना श्चुः (8-4-40)
 - sutra: स्तोः श्चुना श्चुः (L)
   id: 8.4.40
   condition:
@@ -565,6 +578,7 @@
   insert:
       l: shcutva(l)
 
+# 111: स्तोः श्चुना श्चुः (8-4-40-1)
 - sutra: स्तोः श्चुना श्चुः (R)
   id: 8.4.40.1 
   condition:
@@ -575,6 +589,7 @@
   insert:
       r: shcutva(r)
 
+# 113: ष्टुना ष्टुः (8-4-41)
 - sutra: ष्टुना ष्टुः (L)
   id: 8.4.41
   condition:
@@ -585,6 +600,7 @@
   insert:
       l: zwutva(l)
 
+# 113: ष्टुना ष्टुः (8-4-41-1)
 - sutra: ष्टुना ष्टुः (R)
   id: 8.4.41.1
   condition:
@@ -596,6 +612,7 @@
       r: zwutva(r)
 
 
+# 114: न पदान्ताट्टोरनाम् (8-4-42)
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42
   overrides: [8.4.41, 8.4.41.1]
@@ -606,6 +623,7 @@
   xform: null
 
 # Subsutra plus vArtikas
+# 114: न पदान्ताट्टोरनाम् (8-4-42-1)
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42.1
   overrides: [8.4.42, 8.4.41, 8.4.41.1]
@@ -615,6 +633,7 @@
   xform:
         r: zwutva(r)
         
+# 115: तोः षि (8-4-43)
 - sutra: तोः षि
   id: 8.4.43
   overrides: 8.4.41
@@ -623,6 +642,7 @@
         r: z
   xform:
 
+# 112: शात् (8-4-44)
 - sutra: शात्
   id: 8.4.44
   overrides: 8.4.40.1
@@ -631,6 +651,7 @@
         r: [s, tu]
   xform:
 
+# 67: लोपः शाकल्यस्य (8-3-19)
 - sutra: लोपः शाकल्यस्य
   id: 8.3.19
   condition:
@@ -641,6 +662,7 @@
   xform:
      l: null
 
+# 169: ओतो गार्ग्यस्य (8-3-20)
 - sutra: ओतो गार्ग्यस्य
   id: 8.3.20
   condition:
@@ -651,6 +673,7 @@
      l: null
 
 # Pada disabled per kashika
+# 2335: ढो ढे लोपः (8-3-13)
 - sutra: ढो ढे लोपः
   id: 8.3.13
   condition:
@@ -662,6 +685,7 @@
   update:
      olp: +qrlopa
      
+# 173: रो रि (8-3-14)
 - sutra: रो रि
   id: 8.3.14
   condition:
@@ -674,6 +698,7 @@
      olp: +qrlopa
 
 # 8.3.13/14 are siddha for this sutra
+# 174: ढ्रलोपे पूर्वस्य दीर्घोऽणः (6-3-111)
 - sutra: ढ्रलोपे पूर्वस्य दीर्घोऽणः
   id: 6.3.111
   condition:
@@ -696,6 +721,7 @@
 
 
 
+# 124: अनुस्वारस्य ययि परसवर्णः (8-4-58)
 - sutra: अनुस्वारस्य ययि परसवर्णः
   id: 8.4.58
   condition:
@@ -705,6 +731,7 @@
      l: anunasika(r)
 
 #optional at pada end
+# 125: वा पदान्तस्य (8-4-59)
 - sutra: वा पदान्तस्य
   id: 8.4.59
   overrides: 8.4.58
@@ -716,6 +743,7 @@
   xform:
      l: anunasika(r)
 
+# 122: मोऽनुस्वारः (8-3-23)
 - sutra: मोऽनुस्वारः
   id: 8.3.23
   condition:
@@ -724,6 +752,7 @@
   xform:
      l: str("M")
 
+# 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45
   optional: True
@@ -735,6 +764,7 @@
   xform:
      l: anunasika(l)
 
+# 84: झलां जशोऽन्ते (8-2-39)
 - sutra: झलां जशोऽन्ते
   id: 8.2.39
   condition:
@@ -752,6 +782,7 @@
   xform:
      l: str("k")
 
+# 121: खरि च (8-4-55)
 - sutra: खरि च
   id: 8.4.55
   condition:
@@ -760,6 +791,7 @@
   xform:
      l: chartva(l)
 
+# 206: वावसाने (8-4-56)
 - sutra: वाऽवसाने
   id: 8.4.56
   optional: true
@@ -770,6 +802,7 @@
      l: chartva(l)
      
 #  handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
+# 117: तोर्लि (8-4-60)
 - sutra: तोर्लि
   id: 8.4.60
   #overrides: 8.2.39
@@ -778,6 +811,7 @@
      r: l
   xform:
      l: r
+# 117: तोर्लि (8-4-60-1)
 - sutra: तोर्लि
   id: 8.4.60.1
   #overrides: [8.2.39, 8.4.60]
@@ -788,6 +822,7 @@
   xform:
      l: str("l~")
 
+# 118: उदः स्थास्तम्भोः पूर्वस्य (8-4-61)
 - sutra: उदः स्थास्तम्भोः पूर्वस्य सवर्णः
   id: 8.4.61
   #overrides: 8.2.39
@@ -804,6 +839,7 @@
 
 # Ratva
 # FIXME: Get samanapade right
+# 235: रषाभ्यां नो णः समानपदे (8-4-1)
 - sutra: रषाभ्यां नो णः समानपदे
   id: 8.4.1
   condition:
@@ -812,6 +848,7 @@
   xform:
      r: str("R")
 
+# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2
   condition:
@@ -821,6 +858,7 @@
      r: null
      rc: Ratva(r+rc)
 
+# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2-1)
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2.1
   condition:
@@ -832,6 +870,7 @@
   xform:
       l: str("R")
       
+# 198: पदान्तस्य (8-4-37)
 - sutra: पदान्तस्य
   id: 8.4.37
   overrides: [8.4.1, 8.4.2] 
@@ -842,6 +881,7 @@
   xform: null
 
 #  FIXME: Collect Pada aDikAra from 8.1.16
+# 236: न लोपः प्रातिपदिकान्तस्य (8-2-7)
 - sutra: नलोपः प्रातिपदिकान्तस्य
   id: 8.2.7
   condition:
@@ -854,6 +894,7 @@
      l: null
 
 # 352 न ङिसम्बुद्ध्योः (8-2-8)
+# 352: न ङिसंबुद्ध्योः (8-2-8)
 - sutra: न ङिसम्बुद्ध्योः
   id: 8.2.8
   overrides: 8.2.7
@@ -867,6 +908,7 @@
        - ?Ni
        - ?sambudDi
 
+# 54: संयोगान्तस्य लोपः (8-2-23)
 - sutra: संयोगान्तस्य लोपः
   id: 8.2.23
   condition:
@@ -877,6 +919,7 @@
      l: null
 
 # Vartikam
+# 54: संयोगान्तस्य लोपः (8-2-23-1)
 - sutra: संयोगान्तस्य लोपः (v यणः प्रतिषेधो वाच्यः)
   id: 8.2.23.1
   overrides: 8.2.23
@@ -897,6 +940,7 @@
   xform:
      l: null
      
+# 280: रात्सस्य (8-2-24-1)
 - sutra: रात्सस्य
   id: 8.2.24.1
   overrides: 8.2.23
@@ -905,6 +949,7 @@
      ll: r
   xform: null
 
+# 378: चोः कुः (8-2-30)
 - sutra: चोः कुः
   id: 8.2.30
   condition:
@@ -969,6 +1014,7 @@
 # pakZe Qa. Because this relies on matching "druh" etc., it will not get
 # triggered if 8.2.33 doesn't. We cannot rely on 8.2.32 for this, since this
 # is tripAdi etc.
+# 327: वा द्रुहमुहष्णुहष्णिहाम् (8-2-33-1)
 - sutra: वा द्रुहमुहष्णुहष्णिहाम् (पक्षे ढ)
   id: 8.2.33.1
   condition:
@@ -1032,6 +1078,7 @@
 
 
 
+# 2280: झषस्तथोर्धोऽधः (8-2-40)
 - sutra: झषस्तथोर्धोऽधः
   id: 8.2.40
   condition:
@@ -1056,6 +1103,7 @@
   xform:
      l: str("n")
 
+# 134: ङमो ह्रस्वादचि ङमुण्नित्यम् (8-3-32)
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
   id: 8.3.32
   condition:
@@ -1094,6 +1142,7 @@
 # end mUrDanyAdeza aDikAra
 
 
+# 52: झलां जश् झशि (8-4-53)
 - sutra: झलां जश् झशि
   id: 8.4.53
   condition:
@@ -1102,6 +1151,7 @@
   xform:
      l: jashtva(l)
 
+# 119: झयो होऽन्यतरस्याम् (8-4-62)
 - sutra: झयो होऽन्यतरस्याम्
   optional: True
   id: 8.4.62
@@ -1113,6 +1163,7 @@
 
 
 # vartikam छत्वममि इति वक्तव्यम् incorprated
+# 120: शश्छोऽटि (8-4-63)
 - sutra: शश्छोऽटि
   id: 8.4.63
   optional: True
@@ -1123,6 +1174,7 @@
   xform:
      r: str("C")
 
+# 133: शि तुक् (8-3-31)
 - sutra: शि तुक्
   id: 8.3.31
   condition:
@@ -1145,6 +1197,7 @@
 #   update:
 #       olp: -ru_anu
 
+# 137: अनुनासिकात्परोऽनुस्वारः (8-3-4)
 - sutra: अनुनासिकात् परोऽनुस्वारः
   id: 8.3.4
   condition:
@@ -1154,6 +1207,7 @@
   update:
       olp: -ru_anu
       
+# 140: नश्छव्यप्रशान् (8-3-7)
 - sutra: नश्छव्यप्रशान्
   id: 8.3.7
   condition:
@@ -1170,6 +1224,7 @@
 # 8.3.12 - End of 8.3.2 aDikAra
 
 # "Visarga" Sandhi
+# 162: ससजुषो रुः (8-2-66)
 - sutra: ससजुषो रुः
   id: 8.2.66
   overrides: 8.2.39
@@ -1216,6 +1271,7 @@
   xform:
      l: str("d")
 
+# 163: अतो रोरप्लुतादप्लुते (6-1-113)
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
   overrides: 8.3.17
@@ -1231,6 +1287,7 @@
   update:
     olp: -ru
 
+# 166: हशि च (6-1-114)
 - sutra: हशि च
   id: 6.1.114
   overrides: 8.3.17
@@ -1259,6 +1316,7 @@
   insert:
      l: str("u")
  
+# 167: भोभगोअघोअपूर्वस्य योऽशि (8-3-17)
 - sutra: भोभगोअघोअपूर्वस्य योऽशि
   id: 8.3.17
   condition:
@@ -1273,6 +1331,7 @@
   xform:
      l: str("y")
 
+# 76: खरवसानयोर्विसर्जनीयः (8-3-15)
 - sutra: खरवसानयोर्विसर्जनीयः
   id: 8.3.15
   condition:
@@ -1299,6 +1358,7 @@
   xform:
      l: str("H")
 
+# 339: रोः सुपि (8-3-16-1)
 - sutra: रोः सुपि
   id: 8.3.16.1
   overrides: 8.3.15
@@ -1313,6 +1373,7 @@
      null
 
 
+# 138: विसर्जनीयस्य सः (8-3-34)
 - sutra: विसर्जनीयस्य सः
   id: 8.3.34
   condition:
@@ -1322,6 +1383,7 @@
   xform:
      l: str("s")
      
+# 150: शर्परे विसर्जनीयः (8-3-35)
 - sutra: शर्परे विसर्जनीयः
   id: 8.3.35
   overrides: 8.3.34
@@ -1331,6 +1393,7 @@
      rr: _Sar
      lp: ?pada
 
+# 151: वा शरि (8-3-36)
 - sutra: वा शरि
   id: 8.3.36
   overrides: 8.3.34
@@ -1343,6 +1406,7 @@
      l: str("s")
 
 # FIXME: Ignoring updaDmanIya and jihvAmUlIya as they're not seen in practice
+# 142: कुप्वोः कपौ च (8-3-37)
 - sutra: कुप्वोः ≍क≍पौ च
   id: 8.3.37
   overrides: 8.3.34
@@ -1353,6 +1417,7 @@
   xform:
      l: l
  
+# 59: अचो रहाभ्यां द्वे (8-4-46)
 - sutra: अचो रहाभ्यां द्वे
   id: 8.4.46
   optional: true
@@ -1418,6 +1483,7 @@
   xform:
      lc: lc[:-2] + str("zA")
 
+# 60: हलो यमां यमि लोपः (8-4-64)
 - sutra: हलो यमां यमि लोपः
   id: 8.4.64
   optional: true
@@ -1429,6 +1495,7 @@
      l: null
 
 # FIXME - savarna of l
+# 71: झरो झरि सवर्णे (8-4-65)
 - sutra: झरो झरि सवर्णे
   id: 8.4.65
   optional: true
@@ -1438,6 +1505,7 @@
        r: $l
   xform:
      l: null
+# 71: झरो झरि सवर्णे (8-4-65-1)
 - sutra: झरो झरि सवर्णे
   id: 8.4.65.1
   optional: true
@@ -1678,6 +1746,7 @@
        - +yaR
        - -nadI
 
+# 282: वर्षाभ्वश्च (6-4-84-1)
 - sutra: वर्षाभ्वश्च (दृन्करपुनःपूर्वस्य भुवो यण्वक्तव्यः)
   id: 6.4.84.1
   overrides: 6.4.85
@@ -1724,6 +1793,7 @@
      0: UW
     
 # 234 : अल्लोपोऽनः (6-4-134) 
+# 234: अल्लोपोऽनः (6-4-134)
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   condition:
@@ -1739,6 +1809,7 @@
   insert:
      l:  str("n")
 
+# 237: विभाषा ङिश्योः (6-4-136)
 - sutra: विभाषा ङिश्योः
   id: 6.4.136
   overrides: 6.4.134
@@ -1783,6 +1854,7 @@
      l: null
      lc: wilopa(lc+l)
      
+# 847: ओर्गुणः (6-4-146)
 - sutra: ओर्गुणः
   id: 6.4.146
   condition:
@@ -1852,6 +1924,7 @@
      rp: ?wA
   xform:
      r: str("ina")
+# 201: टाङसिङसामिनात्स्याः (7-1-12-1)
 - sutra: टाङसिङसामिनात्स्याः 
   id: 7.1.12.1
   condition:
@@ -1861,6 +1934,7 @@
   xform:
      r: null
      rc: str("At")
+# 201: टाङसिङसामिनात्स्याः (7-1-12-2)
 - sutra: टाङसिङसामिनात्स्याः 
   id: 7.1.12.2
   condition:
@@ -1910,6 +1984,7 @@
      rc: str("smAt")
      r: null
      
+# 216: ङसिङ्योः स्मात्स्मिनौ (7-1-15-1)
 - sutra: ङसिङ्योः स्मात्स्मिनौ
   id: 7.1.15.1
   condition:
@@ -2218,6 +2293,7 @@
   update:
      olp: =tisf
 
+# 298: त्रिचतुरोः स्त्रियां तिसृचतसृ (7-2-99-1)
 - sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
   id: 7.2.99.1
   bahiranga: 1
@@ -2356,6 +2432,7 @@
      lc: null
 
 
+# 254: अचोञ्णिति (7-2-115)
 - sutra: अचो ञ्णिति
   id: 7.2.115
   condition:
@@ -2367,6 +2444,7 @@
   update:
      olp: +tannimitta
      
+# 2282: अत उपधायाः (7-2-116)
 - sutra: अत उपधायाः
   id: 7.2.116
   condition:
@@ -2378,6 +2456,7 @@
   update:
      olp: +tannimitta
      
+# 2168: सार्वधातुकार्धधातुकयोः (7-3-84)
 - sutra: सार्वधातुकार्धधातुकयोः
   id: 7.3.84
   condition:
@@ -2389,6 +2468,7 @@
   xform:
      l: guna(l)
      
+# 2189: पुगन्तलघूपधस्य च (7-3-86)
 - sutra: पुगन्तलघूपधस्य च
   id: 7.3.86
   condition:
@@ -2601,6 +2681,7 @@
          rc: str("Am")
          r: null
 
+# 297: इदुद्भ्याम् (7-3-117)
 -   sutra:  इदुद्भ्याम्
     id: 7.3.117
     overrides: [7.3.116, 7.3.118]
@@ -2659,6 +2740,7 @@
     xform:
        r: str("nA")
   
+# 2217: क्ङिति च (1-1-5)
 - sutra: क्ङिति च
   id: 1.1.5
   overrides: [7.3.84, 7.3.86]
@@ -2679,6 +2761,7 @@
 
 # TadDita aDikAra
     
+# 1075: तद्धितेष्वचामादेः (7-2-117)
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117
   overrides: [7.2.115, 7.2.116]
@@ -2925,6 +3008,7 @@
 
 # saMjYA prakaraRam
 
+# 3012: क्तक्तवतू निष्ठा (1-1-26)
 - sutra: ष्णान्ता षट्
   domain: saMjYA
   id: 1.1.26
@@ -2972,6 +3056,7 @@
        - -Ba
        - -pada
        
+# 229: सुडनपुंसकस्य (1-1-43)
 - sutra: सुडनपुंसकस्य
   domain: saMjYA
   id: 1.1.43
@@ -3078,6 +3163,7 @@
 
 
 # Overrides for future yaR AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-1)
 - sutra: नेयङुवङ्स्थानावस्त्री (yaR sTAnI)
   domain: saMjYA
   bahiranga: 0 
@@ -3094,6 +3180,7 @@
 
 # FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
 # Override for future iyaN AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-2)
 - sutra: नेयङुवङ्स्थानावस्त्री (na BU suDiyO)
   domain: saMjYA
   bahiranga: 0 
@@ -3108,6 +3195,7 @@
   update: null
 
 # Overrides for future yaR AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-3)
 - sutra: नेयङुवङ्स्थानावस्त्री (varzABU)
   domain: saMjYA
   bahiranga: 0 
@@ -3160,6 +3248,7 @@
      olp: +nadI
      lp:  +Niti_hrasva_seza
      
+# 296: ङिति ह्रस्वश्च (1-4-6-1)
 - sutra: ङिति ह्रस्वश्च
   domain: saMjYA
   bahiranga: 0 
@@ -3220,6 +3309,7 @@
   update:
      olp: +Gi
      
+# 257: पतिः समास एव (1-4-8-1)
 - sutra: पतिः समास एव 
   domain: saMjYA
   bahiranga: 0 
@@ -3233,6 +3323,7 @@
   update: null
 
 
+# 230: स्वादिष्वसर्वनामस्थाने (1-4-17)
 - sutra: स्वादिष्वसर्वनामस्थाने
   domain: saMjYA
   bahiranga: 0 
@@ -3245,6 +3336,7 @@
   update:
      olp: +pada
 
+# 231: यचि भम् (1-4-18)
 - sutra: यचि भम्
   domain: saMjYA
   bahiranga: 0 
@@ -3262,6 +3354,7 @@
        - +Ba
        - pada
 
+# 199: यस्मात्प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम् (1-4-13)
 - sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
   domain: saMjYA
   bahiranga: 0 
@@ -3331,6 +3424,17 @@
 # 348: आद्यन्तवदेकस्मिन् (1-1-21) - natural
 
 # 353: नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति (8-2-2) - natural + special siddha for kyac + kyaN
+
+# 354: हलि च (8-2-77)
+- sutra: हलि च
+  id: 8.2.77
+  condition:
+    lp: ?DAtu
+    ll: _ik
+    l: [v, r]
+    r: _hal
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
 
 # Skipping for now
 

@@ -787,6 +787,18 @@ viBakti["rAjan"] = [
     ['राजन्', 'राजानौ', 'राजानः'],
 ]
 
+prAtipadika["pradiv"] = [pradiv_kvip]
+viBakti["pradiv"] = [
+    ['प्रदीव्', 'प्रदिवौ', 'प्रदिवः'],          # praTamA  (nom)
+    ['प्रदिवम्', 'प्रदिवौ', 'प्रदिवः'],          # dvitIyA  (acc)
+    ['प्रदिवा', 'प्रदीव्भ्याम्', 'प्रदीव्भिः'],   # tftIyA   (inst) — SK354 fires for du/pl
+    ['प्रदिवे', 'प्रदीव्भ्याम्', 'प्रदीव्भ्यः'],  # caturTI  (dat)  — SK354 fires for du/pl
+    ['प्रदिवः', 'प्रदीव्भ्याम्', 'प्रदीव्भ्यः'],  # pancamI  (abl)  — SK354 fires for du/pl
+    ['प्रदिवः', 'प्रदिवोः', 'प्रदिवाम्'],         # zazWI    (gen)
+    ['प्रदिवि', 'प्रदिवोः', 'प्रदीव्षु'],         # saptamI  (loc)  — SK354 fires for pl
+    ['प्रदीव्', 'प्रदिवौ', 'प्रदिवः'],            # samboDana (voc)
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 

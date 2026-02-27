@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 352 — 8.2.8 न ङिसम्बुद्ध्योः
-**Next to implement:** SK 354 (SK 353 = 8.2.2 is handled naturally by the engine)
+**Last implemented:** SK 354 — 8.2.77 हलि च
+**Next to implement:** SK 355 (6.4.137 — न संयोगाद्वमन्तात्, exception to SK 354)
 
 ---
 
@@ -147,7 +147,6 @@ The "Forms affected" column uses the convention:
 ## Implemented Sutras (additional, with SK numbers)
 
 These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from `sk_map.md`.
-Note: sutras marked with * use a different Ashtadhyayi edition number in the YAML vs the SK source.
 
 | SK | Sutra ID | Sutra | Forms affected |
 |----|----------|-------|----------------|
@@ -179,7 +178,7 @@ Note: sutras marked with * use a different Ashtadhyayi edition number in the YAM
 | 133 | 8.3.31 | शि तुक् | śi (neuter pl marker): tuk inserted before it after certain stems |
 | 134 | 8.3.32 | ङमो ह्रस्वादचि ङमुण् नित्यम् | Ṅam after hrasva before vowel: ṅamuṇ (kam-api → kamapi) |
 | 137 | 8.3.4 | अनुनासिकात् परोऽनुस्वारः | After anunāsika: anusvāra |
-| 140 | 8.3.9* | नश्छव्यप्रशान् | n before ch-group: ś inserted (rāmāṃś ca) |
+| 140 | 8.3.7 | नश्छव्यप्रशान् | n before ch-group: ś inserted (rāmāṃś ca) |
 | 145 | 6.1.72 | संहितायाम् | Enables saṃhitā domain (prerequisite for sandhi rules) |
 | 146 | 6.1.73 | छे च | c-initial pratyaya: insert t (tuk) before it |
 | 147 | 6.1.74 | आङ्माङोश्च | āṅ/māṅ before vowel: chandas/veda usage |
@@ -240,6 +239,7 @@ Note: sutras marked with * use a different Ashtadhyayi edition number in the YAM
 | 323 | 1.1.48 | एच इग्घ्रस्वादेशे | Handled elsewhere | `hrasva()` in paribhāṣā.py |
 | 348 | 1.1.21 | आद्यन्तवदेकस्मिन् | Natural | Falls out of engine behaviour |
 | 353 | 8.2.2 | नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति | Natural + special siddha | n-lopa in kṛt/kyac/kyaṇ contexts |
+| 354 | 8.2.77 | हलि च | Implemented | upadhā-ik lengthening of r/v-final dhātu before hal suffix |
 
 ---
 

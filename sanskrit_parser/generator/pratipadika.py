@@ -142,6 +142,7 @@ sraMs_kvip = Pratipadika("sras", "pum", other_tags=["DAtu", "kvip"])
 DvaMs_kvip = Pratipadika("Dvas", "pum", other_tags=["DAtu", "kvip"])
 div_kvip = Pratipadika("div", "pum", other_tags=["DAtu", "kvip"])
 praSAm_kvip = Pratipadika("praSAm", "pum", other_tags=["DAtu", "kvip"])
+pradiv_kvip = Pratipadika("pradiv", "pum", other_tags=["DAtu", "kvip"])
 
 anaquh = Pratipadika("anaquh", "pum", other_tags=["anaquh"])
 turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"])
