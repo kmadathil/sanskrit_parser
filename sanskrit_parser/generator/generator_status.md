@@ -1,0 +1,318 @@
+# Generator Implementation Status
+
+Sutras are implemented following the Siddhantakaumudi (SK) order from
+https://drdhaval2785.github.io/siddhantakaumudi/
+
+**Last implemented:** SK 352 — 8.2.8 न ङिसम्बुद्ध्योः
+**Next to implement:** SK 354 (SK 353 = 8.2.2 is handled naturally by the engine)
+
+---
+
+## Summary
+
+| Category | Count |
+|---|---|
+| SK-numbered sutras, implemented | 99 |
+| SK-numbered sutras, skipped/deferred | 21 |
+| Implemented sutras without SK number yet | ~25 |
+| Stems with full vibhakti test tables | 64 |
+
+---
+
+## Implemented Sutras (SK order)
+
+The "Forms affected" column uses the convention:
+- **nom/acc/ins/dat/abl/gen/loc/voc** for vibhakti
+- **sg/du/pl** for vacana
+- **m/f/n** for linga where relevant
+- Stem class in parentheses where the rule is class-specific
+
+| SK | Sutra ID | Sutra | Forms affected |
+|----|----------|-------|----------------|
+| 64 | 6.1.80 | धातोस्तन्निमित्तस्यैव | Restricts yaṇ-sandhi to dhātu context only |
+| 65 | 6.1.81 | क्षय्यजय्यौ शक्यार्थे | Fixed forms kṣayya, jayya |
+| 66 | 6.1.82 | क्रय्यस्तदर्थे | Fixed form krayya |
+| 73 | 6.1.89 | एत्येधत्यूठ्सु | iyaṅ/uvaṅ not applied before eṭ (iR, eDa dhātu) |
+| 74 | 6.1.91 | उपसर्गादृति धातौ | ṛ-initial dhātu after upasarga: guṇa applies |
+| 78 | 6.1.94 | एङि पररूपम् | Upasarga ending in e/o before a-initial dhātu: pararūpa (e.g. upa + eti → upeti) |
+| 80 | 6.1.95 | ओमाङोश्च | om + māṅ: pararūpa |
+| 90 | 6.1.125 | प्लुतप्रगृह्या अचि नित्यम् | Pluta and pragṛhya vowels before vowels: no sandhi |
+| 100 | 1.1.11 | ईदूदेद्द्विवचनं प्रगृह्यम् | Dual endings -ī, -ū, -e are pragṛhya (no sandhi): nom/acc du of ī/ū/e-final stems |
+| 101 | 1.1.12 | अदसोमात् | adasaḥ: the form amā (inst sg of adas) is pragṛhya |
+| 164 | 6.1.102 | प्रथमयोः पूर्वसवर्णः | nom/acc du: stem-final a/ā + O ending → long vowel (e.g. rāma + O → rāmau) |
+| 193 | 6.1.69 | एङ्ह्रस्वात्संबुद्धेः | voc sg of ī/ū-final stems: drop su (śe drops) — rāma→rāma, e→e |
+| 194 | 6.1.107 | अमिपूर्वः | Stem vowel before am: pūrvarūpa (e.g. go + am → gām) |
+| 201 | 7.1.12 | टाङसिङसामिनात्स्याः | ins sg → inā; abl/gen sg → āt, sya (a-stems: rāmeṇa, rāmāt, rāmasya) |
+| 202 | 7.3.102 | सुपि च | a-stem before sup: guṇa of final a — loc sg rāme, ins rāmeṇa |
+| 203 | 7.1.9 | अतो भिस ऐस् | a-stem + bhis → ais (ins pl: rāmaiḥ) |
+| 204 | 7.1.13 | ङेर्यः | dat sg e-ending → ya (a-stem: rāmāya; sarvanāma: sarvasmai) |
+| 205 | 7.3.103 | बहुवचने झल्येत् | a-stem before hal-initial bahuvacana sup: guṇa → e (dat/abl/loc pl: rāmebhyaḥ, rāmeṣu) |
+| 207 | 7.3.104 | ओसि च | a-stem before os: guṇa → e (gen/loc du: rāmayoḥ) |
+| 208 | 7.1.54 | ह्रस्वनद्यापो नुट् | nadī/āp-stems + am/āṁ: inserts nut (n) — gen pl nadīnām, rāmāṇām |
+| 209 | 6.4.3 | नामि | aṅga lengthening before nāmī (gen pl am) — rājñām |
+| 211 | 8.3.57 | इण्कोः | n→ṇ after iṇ or ku (ṇatva) in ādeśa/pratyaya context |
+| 213 | 1.1.27 | सर्वादीनि सर्वनामानि | Defines the sarvanāma class (sarva, viśva, etc.) |
+| 214 | 7.1.17 | जसः शी | ī-final feminine nom pl: jas → śī (nadyaḥ → nadyaḥ via śī+sandhi) |
+| 216 | 7.1.15 | ङसिङ्योः स्मात्स्मिनौ | sarvanāma abl sg → smāt; loc sg → smin (sarvasmāt, sarvasmin) |
+| 217 | 7.1.52 | आमि सर्वनाम्नः सुट् | sarvanāma + āṁ: inserts su → sām (gen pl sarveṣām) |
+| 228 | 6.1.63 | पद्दन्नोमास्… | Samprasāraṇa: special alternants for pada, danta, nāman etc. stems in certain forms |
+| 234 | 6.4.134 | अल्लोपोऽनः | n-final stem: delete n before yāsut (gen pl rājñām) |
+| 240 | 6.4.140 | आतो धातोः | ā-final dhātu + kta: ā deleted (sthā + ta → sthita) |
+| 241 | 7.3.109 | जसि च | ī/ū-final feminine + jas: guṇa (suDiyaḥ, BrūvaḥÀ) |
+| 242 | 7.3.108 | ह्रस्वस्य गुणः | Short ī/ū-final: guṇa before certain sup (nadī → nade in loc sg) |
+| 243 | 1.4.7 | शेषो घ्यसखि | Remaining i/u-final (non-nadī, non-sakhi) stems: ghy-saṃjñā — affects aṅga rules |
+| 246 | 6.1.110 | ङसिङसोश्च | ṛ-final + gen sg/abl sg: uraṇ + dirgha — pitṛ → pituḥ, pitroḥ |
+| 248 | 7.1.93 | अनङ् सौ | n-final neuter + su: anañ substitute — nom sg rājā, but neuter: nāma |
+| 252 | 6.1.68 | हल्ङ्याब्भ्यो दीर्घात्… | Drop apṛkta hal su/si/s after long vowel or ṅī/āp (nadī nom sg: nadī) |
+| 253 | 7.1.92 | सख्युरसंबुद्धौ | sakhi: special oblique stem sakhā- (non-voc forms) |
+| 255 | 6.1.112 | ख्यत्यात्परस्य | khyāt-endings: pararūpa before certain vowels |
+| 257 | 1.4.8 | पतिः समास एव | pati gets ghī-saṃjñā only in compound; standalone uses regular i-stem |
+| 259 | 1.1.25 | डति च | Numeral daśan class: daśa, etc. defined as saṃkhyā with ḍati |
+| 261 | 7.1.22 | षड्भ्यो लुक् | ṣaṭ-group: sup luk (lopa) in certain forms — ṣaḍbhiḥ, etc. |
+| 263 | 1.1.63 | न लुमताङ्गस्य | aṅga rules do not apply when pratyaya has been luked (luk marker) |
+| 264 | 7.1.53 | त्रेस्त्रयः | tri → traya (nom/acc pl m: trayaḥ) |
+| 265 | 7.2.102 | त्यदादीनामः | tya-group (tat, etad, idam, adas) + su: āḥ substitute — saḥ, eṣaḥ |
+| 266 | 1.4.3 | यू स्त्र्याख्यौ नदी | Defines nadī-saṃjñā for ī/ū-final feminines (nadī, vadhū etc.) |
+| 267 | 7.3.107 | अम्बार्थनद्योर्ह्रस्वः | nadī + sambuddhi: hrasva (amba! devi!) |
+| 268 | 7.3.112 | आण्नद्याः | nadī + ṅe (dat sg): āṇ substitute → nadyai |
+| 269 | 6.1.90 | आटश्च | āṭ augment + short vowel: guṇa — affects ā-stem āp forms (rāmāyai) |
+| 270 | 7.3.116 | ङेराम्नद्याम्नीभ्यः | nadī/āp/nī + ṅer (dat sg): āṁ (rāmāyāḥ gen = same) |
+| 271 | 6.4.77 | अचिश्नुधातुभ्रुवां य्वोरियङुवङौ | i/u-final dhātu/bhrū before ac: iyaṅ/uvaṅ (bhrū → bhruvau, suDī → suDiyaḥ) |
+| 272 | 6.4.82 | एरनेकाचोऽसंयोगपूर्वस्य | Multi-syllable i-final (non-saṃyoga) + ac: iyaṅ (suDī forms) |
+| 273 | 6.4.85 | न भूसुधियोः | Exception: BU and suDī do NOT get iyaṅ/uvaṅ (6.4.77 blocked) |
+| 274 | 7.1.95 | तृज्वत्क्रोष्टुः | kroṣṭu inflects like tṛc (ṛ-final) — kroṣṭā, kroṣṭuḥ etc. |
+| 276 | 7.1.94 | ऋदुशनस्पुरुदंसोऽनेहसां च | ṛtu, uśanas, purudaṃsas, anehas: special nom sg |
+| 277 | 6.4.11 | अप्तृन्तृच्… | ṛ-final stems (pitṛ, mātṛ, tvaṣṭṛ etc.): aṅga lengthening before sarvānāmasthāna — pitāram |
+| 278 | 7.1.97 | विभाषा तृतीयादिष्वचि | ṛ-final + tṛtīyādi vowel-initial sup: optional uraṇ (pitrā or pitarā) |
+| 279 | 6.1.111 | ऋत उत् | ṛ-final + gen/loc du os: ṛ→ur (pituḥ, pitroḥ) |
+| 280 | 8.2.24 | रात्सस्य | s after r in pada: deleted (pitṛ+su → pitā, not pitarsu) |
+| 281 | 6.4.83 | ओः सुपि | go + sup: o→av (govā etc.) |
+| 282 | 6.4.84 | वर्षाभ्वश्च | varzāBU and similar compound BU-stems: o→av |
+| 283 | 6.4.6 | नृ च | nṛ-stem: special aṅga form nara- before sarvānāmasthāna |
+| 284 | 7.1.90 | गोतो णित् | go + certain sup: treated as ṇit (long ā) — gāṁ, gāḥ |
+| 285 | 6.1.93 | औतोऽम्शसोः | go + am/śas: au→āv (gām, gāḥ) |
+| 286 | 7.2.85 | रायो हलि | rāy-stem (rE) + hal-initial sup: guṇa → rāye etc. |
+| 287 | 7.1.18 | औङ आपः | āp-stem + au (nom du): auṅ substitute (rāme → rāmau, but āp: rāme) |
+| 288 | 7.3.106 | संबुद्धौ च | āp-stem + sambuddhi: hrasva (rāme voc sg) |
+| 289 | 7.3.105 | आङि चापः | āp-stem + āṅi (loc sg): ā→ai (rāmāyāṁ) |
+| 290 | 7.3.113 | याडापः | āp + ṅe (dat sg): yāṭ inserted (rāmāyai) |
+| 291 | 7.3.114 | सर्वनाम्नः स्याड्ढ्रस्वश्च | sarvanāma + ṅe: syāṭ, hrasva (sarvāsyai fem) |
+| 294 | 8.2.36 | व्रश्चभ्रस्ज… षः | ś/ch at pada-end → ṣ (lih → liṭ etc.) |
+| 295 | 8.2.41 | षढोः कः सि | ṣ/ḍh at pada-end + si → k (lih+su → liṭ) |
+| 296 | 1.4.6 | ङिति ह्रस्वश्च | Long ī/ū-final feminines + ṅit sup: optional hrasva + nadī-saṃjñā |
+| 298 | 7.2.99 | त्रिचतुरोः स्त्रियां तिसृचतसृ | tri/catur fem: tisṛ/catasṛ substitutes |
+| 299 | 7.2.100 | अचि र ऋतः | tisṛ/catasṛ + vowel-initial: ṛ→ar (tisṝṇām → tisṛ forms) |
+| 300 | 6.4.4 | न तिसृचतसृ | Exception: tisṛ/catasṛ don't get lengthening before nāmī |
+| 301 | 6.4.79 | स्त्रियाः | Feminine aṅga operations: governs strī-stem changes |
+| 302 | 6.4.80 | वाम्शसोः | Feminine stem before vā (am) and śas: special form |
+| 303 | 1.4.4 | नेयङुवङ्स्थानावस्त्री | Defines: iyaṅ/uvaṅ substituted stems are NOT nadī (so no nadī rules apply) |
+| 304 | 1.4.5 | वामि | Long ī/ū-final Snu/dhātu/bhrū + Am: optionally nadī |
+| 305 | 7.1.96 | स्त्रियां च | Feminine tṛc-forms: same as tṛj-pattern |
+| 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
+| 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
+| 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
+| 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
+| 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
+| 312 | 7.1.20 | जश्शसोः शिः | Neuter + jas/śas: śi substitute (jñānāni nom/acc pl) |
+| 313 | 1.1.42 | शि सर्वनामस्थानम् | Defines śi as sarvānāmasthāna (triggers strong stem forms) |
+| 314 | 7.1.72 | नपुंसकस्य झलचः | Hal-final neuter + śi: nu-āgama inserted (jaganti) |
+| 315 | 7.1.25 | अद्ड्डतरादिभ्यः पञ्चम्यः | adaḍ etc.: ḍ-āgama in pañcamī |
+| 317 | 6.4.10 | सान्तमहतः संयोगस्य | Saṃyoga-final + nāmī: last consonant of saṃyoga deleted (mahat → mahā before sarvānāmasthāna) |
+| 318 | 1.2.47 | ह्रस्वो नपुंसके | Neuter prātipadika: hrasva before su/am |
+| 318 | 1.2.48 | गोस्त्रियोरुपसर्जनस्य | go/strī in compound: hrasva |
+| 319 | 7.1.23 | स्वमोर्नपुंसकात् | Neuter + su/am: su/am → am (jñānam) |
+| 320 | 7.1.73 | इकोऽचि विभक्तौ | ik-final + vowel-initial vibhakti: tuk inserted (akṣṇā, akṣṇoḥ) |
+| 326 | 8.2.37 | एकाचो बशो भष् | Single-syllable stem ending in b/g/ḍ/j + s/dh: bhāṣ substitute |
+| 329 | 6.4.132 | वाह ऊठ् | vāh-stem: āḥ → ūṭh in strong forms |
+| 330 | 6.1.108 | संप्रसारणाच्च | After samprasāraṇa: pūrvarūpa |
+| 331 | 7.1.98 | चतुरनडुहोरामुदात्तः | catur/anaḍuh + am: āṁ (gen pl caturṇām, anaḍuhām) |
+| 332 | 7.1.82 | सावनडुहः | anaḍuh + su: ā (anaḍvā nom sg) |
+| 333 | 7.1.99 | अम् संबुद्धौ | anaḍuh + sambuddhi: am → anaḍvan (voc sg) |
+| 334 | 8.2.72 | वसुस्रंसुध्वंस्वनडुहां दः | anaḍuh at pada-end: h→d (anaḍud) |
+| 335 | 8.3.56 | सहेः साडः सः | sah-stem: s at start of certain forms |
+| 336 | 7.1.84 | दिव औत् | div-stem + sup: au substitute (dyauḥ nom sg) |
+| 338 | 7.1.55 | षट्चतुर्भ्यश्च | ṣaṭ/catur + am: nuk inserted (ṣaṭṇām, caturṇām) |
+| 340 | 8.4.49 | शरोऽचि | śar after anusvāra before vowel: no change (exception to 8.4.46) |
+| 341 | 8.2.64 | मो नो धातोः | m-final dhātu at pada-end → n (pra-gam → pragan) |
+| 342 | 7.2.103 | किमः कः | kim → ka substitute before most sup (kasya, kasmai etc.) |
+| 345 | 7.2.109 | दश्च | kim + daḥ (abl sg daḥ form): ka |
+| 347 | 7.2.113 | हलि लोपः | kim before hal-initial sup: lopa (kena etc.) |
+| 349 | 7.1.11 | नेदमदसोरकोः | idam/adas: no ka-substitute (1.1.11 blocks) |
+| 350 | 2.4.32 | इदमोऽन्वादेशेऽशनुदात्तः | idam in anuvādeśa context (tṛtīyādi): substitute a (asmāt etc.) |
+| 351 | 2.4.34 | द्वितीयाटौस्स्वेनः | idam anuvādeśa + acc/ins/gen du: svena substitute (anena, ābhyām, anayoḥ) |
+| 352 | 8.2.8 | न ङिसम्बुद्ध्योः | Exception: n-lopa (8.2.7) does NOT apply before ṅi/sambuddhi (rājni, rājan!) |
+
+---
+
+## Implemented Sutras (additional, with SK numbers)
+
+These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from `sk_map.md`.
+Note: sutras marked with * use a different Ashtadhyayi edition number in the YAML vs the SK source.
+
+| SK | Sutra ID | Sutra | Forms affected |
+|----|----------|-------|----------------|
+| 47 | 6.1.77 | इको यणचि | ik before ac: yaṇ (i→y, u→v, ṛ→r) — core vowel sandhi |
+| 52 | 8.4.53 | झलां जश् झशि | Jhal before jhaś: jaś substitute (jihvā+mūlīya etc.) |
+| 54 | 8.2.23 | संयोगान्तस्य लोपः | Saṃyoga-final pada: last consonant deleted |
+| 61 | 6.1.78 | एचोऽयवायावः | ec before ac: e→ay, o→av, ai→āy, au→āv |
+| 63 | 6.1.79 | वान्तो यि प्रत्यये | o/av before y-initial pratyaya: av |
+| 67 | 8.3.19 | लोपः शाकल्यस्य | Śākalya's option: delete y between vowels (Vedic) |
+| 69 | 6.1.87 | आद्गुणः | a/ā + vowel → guṇa — core sandhi (rāma + iti → rāmeti) |
+| 72 | 6.1.88 | वृद्धिरेचि | a/ā + e/o/ai/au → vṛddhi (rāma + eva → rāmaiva) |
+| 84 | 8.2.39 | झलां जशोऽन्ते | Jhal at pada-end → jaś (k→g, t→d, etc.) |
+| 85 | 6.1.101 | अकः सवर्णे दीर्घः | Savarna vowels merge to dīrgha (ā+a→ā, i+i→ī etc.) |
+| 86 | 6.1.109 | एङः पदान्तादति | Pada-final e/o before short a: e/o preserved, a elided |
+| 111 | 8.4.40 | स्तोः श्चुना श्चुः | s/t-group + ś-group → ś-group (śaśca → śaśca; rāmasya+janī → °śjanī) |
+| 112 | 8.4.44 | शात् | After ś: exception to ścutva |
+| 113 | 8.4.41 | ष्टुना ष्टुः | s/t-group + ṣ-group → ṣ-group (ṣṭutva) |
+| 114 | 8.4.42 | न पदान्ताट्टोरनाम् | Exception to ṣṭutva: ṭ/ṭh at pada-end before nāman |
+| 115 | 8.4.43 | तोः षि | t/th + ṣ → ṭ/ṭh (ṣṭutva) |
+| 116 | 8.4.45 | यरोऽनुनासिकेऽनुनासिको वा | Yar before anunāsika: optionally anunāsika |
+| 117 | 8.4.60 | तोर्लि | t/th before l → l (tad + labhate → tallabhate) |
+| 118 | 8.4.61 | उदः स्थास्तम्भोः पूर्वस्य | ud + sthā/stambh: d → t |
+| 119 | 8.4.62 | झयो होऽन्यतरस्याम् | Jha before h: optionally h → jha (tad+hi → tajjhi) |
+| 120 | 8.4.63 | शश्छोऽटि | ś + aṭ: ch (namaś + ca → namaścca) |
+| 121 | 8.4.55 | खरि च | Jhal before khar: jhar → car (t before k etc.) |
+| 122 | 8.3.23 | मोऽनुस्वारः | m at pada-end → anusvāra (rāmam → rāmaṁ) |
+| 124 | 8.4.58 | अनुस्वारस्य ययि परसवर्णः | Anusvāra before yay: parasavarna (rāmaṁ karoti → rāmaṅ k°) |
+| 125 | 8.4.59 | वा पदान्तस्य | Pada-final anusvāra: parasavarna optional |
+| 133 | 8.3.31 | शि तुक् | śi (neuter pl marker): tuk inserted before it after certain stems |
+| 134 | 8.3.32 | ङमो ह्रस्वादचि ङमुण् नित्यम् | Ṅam after hrasva before vowel: ṅamuṇ (kam-api → kamapi) |
+| 137 | 8.3.4 | अनुनासिकात् परोऽनुस्वारः | After anunāsika: anusvāra |
+| 140 | 8.3.9* | नश्छव्यप्रशान् | n before ch-group: ś inserted (rāmāṃś ca) |
+| 145 | 6.1.72 | संहितायाम् | Enables saṃhitā domain (prerequisite for sandhi rules) |
+| 146 | 6.1.73 | छे च | c-initial pratyaya: insert t (tuk) before it |
+| 147 | 6.1.74 | आङ्माङोश्च | āṅ/māṅ before vowel: chandas/veda usage |
+| 148 | 6.1.75 | दीर्घात् | Long vowel + ch: tuk inserted |
+| 149 | 6.1.76 | पदान्ताद्वा | Pada-final + ch: tuk optionally |
+| 162 | 8.2.66 | ससजुषो रुः | s/sajuṣ at pada-end → ru (visarga source: rāmaḥ) |
+| 163 | 6.1.113 | अतो रोरप्लुतादप्लुते | a-final pada + ru before a: ro'r (rāmaH + asti → rāmo'sti) |
+| 169 | 8.3.20 | ओतो गार्ग्यस्य | Gārgya's option for o |
+| 173 | 8.3.14 | रो रि | ru (=r) before r: lopa of ru, pūrva-dīrgha |
+| 174 | 6.3.111 | ढ्रलोपे पूर्वस्य दीर्घोऽणः | Compensatory lengthening after ḍh/r lopa |
+| 197 | 8.4.2 | अट्कुप्वाङ्नुम्व्यवायेऽपि | ṇatva even with aṭ/ku/pu/āṅ/num intervening |
+| 198 | 8.4.37 | पदान्तस्य | Exception: no ṇatva at pada-end |
+| 206 | 8.4.56 | वाऽवसाने | Optionally at avasāna: jhal → car |
+| 212 | 8.3.59 | आदेशप्रत्यययोः | ādeśa/pratyaya context: ṇatva applies |
+| 235 | 8.4.1 | रषाभ्यां नो णः समानपदे | n → ṇ after r/ṣ in same pada (ṇatva: rāmāṇām) |
+| 236 | 8.2.7 | नलोपः प्रातिपदिकान्तस्य | n-final prātipadika at pada-end: n deleted (rājan+su → rājā) |
+| 250 | 6.4.8 | सर्वनामस्थाने चासम्बुद्धौ | n-final + sarvānāmasthāna (non-voc): lengthening (rājā nom sg) |
+| 324 | 8.2.31 | हो ढः | h at pada-end → ḍh (lih → liḍh) |
+| 325 | 8.2.32 | दादेर्धातोर्घः | dā-initial dhātu h → gh at pada-end |
+| 327 | 8.2.33 | वा द्रुहमुहष्णुहष्णिहाम् | druh/muh/ṣṇuh/ṣṇih: optionally gh or ḍh at pada-end |
+| 335 | 8.3.56 | सहेः साडः सः | sah → sāḍ in pada; s preserved before certain endings |
+| 378 | 8.2.30 | चोः कुः | c/ch/j/jh/ñ at pada-end → k-group |
+
+---
+
+## Skipped / Deferred Sutras
+
+| SK | Sutra ID | Sutra | Reason | Affects |
+|----|----------|-------|--------|---------|
+| 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
+| 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
+| 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |
+| 58 | 8.4.52 | दीर्घादाचार्याणाम् | Skipping for now | Āchārya option |
+| 75 | 6.1.85 | अन्तादिवच्च | Skipping for now | Sandhi edge case |
+| 77 | 6.1.92 | वासुप्यापिशलेः | Skipping for now | Āpiśali dialect |
+| 81 | 6.1.98 | अव्यक्तानुकरणस्यात इतौ | Skipping for now | Sound-imitation words |
+| 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |
+| 87 | 6.1.122 | सर्वत्र विभाषा गोः | Skipping for now | go-stem optional sandhi |
+| 88 | 6.1.123 | अवङ् स्फोटायनस्य | Skipping for now | Sphoṭāyana option |
+| 89 | 6.1.124 | इन्द्रे च | Skipping for now | indra compounds |
+| 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
+| 127 | 8.3.26 | हे मपरे वा | Skipping for now | hal-sandhi |
+| 129 | 8.3.27 | न परे नः | Skipping for now | hal-sandhi |
+| 130 | 8.3.28 | ङ्णोः कुक् टुक् शरि | Skipping for now | hal-sandhi |
+| 131 | 8.3.29 | डः सि धुट् | Skipping for now | hal-sandhi |
+| 132 | 8.3.30 | नश्च | Skipping for now | hal-sandhi |
+| 135 | 8.3.5 | समः सुटि | For later | ru-sandhi |
+| 139 | 8.3.6 | पुमः खय्यम्परे | For later | ru-sandhi |
+| 141 | 8.3.10 | नॄन्पे | For later | ru-sandhi |
+| 143 | 8.3.12 | कानाम्रेडिते | For later | ru-sandhi |
+| 144 | 8.3.48 | कस्कादिषु च | For later | ru-sandhi |
+| 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | For later | ahna/ahan in compounds |
+| 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
+| 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |
+| 293 | 7.3.115 | विभाषा द्वितीयातृतीयाभ्याम् | For later | sarvanāma f. dat/ins |
+| 307 | 8.4.12 | एकाजुत्तरपदे णः | For later | ṇatva in compounds |
+| 321 | 7.1.74 | तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य | For later | Gālava's option for neuter |
+| 323 | 1.1.48 | एच इग्घ्रस्वादेशे | Handled elsewhere | `hrasva()` in paribhāṣā.py |
+| 348 | 1.1.21 | आद्यन्तवदेकस्मिन् | Natural | Falls out of engine behaviour |
+| 353 | 8.2.2 | नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति | Natural + special siddha | n-lopa in kṛt/kyac/kyaṇ contexts |
+
+---
+
+## Test Coverage
+
+All tests run from the `generator` branch: `cd sanskrit_parser/generator/test && pytest`
+
+### Stems with full 8×3 vibhakti tables (`vibhaktis_list.py`)
+
+| Stem | Linga | Class | Notes |
+|------|-------|-------|-------|
+| rAma | m | a-stem | Basic masculine |
+| hari | m | i-stem (ghy) | |
+| pati | m | i-stem (pati) | Standalone (not ghy) |
+| saKi | m | i-stem (sakhi) | Special oblique stem sakhā |
+| kavi | m | i-stem | |
+| SamBu | m | u-stem (ghy) | |
+| krozwu | m | u-stem (kroṣṭu) | Inflects like ṛ-stem |
+| go | m | go-stem | |
+| rE | m | rāy-stem | |
+| pitf | m | ṛ-stem | |
+| tvazwf | m | ṛ-stem (naptrādi) | |
+| mAtf | m | ṛ-stem | |
+| rAjan | m | n-stem | |
+| mahat | m | t-stem (mahat) | |
+| lih | m | h-stem | |
+| duh | m | h-stem | |
+| druh | m | h-stem | |
+| pra_vAh | m | h-stem | Compound |
+| anaquh | m | anaḍuh-stem | |
+| turAsAh | m | h-stem | |
+| div | m | v-stem (div) | |
+| catur | m | catur | Numeral |
+| tri | m | tri | Numeral |
+| praSAm | m | m-stem | |
+| kim | m | sarvanāma | Pronoun |
+| idam | m | sarvanāma | Demonstrative |
+| idam_anu | m | sarvanāma | idam in anuvādeśa |
+| sarva | m | sarvanāma (a-stem) | |
+| pAda | m | a-stem (pādādi) | Alternant bha-stem pad |
+| yUza | m | a-stem (pādādi) | Alternant bha-stem yūṣṇ |
+| viSvapA | m | kvip/ā-stem | |
+| hAhA | m | ā-stem | Interjection |
+| nadI | f | ī-stem (nadī) | |
+| ramA | f | ā-stem (āp) | |
+| sarva_A | f | ā-stem (sarvanāma) | |
+| nAsikA | f | ā-stem | |
+| niSA | f | ā-stem | |
+| mati | f | i-stem (non-nadī) | |
+| lakzmI | f | ī-stem (nadī) | |
+| strI | f | ī-stem (strī) | |
+| atistri | f | ī-stem (atistri, pūrvastrī) | |
+| suDI | f | ī-stem (kvip) | Does not take iyaṅ |
+| praDI | f | ī-stem (kvip) | |
+| BrU | f | ū-stem | |
+| svayamBU | f | ū-stem (compound BU) | |
+| varzABU | f | ū-stem (compound BU) | Gets yaṇ, not iyaṅ |
+| dfnBU | f | ū-stem (compound BU) | |
+| karaBU | f | ū-stem (compound BU) | |
+| punarBU | f | ū-stem (compound BU) | |
+| KalapU | f | ū-stem (kvip) | |
+| senAnI | f | ī-stem (kvip) | |
+| nI | f | ī-stem (kvip) | |
+| SrI | f | ī-stem | |
+| Denu | f | u-stem (āp, non-nadī) | |
+| tisf | f | tisṛ | Numeral fem |
+| catasf | f | catasṛ | Numeral fem |
+| jYAna | n | a-stem | |
+| vAri | n | i-stem | |
+| payas | n | s-stem | |
+| SrIpA | n | ā-stem (neuter) | |
+| akzi | n | i-stem (akṣi) | |
+| atinO | n | u-stem (nau-type) | |
+| anya | n | sarvanāma | |
+| dvi | m/f/n | dvi | Numeral (dual-only) |
+| kati | m | kati (qati) | Numeral |
