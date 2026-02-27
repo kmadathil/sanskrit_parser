@@ -125,3 +125,6 @@ misc
 
 # intellij stuff
 /*.iml
+
+#Claude Code
+.claude/
