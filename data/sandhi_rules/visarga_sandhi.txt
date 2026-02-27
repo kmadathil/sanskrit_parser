@@ -28,6 +28,7 @@
 [ः] + [च्, छ्] = श्{1}
 [ः] + [ट्, ठ्] = ष्{1}
 [ः] + [श्, स्, ष्] = ः{1} / {1}{1}
+[स्] + [स्] = {1}{1}
 # For the last three, the case of returning स् will be 
 # taken care of by schutva/ShTutva etc.
 

@@ -14,7 +14,7 @@ Please feel free to ping us if you would like to collaborate on this project.
 
 ## Installation
 
-This project has been tested and developed using Python 3.7 - 3.9. To install the package:
+This project has been tested and developed using Python 3.7 - 3.11. To install the package:
 ```
 pip install sanskrit_parser
 ```

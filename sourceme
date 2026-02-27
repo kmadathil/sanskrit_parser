@@ -1,6 +1,9 @@
 # Sourceme file
 
-if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+if [ "$(uname)" == "Darwin" ]; then
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    export PYTHONPATH=${PYTHONPATH}:${DIR}
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -W)"
     export PYTHONPATH="${PYTHONPATH};${DIR}"
 else
