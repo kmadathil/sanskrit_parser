@@ -1827,7 +1827,19 @@
   xform:
      lc: lc[:-1]
      1: str("n")
-     
+
+# 355: न संयोगाद्वमन्तात् (6-4-137)
+- sutra: न संयोगाद्वमन्तात्
+  id: 6.4.137
+  overrides: [6.4.134, 6.4.135, 6.4.136]
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - $$saMyogapUrvaVamanta
+  xform: null
+
 # 240: आतो धातोः (6-4-140) 
 - sutra: आतो धातोः
   id: 6.4.140

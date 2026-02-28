@@ -232,6 +232,14 @@ def anekAc_asaMyogapUrva(s):
     return False
 
 
+def saMyogapUrvaVamanta(lp):
+    """True if lp ends in hal+[v,m]+a+n — saMyoga ending in v or m immediately precedes 'an'."""
+    if len(lp) < 4:
+        return False
+    return (lp[-1] == 'n' and lp[-2] == 'a' and
+            lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
+
+
 def numAgama(s):
     lastac = -1
     lens = len(s)
@@ -291,6 +299,8 @@ def druhAdi(ss):
 
 
 def notnull(s):
+    if hasattr(s, 'canonical'):      # Suggested by Claude Code
+        return s.canonical() != ""
     return ((s is not None) and (s != ""))
 
 

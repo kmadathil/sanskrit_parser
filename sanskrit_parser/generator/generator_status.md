@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 354 — 8.2.77 हलि च
-**Next to implement:** SK 355 (6.4.137 — न संयोगाद्वमन्तात्, exception to SK 354)
+**Last implemented:** SK 355 — 6.4.137 न संयोगाद्वमन्तात्
+**Next to implement:** SK 356 (6.4.12 — इन्हन्पूषार्यम्णां शौ)
 
 ---
 
@@ -240,6 +240,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 348 | 1.1.21 | आद्यन्तवदेकस्मिन् | Natural | Falls out of engine behaviour |
 | 353 | 8.2.2 | नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति | Natural + special siddha | n-lopa in kṛt/kyac/kyaṇ contexts |
 | 354 | 8.2.77 | हलि च | Implemented | upadhā-ik lengthening of r/v-final dhātu before hal suffix |
+| 355 | 6.4.137 | न संयोगाद्वमन्तात् | Implemented | blocks al-lopa of -an- stems when saMyoga ending in v/m precedes 'a' |
 
 ---
 

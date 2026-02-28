@@ -787,16 +787,28 @@ viBakti["rAjan"] = [
     ['राजन्', 'राजानौ', 'राजानः'],
 ]
 
-prAtipadika["pradiv"] = [pradiv_kvip]
-viBakti["pradiv"] = [
-    ['प्रदीव्', 'प्रदिवौ', 'प्रदिवः'],          # praTamA  (nom)
-    ['प्रदिवम्', 'प्रदिवौ', 'प्रदिवः'],          # dvitIyA  (acc)
-    ['प्रदिवा', 'प्रदीव्भ्याम्', 'प्रदीव्भिः'],   # tftIyA   (inst) — SK354 fires for du/pl
-    ['प्रदिवे', 'प्रदीव्भ्याम्', 'प्रदीव्भ्यः'],  # caturTI  (dat)  — SK354 fires for du/pl
-    ['प्रदिवः', 'प्रदीव्भ्याम्', 'प्रदीव्भ्यः'],  # pancamI  (abl)  — SK354 fires for du/pl
-    ['प्रदिवः', 'प्रदिवोः', 'प्रदिवाम्'],         # zazWI    (gen)
-    ['प्रदिवि', 'प्रदिवोः', 'प्रदीव्षु'],         # saptamI  (loc)  — SK354 fires for pl
-    ['प्रदीव्', 'प्रदिवौ', 'प्रदिवः'],            # samboDana (voc)
+# prAtipadika["parvan"] = parvan_napum   # disabled: ṇatva forms not yet verified
+viBakti["parvan"] = [
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 1 Nominative
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 2 Accusative
+    ['पर्वणा', 'पर्वभ्याम्', 'पर्वभिः'],  # 3 Instrumental  * SK355 fires for sg
+    ['पर्वणे', 'पर्वभ्याम्', 'पर्वभ्यः'],  # 4 Dative         * SK355 fires for sg
+    ['पर्वणः', 'पर्वभ्याम्', 'पर्वभ्यः'],  # 5 Ablative        * SK355 fires for sg
+    ['पर्वणः', 'पर्वणोः', 'पर्वणाम्'],    # 6 Genitive        * SK355 fires for all
+    ['पर्वणि', 'पर्वणोः', 'पर्वसु'],      # 7 Locative        * SK355 fires for sg/du
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 8 Vocative
+]
+
+prAtipadika["yajvan"] = yajvan
+viBakti["yajvan"] = [
+    ['यज्वा', 'यज्वानौ', 'यज्वानः'],         # 1 Nominative   (strong stem)
+    ['यज्वानम्', 'यज्वानौ', 'यज्वनः'],        # 2 Accusative   * SK355 for pl
+    ['यज्वना', 'यज्वभ्याम्', 'यज्वभिः'],      # 3 Instrumental * SK355 for sg (dental n)
+    ['यज्वने', 'यज्वभ्याम्', 'यज्वभ्यः'],     # 4 Dative       * SK355 for sg
+    ['यज्वनः', 'यज्वभ्याम्', 'यज्वभ्यः'],     # 5 Ablative     * SK355 for sg
+    ['यज्वनः', 'यज्वनोः', 'यज्वनाम्'],        # 6 Genitive     * SK355 for all
+    ['यज्वनि', 'यज्वनोः', 'यज्वसु'],          # 7 Locative     * SK355 for sg/du
+    ['यज्वन्', 'यज्वानौ', 'यज्वानः'],         # 8 Vocative     (bare stem sg)
 ]
 
 ajanta = {"pum": [], "strI": [], "napum": []}

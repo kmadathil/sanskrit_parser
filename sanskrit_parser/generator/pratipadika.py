@@ -142,7 +142,6 @@ sraMs_kvip = Pratipadika("sras", "pum", other_tags=["DAtu", "kvip"])
 DvaMs_kvip = Pratipadika("Dvas", "pum", other_tags=["DAtu", "kvip"])
 div_kvip = Pratipadika("div", "pum", other_tags=["DAtu", "kvip"])
 praSAm_kvip = Pratipadika("praSAm", "pum", other_tags=["DAtu", "kvip"])
-pradiv_kvip = Pratipadika("pradiv", "pum", other_tags=["DAtu", "kvip"])
 
 anaquh = Pratipadika("anaquh", "pum", other_tags=["anaquh"])
 turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"])
@@ -152,3 +151,5 @@ idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
 idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])
 
 rAjan = Pratipadika("rAjan", "pum", other_tags=["rAjan"])
+parvan_napum = Pratipadika("parvan", "napum")
+yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])

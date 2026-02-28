@@ -162,3 +162,7 @@ UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 # Anta
 avasAna = PaninianObject(".")
 avasAna.setTag("avasAna")
+
+
+#
+kanin = Pratyaya("an", its=["k", "i", "n"], other_tags=["kanin"])
