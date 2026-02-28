@@ -62,6 +62,10 @@ class PaninianObject(SanskritObject):
         # 1.4.14 suptiNantaM padam
         if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN") or objects[0][-1].hasTag("pada"):
             so.setTag("pada")
+            # Propagate prAtipadika from stem when suffix is luk-deleted (empty canonical)
+            # Allows 8.2.7 (prātipadikānta n-lopa) to fire on the joined pada at word-end
+            if objects[0][0].hasTag("prAtipadika") and objects[0][-1].canonical() == "":
+                so.setTag("prAtipadika")
         # 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam
         elif objects[0][0].hasTag("aNga"):
             so.setTag("aNga")
