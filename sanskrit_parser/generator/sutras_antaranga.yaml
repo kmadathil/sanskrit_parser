@@ -885,11 +885,15 @@
 - sutra: नलोपः प्रातिपदिकान्तस्य
   id: 8.2.7
   condition:
-     lp:
-       - and
-       - ?prAtipadika
-       - ?pada
-     l: n
+    - lp:
+        - and
+        - ?prAtipadika
+        - ?pada
+      l: n
+    - lp: ?prAtipadika
+      l: n
+      rp: ?sup
+      r: $$null
   xform:
      l: null
 

@@ -305,7 +305,9 @@ def notnull(s):
 
 
 def null(s):
-    return ((s is None) or (s == ""))
+    if hasattr(s, 'canonical'):
+        return s.canonical() == ""
+    return (s is None) or (s == "")
 
 
 # sUtra: adeN guRaH

@@ -787,7 +787,7 @@ viBakti["rAjan"] = [
     ['राजन्', 'राजानौ', 'राजानः'],
 ]
 
-# prAtipadika["parvan"] = parvan_napum   # disabled: ṇatva forms not yet verified
+prAtipadika["parvan"] = parvan_napum   
 viBakti["parvan"] = [
     ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 1 Nominative
     ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 2 Accusative
