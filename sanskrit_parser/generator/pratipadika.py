@@ -37,6 +37,15 @@ SamBu = Pratipadika("SamBu", "pum")
 go = Pratipadika("go", "pum")
 rE = Pratipadika("rE", "pum")
 
+# in-stems (iN suffix: possessive adjectives ending in -in)
+# 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
+hastin = Pratipadika("hastin", "pum")
+yogin = Pratipadika("yogin", "pum")
+
+# Special an-stems listed in 6.4.12 (treated like in-stems for upadhā dīrgha)
+pUzan = Pratipadika("pUzan", "pum")        # Pūṣan (Vedic deity)
+aryaman = Pratipadika("aryaman", "pum")    # Aryaman (Vedic deity)
+
 # f
 pitf = Pratipadika("pitf", "pum")
 nf = Pratipadika("nf", "pum")

@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 355 — 6.4.137 न संयोगाद्वमन्तात्
-**Next to implement:** SK 356 (6.4.12 — इन्हन्पूषार्यम्णां शौ)
+**Last implemented:** SK 357 — 6.4.13 सौ च (with SK 356 — 6.4.12 इन्हन्पूषार्यम्णां शौ)
+**Next to implement:** SK 358 (7.3.54 — हो हन्तेर्ञ्णिन्नेषु)
 
 ---
 

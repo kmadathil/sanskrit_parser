@@ -1645,6 +1645,66 @@
   xform:
      lc: lc[:-1]+dirgha(lc[-1])
 
+# SK356: इन्हन्पूषार्यम्णां शौ (6-4-12)
+# Block 6.4.8 for in/pUzan/aryaman stems before all sarvānāmasthāna EXCEPT Si.
+# "शौ" = loc. of suffix name "śi" (Si); rule says upadhā dīrgha ONLY before Si,
+# not before O/jas/am/Ow/su. Together with 6.4.13 (su re-enabled), forms like
+# hastin nom sg → hastī (6.4.13), nom du → hastinau (6.4.12 blocks 6.4.8).
+- sutra: इन्हन्पूषार्यम्णां शौ
+  id: 6.4.12
+  overrides: 6.4.8
+  condition:
+    - l: n
+      ll: i                   # in-stems: penultimate vowel is 'i' (hastin, yogin…)
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si                # do NOT block when Si follows — 6.4.8 handles Si
+    - lp: =pUzan              # pūṣan — specific proper noun (an-stem, exceptional)
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
+    - lp: =aryaman            # aryaman — specific proper noun (an-stem, exceptional)
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
+  # No xform: blocking rule. When this fires, 6.4.8 is suppressed.
+
+# SK357: सौ च (6-4-13)
+# Re-enable upadhā dīrgha for in/pUzan/aryaman stems before su (nom sg), except voc.
+# 6.4.12 blocks 6.4.8 for su (su has no Si tag); 6.4.13 independently applies the
+# same lengthening xform as 6.4.8 for the specific case of su + non-vocative.
+- sutra: सौ च
+  id: 6.4.13
+  condition:
+    - l: n
+      ll: i                   # in-stems
+      rp:
+        - and
+        - ?su                 # specifically su (nom sg marker); ?suw would be too broad
+        - ?!sambudDi          # not vocative (su2 carries sambudDi)
+    - lp: =pUzan
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+    - lp: =aryaman
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
 # asidDavat aDikAra 6.4.22-6.4.175
 # FIXME Implement this priority correctly
 

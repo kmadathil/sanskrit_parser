@@ -811,6 +811,19 @@ viBakti["yajvan"] = [
     ['यज्वन्', 'यज्वानौ', 'यज्वानः'],         # 8 Vocative     (bare stem sg)
 ]
 
+# in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
+prAtipadika["hastin"] = hastin  # noqa: F405
+viBakti["hastin"] = [
+    ['हस्ती', 'हस्तिनौ', 'हस्तिनः'],           # 1 Nominative   * 6.4.13 sg; 6.4.12 blocks du/pl
+    ['हस्तिनम्', 'हस्तिनौ', 'हस्तिनः'],         # 2 Accusative   * 6.4.12 blocks am (suw→sarvanAmasTAna)
+    ['हस्तिना', 'हस्तिभ्याम्', 'हस्तिभिः'],     # 3 Instrumental
+    ['हस्तिने', 'हस्तिभ्याम्', 'हस्तिभ्यः'],    # 4 Dative
+    ['हस्तिनः', 'हस्तिभ्याम्', 'हस्तिभ्यः'],    # 5 Ablative
+    ['हस्तिनः', 'हस्तिनोः', 'हस्तिनाम्'],       # 6 Genitive
+    ['हस्तिनि', 'हस्तिनोः', 'हस्तिषु'],         # 7 Locative
+    ['हस्तिन्', 'हस्तिनौ', 'हस्तिनः'],          # 8 Vocative     (bare stem sg, du/pl = nom)
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
