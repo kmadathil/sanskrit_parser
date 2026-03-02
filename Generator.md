@@ -137,17 +137,31 @@ Defines the interface: `execute()`, `describe()`, `output()`. Holds the `Prakriy
 
 Implements the antaranga algorithm based on Patanjali's commentary: antaranga (more internal) operations take priority over bahiranga (more external) ones.
 
+Priority is managed at two distinct levels:
+
+**Level 1 — Sutra-vs-sutra competition** (multiple sutras trigger at the same window position): `sutra_priority()` uses the per-sutra `bahiranga` field from `sutras_antaranga.yaml` to pick the winner. Convention (lower wins):
+  - `0` — saMjñā sutras
+  - `1` — prakṛti kāryas (modifications of stems)
+  - `2` — pratyaya kāryas (modifications of suffixes)
+  - (default `99` when `bahiranga` is unspecified)
+
+**Level 2 — Window-position priority** (which window to examine first): the engine scans the sequence in a fixed order, giving pratyaya-adjacent windows highest priority. This ensures anga kāryas and anga-pratyaya sandhi fire before pada kāryas without a per-sutra `bahiranga` tag — which would be impractical since the same rule may operate on an anga in one context and a pada in another.
+
 Execution loop:
 1. Start with the initial `PrakriyaVakya`.
 2. Slide a **window of 2 adjacent objects** across the sequence.
-3. At each window position, collect all sutras whose `isTriggered(left, right)` returns True.
-4. If multiple sutras trigger, apply `sutra_priority()` to select the winner.
-5. Call `winner.operate(left, right)` → `(out_left, out_right)`.
-6. Call `winner.update(...)` to set tags on outputs; `winner.insert(...)` to inject āgamas.
-7. Record this step as a `PrakriyaNode` in the `PrakriyaTree`.
-8. If the rule is optional, branch: one child node has the rule applied, the current node has it disabled and continues without it.
-9. Repeat from step 2 on the new `PrakriyaVakya` until nothing fires.
-10. Leaf nodes of the tree are the final outputs.
+3. **Select the highest-priority window** by scanning left to right in this order:
+   - **Pratyaya-adjacent** pairs (anga + pratyaya): highest priority; if multiple, leftmost wins
+   - **Samāsa-adjacent** pairs: next; if multiple, leftmost wins
+   - **Any other pair** (leftmost): fallback when neither pratyaya nor samāsa is present
+4. Collect all sutras whose `isTriggered(left, right)` returns True at that window.
+5. If multiple sutras trigger, apply `sutra_priority()` to select the winner.
+6. Call `winner.operate(left, right)` → `(out_left, out_right)`.
+7. Call `winner.update(...)` to set tags on outputs; `winner.insert(...)` to inject āgamas.
+8. Record this step as a `PrakriyaNode` in the `PrakriyaTree`.
+9. If the rule is optional, branch: one child node has the rule applied, the current node has it disabled and continues without it.
+10. Repeat from step 2 on the new `PrakriyaVakya` until nothing fires.
+11. Leaf nodes of the tree are the final outputs.
 
 ### `HierPrakriya`
 
@@ -223,7 +237,9 @@ Controls which rules are active. Domains are processed in order:
 saMjYA → upadeSa → prakfti → pratyaya → aNga → standard → pada → saMhitA
 ```
 
-Each execution pass activates one domain at a time. Rules can also trigger domain changes via their `update` function.
+Each execution pass activates one domain at a time. Rules can also trigger domain changes via their `update` function. 
+
+This feature is currently unused in the `AntarangaPrakriya` framework
 
 ### Supporting modules
 
@@ -355,5 +371,5 @@ Run from the `generator` branch:
 
 ```bash
 cd sanskrit_parser/generator/test
-pytest
+. run.sh
 ```
