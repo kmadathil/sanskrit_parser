@@ -81,7 +81,7 @@ def chartva(s: str):
 
 
 def kutva(s: str):
-    return adesha(s, "cCjJY", "kKgGN")
+    return adesha(s, "cCjJYh", "kKgGNG")
 
 
 def vargatritiya(s: str):
@@ -152,7 +152,14 @@ def anunasika(s: str):
     else:
         return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
 
+#kutva for h in han
+def han_kutva(lc: str):
+    return lc.replace("h","G")
 
+# for Ratva override in han
+def anat(s):
+    return s != "a"
+    
 # vyavAya check for razAByAM noRaH samAnapade
 def rz_vyavaya_l(s: str):
     i = len(s)-1

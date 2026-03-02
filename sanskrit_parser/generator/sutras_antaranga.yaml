@@ -869,7 +869,32 @@
        - $$notnull
   xform:
       l: str("R")
-      
+
+# 359: हन्तेरत्पूर्वस्य (8-4-22)
+# No n → ṇ in han-stems unless preceded by short a (at-pūrvasya) 
+- sutra: हन्तेरत्पूर्वस्य
+  id: 8.4.22
+  overrides: [8.4.2, 8.4.2.1]
+  condition:
+    - lp: ?han
+      l: n
+      ll: $$anat
+    - lp: ?han
+      l: G
+      r: n     # Must intercept the allop'naH case before Ratvam
+  xform: null
+   
+# 359: हन्तेरात्पूर्वस्य (8-4-22)
+# FIXME: Implement upasarga - prahaRyate etc. but praGAni
+# n-R only if upasarga has r ($$rz_vyavaya_l) and at precedes n in han
+# - sutra: हन्तेरात्पूर्वस्य
+#  id: 8.4.22.1
+#  overrides: [8.4.2, 8.4.2.1]
+#  condition:
+
+#  xform:
+
+
 # 198: पदान्तस्य (8-4-37)
 - sutra: पदान्तस्य
   id: 8.4.37
@@ -1645,8 +1670,8 @@
   xform:
      lc: lc[:-1]+dirgha(lc[-1])
 
-# SK356: इन्हन्पूषार्यम्णां शौ (6-4-12)
-# Block 6.4.8 for in/pUzan/aryaman stems before all sarvānāmasthāna EXCEPT Si.
+# 356: इन्हन्पूषार्यम्णां शौ (6-4-12)
+# Block 6.4.8 for in/han/pUzan/aryaman stems before all sarvānāmasthāna EXCEPT Si.
 # "शौ" = loc. of suffix name "śi" (Si); rule says upadhā dīrgha ONLY before Si,
 # not before O/jas/am/Ow/su. Together with 6.4.13 (su re-enabled), forms like
 # hastin nom sg → hastī (6.4.13), nom du → hastinau (6.4.12 blocks 6.4.8).
@@ -1675,9 +1700,16 @@
         - ?sarvanAmasTAna
         - ?!sambudDi
         - ?!Si
+    - lp: ?han            # han dhatu tag
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
   # No xform: blocking rule. When this fires, 6.4.8 is suppressed.
 
-# SK357: सौ च (6-4-13)
+# 357: सौ च (6-4-13)
 # Re-enable upadhā dīrgha for in/pUzan/aryaman stems before su (nom sg), except voc.
 # 6.4.12 blocks 6.4.8 for su (su has no Si tag); 6.4.13 independently applies the
 # same lengthening xform as 6.4.8 for the specific case of su + non-vocative.
@@ -1697,6 +1729,12 @@
         - ?su
         - ?!sambudDi
     - lp: =aryaman
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+    - lp: ?han
       l: n
       rp:
         - and
@@ -1890,7 +1928,10 @@
        - ?SI
   xform:
      lc: lc[:-1]
-     1: str("n")
+     l: null
+  insert:
+     l:  str("n")
+ 
 
 # 355: न संयोगाद्वमन्तात् (6-4-137)
 - sutra: न संयोगाद्वमन्तात्
@@ -2531,7 +2572,22 @@
      lc: lc[:-1]+str("A")
   update:
      olp: +tannimitta
-     
+
+# 358: हो हन्तेर्ञ्णिन्नेषु (7-3-54)
+# h of han-stems → G (gh) before ñit (Y-it), ṇit (N-it), and n-initial suffixes
+- sutra: हो हन्तेर्ञ्णिन्नेषु
+  id: 7.3.54
+  condition:
+   - lp: ?han
+     rp: +Y          # ñit suffix (Y-it) — covers kṛt/taddhita contexts
+   - lp: ?han
+     rp: +R          # ṇit suffix (R-it) — Rvul etc
+   - lp: ?han
+     r: n            # hn after allopo'naH or viBAza NizyoH
+  xform:
+    l: null   
+    lc: han_kutva(lc+l) # We need both because the h 
+    
 # 2168: सार्वधातुकार्धधातुकयोः (7-3-84)
 - sutra: सार्वधातुकार्धधातुकयोः
   id: 7.3.84
@@ -3565,4 +3621,6 @@
 # Ratva
 # 307: एकाजुत्तरपदे णः (8-4-12)
 
-# 321: तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य (7-1-74) 
+# 321: तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य (7-1-74)
+
+

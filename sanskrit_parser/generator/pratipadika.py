@@ -46,6 +46,11 @@ yogin = Pratipadika("yogin", "pum")
 pUzan = Pratipadika("pUzan", "pum")        # Pūṣan (Vedic deity)
 aryaman = Pratipadika("aryaman", "pum")    # Aryaman (Vedic deity)
 
+# han-stems (upapada tatpuruṣa compounds ending in √han "killer")
+# SK358 (7.3.54): h→G before ñit/ṇit/n-initial suffixes
+# SK359 (8.4.22): n→ṇ when preceded by short a
+vftrahan = Pratipadika("vftrahan", "pum", other_tags=["han"])
+
 # f
 pitf = Pratipadika("pitf", "pum")
 nf = Pratipadika("nf", "pum")
