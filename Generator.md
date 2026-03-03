@@ -304,10 +304,97 @@ update:
 
 ### Insert syntax
 
+`insert` adds āgamas (augment elements) to the prakriya sequence. It fires **after** `xform`
+and `update` in the execution loop (step 7 above).
+
 ```yaml
 insert:
-  m:             # Middle insert
-    kit: tuk     # Insert predefined object tuk as kit (appended to left context)
+  <position>: <expression>   # one key–value pair per insertion
+```
+
+**Eval context.** Expressions are Python strings evaluated at rule-trigger time. The following
+variables are bound (canonical SLP1 strings):
+
+| Variable | Value |
+|----------|-------|
+| `l` | Last character of the left operand |
+| `r` | First character of the right operand |
+| `lc` | Left operand minus its last character |
+| `rc` | Right operand minus its first character |
+
+All names from `pratyaya`, `paribhasha`, `maheshvara`, and `pratipadika` are in scope
+(star-imported by `process_yaml.py`), so pre-defined Pratyaya objects (e.g., `tuk`, `UW`) and
+helper functions (e.g., `shcutva`, `zwutva`) can be referenced directly.
+
+**Position keys and their effect on the sequence:**
+
+| Key | Effect |
+|-----|--------|
+| `"m"` with **kit** (`its=["k"]`) | Appends āgama after left operand: `[left, āgama]` |
+| `"m"` with **wit** (`its=["w"]`) | Prepends āgama before right operand: `[āgama, right]` |
+| `"l"` | Appends āgama after left operand: `[left, āgama]` |
+| `"r"` | Prepends āgama before right operand: `[āgama, right]` |
+| `0` (integer) | Prepends āgama before left operand: `[āgama, left]` |
+| `1` (integer) | Prepends āgama before right operand: `[āgama, right]` |
+
+The key determines *where* in the sequence the āgama lands; for the `"m"` key the kit/wit
+markers on the inserted object itself decide which side to attach to.
+
+**Hierarchical prakriya.** When `insert` produces a list (non-scalar result), `AntarangaPrakriya`
+runs recursively on the expanded pair before continuing. This ensures the āgama undergoes its own
+phonological transformations before being merged back into the main sequence. After hierarchical
+execution, the pair is collapsed into a single `PaninianObject` with the merged string.
+
+> **Samprasāraṇa exception:** when a position-`0` insert places an object carrying the
+> `samprasAraRam` tag before the left operand, the hierarchical output uses the first element of
+> the first output (`hpo[0][0]`) rather than the normal sub-object selection. This drives the
+> vowel-grade alternation in roots like `√vah`.
+
+**Common pattern — ādeśa and lopa via delete-and-replace.** `xform` nulls out a character (lopa)
+and `insert` provides its replacement (ādeśa) as a fresh `Pratyaya` or `PaninianObject`. This
+is the correct way to implement both substitutions and deletions where sandhi may subsequently
+apply. Because the replacement is a new object, the engine detects a non-scalar result and runs
+a **hierarchical prakriya** on the expanded pair — any sandhi rules that can apply between the
+newly inserted object and its neighbours will fire. A simple varna substitution in `xform` alone
+would not create a list, so no hierarchical prakriya would run and post-insertion sandhi would be
+silently skipped.
+
+```yaml
+# 8.4.40 — स्तोः श्चुना श्चुः (L): s / dental-stop → palatal equivalent
+# The palatal replacement fires a hierarchical prakriya; subsequent ścu/ṣṭu sandhi
+# rules can then operate on the newly inserted palatal if needed.
+xform:
+  l: null         # lopa: delete the original s or dental-stop
+insert:
+  l: shcutva(l)  # ādeśa: insert the palatal equivalent as a new object
+```
+
+**Examples:**
+
+```yaml
+# 6.1.73 — छे च: insert tuk (kit) after a short vowel, before cha
+# tuk = Pratyaya("t", its=["k"]) — kit, so appended to left operand
+insert:
+  m: tuk
+
+# 8.4.40/41 — श्चुत्व / ष्टुत्व: delete and re-insert as the appropriate class
+xform:
+  l: null
+insert:
+  l: shcutva(l)   # or zwutva(l) for ष्टुत्व
+
+# 6.4.134 — अल्लोपोऽनः: delete ā, re-insert n as a fresh object
+xform:
+  lc: lc[:-1]
+  l: null
+insert:
+  l: str("n")     # fresh n; subsequent rules see it as a new token
+
+# 6.4.133 — अयादीनामायः: insert UW (samprasāraṇa-tagged) before left operand
+xform:
+  lc: lc[1:]
+insert:
+  0: UW           # integer key → prepend before left operand
 ```
 
 ---
