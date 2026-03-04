@@ -71,8 +71,8 @@ class AntarangaPrakriya(PrakriyaBase):
                     # Replace input list with exploded list
                     # Explosion at position ix is now dealt with
                     self.hier_inputs = tmpl
-                    logger.debug(f"Hier inputs after expl {ix} {self.hier_inputs}")
-            logger.debug(f"Hier inputs after full expl {self.hier_inputs} {[[_r.tags for _r in o] for o in self.hier_inputs]}")
+                    logger.debug(f"Hier inputs after expl {ix}: {self.hier_inputs}")
+            logger.debug(f"Hier inputs after full expl: {self.hier_inputs}")
             # At the end of the loop above self.hier_inputs has been fully exploded
             for i in self.hier_inputs:
                 _n = PrakriyaNode(i, i, "Prakriya Hierarchical Start")
@@ -288,12 +288,10 @@ class AntarangaPrakriya(PrakriyaBase):
             else:
                 triggered = False
             
-        logger.debug(f"I: {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
+        logger.debug(f"I [{node.id}]: {node.outputs}  tags: {[set(_r.tags) for _r in node.outputs]}")
         if triggered:
             ix = _ix
-            logger.debug(f"Triggered rules at window {ix}")
-            for t in triggered:
-                logger.debug(t)
+            logger.debug(f"Triggered at window {ix}: {[str(t) for t in triggered]}")
             s = self.sutra_priority(triggered, node.outputs[ix:ix+2])
             v = self.view(s, node, ix)
             logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
@@ -338,9 +336,7 @@ class AntarangaPrakriya(PrakriyaBase):
                         r[i].setTag("pada")
                         logger.debug(f"Restored pada {r[i]} {r[i].tags}")
 
-            logger.debug(f"I (post update): Node {node.id} Outputs {node.outputs} {[_r.tags for _r in node.outputs]} ")
-            logger.debug(f"I (post update): View {v}")
-            logger.debug(f"I (post update): Op/Update/Insert/Hier Result {r}")
+            logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
             
             
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
@@ -362,7 +358,7 @@ class AntarangaPrakriya(PrakriyaBase):
                         logger.debug(f"Disabling overriden {so}")
             # FIXME: disable sutras for AkaqArAdekA saMjYA
 
-            logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
+            logger.debug(f"O [{s.aps}]: {r}  tags: {[set(_r.tags) for _r in r]}  disabled: {[list(_r.disabled_sutras) for _r in r]}")
 
                     
             # Update Prakriya Tree
@@ -374,7 +370,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 for i in range(len(r)-2):
                     pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
             _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s])
-            logger.debug(f'O Node: {str(_ps)} {[_r.tags for _r in _ps.outputs]}')
+            logger.debug(f'O Node: {_ps.id} [{s.aps}]')
             if node is not None:
                 self.tree.add_child(node, _ps, opt=s.optional)
             else:
@@ -401,7 +397,7 @@ class AntarangaPrakriya(PrakriyaBase):
             # Replace element at ix with merged element and delete next
             pnr = node.outputs.copy_replace_at(ix, mobj).delete_at(ix+1)
             _ps = PrakriyaNode(pnv, pnr, dummySamhitaSutra, ix, [])
-            logger.debug(f'O Node: {str(_ps)} {[_r.tags for _r in _ps.outputs]}')
+            logger.debug(f'O Node: {_ps.id} [merge@{ix}]')
             self.tree.add_child(node, _ps)
             return True
 
@@ -436,7 +432,7 @@ class AntarangaPrakriya(PrakriyaBase):
             for n in self.tree.get_root():
                 self.outputs.append(n.outputs)
         r = self.outputs
-        logger.debug(f"Final Result: {r} {[[_r.tags for _r in o] for o in r]}\n")
+        logger.debug(f"Final Result: {r}\n")
         return r
 
     def describe(self, indent="  "):

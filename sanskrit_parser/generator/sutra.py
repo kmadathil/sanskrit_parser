@@ -99,21 +99,16 @@ class LRSutra(Sutra):
             t = self.domain(domains)
         else:
             t = domains.isdomain("standard")
-        logger.debug(f"Can {self} run in Domain: {domains}: {t}")
         return t
-    
+
     def isTriggered(self, s1, s2, nitya_check=False):
-        if nitya_check:
-            n = "Nitya"
-        else:
-            n = ""
-        logger.debug(f"Checking {n} {self} View: {s1} {s2}")
         env = _env(s1, s2)
         if self.cond is not None:
             c = self.cond(env)
         else:
             c = True
-        logger.debug(f"{n} Check Result {c} for {self}")
+        n = "Nitya " if nitya_check else ""
+        logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
         return c
 
     def update(self, s1, s2, o1, o2):
