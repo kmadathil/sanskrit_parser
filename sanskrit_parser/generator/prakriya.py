@@ -411,17 +411,16 @@ class HierPrakriya(PrakriyaBase):
         logger.debug(f"Final Result: {r}\n")
         return r
 
-    def describe(self):
-        print("\nPrakriya")
-        if self.hier_prakriyas != []:
-            print(f"Pre Input {self.pre_inputs}")
+    def describe(self, indent="  "):
+        slp1 = "".join(str(x) for x in self.inputs.v)
+        print(f"\n{indent}\u2500\u2500\u2500 Prakriya: {slp1}")
         for h in self.hier_prakriyas:
-            print("Hierarchical Prakriya")
-            h.describe()
-        print(f"Input {self.inputs}")
-        self.tree.describe()
-        print(f"Final Output {self.outputs} = {[''.join([str(x) for x in y]) for y in self.outputs]}\n\n")
-
+            print(f"{indent}  \u250c Hierarchical Prakriya:")
+            h.describe(indent=indent + "  \u2502 ")
+            print(f"{indent}  \u2514\u2500")
+        self.tree.describe(indent=indent)
+        outputs = ["".join(str(x) for x in y) for y in self.outputs]
+        print(f"{indent}Output: {'  |  '.join(outputs)}\n")
 
     def name(self):
         return "Hierarchical Prakriya"
@@ -462,14 +461,54 @@ class PrakriyaNode(object):
     def __ne__(self, other):
         return str(self) != str(other)
 
-    def describe(self):
-        print("Prakriya Node")
-        print(str(self))
+    def describe(self, step=None, indent="  ", hier_map=None):
+        step_label = f"Step {step:2d}" if step is not None else "     "
+        if isinstance(self.sutra, str):
+            sutra_label = f"\u27e8{self.sutra}\u27e9"
+        elif self.sutra.aps == "0.0.0":
+            sutra_label = "\u27e8samhit\u0101 merge\u27e9"
+        else:
+            dev  = self.sutra.name.devanagari()
+            slp1 = str(self.sutra.name)
+            sutra_label = f"[{self.sutra.aps}  {dev}  ({slp1})]"
+            if self.sutra.optional:
+                sutra_label += " *"
+        # Extract window pair — keep objects for Devanagari glosses
+        ix = self.index
+        in_l_obj  = self.inputs[ix]    if ix     < len(self.inputs)  else None
+        in_r_obj  = self.inputs[ix+1]  if ix + 1 < len(self.inputs)  else None
+        out_l_obj = self.outputs[ix]   if ix     < len(self.outputs) else None
+        out_r_obj = self.outputs[ix+1] if ix + 1 < len(self.outputs) else None
+        l_in  = str(in_l_obj)  if in_l_obj  is not None else ""
+        r_in  = str(in_r_obj)  if in_r_obj  is not None else ""
+        l_out = str(out_l_obj) if out_l_obj is not None else ""
+        r_out = str(out_r_obj) if out_r_obj is not None else ""
+        dl_in  = in_l_obj.devanagari()  if in_l_obj  is not None else ""
+        dr_in  = in_r_obj.devanagari()  if in_r_obj  is not None else ""
+        dl_out = out_l_obj.devanagari() if out_l_obj is not None else ""
+        dr_out = out_r_obj.devanagari() if out_r_obj is not None else ""
+        changed  = (l_in != l_out) or (r_in != r_out)
+        pair_in  = f"{l_in} | {r_in}"
+        pair_out = f"{l_out} | {r_out}"
+        dev_in   = f"{dl_in} | {dr_in}"
+        dev_out  = f"{dl_out} | {dr_out}"
+        if changed:
+            change_str = f"{dev_in}  \u2192  {dev_out}  ({pair_in}  \u2192  {pair_out})"
+        else:
+            change_str = f"{dev_in}  (no change)  ({pair_in})"
+        print(f"{indent}{step_label}  {sutra_label}")
+        print(f"{indent}           {change_str}")
         if self.other_sutras:
-            print("Sutras that were tiggered but did not win")
-            for s in self.other_sutras:
-                print(str(s))
-        print("End")
+            others = ",  ".join(
+                f"[{s.aps}  {s.name.devanagari()}]" for s in self.other_sutras
+            )
+            print(f"{indent}           \u21b3 also triggered: {others}")
+        # Inline hierarchical prakriyas triggered by this step
+        if hier_map and not isinstance(self.sutra, str) and self.sutra.aps in hier_map:
+            for hp in hier_map[self.sutra.aps]:
+                print(f"{indent}           \u250c Hierarchical Prakriya:")
+                hp.describe(indent=indent + "           \u2502 ")
+                print(f"{indent}           \u2514\u2500")
 
     def dict(self):
         return {
@@ -516,16 +555,16 @@ class PrakriyaTree(object):
         if (not opt) and (node in self.leaves):
             self.leaves.remove(node)
 
-    def describe(self):
+    def describe(self, indent="  ", hier_map=None):
+        step = [0]
+
         def _desc(n):
-            n.describe()
-            if n in self.leaves:
-                print("Leaf Node")
+            step[0] += 1
+            n.describe(step=step[0], indent=indent, hier_map=hier_map)
             for c in self.children[n]:
-                print("Child")
                 _desc(c)
+
         for r in self.roots:
-            print("Root")
             _desc(r)
 
     def dict(self):

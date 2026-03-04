@@ -13,6 +13,7 @@ produce a vakya.
 """
 
 from abc import abstractmethod
+from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
 from sanskrit_parser.generator.pratyaya import Pratyaya
@@ -321,6 +322,7 @@ class AntarangaPrakriya(PrakriyaBase):
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = hp.output()
+                    hp.triggering_sutra_aps = s.aps
                     self.hier_prakriyas.append(hp)
                     logger.debug(f"Hier output for r[{i}] {hpo}")
                     assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
@@ -437,16 +439,28 @@ class AntarangaPrakriya(PrakriyaBase):
         logger.debug(f"Final Result: {r} {[[_r.tags for _r in o] for o in r]}\n")
         return r
 
-    def describe(self):
-        print("\nPrakriya")
-        if self.hier_prakriyas != []:
-            print(f"Pre Input {self.pre_inputs}")
-        for h in self.hier_prakriyas:
-            print("Hierarchical Prakriya")
-            h.describe()
-        print(f"Input {self.inputs}")
-        self.tree.describe()
-        print(f"Final Output {self.outputs} = {[''.join([str(x) for x in y]) for y in self.outputs]}\n\n")
+    def describe(self, indent="  "):
+        slp1 = "".join(str(x) for x in self.inputs.v)
+        dev = sanscript.transliterate(slp1, sanscript.SLP1, sanscript.DEVANAGARI)
+        bar = indent + "\u2500" * 62
+        print(f"\n{bar}")
+        print(f"{indent}Prakriya: {slp1}  ({dev})")
+        # Build hier_map keyed by triggering sutra APS for inline display
+        from collections import defaultdict
+        hier_map = defaultdict(list)
+        for hp in self.hier_prakriyas:
+            aps = getattr(hp, 'triggering_sutra_aps', None)
+            if aps:
+                hier_map[aps].append(hp)
+        self.tree.describe(indent=indent, hier_map=hier_map)
+        outputs = ["".join(str(x) for x in y) for y in self.outputs]
+        out_devs = [
+            sanscript.transliterate(o, sanscript.SLP1, sanscript.DEVANAGARI)
+            for o in outputs
+        ]
+        out_strs = "  |  ".join(f"{o}  ({d})" for o, d in zip(outputs, out_devs))
+        print(f"{indent}Output: {out_strs}")
+        print(f"{bar}\n")
 
 
     def name(self):
