@@ -1880,7 +1880,30 @@
      rp: ?sup
   xform: null
 
-# 329: वाह ऊठ् (6-4-132) 
+# 360: मघवा बहुलम् (6-4-128)
+# Optional tṛ-anta substitute for maGavan before any pratyaya (bahulam = variously).
+# n → t (creates maghavat-type stem); ++f adds ṛ as it-marker (like śatṛ's u-it),
+# enabling SK361 (7.1.70) to insert nUM before sarvanamasthana suffixes.
+# Distinct from kroṣṭu's tfc tag (where ṛ is the stem-final, not an it): here ṛ IS an it.
+- sutra: मघवा बहुलम्
+  id: 6.4.128
+  domain: prakfti
+  bahiranga: 1
+  optional: true
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?maGavan
+     l: n
+     ll: a
+  xform:
+     l: str("t")
+  update:
+     olp:
+      - ++f          # ṛ added as it-marker (like śatṛ u-it); enables SK361 (7.1.70) via +f condition
+
+# 329: वाह ऊठ् (6-4-132)
 - sutra: वाह ऊठ्
   id: 6.4.132
   condition:
@@ -1894,7 +1917,33 @@
   insert:
      0: UW
     
-# 234 : अल्लोपोऽनः (6-4-134) 
+# 362: श्वयुवमघोनामतद्धिते (6-4-133)
+# samprasāraṇa of v→u in bha-position for śvan/yuvan/maGavan before non-taddhita suffixes.
+# "ataddhite" is naturally satisfied: SvanType tag does not propagate through taddhita
+# derivation (paninian_object.py join_objects allowlist), so śauvana- etc. won't have it.
+# Overrides 6.4.134 (general al-lopa of -a- before n) and 6.4.136 (optional al-lopa for Ni/SI).
+- sutra: श्वयुवमघोनामतद्धिते
+  id: 6.4.133
+  overrides: [6.4.134, 6.4.136]
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?SvanType
+     l: n
+     ll: a
+  xform:
+     lc: samprasArana_van(lc)
+     # l (= n) unchanged
+
+# SK363: न संप्रसारणे संप्रसारणम् (6-1-37) — DEFERRED
+# Blocks a second samprasāraṇa from applying after a first has already been applied.
+# Not needed for nominal declension: samprasArana_van() produces Su-/yU-/maGo- which
+# contain no further yaṇ candidate, so no spurious re-application is possible.
+# Relevant only for kṛt/verbal formations (e.g. UW-suffix compounds). Defer until then.
+
+# 234 : अल्लोपोऽनः (6-4-134)
 # 234: अल्लोपोऽनः (6-4-134)
 - sutra: अल्लोपोऽनः
   id: 6.4.134
@@ -2961,7 +3010,37 @@
      r: str("nA")
 
 
-# 314: नपुंसकस्य झलचः (7-1-72) 
+# 361: उगिदचां सर्वनामस्थानेऽधातोः (7-1-70)
+# nUM insertion for ugit stems (u/ṛ/ḷ as it-marker) before sarvanamasthana.
+# Multiple top-level condition blocks = OR alternatives (pattern from SK277 / 6.4.11).
+# Covers: maGavan→maGavat (SK360 sets ++f, i.e. ṛ-it), bhavant (śatṛ is u-it),
+#         and other ugit stems. kroṣṭu has ?tfc (ṛ is stem-final, NOT an it) → excluded.
+# TODO: add ?aNc condition when √añc stems are implemented (dhātu exception)
+- sutra: उगिदचां सर्वनामस्थानेऽधातोः
+  id: 7.1.70
+  domain: prakfti
+  bahiranga: 1
+  condition:
+   - lp:               # non-root ṛ-it stems (e.g., maghavat via SK360 ++f)
+      - and
+      - ?!DAtu
+      - +f
+     rp: ?sarvanAmasTAna
+   - lp:               # non-root u-it stems (e.g., bhavant from śatṛ which is u-it)
+      - and
+      - ?!DAtu
+      - +u
+     rp: ?sarvanAmasTAna
+   - lp:               # non-root ḷ-it stems
+      - and
+      - ?!DAtu
+      - +x
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: numAgama(lc+l)
+     l: null
+
+# 314: नपुंसकस्य झलचः (7-1-72)
 - sutra: नपुंसकस्य झलचः
   id: 7.1.72
   condition:

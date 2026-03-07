@@ -51,6 +51,25 @@ def samprasaranam(s: str):
                   )
 
 
+def samprasArana_van(lc: str):
+    """samprasāraṇa for -v-a-n stems (Svan, yuvan, maGavan) in bha position (SK362 / 6.4.133).
+    lc ends in -v-a (the 'n' is held in l by the YAML rule).
+    Converts v→u (samprasāraṇa via samprasaranam), then merges with the preceding character:
+      - consonant + u  →  consonant + u        (Sva  → Su)
+      - u + u          →  ū  (savarna dīrgha)  (yuva → yU)
+      - a + u          →  o  (guṇa sandhi)      (maGava → maGo)
+    """
+    s = samprasaranam(lc[-2])    # v → u
+    pred = lc[-3]                # character just before the v
+    if isInPratyahara("ac", pred):
+        if isSavarna("u", pred):         # u + u → ū  (yuvan)
+            return lc[:-3] + dirgha(s)
+        else:                            # a + u → o  (maGavan)
+            return lc[:-3] + guna(s)
+    else:                                # consonant + u  (śvan: S + u)
+        return lc[:-2] + s
+
+
 def ayavayav(s: str):
     if s == "e":
         return "ay"

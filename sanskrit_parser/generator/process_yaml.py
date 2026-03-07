@@ -85,7 +85,7 @@ def process_yaml(y):
                                 elif (sk[0] == "?"):  # Tag check
                                     _x = k.hasTag(sk[1:])
                                 elif (sk[0] == "+"):  # It check
-                                    _x = k.hasTag("pratyaya") and k.hasIt(sk[1:])
+                                    _x = hasattr(k, 'hasIt') and k.hasIt(sk[1:])
                                 else:
                                     _x = isSavarna(sk, k)   # noqa: F405
                                 return _x

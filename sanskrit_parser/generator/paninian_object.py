@@ -25,10 +25,20 @@ class PaninianObject(SanskritObject):
         # FIXME: I don't like this being here
         self.disabled_sutras = []
         # Prakriya Related Tags are ephemeral
+        # it-markers (anubandha): used by Pratyaya (e.g. śatṛ u-it) and by Pratipadika
+        # when an it is added dynamically during prakriyā (e.g. SK360 adds f-it to maghavat).
+        self.its = []
 
-    # Dummy
     def hasIt(self, it):
-        return False 
+        return it in self.its
+
+    def setIt(self, it):
+        if it not in self.its:
+            self.its.append(it)
+
+    def deleteIt(self, it):
+        if it in self.its:
+            self.its.remove(it)
 
     def hasTag(self, t):
         return t in self.tags

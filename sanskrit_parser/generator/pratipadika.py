@@ -167,3 +167,11 @@ idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"
 rAjan = Pratipadika("rAjan", "pum", other_tags=["rAjan"])
 parvan_napum = Pratipadika("parvan", "napum")
 yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])
+
+# SvanType: Svan, yuvan, maGavan — -an stems with samprasāraṇa in bha position (SK362 / 6.4.133)
+# NOTE: SvanType does NOT propagate through taddhita derivation (paninian_object.py join_objects
+# allowlist omits it), so the sutra's "ataddhite" restriction is naturally satisfied —
+# śauvana- etc. taddhita derivatives will not carry SvanType and SK362 will not misfire.
+svan = Pratipadika("Svan", "pum", other_tags=["SvanType"])
+yuvan = Pratipadika("yuvan", "pum", other_tags=["SvanType"])
+maGavan = Pratipadika("maGavan", "pum", other_tags=["SvanType", "maGavan"])

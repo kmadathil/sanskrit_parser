@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 358 — 7.3.54 हो हन्तेर्ञ्णिन्नेषु (with SK 359 — 8.4.22 हन्तेरात्पूर्वस्य)
-**Next to implement:** SK 360 (see sk_map.md for next unimplemented rule)
+**Last implemented:** SK 362 — 6.4.133 श्वयुवमघोनामतद्धिते (with SK 360 — 6.4.128 मघवा बहुलम्, SK 361 — 7.1.70 उगिदचां सर्वनामस्थानेऽधातोः)
+**Next to implement:** SK 364 (SK 363 deferred — see Skipped/Deferred table)
 
 ---
 
@@ -241,6 +241,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 353 | 8.2.2 | नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति | Natural + special siddha | n-lopa in kṛt/kyac/kyaṇ contexts |
 | 354 | 8.2.77 | हलि च | Implemented | upadhā-ik lengthening of r/v-final dhātu before hal suffix |
 | 355 | 6.4.137 | न संयोगाद्वमन्तात् | Implemented | blocks al-lopa of -an- stems when saMyoga ending in v/m precedes 'a' |
+| 363 | 6.1.37 | न संप्रसारणे संप्रसारणम् | For later — kṛt/verbal only | blocks double samprasāraṇa; not needed for nominal declension (SK362's samprasArana_van produces no further samprasāraṇa candidate) |
 
 ---
 

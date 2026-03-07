@@ -836,6 +836,48 @@ viBakti["vftrahan"] = [
     ['वृत्रहन्', 'वृत्रहणौ', 'वृत्रहणः'],                       # 8 Vocative     * bare stem sg; ṇatva du/pl
 ]
 
+# SvanType stems: śvan/yuvan/maGavan — SK362 (6.4.133) samprasāraṇa in bha position,
+# SK361 (7.1.70) nUM before sarvanamasthana, SK360 (6.4.128) optional tṛj for maGavan.
+# Du/pl inst/dat/abl consonant-initial → no Ba → no SK362; n drops by padānta rule.
+prAtipadika["svan"] = svan   # noqa: F405
+viBakti["svan"] = [
+    ['श्वा', 'श्वानौ', 'श्वानः'],          # 1 Nom   * 6.4.8 sg; SK361+6.4.8 du/pl
+    ['श्वानम्', 'श्वानौ', 'शुनः'],         # 2 Acc   * SK362 pl (bha)
+    ['शुना', 'श्वभ्याम्', 'श्वभिः'],       # 3 Inst  * SK362 sg (bha)
+    ['शुने', 'श्वभ्याम्', 'श्वभ्यः'],      # 4 Dat   * SK362 sg (bha)
+    ['शुनः', 'श्वभ्याम्', 'श्वभ्यः'],      # 5 Abl   * SK362 sg (bha)
+    ['शुनः', 'शुनोः', 'शुनाम्'],           # 6 Gen   * SK362 all (bha)
+    ['शुनि', 'शुनोः', 'श्वसु'],            # 7 Loc   * SK362 sg/du (bha)
+    ['श्वन्', 'श्वानौ', 'श्वानः'],         # 8 Voc   * bare stem sg; du/pl = nom
+]
+
+prAtipadika["yuvan"] = yuvan   # noqa: F405
+viBakti["yuvan"] = [
+    ['युवा', 'युवानौ', 'युवानः'],          # 1 Nom   * 6.4.8 sg; SK361+6.4.8 du/pl
+    ['युवानम्', 'युवानौ', 'यूनः'],         # 2 Acc   * SK362 pl (bha): yuva→yU
+    ['यूना', 'युवभ्याम्', 'युवभिः'],       # 3 Inst  * SK362 sg (bha)
+    ['यूने', 'युवभ्याम्', 'युवभ्यः'],      # 4 Dat   * SK362 sg (bha)
+    ['यूनः', 'युवभ्याम्', 'युवभ्यः'],      # 5 Abl   * SK362 sg (bha)
+    ['यूनः', 'यूनोः', 'यूनाम्'],           # 6 Gen   * SK362 all (bha)
+    ['यूनि', 'यूनोः', 'युवसु'],            # 7 Loc   * SK362 sg/du (bha)
+    ['युवन्', 'युवानौ', 'युवानः'],         # 8 Voc   * bare stem sg; du/pl = nom
+]
+
+# maGavan: SK360 (6.4.128) optional tṛj substitute fires for all cases (bahulam).
+# Each cell lists [primary, optional-SK360] where they differ.
+# Primary uses SK362 in bha position (→ maGo-); SK360-tṛj uses tṛ-anta declining (→ maGavat-/maGavad-).
+prAtipadika["maGavan"] = maGavan   # noqa: F405
+viBakti["maGavan"] = [
+    [['मघवा', 'मघवन्'], ['मघवानौ', 'मघवन्तौ'], ['मघवानः', 'मघवन्तः']],          # 1 Nom
+    [['मघवानम्', 'मघवन्तम्'], ['मघवानौ', 'मघवन्तौ'], ['मघवतः', 'मघोनः']],       # 2 Acc
+    [['मघवता', 'मघोना'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभिः', 'मघवद्भिः']], # 3 Inst
+    [['मघवते', 'मघोने'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभ्यः', 'मघवद्भ्यः']], # 4 Dat
+    [['मघवतः', 'मघोनः'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभ्यः', 'मघवद्भ्यः']], # 5 Abl
+    [['मघवतः', 'मघोनः'], ['मघवतोः', 'मघोनोः'], ['मघवताम्', 'मघोनाम्']],          # 6 Gen
+    [['मघवति', 'मघोनि'], ['मघवतोः', 'मघोनोः'], ['मघवसु', 'मघवत्सु']],            # 7 Loc
+    ['मघवन्', ['मघवानौ', 'मघवन्तौ'], ['मघवानः', 'मघवन्तः']],                     # 8 Voc  * sg same in both
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
