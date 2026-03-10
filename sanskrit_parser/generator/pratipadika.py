@@ -175,3 +175,6 @@ yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])
 svan = Pratipadika("Svan", "pum", other_tags=["SvanType"])
 yuvan = Pratipadika("yuvan", "pum", other_tags=["SvanType"])
 maGavan = Pratipadika("maGavan", "pum", other_tags=["SvanType", "maGavan"])
+
+# SK364 (6.4.127): arvan — mandatory tṛ-substitute before all suffixes except su.
+arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])

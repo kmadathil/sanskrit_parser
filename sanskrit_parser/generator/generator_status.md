@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 362 — 6.4.133 श्वयुवमघोनामतद्धिते (with SK 360 — 6.4.128 मघवा बहुलम्, SK 361 — 7.1.70 उगिदचां सर्वनामस्थानेऽधातोः)
-**Next to implement:** SK 364 (SK 363 deferred — see Skipped/Deferred table)
+**Last implemented:** SK 364 — 6.4.127 अर्वणस्त्रसावनञः
+**Next to implement:** SK 365 (7.1.85 — पथिमथ्यृभुक्षामात्)
 
 ---
 

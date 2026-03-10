@@ -409,6 +409,34 @@ When multiple sutras trigger at the same window position, `sutra_priority()` sel
 4. **Tripadi** (numbered in 8th adhyaya, `_aps_num > 82000`): earlier number wins
 5. **Para** (later rule): higher `_aps_num` wins (default)
 
+### Siddha / Asiddha
+
+Rule priority determines *which* sutra wins when multiple fire at the same window. Siddha/asiddha determines *what state* each sutra sees — i.e. which earlier outputs are visible to it.
+
+Every sutra's view of the derivation is computed by `view()` in `antaranga_prakriya.py`. It walks back up the `PrakriyaTree` and returns the outputs of the most recent node that the current sutra is allowed to see. The key rule is:
+
+**TripāḍÄ« sutras (8.2.1–8.4.68, `_aps_num > 82000`) are asiddha with respect to sāpadasaptādhyāyī (SPSA) sutras (`_aps_num < 82000`).**
+
+In practice:
+
+| Current sutra | Can see |
+|---|---|
+| SPSA (`_aps_num < 82000`) | Outputs of SPSA sutras only — tripāḍī outputs are invisible (asiddha) |
+| TripāḍÄ« (`_aps_num ≥ 82000`) | Outputs of all SPSA sutras + earlier tripāḍī sutras (lower `_aps_num`) |
+
+This is implemented by walking up the tree and skipping nodes whose sutra `_aps_num` falls outside the visible range. The walk stops at the first visible node, and that node's `outputs` become the view.
+
+**Special siddha exceptions** (`_special_siddha()` in `antaranga_prakriya.py`): certain tripāḍī outputs must be visible to specific later rules even across the SPSA/tripāḍī boundary:
+
+| Producer sutra | Visible to | Reason |
+|---|---|---|
+| ṣṭutva 8.4.41 | ḍ-lopa 8.3.13 | ṣṭutva output must be seen before ḍ-lopa fires |
+| ḍ-lopa 8.3.13, r-lopa 8.3.14 | pūrva-dīrgha 6.3.111 | lopa must be visible for dīrgha to apply correctly |
+| n-lopa 8.2.7, 7.4.33 | 7.4.25 | n-lopa siddha for inter-pada and rājīyati/rājāyate forms |
+| saṃyogānta-lopa 8.2.23 | maGavan upadhā-dīrgha 6.4.8.1 | final cluster lopa must be visible for upadhā-dīrgha to fire correctly for maGavan before sarvanamasthāna |
+
+**Not yet implemented:** *asiddhavat* (8.2.1 — SPSA sutras after 8.2.1 treat each other as asiddha within SPSA) and *ṣṭutokora-siddhaḥ* (a further sub-boundary within tripāḍī). These are noted as FIXMEs in the code.
+
 ---
 
 ## Worked Example

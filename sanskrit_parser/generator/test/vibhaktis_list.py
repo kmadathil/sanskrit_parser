@@ -878,6 +878,18 @@ viBakti["maGavan"] = [
     ['मघवन्', ['मघवानौ', 'मघवन्तौ'], ['मघवानः', 'मघवन्तः']],                     # 8 Voc  * sg same in both
 ]
 
+prAtipadika["arvan"] = arvan   # noqa: F405
+viBakti["arvan"] = [
+    ['अर्वा', 'अर्वन्तौ', 'अर्वन्तः'],          # 1 Nom  * no tṛ before su → arvā; SK364+SK361 for du/pl
+    ['अर्वन्तम्', 'अर्वन्तौ', 'अर्वतः'],         # 2 Acc  * SK364+SK361 sg/du; bha pl → arvataḥ
+    ['अर्वता', 'अर्वद्भ्याम्', 'अर्वद्भिः'],     # 3 Inst * bha sg; 8.4.47 t→d du/pl
+    ['अर्वते', 'अर्वद्भ्याम्', 'अर्वद्भ्यः'],    # 4 Dat
+    ['अर्वतः', 'अर्वद्भ्याम्', 'अर्वद्भ्यः'],    # 5 Abl
+    ['अर्वतः', 'अर्वतोः', 'अर्वताम्'],            # 6 Gen  * bha all
+    ['अर्वति', 'अर्वतोः', 'अर्वत्सु'],            # 7 Loc  * bha sg/du; loc-pl arvatsu
+    ['अर्वन्', 'अर्वन्तौ', 'अर्वन्तः'],           # 8 Voc  * bare stem sg; du/pl = nom
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 

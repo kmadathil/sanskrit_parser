@@ -1968,6 +1968,30 @@
 # contain no further yaṇ candidate, so no spurious re-application is possible.
 # Relevant only for kṛt/verbal formations (e.g. UW-suffix compounds). Defer until then.
 
+# 364: अर्वणस्त्रसावनञः (6-4-127)
+# Mandatory tṛ-anta substitute for arvan (not preceded by nañ), before all suffixes
+# except su (nominative singular). Parallel to SK360 (maGavan) but mandatory.
+# ++f enables SK361 (7.1.70) to insert nUM before sarvanamasthana → arvant-forms.
+# Before su: standard -an rules fire instead (6.4.8 upadhā-dīrgha + 8.2.7 n-lopa → arvā).
+# nañ exception (anarvan → yajvan-type): not yet handled; requires nañ tag propagation.
+- sutra: अर्वणस्त्रसावनञः
+  id: 6.4.127
+  domain: prakfti
+  bahiranga: 1
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?arvan
+     l: n
+     ll: a
+     rp: ?!su
+  xform:
+     l: str("t")
+  update:
+     olp:
+      - ++f          # ṛ as it-marker; enables SK361 (7.1.70) nUM insertion
+
 # 234 : अल्लोपोऽनः (6-4-134)
 # 234: अल्लोपोऽनः (6-4-134)
 - sutra: अल्लोपोऽनः
