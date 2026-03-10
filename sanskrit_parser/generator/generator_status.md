@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 99 |
-| SK-numbered sutras, skipped/deferred | 21 |
+| SK-numbered sutras, implemented | 109 |
+| SK-numbered sutras, skipped/deferred | 20 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 64 |
+| Stems with full vibhakti test tables | 73 |
 
 ---
 
@@ -141,6 +141,16 @@ The "Forms affected" column uses the convention:
 | 350 | 2.4.32 | इदमोऽन्वादेशेऽशनुदात्तः | idam in anuvādeśa context (tṛtīyādi): substitute a (asmāt etc.) |
 | 351 | 2.4.34 | द्वितीयाटौस्स्वेनः | idam anuvādeśa + acc/ins/gen du: svena substitute (anena, ābhyām, anayoḥ) |
 | 352 | 8.2.8 | न ङिसम्बुद्ध्योः | Exception: n-lopa (8.2.7) does NOT apply before ṅi/sambuddhi (rājni, rājan!) |
+| 354 | 8.2.77 | हलि च | upadhā-dīrgha of v/r-final dhātu upadhā-ik before hal-initial suffix |
+| 355 | 6.4.137 | न संयोगाद्वमन्तात् | blocks al-lopa of -an stems when saṃyoga ends in v or m; ensures parvan/yajvan bha forms |
+| 356 | 6.4.12 | इन्हन्पूषार्यम्णां शौ | blocks upadhā-dīrgha (6.4.8) for in/han/pūṣan/aryaman before all sarvānāmasthāna except śi; hastinau (no dīrgha) in du |
+| 357 | 6.4.13 | सौ च | re-enables upadhā-dīrgha for in/pūṣan/aryaman before su: hastī, pūṣā, aryamā (nom sg) |
+| 358 | 7.3.54 | हो हन्तेर्ञ्णिन्नेषु | h of han-stem → G (gh) before ṅit/ṇit/n; vṛtraghna- forms in bha position |
+| 359 | 8.4.22 | हन्तेरत्पूर्वस्य | blocks ṇatva (n→ṇ) after G in han-stems; vṛtraghna not *vṛtraghṇa |
+| 360 | 6.4.128 | मघवा बहुलम् | optional tṛ-substitute for maGavan (bahulam); both maGavat- and maGo- paradigms |
+| 361 | 7.1.70 | उगिदचां सर्वनामस्थानेऽधातोः | nUM before sarvanamasthana for ugit-marked (++f) stems; enables -ant strong forms |
+| 362 | 6.4.133 | श्वयुवमघोनामतद्धिते | samprasāraṇa (v→u) for śvan/yuvan/maGavan in bha (vowel-initial non-sarvanamasthana) |
+| 364 | 6.4.127 | अर्वणस्त्रसावनञः | mandatory tṛ-substitute for arvan before all suffixes except su; arvant- strong, arvat- bha |
 
 ---
 
@@ -239,9 +249,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 323 | 1.1.48 | एच इग्घ्रस्वादेशे | Handled elsewhere | `hrasva()` in paribhāṣā.py |
 | 348 | 1.1.21 | आद्यन्तवदेकस्मिन् | Natural | Falls out of engine behaviour |
 | 353 | 8.2.2 | नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति | Natural + special siddha | n-lopa in kṛt/kyac/kyaṇ contexts |
-| 354 | 8.2.77 | हलि च | Implemented | upadhā-ik lengthening of r/v-final dhātu before hal suffix |
-| 355 | 6.4.137 | न संयोगाद्वमन्तात् | Implemented | blocks al-lopa of -an- stems when saMyoga ending in v/m precedes 'a' |
 | 363 | 6.1.37 | न संप्रसारणे संप्रसारणम् | For later — kṛt/verbal only | blocks double samprasāraṇa; not needed for nominal declension (SK362's samprasArana_van produces no further samprasāraṇa candidate) |
+| 364 | 6.4.127 | अर्वणस्त्रसावनञः | Partial — nañ exception pending | anarvan (nañ compound) should decline like yajvan but "arvan" tag is not propagated through compounds; structurally handled once nañ compound formation is added; verify then |
 
 ---
 
@@ -257,7 +266,6 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | hari | m | i-stem (ghy) | |
 | pati | m | i-stem (pati) | Standalone (not ghy) |
 | saKi | m | i-stem (sakhi) | Special oblique stem sakhā |
-| kavi | m | i-stem | |
 | SamBu | m | u-stem (ghy) | |
 | krozwu | m | u-stem (kroṣṭu) | Inflects like ṛ-stem |
 | go | m | go-stem | |
@@ -317,4 +325,13 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | atinO | n | u-stem (nau-type) | |
 | anya | n | sarvanāma | |
 | dvi | m/f/n | dvi | Numeral (dual-only) |
+| dvi_s | f/n | dvi | Feminine/neuter dual-only numeral |
 | kati | m | kati (qati) | Numeral |
+| parvan | n | n-stem | Neuter; SK355 (6.4.137) blocks al-lopa |
+| yajvan | m | van-stem | yajvan-type (-van with SK355) |
+| hastin | m | in-stem | SK356/357: nom sg hastī, du hastinau |
+| vftrahan | m | han-stem (compound) | SK356–359: vṛtraghna bha, vṛtrahaṇa strong |
+| svan | m | śvan (n-stem) | SK362 samprasāraṇa: śuna- in bha |
+| yuvan | m | van-stem | SK362 samprasāraṇa: yūna- in bha |
+| maGavan | m | van-stem (optional tṛ) | SK360 optional tṛj; both paradigms listed |
+| arvan | m | van-stem (mandatory tṛ) | SK364 mandatory tṛ except nom sg |
