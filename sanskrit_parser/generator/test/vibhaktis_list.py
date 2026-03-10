@@ -890,6 +890,50 @@ viBakti["arvan"] = [
     ['अर्वन्', 'अर्वन्तौ', 'अर्वन्तः'],           # 8 Voc  * bare stem sg; du/pl = nom
 ]
 
+# paTin-group stems: SK365 (7.1.85) ā before su, SK366 (7.1.86) i→a before sarvanamasthana,
+# SK367 (7.1.87) th→nth before sarvanamasthana (paTin/maTin only), SK368 (7.1.88) ṭi-lopa in bha.
+# Strong forms (sarvanamasthana): panTAn-/manTAn- (SK367+366+6.4.8); nom/voc sg +SK365 → panthāḥ.
+# Bha forms (vowel-initial weak): paT-/maT-/fBukz- (SK368 ṭi-lopa).
+# Consonant-initial weak: paTi-/maTi-/fBukzi- (8.2.7 n-lopa drops final n).
+prAtipadika["paTin"] = paTin  # noqa: F405
+viBakti["paTin"] = [
+    ['पन्थाः', 'पन्थानौ', 'पन्थानः'],          # 1 Nom  * SK367+366+6.4.8+SK365 sg; SK367+366+6.4.8 du/pl
+    ['पन्थानम्', 'पन्थानौ', 'पथः'],             # 2 Acc  * SK367+366+6.4.8 sg/du; SK368 pl (bha)
+    ['पथा', 'पथिभ्याम्', 'पथिभिः'],            # 3 Inst * SK368 sg (bha)
+    ['पथे', 'पथिभ्याम्', 'पथिभ्यः'],           # 4 Dat  * SK368 sg (bha)
+    ['पथः', 'पथिभ्याम्', 'पथिभ्यः'],           # 5 Abl  * SK368 sg (bha)
+    ['पथः', 'पथोः', 'पथाम्'],                  # 6 Gen  * SK368 all (bha)
+    ['पथि', 'पथोः', 'पथिषु'],                  # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['पन्थाः', 'पन्थानौ', 'पन्थानः'],          # 8 Voc  * SK365 fires for voc too (no ?!sambudDi); du/pl=nom
+]
+
+prAtipadika["maTin"] = maTin  # noqa: F405
+viBakti["maTin"] = [
+    ['मन्थाः', 'मन्थानौ', 'मन्थानः'],          # 1 Nom  * SK367+366+6.4.8+SK365 sg; SK367+366+6.4.8 du/pl
+    ['मन्थानम्', 'मन्थानौ', 'मथः'],             # 2 Acc  * SK367+366+6.4.8 sg/du; SK368 pl (bha)
+    ['मथा', 'मथिभ्याम्', 'मथिभिः'],            # 3 Inst * SK368 sg (bha)
+    ['मथे', 'मथिभ्याम्', 'मथिभ्यः'],           # 4 Dat  * SK368 sg (bha)
+    ['मथः', 'मथिभ्याम्', 'मथिभ्यः'],           # 5 Abl  * SK368 sg (bha)
+    ['मथः', 'मथोः', 'मथाम्'],                  # 6 Gen  * SK368 all (bha)
+    ['मथि', 'मथोः', 'मथिषु'],                  # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['मन्थाः', 'मन्थानौ', 'मन्थानः'],          # 8 Voc  * SK365 fires for voc (same as nom)
+]
+
+# fBukzin: no SK367 (no th/T in stem). Strong forms get ṇatva (8.4.2) on the n
+# after kṣ (z in SLP1) — ṛbhukṣāṇau, ṛbhukṣāṇaḥ, ṛbhukṣāṇam.
+# Voc sg: SK366 fires (i→a) but 6.4.8 excluded (?!sambudDi); SK365 fires → ṛbhukṣāḥ.
+prAtipadika["fBukzin"] = fBukzin  # noqa: F405
+viBakti["fBukzin"] = [
+    ['ऋभुक्षाः', 'ऋभुक्षाणौ', 'ऋभुक्षाणः'],   # 1 Nom  * SK366+6.4.8+SK365 sg; SK366+6.4.8 du/pl; 8.4.2 ṇatva du/pl
+    ['ऋभुक्षाणम्', 'ऋभुक्षाणौ', 'ऋभुक्षः'],   # 2 Acc  * 8.4.2 ṇatva sg/du; SK368 pl (bha)
+    ['ऋभुक्षा', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभिः'],   # 3 Inst * SK368 sg (bha)
+    ['ऋभुक्षे', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभ्यः'],   # 4 Dat
+    ['ऋभुक्षः', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभ्यः'],   # 5 Abl
+    ['ऋभुक्षः', 'ऋभुक्षोः', 'ऋभुक्षाम्'],     # 6 Gen  * SK368 all (bha)
+    ['ऋभुक्षि', 'ऋभुक्षोः', 'ऋभुक्षिषु'],     # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['ऋभुक्षाः', 'ऋभुक्षाणौ', 'ऋभुक्षाणः'],   # 8 Voc  * SK365+SK366 (6.4.8 excluded by ?!sambudDi); du/pl=nom
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 

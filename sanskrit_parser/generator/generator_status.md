@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 364 — 6.4.127 अर्वणस्त्रसावनञः
-**Next to implement:** SK 365 (7.1.85 — पथिमथ्यृभुक्षामात्)
+**Last implemented:** SK 368 — 7.1.88 भस्य टेर्लोपः
+**Next to implement:** SK 369 (7.1.89 — ?)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 109 |
+| SK-numbered sutras, implemented | 113 |
 | SK-numbered sutras, skipped/deferred | 20 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 73 |
+| Stems with full vibhakti test tables | 76 |
 
 ---
 
@@ -151,6 +151,10 @@ The "Forms affected" column uses the convention:
 | 361 | 7.1.70 | उगिदचां सर्वनामस्थानेऽधातोः | nUM before sarvanamasthana for ugit-marked (++f) stems; enables -ant strong forms |
 | 362 | 6.4.133 | श्वयुवमघोनामतद्धिते | samprasāraṇa (v→u) for śvan/yuvan/maGavan in bha (vowel-initial non-sarvanamasthana) |
 | 364 | 6.4.127 | अर्वणस्त्रसावनञः | mandatory tṛ-substitute for arvan before all suffixes except su; arvant- strong, arvat- bha |
+| 365 | 7.1.85 | पथिमथ्यृभुक्षामात् | ā for final n of paTin/maTin/fBukzin before su (both nom and voc sg); panthāḥ, manthāḥ, ṛbhukṣāḥ |
+| 366 | 7.1.86 | इतोऽत्सर्वनामस्थाने | i→a of paTin-group before sarvanamasthana; combines with 6.4.8 for dīrgha in strong forms |
+| 367 | 7.1.87 | थो न्थः | th→nth in paTin/maTin (not fBukzin) before sarvanamasthana; panthān- strong forms |
+| 368 | 7.1.88 | भस्य टेर्लोपः | ṭi-lopa (delete final i+n) for paTin-group in bha position; path-, math-, ṛbhukṣ- before vowels |
 
 ---
 
@@ -335,3 +339,6 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | yuvan | m | van-stem | SK362 samprasāraṇa: yūna- in bha |
 | maGavan | m | van-stem (optional tṛ) | SK360 optional tṛj; both paradigms listed |
 | arvan | m | van-stem (mandatory tṛ) | SK364 mandatory tṛ except nom sg |
+| paTin | m | paTin-group | SK365–368: panthāḥ nom/voc sg, panTāna- strong, paṭha- bha |
+| maTin | m | paTin-group | same rules as paTin; manthāḥ nom/voc sg |
+| fBukzin | m | paTin-group | SK365/366/368 only (no SK367 — no th); ṛbhukṣāḥ nom/voc sg; ṇatva in strong forms |

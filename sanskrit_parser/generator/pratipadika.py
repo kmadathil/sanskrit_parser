@@ -42,6 +42,13 @@ rE = Pratipadika("rE", "pum")
 hastin = Pratipadika("hastin", "pum")
 yogin = Pratipadika("yogin", "pum")
 
+# paTin-group: SK365 (7.1.85) ā before su; SK366 (7.1.86) i→a before sarvanAmasTAna;
+# SK367 (7.1.87) T→nT before sarvanAmasTAna (paTin/maTin only, both have T=th);
+# SK368 (7.1.88) ṭi-lopa (delete final i+n) in bha position
+paTin = Pratipadika("paTin", "pum", other_tags=["paTin", "paTinTh"])
+maTin = Pratipadika("maTin", "pum", other_tags=["paTin", "paTinTh"])
+fBukzin = Pratipadika("fBukzin", "pum", other_tags=["paTin"])
+
 # Special an-stems listed in 6.4.12 (treated like in-stems for upadhā dīrgha)
 pUzan = Pratipadika("pUzan", "pum")        # Pūṣan (Vedic deity)
 aryaman = Pratipadika("aryaman", "pum")    # Aryaman (Vedic deity)

@@ -3089,6 +3089,66 @@
      lc: numAgama(lc+l)
      l: null
 
+# 368: भस्य टेर्लोपः (7-1-88)
+# ṭi-lopa for paTin-group (paTin/maTin/fBukzin) in bha position.
+# ṭi = final vowel i + following consonant n = "in". Fires before vowel-initial
+# non-sarvanamasthana suffixes: śas (acc pl), TA (inst sg), e (dat sg), as (abl/gen sg), etc.
+# Result: paT (path-), maT (math-), fBukz (ṛbhukṣ-) + vowel suffix.
+- sutra: भस्य टेर्लोपः
+  id: 7.1.88
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?paTin
+     l: n
+     ll: i
+  xform:
+     lc: lc[:-1]
+     l: null
+
+# 367: थो न्थः (7-1-87)
+# nth substituted for th (T in SLP1) in paTin/maTin before sarvanamasthana.
+# Not applicable to fBukzin (no th/T in stem). Tag ?paTinTh restricts to paTin/maTin.
+# APS 71087 > SK366 (71086): fires first; changes lc[-2] from T to nT.
+- sutra: थो न्थः
+  id: 7.1.87
+  condition:
+     lp: ?paTinTh
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc[:-2]+"n"+lc[-2:]
+
+# 366: इतोऽत्सर्वनामस्थाने (7-1-86)
+# a substituted for i of paTin-group (paTin/maTin/fBukzin) before sarvanamasthana.
+# APS 71086 > 6.4.8 (60408): fires before upadhā-dīrgha.
+# After SK367: lc[-1]='i' (for paTin/maTin post-ntha) or lc[-1]='i' (for fBukzin, no SK367).
+# Note: l: n omitted — redundant given ?paTin tag; plain condition dict works fine.
+- sutra: इतोऽत्सर्वनामस्थाने
+  id: 7.1.86
+  condition:
+     lp: ?paTin
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc[:-1]+str("a")
+
+# 365: पथिमथ्यृभुक्षामात् (7-1-85)
+# ā substituted for final n of paTin-group before su (both nom and voc sg —
+# no ?!sambudDi restriction; sūtra is unqualified, unlike 7.1.93 for sakhī).
+# After SK366: lc[-1]='a' (from i→a), l='n'. This rule absorbs both into lc:
+# lc[:-1]+ā replaces (lc[-1]='a' + l='n') → single long ā.
+# Result: lc='panTĀ'/'manTĀ'/'fBukzĀ', l=null; +su(s) → 8.2.66 → visarga ('panTĀH').
+# NOTE: 6.4.8 fires for nom/acc du/pl (SK365 not active for them), giving dīrgha there.
+- sutra: पथिमथ्यृभुक्षामात्
+  id: 7.1.85
+  condition:
+     lp: ?paTin
+     rp: ?su
+  xform:
+     lc: lc[:-1]+str("A")
+     l: null
+
 # 314: नपुंसकस्य झलचः (7-1-72)
 - sutra: नपुंसकस्य झलचः
   id: 7.1.72
