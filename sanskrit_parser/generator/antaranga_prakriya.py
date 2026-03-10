@@ -13,6 +13,7 @@ produce a vakya.
 """
 
 from abc import abstractmethod
+from decimal import Decimal
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
@@ -201,6 +202,7 @@ class AntarangaPrakriya(PrakriyaBase):
         """
         # Wrapper for special "siddha" situations
         def _special_siddha(a1, a2):
+
             # zqutva is siddha for q lopa
             if (int(a1) == 84041) and (a2 == 83013):   # Int gets both the branches
                 return True
@@ -210,7 +212,10 @@ class AntarangaPrakriya(PrakriyaBase):
             # n lopa siddha for inter pada (happens naturally)
             # also for 7.4.33, 7.4.25 rAjIyati, rAjAyate
             elif ((a1 == 82007) or (a1 == 74033)) and (a2 == 74025):
-                return True            
+                return True
+            # maGavan upaDA dIrGa (see Siddhanta Kaumudi on 7.1.70)
+            elif ((a1 == 82023) and (a2 == Decimal("64008.1"))):
+                return True
             else:
                 return False
 

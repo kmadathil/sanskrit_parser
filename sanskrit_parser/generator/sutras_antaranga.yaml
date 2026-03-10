@@ -719,6 +719,31 @@
   xform:
      lc: lc[:-1]+dirgha(lc[-1])
 
+#250:  सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
+# The case of maGavan is unique. After the optional change to maGavat_f,
+# followed by num insertion by 7.1.70 and 8.2.23 संयोगान्तस्य लोपः
+# resulting in maGavan, we need the final a to be lengthened
+# SK says उपधादीर्घः । मघवान् । इह दीर्घे कर्तव्ये संयोगान्तलोपस्याऽसिद्धत्वं न भवति बहुलग्रहणात् ।
+# Thus, we need to make by making the output 0f 8.2.23 visible to
+# 6.4.8,  *only* in the case of maGavan,
+# while also stopping 8.2.7 nalopaH prAtipadikAntasya 
+# To do that, we create a subrule and make it 8.2.23 special_siddha for it
+- sutra: सर्वनामस्थाने चासम्बुद्धौ
+  id: 6.4.8.1
+  overrides: [6.4.8, 8.2.7]
+  condition:
+     l: n
+     lp:
+       - and
+       - ?maGavan
+       - +f
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
 
 
 # 124: अनुस्वारस्य ययि परसवर्णः (8-4-58)
