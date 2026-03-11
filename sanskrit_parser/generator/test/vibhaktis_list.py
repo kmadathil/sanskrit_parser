@@ -934,6 +934,34 @@ viBakti["fBukzin"] = [
     ['ऋभुक्षाः', 'ऋभुक्षाणौ', 'ऋभुक्षाणः'],   # 8 Voc  * SK365+SK366 (6.4.8 excluded by ?!sambudDi); du/pl=nom
 ]
 
+# mahat (pum): ugit (its=['u']) → SK361 (7.1.70) fires nUM before sarvanamasthāna suffixes
+# Strong forms (nom/acc sg+du, nom pl, voc du+pl): mahānt- base
+# Weak forms (acc pl, inst–loc sg, gen–loc du/pl): mahat- / mahad- base
+prAtipadika["mahat"] = mahat  # noqa: F405
+viBakti["mahat"] = [
+    ['महान्', 'महान्तौ', 'महान्तः'],    # 1 Nom  * SK361 nUM fires (sarvanāmasthāna)
+    ['महान्तम्', 'महान्तौ', 'महतः'],    # 2 Acc  * SK361 nUM fires sg+du; weak pl
+    ['महता', 'महद्भ्याम्', 'महद्भिः'],  # 3 Inst
+    ['महते', 'महद्भ्याम्', 'महद्भ्यः'], # 4 Dat
+    ['महतः', 'महद्भ्याम्', 'महद्भ्यः'], # 5 Abl
+    ['महतः', 'महतोः', 'महताम्'],         # 6 Gen
+    ['महति', 'महतोः', 'महत्सु'],          # 7 Loc
+    ['महन्', 'महान्तौ', 'महान्तः'],    # 8 Voc  * SK361 nUM fires du+pl
+]
+
+# mahat_n (napum): nom/acc/voc pl mahānti with nUM; sg has two pause forms (mahat / mahad)
+prAtipadika["mahat_n"] = mahat_n  # noqa: F405
+viBakti["mahat_n"] = [
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 1 Nom  * nUM fires pl
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 2 Acc  (= Nom for napum)
+    ['महता', 'महद्भ्याम्', 'महद्भिः'],       # 3 Inst
+    ['महते', 'महद्भ्याम्', 'महद्भ्यः'],      # 4 Dat
+    ['महतः', 'महद्भ्याम्', 'महद्भ्यः'],      # 5 Abl
+    ['महतः', 'महतोः', 'महताम्'],              # 6 Gen
+    ['महति', 'महतोः', 'महत्सु'],               # 7 Loc
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 8 Voc  (= Nom for napum)
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
