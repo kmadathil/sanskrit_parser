@@ -142,7 +142,7 @@ itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
 vAri = Pratipadika("vAri", "napum")
-mahat_n = Pratipadika("mahat", "napum")
+mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")
 SrIpA = Pratipadika("SrIpA", "napum", other_tags=["DAtu", "kvip"])
 asTi = Pratipadika("asTi", "napum")
@@ -185,3 +185,10 @@ maGavan = Pratipadika("maGavan", "pum", other_tags=["SvanType", "maGavan"])
 
 # SK364 (6.4.127): arvan — mandatory tṛ-substitute before all suffixes except su.
 arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])
+
+# Iyasun (comparative suffix) is u-it → ugit → SK361 nUM fires before sarvanamasthāna.
+# pum: its=['u'] → SK361 fires for all sarvanamasthāna (nom sg śreyān, acc sg śreyāṃsam, etc.)
+# napum: no its=['u'] — 7.1.72 (napum Jal/ac before sarvanamasthāna) already fires for pl;
+#   adding its=['u'] would cause both 7.1.72 and SK361 to fire → double nUM (generator limitation).
+Sreyas   = Pratipadika("Sreyas", "pum",   its=['u'], other_tags=["Iyasun"])
+Sreyas_n = Pratipadika("Sreyas", "napum",            other_tags=["Iyasun"])

@@ -962,6 +962,37 @@ viBakti["mahat_n"] = [
     [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 8 Voc  (= Nom for napum)
 ]
 
+# Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
+# before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
+# voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).
+# Note: the generator renders nasal as 'n' before 's' (न्स), not as anusvāra (ंस).
+prAtipadika["Sreyas"] = Sreyas  # noqa: F405
+viBakti["Sreyas"] = [
+    ['श्रेयान्', 'श्रेयान्सौ', 'श्रेयान्सः'],      # 1 Nom  * SK361 nUM fires
+    ['श्रेयान्सम्', 'श्रेयान्सौ', 'श्रेयसः'],      # 2 Acc  * SK361 sg+du; weak pl
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],      # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],     # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],     # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],           # 6 Gen
+    ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
+    ['श्रेयन्', 'श्रेयान्सौ', 'श्रेयान्सः'],      # 8 Voc  * SK361 du+pl
+]
+
+# Sreyas_n (napum): Iyasun-derived but no its=['u'] (7.1.72 handles napum pl nUM;
+# adding its=['u'] causes double nUM for pl — generator limitation).
+# Nom/acc/voc pl: śreyāṃsi via 7.1.72 (napum Jal before sarvanamasthāna).
+prAtipadika["Sreyas_n"] = Sreyas_n  # noqa: F405
+viBakti["Sreyas_n"] = [
+    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 1 Nom
+    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 2 Acc (= Nom for napum)
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],       # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],      # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],      # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],            # 6 Gen
+    ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
+    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 8 Voc (= Nom for napum)
+]
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
