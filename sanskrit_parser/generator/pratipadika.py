@@ -86,7 +86,7 @@ praDI = Pratipadika("praDI", "pum", other_tags=["DAtu", "kvip", "pUrvastrI"])
 hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
-mahat = Pratipadika("mahat", "pum")
+mahat = Pratipadika("mahat", "pum", its=['u'])
 
 atistri = Pratipadika("atistri", "pum", other_tags=["strI_p", "pUrvastrI"])
 
