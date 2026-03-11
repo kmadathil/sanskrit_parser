@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanskrit Generator — Declension Explorer</title>
+  <style>
+    /* ── Reset / base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      color: #1a1a2e;
+      background: #f5f5f0;
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    header {
+      background: #1a1a2e;
+      color: #e8d5b0;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+      flex: 1;
+    }
+    header .sanskrit-title {
+      font-size: 1.1rem;
+      opacity: .75;
+    }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+      height: calc(100vh - 54px);
+    }
+
+    /* ── Control panel (left sidebar) ────────────────────── */
+    .controls {
+      grid-row: 1 / 3;
+      background: #fff;
+      border-right: 1px solid #ddd;
+      padding: 20px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .controls h2 {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .controls label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: .9rem;
+    }
+
+    select#stem-select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #c8c8c8;
+      border-radius: 6px;
+      font-size: .9rem;
+      background: #fafafa;
+      cursor: pointer;
+      color: #1a1a2e;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+    }
+    select#stem-select:focus { outline: 2px solid #c17f24; }
+
+    .encoding-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .encoding-group label.option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 400;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+    .encoding-group input[type=radio] { accent-color: #c17f24; }
+
+    .btn-generate {
+      width: 100%;
+      padding: 10px;
+      background: #c17f24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-generate:hover { background: #a3691b; }
+    .btn-generate:active { background: #8c5917; }
+    .btn-generate:disabled { background: #ccc; cursor: not-allowed; }
+
+    .status {
+      font-size: .82rem;
+      color: #666;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    .status.error { color: #c0392b; }
+
+    /* ── Main content area ────────────────────────────────── */
+    .main {
+      padding: 20px 24px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Declension table ─────────────────────────────────── */
+    .table-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .table-title span.stem-label {
+      color: #c17f24;
+    }
+
+    .declension-wrap {
+      overflow-x: auto;
+    }
+
+    table.declension {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 560px;
+    }
+
+    table.declension th,
+    table.declension td {
+      border: 1px solid #d8d8d0;
+      padding: 10px 14px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table.declension thead th {
+      background: #1a1a2e;
+      color: #e8d5b0;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-weight: 600;
+    }
+
+    table.declension thead th:first-child { text-align: left; }
+
+    table.declension tbody th {
+      background: #f0ede6;
+      text-align: left;
+      font-size: .82rem;
+      color: #444;
+      font-weight: 600;
+      white-space: nowrap;
+      width: 200px;
+    }
+
+    table.declension tbody td {
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background .12s;
+      background: #fff;
+      min-width: 130px;
+    }
+
+    table.declension tbody td:hover {
+      background: #fff8ee;
+    }
+
+    table.declension tbody td.selected {
+      background: #fff3d4;
+      outline: 2px solid #c17f24;
+      outline-offset: -2px;
+    }
+
+    table.declension tbody td.dash {
+      color: #bbb;
+      cursor: default;
+    }
+
+    table.declension tbody tr:nth-child(even) td {
+      background: #fafaf7;
+    }
+    table.declension tbody tr:nth-child(even) td:hover {
+      background: #fff8ee;
+    }
+    table.declension tbody tr:nth-child(even) td.selected {
+      background: #fff3d4;
+    }
+
+    /* ── Sutra trace panel ────────────────────────────────── */
+    .trace-panel {
+      border: 1px solid #d8d8d0;
+      border-radius: 8px;
+      background: #1a1a2e;
+      color: #c8eac8;
+      padding: 14px 16px;
+      font-family: 'Cascadia Code', 'Fira Mono', 'Menlo', monospace;
+      font-size: .78rem;
+      line-height: 1.6;
+      white-space: pre;
+      overflow-x: auto;
+      max-height: 320px;
+      overflow-y: auto;
+      tab-size: 2;
+    }
+
+    .trace-panel.empty {
+      color: #556;
+      font-family: inherit;
+      font-size: .88rem;
+      white-space: normal;
+    }
+
+    .trace-label {
+      font-size: .8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    /* ── Loading spinner ──────────────────────────────────── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #ddd;
+      border-top-color: #c17f24;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* ── Responsive: narrow screens ──────────────────────── */
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; height: auto; }
+      .controls { grid-row: 1; border-right: none; border-bottom: 1px solid #ddd; }
+      .main { grid-row: 2; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Sanskrit Generator — Declension Explorer</h1>
+  <span class="sanskrit-title">शब्दरूपप्रदर्शकः</span>
+</header>
+
+<div class="layout">
+
+  <!-- ── Left sidebar ─────────────────────────────────────── -->
+  <aside class="controls">
+
+    <div>
+      <h2>Stem</h2>
+      <label for="stem-select">Select a prātipadika:</label>
+      <select id="stem-select">
+        {% for group, stems in groups.items() %}
+        <optgroup label="{{ group }}">
+          {% for s in stems %}
+          <option value="{{ s.key }}"
+            {% if s.key == default_stem %}selected{% endif %}>
+            {{ s.label }}
+          </option>
+          {% endfor %}
+        </optgroup>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <h2>Script</h2>
+      <div class="encoding-group">
+        <label class="option">
+          <input type="radio" name="encoding" value="devanagari" checked>
+          Devanāgarī
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding" value="iast">
+          IAST (romanized)
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding" value="slp1">
+          SLP1 (internal)
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btn-generate" onclick="loadTable()">
+      Generate Table
+    </button>
+
+    <div class="status" id="status"></div>
+
+  </aside>
+
+  <!-- ── Main content ─────────────────────────────────────── -->
+  <main class="main">
+
+    <div class="table-title" id="table-title">
+      Select a stem and click <em>Generate Table</em>
+    </div>
+
+    <div class="declension-wrap">
+      <table class="declension" id="declension-table">
+        <thead>
+          <tr>
+            <th></th>
+            {% for v in vacanas %}
+            <th>{{ v }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          {% for vib in vibhaktis %}
+          <tr>
+            <th>{{ vib }}</th>
+            {% for _ in vacanas %}
+            <td class="dash">—</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="trace-label">Sutra trace — click a cell to inspect</div>
+      <div class="trace-panel empty" id="trace-panel">
+        Click any declension cell to see the detailed sutra derivation trace.
+      </div>
+    </div>
+
+  </main>
+
+</div><!-- /.layout -->
+
+<script>
+  // ── State ────────────────────────────────────────────────
+  let tableData = null;   // {table, traces, vibhaktis, vacanas}
+  let selectedCell = null; // [row, col]
+
+  // ── Load table via API ────────────────────────────────────
+  async function loadTable() {
+    const stem     = document.getElementById('stem-select').value;
+    const encoding = document.querySelector('input[name=encoding]:checked').value;
+    const btn      = document.getElementById('btn-generate');
+    const status   = document.getElementById('status');
+    const title    = document.getElementById('table-title');
+
+    btn.disabled = true;
+    status.className = 'status';
+    status.innerHTML = '<span class="spinner"></span> Generating…';
+    title.innerHTML  = 'Generating…';
+    clearTrace();
+
+    try {
+      const res = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}`);
+      const data = await res.json();
+
+      if (data.error) {
+        status.textContent = 'Error: ' + data.error;
+        status.className = 'status error';
+        btn.disabled = false;
+        return;
+      }
+
+      tableData = data;
+      selectedCell = null;
+      renderTable(data);
+
+      const stemLabel = document.getElementById('stem-select').selectedOptions[0].text;
+      title.innerHTML = `Declension table: <span class="stem-label">${escHtml(stemLabel)}</span>`;
+      status.textContent = 'Done — click a cell for the sutra trace.';
+
+    } catch (err) {
+      status.textContent = 'Network error: ' + err.message;
+      status.className = 'status error';
+    }
+
+    btn.disabled = false;
+  }
+
+  // ── Render table ─────────────────────────────────────────
+  function renderTable(data) {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    data.vibhaktis.forEach((vibName, r) => {
+      const tr = document.createElement('tr');
+
+      const th = document.createElement('th');
+      th.textContent = vibName;
+      tr.appendChild(th);
+
+      data.vacanas.forEach((_, c) => {
+        const td = document.createElement('td');
+        const form = data.table[r][c];
+
+        if (form === '—') {
+          td.textContent = '—';
+          td.classList.add('dash');
+        } else {
+          td.textContent = form;
+          td.title = 'Click for sutra trace';
+          td.addEventListener('click', () => selectCell(r, c));
+        }
+
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── Cell selection ────────────────────────────────────────
+  function selectCell(r, c) {
+    if (!tableData) return;
+
+    // Clear previous selection
+    document.querySelectorAll('td.selected').forEach(el => el.classList.remove('selected'));
+
+    const tbody = document.getElementById('table-body');
+    const td = tbody.rows[r].cells[c + 1];   // +1 because first cell is <th>
+    td.classList.add('selected');
+    selectedCell = [r, c];
+
+    const trace = tableData.traces[r][c];
+    const traceEl = document.getElementById('trace-panel');
+    if (trace && trace.trim()) {
+      traceEl.textContent = trace;
+      traceEl.classList.remove('empty');
+    } else {
+      clearTrace();
+    }
+  }
+
+  function clearTrace() {
+    const traceEl = document.getElementById('trace-panel');
+    traceEl.textContent = 'Click any declension cell to see the detailed sutra derivation trace.';
+    traceEl.classList.add('empty');
+  }
+
+  // ── Helpers ───────────────────────────────────────────────
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── Auto-load on encoding change ─────────────────────────
+  document.querySelectorAll('input[name=encoding]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (tableData) loadTable();
+    });
+  });
+
+  // ── Auto-load on stem change ──────────────────────────────
+  document.getElementById('stem-select').addEventListener('change', loadTable);
+
+  // ── Load default stem on page load ───────────────────────
+  window.addEventListener('DOMContentLoaded', loadTable);
+</script>
+
+</body>
+</html>
