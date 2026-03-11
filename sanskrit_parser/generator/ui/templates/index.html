@@ -267,7 +267,7 @@
       border-bottom: 1px solid #e0ddd8;
     }
     .ts-h-dev  { color: #7a4d0a; font-size: 1.05rem; font-weight: 700; }
-    .ts-h-slp1 { color: #aaa; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
+    .ts-h-slp1 { color: #777; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
 
     .ts-step {
       display: flex;
@@ -278,14 +278,14 @@
     }
     /* Changed step: warm highlight */
     .ts-step.ch { background: #fff4e0; border-left: 2px solid #c17f24; padding-left: 8px; }
-    /* No-change step: faded */
-    .ts-step.nc { opacity: .45; }
-    /* Special step (Prakriya Start / samhitā): very faded */
-    .ts-step.sp { opacity: .35; }
+    /* No-change step: lightly faded — green arrow is sufficient to identify changes */
+    .ts-step.nc { opacity: .65; }
+    /* Special step (Prakriya Start / samhitā): faded */
+    .ts-step.sp { opacity: .55; }
 
     .ts-n {
       min-width: 22px;
-      color: #ccc;
+      color: #888;
       font-size: .7rem;
       text-align: right;
       padding-top: 3px;
@@ -302,8 +302,8 @@
     }
     .ts-aps     { color: #1a4aaa; font-family: monospace; font-size: .73rem; font-weight: 600; }
     .ts-dev     { color: #1a1a2e; }
-    .ts-slp1    { color: #bbb; font-family: monospace; font-size: .7rem; }
-    .ts-special { color: #999; font-style: italic; }
+    .ts-slp1    { color: #777; font-family: monospace; font-size: .7rem; }
+    .ts-special { color: #444; font-style: italic; }
     .ts-opt     { color: #c17f24; font-size: .68rem; border: 1px solid #c17f24; border-radius: 3px; padding: 0 3px; }
 
     .ts-xform {
@@ -314,17 +314,25 @@
       font-size: .9rem;
       margin-top: 1px;
     }
-    .ts-before  { color: #888; }
+    .ts-before  { color: #555; }
     .ts-arr     { color: #c17f24; font-weight: 700; }
     .ts-after   { color: #186018; font-weight: 600; }
-    .ts-nc-lbl  { color: #bbb; font-size: .72rem; font-style: italic; }
+    .ts-nc-lbl  { color: #555; font-size: .72rem; font-style: italic; }
 
     .ts-also {
       margin-top: 3px;
-      color: #bbb;
-      font-family: monospace;
-      font-size: .7rem;
+      color: #444;
+      font-size: .72rem;
     }
+    .ts-also-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3px;
+      margin: 0 4px 0 0;
+      white-space: nowrap;
+    }
+    .ts-also-item .ts-aps { font-size: .7rem; }
+    .ts-also-dev { color: #1a1a2e; }
 
     .ts-output {
       margin-top: 12px;
@@ -337,7 +345,7 @@
     }
     .ts-out-arr { color: #c17f24; font-weight: 700; font-size: 1rem; }
     .ts-out-dev { color: #7a4d0a; font-size: 1.2rem; font-weight: 700; }
-    .ts-out-sep { color: #bbb; margin: 0 4px; }
+    .ts-out-sep { color: #666; margin: 0 4px; }
 
     /* ── Loading spinner ──────────────────────────────────── */
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -650,11 +658,20 @@
       // Form / also lines — heavily indented (8+ leading spaces)
       if (/^\s{8,}/.test(line) && cur) {
         if (t.startsWith('\u21b3') || t.startsWith('↳')) {
-          // Extract APS IDs from also-triggered list
-          const apsIds = [];
-          const re = /\[([\d.]+)\s/g; let m;
-          while ((m = re.exec(t)) !== null) apsIds.push(m[1]);
-          cur.also = apsIds;
+          // Extract full sutra entries from "also applicable" list: [aps  dev  (slp1)]
+          const entries = [];
+          const reBlock = /\[([^\]]+)\]/g; let m;
+          while ((m = reBlock.exec(t)) !== null) {
+            const inner = m[1];
+            const apsM = inner.match(/^([\d.]+)\s{2}(.*?)\s{2}\(([^)]+)\)\s*$/);
+            if (apsM) {
+              entries.push({ aps: apsM[1], dev: apsM[2], slp1: apsM[3] });
+            } else {
+              const apsOnly = inner.match(/^([\d.]+)(.*)/);
+              if (apsOnly) entries.push({ aps: apsOnly[1], dev: apsOnly[2].trim(), slp1: '' });
+            }
+          }
+          cur.also = entries;
         } else if (t.startsWith('┌') || t.startsWith('│') || t.startsWith('└')) {
           // Hierarchical prakriya — skip for now
         } else if (t.includes('  \u2192  ') || t.includes('  →  ')) {
@@ -679,7 +696,7 @@
 
   function formatTrace(raw) {
     const data = parseTrace(raw);
-    if (!data) return '<em style="color:#445">No trace available.</em>';
+    if (!data) return '<em style="color:#888">No trace available.</em>';
     const { header, steps, output } = data;
 
     let h = '';
@@ -726,10 +743,17 @@
         }
       }
 
-      // Also triggered
+      // Also applicable (triggered but didn't fire)
       let alsoHtml = '';
       if (s.also && s.also.length > 0) {
-        alsoHtml = `<div class="ts-also">↳ also fired: ${s.also.map(esc).join(', ')}</div>`;
+        const items = s.also.map(a => {
+          const tooltip = a.slp1 ? `${a.dev} (${a.slp1})` : a.dev;
+          const devSpan = a.dev
+            ? ` <span class="ts-also-dev">${esc(a.dev)}</span>`
+            : '';
+          return `<span class="ts-also-item" title="${esc(tooltip)}"><span class="ts-aps">${esc(a.aps)}</span>${devSpan}</span>`;
+        });
+        alsoHtml = `<div class="ts-also">↳ also applicable: ${items.join('')}</div>`;
       }
 
       h += `<div class="ts-step ${cls}">
