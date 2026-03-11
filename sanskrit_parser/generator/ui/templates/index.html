@@ -242,8 +242,8 @@
     .trace-panel {
       border: 1px solid #d8d8d0;
       border-radius: 8px;
-      background: #13131f;
-      color: #c8c8c8;
+      background: #faf9f6;
+      color: #1a1a2e;
       padding: 14px 16px;
       font-size: .83rem;
       line-height: 1.55;
@@ -252,7 +252,7 @@
     }
 
     .trace-panel.empty {
-      color: #445;
+      color: #999;
       font-family: inherit;
       font-size: .88rem;
     }
@@ -264,10 +264,10 @@
       gap: 10px;
       margin-bottom: 10px;
       padding-bottom: 8px;
-      border-bottom: 1px solid #25253a;
+      border-bottom: 1px solid #e0ddd8;
     }
-    .ts-h-dev  { color: #ffd060; font-size: 1.05rem; font-weight: 700; }
-    .ts-h-slp1 { color: #445; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
+    .ts-h-dev  { color: #7a4d0a; font-size: 1.05rem; font-weight: 700; }
+    .ts-h-slp1 { color: #aaa; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
 
     .ts-step {
       display: flex;
@@ -277,7 +277,7 @@
       border-radius: 4px;
     }
     /* Changed step: warm highlight */
-    .ts-step.ch { background: rgba(193,127,36,.12); }
+    .ts-step.ch { background: #fff4e0; border-left: 2px solid #c17f24; padding-left: 8px; }
     /* No-change step: faded */
     .ts-step.nc { opacity: .45; }
     /* Special step (Prakriya Start / samhitā): very faded */
@@ -285,7 +285,7 @@
 
     .ts-n {
       min-width: 22px;
-      color: #445;
+      color: #ccc;
       font-size: .7rem;
       text-align: right;
       padding-top: 3px;
@@ -300,10 +300,10 @@
       flex-wrap: wrap;
       margin-bottom: 2px;
     }
-    .ts-aps     { color: #88a8ff; font-family: monospace; font-size: .73rem; font-weight: 600; }
-    .ts-dev     { color: #e8d5b0; }
-    .ts-slp1    { color: #334; font-family: monospace; font-size: .7rem; }
-    .ts-special { color: #556; font-style: italic; }
+    .ts-aps     { color: #1a4aaa; font-family: monospace; font-size: .73rem; font-weight: 600; }
+    .ts-dev     { color: #1a1a2e; }
+    .ts-slp1    { color: #bbb; font-family: monospace; font-size: .7rem; }
+    .ts-special { color: #999; font-style: italic; }
     .ts-opt     { color: #c17f24; font-size: .68rem; border: 1px solid #c17f24; border-radius: 3px; padding: 0 3px; }
 
     .ts-xform {
@@ -314,14 +314,14 @@
       font-size: .9rem;
       margin-top: 1px;
     }
-    .ts-before  { color: #778; }
+    .ts-before  { color: #888; }
     .ts-arr     { color: #c17f24; font-weight: 700; }
-    .ts-after   { color: #88ee88; font-weight: 600; }
-    .ts-nc-lbl  { color: #334; font-size: .72rem; font-style: italic; }
+    .ts-after   { color: #186018; font-weight: 600; }
+    .ts-nc-lbl  { color: #bbb; font-size: .72rem; font-style: italic; }
 
     .ts-also {
       margin-top: 3px;
-      color: #334;
+      color: #bbb;
       font-family: monospace;
       font-size: .7rem;
     }
@@ -329,15 +329,15 @@
     .ts-output {
       margin-top: 12px;
       padding-top: 10px;
-      border-top: 1px solid #25253a;
+      border-top: 1px solid #e0ddd8;
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
     .ts-out-arr { color: #c17f24; font-weight: 700; font-size: 1rem; }
-    .ts-out-dev { color: #ffd060; font-size: 1.2rem; font-weight: 700; }
-    .ts-out-sep { color: #445; margin: 0 4px; }
+    .ts-out-dev { color: #7a4d0a; font-size: 1.2rem; font-weight: 700; }
+    .ts-out-sep { color: #bbb; margin: 0 4px; }
 
     /* ── Loading spinner ──────────────────────────────────── */
     @keyframes spin { to { transform: rotate(360deg); } }
