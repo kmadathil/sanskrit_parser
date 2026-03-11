@@ -260,11 +260,17 @@
     /* ── Trace sub-components ─────────────────────────────── */
     .ts-header {
       display: flex;
-      align-items: baseline;
-      gap: 10px;
+      flex-direction: column;
+      gap: 3px;
       margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid #e0ddd8;
+    }
+    .ts-h-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .ts-h-dev  { color: #7a4d0a; font-size: 1.05rem; font-weight: 700; }
     .ts-h-slp1 { color: #777; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
@@ -684,13 +690,29 @@
                        before: (parts[0] || '').trim(),
                        after:  (parts[1] || '').trim() };
         } else if (t.includes('(no change)')) {
-          const dm = t.match(/^(.+?)\s+\(no change\)/);
-          cur.form = { changed: false, dev: dm ? dm[1].trim() : t };
+          // Format: "dev1 | dev2  (no change)  (slp1_1 | slp1_2)"
+          const dm = t.match(/^(.+?)\s+\(no change\)\s+\(([^)]+)\)\s*$/);
+          if (dm) {
+            cur.form = { changed: false, dev: dm[1].trim(), slp1: dm[2].trim() };
+          } else {
+            const dm0 = t.match(/^(.+?)\s+\(no change\)/);
+            cur.form = { changed: false, dev: dm0 ? dm0[1].trim() : t, slp1: '' };
+          }
         }
       }
     }
 
     if (cur) steps.push(cur);
+
+    // Lift Prakriya Start component forms onto header for tokenized display
+    if (header) {
+      const startStep = steps.find(s => s.special && s.special.includes('Prakriya Start'));
+      if (startStep && startStep.form) {
+        header.devComps  = startStep.form.dev;   // e.g. "राम | स्"
+        header.slp1Comps = startStep.form.slp1;  // e.g. "rAma | s"
+      }
+    }
+
     return { header, steps, output };
   }
 
@@ -701,11 +723,19 @@
 
     let h = '';
 
-    // Header
+    // Header — show tokenized components if available, else concatenated fallback
     if (header) {
+      const devParts  = header.devComps
+        ? header.devComps.split(' | ').map(p => p.trim())
+        : [header.dev];
+      const slp1Parts = header.slp1Comps
+        ? header.slp1Comps.split(' | ').map(p => p.trim())
+        : [header.slp1];
+      const devHtml  = devParts.map(p  => `<span class="ts-h-dev">${esc(p)}</span>`).join('');
+      const slp1Html = slp1Parts.map(p => `<span class="ts-h-slp1">${esc(p)}</span>`).join('');
       h += `<div class="ts-header">
-        <span class="ts-h-dev">${esc(header.dev)}</span>
-        <span class="ts-h-slp1">${esc(header.slp1)}</span>
+        <div class="ts-h-row">${devHtml}</div>
+        <div class="ts-h-row">${slp1Html}</div>
       </div>`;
     }
 
