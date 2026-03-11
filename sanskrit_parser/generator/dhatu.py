@@ -10,17 +10,13 @@ class Dhatu(PaninianObject):
     def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.inPrakriya = True
-        self.its = its
         self.setTag("DAtu")
         self.setTag("aNga")
         self.setTag(self.canonical())
         for t in other_tags:
             self.setTag(t)
-
-    def hasIt(self, it):
-        return it in self.its
 
 
 iR = Dhatu("i", its=["R"], other_tags=["eti"])
