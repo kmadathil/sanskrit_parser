@@ -191,4 +191,4 @@ arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])
 # napum: no its=['u'] — 7.1.72 (napum Jal/ac before sarvanamasthāna) already fires for pl;
 #   adding its=['u'] would cause both 7.1.72 and SK361 to fire → double nUM (generator limitation).
 Sreyas   = Pratipadika("Sreyas", "pum",   its=['u'], other_tags=["Iyasun"])
-Sreyas_n = Pratipadika("Sreyas", "napum",            other_tags=["Iyasun"])
+Sreyas_n = Pratipadika("Sreyas", "napum", its=['u'], other_tags=["Iyasun"])

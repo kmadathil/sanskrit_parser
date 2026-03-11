@@ -3067,8 +3067,8 @@
 # TODO: add ?aNc condition when √añc stems are implemented (dhātu exception)
 - sutra: उगिदचां सर्वनामस्थानेऽधातोः
   id: 7.1.70
-  domain: prakfti
-  bahiranga: 1
+#  domain: prakfti
+#  bahiranga: 1
   condition:
    - lp:               # non-root ṛ-it stems (e.g., maghavat via SK360 ++f)
       - and
@@ -3152,6 +3152,7 @@
 # 314: नपुंसकस्य झलचः (7-1-72)
 - sutra: नपुंसकस्य झलचः
   id: 7.1.72
+  overrides: 7.1.70
   condition:
       l:
         - _Jal
