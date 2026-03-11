@@ -8,10 +8,10 @@ class Pratipadika(PaninianObject):
      Attributes:
     """
     def __init__(self, thing=None, linga="pum",
-                 other_tags=[], encoding=sanscript.SLP1,
+                 its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.linga = linga
         self.inPrakriya = True
         self.setTag("prAtipadika")

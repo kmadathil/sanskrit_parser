@@ -10,22 +10,11 @@ class Pratyaya(PaninianObject):
     def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.inPrakriya = True
-        self.its = its
         self.setTag("pratyaya")
         for t in other_tags:
             self.setTag(t)
-
-    def hasIt(self, it):
-        return it in self.its
-
-    def setIt(self, it):
-        if it not in self.its:
-            self.its.append(it)
-
-    def deleteIt(self, it):
-        return self.its.remove(it)
 
     def luTags(self):
         _l = []
