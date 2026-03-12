@@ -187,8 +187,8 @@ maGavan = Pratipadika("maGavan", "pum", other_tags=["SvanType", "maGavan"])
 arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])
 
 # Iyasun (comparative suffix) is u-it → ugit → SK361 nUM fires before sarvanamasthāna.
-# pum: its=['u'] → SK361 fires for all sarvanamasthāna (nom sg śreyān, acc sg śreyāṃsam, etc.)
-# napum: no its=['u'] — 7.1.72 (napum Jal/ac before sarvanamasthāna) already fires for pl;
-#   adding its=['u'] would cause both 7.1.72 and SK361 to fire → double nUM (generator limitation).
+# pum: its=['u'] → SK361 (7.1.70) fires for all sarvanamasthāna (nom sg śreyān, etc.)
+# napum: its=['u'] — ugit; but 7.1.72 (नपुंसकस्य झलचः) overrides 7.1.70 for napum stems,
+#   so only 7.1.72 fires for napum pl nUM (no double nUM). See overrides: 7.1.70 in sutras_antaranga.yaml.
 Sreyas   = Pratipadika("Sreyas", "pum",   its=['u'], other_tags=["Iyasun"])
 Sreyas_n = Pratipadika("Sreyas", "napum", its=['u'], other_tags=["Iyasun"])

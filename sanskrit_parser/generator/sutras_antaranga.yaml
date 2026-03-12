@@ -777,6 +777,18 @@
   xform:
      l: str("M")
 
+# SK123: नश्चापदान्तस्य झलि (8-3-24)
+# n (not at pada-anta) → M (anusvāra) before jhal.
+# Fires after 6.4.10 has produced lp like "SreyAns" (ll="n", l="s").
+# Restricted to sibilants [S, Z, s]: n before stops (e.g., mahant) stays explicit nasal.
+- sutra: नश्चापदान्तस्य झलि
+  id: 8.3.24
+  condition:
+     ll: n
+     l: [S, Z, s]
+  xform:
+     lc: lc[:-1]+str("M")
+
 # 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45

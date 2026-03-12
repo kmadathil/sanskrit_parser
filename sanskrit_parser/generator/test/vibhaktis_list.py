@@ -574,14 +574,14 @@ viBakti["vAri"] = [
 
 prAtipadika["payas"] = payas   # noqa: F405
 viBakti["payas"] = [
-    ['पयः', 'पयसी', 'पयान्सि'],
-    ['पयः', 'पयसी', 'पयान्सि'],
+    ['पयः', 'पयसी', 'पयांसि'],
+    ['पयः', 'पयसी', 'पयांसि'],
     ['पयसा', 'पयोभ्याम्', 'पयोभिः'],
     ['पयसे', 'पयोभ्याम्', 'पयोभ्यः'],
     ['पयसः', 'पयोभ्याम्', 'पयोभ्यः'],
     ['पयसः', 'पयसोः', 'पयसाम्'],
     ['पयसि', 'पयसोः', ['पयःसु', 'पयस्सु']],
-    ['पयः', 'पयसी', 'पयान्सि'],
+    ['पयः', 'पयसी', 'पयांसि'],
 ]
 
 prAtipadika["SrIpA"] = SrIpA   # noqa: F405
@@ -965,32 +965,32 @@ viBakti["mahat_n"] = [
 # Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
 # before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
 # voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).
-# Note: the generator renders nasal as 'n' before 's' (न्स), not as anusvāra (ंस).
+# SK123 (8.3.24) converts n → M (anusvāra) before sibilant s.
+# Nom sg: śreyān (n at word-end → SK123 does not fire).
 prAtipadika["Sreyas"] = Sreyas  # noqa: F405
 viBakti["Sreyas"] = [
-    ['श्रेयान्', 'श्रेयान्सौ', 'श्रेयान्सः'],      # 1 Nom  * SK361 nUM fires
-    ['श्रेयान्सम्', 'श्रेयान्सौ', 'श्रेयसः'],      # 2 Acc  * SK361 sg+du; weak pl
-    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],      # 3 Inst
-    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],     # 4 Dat
-    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],     # 5 Abl
-    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],           # 6 Gen
+    ['श्रेयान्', 'श्रेयांसौ', 'श्रेयांसः'],      # 1 Nom  * SK361 nUM + SK123 M before s
+    ['श्रेयांसम्', 'श्रेयांसौ', 'श्रेयसः'],      # 2 Acc  * SK361 sg+du + SK123; weak pl
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],    # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],   # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],   # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],         # 6 Gen
     ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
-    ['श्रेयन्', 'श्रेयान्सौ', 'श्रेयान्सः'],      # 8 Voc  * SK361 du+pl
+    ['श्रेयन्', 'श्रेयांसौ', 'श्रेयांसः'],      # 8 Voc  * SK361 du+pl + SK123
 ]
 
-# Sreyas_n (napum): Iyasun-derived but no its=['u'] (7.1.72 handles napum pl nUM;
-# adding its=['u'] causes double nUM for pl — generator limitation).
-# Nom/acc/voc pl: śreyāṃsi via 7.1.72 (napum Jal before sarvanamasthāna).
+# Sreyas_n (napum): Iyasun is u-it → ugit; 7.1.72 handles napum pl nUM (overrides 7.1.70).
+# Nom/acc/voc pl: śreyāṃsi via 7.1.72 + SK123 (8.3.24) n→M before s.
 prAtipadika["Sreyas_n"] = Sreyas_n  # noqa: F405
 viBakti["Sreyas_n"] = [
-    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 1 Nom
-    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 2 Acc (= Nom for napum)
-    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],       # 3 Inst
-    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],      # 4 Dat
-    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],      # 5 Abl
-    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],            # 6 Gen
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 1 Nom  * SK123 M before s
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 2 Acc (= Nom for napum)
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],     # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],    # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],    # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],          # 6 Gen
     ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
-    ['श्रेयः', 'श्रेयसी', 'श्रेयान्सि'],            # 8 Voc (= Nom for napum)
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 8 Voc (= Nom for napum)
 ]
 
 ajanta = {"pum": [], "strI": [], "napum": []}
