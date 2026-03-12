@@ -728,6 +728,72 @@ viBakti["catur"] = [
     ['चत्वारः'],
 ]
 
+# n-final ṣaṭ-saṃjñā numerals (SK369-372)
+# pañcan (5): +zaw by 1.1.26; SK261 luk nom/acc; 8.2.7 n-lopa; SK370+SK338 gen pl
+prAtipadika["paYcan"] = paYcan   # noqa: F405
+viBakti["paYcan"] = [
+    [None, None, 'पञ्च'],        # 1 Nom  * SK261 luk + 8.2.7 n-lopa
+    [None, None, 'पञ्च'],        # 2 Acc  = Nom
+    [None, None, 'पञ्चभिः'],     # 3 Inst * 8.2.7 n-lopa
+    [None, None, 'पञ्चभ्यः'],    # 4 Dat  * 8.2.7 n-lopa
+    [None, None, 'पञ्चभ्यः'],    # 5 Abl  * 8.2.7 n-lopa
+    [None, None, 'पञ्चानाम्'],   # 6 Gen  * SK370 + SK338
+    [None, None, 'पञ्चसु'],      # 7 Loc  * 8.2.7 n-lopa
+    [None, None, 'पञ्च'],        # 8 Voc  = Nom
+]
+
+# saptan (7): same pattern as pañcan
+prAtipadika["saptan"] = saptan   # noqa: F405
+viBakti["saptan"] = [
+    [None, None, 'सप्त'],        # 1 Nom
+    [None, None, 'सप्त'],        # 2 Acc
+    [None, None, 'सप्तभिः'],     # 3 Inst
+    [None, None, 'सप्तभ्यः'],    # 4 Dat
+    [None, None, 'सप्तभ्यः'],    # 5 Abl
+    [None, None, 'सप्तानाम्'],   # 6 Gen
+    [None, None, 'सप्तसु'],      # 7 Loc
+    [None, None, 'सप्त'],        # 8 Voc
+]
+
+# navan (9): same pattern as pañcan
+prAtipadika["navan"] = navan   # noqa: F405
+viBakti["navan"] = [
+    [None, None, 'नव'],          # 1 Nom
+    [None, None, 'नव'],          # 2 Acc
+    [None, None, 'नवभिः'],       # 3 Inst
+    [None, None, 'नवभ्यः'],      # 4 Dat
+    [None, None, 'नवभ्यः'],      # 5 Abl
+    [None, None, 'नवानाम्'],     # 6 Gen
+    [None, None, 'नवसु'],        # 7 Loc
+    [None, None, 'नव'],          # 8 Voc
+]
+
+# daśan (10): same pattern as pañcan
+prAtipadika["daSan"] = daSan   # noqa: F405
+viBakti["daSan"] = [
+    [None, None, 'दश'],          # 1 Nom
+    [None, None, 'दश'],          # 2 Acc
+    [None, None, 'दशभिः'],       # 3 Inst
+    [None, None, 'दशभ्यः'],      # 4 Dat
+    [None, None, 'दशभ्यः'],      # 5 Abl
+    [None, None, 'दशानाम्'],     # 6 Gen
+    [None, None, 'दशसु'],        # 7 Loc
+    [None, None, 'दश'],          # 8 Voc
+]
+
+# aṣṭan (8): optional ā by SK371 before hal; optional au by SK372 nom/acc pl
+prAtipadika["azwan"] = azwan   # noqa: F405
+viBakti["azwan"] = [
+    [None, None, ['अष्टौ', 'अष्ट']],            # 1 Nom  * SK372(opt)/SK261+8.2.7
+    [None, None, ['अष्टौ', 'अष्ट']],            # 2 Acc  = Nom
+    [None, None, ['अष्टाभिः', 'अष्टभिः']],      # 3 Inst * SK371(opt)/8.2.7
+    [None, None, ['अष्टाभ्यः', 'अष्टभ्यः']],    # 4 Dat  * SK371(opt)/8.2.7
+    [None, None, ['अष्टाभ्यः', 'अष्टभ्यः']],    # 5 Abl  * SK371(opt)/8.2.7
+    [None, None, 'अष्टानाम्'],                   # 6 Gen  * SK370+SK338 (same both ways)
+    [None, None, ['अष्टासु', 'अष्टसु']],         # 7 Loc  * SK371(opt)/8.2.7
+    [None, None, ['अष्टौ', 'अष्ट']],            # 8 Voc  = Nom
+]
+
 prAtipadika["praSAm"] = [praSAm_kvip]
 viBakti["praSAm"] = [
     ['प्रशान्', 'प्रशामौ', 'प्रशामः'],

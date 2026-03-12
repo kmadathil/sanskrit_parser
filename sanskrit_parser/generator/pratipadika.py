@@ -100,6 +100,13 @@ tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
                                             'tyadAdi'])
 catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana"])
+# n-final ṣaṭ-saṃjñā numerals 5-10 (1.1.26 assigns +zaw automatically via saMKyA+n-final)
+paYcan = Pratipadika("paYcan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
+saptan = Pratipadika("saptan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
+navan  = Pratipadika("navan",  "pum", other_tags=["saMKyA", "nityabahuvacana"])
+daSan  = Pratipadika("daSan",  "pum", other_tags=["saMKyA", "nityabahuvacana"])
+# aṣṭan (8): tagged "azwan" so SK371/SK372 can target it specifically
+azwan  = Pratipadika("azwan",  "pum", other_tags=["saMKyA", "nityabahuvacana", "azwan"])
 tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 #catur_s = Pratipadika("catur", "strI", other_tags=["saMKyA", "nityabahuvacana"])
 dvi_s = Pratipadika("dvi", "strI", other_tags=["saMKyA", "nityadvivacana",

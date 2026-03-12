@@ -1643,6 +1643,21 @@
   xform:
      l: dirgha(l)
 
+# SK370: नोपधायाः (6-4-7) — n-lopa + upadhā dīrgha before gen pl (nāmi = Am suffix).
+# Fires for ṣaṭ-saṃjñā n-final numerals: paYcan+Am → paYcA+Am, azwan+Am → azwA+Am.
+# SK338 (7.1.55) then fires on the ?Am suffix → inserts 'nA' → full gen pl -Anam.
+# Final: paYcAnAm = पञ्चानाम्, azwAnAm = अष्टानाम्.
+- sutra: नोपधायाः
+  id: 6.4.7
+  overrides: 6.4.134
+  condition:
+     lp: ?zaw
+     l: n
+     rp: ?Am
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+     l: null
+
 # 317: सान्तमहतः संयोगस्य (6-4-10) 
 - sutra: सान्तमहतः संयोगस्य 
   id: 6.4.10
@@ -2296,8 +2311,27 @@
   update:
      orp: =Si
 
-# 261: षड्भ्यो लुक् (7-1-22) 
-- sutra: षड्भ्यो लुक् 
+# SK372: अष्टाभ्य औश् (7-1-21) — jas/śas → au (O) for aṣṭan (optional).
+# n is deleted, suffix replaced by 'O' (au = औ). No ā-insertion here: azwO = अष्टौ.
+# Overrides SK261 (7.1.22 ṣaḍbhyo luk). Without this option: SK261 luk + 8.2.7 → azwa = अष्ट.
+- sutra: अष्टाभ्य औश्
+  id: 7.1.21
+  optional: True
+#  overrides: 7.1.22
+  bahiranga: 2   # Pratyaya
+  condition:
+     lp: ?azwan
+     l: n
+     rp:
+       - ?jas
+       - ?Sas
+  xform:
+     l: null
+  update:
+     orp: =OS
+       
+# 261: षड्भ्यो लुक् (7-1-22)
+- sutra: षड्भ्यो लुक्
   id: 7.1.22
   condition:
      lp:
@@ -2306,7 +2340,8 @@
       - ?jas
       - ?Sas
   update:
-     orp: =luk
+     olp: -Ba
+     orp: =luk_sup
 
 # 319: स्वमोर्नपुंसकात् (7-1-23) 
 - sutra: स्वमोर्नपुंसकात् 
@@ -2489,7 +2524,23 @@
      l: str("a")+l
  
 
-# 286: रायो हलि (7-2-85) 
+# SK371: अष्टन आ विभक्तौ (7-2-84) — n → ā before hal-initial vibhakti (optional).
+# Produces aṣṭābhis, aṣṭābhyas, aṣṭāsu alongside aṣṭabhis, aṣṭabhyas, aṣṭasu.
+# When this fires, n→A so 8.2.7 (l: n) won't fire afterward.
+# When not taken, 8.2.7 cond 1 fires (after 1.4.17 assigns ?pada) → normal n-lopa.
+- sutra: अष्टन आ विभक्तौ
+  id: 7.2.84
+  optional: True
+  condition:
+     lp: ?azwan
+     l: n
+     r: _hal
+     rp: ?viBakti
+  xform:
+     l: null
+     lc: lc[:-1]+str("A")
+
+# 286: रायो हलि (7-2-85)
 - sutra:   रायो हलि
   id: 7.2.85
   condition:
