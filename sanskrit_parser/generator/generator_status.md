@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 368 — 7.1.88 भस्य टेर्लोपः
-**Next to implement:** SK 369 (7.1.89 — ?)
+**Last implemented:** SK 372 — 7.1.21 अष्टाभ्य औश्
+**Next to implement:** SK 373 (3.2.59 — ṛtvigdadhṛksragdiguṣṇigañcuyujikruñcāṃ ca)
 
 ---
 
@@ -12,7 +12,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 113 |
+| SK-numbered sutras, implemented | 117 |
 | SK-numbered sutras, skipped/deferred | 20 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 76 |
@@ -119,7 +119,7 @@ The "Forms affected" column uses the convention:
 | 315 | 7.1.25 | अद्ड्डतरादिभ्यः पञ्चम्यः | adaḍ etc.: ḍ-āgama in pañcamī |
 | 317 | 6.4.10 | सान्तमहतः संयोगस्य | Saṃyoga-final + nāmī: last consonant of saṃyoga deleted (mahat → mahā before sarvānāmasthāna) |
 | 318 | 1.2.47 | ह्रस्वो नपुंसके | Neuter prātipadika: hrasva before su/am |
-| 318 | 1.2.48 | गोस्त्रियोरुपसर्जनस्य | go/strī in compound: hrasva |
+| 656 | 1.2.48 | गोस्त्रियोरुपसर्जनस्य | go/strī in compound: hrasva |
 | 319 | 7.1.23 | स्वमोर्नपुंसकात् | Neuter + su/am: su/am → am (jñānam) |
 | 320 | 7.1.73 | इकोऽचि विभक्तौ | ik-final + vowel-initial vibhakti: tuk inserted (akṣṇā, akṣṇoḥ) |
 | 326 | 8.2.37 | एकाचो बशो भष् | Single-syllable stem ending in b/g/ḍ/j + s/dh: bhāṣ substitute |
@@ -155,6 +155,10 @@ The "Forms affected" column uses the convention:
 | 366 | 7.1.86 | इतोऽत्सर्वनामस्थाने | i→a of paTin-group before sarvanamasthana; combines with 6.4.8 for dīrgha in strong forms |
 | 367 | 7.1.87 | थो न्थः | th→nth in paTin/maTin (not fBukzin) before sarvanamasthana; panthān- strong forms |
 | 368 | 7.1.88 | भस्य टेर्लोपः | ṭi-lopa (delete final i+n) for paTin-group in bha position; path-, math-, ṛbhukṣ- before vowels |
+| 369 | 1.1.24 | ष्णान्ता षट् | saṃjñā: ṣ/n-final numerals tagged ?zaT; enables ṣaṭ-class rules for pañcan, ṣaṣ, saptan, aṣṭan, navan, daśan |
+| 370 | 6.4.7 | नोपधायाः | upadhā-dīrgha + n-lopa before gen pl (nāmi); paYcAnAm, azwAnAm, saptAnAm, navAnAm, daSAnAm |
+| 371 | 7.2.84 | अष्टन आ विभक्तौ | optional n→ā for aṣṭan before hal-initial vibhakti; aṣṭābhis/aṣṭabhis, aṣṭābhyas/aṣṭabhyas, aṣṭāsu/aṣṭasu |
+| 372 | 7.1.21 | अष्टाभ्य औश् | optional jas/śas → au (O) for aṣṭan; aṣṭau (nom/acc pl); overrides SK261 (7.1.22) |
 
 ---
 
