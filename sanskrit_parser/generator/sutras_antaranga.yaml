@@ -777,7 +777,7 @@
   xform:
      l: str("M")
 
-# SK123: नश्चापदान्तस्य झलि (8-3-24)
+# 123: नश्चापदान्तस्य झलि (8-3-24)
 # n (not at pada-anta) → M (anusvāra) before jhal.
 # Fires after 6.4.10 has produced lp like "SreyAns" (ll="n", l="s").
 # Restricted to sibilants [S, Z, s]: n before stops (e.g., mahant) stays explicit nasal.
@@ -1643,7 +1643,7 @@
   xform:
      l: dirgha(l)
 
-# SK370: नोपधायाः (6-4-7) — n-lopa + upadhā dīrgha before gen pl (nāmi = Am suffix).
+# 370: नोपधायाः (6-4-7) — n-lopa + upadhā dīrgha before gen pl (nāmi = Am suffix).
 # Fires for ṣaṭ-saṃjñā n-final numerals: paYcan+Am → paYcA+Am, azwan+Am → azwA+Am.
 # SK338 (7.1.55) then fires on the ?Am suffix → inserts 'nA' → full gen pl -Anam.
 # Final: paYcAnAm = पञ्चानाम्, azwAnAm = अष्टानाम्.
@@ -1989,7 +1989,7 @@
      lc: samprasArana_van(lc)
      # l (= n) unchanged
 
-# SK363: न संप्रसारणे संप्रसारणम् (6-1-37) — DEFERRED
+# 363: न संप्रसारणे संप्रसारणम् (6-1-37) — DEFERRED
 # Blocks a second samprasāraṇa from applying after a first has already been applied.
 # Not needed for nominal declension: samprasArana_van() produces Su-/yU-/maGo- which
 # contain no further yaṇ candidate, so no spurious re-application is possible.
@@ -2311,7 +2311,7 @@
   update:
      orp: =Si
 
-# SK372: अष्टाभ्य औश् (7-1-21) — jas/śas → au (O) for aṣṭan (optional).
+# 372: अष्टाभ्य औश् (7-1-21) — jas/śas → au (O) for aṣṭan (optional).
 # n is deleted, suffix replaced by 'O' (au = औ). No ā-insertion here: azwO = अष्टौ.
 # Overrides SK261 (7.1.22 ṣaḍbhyo luk). Without this option: SK261 luk + 8.2.7 → azwa = अष्ट.
 - sutra: अष्टाभ्य औश्
@@ -2524,7 +2524,7 @@
      l: str("a")+l
  
 
-# SK371: अष्टन आ विभक्तौ (7-2-84) — n → ā before hal-initial vibhakti (optional).
+# 371: अष्टन आ विभक्तौ (7-2-84) — n → ā before hal-initial vibhakti (optional).
 # Produces aṣṭābhis, aṣṭābhyas, aṣṭāsu alongside aṣṭabhis, aṣṭabhyas, aṣṭasu.
 # When this fires, n→A so 8.2.7 (l: n) won't fire afterward.
 # When not taken, 8.2.7 cond 1 fires (after 1.4.17 assigns ?pada) → normal n-lopa.
@@ -3392,10 +3392,10 @@
 
 # saMjYA prakaraRam
 
-# 3012: क्तक्तवतू निष्ठा (1-1-26)
+# 369: ष्णान्ता षट् (1-1-24) — ṣ/n-final numerals tagged as ?zaT (ṣaṭ-saṃjñā)
 - sutra: ष्णान्ता षट्
   domain: saMjYA
-  id: 1.1.26
+  id: 1.1.24
   bahiranga: 0 
   condition:
      l: [z, n]
@@ -3482,7 +3482,7 @@
       l: hrasva(l)
 
 # FIXME - implement upasarjana instead of pum_abs
-# 318: गोस्त्रियोरुपसर्जनस्य (1-2-48)
+# 656: गोस्त्रियोरुपसर्जनस्य (1-2-48)
 - sutra: गोस्त्रियोरुपसर्जनस्य
   domain: prakfti
   bahiranga: 1
