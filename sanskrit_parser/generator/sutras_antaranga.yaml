@@ -1015,6 +1015,36 @@
      ll: r
   xform: null
 
+# 377: क्विन्प्रत्ययस्य कुः (8-2-62) — ku-substitution for kvin-derived stems at pada-end.
+# Covers cu-final kvin stems (j→g, same as 8.2.30) and ś-final path.
+# For j-final stems (ṛtvij, sraj, yuj-after-8.2.23): kvinKutva(j)=g, then 8.4.56→k.
+# For ñ-final (Y, after 8.2.23 deletes j from yuñj): kvinKutva(Y=ñ)=N(ṅ) → gives nom sg yuṅ.
+# For ś-final (S): natural order — 8.2.36 fires S→ṣ(z), 8.2.39 fires ṣ→ḍ(q), then here q→g.
+#   Before voiceless (loc pl su): 8.4.55 g→k, then 8.3.59 s→ṣ → dikṣu.
+# Overrides 8.2.30 for kvin stems (same result for cu; adds ñ-final and ḍ-final coverage).
+#
+# PARTIAL IMPLEMENTATION: SK (8-2-62 vṛtti) states: kvinpratyayo yasmāt tasya kavargo
+# 'ntādeśaḥ syāt padānte — the ka-varga replaces the final of ANY kvin-derived stem at
+# pada-end. The condition l:[cu,S,q] covers only the currently implemented stems:
+#   - cu (j,J,Y): j-finals ṛtvij, sraj, yuj; ñ-final (Y) from yuñj after 8.2.23
+#   - S (ś): diś via 8.2.36 S→ṣ(z) and 8.2.39 ṣ→ḍ(q)
+#   - q (ḍ): the ḍ that results from the ś path above
+# When c-final stems are added (dadhṛc, kruñc, añcu-compounds), l must include c (or _cu
+# extended), and kvinKutva must map c→k. SK also notes coḥ kuḥ (8.2.30) does NOT apply
+# subsequently (asiddhatva), so 8.2.62 alone handles all kvin finals.
+# See SK373 entry in generator_status.md for full unimplemented stem list.
+- sutra: क्विन्प्रत्ययस्य कुः
+  id: 8.2.62
+  overrides: 8.2.30
+  condition:
+     lp:
+       - and
+       - ?pada
+       - ?kvin
+     l: [cu, S, q]
+  xform:
+     l: kvinKutva(l)
+
 # 378: चोः कुः (8-2-30)
 - sutra: चोः कुः
   id: 8.2.30
@@ -3151,6 +3181,20 @@
   xform:
      lc: numAgama(lc+l)
      l: null
+
+# 376: युजेरसमासे (7-1-71) — nasal (ñ) augment for non-compound yuj before sarvanamasthāna.
+# Inserts palatal nasal Y (ñ=ञ) after stem vowel: yuj → yuñj in strong forms.
+# Non-compound restriction (asaṃyoge): compound yuj (e.g. aśvayuk) has no nUM — deferred;
+# non-compound yuj_kvin pratipadika is the default here.
+# After num: yuñj+su → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 (Y→N) → yuṅ.
+# Nom/acc du/pl: yuñj+O/jas → yuñjau, yuñjaḥ (no pada-end, no 8.2.23/8.2.62).
+- sutra: युजेरसमासे
+  id: 7.1.71
+  condition:
+     lp: ?yuj
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc+str("Y")
 
 # 368: भस्य टेर्लोपः (7-1-88)
 # ṭi-lopa for paTin-group (paTin/maTin/fBukzin) in bha position.

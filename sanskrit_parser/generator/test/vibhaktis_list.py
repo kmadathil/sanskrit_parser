@@ -806,6 +806,69 @@ viBakti["praSAm"] = [
     ['प्रशान्', 'प्रशामौ', 'प्रशामः'],
 ]
 
+# kvin-derived consonant-final stems (SK373–SK377)
+# ṛtvij (m.) — j-final kvin stem. SK377 (8.2.62) gives j→g at pada-end; 8.4.56 opt g→k.
+# Inst/dat/abl du/pl: stem gets ?pada before Bh → 8.2.62 j→g → ftvig+Bh (g stays voiced).
+# Loc pl: 8.2.62 j→g, then 8.4.55 g→k before s(khar), then 8.3.57 s→ṣ → ftvikzu.
+prAtipadika["ftvij"] = [ftvij_kvin]   # noqa: F405
+viBakti["ftvij"] = [
+    [['ऋत्विग्', 'ऋत्विक्'], 'ऋत्विजौ', 'ऋत्विजः'],  # 1 Nom  * 8.2.62 j→g, 8.4.56 opt g→k
+    ['ऋत्विजम्', 'ऋत्विजौ', 'ऋत्विजः'],               # 2 Acc
+    ['ऋत्विजा', 'ऋत्विग्भ्याम्', 'ऋत्विग्भिः'],        # 3 Inst * 8.2.62 j→g before Bh
+    ['ऋत्विजे', 'ऋत्विग्भ्याम्', 'ऋत्विग्भ्यः'],        # 4 Dat
+    ['ऋत्विजः', 'ऋत्विग्भ्याम्', 'ऋत्विग्भ्यः'],        # 5 Abl
+    ['ऋत्विजः', 'ऋत्विजोः', 'ऋत्विजाम्'],              # 6 Gen
+    ['ऋत्विजि', 'ऋत्विजोः', 'ऋत्विक्षु'],              # 7 Loc  * sg vowel-initial; pl: 8.2.62→k+8.3.57→ṣ
+    [['ऋत्विग्', 'ऋत्विक्'], 'ऋत्विजौ', 'ऋत्विजः'],  # 8 Voc  = Nom
+]
+
+# sraj (f.) — j-final kvin stem (garland). Same paradigm shape as ftvij but feminine.
+prAtipadika["sraj"] = [sraj_kvin]   # noqa: F405
+viBakti["sraj"] = [
+    [['स्रग्', 'स्रक्'], 'स्रजौ', 'स्रजः'],  # 1 Nom  * 8.2.62 j→g, 8.4.56 opt g→k
+    ['स्रजम्', 'स्रजौ', 'स्रजः'],             # 2 Acc
+    ['स्रजा', 'स्रग्भ्याम्', 'स्रग्भिः'],      # 3 Inst * 8.2.62 j→g before Bh
+    ['स्रजे', 'स्रग्भ्याम्', 'स्रग्भ्यः'],      # 4 Dat
+    ['स्रजः', 'स्रग्भ्याम्', 'स्रग्भ्यः'],      # 5 Abl
+    ['स्रजः', 'स्रजोः', 'स्रजाम्'],            # 6 Gen
+    ['स्रजि', 'स्रजोः', 'स्रक्षु'],            # 7 Loc  * pl: 8.2.62→k+8.3.57→ṣ
+    [['स्रग्', 'स्रक्'], 'स्रजौ', 'स्रजः'],  # 8 Voc  = Nom
+]
+
+# yuj (m.) non-compound — SK376 (7.1.71) inserts ñ (Y) before sarvanamasthāna.
+# Strong forms (sarvanamasthāna): yuñj- (nom/acc du/pl; acc sg); nom sg unique (see below).
+# Nom sg: yuñj → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 Y→N → yuṅ.
+# Weak forms (non-sarvanamasthāna): yuj- (inst sg/du/pl, dat, abl, gen, loc).
+# Inst/dat/abl du/pl: 8.2.62 j→g before Bh → yugBh (g stays voiced before voiced Bh).
+# Loc pl: 8.2.62 j→g, 8.4.55 g→k, 8.3.57 s→ṣ → yukṣu.
+prAtipadika["yuj"] = [yuj_kvin]   # noqa: F405
+viBakti["yuj"] = [
+    ['युङ्', 'युञ्जौ', 'युञ्जः'],              # 1 Nom  * yuñj→8.2.23→yuY→8.2.62→yuṅ; du/pl: SK376 num
+    ['युञ्जम्', 'युञ्जौ', 'युजः'],             # 2 Acc  * sg/du: SK376 num; pl (Sas): no num
+    ['युजा', 'युग्भ्याम्', 'युग्भिः'],          # 3 Inst * no num (non-sarvanamasthāna); 8.2.62 j→g before Bh
+    ['युजे', 'युग्भ्याम्', 'युग्भ्यः'],          # 4 Dat
+    ['युजः', 'युग्भ्याम्', 'युग्भ्यः'],          # 5 Abl
+    ['युजः', 'युजोः', 'युजाम्'],               # 6 Gen
+    ['युजि', 'युजोः', 'युक्षु'],               # 7 Loc  * pl: 8.2.62→k+8.3.57→ṣ
+    ['युङ्', 'युञ्जौ', 'युञ्जः'],              # 8 Voc  = Nom
+]
+
+# diś (f.) — ś-final (S in SLP1) kvin stem (direction).
+# At pada-end: 8.2.39 fires first (S→j by jashtva), then 8.2.62 (j→g), then 8.4.56 opt (g→k).
+# Before Bh (voiced): g stays voiced → digBh.
+# Loc pl: g→k (8.4.55 before s=khar), then 8.3.57 s→ṣ → dikṣu.
+prAtipadika["diS"] = [diS_kvin]   # noqa: F405
+viBakti["diS"] = [
+    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 1 Nom  * 8.2.39 S→j, 8.2.62 j→g, 8.4.56 opt g→k
+    ['दिशम्', 'दिशौ', 'दिशः'],             # 2 Acc  * vowel-initial suffix: no pada transformation
+    ['दिशा', 'दिग्भ्याम्', 'दिग्भिः'],      # 3 Inst * 8.2.39+8.2.62 j→g before Bh
+    ['दिशे', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 4 Dat
+    ['दिशः', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 5 Abl
+    ['दिशः', 'दिशोः', 'दिशाम्'],            # 6 Gen
+    ['दिशि', 'दिशोः', 'दिक्षु'],            # 7 Loc  * pl: g→k+8.3.57→ṣ
+    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 8 Voc  = Nom
+]
+
 prAtipadika["kim"] = [kim]
 viBakti["kim"] = [
     ['कः', 'कौ', 'के'],

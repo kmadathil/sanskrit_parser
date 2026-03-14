@@ -103,6 +103,12 @@ def kutva(s: str):
     return adesha(s, "cCjJYh", "kKgGNG")
 
 
+def kvinKutva(s: str):
+    """ku-substitution for kvin-derived stems (8.2.62): kutva extended with ś (S) → k and ḍ (q) → g.
+    ḍ (q) arises when 8.2.36 converts ś→ṣ and 8.2.39 then converts ṣ→ḍ at pada-end."""
+    return adesha(s, "cCjJYhSq", "kKgGNGkg")
+
+
 def vargatritiya(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
 
