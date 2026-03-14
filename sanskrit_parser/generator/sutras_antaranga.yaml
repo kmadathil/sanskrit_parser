@@ -755,6 +755,19 @@
   xform:
      l: anunasika(r)
 
+# 124.1: अनुस्वारस्य ययि परसवर्णः — variant for M embedded in penultimate (ll) position.
+# Fires when M is at ll (last of lc) and a consonant is at l (e.g. after numAgama+8.3.24
+# on añc-stems: numAgama inserts n; 8.3.24 converts n→M in lc, leaving c at l).
+# xform: replace M (last of lc) with anunasika(l) — the class nasal of the following consonant.
+# E.g.: lc="pratyaM", l="c" → anunasika("c")="Y" → lc="pratyaY", l="c" → "pratyaYc" = pratyañc ✓
+- sutra: अनुस्वारस्य ययि परसवर्णः
+  id: 8.4.58.1
+  condition:
+     ll: M
+     l: _yay
+  xform:
+     lc: lc[:-1]+anunasika(l)
+
 #optional at pada end
 # 125: वा पदान्तस्य (8-4-59)
 - sutra: वा पदान्तस्य
@@ -780,12 +793,16 @@
 # 123: नश्चापदान्तस्य झलि (8-3-24)
 # n (not at pada-anta) → M (anusvāra) before jhal.
 # Fires after 6.4.10 has produced lp like "SreyAns" (ll="n", l="s").
-# Restricted to sibilants [S, Z, s]: n before stops (e.g., mahant) stays explicit nasal.
+# Restricted to sibilants and palatal c [S, Z, s, c]:
+#   - Sibilants: main use case (SreyAMs etc.)
+#   - c added for añc-stems: numAgama("pratyac")→"pratyanc"; n+c→M+c here;
+#     then 8.4.58 M+c → Y (anunasika(c)=Y) → "pratyaYc" = pratyañc ✓
+#     n before dental stops (e.g., bhavant: n+t) remains dental nasal — not extended there.
 - sutra: नश्चापदान्तस्य झलि
   id: 8.3.24
   condition:
      ll: n
-     l: [S, Z, s]
+     l: [S, Z, s, c]
   xform:
      lc: lc[:-1]+str("M")
 
@@ -1025,13 +1042,13 @@
 #
 # PARTIAL IMPLEMENTATION: SK (8-2-62 vṛtti) states: kvinpratyayo yasmāt tasya kavargo
 # 'ntādeśaḥ syāt padānte — the ka-varga replaces the final of ANY kvin-derived stem at
-# pada-end. The condition l:[cu,S,q] covers only the currently implemented stems:
+# pada-end. The condition l:[cu,S,q,n] covers currently implemented stems:
 #   - cu (j,J,Y): j-finals ṛtvij, sraj, yuj; ñ-final (Y) from yuñj after 8.2.23
 #   - S (ś): diś via 8.2.36 S→ṣ(z) and 8.2.39 ṣ→ḍ(q)
 #   - q (ḍ): the ḍ that results from the ś path above
-# When c-final stems are added (dadhṛc, kruñc, añcu-compounds), l must include c (or _cu
-# extended), and kvinKutva must map c→k. SK also notes coḥ kuḥ (8.2.30) does NOT apply
-# subsequently (asiddhatva), so 8.2.62 alone handles all kvin finals.
+#   - n (dental): dental n at pada-end after 8.2.23 deletes c from añc-stems (numAgama path);
+#     8.2.23 (82023) fires before 8.3.24 (83024) so n+c → n (c deleted) before n→M→Y chain runs
+# SK also notes coḥ kuḥ (8.2.30) does NOT apply subsequently (asiddhatva).
 # See SK373 entry in generator_status.md for full unimplemented stem list.
 - sutra: क्विन्प्रत्ययस्य कुः
   id: 8.2.62
@@ -1041,7 +1058,7 @@
        - and
        - ?pada
        - ?kvin
-     l: [cu, S, q]
+     l: [cu, S, q, n]
   xform:
      l: kvinKutva(l)
 
@@ -3157,7 +3174,8 @@
 # Multiple top-level condition blocks = OR alternatives (pattern from SK277 / 6.4.11).
 # Covers: maGavan→maGavat (SK360 sets ++f, i.e. ṛ-it), bhavant (śatṛ is u-it),
 #         and other ugit stems. kroṣṭu has ?tfc (ṛ is stem-final, NOT an it) → excluded.
-# TODO: add ?aNc condition when √añc stems are implemented (dhātu exception)
+# Also covers añc-type kvin stems (?aYc tag, āc clause of 7.1.70):
+#   numAgama("pratyac")→"pratyanc" (dental n); then 8.3.24 n+c→M+c; then 8.4.58 M→Y → pratyaYc.
 - sutra: उगिदचां सर्वनामस्थानेऽधातोः
   id: 7.1.70
 #  domain: prakfti
@@ -3177,6 +3195,8 @@
       - and
       - ?!DAtu
       - +x
+     rp: ?sarvanAmasTAna
+   - lp: ?aYc          # añc-type kvin stems (āc clause): prāñc, pratyañc, udañc, etc.
      rp: ?sarvanAmasTAna
   xform:
      lc: numAgama(lc+l)

@@ -854,19 +854,91 @@ viBakti["yuj"] = [
 ]
 
 # diś (f.) — ś-final (S in SLP1) kvin stem (direction).
-# At pada-end: 8.2.39 fires first (S→j by jashtva), then 8.2.62 (j→g), then 8.4.56 opt (g→k).
+# At pada-end: 8.2.36 fires S→ṣ(z), then 8.2.39 ṣ→ḍ(q), then 8.2.62 q→g, 8.4.56 opt g→k.
 # Before Bh (voiced): g stays voiced → digBh.
 # Loc pl: g→k (8.4.55 before s=khar), then 8.3.57 s→ṣ → dikṣu.
 prAtipadika["diS"] = [diS_kvin]   # noqa: F405
 viBakti["diS"] = [
-    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 1 Nom  * 8.2.39 S→j, 8.2.62 j→g, 8.4.56 opt g→k
+    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 1 Nom  * 8.2.36 S→ṣ→8.2.39 ṣ→ḍ→8.2.62 ḍ→g, 8.4.56 opt g→k
     ['दिशम्', 'दिशौ', 'दिशः'],             # 2 Acc  * vowel-initial suffix: no pada transformation
-    ['दिशा', 'दिग्भ्याम्', 'दिग्भिः'],      # 3 Inst * 8.2.39+8.2.62 j→g before Bh
+    ['दिशा', 'दिग्भ्याम्', 'दिग्भिः'],      # 3 Inst * 8.2.62 ḍ→g before Bh
     ['दिशे', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 4 Dat
     ['दिशः', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 5 Abl
     ['दिशः', 'दिशोः', 'दिशाम्'],            # 6 Gen
-    ['दिशि', 'दिशोः', 'दिक्षु'],            # 7 Loc  * pl: g→k+8.3.57→ṣ
+    ['दिशि', 'दिशोः', 'दिक्षु'],            # 7 Loc  * pl: 8.2.62 ḍ→g→k+8.3.57→ṣ
     [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 8 Voc  = Nom
+]
+
+# dadhṛc (m.) — c-final kvin stem (bold, powerful one; from √dhṛṣ via ścutva, nipatana).
+# Same phonology as ṛtvij: 8.2.39 c→j at pada-end, then 8.2.62 j→g, then 8.4.56 opt g→k.
+prAtipadika["daDfc"] = [daDfc_kvin]   # noqa: F405
+viBakti["daDfc"] = [
+    [['दधृग्', 'दधृक्'], 'दधृचौ', 'दधृचः'],  # 1 Nom  * 8.2.39 c→j, 8.2.62 j→g, 8.4.56 opt g→k
+    ['दधृचम्', 'दधृचौ', 'दधृचः'],             # 2 Acc
+    ['दधृचा', 'दधृग्भ्याम्', 'दधृग्भिः'],      # 3 Inst * 8.2.39+8.2.62 c→j→g before Bh
+    ['दधृचे', 'दधृग्भ्याम्', 'दधृग्भ्यः'],      # 4 Dat
+    ['दधृचः', 'दधृग्भ्याम्', 'दधृग्भ्यः'],      # 5 Abl
+    ['दधृचः', 'दधृचोः', 'दधृचाम्'],            # 6 Gen
+    ['दधृचि', 'दधृचोः', 'दधृक्षु'],            # 7 Loc  * pl: c→j→g→k+8.3.57→ṣ
+    [['दधृग्', 'दधृक्'], 'दधृचौ', 'दधृचः'],  # 8 Voc  = Nom
+]
+
+# pratyañc (m.) — añc-type kvin stem (facing west/backward; prati+√añc+kvin).
+# Stored as weak base "pratyac" (c-final); ?aYc tag → SK361 (7.1.70 āc clause) inserts ñ (Y)
+# before sarvanamasthāna: numAgama("pratyac")→"pratyanc"→8.3.24 n+c→M+c→8.4.58 M→Y → pratyaYc.
+# Strong (sarvanamasthāna: su,O,jas,am,Ow): pratyaYc stem. Weak: pratyac stem.
+# Nom sg: pratyaYc → 8.2.23 del c (Yc cluster) → pratyaY → 8.2.62 Y→N → प्रत्यङ्.
+# Inst pl: pratyac (weak) → 8.2.39 c→j → 8.2.62 j→g → pratyag+Bis → प्रत्यग्भिः.
+# Loc pl: pratyac → c→j→g → g+su → g→k → k+ṣu (8.3.57) → प्रत्यक्षु.
+prAtipadika["pratyac"] = [pratyac_kvin]   # noqa: F405
+viBakti["pratyac"] = [
+    ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 1 Nom  * nom sg: 8.2.23+8.2.62; du/pl: SK361 num
+    ['प्रत्यञ्चम्', 'प्रत्यञ्चौ', 'प्रत्यचः'],       # 2 Acc  * sg/du: SK361 num; pl (Sas): weak
+    ['प्रत्यचा', 'प्रत्यग्भ्याम्', 'प्रत्यग्भिः'],    # 3 Inst * weak; 8.2.39+8.2.62 before Bh
+    ['प्रत्यचे', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 4 Dat
+    ['प्रत्यचः', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 5 Abl
+    ['प्रत्यचः', 'प्रत्यचोः', 'प्रत्यचाम्'],           # 6 Gen
+    ['प्रत्यचि', 'प्रत्यचोः', 'प्रत्यक्षु'],           # 7 Loc  * pl: c→j→g→k+8.3.57→ṣ
+    ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 8 Voc  = Nom
+]
+
+# prāñc (m.) — añc-type: weak stem prāc, strong prāñc (SK361 inserts Y). Same paradigm as pratyac.
+prAtipadika["prAc"] = [prAc_kvin]   # noqa: F405
+viBakti["prAc"] = [
+    ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 1 Nom
+    ['प्राञ्चम्', 'प्राञ्चौ', 'प्राचः'],       # 2 Acc
+    ['प्राचा', 'प्राग्भ्याम्', 'प्राग्भिः'],    # 3 Inst
+    ['प्राचे', 'प्राग्भ्याम्', 'प्राग्भ्यः'],    # 4 Dat
+    ['प्राचः', 'प्राग्भ्याम्', 'प्राग्भ्यः'],    # 5 Abl
+    ['प्राचः', 'प्राचोः', 'प्राचाम्'],           # 6 Gen
+    ['प्राचि', 'प्राचोः', 'प्राक्षु'],           # 7 Loc
+    ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 8 Voc
+]
+
+# udañc (m.) — añc-type: weak stem udac, strong udañc.
+prAtipadika["udac"] = [udac_kvin]   # noqa: F405
+viBakti["udac"] = [
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 1 Nom
+    ['उदञ्चम्', 'उदञ्चौ', 'उदचः'],       # 2 Acc
+    ['उदचा', 'उदग्भ्याम्', 'उदग्भिः'],    # 3 Inst
+    ['उदचे', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 4 Dat
+    ['उदचः', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 5 Abl
+    ['उदचः', 'उदचोः', 'उदचाम्'],           # 6 Gen
+    ['उदचि', 'उदचोः', 'उदक्षु'],           # 7 Loc
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 8 Voc
+]
+
+# tiryañc (m.) — añc-type: weak stem tiryac, strong tiryañc.
+prAtipadika["tiryac"] = [tiryac_kvin]   # noqa: F405
+viBakti["tiryac"] = [
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 1 Nom
+    ['तिर्यञ्चम्', 'तिर्यञ्चौ', 'तिर्यचः'],       # 2 Acc
+    ['तिर्यचा', 'तिर्यग्भ्याम्', 'तिर्यग्भिः'],    # 3 Inst
+    ['तिर्यचे', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 4 Dat
+    ['तिर्यचः', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 5 Abl
+    ['तिर्यचः', 'तिर्यचोः', 'तिर्यचाम्'],           # 6 Gen
+    ['तिर्यचि', 'तिर्यचोः', 'तिर्यक्षु'],           # 7 Loc
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 8 Voc
 ]
 
 prAtipadika["kim"] = [kim]

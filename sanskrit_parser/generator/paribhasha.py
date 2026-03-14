@@ -104,9 +104,11 @@ def kutva(s: str):
 
 
 def kvinKutva(s: str):
-    """ku-substitution for kvin-derived stems (8.2.62): kutva extended with ś (S) → k and ḍ (q) → g.
-    ḍ (q) arises when 8.2.36 converts ś→ṣ and 8.2.39 then converts ṣ→ḍ at pada-end."""
-    return adesha(s, "cCjJYhSq", "kKgGNGkg")
+    """ku-substitution for kvin-derived stems (8.2.62): kutva extended with:
+    - S (ś) → k, q (ḍ) → g: ś-final path (8.2.36 S→ṣ + 8.2.39 ṣ→ḍ, then ḍ→g here)
+    - n (dental) → N (velar ṅ): dental n left at pada-end after 8.2.23 deletes c from añc-stems
+      (numAgama inserts n; 8.2.23 fires before 8.3.24+8.4.58 can convert n→M→Y)"""
+    return adesha(s, "cCjJYhSqn", "kKgGNGkgN")
 
 
 def vargatritiya(s: str):

@@ -177,10 +177,15 @@ turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"
 # kvin-derived consonant-final stems (SK373 / 3.2.59)
 # ?kvin tag triggers SK377 (8.2.62 kvinpratyayasya kuH) at pada-end.
 # ?yuj tag (additionally on yuj) triggers SK376 (7.1.71 yujerasamAse) num before sarvanamasthAna.
-ftvij_kvin = Pratipadika("ftvij", "pum",  other_tags=["DAtu", "kvin"])         # ṛtvij m. (the priest)
-sraj_kvin  = Pratipadika("sraj",  "strI", other_tags=["DAtu", "kvin"])         # sraj f. (garland)
-yuj_kvin   = Pratipadika("yuj",   "pum",  other_tags=["DAtu", "kvin", "yuj"])  # yuj m. non-compound; ?yuj → SK376 num
-diS_kvin   = Pratipadika("diS",   "strI", other_tags=["DAtu", "kvin"])         # diś f. (direction)
+ftvij_kvin  = Pratipadika("ftvij",   "pum",  other_tags=["DAtu", "kvin"])          # ṛtvij m. (the priest)
+sraj_kvin   = Pratipadika("sraj",   "strI", other_tags=["DAtu", "kvin"])          # sraj f. (garland)
+yuj_kvin    = Pratipadika("yuj",    "pum",  other_tags=["DAtu", "kvin", "yuj"])   # yuj m. non-compound; ?yuj → SK376 num
+diS_kvin    = Pratipadika("diS",    "strI", other_tags=["DAtu", "kvin"])          # diś f. (direction)
+daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])           # dadhṛc m. (bold one); c→j(8.2.39)→g(8.2.62)→k(8.4.56)
+pratyac_kvin = Pratipadika("pratyac", "pum",  other_tags=["DAtu", "kvin", "aYc"])  # pratyañc m. (westward); ?aYc → SK361 num
+prAc_kvin    = Pratipadika("prAc",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # prāñc m. (eastward/forward)
+udac_kvin    = Pratipadika("udac",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # udañc m. (northward/upward)
+tiryac_kvin  = Pratipadika("tiryac",  "pum",  other_tags=["DAtu", "kvin", "aYc"])  # tiryañc m. (sideways/transverse)
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
