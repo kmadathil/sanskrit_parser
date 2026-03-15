@@ -1062,6 +1062,23 @@
   xform:
      l: kvinKutva(l)
 
+# 380: स्कोः संयोगाद्योरन्ते च (8-2-29) — s or k, when first member of a conjunct, is deleted at pada-end.
+# Vasu examples: √lasj+kvip → लक् (s deleted from sj→j→k via 8.2.30);
+#                √masj+kvip → मक् (same); √takṣ+kvip → तट्/तड् (k deleted from kṣ→ṣ→ḍ→ṭ).
+# Condition: lp=?pada (word boundary), ll=[s,k] (penultimate = first of conjunct), l=_hal (final = second of conjunct).
+# Xform: delete the penultimate s or k (ll: null).
+# Derivation for √takṣ+kvip nom sg: takz → 8.2.29 k del → taz → 8.2.39 ṣ→ḍ(q) → 8.4.56 opt ḍ→ṭ = taṭ/taḍ.
+# Loc pl: taz→8.2.39 ṣ→ḍ(q)→8.4.55 ḍ→ṭ(w)+su = taṭsu (8.4.42 blocks ṣṭutva after pada-ṭ, so s stays).
+- sutra: स्कोः संयोगाद्योरन्ते च
+  id: 8.2.29
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: [s, k]
+     l: _hal
+  xform:
+     lc: lc[:-1]    # delete the penultimate s/k (first of conjunct); lc="tak" → lc[:-1]="ta" for takz
+
 # 378: चोः कुः (8-2-30)
 - sutra: चोः कुः
   id: 8.2.30
@@ -3204,14 +3221,18 @@
 
 # 376: युजेरसमासे (7-1-71) — nasal (ñ) augment for non-compound yuj before sarvanamasthāna.
 # Inserts palatal nasal Y (ñ=ञ) after stem vowel: yuj → yuñj in strong forms.
-# Non-compound restriction (asaṃyoge): compound yuj (e.g. aśvayuk) has no nUM — deferred;
-# non-compound yuj_kvin pratipadika is the default here.
+# Restriction (asaṃyoge): compound yuj (e.g. aśvayuk type) has no nUM — excluded by ?!samAsa.
+# yuj_kvin (?yuj, no ?samAsa) → fires; yuj_kvin_samAsa (?yuj, ?samAsa) → blocked.
+# Follows SK257 (1.4.8/1.4.8.1) pattern for pati compound vs non-compound.
 # After num: yuñj+su → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 (Y→N) → yuṅ.
 # Nom/acc du/pl: yuñj+O/jas → yuñjau, yuñjaḥ (no pada-end, no 8.2.23/8.2.62).
 - sutra: युजेरसमासे
   id: 7.1.71
   condition:
-     lp: ?yuj
+     lp:
+       - and
+       - ?yuj
+       - ?!samAsa    # non-compound only; compound yuj (aśvayuk type) uses ?samAsa tag to block nUM
      rp: ?sarvanAmasTAna
   xform:
      lc: lc+str("Y")

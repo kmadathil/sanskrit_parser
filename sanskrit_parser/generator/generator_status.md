@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 377 — 8.2.62 क्विन्प्रत्ययस्य कुः
-**Next to implement:** SK 379 (6.3.128 — विश्वस्य वसुराटोः; skipping SK378=already done, SK379 for later)
+**Last implemented:** SK 380 — 8.2.29 स्कोः संयोगाद्योरन्ते च (also SK376 compound yuj)
+**Next to implement:** SK 379 remains deferred (requires samāsa infrastructure — see deferred table)
 
 ---
 
@@ -159,7 +159,7 @@ The "Forms affected" column uses the convention:
 | 370 | 6.4.7 | नोपधायाः | upadhā-dīrgha + n-lopa before gen pl (nāmi); paYcAnAm, azwAnAm, saptAnAm, navAnAm, daSAnAm |
 | 371 | 7.2.84 | अष्टन आ विभक्तौ | optional n→ā for aṣṭan before hal-initial vibhakti; aṣṭābhis/aṣṭabhis, aṣṭābhyas/aṣṭabhyas, aṣṭāsu/aṣṭasu |
 | 372 | 7.1.21 | अष्टाभ्य औश् | optional jas/śas → au (O) for aṣṭan; aṣṭau (nom/acc pl); overrides SK261 (7.1.22) |
-| 376 | 7.1.71 | युजेरसमासे | num (ñ) augment for non-compound yuj before sarvanamasthāna; yuñjau, yuñjaḥ strong; yuṅ nom sg |
+| 376 | 7.1.71 | युजेरसमासे | num (ñ) augment for non-compound yuj before sarvanamasthāna; yuñjau, yuñjaḥ strong; yuṅ nom sg. Compound yuj (aśvayuk type): `yuj_kvin_samAsa` with `?samAsa` tag blocks nUM; SK257 pattern |
 | 377 | 8.2.62 | क्विन्प्रत्ययस्य कुः | ku-sub for kvin stems at pada-end: j→g (then 8.4.56→k), Y(ñ)→N(ṅ), ś-path (8.2.36 S→ṣ, 8.2.39 ṣ→ḍ, then here q→g); gives ṛtvik, srak, yuṅ, dik. **PARTIAL**: condition covers only cu/S/q; c-final stems (dadhṛc, kruñc, añc) need extension when added |
 
 ---
@@ -264,8 +264,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 373 | 3.2.59 | ṛtvigdadhṛksragdiguṣṇigañcuyujikruñcāṃ ca | Natural — handled via pratipadika pre-definitions | kvin formation rule. Stems from sutra compound (8): ṛtvij (m., j-final), dadhṛc (m., c-final, from √dhṛṣ via ścutva), sraj (f., j-final), diś (f., ś-final), uṣṇij (m., j-final), añcu-compounds (prāñc/pratyañc/udañc/tiryañc etc., ñc-final), yuj (m., j-final, nirupapada only per SK376), kruñc (m., ñc-final). SK commentary "कनावितौ": the suffixes KAN and ĀVIT are excluded — only kvin applies (not additional stems). Implemented: ftvij/sraj/yuj/diS. Deferred: dadhṛc (c-final), uṣṇij (j-final, same phonology as ftvij — trivial to add), kruñc (ñc-final), añcu-compounds (compound-specific, many forms). Extending to c/ñc-finals requires SK377 (8.2.62) condition and kvinKutva extension — see SK377 PARTIAL note |
 | 374 | 3.1.93 | कृदतिङ् | Natural | kṛt saṃjñā definition; falls out of generator framework |
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
-| 379 | 6.3.128 | विश्वस्य वसुराटोः | For later | viśva lengthening before vasu/rāṭ; compound-specific, not needed for basic declension |
-| 380 | 8.2.29 | स्कोः संयोगाद्योरन्ते च | For later | s/k deletion from conjunct-initial at pada-end; not needed for current kvin stem set |
+| 379 | 6.3.128 | विश्वस्य वसुराटोः | For later — blocked on samāsa infrastructure | viśva dīrgha before vasu/rāṭ in compound. Blockers: (1) `viśva` pratipadika absent; (2) `vasu` pratipadika absent (differs from existing viśvapā); (3) rāṭ-final stem absent (rājan is n-final, not ṭ-final); (4) samāsa context detection not yet in place |
+| 380 | 8.2.29 | स्कोः संयोगाद्योरन्ते च | Implemented | s/k deletion from conjunct-initial at pada-end. Test pratipadika: √takṣ+kvip (`takz_kvip`); nom sg taṭ/taḍ via k-deletion + 8.2.39 ṣ→ḍ + 8.4.56 ḍ→ṭ |
 
 ---
 
@@ -356,4 +356,6 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | ftvij | m | j-stem (kvin) | SK377 (8.2.62): j→g at pada-end; 8.4.56 opt g→k; ṛtvig/ṛtvik nom sg |
 | sraj | f | j-stem (kvin) | SK377 (8.2.62): same as ftvij; srag/srak nom sg |
 | yuj | m | j-stem (kvin, non-compound) | SK376 (7.1.71): num (Y=ñ) before sarvanāmasthāna; SK377 (8.2.62)+8.2.23: yuṅ nom sg |
+| yuj_samAsa | m | j-stem (kvin, compound / aśvayuk type) | SK376 blocked by ?samAsa tag; no nUM; same phonology as ṛtvij: yug/yuk nom sg |
 | diS | f | ś-stem (kvin) | SK377 (8.2.62): 8.2.36 S→ṣ(z), 8.2.39 ṣ→ḍ(q), 8.2.62 q→g; 8.4.56 opt g→k; dig/dik nom sg |
+| takz | m | kṣ-stem (kvip) | SK380 (8.2.29): k deleted from kṣ at pada-end → ṣ→ḍ(8.2.39)→ṭ(8.4.56); nom sg taṭ/taḍ |

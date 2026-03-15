@@ -179,13 +179,15 @@ turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"
 # ?yuj tag (additionally on yuj) triggers SK376 (7.1.71 yujerasamAse) num before sarvanamasthAna.
 ftvij_kvin  = Pratipadika("ftvij",   "pum",  other_tags=["DAtu", "kvin"])          # ṛtvij m. (the priest)
 sraj_kvin   = Pratipadika("sraj",   "strI", other_tags=["DAtu", "kvin"])          # sraj f. (garland)
-yuj_kvin    = Pratipadika("yuj",    "pum",  other_tags=["DAtu", "kvin", "yuj"])   # yuj m. non-compound; ?yuj → SK376 num
+yuj_kvin    = Pratipadika("yuj",    "pum",  other_tags=["DAtu", "kvin", "yuj"])        # yuj m. non-compound; ?yuj → SK376 num
+yuj_kvin_samAsa = Pratipadika("yuj", "pum",  other_tags=["DAtu", "kvin", "yuj", "samAsa"])  # aśvayuk type: ?samAsa blocks SK376 nUM augment
 diS_kvin    = Pratipadika("diS",    "strI", other_tags=["DAtu", "kvin"])          # diś f. (direction)
 daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])           # dadhṛc m. (bold one); c→j(8.2.39)→g(8.2.62)→k(8.4.56)
 pratyac_kvin = Pratipadika("pratyac", "pum",  other_tags=["DAtu", "kvin", "aYc"])  # pratyañc m. (westward); ?aYc → SK361 num
 prAc_kvin    = Pratipadika("prAc",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # prāñc m. (eastward/forward)
 udac_kvin    = Pratipadika("udac",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # udañc m. (northward/upward)
 tiryac_kvin  = Pratipadika("tiryac",  "pum",  other_tags=["DAtu", "kvin", "aYc"])  # tiryañc m. (sideways/transverse)
+takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])          # √takṣ+kvip; nom sg taṭ/taḍ via 8.2.29 k-deletion
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])

@@ -941,6 +941,38 @@ viBakti["tiryac"] = [
     ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 8 Voc
 ]
 
+# yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
+# ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
+# Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.
+prAtipadika["yuj_samAsa"] = [yuj_kvin_samAsa]   # noqa: F405
+viBakti["yuj_samAsa"] = [
+    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 1 Nom  * no nUM; 8.2.62 j→g, 8.4.56 opt g→k
+    ['युजम्', 'युजौ', 'युजः'],             # 2 Acc  * no nUM (all forms: weak)
+    ['युजा', 'युग्भ्याम्', 'युग्भिः'],      # 3 Inst * 8.2.62 j→g before Bh
+    ['युजे', 'युग्भ्याम्', 'युग्भ्यः'],      # 4 Dat
+    ['युजः', 'युग्भ्याम्', 'युग्भ्यः'],      # 5 Abl
+    ['युजः', 'युजोः', 'युजाम्'],            # 6 Gen
+    ['युजि', 'युजोः', 'युक्षु'],            # 7 Loc  * pl: 8.2.62 j→g→k + 8.3.57 s→ṣ
+    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 8 Voc  = Nom
+]
+
+# √takṣ + kvip (m.) — k-deletion via SK380 (8.2.29) at pada-end.
+# Stored as "takz" (kṣ in SLP1 = kz); kvip pratipadika (no ?kvin, no ?yuj).
+# Nom sg: takz → 8.2.29 k del → taz(=taṣ) → 8.2.39 ṣ→ḍ(q) → 8.4.56 opt ḍ→ṭ = taṭ/taḍ.
+# Before Bh (voiced): taz → 8.2.39 ṣ→ḍ → taq before voiced → taḍ+Bh = तड्भिः.
+# Loc pl: taz→q(ḍ)→w(ṭ, 8.4.55 before khar su) → ṭ+s → 8.3.59 s→ṣ = तट्षु.
+prAtipadika["takz"] = [takz_kvip]   # noqa: F405
+viBakti["takz"] = [
+    [['तट्', 'तड्'], 'तक्षौ', 'तक्षः'],   # 1 Nom  * 8.2.29 k→∅, 8.2.39 ṣ→ḍ, 8.4.56 opt ḍ→ṭ
+    ['तक्षम्', 'तक्षौ', 'तक्षः'],            # 2 Acc  * vowel-initial: no pada transformation
+    ['तक्षा', 'तड्भ्याम्', 'तड्भिः'],        # 3 Inst * 8.2.29 k→∅ → ṣ→ḍ before voiced Bh
+    ['तक्षे', 'तड्भ्याम्', 'तड्भ्यः'],        # 4 Dat
+    ['तक्षः', 'तड्भ्याम्', 'तड्भ्यः'],        # 5 Abl
+    ['तक्षः', 'तक्षोः', 'तक्षाम्'],          # 6 Gen
+    ['तक्षि', 'तक्षोः', 'तट्सु'],            # 7 Loc  * pl: 8.2.29→ṣ→ḍ→ṭ (8.4.55); s stays (8.4.42 blocks ṣṭutva after pada-ṭ)
+    [['तट्', 'तड्'], 'तक्षौ', 'तक्षः'],   # 8 Voc  = Nom
+]
+
 prAtipadika["kim"] = [kim]
 viBakti["kim"] = [
     ['कः', 'कौ', 'के'],
