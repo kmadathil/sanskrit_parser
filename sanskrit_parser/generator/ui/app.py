@@ -224,7 +224,13 @@ def _generate_cell(plist, sup, enc):
         forms  (list[str]) : output form(s) in the requested encoding
         trace  (str)       : multi-line sutra-trace text from p.describe()
     """
-    inputs = [*plist, sup, avasAna]
+    # Compound (multi-element plist) requires hierarchical structure so that
+    # pūrva-pada rules (e.g. SK379) fire *after* the uttara-pada + sup merge,
+    # matching the test infrastructure: [[*plist, sup], avasāna].
+    if len(plist) > 1:
+        inputs = [[*plist, sup], avasAna]
+    else:
+        inputs = [*plist, sup, avasAna]
     pv = PrakriyaVakya(inputs)
     p = PrakriyaFactory("AntarangaPrakriya", sutra_list, pv)
     p.execute()
