@@ -23,7 +23,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     rAma, ramA, jYAna, mahat, payas,
     kavi, hari, pati, saKi, mati, vAri,
     nadI, lakzmI, strI,
-    SamBu, krozwu, Denu, BrU, svayamBU,
+    SamBu, krozwu, Denu, vasu_pum, BrU, svayamBU,
     pitf, nf, mAtf, svasf, tisf,
     go, rE,
     rAjan, pUzan, yajvan, parvan_napum,
@@ -34,6 +34,9 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     asTi, daDi, akzi,
     kim, idam,
     div_kvip, lih_kvip, duh_kvip, anaquh, senAnI,
+    ftvij_kvin, sraj_kvin, yuj_kvin, diS_kvin,
+    gaRa, aSva, viSva, rAj_kvip,
+    in_compound,
     tri, dvi, catur,
 )
 from sanskrit_parser.generator.pratyaya import avasAna, sups  # noqa: E402
@@ -60,6 +63,13 @@ sutra_list = SutraFactory("sutras_antaranga.yaml")
 # group_label  → <optgroup> label in the dropdown
 # display_name → human-readable label shown in the dropdown
 
+# Pre-built compound pratipadika lists: [pūrva-pada, in_compound(uttara-pada)]
+# in_compound() deep-copies so each UI request gets a fresh object.
+_gaRapati_cpd  = [gaRa,  in_compound(pati)]      # SK257 gaṇapati
+_aSvayuj_cpd   = [aSva,  in_compound(yuj_kvin)]  # SK376 aśvayuj
+_viSvAvasu_cpd = [viSva, in_compound(vasu_pum)]  # SK379 viśvāvasu
+_viSvArAj_cpd  = [viSva, in_compound(rAj_kvip)]  # SK379 viśvārāj
+
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
     ("rAma",     rAma,        "a-stems (pum)",    "rāma  (rāma-)"),
@@ -84,6 +94,7 @@ _STEMS_RAW = [
     # ── u stems ───────────────────────────────────────────────────────────
     ("SamBu",    SamBu,       "u-stems (pum)",    "śambhu  (śambhu-)"),
     ("krozwu",   krozwu,      "u-stems (pum)",    "kroṣṭu  (kroṣṭu-)"),
+    ("vasu",     vasu_pum,    "u-stems (pum)",    "vasu  (vasu-)"),
     ("Denu",     Denu,        "u-stems (strī)",   "dhenu  (dhenu-)"),
 
     # ── ū stems ───────────────────────────────────────────────────────────
@@ -140,6 +151,18 @@ _STEMS_RAW = [
     ("duh",      duh_kvip,    "kvip-stems",       "duh  (duh-)"),
     ("anaquh",   anaquh,      "kvip-stems",       "anaḍuh  (anaḍuh-)"),
     ("senAnI",   senAnI,      "kvip-stems",       "senānī  (senānī-)"),
+
+    # ── kvin-stems (SK373–377) ────────────────────────────────────────────
+    ("ftvij",    ftvij_kvin,  "kvin-stems",       "ṛtvij  (ṛtvij-)  [SK373]"),
+    ("sraj",     sraj_kvin,   "kvin-stems",       "sraj  (sraj-)  [SK374]"),
+    ("yuj",      yuj_kvin,    "kvin-stems",       "yuj  (yuj-)  [SK375]"),
+    ("diS",      diS_kvin,    "kvin-stems",       "diś  (diś-)  [SK377]"),
+
+    # ── samāsa (compounds) ────────────────────────────────────────────────
+    ("gaRapati",  _gaRapati_cpd,  "samāsa",  "gaṇapati  [SK257 pati-in-cpd]"),
+    ("aSvayuj",   _aSvayuj_cpd,   "samāsa",  "aśvayuj  [SK376 yuj-in-cpd]"),
+    ("viSvAvasu", _viSvAvasu_cpd, "samāsa",  "viśvāvasu  [SK379]"),
+    ("viSvArAj",  _viSvArAj_cpd,  "samāsa",  "viśvārāj  [SK379 rāṭ/rāj forms]"),
 
     # ── Numerals ──────────────────────────────────────────────────────────
     ("tri",      tri,         "Numerals",         "tri  [nityabahuvacana]"),
