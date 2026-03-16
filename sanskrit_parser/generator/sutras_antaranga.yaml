@@ -707,6 +707,27 @@
   xform:
      l: dirgha(l)
 
+# 379: विश्वस्य वसुराटोः (6.3.128)
+# In compound, viśva (pūrva-pada) final a → ā before vasu or rāj+kvip (= rāṭ in nom sg).
+# Example: viśva + vasu → viśvāvasu; viśva + rāj_kvip → viśvārāṭ (nom sg via SK294 chain).
+# Fires after uttara-pada+sup merge when merged form retains ?vasupada/?rAw+?rAj and ?samAsa tags.
+- sutra: विश्वस्य वसुराटोः
+  id: 6.3.128
+  condition:
+    - lp: ?viSva
+      rp:
+        - and
+        - ?vasupada
+        - ?samAsa
+    - lp: ?viSva
+      rp:
+        - and
+        - ?rAj
+        - ?rAw
+        - ?samAsa
+  xform:
+    l: dirgha(l)
+
 #250: सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
 - sutra: सर्वनामस्थाने चासम्बुद्धौ
   id: 6.4.8
@@ -1164,9 +1185,10 @@
      l: str("Q")
 
 
-# 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
+# 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36)
 - sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
   id: 8.2.36
+  overrides: 8.2.30
   condition:
      - lp:
         - and
@@ -1176,8 +1198,15 @@
      - lp: ?pada
        l: [C, S]
        r: _Jal
+     - lp:
+        - and
+        - ?pada
+        - ?vraScAdi
+       l: cu
   xform:
      l: str("z")
+  update:
+     olp: +rAw
 
 
 # 326: एकाचो बशो भष् झषन्तस्य स्ध्वोः (8-2-37) 

@@ -89,8 +89,12 @@ class PaninianObject(SanskritObject):
                  so.setTag("UW")
             
         # Custom tag propagation for rule implementation
-        for t in ["eti", "eDati", "UW", "sTA", "sTamB"]:
+        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
+                so.setTag(t)
+        # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
+        for t in ["samAsa", "vasupada"]:
+            if objects[0][0].hasTag(t):
                 so.setTag(t)
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):

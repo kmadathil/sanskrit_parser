@@ -1,3 +1,4 @@
+import copy
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
@@ -22,6 +23,20 @@ class Pratipadika(PaninianObject):
 
     def anta(self):
         return self.canonical()[-1]
+
+
+def in_compound(p):
+    """Return a deep copy of pratipadika p with ?samAsa tag set.
+
+    Use this in compound test entries (vibhaktis_list.py) to tag the uttara-pada
+    (second member) as being in compound context — without creating permanent
+    _samAsa variants of each pratipadika.
+
+    Must use deepcopy: shallow copy shares the tags list and would mutate the original.
+    """
+    pc = copy.deepcopy(p)
+    pc.setTag("samAsa")
+    return pc
 
 
 rAma = Pratipadika("rAma", "pum")
@@ -214,3 +229,12 @@ arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])
 #   so only 7.1.72 fires for napum pl nUM (no double nUM). See overrides: 7.1.70 in sutras_antaranga.yaml.
 Sreyas   = Pratipadika("Sreyas", "pum",   its=['u'], other_tags=["Iyasun"])
 Sreyas_n = Pratipadika("Sreyas", "napum", its=['u'], other_tags=["Iyasun"])
+
+# Compound test pratipadikas (pūrva-pada candidates — used with in_compound() on the uttara-pada)
+gaRa        = Pratipadika("gaRa", "pum")                            # gaṇa m. — pūrva-pada for gaṇapati (SK257)
+aSva        = Pratipadika("aSva", "pum")                            # aśva m. — pūrva-pada for aśvayuj (SK376)
+
+# SK379 (6.3.128) pratipadikas — viśva's final a lengthens before vasu/rāṭ in compound
+viSva       = Pratipadika("viSva", "pum", other_tags=["viSva"])     # viśva — ?viSva tag triggers 6.3.128
+vasu_pum    = Pratipadika("vasu", "pum", other_tags=["vasupada"])   # vasu m. (u-stem) — uttara-pada (?vasupada avoids collision with 8.2.72's ?vasu)
+rAj_kvip    = Pratipadika("rAj", "pum", other_tags=["DAtu", "kvip", "rAj", "vraScAdi"])  # √rāj+kvip; nom sg: rāṭ via SK294(j→ṣ)+8.2.39(ṣ→ḍ)+8.4.56(ḍ→ṭ)

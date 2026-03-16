@@ -1226,10 +1226,110 @@ viBakti["Sreyas_n"] = [
     ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 8 Voc (= Nom for napum)
 ]
 
+# ---------------------------------------------------------------------------
+# samAsa (compound) test entries
+# Format: prAtipadika[key] = [pUrva_pada, in_compound(uttara_pada)]
+# The in_compound() call deep-copies the uttara-pada and sets ?samAsa tag.
+# generate_vibhakti handles list-form: pratipadika[-1] for tag checks,
+# and produces test tuples (pUrva, uttara_samAsa, sup, avasAna, expected).
+# ---------------------------------------------------------------------------
+
+# SK257 — gaṇapati (m.): pati in compound gets ghī-saṃjñā via 1.4.8.
+# Vasu SK257: "समासे तु भूपतिना । भूपतये"
+# Compound forms differ from standalone pati (patyā/patye/patyuḥ/patyau):
+#   inst sg: gaṇapatinā (7.3.120: tā→nā for ghī non-strī)
+#   dat sg:  gaṇapataye (ghī → regular i-stem gṇe rule)
+#   abl/gen sg: gaṇapateḥ (regular i-stem, not patyuḥ)
+#   loc sg:  gaṇapatau (regular i-stem, not patyau)
+prAtipadika["gaRapati"] = [gaRa, in_compound(pati)]   # noqa: F405
+viBakti["gaRapati"] = [
+    ['गणपतिः', 'गणपती', 'गणपतयः'],                     # 1 Nom  (= standalone)
+    ['गणपतिम्', 'गणपती', 'गणपतीन्'],                   # 2 Acc  (= standalone)
+    ['गणपतिना', 'गणपतिभ्याम्', 'गणपतिभिः'],             # 3 Inst * 7.3.120: tā→nā (ghī non-strī)
+    ['गणपतये', 'गणपतिभ्याम्', 'गणपतिभ्यः'],              # 4 Dat  * ghī i-stem dat
+    ['गणपतेः', 'गणपतिभ्याम्', 'गणपतिभ्यः'],              # 5 Abl  * pateḥ not patyuḥ
+    ['गणपतेः', 'गणपत्योः', 'गणपतीनाम्'],                # 6 Gen  * pateḥ not patyuḥ
+    ['गणपतौ', 'गणपत्योः', 'गणपतिषु'],                   # 7 Loc  * patau not patyau
+    ['गणपते', 'गणपती', 'गणपतयः'],                       # 8 Voc  (= standalone)
+]
+
+# SK376 — aśvayuj (m.): compound yuj, SK376 nUM blocked by ?samAsa.
+# Same phonology as existing yuj_samAsa but with aśva- pūrva-pada prefix.
+# Nom sg: [aśvayug, aśvayuk] (8.2.62 j→g; 8.4.56 opt g→k)
+prAtipadika["aSvayuj"] = [aSva, in_compound(yuj_kvin)]   # noqa: F405
+viBakti["aSvayuj"] = [
+    [['अश्वयुग्', 'अश्वयुक्'], 'अश्वयुजौ', 'अश्वयुजः'],   # 1 Nom  * 8.2.62 j→g; 8.4.56 opt g→k
+    ['अश्वयुजम्', 'अश्वयुजौ', 'अश्वयुजः'],                # 2 Acc  * no nUM
+    ['अश्वयुजा', 'अश्वयुग्भ्याम्', 'अश्वयुग्भिः'],          # 3 Inst * 8.2.62 j→g before Bh
+    ['अश्वयुजे', 'अश्वयुग्भ्याम्', 'अश्वयुग्भ्यः'],          # 4 Dat
+    ['अश्वयुजः', 'अश्वयुग्भ्याम्', 'अश्वयुग्भ्यः'],          # 5 Abl
+    ['अश्वयुजः', 'अश्वयुजोः', 'अश्वयुजाम्'],               # 6 Gen
+    ['अश्वयुजि', 'अश्वयुजोः', 'अश्वयुक्षु'],               # 7 Loc  * pl: j→g→k+8.3.57→ṣ
+    [['अश्वयुग्', 'अश्वयुक्'], 'अश्वयुजौ', 'अश्वयुजः'],   # 8 Voc  = Nom
+]
+
+# SK379 — viśvāvasu (m.): SK379 (6.3.128) elongates viśva final a→ā before vasu.
+# viśvāvasu = viśvā + vasu (u-stem masculine); Vasu SK379: "विश्वं वसु यस्य स विश्वावसुः"
+# SK379 standalone vasu (m.) — u-stem; verifies base pratipadika inflects correctly outside compound.
+# No dīrgha here (SK379 requires ?viSva pūrva-pada, absent in standalone).
+prAtipadika["vasu"] = vasu_pum   # noqa: F405
+viBakti["vasu"] = [
+    ['वसुः', 'वसू', 'वसवः'],               # 1 Nom
+    ['वसुम्', 'वसू', 'वसून्'],              # 2 Acc
+    ['वसुना', 'वसुभ्याम्', 'वसुभिः'],       # 3 Inst
+    ['वसवे', 'वसुभ्याम्', 'वसुभ्यः'],       # 4 Dat
+    ['वसोः', 'वसुभ्याम्', 'वसुभ्यः'],       # 5 Abl
+    ['वसोः', 'वस्वोः', 'वसूनाम्'],          # 6 Gen  * du: vasvoḥ (v insertion, 6.1.77)
+    ['वसौ', 'वस्वोः', 'वसुषु'],             # 7 Loc
+    ['वसो', 'वसू', 'वसवः'],                # 8 Voc
+]
+
+# NOTE: requires SK379 implementation + ?vasu/?samAsa tag propagation in join_objects.
+# All forms carry viśvā- prefix (dīrgha on viśva throughout compound — vasu is always
+# vasu regardless of sup, so SK294 never applies here; SK379 fires unconditionally).
+prAtipadika["viSvAvasu"] = [viSva, in_compound(vasu_pum)]   # noqa: F405
+viBakti["viSvAvasu"] = [
+    ['विश्वावसुः', 'विश्वावसू', 'विश्वावसवः'],               # 1 Nom  * viśvā- + u-stem
+    ['विश्वावसुम्', 'विश्वावसू', 'विश्वावसून्'],              # 2 Acc
+    ['विश्वावसुना', 'विश्वावसुभ्याम्', 'विश्वावसुभिः'],        # 3 Inst
+    ['विश्वावसवे', 'विश्वावसुभ्याम्', 'विश्वावसुभ्यः'],        # 4 Dat
+    ['विश्वावसोः', 'विश्वावसुभ्याम्', 'विश्वावसुभ्यः'],        # 5 Abl
+    ['विश्वावसोः', 'विश्वावस्वोः', 'विश्वावसूनाम्'],          # 6 Gen  * du: vasvoḥ (v insertion)
+    ['विश्वावसौ', 'विश्वावस्वोः', 'विश्वावसुषु'],             # 7 Loc
+    ['विश्वावसो', 'विश्वावसू', 'विश्वावसवः'],                 # 8 Voc
+]
+
+# SK379 — viśvārāṭ (m.): SK379 (6.3.128) elongates viśva final a→ā before rāṭ (= rāj+kvip).
+# Vasu SK379: "विश्वाराट् । विश्वाराड् । विश्वराजौ । विश्वराजः । विश्वाराड्भ्यामित्यादि"
+# NOTE: requires SK379 + SK294 (8.2.36, j→ṣ for rāj, already implemented).
+# NOTE: requires ?rAj/?samAsa tag propagation in join_objects.
+prAtipadika["viSvArAj"] = [viSva, in_compound(rAj_kvip)]   # noqa: F405
+viBakti["viSvArAj"] = [
+    # dīrgha (viśvā-) only where SK294 fires (pada-end / consonant-initial sups):
+    #   sg: nom/voc (rāṭ/rāḍ via j→ṣ chain); du/pl: rājau/rājaḥ (vowel-initial, no SK294).
+    # Inst/Dat/Abl du+pl: consonant-initial bhyAm/bhiH/bhyaH → SK294 fires → rāḍ-bhyām etc.
+    # Gen/Loc sg+du, Acc sg: vowel-initial → SK294 doesn't fire → viśvarāj-
+    [['विश्वाराट्', 'विश्वाराड्'], 'विश्वराजौ', 'विश्वराजः'],    # 1 Nom  sg: dīrgha; du/pl: no dīrgha
+    ['विश्वराजम्', 'विश्वराजौ', 'विश्वराजः'],                    # 2 Acc  all vowel-initial: no dīrgha
+    ['विश्वराजा', 'विश्वाराड्भ्याम्', 'विश्वाराड्भिः'],            # 3 Inst sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजे', 'विश्वाराड्भ्याम्', 'विश्वाराड्भ्यः'],            # 4 Dat  sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजः', 'विश्वाराड्भ्याम्', 'विश्वाराड्भ्यः'],            # 5 Abl  sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजः', 'विश्वराजोः', 'विश्वराजाम्'],                   # 6 Gen  all vowel-initial: no dīrgha
+    ['विश्वराजि', 'विश्वराजोः', 'विश्वाराट्सु'],                  # 7 Loc  sg/du: no dīrgha; pl: dīrgha
+    [['विश्वाराट्', 'विश्वाराड्'], 'विश्वराजौ', 'विश्वराजः'],    # 8 Voc  = Nom
+]
+
+# samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj"],
+          "strI": [], "napum": []}
+_samAsa_keys = {k for ks in samAsa.values() for k in ks}
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
 for p in prAtipadika:
+    if p in _samAsa_keys:
+        continue   # compound entries handled by samAsa dict, not ajanta/halanta
     if isinstance(prAtipadika[p], list):
         if hasattr(prAtipadika[p][-1], "linga"):
             linga[p] = prAtipadika[p][-1].linga

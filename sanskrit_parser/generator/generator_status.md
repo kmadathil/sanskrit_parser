@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 380 — 8.2.29 स्कोः संयोगाद्योरन्ते च (also SK376 compound yuj)
-**Next to implement:** SK 379 remains deferred (requires samāsa infrastructure — see deferred table)
+**Last implemented:** SK 379 — 6.3.128 विश्वस्य वसुराटोः (samāsa infrastructure + SK379 compound tests)
+**Next to implement:** SK 381 (next after SK380)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 119 |
-| SK-numbered sutras, skipped/deferred | 25 |
+| SK-numbered sutras, implemented | 120 |
+| SK-numbered sutras, skipped/deferred | 24 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 80 |
+| Stems with full vibhakti test tables | 84 |
 
 ---
 
@@ -161,6 +161,7 @@ The "Forms affected" column uses the convention:
 | 372 | 7.1.21 | अष्टाभ्य औश् | optional jas/śas → au (O) for aṣṭan; aṣṭau (nom/acc pl); overrides SK261 (7.1.22) |
 | 376 | 7.1.71 | युजेरसमासे | num (ñ) augment for non-compound yuj before sarvanamasthāna; yuñjau, yuñjaḥ strong; yuṅ nom sg. Compound yuj (aśvayuk type): `yuj_kvin_samAsa` with `?samAsa` tag blocks nUM; SK257 pattern |
 | 377 | 8.2.62 | क्विन्प्रत्ययस्य कुः | ku-sub for kvin stems at pada-end: j→g (then 8.4.56→k), Y(ñ)→N(ṅ), ś-path (8.2.36 S→ṣ, 8.2.39 ṣ→ḍ, then here q→g); gives ṛtvik, srak, yuṅ, dik. **PARTIAL**: condition covers only cu/S/q; c-final stems (dadhṛc, kruñc, añc) need extension when added |
+| 379 | 6.3.128 | विश्वस्य वसुराटोः | viśva pūrva-pada final a→ā before vasu or rāj+kvip (= rāṭ) in compound; viśvāvasu, viśvārāṭ. Requires ?samAsa/?vasu/?rAj tag propagation in join_objects() |
 
 ---
 
@@ -264,7 +265,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 373 | 3.2.59 | ṛtvigdadhṛksragdiguṣṇigañcuyujikruñcāṃ ca | Natural — handled via pratipadika pre-definitions | kvin formation rule. Stems from sutra compound (8): ṛtvij (m., j-final), dadhṛc (m., c-final, from √dhṛṣ via ścutva), sraj (f., j-final), diś (f., ś-final), uṣṇij (m., j-final), añcu-compounds (prāñc/pratyañc/udañc/tiryañc etc., ñc-final), yuj (m., j-final, nirupapada only per SK376), kruñc (m., ñc-final). SK commentary "कनावितौ": the suffixes KAN and ĀVIT are excluded — only kvin applies (not additional stems). Implemented: ftvij/sraj/yuj/diS. Deferred: dadhṛc (c-final), uṣṇij (j-final, same phonology as ftvij — trivial to add), kruñc (ñc-final), añcu-compounds (compound-specific, many forms). Extending to c/ñc-finals requires SK377 (8.2.62) condition and kvinKutva extension — see SK377 PARTIAL note |
 | 374 | 3.1.93 | कृदतिङ् | Natural | kṛt saṃjñā definition; falls out of generator framework |
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
-| 379 | 6.3.128 | विश्वस्य वसुराटोः | For later — blocked on samāsa infrastructure | viśva dīrgha before vasu/rāṭ in compound. Blockers: (1) `viśva` pratipadika absent; (2) `vasu` pratipadika absent (differs from existing viśvapā); (3) rāṭ-final stem absent (rājan is n-final, not ṭ-final); (4) samāsa context detection not yet in place |
 | 380 | 8.2.29 | स्कोः संयोगाद्योरन्ते च | Implemented | s/k deletion from conjunct-initial at pada-end. Test pratipadika: √takṣ+kvip (`takz_kvip`); nom sg taṭ/taḍ via k-deletion + 8.2.39 ṣ→ḍ + 8.4.56 ḍ→ṭ |
 
 ---
@@ -359,3 +359,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | yuj_samAsa | m | j-stem (kvin, compound / aśvayuk type) | SK376 blocked by ?samAsa tag; no nUM; same phonology as ṛtvij: yug/yuk nom sg |
 | diS | f | ś-stem (kvin) | SK377 (8.2.62): 8.2.36 S→ṣ(z), 8.2.39 ṣ→ḍ(q), 8.2.62 q→g; 8.4.56 opt g→k; dig/dik nom sg |
 | takz | m | kṣ-stem (kvip) | SK380 (8.2.29): k deleted from kṣ at pada-end → ṣ→ḍ(8.2.39)→ṭ(8.4.56); nom sg taṭ/taḍ |
+| gaRapati | m | i-stem (compound pati, ghī) | SK257 (1.4.8): pati in compound gets ghī-saṃjñā; inst -nā, dat -aye, abl/gen -eḥ, loc -au (cf. standalone patyuḥ gen) |
+| aSvayuj | m | j-stem (kvin, compound) | SK376 (7.1.71) blocked by ?samAsa; no nUM; phonology as ṛtvij: aśvayug/aśvayuk nom sg |
+| viSvAvasu | m | u-stem (compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?vasu in compound; viśvāvasu |
+| viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |

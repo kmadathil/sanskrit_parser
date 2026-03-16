@@ -11,7 +11,7 @@ from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from indic_transliteration import sanscript
 
-from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
+from vibhaktis_list import ajanta, halanta, samAsa, viBakti, prAtipadika, encoding
 
 import pytest
 
@@ -215,3 +215,8 @@ def pytest_generate_tests(metafunc):
                 vibhakti_s_list.extend(generate_vibhakti(prAtipadika[v],
                                                          viBakti[v], sanscript.SLP1))
         metafunc.parametrize("vibhakti_s", vibhakti_s_list)
+    if 'samAsa_pum' in metafunc.fixturenames:
+        samAsa_pum_list = []
+        for v in samAsa["pum"]:
+            samAsa_pum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v]))
+        metafunc.parametrize("samAsa_pum", samAsa_pum_list)
