@@ -37,6 +37,7 @@ class SandhiGraph(object):
     """
     start = "__start__"
     end = "__end__"
+    scorer = lexical_scorer.Scorer()  # Singleton
 
     def __init__(self):
         ''' DAG Class Init
@@ -47,7 +48,6 @@ class SandhiGraph(object):
         '''
         self.roots = []
         self.G = nx.DiGraph()
-        self.scorer = lexical_scorer.Scorer()
 
     def __iter__(self):
         ''' Iterate over nodes '''

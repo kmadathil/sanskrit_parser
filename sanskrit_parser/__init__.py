@@ -19,8 +19,6 @@ Please report any issues at: https://github.com/kmadathil/sanskrit_parser/issues
 from .api import Parser
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
 
 def enable_console_logger(level=logging.INFO,
                           fmt='%(levelname)-8s %(message)s'):
