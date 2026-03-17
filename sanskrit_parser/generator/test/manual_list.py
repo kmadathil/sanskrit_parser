@@ -149,5 +149,8 @@ test_list_devanagari = [
     (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
     ("तृंह्*", "अनीय", "तृंहणीय"), # 8.4.2
+    # SK382-385: yuṣmad/asmad nom sg (tvam, aham)
+    (yuzmad, su, "त्वम्"),   # SK384 (tv) + SK382 (su→am) + SK385 (d-lopa) → tvam
+    (asmad, su, "अहम्"),    # SK384 (ah) + SK382 (su→am) + SK385 (d-lopa) → aham
      ]
 

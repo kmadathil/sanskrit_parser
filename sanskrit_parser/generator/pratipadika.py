@@ -208,6 +208,11 @@ kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
 idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])
 
+# Personal pronouns — alinga (no gender distinction)
+# SK382-395 (7.1.28, 7.2.86-97): nominative sg forms tvam/aham via SK383-385
+yuzmad = Pratipadika("yuzmad", "pum", other_tags=["yuzmad", "sarvanAma"])  # yuṣmad "you"
+asmad  = Pratipadika("asmad",  "pum", other_tags=["asmad",  "sarvanAma"])  # asmad "I/we"
+
 rAjan = Pratipadika("rAjan", "pum", other_tags=["rAjan"])
 parvan_napum = Pratipadika("parvan", "napum")
 yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])

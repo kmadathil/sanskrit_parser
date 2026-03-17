@@ -2699,7 +2699,65 @@
   xform:
      l: str("r")
 
-# 265: त्यदादीनामः (7-2-102) 
+# ---- yuṣmad / asmad (personal pronoun) rules ----
+# SK381: तदोः सः सावनन्त्ययोः (7-2-106) — tad-group pronoun; deferred (no tad pratipadika yet)
+
+# 382: ङेप्रथमयोरम् (7-1-28)
+# For yuṣmad/asmad: ṅe (dat sg "e") and prathamā (nom sg "s") → am.
+# Fires on ?su (nom sg) and ?Ne (ṅit dat sg) after yuzmad/asmad.
+# Priority (7.1.28, _aps_num=71028): fires after SK384 (72094) and SK385 (72090) when competing.
+# NOTE: use block-sequence for ?-tag lists (flow-style [?tag] parses as dict in PyYAML).
+- sutra: ङेप्रथमयोरम्
+  id: 7.1.28
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp:
+      - ?su
+      - ?Ne
+  xform:
+    r: str("a")
+    rc: str("m")
+
+# SK383: मपर्यन्तस्य (7-2-91) — adhikāra scope indicator ("up to m"); Natural Siddha:
+# the "mparyanta" scope is encoded directly in SK384's xform (replacing lc = up to m).
+
+# 384: त्वाहौ सौ (7-2-94)
+# For yuṣmad/asmad, the mparyanta (up to-m portion) → tv / ah before su (nom sg).
+# Two blocks: one for yuzmad (→ tv), one for asmad (→ ah).
+# Priority 72094: fires before SK382 (71028) and SK385 (72090).
+- sutra: त्वाहौ सौ
+  id: 7.2.94
+  condition:
+    lp: ?yuzmad
+    rp: ?su
+  xform:
+    lc: str("tv")
+
+- sutra: त्वाहौ सौ
+  id: 7.2.94.1
+  condition:
+    lp: ?asmad
+    rp: ?su
+  xform:
+    lc: str("ah")
+
+# 385: शेषे लोपः (7-2-90)
+# For yuṣmad/asmad: delete the final d (the śeṣa = remainder after mparyanta) in all
+# vibhakti positions except those motivated by ā-form (SK393) or y-form (SK392) — those
+# are not yet implemented; for now fires universally when l=d is present.
+- sutra: शेषे लोपः
+  id: 7.2.90
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    l: d
+  xform:
+    l: null
+
+# 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः
   id: 7.2.102
   # FIXME: this needs to happen first, before daSca but unclear how. using this for now
