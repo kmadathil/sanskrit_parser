@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 385 — 7.2.90 शेषे लोपः (yuṣmad/asmad personal pronoun nom sg; tvam, aham via SK382+384+385)
-**Next to implement:** SK 386 (7.2.92 युवावौ द्विवचने — yuzmad/asmad nom/voc du)
+**Last implemented:** SK 395 — 7.1.30 भ्यसोभ्यम् (yuṣmad/asmad dat/abl pl: yuṣmabhyam, asmabhyam)
+**Next to implement:** SK 396 (7.1.31 एकवचनस्य च — yuṣmad/asmad abl sg: tvat, mat)
 
 ---
 
@@ -12,7 +12,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 124 |
+| SK-numbered sutras, implemented | 134 |
 | SK-numbered sutras, skipped/deferred | 25 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 84 |
@@ -166,6 +166,16 @@ The "Forms affected" column uses the convention:
 | 382 | 7.1.28 | ङेप्रथमयोरम् | For yuṣmad/asmad: ṅe (dat sg) and prathamā (nom sg su) suffix → am; enables tvam/aham nom sg formation with SK384+SK385 |
 | 384 | 7.2.94 | त्वाहौ सौ | For yuṣmad/asmad: mparyanta (up to m portion) → tv / ah before su (nom sg); two YAML blocks (7.2.94 for yuzmad→tv, 7.2.94.1 for asmad→ah) |
 | 385 | 7.2.90 | शेषे लोपः | For yuṣmad/asmad: lopa of final d in all vibhakti positions (śeṣa = remainder after mparyanta substitution); yields yuzma-/asma- oblique base; nom sg: tvam, aham |
+| 386 | 7.2.92 | युवावौ द्विवचने | Dual mparyanta: yuzmad→yuv, asmad→Āv (preserving trailing a); two YAML blocks (7.2.92 yuzmad, 7.2.92.1 asmad); base for all dual forms |
+| 387 | 7.2.88 | प्रथमायाश्च द्विवचने भाषायाम् | Nom du suffix O → ām for yuzmad/asmad; overrides SK392 (7.2.89); yuvām, āvām |
+| 388 | 7.2.93 | यूयवयौ जसि | Nom pl mparyanta: yuzmad→yūy, asmad→vay (drops trailing a); two YAML blocks; with SK382 (jas→am): yūyam, vayam |
+| 389 | 7.2.97 | त्वमावेकवचने | All-sg mparyanta: yuzmad→tv, asmad→m (preserving trailing a for SK392/393 to act on); two YAML blocks; blocked by SK384 (nom sg), SK394 (dat sg), SK392 (vowel-initial) |
+| 390 | 7.2.87 | द्वितीयायां च | Acc ā-ādeśa: suffix am/au → ām for yuzmad/asmad in dvitīyā (not pl); overrides SK392 (7.2.89); tvām, mām, yuvām, āvām |
+| 391 | 7.1.29 | शसो न | Acc pl śas → n for yuzmad/asmad; SK393 then fires (l=a vowel, r=n hal) → ā; yuṣmān, asmān |
+| 392 | 7.2.89 | योऽचि | y-ādeśa (a→ay) before vowel-initial suffix for yuzmad/asmad; overrides SK389 (7.2.97); tvayā, mayā, tvayi, mayi, yuvayoḥ, āvayoḥ |
+| 393 | 7.2.86 | युष्मदस्मदोरनादेशे | ā-ādeśa (dirgha) for yuzmad/asmad before hal-initial suffix (excludes Byas for short-a dat/abl pl); yuṣmābhiḥ, asmābhiḥ, yuvābhyām, āvābhyām, yuṣmāsu, asmāsu, yuṣmān, asmān |
+| 394 | 7.2.95 | तुभ्यमह्यौ ङयि | Dat sg mparyanta+suffix: yuzmad→tuBhy, asmad→mahy; ṅe→am; overrides SK389; tubhyam, mahyam |
+| 395 | 7.1.30 | भ्यसोभ्यम् | Dat/abl pl Byas → Byam for yuzmad/asmad; SK393 excluded (?!Byas) keeping short a; yuṣmabhyam, asmabhyam |
 
 ---
 
