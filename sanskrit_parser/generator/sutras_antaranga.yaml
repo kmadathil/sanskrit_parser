@@ -361,11 +361,7 @@
     overrides: [6.1.101,  6.1.102, 7.3.102]
     condition:
        l: _ak
-       r: =a
        rp: ?am
-#         - and
-#         - =am
-#         - ?pratyaya
     xform:
        l: null
        r: l
@@ -1017,11 +1013,21 @@
 - sutra: संयोगान्तस्य लोपः
   id: 8.2.23
   condition:
-     lp: ?pada
+   - lp: ?pada
      ll: _hal
      l:  _hal
   xform:
      l: null
+
+- sutra: संयोगान्तस्य लोपः 
+  id: 8.2.23.2
+  condition:
+     rp: ?viBakti    # FIXME - remove this after fixing awkup .. for yuzmAn
+     r: _hal
+     rr: _hal
+     rp: ?samyogAnta
+  xform:
+     rc: null
 
 # Vartikam
 # 54: संयोगान्तस्य लोपः (8-2-23-1)
@@ -2232,11 +2238,7 @@
   domain: pratyaya
   bahiranga: 2
   condition:
-     lp:
-       - and
-       - ?aNga
-       - ?!yuzmad
-       - ?!asmad
+     lp: ?aNga
      l: at
      rp: ?Bis
   xform:
@@ -2714,17 +2716,27 @@
 # NOTE: use block-sequence for ?-tag lists (flow-style [?tag] parses as dict in PyYAML).
 - sutra: ङेप्रथमयोरम्
   id: 7.1.28
+  bahiranga: 2
+  overrides: 7.1.17
   condition:
     lp:
       - ?yuzmad
       - ?asmad
     rp:
-      - ?su
       - ?Ne
+      - ?su
+      - ?O
       - ?jas
+      - ?am
+      - ?Ow
+      - ?Sas
   xform:
-    r: str("a")
-    rc: str("m")
+    r: null
+    rc: str("am")
+  update:
+    orp:
+      - +AdeSa
+      - +am
 
 # SK383: मपर्यन्तस्य (7-2-91) — adhikāra scope indicator ("up to m"); Natural Siddha:
 # the "mparyanta" scope is encoded directly in SK384's xform (replacing lc = up to m).
@@ -2756,6 +2768,7 @@
 # SK393 (ā before hal) and SK392 (y before vowel) fire AFTER SK385 on the d-deleted stem.
 - sutra: शेषे लोपः
   id: 7.2.90
+  overrides: [7.3.102, 7.3.103]
   condition:
     lp:
       - ?yuzmad
@@ -2791,7 +2804,7 @@
 # overrides 7.2.89 (SK392) to block y-ādeśa from also firing for nom du (O is vowel-initial).
 - sutra: प्रथमायाश्च द्विवचने भाषायाम्
   id: 7.2.88
-  overrides: 7.2.89
+  overrides: [7.2.89, 7.2.86]
   condition:
     lp:
       - ?yuzmad
@@ -2801,9 +2814,11 @@
       - ?praTamA
       - ?dvivacana
   xform:
-    r: str("A")
-    rc: str("m")
-
+      l: null
+  insert:
+      l: str("A")
+  
+    
 # 388: यूयवयौ जसि (7-2-93)
 # Nom pl mparyanta: yuzmad → yūy, asmad → vay, before jas.
 # Drops trailing 'a' (like SK384): SK382 (patched to include ?jas) supplies the suffix 'am'.
@@ -2814,7 +2829,7 @@
     lp: ?yuzmad
     rp: ?jas
   xform:
-    lc: str("yUy")
+    lc: str("yUya")
 
 - sutra: यूयवयौ जसि
   id: 7.2.93.1
@@ -2822,7 +2837,7 @@
     lp: ?asmad
     rp: ?jas
   xform:
-    lc: str("vay")
+    lc: str("vaya")
 
 # 389: त्वमावेकवचने (7-2-97)
 # All singular mparyanta: yuzmad → tv, asmad → m, for remaining singular vibhakti.
@@ -2839,7 +2854,10 @@
     lp: ?yuzmad
     rp: ?ekavacana
   xform:
-    lc: str("tv")+lc[-1]
+    lc: str("tva")
+    l: null
+  insert:
+    l: lc[-1]+l
 
 - sutra: त्वमावेकवचने
   id: 7.2.97.1
@@ -2847,7 +2865,10 @@
     lp: ?asmad
     rp: ?ekavacana
   xform:
-    lc: str("m")+lc[-1]
+    lc: str("ma")
+    l: null
+  insert:
+    l: lc[-1]+l
 
 # 390: द्वितीयायां च (7-2-87)
 # Acc ā-ādeśa: suffix → ām for acc sg (am) and acc du (Ow). Gives tvām, mām, yuvām, āvām.
@@ -2863,16 +2884,19 @@
     rp:
       - and
       - ?dvitIyA
-      - ?!bahuvacana
   xform:
-    r: str("A")
-    rc: str("m")
+    l: null
+  insert:
+    l: str("A")
+
 
 # 391: शसो न (7-1-29)
 # Acc pl: śas → n for yuzmad/asmad. After SK391 changes suffix to "n" (consonant),
 # the engine re-evaluates: SK393 now fires (l='a', r='n'=hal) → "yuzmA"+"n" = yuzmān ✓.
 - sutra: शसो न
   id: 7.1.29
+  bahiranga: 2
+  overrides: 7.1.28
   condition:
     lp:
       - ?yuzmad
@@ -2880,7 +2904,8 @@
     rp: ?Sas
   xform:
     r: str("n")
-    rc: str("")
+  update:
+    orp: +samyogAnta   # FIXME - remove after correcting awkup
 
 # 392: योऽचि (7-2-89)
 # y-ādeśa: final 'a' of stem → 'ay' before vowel-initial (non-ādeśa) suffix.
@@ -2893,15 +2918,18 @@
 #       those forms are deferred from test tables.
 - sutra: योऽचि
   id: 7.2.89
-  overrides: 7.2.97
+  overrides: 7.2.90
   condition:
     lp:
       - ?yuzmad
       - ?asmad
-    l: _ac
     r: _ac
+    rp:
+      - and
+      - ?viBakti
+      - ?!AdeSa
   xform:
-    l: str("ay")
+    l: str("y")
 
 # 393: युष्मदस्मदोरनादेशे (7-2-86)
 # ā-ādeśa: lengthen final vowel of stem before non-ādeśa hal-initial suffix.
@@ -2911,15 +2939,26 @@
 # Without ?!Byas: SK393 (72086) fires before SK395 (71030) → wrongly gives yuzmāBhyam.
 - sutra: युष्मदस्मदोरनादेशे
   id: 7.2.86
+  overrides: 7.2.90
   condition:
     lp:
       - ?yuzmad
       - ?asmad
-    l: _ac
     r: _hal
-    rp: ?!Byas
+    rp:              # anAdeSe
+      - and
+      - ?!Byas
+      - ?!Ne
+      - ?!su
+      - ?!O
+      - ?!jas
+      - ?!am
+      - ?!Ow
+      - ?!Sas
   xform:
-    l: dirgha(l)
+    l: null
+  insert:
+    l: str("A")
 
 # 394: तुभ्यमह्यौ ङयि (7-2-95)
 # Dat sg: mparyanta → tuBhy (yuzmad) / mahy (asmad); ṅi → am (am-ādeśa).
@@ -2934,9 +2973,11 @@
     lp: ?yuzmad
     rp: ?Ne
   xform:
-    lc: str("tuBy")
-    r: str("a")
-    rc: str("m")
+    lc: str("tuBya")
+    l: null
+  insert:
+    l: lc[-1]+l
+
 
 - sutra: तुभ्यमह्यौ ङयि
   id: 7.2.95.1
@@ -2945,9 +2986,11 @@
     lp: ?asmad
     rp: ?Ne
   xform:
-    lc: str("mahy")
-    r: str("a")
-    rc: str("m")
+    lc: str("mahya")
+    l: null
+  insert:
+    l: lc[-1]+l
+
 
 # 395: भ्यसोभ्यम् (7-1-30)
 # Abl/dat pl: bhyas → bhyam for yuzmad/asmad (optional abhyam not implemented).
@@ -3135,11 +3178,7 @@
 - sutra:  सुपि च
   id: 7.3.102
   condition:
-     lp:
-       - and
-       - ?aNga
-       - ?!yuzmad
-       - ?!asmad
+     lp: ?aNga
      l: at
      r: _yaY
      rp: ?sup
@@ -3150,11 +3189,7 @@
 - sutra: बहुवचने झल्येत्
   id: 7.3.103
   condition:
-     lp:
-       - and
-       - ?aNga
-       - ?!yuzmad
-       - ?!asmad
+     lp: ?aNga
      l: at
      r: _Jal
      rp:

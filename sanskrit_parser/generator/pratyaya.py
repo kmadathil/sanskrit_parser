@@ -124,6 +124,7 @@ Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si", "viBakti",
 
 OS = Pratyaya("O", other_tags=["sup"])
 
+
 # adaq - for qatarAdi - 
 adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])
 
