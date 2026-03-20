@@ -96,6 +96,10 @@ class PaninianObject(SanskritObject):
         for t in ["samAsa", "vasupada"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t)
+        # Propagate stem-class tags needed for pada-internal sandhi rules
+        for t in ["han"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t)
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
                 so.setTag(t)

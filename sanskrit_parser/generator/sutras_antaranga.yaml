@@ -909,51 +909,51 @@
 
 
 
-# Ratva
-# FIXME: Get samanapade right
+# Ratva — pada-internal implementation (samAnapade = lp must be ?pada)
 # 235: रषाभ्यां नो णः समानपदे (8-4-1)
+# Direct adjacency: ṛ/ṣ/r immediately precedes 'n' (no intervening chars).
+# Apavāda of 8.4.2: fires first when both conditions hold; 8.4.2 handles
+# any remaining vyavāya 'n' positions in the subsequent iteration.
+# xform: l:null + lc:ratva_string(lc+l) rewrites entire element string.
 - sutra: रषाभ्यां नो णः समानपदे
   id: 8.4.1
+  overrides: 8.4.2
   condition:
-     l: [r, z, f] # ऋवर्णात् नस्य णत्वं वाच्यम्
-     r: n
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_simple
   xform:
-     r: str("R")
+    l: null
+    lc: ratva_string(lc+l)
 
 # 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
+# Vyavāya extension: ṛ/ṣ/r may be separated from 'n' by aṭkupvāṅnum chars
+# (vowels, ku/pu-class, anusvara). lp: ?pada (samānapade). Subsumes old
+# cross-boundary 8.4.2 and old 8.4.2.1 (which only checked lp-final 'n').
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2
   condition:
-     lp: $$rz_vyavaya_l 
-     rp: $$rz_vyavaya_r
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_vyavaya
   xform:
-     r: null
-     rc: Ratva(r+rc)
-
-# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2-1)
-- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
-  id: 8.4.2.1
-  condition:
-     lp: $$rz_vyavaya_n
-     rp:
-       - and
-       - ?!avasAna
-       - $$notnull
-  xform:
-      l: str("R")
+    l: null
+    lc: ratva_string(lc+l, True)
 
 # 359: हन्तेरत्पूर्वस्य (8-4-22)
-# No n → ṇ in han-stems unless preceded by short a (at-pūrvasya) 
+# No n → ṇ in han-stems unless preceded by short a (at-pūrvasya).
+# Pada-internal form: block when lp is a ?han ?pada with ṛ/ṣ/r→n but 'a' ≠ immediate predecessor.
 - sutra: हन्तेरत्पूर्वस्य
   id: 8.4.22
-  overrides: [8.4.2, 8.4.2.1]
+  overrides: [8.4.1, 8.4.2]
   condition:
-    - lp: ?han
-      l: n
-      ll: $$anat
-    - lp: ?han
-      l: G
-      r: n     # Must intercept the allop'naH case before Ratvam
+    lp:
+      - and
+      - ?han
+      - ?pada
+      - $$has_ratva_non_at
   xform: null
    
 # 359: हन्तेरात्पूर्वस्य (8-4-22)
@@ -961,20 +961,27 @@
 # n-R only if upasarga has r ($$rz_vyavaya_l) and at precedes n in han
 # - sutra: हन्तेरात्पूर्वस्य
 #  id: 8.4.22.1
-#  overrides: [8.4.2, 8.4.2.1]
+#  overrides: [8.4.1, 8.4.2]
 #  condition:
 
 #  xform:
 
 
 # 198: पदान्तस्य (8-4-37)
+# Blocks ṇatva for pada-final 'n': a word-final 'n' is exempt even when ṛ/ṣ/r
+# precedes it. Fires when lp=?pada ends in 'n' (l='n') and has ṛ/ṣ/r+n conditioning
+# ($$has_ratva_vyavaya) — i.e., when 8.4.1/8.4.2 would otherwise fire on the pada-
+# final 'n'. The l:null + lc:ratva_string xform in 8.4.1/8.4.2 would apply Ratva to
+# all qualifying 'n' including the final one; this apavāda blocks that. Overrides both.
 - sutra: पदान्तस्य
   id: 8.4.37
-  overrides: [8.4.1, 8.4.2] 
+  overrides: [8.4.1, 8.4.2]
   condition:
-     l: [r, z, f]
-     r: n
-     rr: $$null
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_vyavaya
+    l: n
   xform: null
 
 #  FIXME: Collect Pada aDikAra from 8.1.16
@@ -1019,18 +1026,6 @@
   xform:
      l: null
 
-- sutra: संयोगान्तस्य लोपः
-  id: 8.2.23.2
-  # FIXME: remove this rule after fixing awkup (used for yuzmAn acc pl via +samyogAnta tag on SK391)
-  condition:
-     r: _hal
-     rr: _hal
-     rp:
-       - and
-       - ?viBakti
-       - ?samyogAnta
-  xform:
-     rc: null
 
 # Vartikam
 # 54: संयोगान्तस्य लोपः (8-2-23-1)
@@ -2910,12 +2905,10 @@
 
 # 391: शसो न (7-1-29)
 # Acc pl: śas content is "as" (S is it-letter). xform r='a'→'n', rc='s' unchanged →
-# suffix becomes "ns". saMyogāntasya lopaḥ (8.2.23) then deletes the final 's'.
+# suffix becomes "ns". After other pair rules quiesce, (stem, "ns") merges to merged_pada
+# (?pada). 8.2.23 (saMyogāntasya lopaḥ) then fires on (merged_pada, avasāna): the
+# pada ends in two consonants (ns) → deletes final 's' → stem+n.
 # bahiranga:2, overrides:7.1.28 (SK391 beats SK382 for ?Sas so it gets "ns" not "am").
-# After SK391, SK390 (dvitīyāyāñ ca) fires (suffix retains ?dvitIyA tag): l='d'→null,
-# insert ["yuzma","A"] → 6.1.101 (a+A→A) → "yuzmA". Then 8.2.23.2 deletes 's' → "yuzmAn".
-# FIXME: +samyogAnta tag is a workaround for awkup not detecting the samyoga correctly;
-# 8.2.23.2 uses it to fire. Remove both once awkup is fixed.
 - sutra: शसो न
   id: 7.1.29
   bahiranga: 2
@@ -2927,8 +2920,6 @@
     rp: ?Sas
   xform:
     r: str("n")
-  update:
-    orp: +samyogAnta   # FIXME - remove after correcting awkup
 
 # 392: योऽचि (7-2-89)
 # y-ādeśa: fires on the 'd'-final stem before vowel-initial non-ādeśa suffixes.

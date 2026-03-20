@@ -241,6 +241,72 @@ def awkupvaNnum(s):
         or (s == "M")
 
 
+def ratva_string(s, awkupnumvyavaya=False, apply=True):
+    """Unified ṇatva helper for both condition check and xform.
+
+    Scans s for every 'n' at position i. A 'n' qualifies if scanning backward
+    from i-1 through permissible vyavāya characters we find ṛ/ṣ/r (r, z, f).
+
+    awkupnumvyavaya=False (8.4.1): no intervening characters allowed
+    awkupnumvyavaya=True  (8.4.2): aṭkupvāṅnum chars (vowels, ku/pu-class,
+                                    anusvara) may intervene
+
+    apply=True  (xform use):       return modified string (n→R where qualifying)
+    apply=False (condition check): return bool — True if any 'n' would be changed
+    """
+    result = list(s)
+    changed = False
+    for i in range(len(s)):
+        if s[i] == 'n':
+            # 8.3.24 (naścāpadāntasya jali): n before Jal becomes anusvāra M.
+            # That rule has priority; ṇatva must not target such n.
+            if i + 1 < len(s) and isInPratyahara('Jal', s[i + 1]):
+                continue
+            j = i - 1
+            while j >= 0:
+                if s[j] in ('r', 'z', 'f', 'F'):
+                    result[i] = 'R'
+                    changed = True
+                    break
+                elif awkupnumvyavaya and awkupvaNnum(s[j]):
+                    j -= 1
+                else:
+                    break
+    if apply:
+        return "".join(result)
+    else:
+        return changed
+
+
+def has_ratva_simple(s):
+    """Return True if s has ṛ/ṣ/r directly before 'n' (8.4.1, no vyavāya)."""
+    return ratva_string(s, awkupnumvyavaya=False, apply=False)
+
+
+def has_ratva_vyavaya(s):
+    """Return True if s has ṛ/ṣ/r before 'n' with aṭkupvāṅnum vyavāya (8.4.2)."""
+    return ratva_string(s, awkupnumvyavaya=True, apply=False)
+
+
+def has_ratva_non_at(s):
+    """For han-stems (8.4.22): True if s has ṛ/ṣ/r→(aṭkup vyavāya)→n where 'a' does NOT
+    directly precede 'n'. Returns True to block ṇatva (non-at-pūrva case);
+    returns False when 'a' immediately precedes 'n' (allowing ṇatva in that case)."""
+    for i in range(1, len(s)):
+        if s[i] == 'n' and s[i-1] != 'a':
+            if i + 1 < len(s) and isInPratyahara('Jal', s[i + 1]):
+                continue
+            j = i - 1
+            while j >= 0:
+                if s[j] in ('r', 'z', 'f', 'F'):
+                    return True
+                elif awkupvaNnum(s[j]):
+                    j -= 1
+                else:
+                    break
+    return False
+
+
 def Ratva(s):
     return s.replace("n", "R", 1)
 
