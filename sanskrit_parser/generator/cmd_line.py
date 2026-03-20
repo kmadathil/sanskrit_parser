@@ -58,6 +58,9 @@ def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
     else:
         pratipadikax = pratipadika
     for ix, s in enumerate(sups):  # noqa: F405
+        # Sarvanāmas (pronouns) have no vocative (sambōdhana = row 8)
+        if ix == 7 and pratipadikax.hasTag("sarvanAma"):
+            continue
         if verbose:
             logger.info(f"Vibhakti {ix+1} {s}")
         else:

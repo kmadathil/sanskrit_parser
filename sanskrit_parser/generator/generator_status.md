@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 395 — 7.1.30 भ्यसोभ्यम् (yuṣmad/asmad dat/abl pl: yuṣmabhyam, asmabhyam)
-**Next to implement:** SK 396 (7.1.31 एकवचनस्य च — yuṣmad/asmad abl sg: tvat, mat)
+**Last implemented:** SK 400 — 7.1.33 साम आकम् (yuṣmad/asmad gen pl: yuṣmākam, asmākam)
+**Next to implement:** SK 401 (8.1.16 पदस्य — pada-scope rule; skip with SK401–SK413 pada enclitics)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 134 |
-| SK-numbered sutras, skipped/deferred | 25 |
+| SK-numbered sutras, implemented | 138 |
+| SK-numbered sutras, skipped/deferred | 38 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 84 |
+| Stems with full vibhakti test tables | 86 |
 
 ---
 
@@ -176,6 +176,10 @@ The "Forms affected" column uses the convention:
 | 393 | 7.2.86 | युष्मदस्मदोरनादेशे | ā-ādeśa (dirgha) for yuzmad/asmad before hal-initial suffix (excludes Byas for short-a dat/abl pl); yuṣmābhiḥ, asmābhiḥ, yuvābhyām, āvābhyām, yuṣmāsu, asmāsu, yuṣmān, asmān |
 | 394 | 7.2.95 | तुभ्यमह्यौ ङयि | Dat sg mparyanta+suffix: yuzmad→tuBhy, asmad→mahy; ṅe→am; overrides SK389; tubhyam, mahyam |
 | 395 | 7.1.30 | भ्यसोभ्यम् | Dat/abl pl Byas → Byam for yuzmad/asmad; SK393 excluded (?!Byas) keeping short a; yuṣmabhyam, asmabhyam |
+| 396 | 7.1.32 | एकवचनस्य च | Abl sg at-ādeśa: full replacement → tvat (yuzmad), mat (asmad); overrides SK389/SK393/SK392 |
+| 397 | 7.1.31 | पञ्चम्या अत् | Abl pl at-ādeśa: full replacement for ?Byas+?pancamI → yuzmAt, asmAt; wins over SK395 (71031 > 71030 SPSP) |
+| 398 | 7.2.96 | तवममौ ङसि | Gen sg full replacement → tava (yuzmad), mama (asmad); overrides SK389/SK393/SK392 |
+| 400 | 7.1.33 | साम आकम् | Gen pl Am → Akam; SK385 then d-lopa; sandhi a+A→A → yuzmAkam, asmAkam |
 
 ---
 
@@ -281,6 +285,20 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
 | 381 | 7.2.106 | तदोः सः सावनन्त्ययोः | For later | tad-group pronoun: s-substitute for tad/etad nom sg m (gives saḥ, etc.); deferred until tad pratipadika and full tad declension rules are added |
 | 383 | 7.2.91 | मपर्यन्तस्य | Natural Siddha | adhikāra scope indicator ("up to m"); scope encoded directly in SK384's xform (lc replaced = yuzm+a portion); no YAML rule needed |
+| 399 | 7.1.27 | युष्मदस्मद्भ्यां ङसोऽश् | Natural Siddha | gen sg overridden entirely by SK398 (tava/mama); gen/loc du (yuvayoḥ/āvayoḥ) fall out of SK386+SK392; no YAML rule needed |
+| 401 | 8.1.16 | पदस्य | For later — pada enclitics | scope rule for pada-final enclitic pronoun forms (te, me, tvā, mā, vām, nau, vas, nas); whole SK401–SK413 group deferred |
+| 402 | 8.1.17 | पदात् | For later — pada enclitics | pada-from rule; part of SK401–SK413 enclitic group |
+| 403 | 8.1.18 | अनुदात्तं सर्वमपादादौ | For later — accent | unaccented rule; accent not modelled in generator |
+| 404 | 8.1.20 | युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ | For later — pada enclitics | vām/nau enclitic dual; requires word-boundary/sentence context |
+| 405 | 8.1.21 | बहुवचनस्य वस्नसौ | For later — pada enclitics | vas/nas enclitic pl; requires preceding word context |
+| 406 | 8.1.22 | तेमयावेकवचनस्य | For later — pada enclitics | te/me enclitic sg gen/dat; requires preceding word context |
+| 407 | 8.1.23 | त्वामौ द्वितीयायाः | For later — pada enclitics | tvā/mā enclitic acc sg; requires preceding word context |
+| 408 | 8.1.24 | न चवाहाऽहैवयुक्ते | For later — pada enclitics | exception to SK404–407 with ca/vā/ha/aha/eva |
+| 409 | 8.1.25 | पश्यार्थैश्चाऽनालोचने | For later — pada enclitics | exception: no enclitics with non-visual-perception verbs |
+| 410 | 8.1.26 | सपूर्वायाः प्रथमाया विभाषा | For later — pada enclitics | optional pada-enclitics for certain nom constructions |
+| 411 | 2.3.48 | सामन्त्रितम् | For later | vocative definition; no impact on pronoun declension forms |
+| 412 | 8.1.72 | आमन्त्रितं पूर्वमविद्यमानवत् | For later — accent | vocative accent; accent not modelled |
+| 413 | 8.1.73 | नामन्त्रिते समानाधिकरणे सामान्यवचनम् | For later | vocative co-referential number; not needed for basic paradigm |
 
 ---
 
@@ -378,3 +396,5 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | aSvayuj | m | j-stem (kvin, compound) | SK376 (7.1.71) blocked by ?samAsa; no nUM; phonology as ṛtvij: aśvayug/aśvayuk nom sg |
 | viSvAvasu | m | u-stem (compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?vasu in compound; viśvāvasu |
 | viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |
+| yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
+| asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |

@@ -3025,6 +3025,142 @@
     r: str("B")
     rc: str("yam")
 
+# 396: एकवचनस्य च (7-1-32)
+# Abl sg: suffix Nasi → "at" for yuzmad/asmad.
+# SK389 (7.2.97) fires first (higher aps_num): lc→"tva"/"ma", insert "ad" → hier-prakriya → "tvad"/"mad".
+# SK385 then fires (d-lopa) → left="tva"/"ma".
+# SK396 fires: Nasi→"at". Junction: "tva"+"at" → ato guṇe (prior a dropped) → "tvat" ✓; "ma"+"at"→"mat" ✓.
+# Overrides SK392 (7.2.89, y-ādeśa) to prevent y-insertion before Nasi at same step.
+- sutra: एकवचनस्य च
+  id: 7.1.32
+  overrides: [7.2.89, 7.1.15]
+  condition:
+    lp: ?yuzmad
+    rp: ?Nasi
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Nasi
+
+- sutra: एकवचनस्य च
+  id: 7.1.32.1
+  overrides: [7.2.89, 7.1.15]
+  condition:
+    lp: ?asmad
+    rp: ?Nasi
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Nasi
+
+# 397: पञ्चम्या अत् (7-1-31)
+# Abl pl: suffix Byas2 → "at" for yuzmad/asmad.
+# Distinguishes abl pl (Byas2, tagged ?Byas+?pancamI) from dat pl (Byas, tagged ?Byas+?caturTi).
+# SK385 fires (d-lopa) → left="yuzma"/"asma".
+# SK397 fires: Byas2→"at"; wins over SK395 (71030) via SPSP para kāryam (71031>71030).
+# Junction: "yuzma"+"at" → savarṇa dīrgha (a+a→ā) → "yuzmAt" ✓; "asma"+"at"→"asmAt" ✓.
+# Overrides SK392 (7.2.89) for safety (Byas2 is hal-initial, SK392 doesn't fire anyway).
+- sutra: पञ्चम्या अत्
+  id: 7.1.31
+  overrides: 7.2.89
+  condition:
+    lp: ?yuzmad
+    rp:
+      - and
+      - ?Byas
+      - ?pancamI
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Byas
+
+- sutra: पञ्चम्या अत्
+  id: 7.1.31.1
+  overrides: 7.2.89
+  condition:
+    lp: ?asmad
+    rp:
+      - and
+      - ?Byas
+      - ?pancamI
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Byas
+
+# 398: तवममौ ङसि (7-2-96)
+# Gen sg: replaces yuzmad→"tava" / asmad→"mama" base (same mechanism as SK394 dat sg).
+# SK389 (7.2.97, 72097) fires first: lc→"tva"/"ma", insert "ad" → hier-prakriya → ato guṇe → "tvad"/"mad".
+# SK398 (72096) fires: lc→"tava"/"mama", l→null, insert "ad" → hier-prakriya:
+#   "tava"+"ad" → ato guṇe (prior a dropped) → "tavad"; SK385 d-lopa → "tava" ✓.
+#   "mama"+"ad" → ato guṇe → "mamad"; SK385 → "mama" ✓.
+# Nas suffix remains; SK399 (7.1.27) handles it (suffix→"a", junction ato guṇe → final form).
+# Overrides SK392 (7.2.89, y-ādeśa).
+- sutra: तवममौ ङसि
+  id: 7.2.96
+  overrides: 7.2.89
+  condition:
+    lp: ?yuzmad
+    rp: ?Nas
+  xform:
+    lc: str("tava")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+- sutra: तवममौ ङसि
+  id: 7.2.96.1
+  overrides: 7.2.89
+  condition:
+    lp: ?asmad
+    rp: ?Nas
+  xform:
+    lc: str("mama")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+# 399: युष्मदस्मदोर्ङसि (7-1-27)
+# Gen sg: Nas suffix "as" → "a" for yuzmad/asmad.
+# Fires after SK398 has reduced the pratipadika to "tava"/"mama".
+# SK399 (71027) fires after SK398 (72096) since SK398 has higher aps_num.
+# Junction: "tava"+"a" → ato guṇe (prior a dropped) → "tava" ✓; "mama"+"a" → "mama" ✓.
+- sutra: युष्मदस्मदोर्ङसि
+  id: 7.1.27
+  overrides: 7.1.12.2
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Nas
+  xform:
+    rc: null
+
+# 400: साम आकम् (7-1-33)
+# Gen pl: Am → Akam for yuzmad/asmad.
+# Overrides SK217 (7.1.52, suW-addition, aps_num 71052 > 71033) — must block it or SK217
+# would insert 'su' before Am for sarvanāma stems ending in 'a' (yuzmad/asmad after d-lopa).
+# Overrides SK392 (7.2.89, y-ādeśa before vowel-initial Am).
+# After SK400: yuzmad+Akam → SK385 fires (d-lopa) → yuzma+Akam → sandhi a+A→A → yuzmAkam ✓.
+# Produces yuzmAkam, asmAkam.
+- sutra: साम आकम्
+  id: 7.1.33
+  overrides: [7.1.52, 7.2.89]
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Am
+  xform:
+    r: str("A")
+    rc: str("kam")
+  update:
+    orp: -Am
+
 # 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः
   id: 7.2.102

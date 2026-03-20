@@ -1319,6 +1319,44 @@ viBakti["viSvArAj"] = [
     [['विश्वाराट्', 'विश्वाराड्'], 'विश्वराजौ', 'विश्वराजः'],    # 8 Voc  = Nom
 ]
 
+# SK382–SK400 — yuzmad (alinga, stored as pum): 2nd person pronoun "you".
+# Full paradigm via SK382–SK400:
+#   Nom sg: tvam (SK384+SK385), acc sg: tvAm (SK389+SK390+SK382),
+#   ins/loc sg: tvayA/tvayi (SK389+SK392), dat sg: tuBhyam (SK394+SK382),
+#   abl sg: tvat (SK396), gen sg: tava (SK398),
+#   du: SK386 (yuv-base) + SK387 (nom/acc), SK392 (gen/loc), SK393 (ins/dat/abl),
+#   pl: SK388 (nom), SK391+SK393 (acc), SK393 (ins/loc), SK395 (dat), SK397 (abl), SK400 (gen).
+prAtipadika["yuzmad"] = yuzmad   # noqa: F405
+viBakti["yuzmad"] = [
+    ['त्वम्', 'युवाम्', 'यूयम्'],                                        # 1 Nom
+    ['त्वाम्', 'युवाम्', 'युष्मान्'],                                    # 2 Acc
+    ['त्वया', 'युवाभ्याम्', 'युष्माभिः'],                                 # 3 Inst
+    ['तुभ्यम्', 'युवाभ्याम्', 'युष्मभ्यम्'],                              # 4 Dat
+    [['त्वत्', 'त्वद्'], 'युवाभ्याम्', ['युष्मात्', 'युष्माद्']],        # 5 Abl  * pada-final t/d
+    ['तव', 'युवयोः', 'युष्माकम्'],                                       # 6 Gen
+    ['त्वयि', 'युवयोः', 'युष्मासु'],                                     # 7 Loc
+    # 8 Voc: pronouns do not have vocative forms
+]
+
+# SK382–SK400 — asmad (alinga, stored as pum): 1st person pronoun "I/we".
+# Full paradigm via SK382–SK400:
+#   Nom sg: aham (SK384.1+SK385), acc sg: mAm (SK389.1+SK390+SK382),
+#   ins/loc sg: mayA/mayi (SK389.1+SK392), dat sg: mahyam (SK394.1+SK382),
+#   abl sg: mat (SK396.1), gen sg: mama (SK398.1),
+#   du: SK386.1 (Av-base) + SK387 (nom/acc), SK392 (gen/loc), SK393 (ins/dat/abl),
+#   pl: SK388.1 (nom), SK391+SK393 (acc), SK393 (ins/loc), SK395 (dat), SK397.1 (abl), SK400 (gen).
+prAtipadika["asmad"] = asmad   # noqa: F405
+viBakti["asmad"] = [
+    ['अहम्', 'आवाम्', 'वयम्'],                                          # 1 Nom
+    ['माम्', 'आवाम्', 'अस्मान्'],                                        # 2 Acc
+    ['मया', 'आवाभ्याम्', 'अस्माभिः'],                                    # 3 Inst
+    ['मह्यम्', 'आवाभ्याम्', 'अस्मभ्यम्'],                                # 4 Dat
+    [['मत्', 'मद्'], 'आवाभ्याम्', ['अस्मात्', 'अस्माद्']],              # 5 Abl  * pada-final t/d
+    ['मम', 'आवयोः', 'अस्माकम्'],                                         # 6 Gen
+    ['मयि', 'आवयोः', 'अस्मासु'],                                        # 7 Loc
+    # 8 Voc: pronouns do not have vocative forms
+]
+
 # samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
 samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj"],
           "strI": [], "napum": []}
