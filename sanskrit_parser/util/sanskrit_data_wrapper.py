@@ -7,6 +7,7 @@ Wrapper around data from Sanskrit data project
 
 from __future__ import print_function
 import logging
+from functools import lru_cache
 import sanskrit_util.analyze
 import sanskrit_util.context
 from sanskrit_util.schema import Nominal, Indeclinable, Verb, Gerund, Infinitive, ParticipleStem
@@ -30,33 +31,33 @@ class SanskritDataWrapper(LexicalLookup):
         self.tag_cache = {}
         self.logger = logger or logging.getLogger(__name__)
 
+    @lru_cache(maxsize=50000)
+    def _analyze_cached(self, word):
+        """Cached wrapper around analyzer.analyze"""
+        return tuple(self.analyzer.analyze(word))
+
     def valid(self, word):
-        self.logger.debug("Checking if %s is valid", word)
+        # Disable expensive debug logging for performance
         if word in self.tag_cache:
-            self.logger.debug("Cache hit")
             return True
         else:
             tags = self.get_tags(word, tmap=False)
             if tags is not None:
-                self.logger.debug("Found tags")
                 return True
-        self.logger.debug("Returning False")
         return False
 
     def get_tags(self, word, tmap=True):
-        self.logger.debug("Looking up tags for %s", word)
+        # Check instance cache first (for backward compatibility)
         if word in self.tag_cache:
-            self.logger.debug("Cache hit")
             tags = self.tag_cache[word]
-            self.logger.debug("Found tags %s", tags)
         else:
-            tags = self.analyzer.analyze(word)
+            # Use LRU cached analyzer
+            cached_tags = self._analyze_cached(word)
+            tags = list(cached_tags) if cached_tags else []
             if tags != []:
-                self.logger.debug("Found tags %s", tags)
                 self.tag_cache[word] = tags
         if tmap:
             tags = self.map_tags(tags)
-            self.logger.debug("Found tags %s", tags)
         if tags != []:
             return tags
         else:

@@ -105,7 +105,7 @@ setup(
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy>=1.4',
                     'pydot', 'pandas', 'xlrd', 'importlib_resources',
                     # Remove when https://github.com/python-restx/flask-restx/issues/460 is fixed
-                    'werkzeug==2.1.2'
+                    'werkzeug==3.1.6'
                     ],
 
   # List additional groups of dependencies here (e.g. development

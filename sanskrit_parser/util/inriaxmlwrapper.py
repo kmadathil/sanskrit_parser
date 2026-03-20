@@ -52,6 +52,7 @@ import pickle
 import sqlite3
 import logging
 from collections import namedtuple
+from functools import lru_cache
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
@@ -126,17 +127,27 @@ class InriaXMLWrapper(LexicalLookup):
         stem = stems[tag_index[0]]
         return (stem, set(t))
 
-    def valid(self, word):
+    @lru_cache(maxsize=50000)
+    def _valid_cached(self, word):
+        """Cached version of valid check"""
         conn = sqlite3.connect(self.db.db_file)
         cursor = conn.cursor()
         res = cursor.execute('SELECT COUNT(1) FROM forms WHERE form = ?', (word,)).fetchone()
         return res[0] > 0
 
-    def get_tags(self, word, tmap=True):
+    def valid(self, word):
+        return self._valid_cached(word)
+
+    @lru_cache(maxsize=50000)
+    def _get_tags_cached(self, word, tmap):
+        """Cached version of get_tags for performance"""
         tags = self._get_tags(word)
         if tmap and (tags is not None):
             tags = inriaTagMapper(tags)
         return tags
+
+    def get_tags(self, word, tmap=True):
+        return self._get_tags_cached(word, tmap)
 
 
 if __name__ == "__main__":
