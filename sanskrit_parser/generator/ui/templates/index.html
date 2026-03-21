@@ -71,6 +71,23 @@
       font-size: .9rem;
     }
 
+    #stem-filter {
+      width: 100%;
+      padding: 7px 10px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: .9rem;
+      box-sizing: border-box;
+    }
+    #stem-filter:focus { outline: 2px solid #c17f24; }
+    #stem-filter-count {
+      font-size: .75rem;
+      color: #999;
+      margin-bottom: 4px;
+      display: none;
+    }
+
     select#stem-select {
       width: 100%;
       padding: 8px 10px;
@@ -410,7 +427,8 @@
 
     <div>
       <h2>Stem</h2>
-      <label for="stem-select">Select a prātipadika:</label>
+      <input id="stem-filter" type="search" placeholder="Filter stems…" autocomplete="off" spellcheck="false">
+      <div id="stem-filter-count"></div>
       <select id="stem-select">
         {% for group, stems in groups.items() %}
         <optgroup label="{{ group }}">
@@ -893,6 +911,57 @@
   }
   // alias for backward compat
   function escHtml(s) { return esc(s); }
+
+  // ── Stem filter ───────────────────────────────────────────
+  (function () {
+    const filterEl  = document.getElementById('stem-filter');
+    const selectEl  = document.getElementById('stem-select');
+    const countEl   = document.getElementById('stem-filter-count');
+    // Cache all option/optgroup elements and their original text for matching
+    const allGroups = Array.from(selectEl.querySelectorAll('optgroup'));
+    const allOpts   = Array.from(selectEl.querySelectorAll('option'));
+    const total     = allOpts.length;
+
+    filterEl.addEventListener('input', () => {
+      const q = filterEl.value.trim().toLowerCase();
+      if (!q) {
+        // Restore everything
+        allOpts.forEach(o => { o.hidden = false; });
+        allGroups.forEach(g => { g.hidden = false; });
+        countEl.style.display = 'none';
+        // Re-select previously selected option if it got hidden
+        if (!selectEl.value) selectEl.selectedIndex = 0;
+        return;
+      }
+
+      let visible = 0;
+      allGroups.forEach(grp => {
+        const grpText = grp.label.toLowerCase();
+        const opts = Array.from(grp.querySelectorAll('option'));
+        let anyVisible = false;
+        opts.forEach(opt => {
+          const match = opt.textContent.toLowerCase().includes(q) || grpText.includes(q);
+          opt.hidden = !match;
+          if (match) { anyVisible = true; visible++; }
+        });
+        grp.hidden = !anyVisible;
+      });
+
+      countEl.textContent = `${visible} of ${total}`;
+      countEl.style.display = 'block';
+
+      // If current selection is now hidden, move to first visible option
+      if (selectEl.selectedOptions.length === 0 || selectEl.selectedOptions[0].hidden) {
+        const first = allOpts.find(o => !o.hidden);
+        if (first) { selectEl.value = first.value; selectEl.dispatchEvent(new Event('change')); }
+      }
+    });
+
+    // Clear filter on Escape
+    filterEl.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { filterEl.value = ''; filterEl.dispatchEvent(new Event('input')); }
+    });
+  })();
 
   // ── Event wiring ──────────────────────────────────────────
   document.querySelectorAll('input[name=encoding]').forEach(radio => {
