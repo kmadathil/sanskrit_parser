@@ -4,21 +4,13 @@ Created on Aug 4, 2017
 @author: alvarna
 '''
 
-from functools import lru_cache
 from sanskrit_parser.util.inriaxmlwrapper import InriaXMLWrapper
 from sanskrit_parser.util.sanskrit_data_wrapper import SanskritDataWrapper
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
 import logging
 
 
-@lru_cache(maxsize=10000)
-def _merge_tags_cached(tags_tuple):
-    '''Cached version of merge_tags that accepts hashable input'''
-    tags = [list(item) for item in tags_tuple]  # Convert back from tuple format
-    return tuple(_merge_tags_uncached(tags))  # Return as tuple for caching
-
-
-def _merge_tags_uncached(tags):
+def _merge_tags(tags):
     ''' Merge tags from multiple sources
 
         Inputs
@@ -54,11 +46,6 @@ def _merge_tags_uncached(tags):
     for base in tdict:
         tlist.extend([(base, set(s)) for s in tdict[base]])
     return tlist
-
-
-def _merge_tags(tags):
-    '''Public wrapper that maintains original API'''
-    return _merge_tags_uncached(tags)
 
 
 class CombinedWrapper(LexicalLookup):
