@@ -257,6 +257,29 @@
       font-size: .88rem;
     }
 
+    /* ── Inner (hierarchical) prakriya block ──────────────── */
+    .ts-inner-prakriya {
+      border: 1px solid #b8d9a0;
+      border-radius: 6px;
+      background: #f3f9ee;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+    }
+    .ts-inner-prakriya summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .76rem;
+      color: #3a7a20;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      user-select: none;
+    }
+    .ts-inner-prakriya .ts-inner-body {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #cce8b0;
+    }
+
     /* ── Trace sub-components ─────────────────────────────── */
     .ts-header {
       display: flex;
@@ -613,14 +636,49 @@
   }
 
   // ── Trace parser & formatter ─────────────────────────────
+
+  // Extract hierarchical (inner) prakriya blocks from raw trace.
+  // Inner blocks are lines indented with 4 spaces then ┌/│/└.
+  // Returns { outerLines: string[], innerRaws: string[] }.
+  function splitHierBlocks(allLines) {
+    const outerLines = [], innerRaws = [];
+    let collecting = false, innerBuf = [];
+    for (const line of allLines) {
+      if (!collecting) {
+        if (/^    \u250c/.test(line)) {           // "    ┌ ..."
+          collecting = true; innerBuf = [];
+        } else {
+          outerLines.push(line);
+        }
+      } else {
+        if (/^    \u2514/.test(line)) {            // "    └─"
+          collecting = false;
+          innerRaws.push(innerBuf.join('\n'));
+          innerBuf = [];
+        } else if (/^    \u2502 /.test(line)) {   // "    │ <content>"
+          innerBuf.push(line.slice(6));            // strip 6-char prefix "    │ "
+        } else if (/^    \u2502\s*$/.test(line.trimEnd())) {
+          innerBuf.push('');
+        }
+        // other lines inside block are silently dropped
+      }
+    }
+    return { outerLines, innerRaws };
+  }
+
   function parseTrace(raw) {
     if (!raw || !raw.trim()) return null;
+
+    // Pre-pass: extract inner hierarchical blocks, then parse outer lines only
+    const allLines = raw.split('\n');
+    const { outerLines, innerRaws } = splitHierBlocks(allLines);
+    const innerPrakriyas = innerRaws.map(ir => parseTrace(ir)).filter(Boolean);
 
     let header = null, output = null;
     const steps = [];
     let cur = null;
 
-    for (const origLine of raw.split('\n')) {
+    for (const origLine of outerLines) {
       const line = origLine.trimEnd();
       if (!line.trim()) continue;
       // Separator bar (─ characters)
@@ -628,8 +686,9 @@
 
       const t = line.trim();
 
-      // Prakriya header
-      const hm = t.match(/^Prakriya:\s+(\S+)\s+\((.+)\)\s*$/);
+      // Prakriya header — SLP1 may contain spaces (compound inputs: "[gaRa, pati, s].")
+      // Format: "Prakriya: <slp1>  (<dev>)"  — two spaces separate slp1 from (dev)
+      const hm = t.match(/^Prakriya:\s+(.+?)\s{2}\((.+)\)\s*$/);
       if (hm) { header = { slp1: hm[1], dev: hm[2] }; continue; }
 
       // Output line — can be "slp1  (dev)" or "slp1  (dev)  |  slp1  (dev)"
@@ -678,8 +737,6 @@
             }
           }
           cur.also = entries;
-        } else if (t.startsWith('┌') || t.startsWith('│') || t.startsWith('└')) {
-          // Hierarchical prakriya — skip for now
         } else if (t.includes('  \u2192  ') || t.includes('  →  ')) {
           // Changed form: "dev_in  →  dev_out  (slp1_in  →  slp1_out)"
           const arrow = t.includes('  \u2192  ') ? '  \u2192  ' : '  →  ';
@@ -713,13 +770,13 @@
       }
     }
 
-    return { header, steps, output };
+    return { header, steps, output, innerPrakriyas };
   }
 
-  function formatTrace(raw) {
-    const data = parseTrace(raw);
+  function formatTrace(raw, data = null) {
+    if (!data) data = parseTrace(raw);
     if (!data) return '<em style="color:#888">No trace available.</em>';
-    const { header, steps, output } = data;
+    const { header, steps, output, innerPrakriyas } = data;
 
     let h = '';
 
@@ -737,6 +794,19 @@
         <div class="ts-h-row">${devHtml}</div>
         <div class="ts-h-row">${slp1Html}</div>
       </div>`;
+    }
+
+    // Inner (hierarchical) prakriyas — shown before outer steps
+    if (innerPrakriyas && innerPrakriyas.length > 0) {
+      for (const ip of innerPrakriyas) {
+        const ipLabel = ip.header
+          ? `inner prakriya: ${ip.header.dev}`
+          : 'inner prakriya';
+        h += `<details class="ts-inner-prakriya" open>
+          <summary>${esc(ipLabel)}</summary>
+          <div class="ts-inner-body">${formatTrace(null, ip)}</div>
+        </details>`;
+      }
     }
 
     // Steps

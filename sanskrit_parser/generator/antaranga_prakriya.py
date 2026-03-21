@@ -446,7 +446,13 @@ class AntarangaPrakriya(PrakriyaBase):
         bar = indent + "\u2500" * 62
         print(f"\n{bar}")
         print(f"{indent}Prakriya: {slp1}  ({dev})")
-        # Build hier_map keyed by triggering sutra APS for inline display
+        # 1. Show init-time hierarchical prakriyas (inner compound derivations)
+        for hp in self.hier_prakriyas:
+            if not getattr(hp, 'triggering_sutra_aps', None):
+                print(f"{indent}  \u250c Inner prakriya (hierarchical):")
+                hp.describe(indent=indent + "  \u2502 ")
+                print(f"{indent}  \u2514\u2500")
+        # 2. Build hier_map for inline (execution-time) hierarchical prakriyas
         from collections import defaultdict
         hier_map = defaultdict(list)
         for hp in self.hier_prakriyas:

@@ -20,11 +20,11 @@ from indic_transliteration import sanscript
 logging.getLogger().addHandler(logging.NullHandler())
 
 from sanskrit_parser.generator.pratipadika import (     # noqa: E402
-    rAma, ramA, jYAna, mahat, payas,
+    rAma, ramA, jYAna, mahat, mahat_n, payas,
     kavi, hari, pati, saKi, mati, vAri,
     nadI, lakzmI, strI,
     SamBu, krozwu, Denu, vasu_pum, BrU, svayamBU,
-    pitf, nf, mAtf, svasf, tisf,
+    pitf, nf, mAtf, svasf, tisf, tvazwf,
     go, rE,
     rAjan, pUzan, yajvan, parvan_napum,
     svan, yuvan, maGavan, arvan,
@@ -32,14 +32,26 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     paTin, maTin, fBukzin,
     vftrahan,
     asTi, daDi, akzi,
-    kim, idam,
-    div_kvip, lih_kvip, duh_kvip, anaquh, senAnI,
-    ftvij_kvin, sraj_kvin, yuj_kvin, diS_kvin,
+    kim, idam, idam_anu, yuzmad, asmad,
+    sarva, anya,
+    div_kvip, lih_kvip, duh_kvip, druh_kvip, anaquh, senAnI, turAsAh,
+    nI, SrI, SrIpA,
+    varzABU, dfnBU, karaBU, punarBU, KalapU,
+    suDI, praDI, atistri,
+    viSvapA, hAhA,
+    nAsikA, niSA,
+    pAda, yUza,
+    ftvij_kvin, sraj_kvin, yuj_kvin, yuj_kvin_samAsa, diS_kvin,
+    daDfc_kvin, pratyac_kvin, prAc_kvin, udac_kvin, tiryac_kvin,
+    takz_kvip, vAh_kvip, praSAm_kvip,
     gaRa, aSva, viSva, rAj_kvip,
     in_compound,
-    tri, dvi, catur,
+    tri, dvi, dvi_s, catur, kati,
+    paYcan, saptan, navan, daSan, azwan, catasf,
+    atinO,
+    Sreyas, Sreyas_n,
 )
-from sanskrit_parser.generator.pratyaya import avasAna, sups  # noqa: E402
+from sanskrit_parser.generator.pratyaya import avasAna, sups, pra  # noqa: E402
 from sanskrit_parser.generator.sutras_yaml import SutraFactory          # noqa: E402
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory  # noqa: E402
 from sanskrit_parser.generator.prakriya import PrakriyaVakya            # noqa: E402
@@ -69,13 +81,19 @@ _gaRapati_cpd  = [gaRa,  in_compound(pati)]      # SK257 gaṇapati
 _aSvayuj_cpd   = [aSva,  in_compound(yuj_kvin)]  # SK376 aśvayuj
 _viSvAvasu_cpd = [viSva, in_compound(vasu_pum)]  # SK379 viśvāvasu
 _viSvArAj_cpd  = [viSva, in_compound(rAj_kvip)]  # SK379 viśvārāj
+_praVAh_cpd    = [pra,   vAh_kvip]               # pravāh (upasarga + √vāh+kvip)
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
     ("rAma",     rAma,        "a-stems (pum)",    "rāma  (rāma-)"),
+    ("pAda",     pAda,        "a-stems (pum)",    "pāda  (pāda-)  [pādādi opt]"),
+    ("yUza",     yUza,        "a-stems (pum)",    "yūṣa  (yūṣa-)  [pādādi opt]"),
     ("jYAna",    jYAna,       "a-stems (napum)",  "jñāna  (jñāna-)"),
     ("ramA",     ramA,        "ā-stems (strī)",   "ramā  (ramā-)"),
+    ("nAsikA",   nAsikA,      "ā-stems (strī)",   "nāsikā  (nāsikā-)  [pādādi]"),
+    ("niSA",     niSA,        "ā-stems (strī)",   "niśā  (niśā-)  [pādādi]"),
     ("mahat",    mahat,       "t-stems",          "mahat  (mahat-)"),
+    ("mahat_n",  mahat_n,     "t-stems",          "mahat  (mahat-)  [napum]"),
     ("payas",    payas,       "s-stems",          "payas  (payas-)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
@@ -100,10 +118,12 @@ _STEMS_RAW = [
     # ── ū stems ───────────────────────────────────────────────────────────
     ("BrU",      BrU,         "ū-stems (strī)",   "bhrū  (bhrū-)"),
     ("svayamBU", svayamBU,    "ū-stems (kvip)",   "svayambhū  (svayambhū-)"),
+    ("atistri",  atistri,     "ū-stems (kvip)",   "atistri  [strī_p]"),
 
     # ── ṛ stems ───────────────────────────────────────────────────────────
     ("pitf",     pitf,        "ṛ-stems (pum)",    "pitṛ  (pitṛ-)"),
     ("nf",       nf,          "ṛ-stems (pum)",    "nṛ  (nṛ-)"),
+    ("tvazwf",   tvazwf,      "ṛ-stems (pum)",    "tvaṣṭṛ  (tvaṣṭṛ-)  [naptrādi]"),
     ("mAtf",     mAtf,        "ṛ-stems (strī)",   "mātṛ  (mātṛ-)"),
     ("svasf",    svasf,       "ṛ-stems (strī)",   "svasṛ  (svasṛ-)"),
     ("tisf",     tisf,        "ṛ-stems (strī)",   "tisṛ  (tisṛ-)  [nityabahuvacana]"),
@@ -140,23 +160,52 @@ _STEMS_RAW = [
     ("asTi",     asTi,        "i-stems (napum)",  "asthi  (asthi-)"),
     ("daDi",     daDi,        "i-stems (napum)",  "dadhi  (dadhi-)"),
     ("akzi",     akzi,        "i-stems (napum)",  "akṣi  (akṣi-)"),
+    ("atinO",    atinO,       "i-stems (napum)",  "atinau  (atinau-)"),
 
     # ── Pronouns ──────────────────────────────────────────────────────────
     ("kim",      kim,         "Pronouns",         "kim  (kim-)"),
     ("idam",     idam,        "Pronouns",         "idam  (idam-)"),
+    ("idam_anu", [idam_anu],  "Pronouns",         "idam  (anvādeśa)"),
+    ("sarva",    sarva,       "Pronouns",         "sarva  (sarva-)  [sarvādi]"),
+    ("anya",     anya,        "Pronouns",         "anya  (anya-)  [qatarādi]"),
+    ("yuzmad",   yuzmad,      "Pronouns",         "yuṣmad  [2nd person]"),
+    ("asmad",    asmad,       "Pronouns",         "asmad  [1st person]"),
 
     # ── kvip / special ────────────────────────────────────────────────────
     ("div",      div_kvip,    "kvip-stems",       "div  (div-)"),
     ("lih",      lih_kvip,    "kvip-stems",       "lih  (lih-)"),
     ("duh",      duh_kvip,    "kvip-stems",       "duh  (duh-)"),
+    ("druh",     druh_kvip,   "kvip-stems",       "druh  (druh-)"),
     ("anaquh",   anaquh,      "kvip-stems",       "anaḍuh  (anaḍuh-)"),
     ("senAnI",   senAnI,      "kvip-stems",       "senānī  (senānī-)"),
+    ("viSvapA",  viSvapA,     "kvip-stems",       "viśvapā  (viśvapā-)  [vic]"),
+    ("hAhA",     hAhA,        "kvip-stems",       "hāhā  (hāhā-)"),
+    ("nI",       nI,          "kvip-stems",       "nī  (nī-)  [kvip]"),
+    ("SrI",      SrI,         "kvip-stems",       "śrī  (śrī-)  [kvip strī]"),
+    ("SrIpA",    SrIpA,       "kvip-stems",       "śrīpā  (śrīpā-)  [kvip napum]"),
+    ("suDI",     suDI,        "kvip-stems",       "sudhī  [kvip pūrvastrī]"),
+    ("praDI",    praDI,       "kvip-stems",       "pradhī  [kvip pūrvastrī]"),
+    ("varzABU",  varzABU,     "kvip-stems",       "varṣābhū  [kvip BU]"),
+    ("dfnBU",    dfnBU,       "kvip-stems",       "dṛṃbhū  [kvip BU]"),
+    ("karaBU",   karaBU,      "kvip-stems",       "karabhū  [kvip BU]"),
+    ("punarBU",  punarBU,     "kvip-stems",       "punarbhū  [kvip BU]"),
+    ("KalapU",   KalapU,      "kvip-stems",       "khalapū  [kvip]"),
+    ("turAsAh",  turAsAh,     "kvip-stems",       "turāsāh  [kvip]"),
+    ("praSAm",   praSAm_kvip, "kvip-stems",       "praśām  [kvip]"),
+    ("takz",     takz_kvip,   "kvip-stems",       "takṣ  (takṣ-)  [SK380]"),
+    ("praVAh",   _praVAh_cpd, "kvip-stems",       "pravāh  (pra+vāh-)  [cpd kvip]"),
 
     # ── kvin-stems (SK373–377) ────────────────────────────────────────────
     ("ftvij",    ftvij_kvin,  "kvin-stems",       "ṛtvij  (ṛtvij-)  [SK373]"),
     ("sraj",     sraj_kvin,   "kvin-stems",       "sraj  (sraj-)  [SK374]"),
     ("yuj",      yuj_kvin,    "kvin-stems",       "yuj  (yuj-)  [SK375]"),
     ("diS",      diS_kvin,    "kvin-stems",       "diś  (diś-)  [SK377]"),
+    ("daDfc",    daDfc_kvin,  "kvin-stems",       "dadhṛc  (dadhṛc-)  [c-final]"),
+    ("pratyac",  pratyac_kvin,"kvin-stems",       "pratyañc  (pratyac-)  [SK361 aYc]"),
+    ("prAc",     prAc_kvin,   "kvin-stems",       "prāñc  (prāc-)  [SK361 aYc]"),
+    ("udac",     udac_kvin,   "kvin-stems",       "udañc  (udac-)  [SK361 aYc]"),
+    ("tiryac",   tiryac_kvin, "kvin-stems",       "tiryañc  (tiryac-)  [SK361 aYc]"),
+    ("yuj_samAsa", [yuj_kvin_samAsa], "kvin-stems", "yuj-in-cpd  [samāsa no nUM]"),
 
     # ── samāsa (compounds) ────────────────────────────────────────────────
     ("gaRapati",  _gaRapati_cpd,  "samāsa",  "gaṇapati  [SK257 pati-in-cpd]"),
@@ -167,7 +216,19 @@ _STEMS_RAW = [
     # ── Numerals ──────────────────────────────────────────────────────────
     ("tri",      tri,         "Numerals",         "tri  [nityabahuvacana]"),
     ("dvi",      dvi,         "Numerals",         "dvi  [nityadvivacana]"),
+    ("dvi_s",    dvi_s,       "Numerals",         "dvi  (strī)  [nityadvivacana]"),
     ("catur",    catur,       "Numerals",         "catur  [nityabahuvacana]"),
+    ("catasf",   catasf,      "Numerals",         "catasṛ  (catasṛ-)  [strī nityabahuvacana]"),
+    ("kati",     kati,        "Numerals",         "kati  [nityabahuvacana]"),
+    ("paYcan",   paYcan,      "Numerals",         "pañcan  [SK369 nityabahuvacana]"),
+    ("saptan",   saptan,      "Numerals",         "saptan  [nityabahuvacana]"),
+    ("navan",    navan,       "Numerals",         "navan  [nityabahuvacana]"),
+    ("daSan",    daSan,       "Numerals",         "daśan  [nityabahuvacana]"),
+    ("azwan",    azwan,       "Numerals",         "aṣṭan  [SK371–372 opt]"),
+
+    # ── Iyasun (comparatives) ─────────────────────────────────────────────
+    ("Sreyas",   Sreyas,      "Iyasun (comparatives)", "śreyas  (pum)  [SK361 ugit]"),
+    ("Sreyas_n", Sreyas_n,    "Iyasun (comparatives)", "śreyas  (napum)  [7.1.72]"),
 ]
 
 # Build lookup map and ordered groups
