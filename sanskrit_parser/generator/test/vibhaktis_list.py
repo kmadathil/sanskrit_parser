@@ -89,6 +89,18 @@ viBakti["hari"] = [
     ["हरे", "हरी", "हरयः"],
 ]
 
+prAtipadika["pati"] = pati   # noqa: F405
+viBakti["pati"] = [
+    ['पतिः', 'पती', 'पतयः'],
+    ['पतिम्', 'पती', 'पतीन्'],
+    ['पत्या', 'पतिभ्याम्', 'पतिभिः'],
+    ['पत्ये', 'पतिभ्याम्', 'पतिभ्यः'],
+    ['पत्युः', 'पतिभ्याम्', 'पतिभ्यः'],
+    ['पत्युः', 'पत्योः', 'पतीनाम्'],
+    ['पत्यौ', 'पत्योः', 'पतिषु'],
+    ['पते', 'पती', 'पतयः'],
+]
+
 prAtipadika["saKi"] = saKi   # noqa: F405
 viBakti["saKi"] = [
     ["सखा", "सखायौ", "सखायः"],
@@ -100,6 +112,19 @@ viBakti["saKi"] = [
     ["सख्यौ", "सख्योः", "सखिषु"],
     ["सखे", "सखायौ", "सखायः"],
 ]
+
+prAtipadika["tri"] = tri   # noqa: F405
+viBakti["tri"] = [
+    [None, None, "त्रयः"],
+    [None, None, "त्रीन्"],
+    [None, None, "त्रिभिः"],
+    [None, None, "त्रिभ्यः"],
+    [None, None, "त्रिभ्यः"],
+    [None, None, "त्रयाणाम्"],
+    [None, None, "त्रिषु"],
+    [None, None, "त्रयः"],
+]
+
 prAtipadika["tri"] = tri   # noqa: F405
 viBakti["tri"] = [
     [None, None, "त्रयः"],
@@ -135,6 +160,19 @@ viBakti["dvi"] = [
     [None,  "द्वयोः", None],
     [None,  "द्वौ", None],
 ]
+
+prAtipadika["dvi_s"] = dvi_s
+viBakti["dvi_s"] = [
+    [None,  'द्वे', None],
+    [None,  'द्वे', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वाभ्याम्', None],
+    [None,  'द्वयोः', None],
+    [None,  'द्वयोः', None],
+    [None,  'द्वे', None],
+]
+
 prAtipadika["pitf"] = pitf    # noqa: F405
 viBakti["pitf"] = [
      ["पिता", "पितरौ", "पितरः"],
@@ -242,6 +280,18 @@ viBakti["ramA"] = [
      ["रमे", "रमे", "रमाः"]
 ]
 
+prAtipadika["sarva_A"] = [sarva, Ap]
+viBakti["sarva_A"] = [
+    ['सर्वा', 'सर्वे', 'सर्वाः'],
+    ['सर्वाम्', 'सर्वे', 'सर्वाः'],
+    ['सर्वया', 'सर्वाभ्याम्', 'सर्वाभिः'],
+    ['सर्वस्यै', 'सर्वाभ्याम्', 'सर्वाभ्यः'],
+    ['सर्वस्याः', 'सर्वाभ्याम्', 'सर्वाभ्यः'],
+    ['सर्वस्याः', 'सर्वयोः', 'सर्वासाम्'],
+    ['सर्वस्याम्', 'सर्वयोः', 'सर्वासु'],
+    ['सर्वे', 'सर्वे', 'सर्वाः'],
+]
+
 prAtipadika["nAsikA"] = nAsikA    # noqa: F405
 viBakti["nAsikA"] = [
     ['नासिका', 'नासिके', 'नासिकाः'],
@@ -302,6 +352,18 @@ viBakti["strI"] = [
     ['स्त्रि', 'स्त्रियौ', 'स्त्रियः'],
 ]
 
+prAtipadika["atistri"] = atistri     # noqa: F405
+viBakti["atistri"] = [
+    ['अतिस्त्रिः', 'अतिस्त्रियौ', 'अतिस्त्रयः'],
+    [['अतिस्त्रियम्', 'अतिस्त्रिम्'], 'अतिस्त्रियौ', ['अतिस्त्रीन्', 'अतिस्त्रियः']],
+    ['अतिस्त्रिणा', 'अतिस्त्रिभ्याम्', 'अतिस्त्रिभिः'],
+    [['अतिस्त्रये', 'अतिस्त्रये'], 'अतिस्त्रिभ्याम्', 'अतिस्त्रिभ्यः'],
+    [['अतिस्त्रेः', 'अतिस्त्रेः'], 'अतिस्त्रिभ्याम्', 'अतिस्त्रिभ्यः'],
+    [['अतिस्त्रेः', 'अतिस्त्रेः'], 'अतिस्त्रियोः', 'अतिस्त्रीणाम्'],
+    [['अतिस्त्रौ', 'अतिस्त्रौ'], 'अतिस्त्रियोः', 'अतिस्त्रिषु'],
+    ['अतिस्त्रे', 'अतिस्त्रियौ', 'अतिस्त्रयः'],
+]
+
 prAtipadika["suDI"] = suDI   # noqa: F405
 viBakti["suDI"] = [
     ['सुधीः', 'सुधियौ', 'सुधियः'],
@@ -312,6 +374,18 @@ viBakti["suDI"] = [
     [['सुधियः', 'सुधियाः'], 'सुधियोः', ['सुधियाम्', 'सुधीनाम्']],
     [['सुधियाम्', 'सुधियि'], 'सुधियोः', 'सुधीषु'],
     ['सुधि', 'सुधियौ', 'सुधियः'],
+]
+
+prAtipadika["praDI"] = praDI  # noqa: F405
+viBakti["praDI"] = [
+    ['प्रधीः', 'प्रध्यौ', 'प्रध्यः'],
+    ['प्रध्यम्', 'प्रध्यौ', 'प्रध्यः'],
+    ['प्रध्या', 'प्रधीभ्याम्', 'प्रधीभिः'],
+    ['प्रध्ये', 'प्रधीभ्याम्', 'प्रधीभ्यः'],
+    ['प्रध्यः', 'प्रधीभ्याम्', 'प्रधीभ्यः'],
+    ['प्रध्यः', 'प्रध्योः', 'प्रधीनाम्'],
+    ['प्रध्याम्', 'प्रध्योः', 'प्रधीषु'],
+    ['प्रधि', 'प्रध्यौ', 'प्रध्यः'],
 ]
 
 prAtipadika["BrU"] = BrU   # noqa: F405
@@ -349,6 +423,43 @@ viBakti["varzABU"] = [
      ["वर्षाभ्वि", "वर्षाभ्वोः", "वर्षाभूषु"],
      ["वर्षाभूः", "वर्षाभ्वौ", "वर्षाभ्वः"],
 ]
+
+prAtipadika["dfnBU"] = dfnBU    # noqa: F405
+viBakti["dfnBU"] = [
+    ['दृन्भूः', 'दृन्भ्वौ', 'दृन्भ्वः'],
+    ['दृन्भ्वम्', 'दृन्भ्वौ', 'दृन्भ्वः'],
+    ['दृन्भ्वा', 'दृन्भूभ्याम्', 'दृन्भूभिः'],
+    ['दृन्भ्वे', 'दृन्भूभ्याम्', 'दृन्भूभ्यः'],
+    ['दृन्भ्वः', 'दृन्भूभ्याम्', 'दृन्भूभ्यः'],
+    ['दृन्भ्वः', 'दृन्भ्वोः', 'दृन्भ्वाम्'],
+    ['दृन्भ्वि', 'दृन्भ्वोः', 'दृन्भूषु'],
+    ['दृन्भूः', 'दृन्भ्वौ', 'दृन्भ्वः'],
+]
+
+prAtipadika["karaBU"] = karaBU    # noqa: F405
+viBakti["karaBU"] = [
+    ['करभूः', 'करभ्वौ', 'करभ्वः'],
+    ['करभ्वम्', 'करभ्वौ', 'करभ्वः'],
+    ['करभ्वा', 'करभूभ्याम्', 'करभूभिः'],
+    ['करभ्वे', 'करभूभ्याम्', 'करभूभ्यः'],
+    ['करभ्वः', 'करभूभ्याम्', 'करभूभ्यः'],
+    ['करभ्वः', 'करभ्वोः', 'करभ्वाम्'],
+    ['करभ्वि', 'करभ्वोः', 'करभूषु'],
+    ['करभूः', 'करभ्वौ', 'करभ्वः'],
+]
+
+prAtipadika["punarBU"] = punarBU  # noqa: F405 
+viBakti["punarBU"] = [
+    ['पुनर्भूः', 'पुनर्भ्वौ', 'पुनर्भ्वः'],
+    ['पुनर्भ्वम्', 'पुनर्भ्वौ', 'पुनर्भ्वः'],
+    ['पुनर्भ्वा', 'पुनर्भूभ्याम्', 'पुनर्भूभिः'],
+    ['पुनर्भ्वे', 'पुनर्भूभ्याम्', 'पुनर्भूभ्यः'],
+    ['पुनर्भ्वः', 'पुनर्भूभ्याम्', 'पुनर्भूभ्यः'],
+    ['पुनर्भ्वः', 'पुनर्भ्वोः', 'पुनर्भ्वाम्'],
+    ['पुनर्भ्वि', 'पुनर्भ्वोः', 'पुनर्भूषु'],
+    ['पुनर्भूः', 'पुनर्भ्वौ', 'पुनर्भ्वः'],
+]
+
 
 prAtipadika["KalapU"] = KalapU   # noqa: F405
 viBakti["KalapU"] = [
@@ -424,6 +535,19 @@ viBakti["tisf"] = [
     [None, None, 'तिस्रः'],
 ]
 
+prAtipadika["catasf"] = catasf     # noqa: F405
+viBakti["catasf"] = [
+    [None, None, 'चतस्रः'],
+    [None, None, 'चतस्रः'],
+    [None, None, 'चतसृभिः'],
+    [None, None, 'चतसृभ्यः'],
+    [None, None, 'चतसृभ्यः'],
+    [None, None, 'चतसृणाम्'],
+    [None, None, 'चतसृषु'],
+    [None, None, 'चतस्रः'],
+]
+
+
 prAtipadika["anya"] = anya   # noqa: F405
 viBakti["anya"] = [
     [['अन्यद्', 'अन्यत्'], 'अन्ये', 'अन्यानि'],
@@ -450,14 +574,14 @@ viBakti["vAri"] = [
 
 prAtipadika["payas"] = payas   # noqa: F405
 viBakti["payas"] = [
-    ['पयः', 'पयसी', 'पयान्सि'],
-    ['पयः', 'पयसी', 'पयान्सि'],
+    ['पयः', 'पयसी', 'पयांसि'],
+    ['पयः', 'पयसी', 'पयांसि'],
     ['पयसा', 'पयोभ्याम्', 'पयोभिः'],
     ['पयसे', 'पयोभ्याम्', 'पयोभ्यः'],
     ['पयसः', 'पयोभ्याम्', 'पयोभ्यः'],
     ['पयसः', 'पयसोः', 'पयसाम्'],
     ['पयसि', 'पयसोः', ['पयःसु', 'पयस्सु']],
-    ['पयः', 'पयसी', 'पयान्सि'],
+    ['पयः', 'पयसी', 'पयांसि'],
 ]
 
 prAtipadika["SrIpA"] = SrIpA   # noqa: F405
@@ -544,11 +668,717 @@ viBakti["druh"] = [
     [['ध्रुग्', 'ध्रुड्', 'ध्रुक्', 'ध्रुट्'], 'द्रुहौ', 'द्रुहः'],
 ]
 
+prAtipadika["pra_vAh"] = [pra, vAh_kvip]
+viBakti["pra_vAh"] = [
+    [['प्रवाट्', 'प्रवाड्'], 'प्रवाहौ', 'प्रवाहः'],
+    ['प्रवाहम्', 'प्रवाहौ', 'प्रौहः'],
+    ['प्रौहा', 'प्रवाड्भ्याम्', 'प्रवाड्भिः'],
+    ['प्रौहे', 'प्रवाड्भ्याम्', 'प्रवाड्भ्यः'],
+    ['प्रौहः', 'प्रवाड्भ्याम्', 'प्रवाड्भ्यः'],
+    ['प्रौहः', 'प्रौहोः', 'प्रौहाम्'],
+    ['प्रौहि', 'प्रौहोः', 'प्रवाट्सु'],
+    [['प्रवाट्', 'प्रवाड्'], 'प्रवाहौ', 'प्रवाहः'],
+]
+
+prAtipadika["anaquh"] = anaquh
+viBakti["anaquh"] = [
+    ['अनड्वान्', 'अनड्वाहौ', 'अनड्वाहः'],
+    ['अनड्वाहम्', 'अनड्वाहौ', 'अनडुहः'],
+    ['अनडुहा', 'अनडुद्भ्याम्', 'अनडुद्भिः'],
+    ['अनडुहे', 'अनडुद्भ्याम्', 'अनडुद्भ्यः'],
+    ['अनडुहः', 'अनडुद्भ्याम्', 'अनडुद्भ्यः'],
+    ['अनडुहः', 'अनडुहोः', 'अनडुहाम्'],
+    ['अनडुहि', 'अनडुहोः', 'अनडुत्सु'],
+    ['अनड्वन्', 'अनड्वाहौ', 'अनड्वाहः'],
+]
+
+prAtipadika["turAsAh"] = turAsAh
+viBakti["turAsAh"] = [
+    [['तुराषाट्', 'तुराषाड्'], 'तुरासाहौ', 'तुरासाहः'],
+    ['तुरासाहम्', 'तुरासाहौ', 'तुरासाहः'],
+    ['तुरासाहा', 'तुराषाड्भ्याम्', 'तुराषाड्भिः'],
+    ['तुरासाहे', 'तुराषाड्भ्याम्', 'तुराषाड्भ्यः'],
+    ['तुरासाहः', 'तुराषाड्भ्याम्', 'तुराषाड्भ्यः'],
+    ['तुरासाहः', 'तुरासाहोः', 'तुरासाहाम्'],
+    ['तुरासाहि', 'तुरासाहोः', 'तुराषाट्सु'],
+    [['तुराषाट्', 'तुराषाड्'], 'तुरासाहौ', 'तुरासाहः'],
+]
+
+prAtipadika["div"] = div_kvip
+viBakti["div"] = [
+    ['द्यौः', 'दिवौ', 'दिवः'],
+    ['दिवम्', 'दिवौ', 'दिवः'],
+    ['दिवा', 'द्युभ्याम्', 'द्युभिः'],
+    ['दिवे', 'द्युभ्याम्', 'द्युभ्यः'],
+    ['दिवः', 'द्युभ्याम्', 'द्युभ्यः'],
+    ['दिवः', 'दिवोः', 'दिवाम्'],
+    ['दिवि', 'दिवोः', 'द्युषु'],
+    ['द्यौः', 'दिवौ', 'दिवः'],
+]
+
+prAtipadika["catur"] = [catur]
+viBakti["catur"] = [
+    ['चत्वारः'],
+    ['चतुरः'],
+    [['चतुर्भिः', 'चतुर्भिः', 'चतुर्भ्भिः']],
+    [['चतुर्भ्यः', 'चतुर्भ्यः', 'चतुर्भ्भ्यः']],
+    [['चतुर्भ्यः', 'चतुर्भ्यः', 'चतुर्भ्भ्यः']],
+    [['चतुर्णाम्', 'चतुर्ण्णाम्']],
+    ['चतुर्षु'],
+    ['चत्वारः'],
+]
+
+# n-final ṣaṭ-saṃjñā numerals (SK369-372)
+# pañcan (5): +zaw by 1.1.26; SK261 luk nom/acc; 8.2.7 n-lopa; SK370+SK338 gen pl
+prAtipadika["paYcan"] = paYcan   # noqa: F405
+viBakti["paYcan"] = [
+    [None, None, 'पञ्च'],        # 1 Nom  * SK261 luk + 8.2.7 n-lopa
+    [None, None, 'पञ्च'],        # 2 Acc  = Nom
+    [None, None, 'पञ्चभिः'],     # 3 Inst * 8.2.7 n-lopa
+    [None, None, 'पञ्चभ्यः'],    # 4 Dat  * 8.2.7 n-lopa
+    [None, None, 'पञ्चभ्यः'],    # 5 Abl  * 8.2.7 n-lopa
+    [None, None, 'पञ्चानाम्'],   # 6 Gen  * SK370 + SK338
+    [None, None, 'पञ्चसु'],      # 7 Loc  * 8.2.7 n-lopa
+    [None, None, 'पञ्च'],        # 8 Voc  = Nom
+]
+
+# saptan (7): same pattern as pañcan
+prAtipadika["saptan"] = saptan   # noqa: F405
+viBakti["saptan"] = [
+    [None, None, 'सप्त'],        # 1 Nom
+    [None, None, 'सप्त'],        # 2 Acc
+    [None, None, 'सप्तभिः'],     # 3 Inst
+    [None, None, 'सप्तभ्यः'],    # 4 Dat
+    [None, None, 'सप्तभ्यः'],    # 5 Abl
+    [None, None, 'सप्तानाम्'],   # 6 Gen
+    [None, None, 'सप्तसु'],      # 7 Loc
+    [None, None, 'सप्त'],        # 8 Voc
+]
+
+# navan (9): same pattern as pañcan
+prAtipadika["navan"] = navan   # noqa: F405
+viBakti["navan"] = [
+    [None, None, 'नव'],          # 1 Nom
+    [None, None, 'नव'],          # 2 Acc
+    [None, None, 'नवभिः'],       # 3 Inst
+    [None, None, 'नवभ्यः'],      # 4 Dat
+    [None, None, 'नवभ्यः'],      # 5 Abl
+    [None, None, 'नवानाम्'],     # 6 Gen
+    [None, None, 'नवसु'],        # 7 Loc
+    [None, None, 'नव'],          # 8 Voc
+]
+
+# daśan (10): same pattern as pañcan
+prAtipadika["daSan"] = daSan   # noqa: F405
+viBakti["daSan"] = [
+    [None, None, 'दश'],          # 1 Nom
+    [None, None, 'दश'],          # 2 Acc
+    [None, None, 'दशभिः'],       # 3 Inst
+    [None, None, 'दशभ्यः'],      # 4 Dat
+    [None, None, 'दशभ्यः'],      # 5 Abl
+    [None, None, 'दशानाम्'],     # 6 Gen
+    [None, None, 'दशसु'],        # 7 Loc
+    [None, None, 'दश'],          # 8 Voc
+]
+
+# aṣṭan (8): optional ā by SK371 before hal; optional au by SK372 nom/acc pl
+prAtipadika["azwan"] = azwan   # noqa: F405
+viBakti["azwan"] = [
+    [None, None, ['अष्टौ', 'अष्ट']],            # 1 Nom  * SK372(opt)/SK261+8.2.7
+    [None, None, ['अष्टौ', 'अष्ट']],            # 2 Acc  = Nom
+    [None, None, ['अष्टाभिः', 'अष्टभिः']],      # 3 Inst * SK371(opt)/8.2.7
+    [None, None, ['अष्टाभ्यः', 'अष्टभ्यः']],    # 4 Dat  * SK371(opt)/8.2.7
+    [None, None, ['अष्टाभ्यः', 'अष्टभ्यः']],    # 5 Abl  * SK371(opt)/8.2.7
+    [None, None, 'अष्टानाम्'],                   # 6 Gen  * SK370+SK338 (same both ways)
+    [None, None, ['अष्टासु', 'अष्टसु']],         # 7 Loc  * SK371(opt)/8.2.7
+    [None, None, ['अष्टौ', 'अष्ट']],            # 8 Voc  = Nom
+]
+
+prAtipadika["praSAm"] = [praSAm_kvip]
+viBakti["praSAm"] = [
+    ['प्रशान्', 'प्रशामौ', 'प्रशामः'],
+    ['प्रशामम्', 'प्रशामौ', 'प्रशामः'],
+    ['प्रशामा', 'प्रशान्भ्याम्', 'प्रशान्भिः'],
+    ['प्रशामे', 'प्रशान्भ्याम्', 'प्रशान्भ्यः'],
+    ['प्रशामः', 'प्रशान्भ्याम्', 'प्रशान्भ्यः'],
+    ['प्रशामः', 'प्रशामोः', 'प्रशामाम्'],
+    ['प्रशामि', 'प्रशामोः', 'प्रशान्सु'],
+    ['प्रशान्', 'प्रशामौ', 'प्रशामः'],
+]
+
+# kvin-derived consonant-final stems (SK373–SK377)
+# ṛtvij (m.) — j-final kvin stem. SK377 (8.2.62) gives j→g at pada-end; 8.4.56 opt g→k.
+# Inst/dat/abl du/pl: stem gets ?pada before Bh → 8.2.62 j→g → ftvig+Bh (g stays voiced).
+# Loc pl: 8.2.62 j→g, then 8.4.55 g→k before s(khar), then 8.3.57 s→ṣ → ftvikzu.
+prAtipadika["ftvij"] = [ftvij_kvin]   # noqa: F405
+viBakti["ftvij"] = [
+    [['ऋत्विग्', 'ऋत्विक्'], 'ऋत्विजौ', 'ऋत्विजः'],  # 1 Nom  * 8.2.62 j→g, 8.4.56 opt g→k
+    ['ऋत्विजम्', 'ऋत्विजौ', 'ऋत्विजः'],               # 2 Acc
+    ['ऋत्विजा', 'ऋत्विग्भ्याम्', 'ऋत्विग्भिः'],        # 3 Inst * 8.2.62 j→g before Bh
+    ['ऋत्विजे', 'ऋत्विग्भ्याम्', 'ऋत्विग्भ्यः'],        # 4 Dat
+    ['ऋत्विजः', 'ऋत्विग्भ्याम्', 'ऋत्विग्भ्यः'],        # 5 Abl
+    ['ऋत्विजः', 'ऋत्विजोः', 'ऋत्विजाम्'],              # 6 Gen
+    ['ऋत्विजि', 'ऋत्विजोः', 'ऋत्विक्षु'],              # 7 Loc  * sg vowel-initial; pl: 8.2.62→k+8.3.57→ṣ
+    [['ऋत्विग्', 'ऋत्विक्'], 'ऋत्विजौ', 'ऋत्विजः'],  # 8 Voc  = Nom
+]
+
+# sraj (f.) — j-final kvin stem (garland). Same paradigm shape as ftvij but feminine.
+prAtipadika["sraj"] = [sraj_kvin]   # noqa: F405
+viBakti["sraj"] = [
+    [['स्रग्', 'स्रक्'], 'स्रजौ', 'स्रजः'],  # 1 Nom  * 8.2.62 j→g, 8.4.56 opt g→k
+    ['स्रजम्', 'स्रजौ', 'स्रजः'],             # 2 Acc
+    ['स्रजा', 'स्रग्भ्याम्', 'स्रग्भिः'],      # 3 Inst * 8.2.62 j→g before Bh
+    ['स्रजे', 'स्रग्भ्याम्', 'स्रग्भ्यः'],      # 4 Dat
+    ['स्रजः', 'स्रग्भ्याम्', 'स्रग्भ्यः'],      # 5 Abl
+    ['स्रजः', 'स्रजोः', 'स्रजाम्'],            # 6 Gen
+    ['स्रजि', 'स्रजोः', 'स्रक्षु'],            # 7 Loc  * pl: 8.2.62→k+8.3.57→ṣ
+    [['स्रग्', 'स्रक्'], 'स्रजौ', 'स्रजः'],  # 8 Voc  = Nom
+]
+
+# yuj (m.) non-compound — SK376 (7.1.71) inserts ñ (Y) before sarvanamasthāna.
+# Strong forms (sarvanamasthāna): yuñj- (nom/acc du/pl; acc sg); nom sg unique (see below).
+# Nom sg: yuñj → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 Y→N → yuṅ.
+# Weak forms (non-sarvanamasthāna): yuj- (inst sg/du/pl, dat, abl, gen, loc).
+# Inst/dat/abl du/pl: 8.2.62 j→g before Bh → yugBh (g stays voiced before voiced Bh).
+# Loc pl: 8.2.62 j→g, 8.4.55 g→k, 8.3.57 s→ṣ → yukṣu.
+prAtipadika["yuj"] = [yuj_kvin]   # noqa: F405
+viBakti["yuj"] = [
+    ['युङ्', 'युञ्जौ', 'युञ्जः'],              # 1 Nom  * yuñj→8.2.23→yuY→8.2.62→yuṅ; du/pl: SK376 num
+    ['युञ्जम्', 'युञ्जौ', 'युजः'],             # 2 Acc  * sg/du: SK376 num; pl (Sas): no num
+    ['युजा', 'युग्भ्याम्', 'युग्भिः'],          # 3 Inst * no num (non-sarvanamasthāna); 8.2.62 j→g before Bh
+    ['युजे', 'युग्भ्याम्', 'युग्भ्यः'],          # 4 Dat
+    ['युजः', 'युग्भ्याम्', 'युग्भ्यः'],          # 5 Abl
+    ['युजः', 'युजोः', 'युजाम्'],               # 6 Gen
+    ['युजि', 'युजोः', 'युक्षु'],               # 7 Loc  * pl: 8.2.62→k+8.3.57→ṣ
+    ['युङ्', 'युञ्जौ', 'युञ्जः'],              # 8 Voc  = Nom
+]
+
+# diś (f.) — ś-final (S in SLP1) kvin stem (direction).
+# At pada-end: 8.2.36 fires S→ṣ(z), then 8.2.39 ṣ→ḍ(q), then 8.2.62 q→g, 8.4.56 opt g→k.
+# Before Bh (voiced): g stays voiced → digBh.
+# Loc pl: g→k (8.4.55 before s=khar), then 8.3.57 s→ṣ → dikṣu.
+prAtipadika["diS"] = [diS_kvin]   # noqa: F405
+viBakti["diS"] = [
+    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 1 Nom  * 8.2.36 S→ṣ→8.2.39 ṣ→ḍ→8.2.62 ḍ→g, 8.4.56 opt g→k
+    ['दिशम्', 'दिशौ', 'दिशः'],             # 2 Acc  * vowel-initial suffix: no pada transformation
+    ['दिशा', 'दिग्भ्याम्', 'दिग्भिः'],      # 3 Inst * 8.2.62 ḍ→g before Bh
+    ['दिशे', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 4 Dat
+    ['दिशः', 'दिग्भ्याम्', 'दिग्भ्यः'],      # 5 Abl
+    ['दिशः', 'दिशोः', 'दिशाम्'],            # 6 Gen
+    ['दिशि', 'दिशोः', 'दिक्षु'],            # 7 Loc  * pl: 8.2.62 ḍ→g→k+8.3.57→ṣ
+    [['दिग्', 'दिक्'], 'दिशौ', 'दिशः'],   # 8 Voc  = Nom
+]
+
+# dadhṛc (m.) — c-final kvin stem (bold, powerful one; from √dhṛṣ via ścutva, nipatana).
+# Same phonology as ṛtvij: 8.2.39 c→j at pada-end, then 8.2.62 j→g, then 8.4.56 opt g→k.
+prAtipadika["daDfc"] = [daDfc_kvin]   # noqa: F405
+viBakti["daDfc"] = [
+    [['दधृग्', 'दधृक्'], 'दधृचौ', 'दधृचः'],  # 1 Nom  * 8.2.39 c→j, 8.2.62 j→g, 8.4.56 opt g→k
+    ['दधृचम्', 'दधृचौ', 'दधृचः'],             # 2 Acc
+    ['दधृचा', 'दधृग्भ्याम्', 'दधृग्भिः'],      # 3 Inst * 8.2.39+8.2.62 c→j→g before Bh
+    ['दधृचे', 'दधृग्भ्याम्', 'दधृग्भ्यः'],      # 4 Dat
+    ['दधृचः', 'दधृग्भ्याम्', 'दधृग्भ्यः'],      # 5 Abl
+    ['दधृचः', 'दधृचोः', 'दधृचाम्'],            # 6 Gen
+    ['दधृचि', 'दधृचोः', 'दधृक्षु'],            # 7 Loc  * pl: c→j→g→k+8.3.57→ṣ
+    [['दधृग्', 'दधृक्'], 'दधृचौ', 'दधृचः'],  # 8 Voc  = Nom
+]
+
+# pratyañc (m.) — añc-type kvin stem (facing west/backward; prati+√añc+kvin).
+# Stored as weak base "pratyac" (c-final); ?aYc tag → SK361 (7.1.70 āc clause) inserts ñ (Y)
+# before sarvanamasthāna: numAgama("pratyac")→"pratyanc"→8.3.24 n+c→M+c→8.4.58 M→Y → pratyaYc.
+# Strong (sarvanamasthāna: su,O,jas,am,Ow): pratyaYc stem. Weak: pratyac stem.
+# Nom sg: pratyaYc → 8.2.23 del c (Yc cluster) → pratyaY → 8.2.62 Y→N → प्रत्यङ्.
+# Inst pl: pratyac (weak) → 8.2.39 c→j → 8.2.62 j→g → pratyag+Bis → प्रत्यग्भिः.
+# Loc pl: pratyac → c→j→g → g+su → g→k → k+ṣu (8.3.57) → प्रत्यक्षु.
+prAtipadika["pratyac"] = [pratyac_kvin]   # noqa: F405
+viBakti["pratyac"] = [
+    ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 1 Nom  * nom sg: 8.2.23+8.2.62; du/pl: SK361 num
+    ['प्रत्यञ्चम्', 'प्रत्यञ्चौ', 'प्रत्यचः'],       # 2 Acc  * sg/du: SK361 num; pl (Sas): weak
+    ['प्रत्यचा', 'प्रत्यग्भ्याम्', 'प्रत्यग्भिः'],    # 3 Inst * weak; 8.2.39+8.2.62 before Bh
+    ['प्रत्यचे', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 4 Dat
+    ['प्रत्यचः', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 5 Abl
+    ['प्रत्यचः', 'प्रत्यचोः', 'प्रत्यचाम्'],           # 6 Gen
+    ['प्रत्यचि', 'प्रत्यचोः', 'प्रत्यक्षु'],           # 7 Loc  * pl: c→j→g→k+8.3.57→ṣ
+    ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 8 Voc  = Nom
+]
+
+# prāñc (m.) — añc-type: weak stem prāc, strong prāñc (SK361 inserts Y). Same paradigm as pratyac.
+prAtipadika["prAc"] = [prAc_kvin]   # noqa: F405
+viBakti["prAc"] = [
+    ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 1 Nom
+    ['प्राञ्चम्', 'प्राञ्चौ', 'प्राचः'],       # 2 Acc
+    ['प्राचा', 'प्राग्भ्याम्', 'प्राग्भिः'],    # 3 Inst
+    ['प्राचे', 'प्राग्भ्याम्', 'प्राग्भ्यः'],    # 4 Dat
+    ['प्राचः', 'प्राग्भ्याम्', 'प्राग्भ्यः'],    # 5 Abl
+    ['प्राचः', 'प्राचोः', 'प्राचाम्'],           # 6 Gen
+    ['प्राचि', 'प्राचोः', 'प्राक्षु'],           # 7 Loc
+    ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 8 Voc
+]
+
+# udañc (m.) — añc-type: weak stem udac, strong udañc.
+prAtipadika["udac"] = [udac_kvin]   # noqa: F405
+viBakti["udac"] = [
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 1 Nom
+    ['उदञ्चम्', 'उदञ्चौ', 'उदचः'],       # 2 Acc
+    ['उदचा', 'उदग्भ्याम्', 'उदग्भिः'],    # 3 Inst
+    ['उदचे', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 4 Dat
+    ['उदचः', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 5 Abl
+    ['उदचः', 'उदचोः', 'उदचाम्'],           # 6 Gen
+    ['उदचि', 'उदचोः', 'उदक्षु'],           # 7 Loc
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 8 Voc
+]
+
+# tiryañc (m.) — añc-type: weak stem tiryac, strong tiryañc.
+prAtipadika["tiryac"] = [tiryac_kvin]   # noqa: F405
+viBakti["tiryac"] = [
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 1 Nom
+    ['तिर्यञ्चम्', 'तिर्यञ्चौ', 'तिर्यचः'],       # 2 Acc
+    ['तिर्यचा', 'तिर्यग्भ्याम्', 'तिर्यग्भिः'],    # 3 Inst
+    ['तिर्यचे', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 4 Dat
+    ['तिर्यचः', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 5 Abl
+    ['तिर्यचः', 'तिर्यचोः', 'तिर्यचाम्'],           # 6 Gen
+    ['तिर्यचि', 'तिर्यचोः', 'तिर्यक्षु'],           # 7 Loc
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 8 Voc
+]
+
+# yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
+# ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
+# Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.
+prAtipadika["yuj_samAsa"] = [yuj_kvin_samAsa]   # noqa: F405
+viBakti["yuj_samAsa"] = [
+    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 1 Nom  * no nUM; 8.2.62 j→g, 8.4.56 opt g→k
+    ['युजम्', 'युजौ', 'युजः'],             # 2 Acc  * no nUM (all forms: weak)
+    ['युजा', 'युग्भ्याम्', 'युग्भिः'],      # 3 Inst * 8.2.62 j→g before Bh
+    ['युजे', 'युग्भ्याम्', 'युग्भ्यः'],      # 4 Dat
+    ['युजः', 'युग्भ्याम्', 'युग्भ्यः'],      # 5 Abl
+    ['युजः', 'युजोः', 'युजाम्'],            # 6 Gen
+    ['युजि', 'युजोः', 'युक्षु'],            # 7 Loc  * pl: 8.2.62 j→g→k + 8.3.57 s→ṣ
+    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 8 Voc  = Nom
+]
+
+# √takṣ + kvip (m.) — k-deletion via SK380 (8.2.29) at pada-end.
+# Stored as "takz" (kṣ in SLP1 = kz); kvip pratipadika (no ?kvin, no ?yuj).
+# Nom sg: takz → 8.2.29 k del → taz(=taṣ) → 8.2.39 ṣ→ḍ(q) → 8.4.56 opt ḍ→ṭ = taṭ/taḍ.
+# Before Bh (voiced): taz → 8.2.39 ṣ→ḍ → taq before voiced → taḍ+Bh = तड्भिः.
+# Loc pl: taz→q(ḍ)→w(ṭ, 8.4.55 before khar su) → ṭ+s → 8.3.59 s→ṣ = तट्षु.
+prAtipadika["takz"] = [takz_kvip]   # noqa: F405
+viBakti["takz"] = [
+    [['तट्', 'तड्'], 'तक्षौ', 'तक्षः'],   # 1 Nom  * 8.2.29 k→∅, 8.2.39 ṣ→ḍ, 8.4.56 opt ḍ→ṭ
+    ['तक्षम्', 'तक्षौ', 'तक्षः'],            # 2 Acc  * vowel-initial: no pada transformation
+    ['तक्षा', 'तड्भ्याम्', 'तड्भिः'],        # 3 Inst * 8.2.29 k→∅ → ṣ→ḍ before voiced Bh
+    ['तक्षे', 'तड्भ्याम्', 'तड्भ्यः'],        # 4 Dat
+    ['तक्षः', 'तड्भ्याम्', 'तड्भ्यः'],        # 5 Abl
+    ['तक्षः', 'तक्षोः', 'तक्षाम्'],          # 6 Gen
+    ['तक्षि', 'तक्षोः', 'तट्सु'],            # 7 Loc  * pl: 8.2.29→ṣ→ḍ→ṭ (8.4.55); s stays (8.4.42 blocks ṣṭutva after pada-ṭ)
+    [['तट्', 'तड्'], 'तक्षौ', 'तक्षः'],   # 8 Voc  = Nom
+]
+
+prAtipadika["kim"] = [kim]
+viBakti["kim"] = [
+    ['कः', 'कौ', 'के'],
+    ['कम्', 'कौ', 'कान्'],
+    ['केन', 'काभ्याम्', 'कैः'],
+    ['कस्मै', 'काभ्याम्', 'केभ्यः'],
+    [['कस्मात्', 'कस्माद्'], 'काभ्याम्', 'केभ्यः'],
+    ['कस्य', 'कयोः', 'केषाम्'],
+    ['कस्मिन्', 'कयोः', 'केषु'],
+    ['क', 'कौ', 'के'],
+]
+
+prAtipadika["idam"] = idam
+viBakti["idam"] = [
+    ['अयम्', 'इमौ', 'इमे'],
+    ['इमम्', 'इमौ', 'इमान्'],
+    ['अनेन', 'आभ्याम्', 'एभिः'],
+    ['अस्मै', 'आभ्याम्', 'एभ्यः'],
+    [['अस्मात्', 'अस्माद्'], 'आभ्याम्', 'एभ्यः'],
+    ['अस्य', 'अनयोः', 'एषाम्'],
+    ['अस्मिन्', 'अनयोः', 'एषु'],
+    ['अयम्', 'इमौ', 'इमे'],
+]
+
+prAtipadika["idam_anu"] = [idam_anu]
+viBakti["idam_anu"] = [
+    ['अयम्', 'इमौ', 'इमे'],
+    ['एनम्', 'एनौ', 'एनान्'],
+    ['एनेन', 'आभ्याम्', 'एभिः'],
+    ['अस्मै', 'आभ्याम्', 'एभ्यः'],
+    [['अस्मात्', 'अस्माद्'], 'आभ्याम्', 'एभ्यः'],
+    ['अस्य', 'एनयोः', 'एषाम्'],
+    ['अस्मिन्', 'एनयोः', 'एषु'],
+    ['अयम्', 'इमौ', 'इमे'],
+]
+prAtipadika["rAjan"] = rAjan
+viBakti["rAjan"] = [
+    ['राजा', 'राजानौ', 'राजानः'],
+    ['राजानम्', 'राजानौ', 'राज्ञः'],
+    ['राज्ञा', 'राजभ्याम्', 'राजभिः'],
+    ['राज्ञे', 'राजभ्याम्', 'राजभ्यः'],
+    ['राज्ञः', 'राजभ्याम्', 'राजभ्यः'],
+    ['राज्ञः', 'राज्ञोः', 'राज्ञाम्'],
+    [['राज्ञि', 'राजनि'], 'राज्ञोः', 'राजसु'],
+    ['राजन्', 'राजानौ', 'राजानः'],
+]
+
+prAtipadika["parvan"] = parvan_napum   
+viBakti["parvan"] = [
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 1 Nominative
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 2 Accusative
+    ['पर्वणा', 'पर्वभ्याम्', 'पर्वभिः'],  # 3 Instrumental  * SK355 fires for sg
+    ['पर्वणे', 'पर्वभ्याम्', 'पर्वभ्यः'],  # 4 Dative         * SK355 fires for sg
+    ['पर्वणः', 'पर्वभ्याम्', 'पर्वभ्यः'],  # 5 Ablative        * SK355 fires for sg
+    ['पर्वणः', 'पर्वणोः', 'पर्वणाम्'],    # 6 Genitive        * SK355 fires for all
+    ['पर्वणि', 'पर्वणोः', 'पर्वसु'],      # 7 Locative        * SK355 fires for sg/du
+    ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 8 Vocative
+]
+
+prAtipadika["yajvan"] = yajvan
+viBakti["yajvan"] = [
+    ['यज्वा', 'यज्वानौ', 'यज्वानः'],         # 1 Nominative   (strong stem)
+    ['यज्वानम्', 'यज्वानौ', 'यज्वनः'],        # 2 Accusative   * SK355 for pl
+    ['यज्वना', 'यज्वभ्याम्', 'यज्वभिः'],      # 3 Instrumental * SK355 for sg (dental n)
+    ['यज्वने', 'यज्वभ्याम्', 'यज्वभ्यः'],     # 4 Dative       * SK355 for sg
+    ['यज्वनः', 'यज्वभ्याम्', 'यज्वभ्यः'],     # 5 Ablative     * SK355 for sg
+    ['यज्वनः', 'यज्वनोः', 'यज्वनाम्'],        # 6 Genitive     * SK355 for all
+    ['यज्वनि', 'यज्वनोः', 'यज्वसु'],          # 7 Locative     * SK355 for sg/du
+    ['यज्वन्', 'यज्वानौ', 'यज्वानः'],         # 8 Vocative     (bare stem sg)
+]
+
+# in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
+prAtipadika["hastin"] = hastin  # noqa: F405
+viBakti["hastin"] = [
+    ['हस्ती', 'हस्तिनौ', 'हस्तिनः'],           # 1 Nominative   * 6.4.13 sg; 6.4.12 blocks du/pl
+    ['हस्तिनम्', 'हस्तिनौ', 'हस्तिनः'],         # 2 Accusative   * 6.4.12 blocks am (suw→sarvanAmasTAna)
+    ['हस्तिना', 'हस्तिभ्याम्', 'हस्तिभिः'],     # 3 Instrumental
+    ['हस्तिने', 'हस्तिभ्याम्', 'हस्तिभ्यः'],    # 4 Dative
+    ['हस्तिनः', 'हस्तिभ्याम्', 'हस्तिभ्यः'],    # 5 Ablative
+    ['हस्तिनः', 'हस्तिनोः', 'हस्तिनाम्'],       # 6 Genitive
+    ['हस्तिनि', 'हस्तिनोः', 'हस्तिषु'],         # 7 Locative
+    ['हस्तिन्', 'हस्तिनौ', 'हस्तिनः'],          # 8 Vocative     (bare stem sg, du/pl = nom)
+]
+
+prAtipadika["vftrahan"] = vftrahan  # noqa: F405
+viBakti["vftrahan"] = [
+    ['वृत्रहा', 'वृत्रहणौ', 'वृत्रहणः'],                        # 1 Nominative   * 6.4.13 sg; 6.4.12 blocks du/pl; ṇatva du/pl
+    ['वृत्रहणम्', 'वृत्रहणौ', 'वृत्रघ्नः'],                     # 2 Accusative   * 6.4.12 blocks sg; 7.3.54 pl (h→G, dental n after G)
+    ['वृत्रघ्ना', 'वृत्रहभ्याम्', 'वृत्रहभिः'],                 # 3 Instrumental * 7.3.54 sg (h→G); 8.4.22 blocks ṇatva after G
+    ['वृत्रघ्ने', 'वृत्रहभ्याम्', 'वृत्रहभ्यः'],                # 4 Dative       * 7.3.54 sg (h→G); 8.4.22 blocks ṇatva after G
+    ['वृत्रघ्नः', 'वृत्रहभ्याम्', 'वृत्रहभ्यः'],                # 5 Ablative     * 7.3.54 sg (h→G); 8.4.22 blocks ṇatva after G
+    ['वृत्रघ्नः', 'वृत्रघ्नोः', 'वृत्रघ्नाम्'],                 # 6 Genitive     * 7.3.54 sg/du/pl; 8.4.22 blocks ṇatva after G
+    [['वृत्रहणि', 'वृत्रघ्नि'], 'वृत्रघ्नोः', 'वृत्रहसु'],     # 7 Locative     * two sg forms; 7.3.54 du
+    ['वृत्रहन्', 'वृत्रहणौ', 'वृत्रहणः'],                       # 8 Vocative     * bare stem sg; ṇatva du/pl
+]
+
+# SvanType stems: śvan/yuvan/maGavan — SK362 (6.4.133) samprasāraṇa in bha position,
+# SK361 (7.1.70) nUM before sarvanamasthana, SK360 (6.4.128) optional tṛj for maGavan.
+# Du/pl inst/dat/abl consonant-initial → no Ba → no SK362; n drops by padānta rule.
+prAtipadika["svan"] = svan   # noqa: F405
+viBakti["svan"] = [
+    ['श्वा', 'श्वानौ', 'श्वानः'],          # 1 Nom   * 6.4.8 sg; SK361+6.4.8 du/pl
+    ['श्वानम्', 'श्वानौ', 'शुनः'],         # 2 Acc   * SK362 pl (bha)
+    ['शुना', 'श्वभ्याम्', 'श्वभिः'],       # 3 Inst  * SK362 sg (bha)
+    ['शुने', 'श्वभ्याम्', 'श्वभ्यः'],      # 4 Dat   * SK362 sg (bha)
+    ['शुनः', 'श्वभ्याम्', 'श्वभ्यः'],      # 5 Abl   * SK362 sg (bha)
+    ['शुनः', 'शुनोः', 'शुनाम्'],           # 6 Gen   * SK362 all (bha)
+    ['शुनि', 'शुनोः', 'श्वसु'],            # 7 Loc   * SK362 sg/du (bha)
+    ['श्वन्', 'श्वानौ', 'श्वानः'],         # 8 Voc   * bare stem sg; du/pl = nom
+]
+
+prAtipadika["yuvan"] = yuvan   # noqa: F405
+viBakti["yuvan"] = [
+    ['युवा', 'युवानौ', 'युवानः'],          # 1 Nom   * 6.4.8 sg; SK361+6.4.8 du/pl
+    ['युवानम्', 'युवानौ', 'यूनः'],         # 2 Acc   * SK362 pl (bha): yuva→yU
+    ['यूना', 'युवभ्याम्', 'युवभिः'],       # 3 Inst  * SK362 sg (bha)
+    ['यूने', 'युवभ्याम्', 'युवभ्यः'],      # 4 Dat   * SK362 sg (bha)
+    ['यूनः', 'युवभ्याम्', 'युवभ्यः'],      # 5 Abl   * SK362 sg (bha)
+    ['यूनः', 'यूनोः', 'यूनाम्'],           # 6 Gen   * SK362 all (bha)
+    ['यूनि', 'यूनोः', 'युवसु'],            # 7 Loc   * SK362 sg/du (bha)
+    ['युवन्', 'युवानौ', 'युवानः'],         # 8 Voc   * bare stem sg; du/pl = nom
+]
+
+# maGavan: SK360 (6.4.128) optional tṛj substitute fires for all cases (bahulam).
+# Each cell lists [primary, optional-SK360] where they differ.
+# Primary uses SK362 in bha position (→ maGo-); SK360-tṛj uses tṛ-anta declining (→ maGavat-/maGavad-).
+prAtipadika["maGavan"] = maGavan   # noqa: F405
+viBakti["maGavan"] = [
+    [['मघवा', 'मघवान्'], ['मघवानौ', 'मघवन्तौ'], ['मघवानः', 'मघवन्तः']],          # 1 Nom
+    [['मघवानम्', 'मघवन्तम्'], ['मघवानौ', 'मघवन्तौ'], ['मघवतः', 'मघोनः']],       # 2 Acc
+    [['मघवता', 'मघोना'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभिः', 'मघवद्भिः']], # 3 Inst
+    [['मघवते', 'मघोने'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभ्यः', 'मघवद्भ्यः']], # 4 Dat
+    [['मघवतः', 'मघोनः'], ['मघवभ्याम्', 'मघवद्भ्याम्'], ['मघवभ्यः', 'मघवद्भ्यः']], # 5 Abl
+    [['मघवतः', 'मघोनः'], ['मघवतोः', 'मघोनोः'], ['मघवताम्', 'मघोनाम्']],          # 6 Gen
+    [['मघवति', 'मघोनि'], ['मघवतोः', 'मघोनोः'], ['मघवसु', 'मघवत्सु']],            # 7 Loc
+    ['मघवन्', ['मघवानौ', 'मघवन्तौ'], ['मघवानः', 'मघवन्तः']],                     # 8 Voc  * sg same in both
+]
+
+prAtipadika["arvan"] = arvan   # noqa: F405
+viBakti["arvan"] = [
+    ['अर्वा', 'अर्वन्तौ', 'अर्वन्तः'],          # 1 Nom  * no tṛ before su → arvā; SK364+SK361 for du/pl
+    ['अर्वन्तम्', 'अर्वन्तौ', 'अर्वतः'],         # 2 Acc  * SK364+SK361 sg/du; bha pl → arvataḥ
+    ['अर्वता', 'अर्वद्भ्याम्', 'अर्वद्भिः'],     # 3 Inst * bha sg; 8.4.47 t→d du/pl
+    ['अर्वते', 'अर्वद्भ्याम्', 'अर्वद्भ्यः'],    # 4 Dat
+    ['अर्वतः', 'अर्वद्भ्याम्', 'अर्वद्भ्यः'],    # 5 Abl
+    ['अर्वतः', 'अर्वतोः', 'अर्वताम्'],            # 6 Gen  * bha all
+    ['अर्वति', 'अर्वतोः', 'अर्वत्सु'],            # 7 Loc  * bha sg/du; loc-pl arvatsu
+    ['अर्वन्', 'अर्वन्तौ', 'अर्वन्तः'],           # 8 Voc  * bare stem sg; du/pl = nom
+]
+
+# paTin-group stems: SK365 (7.1.85) ā before su, SK366 (7.1.86) i→a before sarvanamasthana,
+# SK367 (7.1.87) th→nth before sarvanamasthana (paTin/maTin only), SK368 (7.1.88) ṭi-lopa in bha.
+# Strong forms (sarvanamasthana): panTAn-/manTAn- (SK367+366+6.4.8); nom/voc sg +SK365 → panthāḥ.
+# Bha forms (vowel-initial weak): paT-/maT-/fBukz- (SK368 ṭi-lopa).
+# Consonant-initial weak: paTi-/maTi-/fBukzi- (8.2.7 n-lopa drops final n).
+prAtipadika["paTin"] = paTin  # noqa: F405
+viBakti["paTin"] = [
+    ['पन्थाः', 'पन्थानौ', 'पन्थानः'],          # 1 Nom  * SK367+366+6.4.8+SK365 sg; SK367+366+6.4.8 du/pl
+    ['पन्थानम्', 'पन्थानौ', 'पथः'],             # 2 Acc  * SK367+366+6.4.8 sg/du; SK368 pl (bha)
+    ['पथा', 'पथिभ्याम्', 'पथिभिः'],            # 3 Inst * SK368 sg (bha)
+    ['पथे', 'पथिभ्याम्', 'पथिभ्यः'],           # 4 Dat  * SK368 sg (bha)
+    ['पथः', 'पथिभ्याम्', 'पथिभ्यः'],           # 5 Abl  * SK368 sg (bha)
+    ['पथः', 'पथोः', 'पथाम्'],                  # 6 Gen  * SK368 all (bha)
+    ['पथि', 'पथोः', 'पथिषु'],                  # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['पन्थाः', 'पन्थानौ', 'पन्थानः'],          # 8 Voc  * SK365 fires for voc too (no ?!sambudDi); du/pl=nom
+]
+
+prAtipadika["maTin"] = maTin  # noqa: F405
+viBakti["maTin"] = [
+    ['मन्थाः', 'मन्थानौ', 'मन्थानः'],          # 1 Nom  * SK367+366+6.4.8+SK365 sg; SK367+366+6.4.8 du/pl
+    ['मन्थानम्', 'मन्थानौ', 'मथः'],             # 2 Acc  * SK367+366+6.4.8 sg/du; SK368 pl (bha)
+    ['मथा', 'मथिभ्याम्', 'मथिभिः'],            # 3 Inst * SK368 sg (bha)
+    ['मथे', 'मथिभ्याम्', 'मथिभ्यः'],           # 4 Dat  * SK368 sg (bha)
+    ['मथः', 'मथिभ्याम्', 'मथिभ्यः'],           # 5 Abl  * SK368 sg (bha)
+    ['मथः', 'मथोः', 'मथाम्'],                  # 6 Gen  * SK368 all (bha)
+    ['मथि', 'मथोः', 'मथिषु'],                  # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['मन्थाः', 'मन्थानौ', 'मन्थानः'],          # 8 Voc  * SK365 fires for voc (same as nom)
+]
+
+# fBukzin: no SK367 (no th/T in stem). Strong forms get ṇatva (8.4.2) on the n
+# after kṣ (z in SLP1) — ṛbhukṣāṇau, ṛbhukṣāṇaḥ, ṛbhukṣāṇam.
+# Voc sg: SK366 fires (i→a) but 6.4.8 excluded (?!sambudDi); SK365 fires → ṛbhukṣāḥ.
+prAtipadika["fBukzin"] = fBukzin  # noqa: F405
+viBakti["fBukzin"] = [
+    ['ऋभुक्षाः', 'ऋभुक्षाणौ', 'ऋभुक्षाणः'],   # 1 Nom  * SK366+6.4.8+SK365 sg; SK366+6.4.8 du/pl; 8.4.2 ṇatva du/pl
+    ['ऋभुक्षाणम्', 'ऋभुक्षाणौ', 'ऋभुक्षः'],   # 2 Acc  * 8.4.2 ṇatva sg/du; SK368 pl (bha)
+    ['ऋभुक्षा', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभिः'],   # 3 Inst * SK368 sg (bha)
+    ['ऋभुक्षे', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभ्यः'],   # 4 Dat
+    ['ऋभुक्षः', 'ऋभुक्षिभ्याम्', 'ऋभुक्षिभ्यः'],   # 5 Abl
+    ['ऋभुक्षः', 'ऋभुक्षोः', 'ऋभुक्षाम्'],     # 6 Gen  * SK368 all (bha)
+    ['ऋभुक्षि', 'ऋभुक्षोः', 'ऋभुक्षिषु'],     # 7 Loc  * SK368 sg/du (bha); 8.3.59 ṣatva pl
+    ['ऋभुक्षाः', 'ऋभुक्षाणौ', 'ऋभुक्षाणः'],   # 8 Voc  * SK365+SK366 (6.4.8 excluded by ?!sambudDi); du/pl=nom
+]
+
+# mahat (pum): ugit (its=['u']) → SK361 (7.1.70) fires nUM before sarvanamasthāna suffixes
+# Strong forms (nom/acc sg+du, nom pl, voc du+pl): mahānt- base
+# Weak forms (acc pl, inst–loc sg, gen–loc du/pl): mahat- / mahad- base
+prAtipadika["mahat"] = mahat  # noqa: F405
+viBakti["mahat"] = [
+    ['महान्', 'महान्तौ', 'महान्तः'],    # 1 Nom  * SK361 nUM fires (sarvanāmasthāna)
+    ['महान्तम्', 'महान्तौ', 'महतः'],    # 2 Acc  * SK361 nUM fires sg+du; weak pl
+    ['महता', 'महद्भ्याम्', 'महद्भिः'],  # 3 Inst
+    ['महते', 'महद्भ्याम्', 'महद्भ्यः'], # 4 Dat
+    ['महतः', 'महद्भ्याम्', 'महद्भ्यः'], # 5 Abl
+    ['महतः', 'महतोः', 'महताम्'],         # 6 Gen
+    ['महति', 'महतोः', 'महत्सु'],          # 7 Loc
+    ['महन्', 'महान्तौ', 'महान्तः'],    # 8 Voc  * SK361 nUM fires du+pl
+]
+
+# mahat_n (napum): nom/acc/voc pl mahānti with nUM; sg has two pause forms (mahat / mahad)
+prAtipadika["mahat_n"] = mahat_n  # noqa: F405
+viBakti["mahat_n"] = [
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 1 Nom  * nUM fires pl
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 2 Acc  (= Nom for napum)
+    ['महता', 'महद्भ्याम्', 'महद्भिः'],       # 3 Inst
+    ['महते', 'महद्भ्याम्', 'महद्भ्यः'],      # 4 Dat
+    ['महतः', 'महद्भ्याम्', 'महद्भ्यः'],      # 5 Abl
+    ['महतः', 'महतोः', 'महताम्'],              # 6 Gen
+    ['महति', 'महतोः', 'महत्सु'],               # 7 Loc
+    [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 8 Voc  (= Nom for napum)
+]
+
+# Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
+# before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
+# voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).
+# SK123 (8.3.24) converts n → M (anusvāra) before sibilant s.
+# Nom sg: śreyān (n at word-end → SK123 does not fire).
+prAtipadika["Sreyas"] = Sreyas  # noqa: F405
+viBakti["Sreyas"] = [
+    ['श्रेयान्', 'श्रेयांसौ', 'श्रेयांसः'],      # 1 Nom  * SK361 nUM + SK123 M before s
+    ['श्रेयांसम्', 'श्रेयांसौ', 'श्रेयसः'],      # 2 Acc  * SK361 sg+du + SK123; weak pl
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],    # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],   # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],   # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],         # 6 Gen
+    ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
+    ['श्रेयन्', 'श्रेयांसौ', 'श्रेयांसः'],      # 8 Voc  * SK361 du+pl + SK123
+]
+
+# Sreyas_n (napum): Iyasun is u-it → ugit; 7.1.72 handles napum pl nUM (overrides 7.1.70).
+# Nom/acc/voc pl: śreyāṃsi via 7.1.72 + SK123 (8.3.24) n→M before s.
+prAtipadika["Sreyas_n"] = Sreyas_n  # noqa: F405
+viBakti["Sreyas_n"] = [
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 1 Nom  * SK123 M before s
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 2 Acc (= Nom for napum)
+    ['श्रेयसा', 'श्रेयोभ्याम्', 'श्रेयोभिः'],     # 3 Inst
+    ['श्रेयसे', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],    # 4 Dat
+    ['श्रेयसः', 'श्रेयोभ्याम्', 'श्रेयोभ्यः'],    # 5 Abl
+    ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],          # 6 Gen
+    ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
+    ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 8 Voc (= Nom for napum)
+]
+
+# ---------------------------------------------------------------------------
+# samAsa (compound) test entries
+# Format: prAtipadika[key] = [pUrva_pada, in_compound(uttara_pada)]
+# The in_compound() call deep-copies the uttara-pada and sets ?samAsa tag.
+# generate_vibhakti handles list-form: pratipadika[-1] for tag checks,
+# and produces test tuples (pUrva, uttara_samAsa, sup, avasAna, expected).
+# ---------------------------------------------------------------------------
+
+# SK257 — gaṇapati (m.): pati in compound gets ghī-saṃjñā via 1.4.8.
+# Vasu SK257: "समासे तु भूपतिना । भूपतये"
+# Compound forms differ from standalone pati (patyā/patye/patyuḥ/patyau):
+#   inst sg: gaṇapatinā (7.3.120: tā→nā for ghī non-strī)
+#   dat sg:  gaṇapataye (ghī → regular i-stem gṇe rule)
+#   abl/gen sg: gaṇapateḥ (regular i-stem, not patyuḥ)
+#   loc sg:  gaṇapatau (regular i-stem, not patyau)
+prAtipadika["gaRapati"] = [gaRa, in_compound(pati)]   # noqa: F405
+viBakti["gaRapati"] = [
+    ['गणपतिः', 'गणपती', 'गणपतयः'],                     # 1 Nom  (= standalone)
+    ['गणपतिम्', 'गणपती', 'गणपतीन्'],                   # 2 Acc  (= standalone)
+    ['गणपतिना', 'गणपतिभ्याम्', 'गणपतिभिः'],             # 3 Inst * 7.3.120: tā→nā (ghī non-strī)
+    ['गणपतये', 'गणपतिभ्याम्', 'गणपतिभ्यः'],              # 4 Dat  * ghī i-stem dat
+    ['गणपतेः', 'गणपतिभ्याम्', 'गणपतिभ्यः'],              # 5 Abl  * pateḥ not patyuḥ
+    ['गणपतेः', 'गणपत्योः', 'गणपतीनाम्'],                # 6 Gen  * pateḥ not patyuḥ
+    ['गणपतौ', 'गणपत्योः', 'गणपतिषु'],                   # 7 Loc  * patau not patyau
+    ['गणपते', 'गणपती', 'गणपतयः'],                       # 8 Voc  (= standalone)
+]
+
+# SK376 — aśvayuj (m.): compound yuj, SK376 nUM blocked by ?samAsa.
+# Same phonology as existing yuj_samAsa but with aśva- pūrva-pada prefix.
+# Nom sg: [aśvayug, aśvayuk] (8.2.62 j→g; 8.4.56 opt g→k)
+prAtipadika["aSvayuj"] = [aSva, in_compound(yuj_kvin)]   # noqa: F405
+viBakti["aSvayuj"] = [
+    [['अश्वयुग्', 'अश्वयुक्'], 'अश्वयुजौ', 'अश्वयुजः'],   # 1 Nom  * 8.2.62 j→g; 8.4.56 opt g→k
+    ['अश्वयुजम्', 'अश्वयुजौ', 'अश्वयुजः'],                # 2 Acc  * no nUM
+    ['अश्वयुजा', 'अश्वयुग्भ्याम्', 'अश्वयुग्भिः'],          # 3 Inst * 8.2.62 j→g before Bh
+    ['अश्वयुजे', 'अश्वयुग्भ्याम्', 'अश्वयुग्भ्यः'],          # 4 Dat
+    ['अश्वयुजः', 'अश्वयुग्भ्याम्', 'अश्वयुग्भ्यः'],          # 5 Abl
+    ['अश्वयुजः', 'अश्वयुजोः', 'अश्वयुजाम्'],               # 6 Gen
+    ['अश्वयुजि', 'अश्वयुजोः', 'अश्वयुक्षु'],               # 7 Loc  * pl: j→g→k+8.3.57→ṣ
+    [['अश्वयुग्', 'अश्वयुक्'], 'अश्वयुजौ', 'अश्वयुजः'],   # 8 Voc  = Nom
+]
+
+# SK379 — viśvāvasu (m.): SK379 (6.3.128) elongates viśva final a→ā before vasu.
+# viśvāvasu = viśvā + vasu (u-stem masculine); Vasu SK379: "विश्वं वसु यस्य स विश्वावसुः"
+# SK379 standalone vasu (m.) — u-stem; verifies base pratipadika inflects correctly outside compound.
+# No dīrgha here (SK379 requires ?viSva pūrva-pada, absent in standalone).
+prAtipadika["vasu"] = vasu_pum   # noqa: F405
+viBakti["vasu"] = [
+    ['वसुः', 'वसू', 'वसवः'],               # 1 Nom
+    ['वसुम्', 'वसू', 'वसून्'],              # 2 Acc
+    ['वसुना', 'वसुभ्याम्', 'वसुभिः'],       # 3 Inst
+    ['वसवे', 'वसुभ्याम्', 'वसुभ्यः'],       # 4 Dat
+    ['वसोः', 'वसुभ्याम्', 'वसुभ्यः'],       # 5 Abl
+    ['वसोः', 'वस्वोः', 'वसूनाम्'],          # 6 Gen  * du: vasvoḥ (v insertion, 6.1.77)
+    ['वसौ', 'वस्वोः', 'वसुषु'],             # 7 Loc
+    ['वसो', 'वसू', 'वसवः'],                # 8 Voc
+]
+
+# NOTE: requires SK379 implementation + ?vasu/?samAsa tag propagation in join_objects.
+# All forms carry viśvā- prefix (dīrgha on viśva throughout compound — vasu is always
+# vasu regardless of sup, so SK294 never applies here; SK379 fires unconditionally).
+prAtipadika["viSvAvasu"] = [viSva, in_compound(vasu_pum)]   # noqa: F405
+viBakti["viSvAvasu"] = [
+    ['विश्वावसुः', 'विश्वावसू', 'विश्वावसवः'],               # 1 Nom  * viśvā- + u-stem
+    ['विश्वावसुम्', 'विश्वावसू', 'विश्वावसून्'],              # 2 Acc
+    ['विश्वावसुना', 'विश्वावसुभ्याम्', 'विश्वावसुभिः'],        # 3 Inst
+    ['विश्वावसवे', 'विश्वावसुभ्याम्', 'विश्वावसुभ्यः'],        # 4 Dat
+    ['विश्वावसोः', 'विश्वावसुभ्याम्', 'विश्वावसुभ्यः'],        # 5 Abl
+    ['विश्वावसोः', 'विश्वावस्वोः', 'विश्वावसूनाम्'],          # 6 Gen  * du: vasvoḥ (v insertion)
+    ['विश्वावसौ', 'विश्वावस्वोः', 'विश्वावसुषु'],             # 7 Loc
+    ['विश्वावसो', 'विश्वावसू', 'विश्वावसवः'],                 # 8 Voc
+]
+
+# SK379 — viśvārāṭ (m.): SK379 (6.3.128) elongates viśva final a→ā before rāṭ (= rāj+kvip).
+# Vasu SK379: "विश्वाराट् । विश्वाराड् । विश्वराजौ । विश्वराजः । विश्वाराड्भ्यामित्यादि"
+# NOTE: requires SK379 + SK294 (8.2.36, j→ṣ for rāj, already implemented).
+# NOTE: requires ?rAj/?samAsa tag propagation in join_objects.
+prAtipadika["viSvArAj"] = [viSva, in_compound(rAj_kvip)]   # noqa: F405
+viBakti["viSvArAj"] = [
+    # dīrgha (viśvā-) only where SK294 fires (pada-end / consonant-initial sups):
+    #   sg: nom/voc (rāṭ/rāḍ via j→ṣ chain); du/pl: rājau/rājaḥ (vowel-initial, no SK294).
+    # Inst/Dat/Abl du+pl: consonant-initial bhyAm/bhiH/bhyaH → SK294 fires → rāḍ-bhyām etc.
+    # Gen/Loc sg+du, Acc sg: vowel-initial → SK294 doesn't fire → viśvarāj-
+    [['विश्वाराट्', 'विश्वाराड्'], 'विश्वराजौ', 'विश्वराजः'],    # 1 Nom  sg: dīrgha; du/pl: no dīrgha
+    ['विश्वराजम्', 'विश्वराजौ', 'विश्वराजः'],                    # 2 Acc  all vowel-initial: no dīrgha
+    ['विश्वराजा', 'विश्वाराड्भ्याम्', 'विश्वाराड्भिः'],            # 3 Inst sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजे', 'विश्वाराड्भ्याम्', 'विश्वाराड्भ्यः'],            # 4 Dat  sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजः', 'विश्वाराड्भ्याम्', 'विश्वाराड्भ्यः'],            # 5 Abl  sg: no dīrgha; du/pl: dīrgha
+    ['विश्वराजः', 'विश्वराजोः', 'विश्वराजाम्'],                   # 6 Gen  all vowel-initial: no dīrgha
+    ['विश्वराजि', 'विश्वराजोः', 'विश्वाराट्सु'],                  # 7 Loc  sg/du: no dīrgha; pl: dīrgha
+    [['विश्वाराट्', 'विश्वाराड्'], 'विश्वराजौ', 'विश्वराजः'],    # 8 Voc  = Nom
+]
+
+# SK382–SK400 — yuzmad (alinga, stored as pum): 2nd person pronoun "you".
+# Full paradigm via SK382–SK400:
+#   Nom sg: tvam (SK384+SK385), acc sg: tvAm (SK389+SK390+SK382),
+#   ins/loc sg: tvayA/tvayi (SK389+SK392), dat sg: tuBhyam (SK394+SK382),
+#   abl sg: tvat (SK396), gen sg: tava (SK398),
+#   du: SK386 (yuv-base) + SK387 (nom/acc), SK392 (gen/loc), SK393 (ins/dat/abl),
+#   pl: SK388 (nom), SK391+SK393 (acc), SK393 (ins/loc), SK395 (dat), SK397 (abl), SK400 (gen).
+prAtipadika["yuzmad"] = yuzmad   # noqa: F405
+viBakti["yuzmad"] = [
+    ['त्वम्', 'युवाम्', 'यूयम्'],                                        # 1 Nom
+    ['त्वाम्', 'युवाम्', 'युष्मान्'],                                    # 2 Acc
+    ['त्वया', 'युवाभ्याम्', 'युष्माभिः'],                                 # 3 Inst
+    ['तुभ्यम्', 'युवाभ्याम्', 'युष्मभ्यम्'],                              # 4 Dat
+    [['त्वत्', 'त्वद्'], 'युवाभ्याम्', ['युष्मात्', 'युष्माद्']],        # 5 Abl  * pada-final t/d
+    ['तव', 'युवयोः', 'युष्माकम्'],                                       # 6 Gen
+    ['त्वयि', 'युवयोः', 'युष्मासु'],                                     # 7 Loc
+    # 8 Voc: pronouns do not have vocative forms
+]
+
+# SK382–SK400 — asmad (alinga, stored as pum): 1st person pronoun "I/we".
+# Full paradigm via SK382–SK400:
+#   Nom sg: aham (SK384.1+SK385), acc sg: mAm (SK389.1+SK390+SK382),
+#   ins/loc sg: mayA/mayi (SK389.1+SK392), dat sg: mahyam (SK394.1+SK382),
+#   abl sg: mat (SK396.1), gen sg: mama (SK398.1),
+#   du: SK386.1 (Av-base) + SK387 (nom/acc), SK392 (gen/loc), SK393 (ins/dat/abl),
+#   pl: SK388.1 (nom), SK391+SK393 (acc), SK393 (ins/loc), SK395 (dat), SK397.1 (abl), SK400 (gen).
+prAtipadika["asmad"] = asmad   # noqa: F405
+viBakti["asmad"] = [
+    ['अहम्', 'आवाम्', 'वयम्'],                                          # 1 Nom
+    ['माम्', 'आवाम्', 'अस्मान्'],                                        # 2 Acc
+    ['मया', 'आवाभ्याम्', 'अस्माभिः'],                                    # 3 Inst
+    ['मह्यम्', 'आवाभ्याम्', 'अस्मभ्यम्'],                                # 4 Dat
+    [['मत्', 'मद्'], 'आवाभ्याम्', ['अस्मात्', 'अस्माद्']],              # 5 Abl  * pada-final t/d
+    ['मम', 'आवयोः', 'अस्माकम्'],                                         # 6 Gen
+    ['मयि', 'आवयोः', 'अस्मासु'],                                        # 7 Loc
+    # 8 Voc: pronouns do not have vocative forms
+]
+
+# samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj"],
+          "strI": [], "napum": []}
+_samAsa_keys = {k for ks in samAsa.values() for k in ks}
+
 ajanta = {"pum": [], "strI": [], "napum": []}
 halanta = {"pum": [], "strI": [], "napum": []}
 
 for p in prAtipadika:
-    linga[p] = prAtipadika[p].linga
+    if p in _samAsa_keys:
+        continue   # compound entries handled by samAsa dict, not ajanta/halanta
+    if isinstance(prAtipadika[p], list):
+        if hasattr(prAtipadika[p][-1], "linga"):
+            linga[p] = prAtipadika[p][-1].linga
+        elif prAtipadika[p][-1].hasTag("strI"):
+            linga[p] = "strI"
+        elif prAtipadika[p][-1].hasTag("napum"):
+            linga[p] = "napum"
+        else:
+            linga[p] = "pum"
+    else:
+            linga[p] = prAtipadika[p].linga
     if p[-1].lower() in "aeioufx":
         ajanta[linga[p]].append(p)
     else:

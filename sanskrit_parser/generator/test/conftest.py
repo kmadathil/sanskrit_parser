@@ -1,9 +1,27 @@
+import logging
+# First we disable the root logger handlers
+rootlogger = logging.getLogger()
+for h in rootlogger.handlers:
+    rootlogger.removeHandler(h)
+rootlogger.addHandler(logging.NullHandler())
+
 from sanskrit_parser.generator.paninian_object import PaninianObject
-from sanskrit_parser.generator.prakriya import Prakriya, PrakriyaVakya
+from sanskrit_parser.generator.prakriya import PrakriyaVakya
+from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from indic_transliteration import sanscript
 
-from vibhaktis_list import ajanta, halanta, viBakti, prAtipadika, encoding
+from vibhaktis_list import ajanta, halanta, samAsa, viBakti, prAtipadika, encoding
+
+import pytest
+
+from sanskrit_parser.generator.sutras_yaml import SutraFactory
+#sutra_list = SutraFactory("sutras_hier.yaml")
+#prakriya_name = "HierPrakriya"
+sutra_list = SutraFactory("sutras_antaranga.yaml")
+prakriya_name = "AntarangaPrakriya"
+
+
 
 # @pytest.fixture(scope="module")
 # def sutra_fixture():
@@ -34,15 +52,15 @@ def _test(output, s, enc):
         # Single element
         _s = [_s]
     # Remove spaces in reference
-    _s = [x.replace(' ', "") for x in _s]
+    _s = [sanscript.transliterate(x.replace(' ', ""), enc, sanscript.SLP1) for x in _s]
     j = [
         PaninianObject("".join([
             _o.transcoded(sanscript.SLP1) for _o in list(o)
-        ]), encoding=sanscript.SLP1).transcoded(enc)
+        ]), encoding=sanscript.SLP1).canonical()
         for o in output
     ]
     if not (set(j) == set(_s)):
-        print(set(j), set(_s))
+        print(f"Got {set(j)} expected {set(_s)}")
     return (set(j) == set(_s))
 
 
@@ -74,17 +92,28 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
             return l
         l = _gen_obj(s, i)  # noqa: E741
         pl.append(l)
-    p = Prakriya(sutra_list, PrakriyaVakya(pl))
+        
+    print(f"Canonical Input {pl} - ")
+    p = PrakriyaFactory(prakriya_name, sutra_list, PrakriyaVakya(pl))
     p.execute()
-    if verbose:
-        p.describe()
+    #if verbose:
+    #    p.describe()
     o = p.output(copy=True)
     assert _test(o, s, encoding)
     return None
 
 
-def generate_vibhakti(pratipadika, vibhaktis, encoding=sanscript.DEVANAGARI):
+def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI):
     t = []
+    
+    # If we get alist, treat as prefixes + prAtipadika
+    if isinstance(pratipadika_i, list):
+        plist = pratipadika_i
+        pratipadika = pratipadika_i[-1]
+    else:
+        plist = [pratipadika_i]
+        pratipadika = pratipadika_i
+  
     for ix, pv in enumerate(vibhaktis):
         for jx, pvv in enumerate(pv):
             # For nitya eka/dvi/bahuvacana, generate only the appropriate
@@ -98,7 +127,7 @@ def generate_vibhakti(pratipadika, vibhaktis, encoding=sanscript.DEVANAGARI):
                     _pvv = pvv+avasAna.transcoded(encoding)  # noqa: F405
                 else:
                     _pvv = [x+avasAna.transcoded(encoding) for x in pvv]  # noqa: F405
-                t.append([(pratipadika, sups[ix][jx]), avasAna, _pvv])  # noqa: F405
+                t.append([(*plist, sups[ix][jx]), avasAna, _pvv])  # noqa: F405
     return t
 
 
@@ -186,3 +215,8 @@ def pytest_generate_tests(metafunc):
                 vibhakti_s_list.extend(generate_vibhakti(prAtipadika[v],
                                                          viBakti[v], sanscript.SLP1))
         metafunc.parametrize("vibhakti_s", vibhakti_s_list)
+    if 'samAsa_pum' in metafunc.fixturenames:
+        samAsa_pum_list = []
+        for v in samAsa["pum"]:
+            samAsa_pum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v]))
+        metafunc.parametrize("samAsa_pum", samAsa_pum_list)

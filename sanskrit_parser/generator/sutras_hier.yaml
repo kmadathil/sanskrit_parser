@@ -50,7 +50,10 @@
 #           condition:  - if
 #              r: f       - r = "f"
 
-
+# Insert: Insert string or augment
+#    l: insert after left
+#    r: insert before right
+#    m: insert based on it
 # ac sandhi
 
 # FIXME - create samhita aDikAras
@@ -113,7 +116,7 @@
 # 66: क्रय्यस्तदर्थे (6-1-82) 
 -   sutra:  क्रय्यस्तदर्थे 
     id: 6.1.82
-    overrides: [6.1.79, 7.3.84]
+    overrides: 6.1.79
     optional: true
     condition:
       lc: =kr
@@ -126,6 +129,12 @@
 
 
 # FIXME PurvaparayoH needs a bit more thought
+# How do we make both pUrva and para "look" the same?
+# If we lump it on pUrva, we trigger wrong para sutras
+# We use two hacks -
+#     - Remove pada tag on left after lumping PurvaparayoH on rp
+#     - Where possible, make l=r=hrasva and let savarna dIrgha work (technically wrong prakriya which gives the right result)
+#     - Specifically override sutras
 -   sutra: आद्गुणः
     id: 6.1.87
     condition:
@@ -206,7 +215,8 @@
 # 285: औतोऽम्शसोः (6-1-93) 
 -   sutra:   औतोऽम्शसोः
     id: 6.1.93
-    overrides: 7.1.90
+    # apavada of 7.2.115 + 7.1.90 गोतो णित् by सूत्रनिर्माणसामर्थ्यात् 
+    overrides: 7.2.115
     condition:
        l: o
        lp: ?aNga
@@ -233,10 +243,12 @@
         - -pada # for pUrvaparayoH
         - -aNga
         - -Ba
+        
 # 80: ओमाङोश्च (6-1-95) 
 -   sutra:  ओमाङोश्च 
     id: 6.1.95
     condition:
+       l: a    
        rp:
         - =om
         - ?AN
@@ -247,6 +259,7 @@
         - -pada # for pUrvaparayoH
         - -aNga
         - -Ba
+        
 #  191: अतो गुणे (6-1-97)
 -   sutra:  अतो गुणे
     id: 6.1.97
@@ -276,7 +289,7 @@
          - ?dvitIyA
          - ?samboDana
     xform:
-       r: l
+       r: l  # This is a pUrvaparayoH hack. 
     update:
        orp: +psavarRa
        
@@ -337,8 +350,8 @@
 # 194: अमिपूर्वः (6-1-107) 
 -   sutra:  अमिपूर्वः
     id: 6.1.107
-    # FIXME: This prevents 7.3.102 from triggering, but we need a proper
-    # fix for pUrvaparayOH
+    # FIXME: This prevents 7.3.102 supi ca from triggering, but we need a proper
+    # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack 
     overrides: 7.3.102
     condition:
        l: _ak
@@ -352,6 +365,7 @@
 #165: नादिचि (6-1-104) 
 -   sutra: नादिचि
     id: 6.1.104
+    # Need apavada here to disable 6.1.102 so vfdDireci or AdguRaH can run
     overrides: 6.1.102
     # bahiranga: 1
     condition:
@@ -369,19 +383,19 @@
     overrides: [6.1.102, 6.1.104]
     # bahiranga: 1
     condition:
-       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+     - l: [At, It, Ut, Ft, Xt, e, o, E, O]
        r: _ic
        rp:
          - ?praTamA
          - ?dvitIyA
          - ?samboDana
-    xform: null
--   sutra: दीर्घाज्जसि च
-    id: 6.1.105.1
-    overrides: 6.1.102
-    # bahiranga: 1
-    condition:
-       l: [At, It, Ut, Ft, Xt, e, o, E, O]
+#     xform: null
+# -   sutra: दीर्घाज्जसि च
+#     id: 6.1.105.1
+#     overrides: 6.1.102
+#     # bahiranga: 1
+#     condition:
+     - l: [At, It, Ut, Ft, Xt, e, o, E, O]
        rp:
          - ?jas
     xform: null
@@ -464,7 +478,7 @@
 # 279: ऋत उत् (6-1-111) 
 -   sutra:  ऋत उत्
     id: 6.1.111
-    overrides: 8.4.46 # FIXME: Why do we need this? pituH
+    #overrides: 8.4.46 # FIXED (8.4.49): Why do we need this? pituH
     condition:
       l: ft
       rp:
@@ -485,6 +499,8 @@
       rp:
         - ?Nas
         - ?Nasi
+      r: at
+      rr: =s
     xform:
       r: str("u")
 
@@ -495,7 +511,7 @@
      l: [at,it,ut,ft,xt]
      r: C
   insert:
-     1: tuk
+     m: tuk
 
 - sutra: आङ्माङोश्च
   id: 6.1.74
@@ -512,7 +528,7 @@
         - +N       
        r: C
   insert:
-     1: tuk
+     m: tuk
      
 - sutra: दीर्घात्
   id: 6.1.75
@@ -520,7 +536,7 @@
      l: [At, It, Ut, Ft, Xt, e, o]
      r: C
   insert:
-     1: tuk
+     m: tuk
      
 - sutra: पदान्ताद्वा
   id: 6.1.76
@@ -531,33 +547,52 @@
      lp: ?pada
      r: C
   insert:
-     1: tuk
+     m: tuk
 
-- sutra: स्तोः श्चुना श्चुः
+- sutra: स्तोः श्चुना श्चुः (L)
   id: 8.4.40
   condition:
       - l: [s, tu]
         r: [S, cu]
+  xform:
+      l: null
+  insert:
+      l: shcutva(l)
+
+- sutra: स्तोः श्चुना श्चुः (R)
+  id: 8.4.40.1 
+  condition:
       - l: [S, cu]
         r: [s, tu]
   xform:
+      r: null
+  insert:
       r: shcutva(r)
-      l: shcutva(l)
 
-- sutra: ष्टुना ष्टुः
+- sutra: ष्टुना ष्टुः (L)
   id: 8.4.41
   condition:
       - l: [s, tu]
         r: [z, wu]
+  xform:
+      l: null
+  insert:
+      l: zwutva(l)
+
+- sutra: ष्टुना ष्टुः (R)
+  id: 8.4.41.1
+  condition:
       - l: [z, wu]
         r: [s, tu]
   xform:
+      r: null
+  insert:
       r: zwutva(r)
-      l: zwutva(l)
+
 
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42
-  overrides: 8.4.41
+  overrides: [8.4.41, 8.4.41.1]
   condition:
         lp: ?pada
         l: wu
@@ -567,7 +602,7 @@
 # Subsutra plus vArtikas
 - sutra: न पदान्ताट्टोरनाम्
   id: 8.4.42.1
-  overrides: [8.4.42, 8.4.41]
+  overrides: [8.4.42, 8.4.41, 8.4.41.1]
   condition:
         l: wu
         rp: [=nAm, =navatis, =nagaris]
@@ -581,9 +616,10 @@
         l: tu
         r: z
   xform:
+
 - sutra: शात्
   id: 8.4.44
-  overrides: 8.4.40
+  overrides: 8.4.40.1
   condition:
         l: S
         r: [s, tu]
@@ -730,7 +766,7 @@
 #  handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
 - sutra: तोर्लि
   id: 8.4.60
-  overrides: 8.2.39
+  #overrides: 8.2.39
   condition:
      l: tu
      r: l
@@ -738,7 +774,8 @@
      l: r
 - sutra: तोर्लि
   id: 8.4.60.1
-  overrides: [8.2.39, 8.4.60]
+  #overrides: [8.2.39, 8.4.60]
+  overrides: 8.4.60
   condition:
      l: n
      r: l
@@ -815,27 +852,9 @@
      l:  _hal
   xform:
      l: null
-     
-# 280: रात्सस्य (8-2-24)
-- sutra: रात्सस्य
-  id: 8.2.24
-  overrides: 8.2.23
-  condition:
-     lp: ?pada
-     ll: r
-     l:  s
-  xform:
-     l: null
-- sutra: रात्सस्य
-  id: 8.2.24.1
-  overrides: 8.2.23
-  condition:
-     lp: ?pada
-     ll: r
-  xform: null
 
 # Vartikam
-- sutra: यणः प्रतिषेधो वाच्यः 
+- sutra: संयोगान्तस्य लोपः (v यणः प्रतिषेधो वाच्यः)
   id: 8.2.23.1
   overrides: 8.2.23
   condition:
@@ -843,6 +862,25 @@
      ll: _hal
      l:  _yaR
   xform:
+
+# 280: रात्सस्य (8-2-24)
+- sutra: रात्सस्य
+  id: 8.2.24
+  overrides: 8.2.23, 8.2.24.1
+  condition:
+     lp: ?pada
+     ll: r
+     l:  s
+  xform:
+     l: null
+     
+- sutra: रात्सस्य
+  id: 8.2.24.1
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: r
+  xform: null
 
 - sutra: चोः कुः
   id: 8.2.30
@@ -1059,7 +1097,7 @@
      lp: ?pada
   optional: true
   insert:
-     1: tuk
+     m: tuk
 
 
 # Sutras in this aDikAra set the ru_anu tag to backtrigger 8.3.2/3/4
@@ -1113,6 +1151,7 @@
 
 - sutra: अतो रोरप्लुतादप्लुते
   id: 6.1.113
+  # FIXME: 8.4.46 can be removed by nityatvam
   overrides: [8.3.17, 8.4.46]
   condition:  
      lp: ?ru
@@ -1224,6 +1263,34 @@
 #      r: _hal
 #   xform:
 #      l: l+l
+
+- sutra: शरोऽचि
+  id: 8.4.49
+  overrides: 8.4.46
+  condition:  
+     ll:  _ac
+     l: [r, h]
+     r: _Sar
+     rr:
+        - _ac
+        - $$null
+  xform: null
+
+# This is split into two parts
+# 8.4.49 is the nizeDaH
+# 8.4.49.1 is the atideSa for hali
+# We do not allow dvitvam at the end
+# - sutra: शरोऽचि
+#   id: 8.4.49.1
+#   overrides: [8.4.49, 8.4.46]
+#   optional: true
+#   condition:  
+#      ll:  _ac
+#      l: [r, h]
+#      r: _Sar
+#      rr: _hal
+#   xform: 
+#      r: r+r
 
 - sutra: हलो यमां यमि लोपः
   id: 8.4.64
@@ -1520,8 +1587,6 @@
      l: n
   xform:
      lc: lc[:-1]
-     l: null
-  insert:
      1: str("n")
      
 - sutra: विभाषा ङिश्योः
@@ -1540,8 +1605,6 @@
        - ?SI
   xform:
      lc: lc[:-1]
-     l: null
-  insert:
      1: str("n")
      
 # 240: आतो धातोः (6-4-140) 
@@ -1574,15 +1637,15 @@
      
 - sutra: ओर्गुणः
   id: 6.4.146
-  overrides: [7.2.115, 7.2.116]
   condition:
-     lp: ?aNga
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
      l: u
      rp:
        - and
        - ?tadDita
-       - ?svAdi
-       - ?!sarvanAmasTAna
   xform:
      l: guna(l)
 
@@ -1607,7 +1670,10 @@
 - sutra: अतो भिस ऐस् 
   id: 7.1.9
   # FIXME : this needs proper priority
-  overrides: [7.3.102, 7.3.103]
+  # These two should go away with proper nityatva and bhautapUrvya in this
+  # Alternatively, this is also antaranga (A1) by Nagesa. 
+  # overrides: [7.3.102, 7.3.103]
+  domain: pratyaya
   condition:
      lp: ?aNga
      l: at
@@ -1783,7 +1849,7 @@
 - sutra: स्वमोर्नपुंसकात् 
   id: 7.1.23
   domain: pratyaya
-  #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya
+  #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya - will go with nitya as well
   condition:
      lp:
       - and
@@ -2170,7 +2236,7 @@
         - ?nadI
        rp: +N
     insert:
-       1: Aw
+       m: Aw
 # 290: याडापः (7-3-113)
 -   sutra:  याडापः
     id: 7.3.113
@@ -2181,7 +2247,7 @@
         - ?Ap
        rp: +N
     insert:
-       1: yAw
+       m: yAw
        
 # 291: सर्वनाम्नः स्याड्ढ्रस्वश्च (7-3-114) 
 -   sutra:  सर्वनाम्नः स्याड्ढ्रस्वश्च
@@ -2194,7 +2260,7 @@
         - ?sarvanAma
        rp: +N
     insert:
-       1: syAw
+       m: syAw
     xform:
        l: hrasva(l)
 
@@ -2279,54 +2345,18 @@
          - ?wA
     xform:
        r: str("nA")
-
-
+  
 - sutra: क्ङिति च
   id: 1.1.5
   overrides: [7.3.84, 7.3.86]
   condition:
-     - lp:
-        - and
-        - ?aNga
+     - lp: ?aNga
        l: _ik
        rp:
-         - and
-         - ?sArvaDAtuka
          - +k
-     - lp:
-        - and
-        - ?aNga
-       l: _ik
-       rp:
-         - and
-         - ?ArDaDAtuka
-         - +k
-     - lp:
-        - and
-        - ?aNga
-       l: _ik
-       rp:
-         - and
-         - ?sArvaDAtuka
          - +N
-     - lp:
-        - and
-        - ?aNga
-       l: _ik
-       rp:
-         - and
-         - ?ArDaDAtuka
-         - +N
-  xform: null
-  
-- sutra: क्ङिति च
-  id: 1.1.5.1
-  overrides: [7.3.84, 7.3.86]
-  condition:
-     - lp:
-        - and
-        - ?aNga
-       ll: _ik
+     - lp: ?aNga
+       ll: [it, ut, ft]
        rp:
          - +k
          - +N
@@ -2336,6 +2366,7 @@
     
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117
+  overrides: [7.2.115, 7.2.116]
   condition:
    - lp: ?aNga
      rp:
@@ -2799,6 +2830,7 @@
 - sutra: पतिः समास एव 
   domain: saMjYA
   id: 1.4.8.1
+  overrides: 1.4.7
   condition:
      lp:
        - "and"

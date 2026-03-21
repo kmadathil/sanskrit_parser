@@ -67,7 +67,7 @@ class Sutra(object):
         self._aps_num = aps_t[2]+aps_t[1]*1000+aps_t[0]*10000 + aps_sub
         self.overrides = overrides
         self.optional = optional
-        logger.info(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
+        logger.debug(f"Initialized {self}:  {self._aps_num} Optional:{self.optional}")
 
     def __str__(self):
         if self.optional:
@@ -79,7 +79,7 @@ class Sutra(object):
 
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
-                 update=None, optional=False, bahiranga=1, overrides=None):
+                 update=None, optional=False, bahiranga=99, overrides=None):
         '''
         Sutra Class that expects a left and right input
         '''
@@ -94,26 +94,29 @@ class LRSutra(Sutra):
     def inAdhikara(self, context):
         return self.adhikara(context)
 
-    def isTriggered(self, s1, s2, domains):
-        logger.debug(f"Checking {self} View: {s1} {s2}")
-        env = _env(s1, s2)
+    def isInDomain(self, domains):
         if self.domain is not None:
             t = self.domain(domains)
         else:
             t = domains.isdomain("standard")
+        return t
+
+    def isTriggered(self, s1, s2, nitya_check=False):
+        env = _env(s1, s2)
         if self.cond is not None:
             c = self.cond(env)
         else:
             c = True
-        logger.debug(f"Check Result {c and t} for {self}")
-        return c and t
+        n = "Nitya " if nitya_check else ""
+        logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
+        return c
 
-    def update(self, s1, s2, o1, o2, domains):
+    def update(self, s1, s2, o1, o2):
         env = _env(s1, s2)
         env["olp"] = o1
         env["orp"] = o2
         if self.update_f is not None:
-            self.update_f(env, domains)
+            self.update_f(env)
         return env["olp"], env["orp"]
 
     def operate(self, s1, s2):
@@ -127,20 +130,33 @@ class LRSutra(Sutra):
             rs2.update(ret[1], sanscript.SLP1)
         return rs1, rs2
 
-    def insert(self, s1, s2):
+    def insert(self, s1, s2, o1, o2):
         if self.insertx is not None:
             env = _env(s1, s2)
             itx = self.insertx(env)
-            r = [s1, s2]
+            r = [o1, o2]
             for i in itx:
                 if not isinstance(itx[i], PaninianObject):
                     assert isinstance(itx[i], str)
-                    itx[i] = PaninianObject(itx[i])
-                r.insert(i, itx[i])
+                    itx[i] = PaninianObject(itx[i], encoding=sanscript.SLP1)
+
+                # A "middle" insert is handled based on it
+                # kit => append to left context
+                # wit => prepend to right context
+                # A list being returned in one of the contexts
+                # will trigger a hier prakriya
+                # left and right inserts are hierarchically merged
+                # with the correct operand
+                if ((i=="m") and itx[i].hasIt("k")) or i=="l":
+                    r[0] = [r[0], itx[i]]
+                elif ((i=="m") and itx[i].hasIt("w")) or i=="r":
+                    r[1] = [itx[i], r[1]]
+                else:
+                    r[i] = [itx[i], r[i]]
             logger.debug(f"After insertion {r}")
             return r
         else:
-            return(s1, s2)
+            return(o1, o2)
 
 
 def _env(s1, s2):

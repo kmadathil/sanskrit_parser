@@ -43,9 +43,11 @@ test_list_slp1 = [
     (ava, (AN, "ihi"), "avehi"), # 6.1.95
     ("SivAya", "om", "SivAyom"), # 6.1.95
     (kavi, O, "kavI"),
-    ("catur", "nAm", ['caturRAm', 'catur~RAm', 'caturRRAm']), #8.4.1
+    (catur, Am, avasAna, ['caturRAm .', 'caturRnAm .']), #8.4.1
     ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
     ("dviz*", sip, "dvekzi"), #8.2.41
+    ("Dvas*", kta, "Dvasta"),
+    ("sras*", kta, "srasta"),
     (duh, kta, "dugDa"),
    ]
 
@@ -119,7 +121,7 @@ test_list_devanagari = [
     (lUY, Ryat, "लाव्य"),
     (kzI, yat, ["क्षेय", "क्षय्य"]),
     (ji, yat, ["जेय", "जय्य"]),
-    (wukrIY, yat, ["क्रेय", "क्रय्य"]),
+    (qukrIY, yat, ["क्रेय", "क्रय्य"]),
      # FIXME - can't test this now
     # आ + वेञ् + यक् + त = ओयते
     ("आ", (veY_smp, yak), "ओय"),
@@ -146,6 +148,46 @@ test_list_devanagari = [
     # FIXME: correct when we can do uttizTati, move to utTAna
     (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
-    ("तृंह्*", "अनीय", "तृंहणीय"), # 8.4.2
+    ("तृंह्*", "अनीय", su, avasAna, "तृंहणीयः ।"), # 8.4.2
+    # SK382-395: yuṣmad/asmad full declension
+    # Nom sg (SK384+SK382+SK385)
+    (yuzmad, su, "त्वम्"),         # SK384 (tv) + SK382 (su→am) + SK385 (d-lopa) → tvam
+    (asmad, su, "अहम्"),          # SK384 (ah) + SK382 (su→am) + SK385 (d-lopa) → aham
+    # Nom/voc du (SK386+SK387)
+    (yuzmad, O, "युवाम्"),        # SK386 (yuva) + SK387 (O→ām) → yuvām
+    (asmad, O, "आवाम्"),         # SK386 (Āva) + SK387 → āvām
+    # Nom pl (SK388+SK382+SK385)
+    (yuzmad, jas, "यूयम्"),       # SK388 (yūy) + SK382 (jas→am) + SK385 → yūyam
+    (asmad, jas, "वयम्"),        # SK388 (vay) + SK382 → vayam
+    # Acc sg (SK389+SK390+SK385)
+    (yuzmad, am, "त्वाम्"),       # SK389 (tva) + SK390 (am→ām) + SK385 → tvām
+    (asmad, am, "माम्"),         # SK389 (ma) + SK390 → mām
+    # Acc pl (SK391+SK393+SK385)
+    ((yuzmad, Sas), avasAna, "युष्मान् ।"),    # SK391 (śas→n) + SK393 (ā) + SK385 + 8.2.23 → yuṣmān
+    ((asmad, Sas), avasAna, "अस्मान् ।"),     # SK391 + SK393 + 8.2.23 → asmān
+    # Inst sg (SK389+SK392+SK385)
+    (yuzmad, wA, "त्वया"),        # SK389 (tva) + SK392 (a→ay) + SK385 → tvayā
+    (asmad, wA, "मया"),          # SK389 (ma) + SK392 → mayā
+    # Dat sg (SK394+SK382+SK385)
+    (yuzmad, Ne, "तुभ्यम्"),      # SK394 (tuBhy+am) + SK385 → tubhyam
+    (asmad, Ne, "मह्यम्"),       # SK394 (mahy+am) → mahyam
+    # Inst/dat/abl du (SK386+SK393+SK385)
+    (yuzmad, ByAm, "युवाभ्याम्"), # SK386 (yuva) + SK393 (ā) + SK385 → yuvābhyām
+    (asmad, ByAm, "आवाभ्याम्"),  # SK386 (Āva) + SK393 → āvābhyām
+    # Inst pl (SK393+SK385) — needs avasāna for final visarga
+    ((yuzmad, Bis), avasAna, "युष्माभिः ।"),  # SK393 (ā) + SK385 → yuṣmābhiḥ
+    ((asmad, Bis), avasAna, "अस्माभिः ।"),   # SK393 → asmābhiḥ
+    # Dat/abl pl (SK395+SK385)
+    (yuzmad, Byas, "युष्मभ्यम्"), # SK395 (Byas→Byam) + SK385 → yuṣmabhyam
+    (asmad, Byas, "अस्मभ्यम्"),  # SK395 → asmabhyam
+    # Gen/loc du (SK386+SK392+SK385) — needs avasāna for final visarga
+    ((yuzmad, os), avasAna, "युवयोः ।"),   # SK386 (yuva) + SK392 (a→ay) + SK385 → yuvayoḥ
+    ((asmad, os), avasAna, "आवयोः ।"),    # SK386 (Āva) + SK392 → āvayoḥ
+    # Loc sg (SK389+SK392+SK385)
+    (yuzmad, Ni, "त्वयि"),        # SK389 (tva) + SK392 (a→ay) + SK385 → tvayi
+    (asmad, Ni, "मयि"),          # SK389 (ma) + SK392 → mayi
+    # Loc pl (SK393+SK385)
+    (yuzmad, sup, "युष्मासु"),    # SK393 (ā) + SK385 → yuṣmāsu
+    (asmad, sup, "अस्मासु"),     # SK393 → asmāsu
      ]
 

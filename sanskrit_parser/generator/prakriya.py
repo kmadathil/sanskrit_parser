@@ -1,5 +1,5 @@
 """
-Prakriya Engine for Panini Sutras
+Prakriya Engine Base Class for Panini Sutras
 
 Takes in a list of Sutras, and executes them on a bunch of inputs
 
@@ -12,6 +12,7 @@ produce a vakya.
 @author: kmadathil
 """
 
+from abc import abstractmethod
 from sanskrit_parser.generator.sutra import GlobalDomains
 from sanskrit_parser.generator.paninian_object import PaninianObject
 from copy import deepcopy, copy
@@ -64,7 +65,11 @@ class PrakriyaVakya(object):
         # As above, deepcopy to prevent predefined objects getting tags
         self.v.insert(ix, deepcopy(r))
         return self
-
+    
+    def delete_at(self, ix):
+        self.v.pop(ix)
+        return self
+    
     def __getitem__(self, ix):
         return self.v[ix]
 
@@ -78,9 +83,9 @@ class PrakriyaVakya(object):
         return str([str(x) for x in self.v])
 
 
-class Prakriya(object):
+class PrakriyaBase(object):
     """
-    Prakriya Class
+    Prakriya Base Class
 
     Inputs:
        sutra_list: list of Sutra objects
@@ -90,6 +95,40 @@ class Prakriya(object):
         self.sutra_list = sutra_list
         self.pre_inputs = deepcopy(inputs)
         self.inputs = copy(inputs)
+        self.outputs = None
+        self.tree = PrakriyaTree()
+
+    def output(self, copy=False):
+        if copy:
+            return deepcopy(self.outputs)
+        else:
+            return self.outputs
+
+    def dict(self):
+        return self.tree.dict()
+
+    @abstractmethod
+    def execute(self):
+        pass
+
+    @abstractmethod
+    def describe(self):
+        pass
+
+    @abstractmethod
+    def name(self):
+        pass
+    
+class HierPrakriya(PrakriyaBase):
+    """
+    Prakriya Class
+
+    Inputs:
+       sutra_list: list of Sutra objects
+       inputs    : PrakriyaVakya object
+    """
+    def __init__(self, sutra_list, inputs):
+        super().__init__(sutra_list, inputs)
         self.hier_prakriyas = []
         self.need_hier = False
         # List of alternatives
@@ -102,14 +141,13 @@ class Prakriya(object):
             if self.inputs.need_hierarchy_at(ix):
                 self.need_hier = True
                 # hierarchy needed here
-                hp = Prakriya(sutra_list,
-                              PrakriyaVakya(self.inputs[ix]))
+                hp = HierPrakriya(sutra_list,
+                                  PrakriyaVakya(self.inputs[ix]))
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
                 hpo = hp.output()
                 self.hier_outputs[ix] = hpo  # accumulate hierarchical outputs
-        self.tree = PrakriyaTree()
         if self.need_hier:
             for ix, ol in enumerate(self.hier_outputs):
                 if ol != []:  # Hierarchy exists here
@@ -125,7 +163,7 @@ class Prakriya(object):
                     # Replace input list with exploded list
                     # Explosion at position ix is now dealt with
                     self.hier_inputs = tmpl
-                    logger.debug(f"Hier inputs after expl {ix} {self.hier_inputs}")
+                    logger.debug(f"Hier inputs after expl {ix}: {self.hier_inputs}")
             # At the end of the loop above self.hier_inputs has been fully exploded
             for i in self.hier_inputs:
                 _n = PrakriyaNode(i, i, "Prakriya Hierarchical Start")
@@ -195,7 +233,7 @@ class Prakriya(object):
         # Wrapper for special "siddha" situations
         def _special_siddha(a1, a2):
             # zqutva is siddha for q lopa
-            if (a1 == 84041) and (a2 == 83013):
+            if (int(a1) == 84041) and (a2 == 83013):   # Int gets both the branches
                 return True
             # q, r lopa siddha for purvadirgha
             elif ((a1 == 83013) or (a1 == 83014)) and (a2 == 63111):
@@ -244,17 +282,15 @@ class Prakriya(object):
             logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
             triggered = []
             triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
-                                          and s.isTriggered(*self.view(s, node, ix), self.domains))]
+                                          and s.isInDomain(self.domains) and s.isTriggered(*self.view(s, node, ix)))]
             # Break at first index from left where trigger occurs
             if triggered:
                 _ix = ix
                 break
-        logger.debug(f"I: {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
+        logger.debug(f"I [{node.id}]: {node.outputs}  tags: {[set(_r.tags) for _r in node.outputs]}")
         if triggered:
             ix = _ix
-            logger.debug(f"Triggered rules at window {ix}")
-            for t in triggered:
-                logger.debug(t)
+            logger.debug(f"Triggered at window {ix}: {[str(t) for t in triggered]}")
             s = self.sutra_priority(triggered)
             v = self.view(s, node, ix)
             logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
@@ -264,10 +300,31 @@ class Prakriya(object):
             r0 = r[0]
             v0 = v[0]
             # State update
-            r = s.update(*v, *r, self.domains)
-            r = s.insert(*r)
-            logger.debug(f"I (post update): {node.id} {node.outputs} {[_r.tags for _r in node.outputs]} ")
-            logger.debug(f"I (post update): {v}")
+            r = s.update(*v, *r)
+            r = s.insert(*v, *r)
+            # Insertion - hierarchical prakriya
+            for i in [0, 1]:
+                if not _isScalar(r[i]):
+                    logger.debug(f"Insertion hier prakriya for {r[i]}")
+                    # need hierarchy here if we get list back
+                    # hierarchy needed here
+                    hp = HierPrakriya(self.sutra_list,
+                                      PrakriyaVakya(r[i]))
+                    # This will execute hierarchically as needed
+                    hp.execute()
+                    hpo = hp.output()
+                    logger.debug(f"Hier output for r[{i}] {hpo}")
+                    assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
+                    # Don't use join_object, since this is not a promotion but a replacement
+                    r[i] = r[i][i]  # Appropriate sub-object for insertion
+                    r[i].update("".join([o.canonical() for o in hpo[0]]))
+                    
+            logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
+            
+            
+            # Sutras that run disable not only themselves but the utsargas they override  from running again by the
+            # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam
+
             # Using sutra id in the disabled list to get round paninian object deepcopy
             r0.disabled_sutras.append(s.aps)
             if s.optional:
@@ -284,7 +341,9 @@ class Prakriya(object):
                         logger.debug(f"Disabling overriden {so}")
             # FIXME: disable sutras for AkaqArAdekA saMjYA
 
-            logger.debug(f"O: {r} {[_r.tags for _r in r]} Disabled: {[[s for s in _r.disabled_sutras] for _r in r]}")
+            logger.debug(f"O [{s.aps}]: {r}  tags: {[set(_r.tags) for _r in r]}  disabled: {[list(_r.disabled_sutras) for _r in r]}")
+
+                    
             # Update Prakriya Tree
             # Craft inputs and outputs based on viewed inputs
             # And generated outputs
@@ -294,7 +353,7 @@ class Prakriya(object):
                 for i in range(len(r)-2):
                     pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
             _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s])
-            logger.debug(f'O Node: {str(_ps)}')
+            logger.debug(f'O Node: {_ps.id} [{s.aps}]')
             if node is not None:
                 self.tree.add_child(node, _ps, opt=s.optional)
             else:
@@ -307,6 +366,7 @@ class Prakriya(object):
     def _exec_all_domains(self, node):
         for d in ["saMjYA", "prakfti", "pratyaya", "aNga", "standard", "pada", "saMhitA"]:
             self.domains.set_domain(d)
+            logger.debug(f'Global Domain Set to: {d}')
             r = self._exec_single(node)
             if r:
                 return r
@@ -347,25 +407,19 @@ class Prakriya(object):
         logger.debug(f"Final Result: {r}\n")
         return r
 
-    def output(self, copy=False):
-        if copy:
-            return deepcopy(self.outputs)
-        else:
-            return self.outputs
-
-    def describe(self):
-        print("\nPrakriya")
-        if self.hier_prakriyas != []:
-            print(f"Pre Input {self.pre_inputs}")
+    def describe(self, indent="  "):
+        slp1 = "".join(str(x) for x in self.inputs.v)
+        print(f"\n{indent}\u2500\u2500\u2500 Prakriya: {slp1}")
         for h in self.hier_prakriyas:
-            print("Hierarchical Prakriya")
-            h.describe()
-        print(f"Input {self.inputs}")
-        self.tree.describe()
-        print(f"Final Output {self.outputs} = {[''.join([str(x) for x in y]) for y in self.outputs]}\n\n")
+            print(f"{indent}  \u250c Hierarchical Prakriya:")
+            h.describe(indent=indent + "  \u2502 ")
+            print(f"{indent}  \u2514\u2500")
+        self.tree.describe(indent=indent)
+        outputs = ["".join(str(x) for x in y) for y in self.outputs]
+        print(f"{indent}Output: {'  |  '.join(outputs)}\n")
 
-    def dict(self):
-        return self.tree.dict()
+    def name(self):
+        return "Hierarchical Prakriya"
 
 
 _node_id = 0
@@ -403,14 +457,54 @@ class PrakriyaNode(object):
     def __ne__(self, other):
         return str(self) != str(other)
 
-    def describe(self):
-        print("Prakriya Node")
-        print(str(self))
+    def describe(self, step=None, indent="  ", hier_map=None):
+        step_label = f"Step {step:2d}" if step is not None else "     "
+        if isinstance(self.sutra, str):
+            sutra_label = f"\u27e8{self.sutra}\u27e9"
+        elif self.sutra.aps == "0.0.0":
+            sutra_label = "\u27e8samhit\u0101 merge\u27e9"
+        else:
+            dev  = self.sutra.name.devanagari()
+            slp1 = str(self.sutra.name)
+            sutra_label = f"[{self.sutra.aps}  {dev}  ({slp1})]"
+            if self.sutra.optional:
+                sutra_label += " *"
+        # Extract window pair — keep objects for Devanagari glosses
+        ix = self.index
+        in_l_obj  = self.inputs[ix]    if ix     < len(self.inputs)  else None
+        in_r_obj  = self.inputs[ix+1]  if ix + 1 < len(self.inputs)  else None
+        out_l_obj = self.outputs[ix]   if ix     < len(self.outputs) else None
+        out_r_obj = self.outputs[ix+1] if ix + 1 < len(self.outputs) else None
+        l_in  = str(in_l_obj)  if in_l_obj  is not None else ""
+        r_in  = str(in_r_obj)  if in_r_obj  is not None else ""
+        l_out = str(out_l_obj) if out_l_obj is not None else ""
+        r_out = str(out_r_obj) if out_r_obj is not None else ""
+        dl_in  = in_l_obj.devanagari()  if in_l_obj  is not None else ""
+        dr_in  = in_r_obj.devanagari()  if in_r_obj  is not None else ""
+        dl_out = out_l_obj.devanagari() if out_l_obj is not None else ""
+        dr_out = out_r_obj.devanagari() if out_r_obj is not None else ""
+        changed  = (l_in != l_out) or (r_in != r_out)
+        pair_in  = f"{l_in} | {r_in}"
+        pair_out = f"{l_out} | {r_out}"
+        dev_in   = f"{dl_in} | {dr_in}"
+        dev_out  = f"{dl_out} | {dr_out}"
+        if changed:
+            change_str = f"{dev_in}  \u2192  {dev_out}  ({pair_in}  \u2192  {pair_out})"
+        else:
+            change_str = f"{dev_in}  (no change)  ({pair_in})"
+        print(f"{indent}{step_label}  {sutra_label}")
+        print(f"{indent}           {change_str}")
         if self.other_sutras:
-            print("Sutras that were tiggered but did not win")
-            for s in self.other_sutras:
-                print(str(s))
-        print("End")
+            others = ",  ".join(
+                f"[{s.aps}  {s.name.devanagari()}]" for s in self.other_sutras
+            )
+            print(f"{indent}           \u21b3 also triggered: {others}")
+        # Inline hierarchical prakriyas triggered by this step
+        if hier_map and not isinstance(self.sutra, str) and self.sutra.aps in hier_map:
+            for hp in hier_map[self.sutra.aps]:
+                print(f"{indent}           \u250c Hierarchical Prakriya:")
+                hp.describe(indent=indent + "           \u2502 ")
+                print(f"{indent}           \u2514\u2500")
 
     def dict(self):
         return {
@@ -457,16 +551,16 @@ class PrakriyaTree(object):
         if (not opt) and (node in self.leaves):
             self.leaves.remove(node)
 
-    def describe(self):
+    def describe(self, indent="  ", hier_map=None):
+        step = [0]
+
         def _desc(n):
-            n.describe()
-            if n in self.leaves:
-                print("Leaf Node")
+            step[0] += 1
+            n.describe(step=step[0], indent=indent, hier_map=hier_map)
             for c in self.children[n]:
-                print("Child")
                 _desc(c)
+
         for r in self.roots:
-            print("Root")
             _desc(r)
 
     def dict(self):

@@ -1,7 +1,7 @@
 # flake8: noqa
-from conftest import run_test
+from conftest import run_test, sutra_list
 from sanskrit_parser.generator.pratipadika import *
-from sanskrit_parser.generator.sutras_yaml import sutra_list
+
 from indic_transliteration import sanscript
 
 def test_vibhakti_ajanta_napum(ajanta_napum):

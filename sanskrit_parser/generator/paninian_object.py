@@ -18,13 +18,27 @@ class PaninianObject(SanskritObject):
     Attributes:
     """
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
-                 strict_io=True, replace_ending_visarga='s'):
+                 strict_io=True, replace_ending_visarga='s', its=[]):
         super().__init__(thing, encoding, unicode_encoding, strict_io,
                          replace_ending_visarga)
         self.inPrakriya = True
         # FIXME: I don't like this being here
         self.disabled_sutras = []
         # Prakriya Related Tags are ephemeral
+        # it-markers (anubandha): used by Pratyaya (e.g. śatṛ u-it) and by Pratipadika
+        # when an it is added dynamically during prakriyā (e.g. SK360 adds f-it to maghavat).
+        self.its = its
+
+    def hasIt(self, it):
+        return it in self.its
+
+    def setIt(self, it):
+        if it not in self.its:
+            self.its.append(it)
+
+    def deleteIt(self, it):
+        if it in self.its:
+            self.its.remove(it)
 
     def hasTag(self, t):
         return t in self.tags
@@ -49,11 +63,14 @@ class PaninianObject(SanskritObject):
         for o in objects[0]:
             logger.debug(f"{o} type {type(o)}")
             assert isinstance(o, SanskritObject), f"{o} type {type(o)}"
+        # Passthrough
+        if len(objects[0]) == 1:
+            return objects[0][0]
         s = "".join([o.canonical() for o in objects[0]])
         so = PaninianObject(s, encoding=sanscript.SLP1)
         # Tag rules
         # 1.4.14 suptiNantaM padam
-        if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN"):
+        if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN") or objects[0][-1].hasTag("pada"):
             so.setTag("pada")
         # 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam
         elif objects[0][0].hasTag("aNga"):
@@ -65,9 +82,23 @@ class PaninianObject(SanskritObject):
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
 
+        if objects[0][0].hasTag("samprasAraRam"):
+            for tt in objects[0][1].tags:
+                    so.setTag(tt)
+            if objects[0][0].hasTag("UW"):
+                 so.setTag("UW")
+            
         # Custom tag propagation for rule implementation
-        for t in ["eti", "eDati", "UW", "sTA", "sTamB"]:
+        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
+                so.setTag(t)
+        # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
+        for t in ["samAsa", "vasupada"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t)
+        # Propagate stem-class tags needed for pada-internal sandhi rules
+        for t in ["han"]:
+            if objects[0][0].hasTag(t):
                 so.setTag(t)
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
@@ -85,4 +116,16 @@ class PaninianObject(SanskritObject):
                     so.deleteTag("pum")
                 if so.hasTag("napum"):
                     so.deleteTag("napum")
+        for t in ['pum_abs']:
+            if objects[0][-1].hasTag(t):
+                so.setTag("pum")
+                for tt in objects[0][-2].tags:
+                    so.setTag(tt)
+                for tt in ["NI", "Ap", 'strI_abs', "strI"]:
+                    if so.hasTag(tt):
+                        so.deleteTag(tt)
+                    so.setTag("pUrvastrI")
+                if so.hasTag("napum"):
+                    so.deleteTag("napum")
+                    
         return so

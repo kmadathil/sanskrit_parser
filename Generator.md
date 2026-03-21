@@ -137,17 +137,31 @@ Defines the interface: `execute()`, `describe()`, `output()`. Holds the `Prakriy
 
 Implements the antaranga algorithm based on Patanjali's commentary: antaranga (more internal) operations take priority over bahiranga (more external) ones.
 
+Priority is managed at two distinct levels:
+
+**Level 1 — Sutra-vs-sutra competition** (multiple sutras trigger at the same window position): `sutra_priority()` uses the per-sutra `bahiranga` field from `sutras_antaranga.yaml` to pick the winner. Convention (lower wins):
+  - `0` — saMjñā sutras
+  - `1` — prakṛti kāryas (modifications of stems)
+  - `2` — pratyaya kāryas (modifications of suffixes)
+  - (default `99` when `bahiranga` is unspecified)
+
+**Level 2 — Window-position priority** (which window to examine first): the engine scans the sequence in a fixed order, giving pratyaya-adjacent windows highest priority. This ensures anga kāryas and anga-pratyaya sandhi fire before pada kāryas without a per-sutra `bahiranga` tag — which would be impractical since the same rule may operate on an anga in one context and a pada in another.
+
 Execution loop:
 1. Start with the initial `PrakriyaVakya`.
 2. Slide a **window of 2 adjacent objects** across the sequence.
-3. At each window position, collect all sutras whose `isTriggered(left, right)` returns True.
-4. If multiple sutras trigger, apply `sutra_priority()` to select the winner.
-5. Call `winner.operate(left, right)` → `(out_left, out_right)`.
-6. Call `winner.update(...)` to set tags on outputs; `winner.insert(...)` to inject āgamas.
-7. Record this step as a `PrakriyaNode` in the `PrakriyaTree`.
-8. If the rule is optional, branch: one child node has the rule applied, the current node has it disabled and continues without it.
-9. Repeat from step 2 on the new `PrakriyaVakya` until nothing fires.
-10. Leaf nodes of the tree are the final outputs.
+3. **Select the highest-priority window** by scanning left to right in this order:
+   - **Pratyaya-adjacent** pairs (anga + pratyaya): highest priority; if multiple, leftmost wins
+   - **Samāsa-adjacent** pairs: next; if multiple, leftmost wins
+   - **Any other pair** (leftmost): fallback when neither pratyaya nor samāsa is present
+4. Collect all sutras whose `isTriggered(left, right)` returns True at that window.
+5. If multiple sutras trigger, apply `sutra_priority()` to select the winner.
+6. Call `winner.operate(left, right)` → `(out_left, out_right)`.
+7. Call `winner.update(...)` to set tags on outputs; `winner.insert(...)` to inject āgamas.
+8. Record this step as a `PrakriyaNode` in the `PrakriyaTree`.
+9. If the rule is optional, branch: one child node has the rule applied, the current node has it disabled and continues without it.
+10. Repeat from step 2 on the new `PrakriyaVakya` until nothing fires.
+11. Leaf nodes of the tree are the final outputs.
 
 ### `HierPrakriya`
 
@@ -223,7 +237,9 @@ Controls which rules are active. Domains are processed in order:
 saMjYA → upadeSa → prakfti → pratyaya → aNga → standard → pada → saMhitA
 ```
 
-Each execution pass activates one domain at a time. Rules can also trigger domain changes via their `update` function.
+Each execution pass activates one domain at a time. Rules can also trigger domain changes via their `update` function. 
+
+This feature is currently unused in the `AntarangaPrakriya` framework
 
 ### Supporting modules
 
@@ -288,10 +304,97 @@ update:
 
 ### Insert syntax
 
+`insert` adds āgamas (augment elements) to the prakriya sequence. It fires **after** `xform`
+and `update` in the execution loop (step 7 above).
+
 ```yaml
 insert:
-  m:             # Middle insert
-    kit: tuk     # Insert predefined object tuk as kit (appended to left context)
+  <position>: <expression>   # one key–value pair per insertion
+```
+
+**Eval context.** Expressions are Python strings evaluated at rule-trigger time. The following
+variables are bound (canonical SLP1 strings):
+
+| Variable | Value |
+|----------|-------|
+| `l` | Last character of the left operand |
+| `r` | First character of the right operand |
+| `lc` | Left operand minus its last character |
+| `rc` | Right operand minus its first character |
+
+All names from `pratyaya`, `paribhasha`, `maheshvara`, and `pratipadika` are in scope
+(star-imported by `process_yaml.py`), so pre-defined Pratyaya objects (e.g., `tuk`, `UW`) and
+helper functions (e.g., `shcutva`, `zwutva`) can be referenced directly.
+
+**Position keys and their effect on the sequence:**
+
+| Key | Effect |
+|-----|--------|
+| `"m"` with **kit** (`its=["k"]`) | Appends āgama after left operand: `[left, āgama]` |
+| `"m"` with **wit** (`its=["w"]`) | Prepends āgama before right operand: `[āgama, right]` |
+| `"l"` | Appends āgama after left operand: `[left, āgama]` |
+| `"r"` | Prepends āgama before right operand: `[āgama, right]` |
+| `0` (integer) | Prepends āgama before left operand: `[āgama, left]` |
+| `1` (integer) | Prepends āgama before right operand: `[āgama, right]` |
+
+The key determines *where* in the sequence the āgama lands; for the `"m"` key the kit/wit
+markers on the inserted object itself decide which side to attach to.
+
+**Hierarchical prakriya.** When `insert` produces a list (non-scalar result), `AntarangaPrakriya`
+runs recursively on the expanded pair before continuing. This ensures the āgama undergoes its own
+phonological transformations before being merged back into the main sequence. After hierarchical
+execution, the pair is collapsed into a single `PaninianObject` with the merged string.
+
+> **Samprasāraṇa exception:** when a position-`0` insert places an object carrying the
+> `samprasAraRam` tag before the left operand, the hierarchical output uses the first element of
+> the first output (`hpo[0][0]`) rather than the normal sub-object selection. This drives the
+> vowel-grade alternation in roots like `√vah`.
+
+**Common pattern — ādeśa and lopa via delete-and-replace.** `xform` nulls out a character (lopa)
+and `insert` provides its replacement (ādeśa) as a fresh `Pratyaya` or `PaninianObject`. This
+is the correct way to implement both substitutions and deletions where sandhi may subsequently
+apply. Because the replacement is a new object, the engine detects a non-scalar result and runs
+a **hierarchical prakriya** on the expanded pair — any sandhi rules that can apply between the
+newly inserted object and its neighbours will fire. A simple varna substitution in `xform` alone
+would not create a list, so no hierarchical prakriya would run and post-insertion sandhi would be
+silently skipped.
+
+```yaml
+# 8.4.40 — स्तोः श्चुना श्चुः (L): s / dental-stop → palatal equivalent
+# The palatal replacement fires a hierarchical prakriya; subsequent ścu/ṣṭu sandhi
+# rules can then operate on the newly inserted palatal if needed.
+xform:
+  l: null         # lopa: delete the original s or dental-stop
+insert:
+  l: shcutva(l)  # ādeśa: insert the palatal equivalent as a new object
+```
+
+**Examples:**
+
+```yaml
+# 6.1.73 — छे च: insert tuk (kit) after a short vowel, before cha
+# tuk = Pratyaya("t", its=["k"]) — kit, so appended to left operand
+insert:
+  m: tuk
+
+# 8.4.40/41 — श्चुत्व / ष्टुत्व: delete and re-insert as the appropriate class
+xform:
+  l: null
+insert:
+  l: shcutva(l)   # or zwutva(l) for ष्टुत्व
+
+# 6.4.134 — अल्लोपोऽनः: delete ā, re-insert n as a fresh object
+xform:
+  lc: lc[:-1]
+  l: null
+insert:
+  l: str("n")     # fresh n; subsequent rules see it as a new token
+
+# 6.4.133 — अयादीनामायः: insert UW (samprasāraṇa-tagged) before left operand
+xform:
+  lc: lc[1:]
+insert:
+  0: UW           # integer key → prepend before left operand
 ```
 
 ---
@@ -305,6 +408,34 @@ When multiple sutras trigger at the same window position, `sutra_priority()` sel
 3. **Saṃjñā rules** (numbered < 1.4.2 / `_aps_num < 14000`): earlier number wins
 4. **Tripadi** (numbered in 8th adhyaya, `_aps_num > 82000`): earlier number wins
 5. **Para** (later rule): higher `_aps_num` wins (default)
+
+### Siddha / Asiddha
+
+Rule priority determines *which* sutra wins when multiple fire at the same window. Siddha/asiddha determines *what state* each sutra sees — i.e. which earlier outputs are visible to it.
+
+Every sutra's view of the derivation is computed by `view()` in `antaranga_prakriya.py`. It walks back up the `PrakriyaTree` and returns the outputs of the most recent node that the current sutra is allowed to see. The key rule is:
+
+**TripāḍÄ« sutras (8.2.1–8.4.68, `_aps_num > 82000`) are asiddha with respect to sāpadasaptādhyāyī (SPSA) sutras (`_aps_num < 82000`).**
+
+In practice:
+
+| Current sutra | Can see |
+|---|---|
+| SPSA (`_aps_num < 82000`) | Outputs of SPSA sutras only — tripāḍī outputs are invisible (asiddha) |
+| TripāḍÄ« (`_aps_num ≥ 82000`) | Outputs of all SPSA sutras + earlier tripāḍī sutras (lower `_aps_num`) |
+
+This is implemented by walking up the tree and skipping nodes whose sutra `_aps_num` falls outside the visible range. The walk stops at the first visible node, and that node's `outputs` become the view.
+
+**Special siddha exceptions** (`_special_siddha()` in `antaranga_prakriya.py`): certain tripāḍī outputs must be visible to specific later rules even across the SPSA/tripāḍī boundary:
+
+| Producer sutra | Visible to | Reason |
+|---|---|---|
+| ṣṭutva 8.4.41 | ḍ-lopa 8.3.13 | ṣṭutva output must be seen before ḍ-lopa fires |
+| ḍ-lopa 8.3.13, r-lopa 8.3.14 | pūrva-dīrgha 6.3.111 | lopa must be visible for dīrgha to apply correctly |
+| n-lopa 8.2.7, 7.4.33 | 7.4.25 | n-lopa siddha for inter-pada and rājīyati/rājāyate forms |
+| saṃyogānta-lopa 8.2.23 | maGavan upadhā-dīrgha 6.4.8.1 | final cluster lopa must be visible for upadhā-dīrgha to fire correctly for maGavan before sarvanamasthāna |
+
+**Not yet implemented:** *asiddhavat* (8.2.1 — SPSA sutras after 8.2.1 treat each other as asiddha within SPSA) and *ṣṭutokora-siddhaḥ* (a further sub-boundary within tripāḍī). These are noted as FIXMEs in the code.
 
 ---
 
@@ -355,5 +486,5 @@ Run from the `generator` branch:
 
 ```bash
 cd sanskrit_parser/generator/test
-pytest
+. run.sh
 ```

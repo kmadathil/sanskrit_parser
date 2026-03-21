@@ -105,10 +105,23 @@
        - ?sarvAdi
   update:
      olp: +sarvanAma
-
+     
+# 313: शि सर्वनामस्थानम् (1-1-42) 
+- sutra:  शि सर्वनामस्थानम्
+  domain: saMjYA
+  id: 1.1.42
+  condition:
+     rp: ?Si
+  update:
+     orp:
+       - +sarvanAmasTAna
+     olp:
+       - -Ba
+       - -pada
+ 
 - sutra: सुडनपुंसकस्य
   domain: saMjYA
-  id: 1.1.53
+  id: 1.1.43
   condition:
      rp: ?suw
      lp: ?!napumsaka
@@ -127,7 +140,21 @@
      lp: ?aNga
   update:
      orp: _lu # Strip all tags, prevent pratyayalakzaRa
- 
+
+# 318: ह्रस्वो नपुंसके प्रातिपदिकस्य (1-2-47)
+- sutra: ह्रस्वो नपुंसके प्रातिपदिकस्य
+  domain: prakfti
+  id: 1.2.47
+  overrides: 6.4.140 # sannipAtapariBAzA, according to SK
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+  xform:
+      l: hrasva(l)
+
+
 # 266: यू स्त्र्याख्यौ नदी (1-4-3) 
 - sutra: यू स्त्र्याख्यौ नदी
   domain: saMjYA
@@ -491,6 +518,28 @@
   xform:
      lc: lc[:-1]+dirgha(lc[-1])
 
+# 317: सान्तमहतः संयोगस्य (6-4-10) 
+- sutra: सान्तमहतः संयोगस्य 
+  id: 6.4.10
+  condition:
+   - lp: ?aNga
+     l: s
+     ll: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =mahant
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-2]+dirgha(lc[-2])+lc[-1]
+
 
 
 # FIXME simplify once we have and/or in condition
@@ -714,6 +763,20 @@
   xform:
      l: null
 
+#316: टेः (6-4-143) 
+- sutra: टेः
+  id: 6.4.143
+  # bahiranga: 1
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     rp: +q
+  xform:
+     l: null
+     lc: wilopa(lc+l)
+     
 - sutra: ओर्गुणः
   id: 6.4.146
   overrides: [7.2.115, 7.2.116]
@@ -728,7 +791,24 @@
        - ?!sarvanAmasTAna
   xform:
      l: guna(l)
- 
+
+# 311: यस्येति च (6-4-148) 
+- sutra: यस्येति च 
+  id: 6.4.148
+  condition:
+    -  lp:
+        - and
+        - ?aNga
+        - ?Ba
+       l:
+        - a
+        - i
+       rp:
+        - ?tadDita
+        - ?NI  # औङः श्यां प्रतिषेधो वाच्यः rules out SI. That leaves only NIp/z/n
+  xform:
+     l: null
+
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
   id: 7.1.9
@@ -884,6 +964,22 @@
   update:
      orp: +SI
 
+# 312: जश्शसोः शिः (7-1-20) 
+- sutra: जश्शसोः शिः
+  id: 7.1.20
+  # domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?jas
+       - ?Sas
+  update:
+     orp: =Si
+
+
 # 261: षड्भ्यो लुक् (7-1-22) 
 - sutra: षड्भ्यो लुक् 
   id: 7.1.22
@@ -901,6 +997,23 @@
   update:
      orp: +luk
 
+# 319: स्वमोर्नपुंसकात् (7-1-23) 
+- sutra: स्वमोर्नपुंसकात् 
+  id: 7.1.23
+  domain: pratyaya
+  #overrides: 7.1.73 # FIXME: Remove this with domain pratyaya
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  
+  update:
+     orp: =luk_sup
+
+
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
   id: 7.1.24
@@ -916,7 +1029,25 @@
       - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
   update:
      orp: =am
-     
+
+# 315: अद्ड्डतरादिभ्यः पञ्चम्यः (7-1-25) 
+- sutra: अद्ड्डतरादिभ्यः पञ्चम्यः 
+  id: 7.1.25
+  # domain: aNga
+  overrides: 7.1.24
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+      - ?qatarAdi
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =adaq
+
+
 # 264: त्रेस्त्रयः (7-1-53) 
 - sutra:  त्रेस्त्रयः
   id: 7.1.53
@@ -931,6 +1062,55 @@
   xform:
      l: str("traya")
      lc: null
+
+# 314: नपुंसकस्य झलचः (7-1-72) 
+- sutra: नपुंसकस्य झलचः
+  id: 7.1.72
+  condition:
+      l:
+        - _Jal
+        - _ac
+      lp: ?napum
+      rp: ?sarvanAmasTAna
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
+      
+# 320: इकोऽचि विभक्तौ (7-1-73) 
+- sutra: इकोऽचि विभक्तौ
+  id: 7.1.73
+  overrides: [7.1.72, 7.3.109, 7.3.111, 7.3.119]
+  # Vartikas: वृद्ध्यौत्त्वतृज्वद्भावगुणेभ्यो नुम्पूर्वविप्रतिषेधेन
+  #           नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  condition:
+      l: _ik
+      lp: ?napum
+      r: _ac
+      rp: ?viBakti
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
+      
+#322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75) 
+- sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
+  id: 7.1.75
+  domain: prakfti
+  condition:
+     lp:
+      - =asTi
+      - =daDi
+      - =sakTi
+      - =akzi
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+  update:
+     olp: -Gi
+  xform:
+     l: str("an") # Nicca
 
 # 284: गोतो णित् (7-1-90) 
 - sutra:  गोतो णित् 
@@ -1390,15 +1570,7 @@
           - ?aNga
           - ?Ap
          rp: ?Ni
-    xform:
-       r: str("Am")
-# Seperated out so it does not get overriden by 6.4.77. FIXME: Ideally a proper nityatva check would work better.
--   sutra:  ङेराम्नद्याम्नीभ्यः
-    id: 7.3.116.1
-    overrides: 7.3.118
-    domain: aNga
-    condition:
-         lp:
+       - lp:
           - and
           - ?aNga
           - ?DAtu
@@ -1406,8 +1578,9 @@
          ll: n
          rp: ?Ni
     xform:
-       r: str("Am")
-       
+        rc: str("Am")
+        r: null
+                
 -   sutra:  इदुद्भ्याम्
     id: 7.3.117
     overrides: [7.3.116, 7.3.118]
@@ -1904,7 +2077,7 @@
        lp:
         - ?pluta
         - ?pragfhya
-       r: _aC
+       r: _ac
     xform:
        l: null
 
@@ -2381,7 +2554,69 @@
        r: _Jal
   xform:
      l: str("Q")
-     
+
+#325: दादेर्धातोर्घः (8-2-32)      
+- sutra: दादेर्धातोर्घः
+  id: 8.2.32
+  overrides: 8.2.31
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$dAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$dAdi
+       r: _Jal
+  xform:
+     l: str("G")
+
+#  327: वा द्रुहमुहष्णुहष्णिहाम् (8-2-33) 
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् 
+  id: 8.2.33
+  overrides: [8.2.32, 8.2.31]
+  optional: true
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("G")
+
+# pakZe Qa. Because this relies on matching "druh" etc., it will not get
+# triggered if 8.2.33 doesn't. We cannot rely on 8.2.32 for this, since this
+# is tripAdi etc.
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् (पक्षे ढ)
+  id: 8.2.33.1
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("Q")
+
 # 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36) 
 - sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
   id: 8.2.36
@@ -2397,6 +2632,33 @@
        r: _Jal
   xform:
      l: str("z")
+
+
+# 326: एकाचो बशो भष् झषन्तस्य स्ध्वोः (8-2-37) 
+- sutra: एकाचो बशो भष् झषन्तस्य स्ध्वोः
+  id: 8.2.37
+  condition:
+     - l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - ?pada
+        - $$ekAcDAtu
+     - r: s
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+     - r: D
+       rr: v
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+  xform:
+     lc: baSoBaz(lc)
 
 - sutra: झषस्तथोर्धोऽधः
   id: 8.2.40

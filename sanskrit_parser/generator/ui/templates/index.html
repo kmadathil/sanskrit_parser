@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanskrit Generator — Declension Explorer</title>
+  <style>
+    /* ── Reset / base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      color: #1a1a2e;
+      background: #f5f5f0;
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    header {
+      background: #1a1a2e;
+      color: #e8d5b0;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+      flex: 1;
+    }
+    header .sanskrit-title {
+      font-size: 1.1rem;
+      opacity: .75;
+    }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 0;
+      height: calc(100vh - 54px);
+    }
+
+    /* ── Control panel (left sidebar) ────────────────────── */
+    .controls {
+      background: #fff;
+      border-right: 1px solid #ddd;
+      padding: 20px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .controls h2 {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .controls label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: .9rem;
+    }
+
+    select#stem-select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #c8c8c8;
+      border-radius: 6px;
+      font-size: .9rem;
+      background: #fafafa;
+      cursor: pointer;
+      color: #1a1a2e;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+    }
+    select#stem-select:focus { outline: 2px solid #c17f24; }
+
+    .encoding-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .encoding-group label.option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 400;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+    .encoding-group input[type=radio] { accent-color: #c17f24; }
+
+    .btn-generate {
+      width: 100%;
+      padding: 10px;
+      background: #c17f24;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-generate:hover { background: #a3691b; }
+    .btn-generate:active { background: #8c5917; }
+    .btn-generate:disabled { background: #ccc; cursor: not-allowed; }
+
+    .status {
+      font-size: .82rem;
+      color: #666;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    .status.error { color: #c0392b; }
+
+    /* ── Main content area ────────────────────────────────── */
+    .main {
+      padding: 20px 24px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Declension table ─────────────────────────────────── */
+    .table-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .table-title span.stem-label {
+      color: #c17f24;
+    }
+
+    .declension-wrap {
+      overflow-x: auto;
+    }
+
+    table.declension {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 560px;
+    }
+
+    table.declension th,
+    table.declension td {
+      border: 1px solid #d8d8d0;
+      padding: 10px 14px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table.declension thead th {
+      background: #1a1a2e;
+      color: #e8d5b0;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-weight: 600;
+    }
+    /* When devanagari, don't uppercase Sanskrit labels */
+    table.declension thead th.dev-label {
+      text-transform: none;
+      font-size: .95rem;
+      letter-spacing: 0;
+    }
+
+    table.declension thead th:first-child { text-align: left; }
+
+    table.declension tbody th {
+      background: #f0ede6;
+      text-align: left;
+      font-size: .82rem;
+      color: #444;
+      font-weight: 600;
+      white-space: nowrap;
+      width: 200px;
+    }
+    /* Devanāgarī row labels: larger font, no small-caps */
+    table.declension tbody th.dev-label {
+      font-size: 1rem;
+      color: #2a2a1e;
+    }
+
+    table.declension tbody td {
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background .12s;
+      background: #fff;
+      min-width: 130px;
+    }
+
+    table.declension tbody td:hover {
+      background: #fff8ee;
+    }
+
+    table.declension tbody td.selected {
+      background: #fff3d4;
+      outline: 2px solid #c17f24;
+      outline-offset: -2px;
+    }
+
+    table.declension tbody td.dash {
+      color: #bbb;
+      cursor: default;
+    }
+
+    table.declension tbody tr:nth-child(even) td {
+      background: #fafaf7;
+    }
+    table.declension tbody tr:nth-child(even) td:hover {
+      background: #fff8ee;
+    }
+    table.declension tbody tr:nth-child(even) td.selected {
+      background: #fff3d4;
+    }
+
+    /* ── Sutra trace panel ────────────────────────────────── */
+    .trace-label {
+      font-size: .8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .trace-panel {
+      border: 1px solid #d8d8d0;
+      border-radius: 8px;
+      background: #faf9f6;
+      color: #1a1a2e;
+      padding: 14px 16px;
+      font-size: .83rem;
+      line-height: 1.55;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .trace-panel.empty {
+      color: #999;
+      font-family: inherit;
+      font-size: .88rem;
+    }
+
+    /* ── Trace sub-components ─────────────────────────────── */
+    .ts-header {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0ddd8;
+    }
+    .ts-h-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ts-h-dev  { color: #7a4d0a; font-size: 1.05rem; font-weight: 700; }
+    .ts-h-slp1 { color: #777; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: .75rem; }
+
+    .ts-step {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+    /* Changed step: warm highlight */
+    .ts-step.ch { background: #fff4e0; border-left: 2px solid #c17f24; padding-left: 8px; }
+    /* No-change step: lightly faded — green arrow is sufficient to identify changes */
+    .ts-step.nc { opacity: .65; }
+    /* Special step (Prakriya Start / samhitā): faded */
+    .ts-step.sp { opacity: .55; }
+
+    .ts-n {
+      min-width: 22px;
+      color: #888;
+      font-size: .7rem;
+      text-align: right;
+      padding-top: 3px;
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+    .ts-content { flex: 1; min-width: 0; }
+    .ts-hdr {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 2px;
+    }
+    .ts-aps     { color: #1a4aaa; font-family: monospace; font-size: .73rem; font-weight: 600; }
+    .ts-dev     { color: #1a1a2e; }
+    .ts-slp1    { color: #777; font-family: monospace; font-size: .7rem; }
+    .ts-special { color: #444; font-style: italic; }
+    .ts-opt     { color: #c17f24; font-size: .68rem; border: 1px solid #c17f24; border-radius: 3px; padding: 0 3px; }
+
+    .ts-xform {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: .9rem;
+      margin-top: 1px;
+    }
+    .ts-before  { color: #555; }
+    .ts-arr     { color: #c17f24; font-weight: 700; }
+    .ts-after   { color: #186018; font-weight: 600; }
+    .ts-nc-lbl  { color: #555; font-size: .72rem; font-style: italic; }
+
+    .ts-also {
+      margin-top: 3px;
+      color: #444;
+      font-size: .72rem;
+    }
+    .ts-also-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3px;
+      margin: 0 4px 0 0;
+      white-space: nowrap;
+    }
+    .ts-also-item .ts-aps { font-size: .7rem; }
+    .ts-also-dev { color: #1a1a2e; }
+
+    .ts-output {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #e0ddd8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .ts-out-arr { color: #c17f24; font-weight: 700; font-size: 1rem; }
+    .ts-out-dev { color: #7a4d0a; font-size: 1.2rem; font-weight: 700; }
+    .ts-out-sep { color: #666; margin: 0 4px; }
+
+    /* ── Loading spinner ──────────────────────────────────── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #ddd;
+      border-top-color: #c17f24;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; height: auto; }
+      .controls { border-right: none; border-bottom: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Sanskrit Generator — Declension Explorer</h1>
+  <span class="sanskrit-title">शब्दरूपप्रदर्शकः</span>
+</header>
+
+<div class="layout">
+
+  <!-- ── Left sidebar ─────────────────────────────────────── -->
+  <aside class="controls">
+
+    <div>
+      <h2>Stem</h2>
+      <label for="stem-select">Select a prātipadika:</label>
+      <select id="stem-select">
+        {% for group, stems in groups.items() %}
+        <optgroup label="{{ group }}">
+          {% for s in stems %}
+          <option value="{{ s.key }}"
+            {% if s.key == default_stem %}selected{% endif %}>
+            {{ s.label }}
+          </option>
+          {% endfor %}
+        </optgroup>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <h2>Script</h2>
+      <div class="encoding-group">
+        <label class="option">
+          <input type="radio" name="encoding" value="devanagari" checked>
+          Devanāgarī
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding" value="iast">
+          IAST (romanized)
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding" value="slp1">
+          SLP1 (internal)
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btn-generate" onclick="loadTable()">
+      Generate Table
+    </button>
+
+    <div class="status" id="status"></div>
+
+  </aside>
+
+  <!-- ── Main content ─────────────────────────────────────── -->
+  <main class="main">
+
+    <div class="table-title" id="table-title">
+      Select a stem and click <em>Generate Table</em>
+    </div>
+
+    <div class="declension-wrap">
+      <table class="declension" id="declension-table">
+        <thead>
+          <tr>
+            <th id="th-empty"></th>
+            <th id="th-sg">Singular</th>
+            <th id="th-du">Dual</th>
+            <th id="th-pl">Plural</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          {% for vib in vibhaktis %}
+          <tr>
+            <th>{{ vib }}</th>
+            {% for _ in vacanas %}
+            <td class="dash">—</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="trace-label">Sutra trace — click a cell to inspect</div>
+      <div class="trace-panel empty" id="trace-panel">
+        Click any declension cell to see the detailed sutra derivation trace.
+      </div>
+    </div>
+
+  </main>
+
+</div><!-- /.layout -->
+
+<script>
+  // ── Label sets ───────────────────────────────────────────
+  const LABELS = {
+    devanagari: {
+      vibhaktis: ['प्रथमा', 'द्वितीया', 'तृतीया', 'चतुर्थी',
+                  'पञ्चमी', 'षष्ठी', 'सप्तमी', 'सम्बोधनम्'],
+      vacanas:   ['एकवचनम्', 'द्विवचनम्', 'बहुवचनम्'],
+    },
+    // IAST and SLP1 use the same English labels
+    _default: {
+      vibhaktis: ['Nominative', 'Accusative', 'Instrumental', 'Dative',
+                  'Ablative',  'Genitive',   'Locative',     'Vocative'],
+      vacanas:   ['Singular', 'Dual', 'Plural'],
+    },
+  };
+
+  function getLabels() {
+    const enc = document.querySelector('input[name=encoding]:checked').value;
+    return LABELS[enc] || LABELS._default;
+  }
+
+  function applyLabels() {
+    const labels = getLabels();
+    const enc    = document.querySelector('input[name=encoding]:checked').value;
+    const isDev  = enc === 'devanagari';
+
+    // Column headers
+    const thIds = ['th-sg','th-du','th-pl'];
+    thIds.forEach((id, i) => {
+      const th = document.getElementById(id);
+      th.textContent = labels.vacanas[i];
+      th.className   = isDev ? 'dev-label' : '';
+    });
+
+    // Row headers
+    const tbody = document.getElementById('table-body');
+    Array.from(tbody.rows).forEach((tr, i) => {
+      const th = tr.cells[0];
+      th.textContent = labels.vibhaktis[i];
+      th.className   = isDev ? 'dev-label' : '';
+    });
+  }
+
+  // ── State ────────────────────────────────────────────────
+  let tableData    = null;
+  let selectedCell = null;
+
+  // ── Load table via API ────────────────────────────────────
+  async function loadTable() {
+    const stem     = document.getElementById('stem-select').value;
+    const encoding = document.querySelector('input[name=encoding]:checked').value;
+    const btn      = document.getElementById('btn-generate');
+    const status   = document.getElementById('status');
+    const title    = document.getElementById('table-title');
+
+    btn.disabled = true;
+    status.className = 'status';
+    status.innerHTML = '<span class="spinner"></span> Generating…';
+    title.innerHTML  = 'Generating…';
+    clearTrace();
+
+    try {
+      const res  = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}`);
+      const data = await res.json();
+
+      if (data.error) {
+        status.textContent = 'Error: ' + data.error;
+        status.className   = 'status error';
+        btn.disabled       = false;
+        return;
+      }
+
+      tableData    = data;
+      selectedCell = null;
+      renderTable(data);
+      applyLabels();
+
+      const stemLabel = document.getElementById('stem-select').selectedOptions[0].text;
+      title.innerHTML = `Declension table: <span class="stem-label">${escHtml(stemLabel)}</span>`;
+      status.textContent = 'Done — click a cell for the sutra trace.';
+
+    } catch (err) {
+      status.textContent = 'Network error: ' + err.message;
+      status.className   = 'status error';
+    }
+
+    btn.disabled = false;
+  }
+
+  // ── Render table ─────────────────────────────────────────
+  function renderTable(data) {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    data.vibhaktis.forEach((_, r) => {
+      const tr = document.createElement('tr');
+
+      const th = document.createElement('th');
+      tr.appendChild(th);   // text set by applyLabels()
+
+      data.vacanas.forEach((_, c) => {
+        const td = document.createElement('td');
+        const form = data.table[r][c];
+        if (form === '—') {
+          td.textContent = '—';
+          td.classList.add('dash');
+        } else {
+          td.textContent = form;
+          td.title       = 'Click for sutra trace';
+          td.addEventListener('click', () => selectCell(r, c));
+        }
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── Cell selection ────────────────────────────────────────
+  function selectCell(r, c) {
+    if (!tableData) return;
+    document.querySelectorAll('td.selected').forEach(el => el.classList.remove('selected'));
+    const tbody = document.getElementById('table-body');
+    const td    = tbody.rows[r].cells[c + 1];
+    td.classList.add('selected');
+    selectedCell = [r, c];
+
+    const traceEl = document.getElementById('trace-panel');
+    const raw     = tableData.traces[r][c];
+    if (raw && raw.trim()) {
+      traceEl.innerHTML = formatTrace(raw);
+      traceEl.classList.remove('empty');
+    } else {
+      clearTrace();
+    }
+  }
+
+  function clearTrace() {
+    const el = document.getElementById('trace-panel');
+    el.textContent = 'Click any declension cell to see the detailed sutra derivation trace.';
+    el.classList.add('empty');
+  }
+
+  // ── Trace parser & formatter ─────────────────────────────
+  function parseTrace(raw) {
+    if (!raw || !raw.trim()) return null;
+
+    let header = null, output = null;
+    const steps = [];
+    let cur = null;
+
+    for (const origLine of raw.split('\n')) {
+      const line = origLine.trimEnd();
+      if (!line.trim()) continue;
+      // Separator bar (─ characters)
+      if (/^[\s\u2500\u2501]+$/.test(line)) continue;
+
+      const t = line.trim();
+
+      // Prakriya header
+      const hm = t.match(/^Prakriya:\s+(\S+)\s+\((.+)\)\s*$/);
+      if (hm) { header = { slp1: hm[1], dev: hm[2] }; continue; }
+
+      // Output line — can be "slp1  (dev)" or "slp1  (dev)  |  slp1  (dev)"
+      const om = t.match(/^Output:\s+(.+)$/);
+      if (om) { output = om[1].trim(); continue; }
+
+      // Special step ⟨...⟩
+      const sm = t.match(/^Step\s+(\d+)\s+⟨(.+)⟩\s*$/);
+      if (sm) {
+        if (cur) steps.push(cur);
+        cur = { num: sm[1], special: sm[2], form: null, also: [] };
+        continue;
+      }
+
+      // Sutra step [...]
+      const stm = t.match(/^Step\s+(\d+)\s+\[(.+)\]\s*(\*)?\s*$/);
+      if (stm) {
+        if (cur) steps.push(cur);
+        const inner  = stm[2];
+        // Match "aps  dev  (slp1)" — greedy to handle spaces inside dev
+        const apsM = inner.match(/^([\d.]+)\s{2}(.*)\s{2}\(([^)]+)\)\s*$/);
+        let aps = '', dev = inner, slp1 = '';
+        if (apsM) { aps = apsM[1]; dev = apsM[2]; slp1 = apsM[3]; }
+        else {
+          const apsOnly = inner.match(/^([\d.]+)\s{2}(.*)/);
+          if (apsOnly) { aps = apsOnly[1]; dev = apsOnly[2]; }
+        }
+        cur = { num: stm[1], aps, dev, slp1, opt: !!stm[3], form: null, also: [] };
+        continue;
+      }
+
+      // Form / also lines — heavily indented (8+ leading spaces)
+      if (/^\s{8,}/.test(line) && cur) {
+        if (t.startsWith('\u21b3') || t.startsWith('↳')) {
+          // Extract full sutra entries from "also applicable" list: [aps  dev  (slp1)]
+          const entries = [];
+          const reBlock = /\[([^\]]+)\]/g; let m;
+          while ((m = reBlock.exec(t)) !== null) {
+            const inner = m[1];
+            const apsM = inner.match(/^([\d.]+)\s{2}(.*?)\s{2}\(([^)]+)\)\s*$/);
+            if (apsM) {
+              entries.push({ aps: apsM[1], dev: apsM[2], slp1: apsM[3] });
+            } else {
+              const apsOnly = inner.match(/^([\d.]+)(.*)/);
+              if (apsOnly) entries.push({ aps: apsOnly[1], dev: apsOnly[2].trim(), slp1: '' });
+            }
+          }
+          cur.also = entries;
+        } else if (t.startsWith('┌') || t.startsWith('│') || t.startsWith('└')) {
+          // Hierarchical prakriya — skip for now
+        } else if (t.includes('  \u2192  ') || t.includes('  →  ')) {
+          // Changed form: "dev_in  →  dev_out  (slp1_in  →  slp1_out)"
+          const arrow = t.includes('  \u2192  ') ? '  \u2192  ' : '  →  ';
+          const slp1Idx = t.lastIndexOf('  (');
+          const core    = slp1Idx > 0 ? t.substring(0, slp1Idx) : t;
+          const parts   = core.split(arrow);
+          cur.form = { changed: true,
+                       before: (parts[0] || '').trim(),
+                       after:  (parts[1] || '').trim() };
+        } else if (t.includes('(no change)')) {
+          // Format: "dev1 | dev2  (no change)  (slp1_1 | slp1_2)"
+          const dm = t.match(/^(.+?)\s+\(no change\)\s+\(([^)]+)\)\s*$/);
+          if (dm) {
+            cur.form = { changed: false, dev: dm[1].trim(), slp1: dm[2].trim() };
+          } else {
+            const dm0 = t.match(/^(.+?)\s+\(no change\)/);
+            cur.form = { changed: false, dev: dm0 ? dm0[1].trim() : t, slp1: '' };
+          }
+        }
+      }
+    }
+
+    if (cur) steps.push(cur);
+
+    // Lift Prakriya Start component forms onto header for tokenized display
+    if (header) {
+      const startStep = steps.find(s => s.special && s.special.includes('Prakriya Start'));
+      if (startStep && startStep.form) {
+        header.devComps  = startStep.form.dev;   // e.g. "राम | स्"
+        header.slp1Comps = startStep.form.slp1;  // e.g. "rAma | s"
+      }
+    }
+
+    return { header, steps, output };
+  }
+
+  function formatTrace(raw) {
+    const data = parseTrace(raw);
+    if (!data) return '<em style="color:#888">No trace available.</em>';
+    const { header, steps, output } = data;
+
+    let h = '';
+
+    // Header — show tokenized components if available, else concatenated fallback
+    if (header) {
+      const devParts  = header.devComps
+        ? header.devComps.split(' | ').map(p => p.trim())
+        : [header.dev];
+      const slp1Parts = header.slp1Comps
+        ? header.slp1Comps.split(' | ').map(p => p.trim())
+        : [header.slp1];
+      const devHtml  = devParts.map(p  => `<span class="ts-h-dev">${esc(p)}</span>`).join('');
+      const slp1Html = slp1Parts.map(p => `<span class="ts-h-slp1">${esc(p)}</span>`).join('');
+      h += `<div class="ts-header">
+        <div class="ts-h-row">${devHtml}</div>
+        <div class="ts-h-row">${slp1Html}</div>
+      </div>`;
+    }
+
+    // Steps
+    for (const s of steps) {
+      const isCh = s.form && s.form.changed;
+      const isNC = s.form && !s.form.changed;
+      const cls  = s.special ? 'sp' : (isCh ? 'ch' : (isNC ? 'nc' : ''));
+
+      // Sutra header
+      let hdrHtml;
+      if (s.special) {
+        hdrHtml = `<span class="ts-special">⟨${esc(s.special)}⟩</span>`;
+      } else {
+        hdrHtml  = `<span class="ts-aps">${esc(s.aps)}</span>`;
+        hdrHtml += `<span class="ts-dev">${esc(s.dev)}</span>`;
+        if (s.slp1) hdrHtml += ` <span class="ts-slp1">(${esc(s.slp1)})</span>`;
+        if (s.opt)  hdrHtml += ` <span class="ts-opt">optional</span>`;
+      }
+
+      // Form transformation
+      let xformHtml = '';
+      if (s.form) {
+        if (s.form.changed) {
+          xformHtml = `<div class="ts-xform">
+            <span class="ts-before">${esc(s.form.before)}</span>
+            <span class="ts-arr">→</span>
+            <span class="ts-after">${esc(s.form.after)}</span>
+          </div>`;
+        } else {
+          xformHtml = `<div class="ts-xform">
+            <span class="ts-before">${esc(s.form.dev)}</span>
+            <span class="ts-nc-lbl">no change</span>
+          </div>`;
+        }
+      }
+
+      // Also applicable (triggered but didn't fire)
+      let alsoHtml = '';
+      if (s.also && s.also.length > 0) {
+        const items = s.also.map(a => {
+          const tooltip = a.slp1 ? `${a.dev} (${a.slp1})` : a.dev;
+          const devSpan = a.dev
+            ? ` <span class="ts-also-dev">${esc(a.dev)}</span>`
+            : '';
+          return `<span class="ts-also-item" title="${esc(tooltip)}"><span class="ts-aps">${esc(a.aps)}</span>${devSpan}</span>`;
+        });
+        alsoHtml = `<div class="ts-also">↳ also applicable: ${items.join('')}</div>`;
+      }
+
+      h += `<div class="ts-step ${cls}">
+        <span class="ts-n">${esc(s.num)}</span>
+        <div class="ts-content">
+          <div class="ts-hdr">${hdrHtml}</div>
+          ${xformHtml}${alsoHtml}
+        </div>
+      </div>`;
+    }
+
+    // Output
+    if (output) {
+      // Format: "slp1  (dev)" possibly multiple alternatives joined by "  |  "
+      const parts    = output.split('  |  ');
+      const devParts = parts.map(p => {
+        const m = p.trim().match(/^(\S+)\s+\((.+)\)$/);
+        return m ? `<span class="ts-out-dev">${esc(m[2])}</span>` :
+                   `<span class="ts-out-dev">${esc(p.trim())}</span>`;
+      });
+      h += `<div class="ts-output">
+        <span class="ts-out-arr">→</span>
+        ${devParts.join(' <span class="ts-out-sep">|</span> ')}
+      </div>`;
+    }
+
+    return h;
+  }
+
+  // ── Helpers ───────────────────────────────────────────────
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  // alias for backward compat
+  function escHtml(s) { return esc(s); }
+
+  // ── Event wiring ──────────────────────────────────────────
+  document.querySelectorAll('input[name=encoding]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (tableData) loadTable();
+    });
+  });
+
+  document.getElementById('stem-select').addEventListener('change', loadTable);
+
+  window.addEventListener('DOMContentLoaded', loadTable);
+</script>
+
+</body>
+</html>

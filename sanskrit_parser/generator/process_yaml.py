@@ -37,7 +37,7 @@ def process_yaml(y):
             if c not in s:
                 s[c] = None
         if "bahiranga" not in s:
-            s["bahiranga"] = 1
+            s["bahiranga"] = 9    # Class 9 - other sutras
         # svar = "sutra_"+s["id"].replace(".", "_")
         sname = s["sutra"]
         soverrides = None
@@ -52,8 +52,6 @@ def process_yaml(y):
             logger.debug(f"Sutra {s['id']} Overrides {soverrides}")
         scond = None
         if s["condition"] is not None:
-            logger.debug("Processing Condition")
-
             def _exec_cond(s):
                 logger.debug(f"Cond dict {s}")
                 # FIXME Fix variables after fixing sutra_engine
@@ -64,48 +62,35 @@ def process_yaml(y):
                         # LHS = variable
                         # RHS = _pratyahara , {variable}, or savarna
                         x = True
+                        results = {}
                         for k in _s:
-                            logger.debug(f"Checking cond {_s[k]} against {k}")
-
                             def _cond_single(sk, k):
                                 if (sk[0] == "_"):
                                     # Pratyahara
-                                    logger.debug(f"Checking pratyahara {sk[1:]} {k}")
                                     _x = isInPratyahara(sk[1:], k)  # noqa: F405
                                 elif (sk[0:2] == "$$"):
                                     # function call
-                                    logger.debug(f"Checking function {sk[2:]} {k}")
                                     _x = eval(f"{sk[2:]}(k)")
                                 elif (sk[0] == "$"):
                                     # Variable
-                                    logger.debug(f"Checking variable {sk[1:]} {k}")
                                     _x = isSavarna(env[sk[1:]], k)  # noqa: F405
+                                elif (sk[0:2] == "=!"):
+                                    # Raw inequality
+                                    _x = (sk[2:] != k.canonical())
                                 elif (sk[0] == "="):
                                     # Raw equality
-                                    logger.debug(f"Checking raw {sk[1:]} {k}")
                                     _x = (sk[1:] == k.canonical())
-                                elif (sk[0:2] == "!="):
-                                    # Raw inequality
-                                    logger.debug(f"Checking raw inequality {sk[2:]} {k}")
-                                    _x = (sk[2:] != k.canonical())
                                 elif (sk[0:2] == "?!"):  # Tag false check
-                                    logger.debug(f"Checking tag false {sk[2:]} {k}")
                                     _x = not k.hasTag(sk[2:])
                                 elif (sk[0] == "?"):  # Tag check
-                                    logger.debug(f"Checking tag {sk[1:]} {k}")
                                     _x = k.hasTag(sk[1:])
                                 elif (sk[0] == "+"):  # It check
-                                    logger.debug(f"Checking it {sk[1:]} {k}")
-                                    _x = k.hasTag("pratyaya") and k.hasIt(sk[1:])
+                                    _x = hasattr(k, 'hasIt') and k.hasIt(sk[1:])
                                 else:
-                                    logger.debug(f"Checking savarna {sk} {k} ")
                                     _x = isSavarna(sk, k)   # noqa: F405
-                                logger.debug(f"Return {_x}")
                                 return _x
                             if isinstance(_s[k], list):
-                                logger.debug("List")
                                 if _s[k][0] == "and":
-                                    logger.debug("Checking and condition")
                                     _x = True
                                     for sk in _s[k][1:]:
                                         _x = _x and _cond_single(sk, env[k])
@@ -114,10 +99,11 @@ def process_yaml(y):
                                     for sk in _s[k]:
                                         _x = _x or _cond_single(sk, env[k])
                             else:
-                                logger.debug("Single")
                                 _x = _cond_single(_s[k], env[k])
-                            logger.debug(f"Got {_x}")
+                            results[k] = (_s[k], _x)
                             x = x and _x
+                        parts = "  ".join(f"{k}:{v[0]}={'✓' if v[1] else '✗'}" for k, v in results.items())
+                        logger.debug(f"Cond  {parts}  →  {'match' if x else 'no'}")
                         return x
                     # List implies an or condition
                     if isinstance(s, list):
@@ -134,8 +120,6 @@ def process_yaml(y):
 
         sxform = None
         if s["xform"] is not None:
-            logger.debug("Processing Xform")
-
             def _exec_xform(s):
                 logger.debug(f"Xform dict {s}")
                 xdict = s
@@ -150,8 +134,6 @@ def process_yaml(y):
                     _r = r = env["r"].canonical()  # noqa: E741, F841
                     _lc = lc = env["lc"].canonical()  # noqa: E741, F841
                     _rc = rc = env["rc"].canonical()  # noqa: E741, F841
-                    logger.debug(f"Xform dict {xdict}")
-                    logger.debug(f"Before: {_lc} {_l} {_r} {_rc}")
                     # Execute transforms for predefined variables
                     # FIXME: We assume our code in xform is safe to eval
                     if "l" in xdict:
@@ -174,39 +156,36 @@ def process_yaml(y):
                             _rc = eval(xdict["rc"])
                         else:
                             _rc = ""
-                    logger.debug(f"After {_lc} {_l} {_r} {_rc}")
                     ret = [_lc+_l, _r+_rc]
+                    logger.debug(f"Xform: {lc}{l}|{r}{rc} → {ret[0]}|{ret[1]}")
                     return ret
                 return _xform
             sxform = _exec_xform(s["xform"])
-            logger.debug(f"Xform def {sxform}")
         sinsert = None
         if s["insert"] is not None:
-            logger.debug("Processing insert")
-
             def _exec_insert(s):
                 logger.debug(f"insert dict {s}")
                 idict = s
 
                 def _insert(env):
-                    _r = {}
+                    _rv = {}
+                    _l = l = env["l"].canonical()  # noqa: E741, F841
+                    _r = r = env["r"].canonical()  # noqa: E741, F841
+                    _lc = lc = env["lc"].canonical()  # noqa: E741, F841
+                    _rc = rc = env["rc"].canonical()  # noqa: E741, F841
                     for i in idict:
-                        logger.debug(f"Insert {i} {idict[i]}")
-                        _r[i] = eval(idict[i])
-                    return _r
+                        _rv[i] = eval(idict[i])
+                    logger.debug(f"Insert: {_rv}")
+                    return _rv
                 return _insert
             sinsert = _exec_insert(s["insert"])
-            logger.debug(f"Insert def {sinsert}")
         sdom = None
         if s["domain"] is not None:
-            logger.debug("Processing domain")
-
             def _exec_trig(s):
-                logger.debug(f"Trig {s}")
+                logger.debug(f"Domain: {s}")
 
                 def _trig(domains):
                     # list of domains
-                    logger.debug(f"Domain checks {s}")
                     if isinstance(s, list):
                         x = True
                         for t in s:
@@ -217,30 +196,25 @@ def process_yaml(y):
             sdom = _exec_trig(s["domain"])
         supdate = None
         if s["update"] is not None:
-            logger.debug("Processing update")
 
             def _exec_update(s):
                 logger.debug(f"Update {s}")
 
-                def _update(env, domains):
+                def _update(env):
                     def _c(env):
                         # _s a dict
                         # LHS = variable
                         # RHS = _pratyahara , {variable}, or savarna
                         x = True
                         for k in _s:
-                            logger.debug(f"Checking cond {_s[k]} against {k}")
                             if (_s[k][0] == "_"):
                                 # Pratyahara
-                                logger.debug(f"Checking pratyahara {_s[k][1:]}")
                                 _x = isInPratyahara(_s[k][1:], env[k])  # noqa: F405
                             elif (_s[k][0] == "$"):
                                 # Variable
-                                logger.debug(f"Checking variable {_s[k][1:]} ")
                                 _x = isSavarna(env[_s[k][1:]], env[k])  # noqa: F405
                             else:
                                 _x = isSavarna(_s[k], env[k])  # noqa: F405
-                            logger.debug(f"Got {_x}")
                             x = x and _x
                         return x
 
@@ -275,24 +249,6 @@ def process_yaml(y):
                             else:
                                 _tag(k, s[k])
 
-                    if "domain" in s.keys():
-                        st = s["domain"]
-                        for k in st:
-                            logger.debug(f"Updating domain {k} {st[k]}")
-                            cond = True
-                            if "condition" in st[k]:
-                                logger.debug(f"Update condition check {st[k]['condition']}")
-                                # List implies an or in condition
-                                if isinstance(st[k]['condition'], list):
-                                    cond = False
-                                    for _s in st[k]['condition']:
-                                        cond = cond or _c(env)
-                                else:
-                                    _s = st[k]['condition']
-                                    cond = _c(env)
-                                logger.debug(f"Check got {cond}")
-                            if cond:
-                                setattr(domains, k, st[k]["value"])
                 return _update
             supdate = _exec_update(s["update"])
         if s["id"] in sutra_dict:

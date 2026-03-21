@@ -10,22 +10,11 @@ class Pratyaya(PaninianObject):
     def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.inPrakriya = True
-        self.its = its
         self.setTag("pratyaya")
         for t in other_tags:
             self.setTag(t)
-
-    def hasIt(self, it):
-        return it in self.its
-
-    def setIt(self, it):
-        if it not in self.its:
-            self.its.append(it)
-
-    def deleteIt(self, it):
-        return self.its.remove(it)
 
     def luTags(self):
         _l = []
@@ -68,6 +57,7 @@ upa = Pratyaya("upa", other_tags=["nipAta", "upasarga", "pada"])
 pra = Pratyaya("pra", other_tags=["nipAta", "upasarga", "pada"])
 ava = Pratyaya("ava", other_tags=["nipAta", "upasarga", "pada"])
 ud = Pratyaya("ud", other_tags=["nipAta", "upasarga", "pada"])
+ati = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 
 
 # bha when applied to prAtipadikas only!
@@ -128,9 +118,14 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
 # SI - jasaH SI
 SI = Pratyaya("I", its=["S"], other_tags=["svAdi", "sup", "SI"])
 # Si - jasSasaH Si
-Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si",
+Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si", "viBakti",
+                                          "praTamA",
                                           "sarvanAmasTAna"])
-# adaw - for watarAdi
+
+OS = Pratyaya("O", other_tags=["sup"])
+
+
+# adaq - for qatarAdi - 
 adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])
 
 # StrI
@@ -141,11 +136,26 @@ strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
 
 # Sup Luk
 luk_sup = Pratyaya("", its=[], other_tags=["sup"])
+luk = Pratyaya("", its=[], other_tags=[""])
 
 # Sambuddhi
 sambudDi = PaninianObject("")
 sambudDi.setTag("sambudDi")
 
+# Pum / Napum
+pum_abs = Pratyaya("", its=[], other_tags=["pum_abs", "pum"])
+napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "napum"])
+
+# kvip
+kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip"])
+
+# UW
+UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
+
 # Anta
 avasAna = PaninianObject(".")
 avasAna.setTag("avasAna")
+
+
+#
+kanin = Pratyaya("an", its=["k", "i", "n"], other_tags=["kanin"])

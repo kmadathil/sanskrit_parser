@@ -10,16 +10,13 @@ class Dhatu(PaninianObject):
     def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
-        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga)
+        super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.inPrakriya = True
-        self.its = its
         self.setTag("DAtu")
         self.setTag("aNga")
+        self.setTag(self.canonical())
         for t in other_tags:
             self.setTag(t)
-
-    def hasIt(self, it):
-        return it in self.its
 
 
 iR = Dhatu("i", its=["R"], other_tags=["eti"])
@@ -27,7 +24,7 @@ eDa = Dhatu("eD", other_tags=["eDati"], its=["a"])
 lUY = Dhatu("lU", its=["Y"])
 kzI = Dhatu("kzI")
 ji = Dhatu("ji")
-wukrIY = Dhatu("krI", its=["Y", "wu"])
+qukrIY = Dhatu("krI", its=["Y", "qu"])
 veY = Dhatu("veY", its=["Y"])
 fcCa = Dhatu("fcC", its=["~a"])
 Cad = Dhatu("Cad")
@@ -40,7 +37,9 @@ qulaBaz = Dhatu("laB", its=["~a", "z", "qu"])
 guhU = Dhatu("guh", its=["~u"])
 sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
-
+dfS = Dhatu("dfS", its=[])
+vah = Dhatu("vah", its=[])
+Sam = Dhatu("Sam", its=[])
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp = Dhatu("u", its=["Y"])

@@ -1,0 +1,163 @@
+#!/usr/bin/env python3
+"""log_nav_gen — Navigate Sanskrit generator debug logs.
+
+Usage:
+  log_nav_gen <cmd> <logfile|-> [arg]
+
+Commands:
+  skeleton  <logfile>        Step skeleton: node entries, triggers, op-results, hier boundaries
+  node      <logfile> <N>   Everything for node N (including any nested hier prakriyas)
+  hier      <logfile>        Hier prakriya injection and output points only
+  triggered <logfile>        Only triggered sutras, in order
+  cond      <logfile>        Only condition evaluation lines (Cond … → match/no)
+  sutra     <logfile> <id>  All lines mentioning sutra <id>  (e.g. 7.3.54)
+
+Logfile may be '-' to read from stdin.
+
+Examples:
+  log_nav_gen skeleton  debug.log
+  log_nav_gen node      debug.log  42
+  log_nav_gen sutra     debug.log  7.3.54
+  log_nav_gen triggered debug.log
+  log_nav_gen hier      debug.log
+  log_nav_gen cond      debug.log | grep match   # only matching conditions
+  PYTHONPATH=. python scripts/sanskrit_generator -t rAjan --vibhakti --debug 2>&1 \\
+      | log_nav_gen skeleton -
+"""
+
+import re
+import sys
+
+# ── compiled patterns ──────────────────────────────────────────────────────
+
+_SKELETON = re.compile(
+    r'I \[|'
+    r'O Node:|'
+    r'Triggered at window|'
+    r'Op result \[|'
+    r'Input:|'
+    r'Final Result:|'
+    r'Insertion hier prakriya|'
+    r'Hier output for|'
+    r'Nothing triggered|'
+    r'Nothing Triggered'
+)
+
+_HIER = re.compile(
+    r'Insertion hier prakriya|'
+    r'Input:|'
+    r'Final Result:|'
+    r'Hier output for'
+)
+
+_TRIGGERED = re.compile(r'Triggered at window|✓')
+
+_COND = re.compile(r'Cond  ')
+
+
+# ── helpers ────────────────────────────────────────────────────────────────
+
+def _lines(path):
+    src = open(path) if path != '-' else sys.stdin
+    with src:
+        return [(i + 1, ln.rstrip()) for i, ln in enumerate(src)]
+
+
+def _emit(lineno, line):
+    print(f"{lineno:6d}  {line}")
+
+
+# ── commands ───────────────────────────────────────────────────────────────
+
+def cmd_skeleton(lines):
+    """Structural view: one line per step event."""
+    for lineno, line in lines:
+        if _SKELETON.search(line):
+            _emit(lineno, line)
+
+
+def cmd_node(lines, node_id):
+    """Print every line from I [N]: through the O Node: that closes it.
+
+    Depth tracking handles nested hier prakriyas correctly: each
+    'Input:' inside the node opens a new level, 'Final Result:' closes
+    it; the first 'O Node:' at depth 0 is the one belonging to this step.
+    """
+    in_node = False
+    depth = 0
+    start = re.compile(rf'\bI \[{re.escape(str(node_id))}\]:')
+
+    for lineno, line in lines:
+        if not in_node:
+            if start.search(line):
+                in_node = True
+        if in_node:
+            _emit(lineno, line)
+            if re.search(r'\bInput:', line):
+                depth += 1
+            elif re.search(r'\bFinal Result:', line):
+                depth -= 1
+            elif re.search(r'\bO Node:', line) and depth == 0:
+                break
+
+
+def cmd_hier(lines):
+    """Show hier prakriya injection points and their outputs."""
+    for lineno, line in lines:
+        if _HIER.search(line):
+            _emit(lineno, line)
+
+
+def cmd_triggered(lines):
+    """Show only triggered-sutra lines and the ✓ checks."""
+    for lineno, line in lines:
+        if _TRIGGERED.search(line):
+            _emit(lineno, line)
+
+
+def cmd_cond(lines):
+    """Show condition evaluation summary lines (one per sutra check)."""
+    for lineno, line in lines:
+        if _COND.search(line):
+            _emit(lineno, line)
+
+
+def cmd_sutra(lines, sutra_id):
+    """Show every line that mentions a specific sutra ID."""
+    pat = re.compile(re.escape(sutra_id))
+    for lineno, line in lines:
+        if pat.search(line):
+            _emit(lineno, line)
+
+
+# ── dispatch ───────────────────────────────────────────────────────────────
+
+_COMMANDS = {
+    'skeleton':  (cmd_skeleton,  0),
+    'node':      (cmd_node,      1),
+    'hier':      (cmd_hier,      0),
+    'triggered': (cmd_triggered, 0),
+    'cond':      (cmd_cond,      0),
+    'sutra':     (cmd_sutra,     1),
+}
+
+
+def main():
+    args = sys.argv[1:]
+    if len(args) < 2 or args[0] not in _COMMANDS:
+        print(__doc__)
+        sys.exit(0 if not args else 1)
+
+    cmd, logfile, rest = args[0], args[1], args[2:]
+    fn, nargs = _COMMANDS[cmd]
+
+    if len(rest) < nargs:
+        print(f"error: '{cmd}' requires {nargs} argument(s) after the logfile.")
+        sys.exit(1)
+
+    lines = _lines(logfile)
+    fn(lines, *rest[:nargs])
+
+
+if __name__ == '__main__':
+    main()

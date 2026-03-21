@@ -51,6 +51,25 @@ def samprasaranam(s: str):
                   )
 
 
+def samprasArana_van(lc: str):
+    """samprasāraṇa for -v-a-n stems (Svan, yuvan, maGavan) in bha position (SK362 / 6.4.133).
+    lc ends in -v-a (the 'n' is held in l by the YAML rule).
+    Converts v→u (samprasāraṇa via samprasaranam), then merges with the preceding character:
+      - consonant + u  →  consonant + u        (Sva  → Su)
+      - u + u          →  ū  (savarna dīrgha)  (yuva → yU)
+      - a + u          →  o  (guṇa sandhi)      (maGava → maGo)
+    """
+    s = samprasaranam(lc[-2])    # v → u
+    pred = lc[-3]                # character just before the v
+    if isInPratyahara("ac", pred):
+        if isSavarna("u", pred):         # u + u → ū  (yuvan)
+            return lc[:-3] + dirgha(s)
+        else:                            # a + u → o  (maGavan)
+            return lc[:-3] + guna(s)
+    else:                                # consonant + u  (śvan: S + u)
+        return lc[:-2] + s
+
+
 def ayavayav(s: str):
     if s == "e":
         return "ay"
@@ -81,7 +100,15 @@ def chartva(s: str):
 
 
 def kutva(s: str):
-    return adesha(s, "cCjJY", "kKgGN")
+    return adesha(s, "cCjJYh", "kKgGNG")
+
+
+def kvinKutva(s: str):
+    """ku-substitution for kvin-derived stems (8.2.62): kutva extended with:
+    - S (ś) → k, q (ḍ) → g: ś-final path (8.2.36 S→ṣ + 8.2.39 ṣ→ḍ, then ḍ→g here)
+    - n (dental) → N (velar ṅ): dental n left at pada-end after 8.2.23 deletes c from añc-stems
+      (numAgama inserts n; 8.2.23 fires before 8.3.24+8.4.58 can convert n→M→Y)"""
+    return adesha(s, "cCjJYhSqn", "kKgGNGkgN")
 
 
 def vargatritiya(s: str):
@@ -152,7 +179,14 @@ def anunasika(s: str):
     else:
         return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
 
+#kutva for h in han
+def han_kutva(lc: str):
+    return lc.replace("h","G")
 
+# for Ratva override in han
+def anat(s):
+    return s != "a"
+    
 # vyavAya check for razAByAM noRaH samAnapade
 def rz_vyavaya_l(s: str):
     i = len(s)-1
@@ -207,6 +241,72 @@ def awkupvaNnum(s):
         or (s == "M")
 
 
+def ratva_string(s, awkupnumvyavaya=False, apply=True):
+    """Unified ṇatva helper for both condition check and xform.
+
+    Scans s for every 'n' at position i. A 'n' qualifies if scanning backward
+    from i-1 through permissible vyavāya characters we find ṛ/ṣ/r (r, z, f).
+
+    awkupnumvyavaya=False (8.4.1): no intervening characters allowed
+    awkupnumvyavaya=True  (8.4.2): aṭkupvāṅnum chars (vowels, ku/pu-class,
+                                    anusvara) may intervene
+
+    apply=True  (xform use):       return modified string (n→R where qualifying)
+    apply=False (condition check): return bool — True if any 'n' would be changed
+    """
+    result = list(s)
+    changed = False
+    for i in range(len(s)):
+        if s[i] == 'n':
+            # 8.3.24 (naścāpadāntasya jali): n before Jal becomes anusvāra M.
+            # That rule has priority; ṇatva must not target such n.
+            if i + 1 < len(s) and isInPratyahara('Jal', s[i + 1]):
+                continue
+            j = i - 1
+            while j >= 0:
+                if s[j] in ('r', 'z', 'f', 'F'):
+                    result[i] = 'R'
+                    changed = True
+                    break
+                elif awkupnumvyavaya and awkupvaNnum(s[j]):
+                    j -= 1
+                else:
+                    break
+    if apply:
+        return "".join(result)
+    else:
+        return changed
+
+
+def has_ratva_simple(s):
+    """Return True if s has ṛ/ṣ/r directly before 'n' (8.4.1, no vyavāya)."""
+    return ratva_string(s, awkupnumvyavaya=False, apply=False)
+
+
+def has_ratva_vyavaya(s):
+    """Return True if s has ṛ/ṣ/r before 'n' with aṭkupvāṅnum vyavāya (8.4.2)."""
+    return ratva_string(s, awkupnumvyavaya=True, apply=False)
+
+
+def has_ratva_non_at(s):
+    """For han-stems (8.4.22): True if s has ṛ/ṣ/r→(aṭkup vyavāya)→n where 'a' does NOT
+    directly precede 'n'. Returns True to block ṇatva (non-at-pūrva case);
+    returns False when 'a' immediately precedes 'n' (allowing ṇatva in that case)."""
+    for i in range(1, len(s)):
+        if s[i] == 'n' and s[i-1] != 'a':
+            if i + 1 < len(s) and isInPratyahara('Jal', s[i + 1]):
+                continue
+            j = i - 1
+            while j >= 0:
+                if s[j] in ('r', 'z', 'f', 'F'):
+                    return True
+                elif awkupvaNnum(s[j]):
+                    j -= 1
+                else:
+                    break
+    return False
+
+
 def Ratva(s):
     return s.replace("n", "R", 1)
 
@@ -230,6 +330,14 @@ def anekAc_asaMyogapUrva(s):
         if ac > 1:
             return True
     return False
+
+
+def saMyogapUrvaVamanta(lp):
+    """True if lp ends in hal+[v,m]+a+n — saMyoga ending in v or m immediately precedes 'an'."""
+    if len(lp) < 4:
+        return False
+    return (lp[-1] == 'n' and lp[-2] == 'a' and
+            lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
 
 
 def numAgama(s):
@@ -291,11 +399,15 @@ def druhAdi(ss):
 
 
 def notnull(s):
+    if hasattr(s, 'canonical'):      # Suggested by Claude Code
+        return s.canonical() != ""
     return ((s is not None) and (s != ""))
 
 
 def null(s):
-    return ((s is None) or (s == ""))
+    if hasattr(s, 'canonical'):
+        return s.canonical() == ""
+    return (s is None) or (s == "")
 
 
 # sUtra: adeN guRaH
@@ -312,3 +424,7 @@ def is_vriddhi(s: str):
     aat = "A"
     aich = SanskritImmutableString("Ec", encoding=sanscript.SLP1)
     return (s == aat) or ms.isInPratyahara(aich, so)
+
+# daSca d check
+def idam_d_p(s):
+    return ("d" in s)

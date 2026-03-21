@@ -1,0 +1,4454 @@
+# -*- coding: utf-8 -*-
+# Sutras for ac sandhi
+#  @author: kmadathil
+
+# Preefined variables, can be used as lvalues and rvalues in xform and
+# lvalues in conditions. To use a variable as rvalue in a condition,
+# prefix with $ (eg l: $r checkes for savarnatva between l and r)
+#
+#   lp = left pada
+#   rp = right pada
+#   l = last varna of left pada
+#   r = first varna of right pada
+#  ll = second last varna of left pada
+#  rr = second varna of right pada
+#  lc = left pada except last varna
+#  rc = right pada except first varna
+#  olp = output left pada (Used only for tagging outputs)
+#  orp = output right pada (Used only for tagging outputs)
+
+# Sutra: Name
+# Id: <adhyAya.pAda.sutra>
+# Condition: boolean
+# Every boolean is a(n or reduced list of) var: <value> and conditions
+#     l: a - l is savarna of a varna
+#     l: ut - l is short u varna
+#     r: ku - l is kavarga
+#     r: _ac - r is in pratyahara "ac"
+#     r: $l  - r is savarna of l (variable)
+#    rp: =naam - rp is exactly the string "naam"
+#    rp: !=strI - rp is not exactly the string "strI"
+#    lp: ?pada - lp has tag pada
+#    lp: ?!pada - lp does not have tag pada
+#    rp: +Y   - rp is a pratyaya with it Y
+#    lp: $$fname - call fname on lp (paninian_object)
+#
+# Domain: (list of) global domains needed to enable this rule
+#
+# Xform: dict of transformations. Each transformation is a python expression
+#    l: dirgha(l)
+#    r: ""
+# 
+# Update:
+#   olp: +ru - sets tag "ru" on output lp 
+#   olp: ++R - sets it R on output lp 
+#   orp: -pada - removes "pada" tag from output rp
+#   olp: --Y - removes it Y on output lp
+#   olp: =krozwf replaces output lp with krozwf (must be defined)
+#   domain: - sets domain triggers
+#     xxx_domain:   - sets domain trigger xxx_domain
+#         value: True - to True
+#           condition:  - if
+#              r: f       - r = "f"
+
+# Insert: Insert string or augment
+#    l: insert after left
+#    r: insert before right
+#    m: insert based on it
+# ac sandhi
+
+# FIXME - create samhita aDikAras
+# Three 6.1.72, 6.3.115, 8.2.108
+# 47: इको यणचि (6-1-77)
+-   sutra: इको यणचि
+    id: 6.1.77
+    condition:
+      l: _ik
+      r: _ac
+    xform:
+      l: ikoyan(l)
+       
+# 61: एचोऽयवायावः (6-1-78)
+-   sutra: एचोऽयवायावः
+    id: 6.1.78
+    condition:
+      l: _ec
+      r: _ac
+    xform:
+       l: ayavayav(l)
+       
+# 63: वान्तो यि प्रत्यये (6-1-79)
+-   sutra: वान्तो यि प्रत्यये 
+    id: 6.1.79
+    condition:
+      l: [o, O]
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+# 64: धातोस्तन्निमित्तस्यैव (6-1-80) 
+-   sutra:  धातोस्तन्निमित्तस्यैव 
+    id: 6.1.80
+    overrides: 6.1.79   
+    condition:
+      l: [o, O]
+      lp:
+        - and
+        - ?DAtu
+        - ?!tannimitta
+      r: y
+      rp: ?pratyaya
+    xform: null
+    
+# 65: क्षय्यजय्यौ शक्यार्थे (6-1-81)
+-   sutra:  क्षय्यजय्यौ शक्यार्थे 
+    id: 6.1.81
+    overrides: 6.1.79
+    optional: true
+    condition:
+      l: et
+      lc:
+        - =kz
+        - =j
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+# 66: क्रय्यस्तदर्थे (6-1-82) 
+-   sutra:  क्रय्यस्तदर्थे 
+    id: 6.1.82
+    overrides: 6.1.79
+    optional: true
+    condition:
+      lc: =kr
+      l: et
+      lp: ?DAtu
+      r: y
+      rp: ?pratyaya
+    xform:
+       l: ayavayav(l)
+
+
+# FIXME PurvaparayoH needs a bit more thought
+# How do we make both pUrva and para "look" the same?
+# If we lump it on pUrva, we trigger wrong para sutras
+# We use two hacks -
+#     - Remove pada tag on left after lumping PurvaparayoH on rp
+#     - Where possible, make l=r=hrasva and let savarna dIrgha work (technically wrong prakriya which gives the right result)
+#     - Specifically override sutras
+# 69: आद् गुणः (6-1-87)
+-   sutra: आद्गुणः
+    id: 6.1.87
+    condition:
+       l: a
+       r: _ik
+    xform:
+       l: null
+       r: guna(r)
+    update:
+      olp:
+       - -pada # for pUrvaparayoH
+       - -aNga
+       - -Ba
+# 72: वृद्धिरेचि (6-1-88)
+-   sutra: वृद्धिरेचि
+    id: 6.1.88
+    condition:
+       l: a
+       r: _ec
+    xform:
+       r: vriddhi(r)
+       l: null
+    update:
+      olp:
+       - -pada # for pUrvaparayoH
+       - -aNga
+       - -Ba
+
+# 73: एत्येधत्यूठ्सु (6-1-89) 
+-   sutra: एत्येधत्यूठ्सु
+    id: 6.1.89
+    overrides: 6.1.94
+    condition:
+     - l: a
+       rp:
+         - ?eti
+         - ?UW
+         - ?eDati
+    xform:
+       l: null
+       r: vriddhi(r)
+    update:
+       olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+
+# 269: आटश्च (6-1-90) 
+-   sutra: आटश्च
+    id: 6.1.90
+    condition:
+     - lp: ?Aw
+       r: _ac
+    xform:
+       l: vriddhi(r)
+       r: null
+    update:
+       olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+# 74: उपसर्गादृति धातौ (6-1-91)
+-   sutra: उपसर्गादृति धातौ 
+    id: 6.1.91
+    condition:
+     - l: a
+       lp: ?upasarga
+       r: f
+       #rp: ?DAtu
+    xform:
+       l: null
+       r: vriddhi(r)
+    update:
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
+# 285: औतोऽम्शसोः (6-1-93) 
+-   sutra:   औतोऽम्शसोः
+    id: 6.1.93
+    # apavada of 7.2.115 + 7.1.90 गोतो णित् by सूत्रनिर्माणसामर्थ्यात् 
+    overrides: 7.2.115
+    condition:
+       l: o
+       lp: ?aNga
+       rp:
+         - ?am
+         - ?Sas
+    xform:
+       l: null
+       r: str('A')
+    # for pUrvaparayoH
+    
+# 78: एङि पररूपम् (6-1-94)
+-   sutra:  एङि पररूपम् 
+    id: 6.1.94
+    condition:
+       l: a
+       lp: ?upasarga
+       r: eN
+       # rp: ?DAtu
+    xform:
+       l: null
+    update:
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
+# 80: ओमाङोश्च (6-1-95) 
+-   sutra:  ओमाङोश्च 
+    id: 6.1.95
+    condition:
+       l: a    
+       rp:
+        - =om
+        - ?AN
+    xform:
+       l: null
+    update:
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
+#  191: अतो गुणे (6-1-97)
+-   sutra:  अतो गुणे
+    id: 6.1.97
+    overrides: 6.1.101
+    condition:
+       l: at
+       lp: ?!pada
+       r: [at, _eN]
+    xform:
+       l: null
+    update:
+      olp:
+        - -pada # for pUrvaparayoH
+        - -aNga
+        - -Ba
+        
+# 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
+-   sutra:  प्रथमयोः पूर्वसवर्णः 
+    id: 6.1.102
+    overrides: [6.1.97, 6.1.77, 6.1.101]
+    condition:
+       l: _ak
+       r: _ac
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform:
+       l: dirgha(l)  # pUrvaparayoH
+       r: null
+    update:
+       orp: +psavarRa
+       
+ # 196: तस्माच्छसो नः पुंसि (6-1-103)
+# 196: तस्माच्छसो नः पुंसि (6-1-103)
+-   sutra:  तस्माच्छसो नः पुंसि 
+    id: 6.1.103
+    overrides: 6.1.97
+    condition:
+       l: _ak
+       lp:
+        - and
+        - ?aNga
+        - ?pum
+       rp:
+         - and
+#         - =as
+#         - ?dvitIyA
+         - ?Sas
+         - ?psavarRa
+    xform:
+       r: str("n")
+       
+# 252: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् (6-1-68)        
+-   sutra: हल्ङ्याब्भ्यो दीर्घात्सुतिस्यपृक्तं हल् 
+    id: 6.1.68
+    condition:
+      - l: _hal
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+      - lp:
+          - ?NI
+          - ?Ap
+        rc: $$null
+        rp:
+          - ?su
+          - ?tip
+          - ?sip
+    xform:
+       r: null
+    update:
+       olp: +pada
+       
+# 193: एङ्ह्रस्वात्संबुद्धेः (6-1-69)
+-   sutra: एङ्ह्रस्वात्संबुद्धेः
+    id: 6.1.69
+    condition:
+       l: [at, it, ut, ft, xt, _eN]
+       r: _hal
+       rp:
+         - ?sambudDi
+    xform:
+       r: null
+       
+# 194: अमिपूर्वः (6-1-107) 
+-   sutra:  अमिपूर्वः
+    id: 6.1.107
+    # FIXME: This prevents 7.3.102 supi ca from triggering, but we need a proper
+    # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack 
+    overrides: [6.1.101,  6.1.102, 7.3.102]
+    condition:
+       l: _ak
+       rp: ?am
+    xform:
+       l: null
+       r: l
+    update:
+       olp:
+         - -Ba
+         - -pada
+    
+# 330: संप्रसारणाच्च (6-1-108)
+-   sutra:  संप्रसारणाच्च
+    id: 6.1.108
+    condition:
+       lp: ?samprasAraRam
+       r: _ac 
+    xform:
+       r: null
+ 
+#165: नादिचि (6-1-104) 
+-   sutra: नादिचि
+    id: 6.1.104
+    # Need apavada here to disable 6.1.102 so vfdDireci or AdguRaH can run
+    overrides: 6.1.102
+    condition:
+       l: a
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+    xform: null
+    
+#239: दीर्घाज्जसि च (6-1-105) 
+-   sutra: दीर्घाज्जसि च
+    id: 6.1.105
+    overrides: [6.1.102, 6.1.104]
+    condition:
+     - l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       r: _ic
+       rp:
+         - ?praTamA
+         - ?dvitIyA
+         - ?samboDana
+     - l: [At, It, Ut, Ft, Xt, e, o, E, O]
+       rp:
+         - ?jas
+    xform: null
+
+
+# 90: प्लुतप्रगृह्या अचि नित्यम् (6-1-125)
+-   sutra:  प्लुतप्रगृह्या अचि नित्यम् 
+    id: 6.1.125
+    condition:
+       lp:
+        - ?pluta
+        - ?pragfhya
+       r: _ac
+    xform:
+       l: null
+
+# FIXME - test this once we do dvicacana
+# 100: ईदूदेद्द्विवचनं प्रगृह्यम् (1-1-11) 
+-   sutra:  ईदूदेद्द्विवचनं प्रगृह्यम्
+    id: 1.1.11
+    condition:
+      l: [It, Ut, et]
+      lp: ?dvivacana
+    update:
+      olp: +pragfhya
+      
+# FIXME - test this once we do adas
+# 101: अदसोमात् (1-1-12) 
+-   sutra: अदसोमात्
+    id: 1.1.12
+    condition:
+      l: [It, Ut, et]
+      ll: m
+      lp: ?adas
+    update:
+      olp: +pragfhya
+
+
+# Better handled as a paribhAshA
+# -   sutra: उरण् रपरः
+#     id: 1.1.51
+#     condition: null
+#     xform:
+#        r: str("r")+r
+#     trigger: uran_trigger 
+#     update:
+#       trigger:
+#         uran_trigger:
+#           value: False
+       
+# 85: अकः सवर्णे दीर्घः (6-1-101)
+-   sutra: अकः सवर्णे दीर्घः
+    id: 6.1.101
+    condition:
+      l: _ak
+      r: $l
+    xform:
+      l: dirgha(l)
+      r: null
+
+# 86: एङः पदान्तादति (6-1-109)
+-   sutra: एङः पदान्तादति
+    id: 6.1.109
+    condition:
+      l: _eN
+      r: at
+      lp: ?pada
+    xform:
+      r: null
+
+# 246: ङसिङसोश्च (6-1-110) 
+-   sutra: ङसिङसोश्च
+    id: 6.1.110
+    condition:
+      l: _eN
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: null
+      
+# 279: ऋत उत् (6-1-111) 
+-   sutra:  ऋत उत्
+    id: 6.1.111
+    #overrides: 8.4.46 # FIXED (8.4.49): Why do we need this? pituH
+    condition:
+      l: ft
+      rp:
+        - ?Nas
+        - ?Nasi
+    xform:
+      r: null
+      l: str("ur")  # Uran raparaH
+      
+# 255: ख्यत्यात्परस्य (6-1-112) 
+-   sutra: ख्यत्यात्परस्य
+    id: 6.1.112
+    condition:
+      l: =y
+      ll:
+       - =t
+       - =K
+      rp:
+        - ?Nas
+        - ?Nasi
+      r: at
+      rr: =s
+    xform:
+      r: str("u")
+
+# hal sandhi
+# 146: छे च (6-1-73)
+- sutra: छे च
+  id: 6.1.73
+  condition:
+     l: [at,it,ut,ft,xt]
+     r: C
+  insert:
+     m: tuk
+
+# 147: आङ्माङोश्च (6-1-74)
+- sutra: आङ्माङोश्च
+  id: 6.1.74
+  overrides: [6.1.75, 6.1.76]
+  condition:
+     - lp:
+        - and
+        - =A
+        - +N
+       r: C
+     - lp:
+        - and
+        - =mA
+        - +N       
+       r: C
+  insert:
+     m: tuk
+     
+# 148: दीर्घात् (6-1-75)
+- sutra: दीर्घात्
+  id: 6.1.75
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     r: C
+  insert:
+     m: tuk
+     
+# 149: पदान्ताद्वा (6-1-76)
+- sutra: पदान्ताद्वा
+  id: 6.1.76
+  overrides: 6.1.75
+  optional: true
+  condition:
+     l: [At, It, Ut, Ft, Xt, e, o]
+     lp: ?pada
+     r: C
+  insert:
+     m: tuk
+
+# 111: स्तोः श्चुना श्चुः (8-4-40)
+- sutra: स्तोः श्चुना श्चुः (L)
+  id: 8.4.40
+  condition:
+      - l: [s, tu]
+        r: [S, cu]
+  xform:
+      l: null
+  insert:
+      l: shcutva(l)
+
+# 111: स्तोः श्चुना श्चुः (8-4-40-1)
+- sutra: स्तोः श्चुना श्चुः (R)
+  id: 8.4.40.1 
+  condition:
+      - l: [S, cu]
+        r: [s, tu]
+  xform:
+      r: null
+  insert:
+      r: shcutva(r)
+
+# 113: ष्टुना ष्टुः (8-4-41)
+- sutra: ष्टुना ष्टुः (L)
+  id: 8.4.41
+  condition:
+      - l: [s, tu]
+        r: [z, wu]
+  xform:
+      l: null
+  insert:
+      l: zwutva(l)
+
+# 113: ष्टुना ष्टुः (8-4-41-1)
+- sutra: ष्टुना ष्टुः (R)
+  id: 8.4.41.1
+  condition:
+      - l: [z, wu]
+        r: [s, tu]
+  xform:
+      r: null
+  insert:
+      r: zwutva(r)
+
+
+# 114: न पदान्ताट्टोरनाम् (8-4-42)
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.4.42
+  overrides: [8.4.41, 8.4.41.1]
+  condition:
+        lp: ?pada
+        l: wu
+        r: [s, tu]
+  xform: null
+
+# Subsutra plus vArtikas
+# 114: न पदान्ताट्टोरनाम् (8-4-42-1)
+- sutra: न पदान्ताट्टोरनाम्
+  id: 8.4.42.1
+  overrides: [8.4.42, 8.4.41, 8.4.41.1]
+  condition:
+        l: wu
+        rp: [=nAm, =navatis, =nagaris]
+  xform:
+        r: zwutva(r)
+        
+# 115: तोः षि (8-4-43)
+- sutra: तोः षि
+  id: 8.4.43
+  overrides: 8.4.41
+  condition:
+        l: tu
+        r: z
+  xform:
+
+# 112: शात् (8-4-44)
+- sutra: शात्
+  id: 8.4.44
+  overrides: 8.4.40.1
+  condition:
+        l: S
+        r: [s, tu]
+  xform:
+
+# 67: लोपः शाकल्यस्य (8-3-19)
+- sutra: लोपः शाकल्यस्य
+  id: 8.3.19
+  condition:
+     lp: ?pada
+     l: y
+     ll: a
+     r: _aS
+  xform:
+     l: null
+
+# 169: ओतो गार्ग्यस्य (8-3-20)
+- sutra: ओतो गार्ग्यस्य
+  id: 8.3.20
+  condition:
+     l: y
+     ll: o
+     r: _aS
+  xform:
+     l: null
+
+# Pada disabled per kashika
+# 2335: ढो ढे लोपः (8-3-13)
+- sutra: ढो ढे लोपः
+  id: 8.3.13
+  condition:
+     #lp: ?pada
+     l: Q
+     r: Q
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+     
+# 173: रो रि (8-3-14)
+- sutra: रो रि
+  id: 8.3.14
+  condition:
+     #lp: ?pada
+     l: r
+     r: r
+  xform:
+     l: null
+  update:
+     olp: +qrlopa
+
+# 8.3.13/14 are siddha for this sutra
+# 174: ढ्रलोपे पूर्वस्य दीर्घोऽणः (6-3-111)
+- sutra: ढ्रलोपे पूर्वस्य दीर्घोऽणः
+  id: 6.3.111
+  condition:
+     lp: ?qrlopa
+     l: _aR
+  xform:
+     l: dirgha(l)
+
+# 379: विश्वस्य वसुराटोः (6.3.128)
+# In compound, viśva (pūrva-pada) final a → ā before vasu or rāj+kvip (= rāṭ in nom sg).
+# Example: viśva + vasu → viśvāvasu; viśva + rāj_kvip → viśvārāṭ (nom sg via SK294 chain).
+# Fires after uttara-pada+sup merge when merged form retains ?vasupada/?rAw+?rAj and ?samAsa tags.
+- sutra: विश्वस्य वसुराटोः
+  id: 6.3.128
+  condition:
+    - lp: ?viSva
+      rp:
+        - and
+        - ?vasupada
+        - ?samAsa
+    - lp: ?viSva
+      rp:
+        - and
+        - ?rAj
+        - ?rAw
+        - ?samAsa
+  xform:
+    l: dirgha(l)
+
+#250: सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
+- sutra: सर्वनामस्थाने चासम्बुद्धौ
+  id: 6.4.8
+  condition:
+     l: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+#250:  सर्वनामस्थाने चाऽसंबुद्धौ (6-4-8)
+# The case of maGavan is unique. After the optional change to maGavat_f,
+# followed by num insertion by 7.1.70 and 8.2.23 संयोगान्तस्य लोपः
+# resulting in maGavan, we need the final a to be lengthened
+# SK says उपधादीर्घः । मघवान् । इह दीर्घे कर्तव्ये संयोगान्तलोपस्याऽसिद्धत्वं न भवति बहुलग्रहणात् ।
+# Thus, we need to make by making the output 0f 8.2.23 visible to
+# 6.4.8,  *only* in the case of maGavan,
+# while also stopping 8.2.7 nalopaH prAtipadikAntasya 
+# To do that, we create a subrule and make it 8.2.23 special_siddha for it
+- sutra: सर्वनामस्थाने चासम्बुद्धौ
+  id: 6.4.8.1
+  overrides: [6.4.8, 8.2.7]
+  condition:
+     l: n
+     lp:
+       - and
+       - ?maGavan
+       - +f
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+
+
+# 124: अनुस्वारस्य ययि परसवर्णः (8-4-58)
+- sutra: अनुस्वारस्य ययि परसवर्णः
+  id: 8.4.58
+  condition:
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
+
+# 124.1: अनुस्वारस्य ययि परसवर्णः — variant for M embedded in penultimate (ll) position.
+# Fires when M is at ll (last of lc) and a consonant is at l (e.g. after numAgama+8.3.24
+# on añc-stems: numAgama inserts n; 8.3.24 converts n→M in lc, leaving c at l).
+# xform: replace M (last of lc) with anunasika(l) — the class nasal of the following consonant.
+# E.g.: lc="pratyaM", l="c" → anunasika("c")="Y" → lc="pratyaY", l="c" → "pratyaYc" = pratyañc ✓
+- sutra: अनुस्वारस्य ययि परसवर्णः
+  id: 8.4.58.1
+  condition:
+     ll: M
+     l: _yay
+  xform:
+     lc: lc[:-1]+anunasika(l)
+
+#optional at pada end
+# 125: वा पदान्तस्य (8-4-59)
+- sutra: वा पदान्तस्य
+  id: 8.4.59
+  overrides: 8.4.58
+  optional: True
+  condition:
+     lp: ?pada
+     l: M
+     r: _yay
+  xform:
+     l: anunasika(r)
+
+# 122: मोऽनुस्वारः (8-3-23)
+- sutra: मोऽनुस्वारः
+  id: 8.3.23
+  condition:
+     l: m
+     r: _hal
+  xform:
+     l: str("M")
+
+# 123: नश्चापदान्तस्य झलि (8-3-24)
+# n (not at pada-anta) → M (anusvāra) before jhal.
+# Fires after 6.4.10 has produced lp like "SreyAns" (ll="n", l="s").
+# Restricted to sibilants and palatal c [S, Z, s, c]:
+#   - Sibilants: main use case (SreyAMs etc.)
+#   - c added for añc-stems: numAgama("pratyac")→"pratyanc"; n+c→M+c here;
+#     then 8.4.58 M+c → Y (anunasika(c)=Y) → "pratyaYc" = pratyañc ✓
+#     n before dental stops (e.g., bhavant: n+t) remains dental nasal — not extended there.
+- sutra: नश्चापदान्तस्य झलि
+  id: 8.3.24
+  condition:
+     ll: n
+     l: [S, Z, s, c]
+  xform:
+     lc: lc[:-1]+str("M")
+
+# 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
+- sutra: यरोऽनुनासिकेऽनुनासिको वा 
+  id: 8.4.45
+  optional: True
+  #overrides: 8.2.39
+  condition:
+     l: _yar
+     lp: ?pada
+     r: [N,Y,R,n,m]
+  xform:
+     l: anunasika(l)
+
+# 84: झलां जशोऽन्ते (8-2-39)
+- sutra: झलां जशोऽन्ते
+  id: 8.2.39
+  condition:
+   - lp: ?pada
+     l: _Jal
+  xform:
+     l: jashtva(l)
+
+# 295: षढोः कः सि (8-2-41) 
+- sutra: षढोः कः सि
+  id: 8.2.41
+  condition:
+     l: [z, Q]
+     r: s
+  xform:
+     l: str("k")
+
+# 121: खरि च (8-4-55)
+- sutra: खरि च
+  id: 8.4.55
+  condition:
+     l: _Jal
+     r: _Kar
+  xform:
+     l: chartva(l)
+
+# 206: वावसाने (8-4-56)
+- sutra: वाऽवसाने
+  id: 8.4.56
+  optional: true
+  condition:
+     l: _Jal
+     rp: ?avasAna
+  xform:
+     l: chartva(l)
+     
+#  handle savarna of n - भवान् + लिखति = भवाल्ँलिखति । 
+# 117: तोर्लि (8-4-60)
+- sutra: तोर्लि
+  id: 8.4.60
+  #overrides: 8.2.39
+  condition:
+     l: tu
+     r: l
+  xform:
+     l: r
+# 117: तोर्लि (8-4-60-1)
+- sutra: तोर्लि
+  id: 8.4.60.1
+  #overrides: [8.2.39, 8.4.60]
+  overrides: 8.4.60
+  condition:
+     l: n
+     r: l
+  xform:
+     l: str("l~")
+
+# 118: उदः स्थास्तम्भोः पूर्वस्य (8-4-61)
+- sutra: उदः स्थास्तम्भोः पूर्वस्य सवर्णः
+  id: 8.4.61
+  #overrides: 8.2.39
+  condition:
+     lp: =ut
+     rp:
+       - ?sTA
+       - ?sTamB
+  xform:
+     r: str("T")
+
+
+
+
+# Ratva — pada-internal implementation (samAnapade = lp must be ?pada)
+# 235: रषाभ्यां नो णः समानपदे (8-4-1)
+# Direct adjacency: ṛ/ṣ/r immediately precedes 'n' (no intervening chars).
+# Apavāda of 8.4.2: fires first when both conditions hold; 8.4.2 handles
+# any remaining vyavāya 'n' positions in the subsequent iteration.
+# xform: l:null + lc:ratva_string(lc+l) rewrites entire element string.
+- sutra: रषाभ्यां नो णः समानपदे
+  id: 8.4.1
+  overrides: 8.4.2
+  condition:
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_simple
+  xform:
+    l: null
+    lc: ratva_string(lc+l)
+
+# 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
+# Vyavāya extension: ṛ/ṣ/r may be separated from 'n' by aṭkupvāṅnum chars
+# (vowels, ku/pu-class, anusvara). lp: ?pada (samānapade). Subsumes old
+# cross-boundary 8.4.2 and old 8.4.2.1 (which only checked lp-final 'n').
+- sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
+  id: 8.4.2
+  condition:
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_vyavaya
+  xform:
+    l: null
+    lc: ratva_string(lc+l, True)
+
+# 359: हन्तेरत्पूर्वस्य (8-4-22)
+# No n → ṇ in han-stems unless preceded by short a (at-pūrvasya).
+# Pada-internal form: block when lp is a ?han ?pada with ṛ/ṣ/r→n but 'a' ≠ immediate predecessor.
+- sutra: हन्तेरत्पूर्वस्य
+  id: 8.4.22
+  overrides: [8.4.1, 8.4.2]
+  condition:
+    lp:
+      - and
+      - ?han
+      - ?pada
+      - $$has_ratva_non_at
+  xform: null
+   
+# 359: हन्तेरात्पूर्वस्य (8-4-22)
+# FIXME: Implement upasarga - prahaRyate etc. but praGAni
+# n-R only if upasarga has r ($$rz_vyavaya_l) and at precedes n in han
+# - sutra: हन्तेरात्पूर्वस्य
+#  id: 8.4.22.1
+#  overrides: [8.4.1, 8.4.2]
+#  condition:
+
+#  xform:
+
+
+# 198: पदान्तस्य (8-4-37)
+# Blocks ṇatva for pada-final 'n': a word-final 'n' is exempt even when ṛ/ṣ/r
+# precedes it. Fires when lp=?pada ends in 'n' (l='n') and has ṛ/ṣ/r+n conditioning
+# ($$has_ratva_vyavaya) — i.e., when 8.4.1/8.4.2 would otherwise fire on the pada-
+# final 'n'. The l:null + lc:ratva_string xform in 8.4.1/8.4.2 would apply Ratva to
+# all qualifying 'n' including the final one; this apavāda blocks that. Overrides both.
+- sutra: पदान्तस्य
+  id: 8.4.37
+  overrides: [8.4.1, 8.4.2]
+  condition:
+    lp:
+      - and
+      - ?pada
+      - $$has_ratva_vyavaya
+    l: n
+  xform: null
+
+#  FIXME: Collect Pada aDikAra from 8.1.16
+# 236: न लोपः प्रातिपदिकान्तस्य (8-2-7)
+- sutra: नलोपः प्रातिपदिकान्तस्य
+  id: 8.2.7
+  condition:
+    - lp:
+        - and
+        - ?prAtipadika
+        - ?pada
+      l: n
+    - lp: ?prAtipadika
+      l: n
+      rp: ?sup
+      r: $$null
+  xform:
+     l: null
+
+# 352 न ङिसम्बुद्ध्योः (8-2-8)
+# 352: न ङिसंबुद्ध्योः (8-2-8)
+- sutra: न ङिसम्बुद्ध्योः
+  id: 8.2.8
+  overrides: 8.2.7
+  condition:
+     lp:
+       - and
+       - ?prAtipadika
+       - ?pada
+     l: n
+     rp:
+       - ?Ni
+       - ?sambudDi
+
+# 54: संयोगान्तस्य लोपः (8-2-23)
+- sutra: संयोगान्तस्य लोपः
+  id: 8.2.23
+  condition:
+   - lp: ?pada
+     ll: _hal
+     l:  _hal
+  xform:
+     l: null
+
+
+# Vartikam
+# 54: संयोगान्तस्य लोपः (8-2-23-1)
+- sutra: संयोगान्तस्य लोपः (v यणः प्रतिषेधो वाच्यः)
+  id: 8.2.23.1
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: _hal
+     l:  _yaR
+  xform:
+
+# 280: रात्सस्य (8-2-24)
+- sutra: रात्सस्य
+  id: 8.2.24
+  overrides: 8.2.23, 8.2.24.1
+  condition:
+     lp: ?pada
+     ll: r
+     l:  s
+  xform:
+     l: null
+     
+# 280: रात्सस्य (8-2-24-1)
+- sutra: रात्सस्य
+  id: 8.2.24.1
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: r
+  xform: null
+
+# 377: क्विन्प्रत्ययस्य कुः (8-2-62) — ku-substitution for kvin-derived stems at pada-end.
+# Covers cu-final kvin stems (j→g, same as 8.2.30) and ś-final path.
+# For j-final stems (ṛtvij, sraj, yuj-after-8.2.23): kvinKutva(j)=g, then 8.4.56→k.
+# For ñ-final (Y, after 8.2.23 deletes j from yuñj): kvinKutva(Y=ñ)=N(ṅ) → gives nom sg yuṅ.
+# For ś-final (S): natural order — 8.2.36 fires S→ṣ(z), 8.2.39 fires ṣ→ḍ(q), then here q→g.
+#   Before voiceless (loc pl su): 8.4.55 g→k, then 8.3.59 s→ṣ → dikṣu.
+# Overrides 8.2.30 for kvin stems (same result for cu; adds ñ-final and ḍ-final coverage).
+#
+# PARTIAL IMPLEMENTATION: SK (8-2-62 vṛtti) states: kvinpratyayo yasmāt tasya kavargo
+# 'ntādeśaḥ syāt padānte — the ka-varga replaces the final of ANY kvin-derived stem at
+# pada-end. The condition l:[cu,S,q,n] covers currently implemented stems:
+#   - cu (j,J,Y): j-finals ṛtvij, sraj, yuj; ñ-final (Y) from yuñj after 8.2.23
+#   - S (ś): diś via 8.2.36 S→ṣ(z) and 8.2.39 ṣ→ḍ(q)
+#   - q (ḍ): the ḍ that results from the ś path above
+#   - n (dental): dental n at pada-end after 8.2.23 deletes c from añc-stems (numAgama path);
+#     8.2.23 (82023) fires before 8.3.24 (83024) so n+c → n (c deleted) before n→M→Y chain runs
+# SK also notes coḥ kuḥ (8.2.30) does NOT apply subsequently (asiddhatva).
+# See SK373 entry in generator_status.md for full unimplemented stem list.
+- sutra: क्विन्प्रत्ययस्य कुः
+  id: 8.2.62
+  overrides: 8.2.30
+  condition:
+     lp:
+       - and
+       - ?pada
+       - ?kvin
+     l: [cu, S, q, n]
+  xform:
+     l: kvinKutva(l)
+
+# 380: स्कोः संयोगाद्योरन्ते च (8-2-29) — s or k, when first member of a conjunct, is deleted at pada-end.
+# Vasu examples: √lasj+kvip → लक् (s deleted from sj→j→k via 8.2.30);
+#                √masj+kvip → मक् (same); √takṣ+kvip → तट्/तड् (k deleted from kṣ→ṣ→ḍ→ṭ).
+# Condition: lp=?pada (word boundary), ll=[s,k] (penultimate = first of conjunct), l=_hal (final = second of conjunct).
+# Xform: delete the penultimate s or k (ll: null).
+# Derivation for √takṣ+kvip nom sg: takz → 8.2.29 k del → taz → 8.2.39 ṣ→ḍ(q) → 8.4.56 opt ḍ→ṭ = taṭ/taḍ.
+# Loc pl: taz→8.2.39 ṣ→ḍ(q)→8.4.55 ḍ→ṭ(w)+su = taṭsu (8.4.42 blocks ṣṭutva after pada-ṭ, so s stays).
+- sutra: स्कोः संयोगाद्योरन्ते च
+  id: 8.2.29
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     ll: [s, k]
+     l: _hal
+  xform:
+     lc: lc[:-1]    # delete the penultimate s/k (first of conjunct); lc="tak" → lc[:-1]="ta" for takz
+
+# 378: चोः कुः (8-2-30)
+- sutra: चोः कुः
+  id: 8.2.30
+  condition:
+     - lp: ?pada
+       l: cu
+     - l: cu
+       r: _Jal
+  xform:
+     l: kutva(l)
+
+#324: हो ढः (8-2-31)
+- sutra: हो ढः
+  id: 8.2.31
+  condition:
+     - lp: ?pada
+       l: h
+     - l: h
+       r: _Jal
+  xform:
+     l: str("Q")
+     
+#325: दादेर्धातोर्घः (8-2-32)      
+- sutra: दादेर्धातोर्घः
+  id: 8.2.32
+  overrides: 8.2.31
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$dAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$dAdi
+       r: _Jal
+  xform:
+     l: str("G")
+
+#  327: वा द्रुहमुहष्णुहष्णिहाम् (8-2-33) 
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् 
+  id: 8.2.33
+  overrides: [8.2.32, 8.2.31]
+  optional: true
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("G")
+# pakZe Qa. Because this relies on matching "druh" etc., it will not get
+# triggered if 8.2.33 doesn't. We cannot rely on 8.2.32 for this, since this
+# is tripAdi etc.
+# 327: वा द्रुहमुहष्णुहष्णिहाम् (8-2-33-1)
+- sutra: वा द्रुहमुहष्णुहष्णिहाम् (पक्षे ढ)
+  id: 8.2.33.1
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?DAtu
+        - $$druhAdi
+       l: h
+     - l: h
+       lp:
+        - and
+        - ?DAtu
+        - $$druhAdi
+       r: _Jal
+  xform:
+     l: str("Q")
+
+
+# 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36)
+- sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
+  id: 8.2.36
+  overrides: 8.2.30
+  condition:
+     - lp:
+        - and
+        - ?pada
+        - ?vraScAdi
+       r: _Jal
+     - lp: ?pada
+       l: [C, S]
+       r: _Jal
+     - lp:
+        - and
+        - ?pada
+        - ?vraScAdi
+       l: cu
+  xform:
+     l: str("z")
+  update:
+     olp: +rAw
+
+
+# 326: एकाचो बशो भष् झषन्तस्य स्ध्वोः (8-2-37) 
+- sutra: एकाचो बशो भष् झषन्तस्य स्ध्वोः
+  id: 8.2.37
+  condition:
+     - l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - ?pada
+        - $$ekAcDAtu
+     - r: s
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+     - r: D
+       rr: v
+       l: _Jaz
+       lp:
+        - and
+        - ?DAtu
+        - $$ekAcDAtu
+  xform:
+     lc: baSoBaz(lc)
+
+
+
+# 2280: झषस्तथोर्धोऽधः (8-2-40)
+- sutra: झषस्तथोर्धोऽधः
+  id: 8.2.40
+  condition:
+     - l: _Jaz
+       r: [t, T]
+       lp:
+        - and
+        - ?DAtu
+        - ?!DA
+  xform:
+     r: str("D")
+
+# 341: मो नो धातोः (8-2-64)
+- sutra: मो नो धातोः
+  id: 8.2.64
+  condition:
+     lp:
+      - and
+      - ?DAtu
+      - ?pada
+     l: m
+  xform:
+     l: str("n")
+
+# 134: ङमो ह्रस्वादचि ङमुण्नित्यम् (8-3-32)
+- sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
+  id: 8.3.32
+  condition:
+     ll: [at, it, ut, ft]
+     l: _Nam
+     r: _ac
+     lp: ?pada
+  xform:
+     r: l+r
+
+
+# End Pada aDikAra 8.3.54
+
+# mUrDanyAdeSa aDikAra
+#  210: अपदान्तस्य मूर्धन्यः (8-3-55) 
+# 211: इण्कोः (8-3-57) 
+#  212: आदेशप्रत्यययोः (8-3-59) 
+
+- sutra: आदेशप्रत्यययोः
+  id: 8.3.59
+  condition:
+     l:
+        - _iR
+        - ku
+     r: s
+     rc: $$notnull
+     rp:
+        - ?pratyaya
+        - ?AdeSa_s
+  xform:
+     r: str("z")
+     
+# FIXME Get apadAntasya done
+# FIXME नुम्विसर्जनीयशर्व्यवायेऽपि (8-3-58) 
+
+# end mUrDanyAdeza aDikAra
+
+
+# 52: झलां जश् झशि (8-4-53)
+- sutra: झलां जश् झशि
+  id: 8.4.53
+  condition:
+     l: _Jal
+     r: _JaS
+  xform:
+     l: jashtva(l)
+
+# 119: झयो होऽन्यतरस्याम् (8-4-62)
+- sutra: झयो होऽन्यतरस्याम्
+  optional: True
+  id: 8.4.62
+  condition:
+     l: _Jay
+     r: h
+  xform:
+     r: vargatritiya(l)
+
+
+# vartikam छत्वममि इति वक्तव्यम् incorprated
+# 120: शश्छोऽटि (8-4-63)
+- sutra: शश्छोऽटि
+  id: 8.4.63
+  optional: True
+  condition:  
+     l: _Jay
+     r: S
+     rr: _am
+  xform:
+     r: str("C")
+
+# 133: शि तुक् (8-3-31)
+- sutra: शि तुक्
+  id: 8.3.31
+  condition:
+     l: n
+     r: S
+     lp: ?pada
+  optional: true
+  insert:
+     m: tuk
+
+
+# Sutras in this aDikAra set the ru_anu tag to backtrigger 8.3.2/3/4
+# - sutra: अत्रानुनासिकः पूर्वस्य तु वा
+#   id: 8.3.2
+#   optional: True
+#   condition:
+#       lp: ?ru_anu
+#   xform:
+#       l: str("~r")
+#   update:
+#       olp: -ru_anu
+
+# 137: अनुनासिकात्परोऽनुस्वारः (8-3-4)
+- sutra: अनुनासिकात् परोऽनुस्वारः
+  id: 8.3.4
+  condition:
+      lp: ?ru_anu
+  xform:
+      l: str("Mr")
+  update:
+      olp: -ru_anu
+      
+# 140: नश्छव्यप्रशान् (8-3-7)
+- sutra: नश्छव्यप्रशान्
+  id: 8.3.7
+  condition:
+     l: n
+     r: _Cav
+     rr: _am
+  xform:
+     l: str("r")
+  update:
+     # Set on input to backtrigger 8.3.2/3/4
+     lp: [+ru, +ru_anu]
+
+
+# 8.3.12 - End of 8.3.2 aDikAra
+
+# "Visarga" Sandhi
+# 162: ससजुषो रुः (8-2-66)
+- sutra: ससजुषो रुः
+  id: 8.2.66
+  overrides: 8.2.39
+  condition:  
+     l: s
+     lp: ?pada
+  xform:
+     l: str("r")
+  update:
+     olp: +ru
+     # Have to do this to back-trigger 6.1.113
+     lp: +ru
+
+# 334: वसुस्रंसुध्वंस्वनडुहां दः (8-2-72)
+- sutra: वसुस्रंसुध्वंस्वनडुहां 
+  id: 8.2.72
+  overrides: 8.2.66
+  # sarvanAmasTAna not explicitly in the sutra, but implied by vacanasamarthya of
+  # num in 7.1.82 etc
+  condition:  
+    -  lp:
+         - and
+         - ?pada
+         - ?anaquh
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - ?vasu
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - =Dvas
+       rp: ?!sarvanAmasTAna  
+    -  l: s
+       lp:
+         - and
+         - ?pada
+         - =sras
+       rp: ?!sarvanAmasTAna  
+  xform:
+     l: str("d")
+
+# 163: अतो रोरप्लुतादप्लुते (6-1-113)
+- sutra: अतो रोरप्लुतादप्लुते
+  id: 6.1.113
+  overrides: 8.3.17
+  condition:  
+     lp: ?ru
+     #l: r
+     ll: at
+     r: at
+  xform:
+     l: null
+  insert:
+     l: str("u")
+  update:
+    olp: -ru
+
+# 166: हशि च (6-1-114)
+- sutra: हशि च
+  id: 6.1.114
+  overrides: 8.3.17
+  condition:  
+     lp: ?ru
+     #l: r
+     ll: at
+     r: _haS
+  xform:
+     l: null
+  insert:
+     l: str("u")
+  update:
+    olp: -ru
+
+#  337: दिव उत् (6-1-131) 
+- sutra: दिव उत्
+  id: 6.1.131
+  condition:
+     lp:
+      - and
+      - =div
+      - ?pada
+  xform:
+     l: null
+  insert:
+     l: str("u")
+ 
+# 167: भोभगोअघोअपूर्वस्य योऽशि (8-3-17)
+- sutra: भोभगोअघोअपूर्वस्य योऽशि
+  id: 8.3.17
+  condition:
+     - ll: a
+       #l:  r
+       lp: ?ru
+       r: _aS
+     - lc: [=Bo, =Bago, =aGo]
+       #l:  r
+       lp: ?ru
+       r: _aS
+  xform:
+     l: str("y")
+
+# 76: खरवसानयोर्विसर्जनीयः (8-3-15)
+- sutra: खरवसानयोर्विसर्जनीयः
+  id: 8.3.15
+  condition:
+     - l:  r
+       r: _Kar
+       lp: ?pada
+     - l:  r
+       lp: ?pada
+       rp: ?avasAna
+  xform:
+     l: str("H")
+
+#339: रोः सुपि (8-3-16) 
+- sutra: रोः सुपि
+  id: 8.3.16
+  overrides: 8.3.15
+  condition:
+     - l:  r
+       rp:
+        - and
+        - =su
+        - +p
+       lp: ?ru
+  xform:
+     l: str("H")
+
+# 339: रोः सुपि (8-3-16-1)
+- sutra: रोः सुपि
+  id: 8.3.16.1
+  overrides: 8.3.15
+  condition:
+     - l:  r
+       rp:
+        - and
+        - =su
+        - +p
+       lp: ?!ru   #  Only ru
+  xform:
+     null
+
+
+# 138: विसर्जनीयस्य सः (8-3-34)
+- sutra: विसर्जनीयस्य सः
+  id: 8.3.34
+  condition:
+     l:  H
+     r: _Kar
+     lp: ?pada
+  xform:
+     l: str("s")
+     
+# 150: शर्परे विसर्जनीयः (8-3-35)
+- sutra: शर्परे विसर्जनीयः
+  id: 8.3.35
+  overrides: 8.3.34
+  condition:
+     l:  H
+     r: _Kar
+     rr: _Sar
+     lp: ?pada
+
+# 151: वा शरि (8-3-36)
+- sutra: वा शरि
+  id: 8.3.36
+  overrides: 8.3.34
+  optional: True
+  condition:
+     l:  H
+     r: _Sar
+     lp: ?pada
+  xform:
+     l: str("s")
+
+# FIXME: Ignoring updaDmanIya and jihvAmUlIya as they're not seen in practice
+# 142: कुप्वोः कपौ च (8-3-37)
+- sutra: कुप्वोः ≍क≍पौ च
+  id: 8.3.37
+  overrides: 8.3.34
+  condition:
+     l:  H
+     r: [ku, pu]
+     lp: ?pada
+  xform:
+     l: l
+ 
+# 59: अचो रहाभ्यां द्वे (8-4-46)
+- sutra: अचो रहाभ्यां द्वे
+  id: 8.4.46
+  optional: true
+  condition:  
+     ll:  _ac
+     l: [r, h]
+     r: _yar
+  xform:
+     r: r+r
+
+
+# FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this
+# Until we can fix this ;-)
+# - sutra: अनचि च
+#   id: 8.4.47
+#   optional: true
+#   condition:  
+#      ll: _ac
+#      l: _yar
+#      r: _hal
+#   xform:
+#      l: l+l
+
+# 340: शरोऽचि (8-4-49) 
+- sutra: शरोऽचि
+  id: 8.4.49
+  overrides: 8.4.46
+  condition:  
+     ll:  _ac
+     l: [r, h]
+     r: _Sar
+     rr:
+        - _ac
+        - $$null
+  xform: null
+
+# This is split into two parts
+# 8.4.49 is the nizeDaH
+# 8.4.49.1 is the atideSa for hali
+# We do not allow dvitvam at the end
+# - sutra: शरोऽचि
+#   id: 8.4.49.1
+#   overrides: [8.4.49, 8.4.46]
+#   optional: true
+#   condition:  
+#      ll:  _ac
+#      l: [r, h]
+#      r: _Sar
+#      rr: _hal
+#   xform: 
+#      r: r+r
+
+# 335: सहेः साडः सः (8-3-56) 
+- sutra: सहेः साडः सः
+  id: 8.3.56
+  condition:  
+     lp:
+       - and
+       - ?sah
+       - ?pada
+     l: q
+     ll: A
+  xform:
+     lc: lc[:-2] + str("zA")
+
+# 60: हलो यमां यमि लोपः (8-4-64)
+- sutra: हलो यमां यमि लोपः
+  id: 8.4.64
+  optional: true
+  condition:  
+     ll:  _hal
+     l: _yam
+     r: $l
+  xform:
+     l: null
+
+# FIXME - savarna of l
+# 71: झरो झरि सवर्णे (8-4-65)
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65
+  optional: true
+  condition:  
+     - ll:  _hal
+       l: _Jar
+       r: $l
+  xform:
+     l: null
+# 71: झरो झरि सवर्णे (8-4-65-1)
+- sutra: झरो झरि सवर्णे
+  id: 8.4.65.1
+  optional: true
+  condition:  
+     - l:  _hal
+       r: _Jar
+       rr: $r
+  xform:
+     r: null
+
+
+## Rules added for pratyayas etc.
+# aNga aDikAra
+
+# 209: नामि (6-4-3) 
+- sutra: नामि 
+  id: 6.4.3
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: 7.3.102
+  condition:
+     lp: ?aNga
+     l: _ac
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
+# 300: न तिसृचतसृ (6-4-4)
+- sutra: न तिसृचतसृ 
+  id: 6.4.4
+  overrides: 6.4.3
+  condition:
+     - lp:
+       - and
+       - ?aNga
+       - =tisf
+       rp:
+       - and
+       - ?Am
+     - lp:
+       - and
+       - ?aNga
+       - =catasf
+       rp:
+       - and
+       - ?Am
+  xform: null
+
+
+# 283: नृ च (6-4-6)
+- sutra: नृ च
+  id: 6.4.6
+  # FIXME: SK says संनिपातपरिभाषाविरोधात्
+  # but I'm not sure that pariBAzA is univeral
+  overrides: [6.4.3, 7.3.102]
+  optional: true
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =nf
+     rp:
+      - and
+      - =nAm
+      - ?Am
+  xform:
+     l: dirgha(l)
+
+# 370: नोपधायाः (6-4-7) — n-lopa + upadhā dīrgha before gen pl (nāmi = Am suffix).
+# Fires for ṣaṭ-saṃjñā n-final numerals: paYcan+Am → paYcA+Am, azwan+Am → azwA+Am.
+# SK338 (7.1.55) then fires on the ?Am suffix → inserts 'nA' → full gen pl -Anam.
+# Final: paYcAnAm = पञ्चानाम्, azwAnAm = अष्टानाम्.
+- sutra: नोपधायाः
+  id: 6.4.7
+  overrides: 6.4.134
+  condition:
+     lp: ?zaw
+     l: n
+     rp: ?Am
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+     l: null
+
+# 317: सान्तमहतः संयोगस्य (6-4-10) 
+- sutra: सान्तमहतः संयोगस्य 
+  id: 6.4.10
+  condition:
+   - lp: ?aNga
+     l: s
+     ll: n
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =mahant
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-2]+dirgha(lc[-2])+lc[-1]
+
+
+# FIXME simplify once we have and/or in condition
+
+# 277: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् (6-4-11)
+- sutra: अप्तृन्तृच्स्वसृनप्तृनेष्टृत्वष्टृक्षत्तृहोतृपोतृप्रशास्तॄणाम् 
+  id: 6.4.11
+  condition:
+   - lp:
+      - and
+      - ?aNga
+      - ?tfc
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?tfn
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - =ap
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+   - lp:
+      - and
+      - ?aNga
+      - ?naptrAdi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     lc: lc[:-1]+dirgha(lc[-1])
+
+# 356: इन्हन्पूषार्यम्णां शौ (6-4-12)
+# Block 6.4.8 for in/han/pUzan/aryaman stems before all sarvānāmasthāna EXCEPT Si.
+# "शौ" = loc. of suffix name "śi" (Si); rule says upadhā dīrgha ONLY before Si,
+# not before O/jas/am/Ow/su. Together with 6.4.13 (su re-enabled), forms like
+# hastin nom sg → hastī (6.4.13), nom du → hastinau (6.4.12 blocks 6.4.8).
+- sutra: इन्हन्पूषार्यम्णां शौ
+  id: 6.4.12
+  overrides: 6.4.8
+  condition:
+    - l: n
+      ll: i                   # in-stems: penultimate vowel is 'i' (hastin, yogin…)
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si                # do NOT block when Si follows — 6.4.8 handles Si
+    - lp: =pUzan              # pūṣan — specific proper noun (an-stem, exceptional)
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
+    - lp: =aryaman            # aryaman — specific proper noun (an-stem, exceptional)
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
+    - lp: ?han            # han dhatu tag
+      l: n
+      rp:
+        - and
+        - ?sarvanAmasTAna
+        - ?!sambudDi
+        - ?!Si
+  # No xform: blocking rule. When this fires, 6.4.8 is suppressed.
+
+# 357: सौ च (6-4-13)
+# Re-enable upadhā dīrgha for in/pUzan/aryaman stems before su (nom sg), except voc.
+# 6.4.12 blocks 6.4.8 for su (su has no Si tag); 6.4.13 independently applies the
+# same lengthening xform as 6.4.8 for the specific case of su + non-vocative.
+- sutra: सौ च
+  id: 6.4.13
+  condition:
+    - l: n
+      ll: i                   # in-stems
+      rp:
+        - and
+        - ?su                 # specifically su (nom sg marker); ?suw would be too broad
+        - ?!sambudDi          # not vocative (su2 carries sambudDi)
+    - lp: =pUzan
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+    - lp: =aryaman
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+    - lp: ?han
+      l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
+# asidDavat aDikAra 6.4.22-6.4.175
+# FIXME Implement this priority correctly
+
+# 271: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ (6-4-77) 
+- sutra: अचिश्नुधातुभ्रुवां य्वोरियङुवङौ 
+  id: 6.4.77
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+      - i
+      - u
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+       
+# 301: स्त्रियाः (6-4-79)        
+- sutra: स्त्रियाः
+  id: 6.4.79
+  condition:
+     l: i          # atistrayaH jas requires guna by jasi ca - this has to be anitya
+     lp: ?strI_p   # Not looking at ?strI because of atistri atistriyaU etc.
+     r: _ac
+     rp: ?pratyaya     
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+       
+# 302: वाम्शसोः (6-4-80)   
+- sutra: वाम्शसोः
+  id: 6.4.80
+  optional: true
+  overrides: 6.4.79
+  condition:
+     lp: ?strI_p
+     rp:
+      - ?am
+      - ?Sas
+  xform:
+     l: iyuvaN(l)
+  update:
+     olp:
+       - +iyuvaN
+
+# 272: एरनेकाचोऽसंयोगपूर्वस्य (6-4-82)
+- sutra: एरनेकाचोऽसंयोगपूर्वस्य
+  id: 6.4.82
+  condition:
+     l: i
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+  xform:
+     l: str("y")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+     
+# 281: ओः सुपि (6-4-83)
+- sutra: ओः सुपि
+  id: 6.4.83
+  condition:
+     l: u
+     lp:
+      - and
+      - ?DAtu
+      - $$anekAc_asaMyogapUrva
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+
+# 282: वर्षाभ्वश्च (6-4-84)
+- sutra: वर्षाभ्वश्च
+  id: 6.4.84
+  overrides: 6.4.85
+  condition:
+     l: u
+     lp: =varzABU
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+
+# 282: वर्षाभ्वश्च (6-4-84-1)
+- sutra: वर्षाभ्वश्च (दृन्करपुनःपूर्वस्य भुवो यण्वक्तव्यः)
+  id: 6.4.84.1
+  overrides: 6.4.85
+  condition:
+     l: u
+     lp:
+       - =dfnBU
+       - =karaBU
+       - =punarBU
+     r: _ac
+     rp: ?sup
+  xform:
+     l: str("v")
+  update:
+     olp:
+       - +yaR
+       - -nadI
+
+
+# 273: न भूसुधियोः (6-4-85) 
+- sutra: न भूसुधियोः 
+  id: 6.4.85
+  overrides: 6.4.82
+  condition:
+     lp:
+      - ?BU
+      - =suDI
+     r: _ac
+     rp: ?sup
+  xform: null
+
+# 360: मघवा बहुलम् (6-4-128)
+# Optional tṛ-anta substitute for maGavan before any pratyaya (bahulam = variously).
+# n → t (creates maghavat-type stem); ++f adds ṛ as it-marker (like śatṛ's u-it),
+# enabling SK361 (7.1.70) to insert nUM before sarvanamasthana suffixes.
+# Distinct from kroṣṭu's tfc tag (where ṛ is the stem-final, not an it): here ṛ IS an it.
+- sutra: मघवा बहुलम्
+  id: 6.4.128
+  domain: prakfti
+  bahiranga: 1
+  optional: true
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?maGavan
+     l: n
+     ll: a
+  xform:
+     l: str("t")
+  update:
+     olp:
+      - ++f          # ṛ added as it-marker (like śatṛ u-it); enables SK361 (7.1.70) via +f condition
+
+# 329: वाह ऊठ् (6-4-132)
+- sutra: वाह ऊठ्
+  id: 6.4.132
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - =vAh
+  xform:
+     lc: lc[1:]
+  insert:
+     0: UW
+    
+# 362: श्वयुवमघोनामतद्धिते (6-4-133)
+# samprasāraṇa of v→u in bha-position for śvan/yuvan/maGavan before non-taddhita suffixes.
+# "ataddhite" is naturally satisfied: SvanType tag does not propagate through taddhita
+# derivation (paninian_object.py join_objects allowlist), so śauvana- etc. won't have it.
+# Overrides 6.4.134 (general al-lopa of -a- before n) and 6.4.136 (optional al-lopa for Ni/SI).
+- sutra: श्वयुवमघोनामतद्धिते
+  id: 6.4.133
+  overrides: [6.4.134, 6.4.136]
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?SvanType
+     l: n
+     ll: a
+  xform:
+     lc: samprasArana_van(lc)
+     # l (= n) unchanged
+
+# 363: न संप्रसारणे संप्रसारणम् (6-1-37) — DEFERRED
+# Blocks a second samprasāraṇa from applying after a first has already been applied.
+# Not needed for nominal declension: samprasArana_van() produces Su-/yU-/maGo- which
+# contain no further yaṇ candidate, so no spurious re-application is possible.
+# Relevant only for kṛt/verbal formations (e.g. UW-suffix compounds). Defer until then.
+
+# 364: अर्वणस्त्रसावनञः (6-4-127)
+# Mandatory tṛ-anta substitute for arvan (not preceded by nañ), before all suffixes
+# except su (nominative singular). Parallel to SK360 (maGavan) but mandatory.
+# ++f enables SK361 (7.1.70) to insert nUM before sarvanamasthana → arvant-forms.
+# Before su: standard -an rules fire instead (6.4.8 upadhā-dīrgha + 8.2.7 n-lopa → arvā).
+# nañ exception (anarvan → yajvan-type): not yet handled; requires nañ tag propagation.
+- sutra: अर्वणस्त्रसावनञः
+  id: 6.4.127
+  domain: prakfti
+  bahiranga: 1
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?arvan
+     l: n
+     ll: a
+     rp: ?!su
+  xform:
+     l: str("t")
+  update:
+     olp:
+      - ++f          # ṛ as it-marker; enables SK361 (7.1.70) nUM insertion
+
+# 234 : अल्लोपोऽनः (6-4-134)
+# 234: अल्लोपोऽनः (6-4-134)
+- sutra: अल्लोपोऽनः
+  id: 6.4.134
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     l:  str("n")
+
+# 237: विभाषा ङिश्योः (6-4-136)
+- sutra: विभाषा ङिश्योः
+  id: 6.4.136
+  overrides: 6.4.134
+  optional: true
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     ll: a
+     l: n
+     rp:
+       - ?Ni
+       - ?SI
+  xform:
+     lc: lc[:-1]
+     l: null
+  insert:
+     l:  str("n")
+ 
+
+# 355: न संयोगाद्वमन्तात् (6-4-137)
+- sutra: न संयोगाद्वमन्तात्
+  id: 6.4.137
+  overrides: [6.4.134, 6.4.135, 6.4.136]
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - $$saMyogapUrvaVamanta
+  xform: null
+
+# 240: आतो धातोः (6-4-140) 
+- sutra: आतो धातोः
+  id: 6.4.140
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?DAtu
+     l: At
+  xform:
+     l: null
+     
+#316: टेः (6-4-143) 
+- sutra: टेः
+  id: 6.4.143
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     rp: +q
+  xform:
+     l: null
+     lc: wilopa(lc+l)
+     
+# 847: ओर्गुणः (6-4-146)
+- sutra: ओर्गुणः
+  id: 6.4.146
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+     l: u
+     rp:
+       - and
+       - ?tadDita
+  xform:
+     l: guna(l)
+
+# 311: यस्येति च (6-4-148) 
+- sutra: यस्येति च 
+  id: 6.4.148
+  condition:
+    -  lp:
+        - and
+        - ?aNga
+        - ?Ba
+       l:
+        - a
+        - i
+       rp:
+        - ?tadDita
+        - ?NI  # औङः श्यां प्रतिषेधो वाच्यः rules out SI. That leaves only NIp/z/n
+  xform:
+     l: null
+
+# 203: अतो भिस ऐस् (7-1-9)
+- sutra: अतो भिस ऐस् 
+  id: 7.1.9
+  # FIXME : this needs proper priority
+  # These two should go away with proper nityatva and bhautapUrvya in this
+  # Alternatively, this is also antaranga (A1) by Nagesa. 
+  # overrides: [7.3.102, 7.3.103]
+  domain: pratyaya
+  bahiranga: 2
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Bis
+  xform:
+     r: null
+     rc: str("Es")
+
+# 349: नेदमदसोरकोः (7-1-11) 
+- sutra: नेदमदसोरकोः
+  id: 7.1.11
+  overrides: 7.1.9
+  domain: pratyaya
+  bahiranga: 2
+  condition:
+     lp:
+       - ?idam
+       - ?adas
+     rp: ?Bis
+
+# 201: टाङसिङसामिनात्स्याः (7-1-12)
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?wA
+  xform:
+     r: str("ina")
+# 201: टाङसिङसामिनात्स्याः (7-1-12-1)
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.1
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nasi
+  xform:
+     r: null
+     rc: str("At")
+# 201: टाङसिङसामिनात्स्याः (7-1-12-2)
+- sutra: टाङसिङसामिनात्स्याः 
+  id: 7.1.12.2
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Nas
+  xform:
+     r: null
+     rc: str("sya")
+
+# 204: ङेर्यः (7-1-13)
+- sutra: ङेर्यः 
+  id: 7.1.13
+  condition:
+     lp: ?aNga
+     l: at
+     rp: ?Ne
+  xform:
+     r: str("ya")
+     
+#215: सर्वनाम्नः स्मै (7-1-14)
+- sutra: सर्वनाम्नः स्मै
+  id: 7.1.14
+  overrides: 7.1.13
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Ne
+  xform:
+     r: str("smE")
+     
+# 216: ङसिङ्योः स्मात्स्मिनौ (7-1-15)
+- sutra: ङसिङ्योः स्मात्स्मिनौ
+  id: 7.1.15
+  overrides: 7.1.12.1
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Nasi
+  xform:
+     rc: str("smAt")
+     r: null
+     
+# 216: ङसिङ्योः स्मात्स्मिनौ (7-1-15-1)
+- sutra: ङसिङ्योः स्मात्स्मिनौ
+  id: 7.1.15.1
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?Ni
+  xform:
+     r: null
+     rc: str("smin")
+
+
+# 214: जसः शी (7-1-17) 
+- sutra:  जसः शी
+  id: 7.1.17
+  # pratyaya class - so it wins by bahiranga against 6.1.102 praTamayoH pUrvasavarRaH
+  bahiranga: 2
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?sarvanAma
+     l: at
+     rp: ?jas
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 287: औङ आपः (7-1-18)
+- sutra: औङ आपः
+  id: 7.1.18
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?O
+       - ?Ow
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 310: नपुंसकाच्च (7-1-19) 
+- sutra: नपुंसकाच्च 
+  id: 7.1.19
+  # domain: aNga
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?O
+       - ?Ow
+  xform:
+     r: str("I")
+     rc: null
+  update:
+     orp: +SI
+     
+# 312: जश्शसोः शिः (7-1-20) 
+- sutra: जश्शसोः शिः
+  id: 7.1.20
+  # domain: aNga
+  # So it wins against 7.1.17, which is also at 2
+  bahiranga: 2
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+       - ?jas
+       - ?Sas
+  update:
+     orp: =Si
+
+# 372: अष्टाभ्य औश् (7-1-21) — jas/śas → au (O) for aṣṭan (optional).
+# n is deleted, suffix replaced by 'O' (au = औ). No ā-insertion here: azwO = अष्टौ.
+# Overrides SK261 (7.1.22 ṣaḍbhyo luk). Without this option: SK261 luk + 8.2.7 → azwa = अष्ट.
+- sutra: अष्टाभ्य औश्
+  id: 7.1.21
+  optional: True
+#  overrides: 7.1.22
+  bahiranga: 2   # Pratyaya
+  condition:
+     lp: ?azwan
+     l: n
+     rp:
+       - ?jas
+       - ?Sas
+  xform:
+     l: null
+  update:
+     orp: =OS
+       
+# 261: षड्भ्यो लुक् (7-1-22)
+- sutra: षड्भ्यो लुक्
+  id: 7.1.22
+  condition:
+     lp:
+      - ?zaw
+     rp:
+      - ?jas
+      - ?Sas
+  update:
+     olp: -Ba
+     orp: =luk_sup
+
+# 319: स्वमोर्नपुंसकात् (7-1-23) 
+- sutra: स्वमोर्नपुंसकात् 
+  id: 7.1.23
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  
+  update:
+     orp: =luk_sup
+
+# 309: अतोऽम् (7-1-24) 
+- sutra: अतोऽम् 
+  id: 7.1.24
+  overrides: 7.1.23
+  condition:
+     l: at
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =am
+     
+# 315: अद्ड्डतरादिभ्यः पञ्चम्यः (7-1-25) 
+- sutra: अद्ड्डतरादिभ्यः पञ्चम्यः 
+  id: 7.1.25
+  # domain: aNga
+  overrides: 7.1.24
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?napum
+      - ?qatarAdi
+     rp:
+      - ?su
+      - ?am  # This is effectively a NOP, but is specified to avoid 7.1.23
+  update:
+     orp: =adaq
+          
+# 264: त्रेस्त्रयः (7-1-53) 
+- sutra:  त्रेस्त्रयः
+  id: 7.1.53
+  # So that this (prakriti karya) wins against the nitya nAmi
+  # Can't use override since that needs to run too. 
+  bahiranga: 1    
+  condition:
+     lp:
+      - and
+      - =tri
+      - ?saMKyA
+     rp:
+      - ?Am
+  xform:
+     l: str("traya")
+     lc: null
+
+
+# 332: सावनडुहः (7-1-82) 
+- sutra: सावनडुहः
+  id: 7.1.82
+  condition:
+     lp: ?anaquh
+     rp: ?su
+  xform:
+     l: str("n")+l
+
+# 336: दिव औत् (7-1-84)
+- sutra: दिव औत्
+  id: 7.1.84
+  condition:
+     lp: =div
+     rp: ?su
+  xform:
+     l: null
+  insert:
+     l: str("O")
+
+
+
+# 284: गोतो णित् (7-1-90) 
+- sutra:  गोतो णित् 
+  id: 7.1.90
+  # Bahiranga class set to 2, since this is not varRakAryam 
+  bahiranga: 2
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =go
+     rp: ?sarvanAmasTAna
+  update:
+     orp: ++R
+
+# 253: सख्युरसंबुद्धौ (7-1-92) 
+- sutra:  सख्युरसंबुद्धौ
+  id: 7.1.92
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?saKi
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  update:
+     orp: ++R
+
+# 276: ऋदुशनस्पुरुदंसोऽनेहसां च (7-1-94)      
+- sutra:  ऋदुशनस्पुरुदंसोऽनेहसां च
+  id: 7.1.94
+  overrides: 7.3.110
+  condition:
+     - l: ft
+       lp: ?aNga
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =uSanas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =purudaMsas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - =anehas
+       rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+     l: str("an")
+
+
+# 331: चतुरनडुहोरामुदात्तः (7-1-98) 
+- sutra: चतुरनडुहोरामुदात्तः
+  id: 7.1.98
+  condition:
+     lp:
+       - =catur
+       - ?anaquh
+     rp: ?sarvanAmasTAna
+  xform:
+     l: null
+  insert:
+     l: str("A")+l
+
+# 333: अम् संबुद्धौ (7-1-99) 
+- sutra: अम् संबुद्धौ  
+  id: 7.1.99
+  overrides: 7.1.98
+  condition:
+     lp: ?anaquh
+     rp: ?sambudDi
+  xform:
+     l: null
+  insert:
+     l: str("a")+l
+ 
+
+# 371: अष्टन आ विभक्तौ (7-2-84) — n → ā before hal-initial vibhakti (optional).
+# Produces aṣṭābhis, aṣṭābhyas, aṣṭāsu alongside aṣṭabhis, aṣṭabhyas, aṣṭasu.
+# When this fires, n→A so 8.2.7 (l: n) won't fire afterward.
+# When not taken, 8.2.7 cond 1 fires (after 1.4.17 assigns ?pada) → normal n-lopa.
+- sutra: अष्टन आ विभक्तौ
+  id: 7.2.84
+  optional: True
+  condition:
+     lp: ?azwan
+     l: n
+     r: _hal
+     rp: ?viBakti
+  xform:
+     l: null
+     lc: lc[:-1]+str("A")
+
+# 286: रायो हलि (7-2-85)
+- sutra:   रायो हलि
+  id: 7.2.85
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - =rE
+     r: _hal
+     rp: ?viBakti
+  xform:
+     l: str("A")
+
+# 298: त्रिचतुरोः स्त्रियां तिसृचतसृ (7-2-99)
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99
+  bahiranga: 1
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  condition:
+     lp:
+      - and
+      - ?aNga
+#     - ?strI
+      - =tri
+     rp: ?strI_abs # Was ?sup
+#  xform:
+#      l: str("tisf")
+#      lc: null
+  update:
+     olp: =tisf
+
+# 298: त्रिचतुरोः स्त्रियां तिसृचतसृ (7-2-99-1)
+- sutra: त्रिचतुरोः स्त्रियां तिसृचतसृ 
+  id: 7.2.99.1
+  bahiranga: 1
+  #overrides: [7.3.109, 7.3.110] # FIXME bahiranga
+  condition:
+     lp:
+      - and
+      - ?aNga
+#     - ?strI
+      - =catur
+     rp: ?strI_abs # Was ?sup
+#  xform:
+#     l: str("catasf")
+#     lc: null
+  update:
+     olp: =catasf
+    
+# 299: अचि र ऋतः (7-2-100) 
+- sutra: अचि र ऋतः
+  overrides: [7.3.109, 7.3.110]
+  id: 7.2.100
+  condition:
+     lp:
+      - =tisf
+      - =catasf
+     rp:
+      - and
+      - ?viBakti
+      - ?!Am # नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+     r:
+      - _ac
+  xform:
+     l: str("r")
+
+# ---- yuṣmad / asmad (personal pronoun) rules ----
+# SK381: तदोः सः सावनन्त्ययोः (7-2-106) — tad-group pronoun; deferred (no tad pratipadika yet)
+
+# 382: ङेप्रथमयोरम् (7-1-28)
+# am-ādeśa for yuṣmad/asmad: ṅe (dat sg), prathamā (nom sg/du/pl), and dvitīyā (acc
+# sg/du/pl) suffixes → "am". SK384/SK388/SK389/SK394 replace the mparyanta stem portion;
+# SK391/SK392/SK393 operate on the resulting stem-final char. Marks output suffix +AdeSa
+# so SK392/SK393 (which check ?!AdeSa) do not double-fire on the ādeśa suffix.
+# bahiranga:2, overrides:7.1.17. Priority (7.1.28, _aps_num=71028): fires after SK384 (72094)
+# and SK385 (72090) when competing.
+# NOTE: use block-sequence for ?-tag lists (flow-style [?tag] parses as dict in PyYAML).
+- sutra: ङेप्रथमयोरम्
+  id: 7.1.28
+  bahiranga: 2
+  overrides: 7.1.17
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp:
+      - ?Ne
+      - ?su
+      - ?O
+      - ?jas
+      - ?am
+      - ?Ow
+      - ?Sas
+  xform:
+    r: null
+    rc: str("am")
+  update:
+    orp:
+      - +AdeSa
+      - +am
+
+# SK383: मपर्यन्तस्य (7-2-91) — adhikāra scope indicator ("up to m"); Natural Siddha:
+# the "mparyanta" scope is encoded directly in SK384's xform (replacing lc = up to m).
+
+# 384: त्वाहौ सौ (7-2-94)
+# For yuṣmad/asmad, the mparyanta (up to-m portion) → tv / ah before su (nom sg).
+# Two blocks: one for yuzmad (→ tv), one for asmad (→ ah).
+# Priority 72094: fires before SK382 (71028) and SK385 (72090).
+- sutra: त्वाहौ सौ
+  id: 7.2.94
+  overrides: 7.2.97
+  condition:
+    lp: ?yuzmad
+    rp: ?su
+  xform:
+    lc: str("tv")
+
+- sutra: त्वाहौ सौ
+  id: 7.2.94.1
+  overrides: 7.2.97
+  condition:
+    lp: ?asmad
+    rp: ?su
+  xform:
+    lc: str("ah")
+
+# 385: शेषे लोपः (7-2-90)
+# d-lopa for yuzmad/asmad. Fires in exactly four positions:
+#   - nom sg: after SK384 sets lc→"tv"/"ah", leaving l='d' → SK385 deletes it
+#   - nom pl: after SK388 sets lc→"yUya"/"vaya", leaving l='d' → SK385 deletes it
+#   - dat sg: after SK394's hier-prakriya gives "tuByad"/"mahyad" → SK385 deletes 'd'
+#   - abl/dat pl (Byas): fires directly; SK393/SK392 are blocked by rp conditions
+# For all other positions, SK387/SK390/SK392/SK393 override 7.2.90 and handle 'd' directly.
+- sutra: शेषे लोपः
+  id: 7.2.90
+  overrides: [7.3.102, 7.3.103]
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    l: d
+  xform:
+    l: null
+
+# 386: युवावौ द्विवचने (7-2-92)
+# Dual mparyanta: yuzmad → yuv, asmad → āv, for ALL dual vibhakti.
+# Preserves trailing 'a' (lc[-1]): result is "yuvad"/"Avad". SK387 then handles nom/acc
+# du (deletes 'd' via insert→'A'). For other dual forms (gen/loc du), SK392/SK393 fire
+# on 'd' directly (deferred). Priority 72092: fires before SK385 (72090) and SK382 (71028).
+- sutra: युवावौ द्विवचने
+  id: 7.2.92
+  condition:
+    lp: ?yuzmad
+    rp: ?dvivacana
+  xform:
+    lc: str("yuv")+lc[-1]
+
+- sutra: युवावौ द्विवचने
+  id: 7.2.92.1
+  condition:
+    lp: ?asmad
+    rp: ?dvivacana
+  xform:
+    lc: str("Av")+lc[-1]
+
+# 387: प्रथमायाश्च द्विवचने भाषायाम् (7-2-88)
+# Nom du ā-ādeśa: deletes the final stem char and inserts 'A'. Fires after SK386 changes stem
+# to yuva/Āva (stem-final 'a' preserved by SK386). "yuv"+"A" + suffix "am" (from SK382)
+# → sandhi a+A=A → yuvām ✓.
+# overrides [7.2.89, 7.2.86] to block y-ādeśa (SK392) and ā-lengthening (SK393) from also
+# firing for nom du (O is vowel-initial but this rule takes precedence).
+- sutra: प्रथमायाश्च द्विवचने भाषायाम्
+  id: 7.2.88
+  overrides: [7.2.89, 7.2.86]
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp:
+      - and
+      - ?praTamA
+      - ?dvivacana
+  xform:
+      l: null
+  insert:
+      l: str("A")
+  
+    
+# 388: यूयवयौ जसि (7-2-93)
+# Nom pl mparyanta: yuzmad → yūya, asmad → vaya, before jas. Sets lc and leaves l='d';
+# SK385 then deletes 'd' → "yUya". SK382 (covering ?jas) supplies suffix "am".
+# 6.1.107 (amipūrvaḥ) fires: "yUya"+"am" → "yUy"+"am" → yūyam ✓.
+# Priority 72093 > SK382 (71028), so SK388 fires first.
+- sutra: यूयवयौ जसि
+  id: 7.2.93
+  condition:
+    lp: ?yuzmad
+    rp: ?jas
+  xform:
+    lc: str("yUya")
+
+- sutra: यूयवयौ जसि
+  id: 7.2.93.1
+  condition:
+    lp: ?asmad
+    rp: ?jas
+  xform:
+    lc: str("vaya")
+
+# 389: त्वमावेकवचने (7-2-97)
+# All singular mparyanta: yuzmad → tv, asmad → m, for remaining singular vibhakti.
+# Mechanism: xform sets lc="tva"/"ma" and nulls l (the 'd'); insert: l: lc[-1]+l re-appends
+# original "ad" (lc[-1]='a', l='d') as a hier-prakriya. The hier-prakriya applies ato guṇe
+# (6.1.97): prior 'a' of "tva" is dropped before 'a' of "ad" → "tvad". In the outer loop,
+# SK390/SK392/SK393 then fire on 'd' directly (they override SK385); SK385 does not fire.
+# Apavādas that override SK389 for specific cases:
+#   - SK384 (7.2.94): overrides for nom sg → tvam/aham
+#   - SK394 (7.2.95): overrides for dat sg → tubhyam/mahyam
+#   - SK392 (7.2.89): overrides for vowel-initial suffixes → tvayā/mayā etc.
+- sutra: त्वमावेकवचने
+  id: 7.2.97
+  condition:
+    lp: ?yuzmad
+    rp: ?ekavacana
+  xform:
+    lc: str("tva")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+- sutra: त्वमावेकवचने
+  id: 7.2.97.1
+  condition:
+    lp: ?asmad
+    rp: ?ekavacana
+  xform:
+    lc: str("ma")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+# 390: द्वितीयायां च (7-2-87)
+# Acc ā-ādeśa. Fires on whatever 'd'-final stem is current (after SK389 for sg, after SK391
+# for acc pl, after SK386 for du). xform: l='d'→null; insert: l: str("A") forces a
+# hier-prakriya at the resulting a+A junction → 6.1.101 (akaḥ savarṇe dīrghaḥ) → "yuzmA".
+# For acc sg: SK389 fires first (yuzmad→tvad via ato guṇe), then SK390 fires on tvad.
+# For acc pl: SK391 fires first (suffix→"ns"), then SK390 fires on yuzmad directly.
+# SK382 supplies suffix "am"; "tvA"+"am" → sandhi → tvām ✓. Gives tvām, mām, yuvām, āvām.
+# overrides 7.2.89 (SK392) to block y-ādeśa for acc forms.
+- sutra: द्वितीयायां च
+  id: 7.2.87
+  overrides: 7.2.89
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp:
+      - and
+      - ?dvitIyA
+  xform:
+    l: null
+  insert:
+    l: str("A")
+
+
+# 391: शसो न (7-1-29)
+# Acc pl: śas content is "as" (S is it-letter). xform r='a'→'n', rc='s' unchanged →
+# suffix becomes "ns". After other pair rules quiesce, (stem, "ns") merges to merged_pada
+# (?pada). 8.2.23 (saMyogāntasya lopaḥ) then fires on (merged_pada, avasāna): the
+# pada ends in two consonants (ns) → deletes final 's' → stem+n.
+# bahiranga:2, overrides:7.1.28 (SK391 beats SK382 for ?Sas so it gets "ns" not "am").
+- sutra: शसो न
+  id: 7.1.29
+  bahiranga: 2
+  overrides: 7.1.28
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Sas
+  xform:
+    r: str("n")
+
+# 392: योऽचि (7-2-89)
+# y-ādeśa: fires on the 'd'-final stem before vowel-initial non-ādeśa suffixes.
+# overrides 7.2.90 (SK385); SK389 fires first (giving "tvad"), then SK392 fires on 'd'.
+# l: str("y") replaces 'd' → "tvad" → lc="tva", l="y" → "tvay"+vowel suffix ✓.
+# Guard rp: [and, ?viBakti, ?!AdeSa] skips am-ādeśa suffixes already handled by SK382.
+# Produces: tvayā/mayā (inst sg), tvayi/mayi (loc sg), yuvayoḥ/āvayoḥ (gen/loc du).
+# SK390 (7.2.87, overrides 7.2.89) blocks SK392 for acc sg/du. ✓
+# NOTE: gen sg (tava/mama) needs additional rules; those forms are deferred.
+- sutra: योऽचि
+  id: 7.2.89
+  overrides: 7.2.90
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    r: _ac
+    rp:
+      - and
+      - ?viBakti
+      - ?!AdeSa
+  xform:
+    l: str("y")
+
+# 393: युष्मदस्मदोरनादेशे (7-2-86)
+# ā-ādeśa: fires directly on the 'd'-final stem before non-ādeśa hal-initial suffixes.
+# overrides 7.2.90 (SK385); does not need SK385 to precede it.
+# xform: l='d'→null → stem "yuzma"; insert: l: str("A") forces a hier-prakriya at the
+# resulting a+A junction ("yuzma"+"A") → internal sandhi gives "yuzmA".
+# "yuzmA"+"Bis"=yuzmābhiḥ ✓; "yuvA"+"ByAm"=yuvābhyām ✓.
+# rp condition lists all suffixes that are ādeśa (SK382 targets) and excludes them,
+# so SK393 only fires on truly non-ādeśa hal suffixes.
+# rp: ?!Byas also excludes Byas (abl/dat pl) so SK395 can give short-a yuzmaBhyam.
+# Without ?!Byas: SK393 (72086) fires before SK395 (71030) → wrongly gives yuzmāBhyam.
+- sutra: युष्मदस्मदोरनादेशे
+  id: 7.2.86
+  overrides: 7.2.90
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    r: _hal
+    rp:              # anAdeSe
+      - and
+      - ?!Byas
+      - ?!Ne
+      - ?!su
+      - ?!O
+      - ?!jas
+      - ?!am
+      - ?!Ow
+      - ?!Sas
+  xform:
+    l: null
+  insert:
+    l: str("A")
+
+# 394: तुभ्यमह्यौ ङयि (7-2-95)
+# Dat sg: mparyanta → tuBhya (yuzmad) / mahya (asmad).
+# SK389 (72097) fires first (lc→"tva"), then SK394 (72095) overwrites lc.
+# Mechanism: lc: str("tuBya"), l: null, insert: l: lc[-1]+l — re-appends original "ad"
+# via hier-prakriya. ato guṇe (6.1.97) fires: prior 'a' of "tuBya" dropped before 'a' of
+# "ad" → "tuByad". SK385 then fires in the outer loop to delete 'd' → "tuBya"/"mahya".
+# SK382 supplies suffix "am"; "tuBya"+"am" → 6.1.107 → tuByam ✓; mahyam ✓.
+- sutra: तुभ्यमह्यौ ङयि
+  id: 7.2.95
+  overrides: 7.2.97
+  condition:
+    lp: ?yuzmad
+    rp: ?Ne
+  xform:
+    lc: str("tuBya")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+
+- sutra: तुभ्यमह्यौ ङयि
+  id: 7.2.95.1
+  overrides: 7.2.97
+  condition:
+    lp: ?asmad
+    rp: ?Ne
+  xform:
+    lc: str("mahya")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+
+# 395: भ्यसोभ्यम् (7-1-30)
+# Abl/dat pl: bhyas → bhyam for yuzmad/asmad (optional abhyam not implemented).
+# After SK385 (d-lopa): "yuzma"+"Byam" = yuzmaBhyam ✓.
+# SK393 excluded for ?Byas suffix (see SK393 above) → short 'a' preserved ✓.
+- sutra: भ्यसोभ्यम्
+  id: 7.1.30
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Byas
+  xform:
+    r: str("B")
+    rc: str("yam")
+
+# 396: एकवचनस्य च (7-1-32)
+# Abl sg: suffix Nasi → "at" for yuzmad/asmad.
+# SK389 (7.2.97) fires first (higher aps_num): lc→"tva"/"ma", insert "ad" → hier-prakriya → "tvad"/"mad".
+# SK385 then fires (d-lopa) → left="tva"/"ma".
+# SK396 fires: Nasi→"at". Junction: "tva"+"at" → ato guṇe (prior a dropped) → "tvat" ✓; "ma"+"at"→"mat" ✓.
+# Overrides SK392 (7.2.89, y-ādeśa) to prevent y-insertion before Nasi at same step.
+- sutra: एकवचनस्य च
+  id: 7.1.32
+  overrides: [7.2.89, 7.1.15]
+  condition:
+    lp: ?yuzmad
+    rp: ?Nasi
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Nasi
+
+- sutra: एकवचनस्य च
+  id: 7.1.32.1
+  overrides: [7.2.89, 7.1.15]
+  condition:
+    lp: ?asmad
+    rp: ?Nasi
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Nasi
+
+# 397: पञ्चम्या अत् (7-1-31)
+# Abl pl: suffix Byas2 → "at" for yuzmad/asmad.
+# Distinguishes abl pl (Byas2, tagged ?Byas+?pancamI) from dat pl (Byas, tagged ?Byas+?caturTi).
+# SK385 fires (d-lopa) → left="yuzma"/"asma".
+# SK397 fires: Byas2→"at"; wins over SK395 (71030) via SPSP para kāryam (71031>71030).
+# Junction: "yuzma"+"at" → savarṇa dīrgha (a+a→ā) → "yuzmAt" ✓; "asma"+"at"→"asmAt" ✓.
+# Overrides SK392 (7.2.89) for safety (Byas2 is hal-initial, SK392 doesn't fire anyway).
+- sutra: पञ्चम्या अत्
+  id: 7.1.31
+  overrides: 7.2.89
+  condition:
+    lp: ?yuzmad
+    rp:
+      - and
+      - ?Byas
+      - ?pancamI
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Byas
+
+- sutra: पञ्चम्या अत्
+  id: 7.1.31.1
+  overrides: 7.2.89
+  condition:
+    lp: ?asmad
+    rp:
+      - and
+      - ?Byas
+      - ?pancamI
+  xform:
+    r: str("a")
+    rc: str("t")
+  update:
+    orp: -Byas
+
+# 398: तवममौ ङसि (7-2-96)
+# Gen sg: replaces yuzmad→"tava" / asmad→"mama" base (same mechanism as SK394 dat sg).
+# SK389 (7.2.97, 72097) fires first: lc→"tva"/"ma", insert "ad" → hier-prakriya → ato guṇe → "tvad"/"mad".
+# SK398 (72096) fires: lc→"tava"/"mama", l→null, insert "ad" → hier-prakriya:
+#   "tava"+"ad" → ato guṇe (prior a dropped) → "tavad"; SK385 d-lopa → "tava" ✓.
+#   "mama"+"ad" → ato guṇe → "mamad"; SK385 → "mama" ✓.
+# Nas suffix remains; SK399 (7.1.27) handles it (suffix→"a", junction ato guṇe → final form).
+# Overrides SK392 (7.2.89, y-ādeśa).
+- sutra: तवममौ ङसि
+  id: 7.2.96
+  overrides: 7.2.89
+  condition:
+    lp: ?yuzmad
+    rp: ?Nas
+  xform:
+    lc: str("tava")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+- sutra: तवममौ ङसि
+  id: 7.2.96.1
+  overrides: 7.2.89
+  condition:
+    lp: ?asmad
+    rp: ?Nas
+  xform:
+    lc: str("mama")
+    l: null
+  insert:
+    l: lc[-1]+l
+
+# 399: युष्मदस्मदोर्ङसि (7-1-27)
+# Gen sg: Nas suffix "as" → "a" for yuzmad/asmad.
+# Fires after SK398 has reduced the pratipadika to "tava"/"mama".
+# SK399 (71027) fires after SK398 (72096) since SK398 has higher aps_num.
+# Junction: "tava"+"a" → ato guṇe (prior a dropped) → "tava" ✓; "mama"+"a" → "mama" ✓.
+- sutra: युष्मदस्मदोर्ङसि
+  id: 7.1.27
+  overrides: 7.1.12.2
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Nas
+  xform:
+    rc: null
+
+# 400: साम आकम् (7-1-33)
+# Gen pl: Am → Akam for yuzmad/asmad.
+# Overrides SK217 (7.1.52, suW-addition, aps_num 71052 > 71033) — must block it or SK217
+# would insert 'su' before Am for sarvanāma stems ending in 'a' (yuzmad/asmad after d-lopa).
+# Overrides SK392 (7.2.89, y-ādeśa before vowel-initial Am).
+# After SK400: yuzmad+Akam → SK385 fires (d-lopa) → yuzma+Akam → sandhi a+A→A → yuzmAkam ✓.
+# Produces yuzmAkam, asmAkam.
+- sutra: साम आकम्
+  id: 7.1.33
+  overrides: [7.1.52, 7.2.89]
+  condition:
+    lp:
+      - ?yuzmad
+      - ?asmad
+    rp: ?Am
+  xform:
+    r: str("A")
+    rc: str("kam")
+  update:
+    orp: -Am
+
+# 265: त्यदादीनामः (7-2-102)
+- sutra:  त्यदादीनामः
+  id: 7.2.102
+  # FIXME: this needs to happen first, before daSca but unclear how. using this for now
+  bahiranga: 1
+  condition:
+     lp: ?tyadAdi
+     rp: ?viBakti
+  xform:
+     l: null
+  insert:
+     l: str("a")
+
+# 342: किमः कः (7-2-103) 
+- sutra:  किमः कः
+  id: 7.2.103
+  condition:
+     lp: ?kim
+     rp: ?viBakti
+  xform:
+     lc: str("ka")
+     l: null
+
+#  343: इदमो मः (7-2-108) 
+- sutra:  इदमो मः 
+  id: 7.2.108
+  overrides: 7.2.102
+#  bahiranga: 1    
+  condition:
+     lp: ?idam
+     rp: ?su
+  xform:
+     l: str("m")
+
+# 345: दश्च (7-2-109) 
+- sutra:  दश्च
+  id: 7.2.109
+  # we use a general d check instead of specific position to maintain nityatva
+  # wrt 6.1.107 ami pUrvaH
+  condition:
+     lp:
+       - and
+       - ?idam
+       - $$idam_d_p   # check for d
+     rp: ?viBakti
+  xform:
+     lc: str("im")
+     l: null
+  insert:
+     l: l
+     
+#  344: इदोऽय् पुंसि (7-2-111) 
+- sutra:  इदोऽय् पुंसि
+  id: 7.2.111
+  condition:
+     lp:
+         - and
+         - ?idam
+         - ?pum
+     rp: ?su
+  xform:
+     lc: str("aya")
+
+#  346: अनाप्यकः (7-2-112)
+- sutra:  अनाप्यकः
+  id: 7.2.112
+  overrides: 7.2.109
+  condition:
+     lp:
+         - and
+         - ?idam
+         - $$idam_d_p
+     # not using =id for nityatvam
+     # lc: =id
+     r: _ac
+     rp:
+         - ?tftIyA
+         - ?caturTi
+         - ?pancamI
+         - ?zazWI
+         - ?saptamI
+  xform:
+     lc: str("an")
+
+# 347: हलि लोपः (7-2-113)
+- sutra:  हलि लोपः
+  id: 7.2.113
+  condition:
+     lp:
+         - and
+         - ?idam
+     lc: 
+         - =id
+     r: _hal
+     rp:
+         - ?tftIyA
+         - ?caturTi
+         - ?pancamI
+         - ?zazWI
+         - ?saptamI
+  xform:
+     lc: null
+
+
+# 254: अचोञ्णिति (7-2-115)
+- sutra: अचो ञ्णिति
+  id: 7.2.115
+  condition:
+     lp: ?aNga
+     l: _ac
+     rp: [+R, +Y]
+  xform:
+     l: vriddhi(l)
+  update:
+     olp: +tannimitta
+     
+# 2282: अत उपधायाः (7-2-116)
+- sutra: अत उपधायाः
+  id: 7.2.116
+  condition:
+     lp: ?aNga
+     ll: at
+     rp: [+R, +Y]
+  xform:
+     lc: lc[:-1]+str("A")
+  update:
+     olp: +tannimitta
+
+# 358: हो हन्तेर्ञ्णिन्नेषु (7-3-54)
+# h of han-stems → G (gh) before ñit (Y-it), ṇit (R-it), and n (after a deletion)
+- sutra: हो हन्तेर्ञ्णिन्नेषु
+  id: 7.3.54
+  condition:
+   - lp: ?han
+     rp: +Y          # ñit suffix (Y-it) — covers kṛt/taddhita contexts
+   - lp: ?han
+     rp: +R          # ṇit suffix (R-it) — Rvul etc
+   - lp: ?han
+     r: n            # hn after allopo'naH or viBAza NizyoH
+  xform:
+    l: null   
+    lc: han_kutva(lc+l) # We need both because the h 
+    
+# 2168: सार्वधातुकार्धधातुकयोः (7-3-84)
+- sutra: सार्वधातुकार्धधातुकयोः
+  id: 7.3.84
+  condition:
+     - lp: ?aNga
+       l: _ac
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
+  xform:
+     l: guna(l)
+     
+# 2189: पुगन्तलघूपधस्य च (7-3-86)
+- sutra: पुगन्तलघूपधस्य च
+  id: 7.3.86
+  condition:
+     - lp: ?aNga
+       ll: [it, ut, ft, xt]
+       rp:
+         - ?ArDaDAtuka
+         - ?sArvaDAtuka
+  xform:
+     lc: lc[:-1]+guna(lc[-1])
+     
+# 202: सुपि च (7-3-102)
+- sutra:  सुपि च
+  id: 7.3.102
+  condition:
+     lp: ?aNga
+     l: at
+     r: _yaY
+     rp: ?sup
+  xform:
+     l: str("A")
+      
+# 205: बहुवचने झल्येत् (7-3-103)
+- sutra: बहुवचने झल्येत्
+  id: 7.3.103
+  condition:
+     lp: ?aNga
+     l: at
+     r: _Jal
+     rp:
+       - and
+       - ?bahuvacana
+       - ?sup
+  xform:
+     l: str("e")
+     
+# 207: ओसि च (7-3-104) 
+- sutra: ओसि च
+  id: 7.3.104
+  condition:
+     lp: ?aNga
+     l: at
+     rp:
+       - ?os
+  xform:
+     l: str("e")
+     
+
+# 289: आङि चापः (7-3-105)
+- sutra: आङि चापः 
+  id: 7.3.105
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?wA
+       - ?os
+  xform:
+     l: str("e")
+     
+# 288: संबुद्धौ च (7-3-106)
+- sutra: संबुद्धौ च
+  id: 7.3.106
+  condition:
+     lp:
+      - and
+      - ?aNga
+      - ?Ap
+     rp:
+       - ?sambudDi
+  xform:
+     l: str("e")
+ 
+# 267: अम्बार्थनद्योर्ह्रस्वः (7-3-107)
+-   sutra: अम्बार्थनद्योर्ह्रस्वः
+    id: 7.3.107
+    overrides: 7.3.108
+    condition:
+     - lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp:
+         - ?sambudDi
+     - lp:
+        - and
+        - ?aNga
+        - ?ambArTa
+       rp:
+         - ?sambudDi
+    xform:
+       l: hrasva(l)
+
+# 242: ह्रस्वस्य गुणः (7-3-108) 
+-   sutra: ह्रस्वस्य गुणः
+    id: 7.3.108
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?sambudDi
+    xform:
+       l: guna(l)
+       
+# 241: जसि च (7-3-109) 
+-   sutra:  जसि च
+    id: 7.3.109
+    condition:
+       lp: ?aNga
+       l: [at, it, ut, ft, xt]
+       rp:
+         - ?jas
+    xform:
+       l: guna(l)
+       
+#  275: ऋतो ङिसर्वनामस्थानयोः (7-3-110) 
+-   sutra:  ऋतो ङिसर्वनामस्थानयोः
+    id: 7.3.110
+    condition:
+       l: ft
+       lp: ?aNga
+       rp:
+        - ?Ni
+        - ?sarvanAmasTAna
+    xform:
+       l: guna(l)
+       
+#  245: घेर्ङिति (7-3-111) 
+-   sutra:  घेर्ङिति
+    id: 7.3.111
+    condition:
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp:
+        - and
+        - +N
+        - ?sup
+    xform:
+       l: guna(l)
+
+# 268: आण्नद्याः (7-3-112)
+-   sutra:  आण्नद्याः
+    id: 7.3.112
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: +N
+    insert:
+       m: Aw
+       
+# 290: याडापः (7-3-113)
+-   sutra:  याडापः
+    id: 7.3.113
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+       rp: +N
+    insert:
+       m: yAw
+       
+# 291: सर्वनाम्नः स्याड्ढ्रस्वश्च (7-3-114) 
+-   sutra:  सर्वनाम्नः स्याड्ढ्रस्वश्च
+    id: 7.3.114
+    overrides: [7.3.113, 7.1.12.1, 7.1.12.2, 7.1.13, 7.1.14, 7.1.15, 7.1.15.1]
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+        - ?sarvanAma
+       rp: +N
+    insert:
+       m: syAw
+    xform:
+       l: hrasva(l)
+
+# 270: ङेराम्नद्याम्नीभ्यः (7-3-116)        
+-   sutra:  ङेराम्नद्याम्नीभ्यः
+    # So this wins over varRakAryas
+    bahiranga: 2
+    id: 7.3.116
+    overrides: 7.3.118
+    condition:
+       - lp:
+          - and
+          - ?aNga
+          - ?nadI
+         rp: ?Ni
+       - lp:
+          - and
+          - ?aNga
+          - ?Ap
+         rp: ?Ni
+       - lp:
+          - and
+          - ?aNga
+          - ?DAtu
+         l: It
+         ll: n
+         rp: ?Ni
+    xform:
+         rc: str("Am")
+         r: null
+
+# 297: इदुद्भ्याम् (7-3-117)
+-   sutra:  इदुद्भ्याम्
+    id: 7.3.117
+    overrides: [7.3.116, 7.3.118]
+    condition:
+       l: [it, ut]
+       lp:
+        - and
+        - ?aNga
+        - ?nadI
+       rp: ?Ni
+    xform:
+       rc: str("Am")
+       r: null
+       
+#  256: औत् (7-3-118) 
+-   sutra:  औत्
+    id: 7.3.118
+    condition:
+       l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?!Gi
+        - ?!nadI
+       rp: ?Ni
+    xform:
+       r: str("O")
+       
+#  247: अच्च घेः (7-3-119) 
+-   sutra:  अच्च घेः 
+    id: 7.3.119
+    condition:
+       # Commenting this out - this is covered by Gi, and that lets this be
+       # nitya against 7.3.111
+       # l: [it, ut]
+       lp:
+        - "and"
+        - ?aNga
+        - ?Gi
+       rp: ?Ni
+    xform:
+       l: str("a")
+       r: str("O")
+       
+
+#  244: आङो नाऽस्त्रियाम् (7-3-120) 
+-   sutra:  आङो नाऽस्त्रियाम्
+    id: 7.3.120
+    condition:
+       lp:
+         - "and"
+         - ?Gi
+         - ?!strI
+       rp:
+         - ?wA
+    xform:
+       r: str("nA")
+  
+# 2217: क्ङिति च (1-1-5)
+- sutra: क्ङिति च
+  id: 1.1.5
+  overrides: [7.3.84, 7.3.86]
+  condition:
+     - lp: ?aNga
+       l: _ik
+       rp:
+         - +k
+         - +N
+         - +g
+     - lp: ?aNga
+       ll: [it, ut, ft]
+       rp:
+         - +k
+         - +N
+         - +g
+  xform: null
+
+# TadDita aDikAra
+    
+# 1075: तद्धितेष्वचामादेः (7-2-117)
+- sutra: तद्धितेष्वचामादेः
+  id: 7.2.117
+  overrides: [7.2.115, 7.2.116]
+  condition:
+   - lp: ?aNga
+     rp:
+       - and
+       - ?tadDita
+       - +R
+   - lp: ?aNga
+     rp:
+       - and
+       - ?tadDita
+       - +Y
+  xform:
+     lc: adivriddhi(lc)
+
+
+# End taddhita aDikAra
+# End aNga aDikAra
+
+# Agamas
+# Am
+# 217: आमि सर्वनाम्नः सुट् (7-1-52) 
+- sutra: आमि सर्वनाम्नः सुट्
+  id: 7.1.52
+  overrides: 7.1.54
+  condition:
+      l: a
+      lp:
+        - and
+        - ?aNga
+        - ?sarvanAma
+      rp: ?Am  
+  xform:
+     r: str("s")+r
+     rp: +AdeSa_s
+
+# 208: ह्रस्वनद्यापो नुट् (7-1-54)
+- sutra: ह्रस्वनद्यापो नुट्
+  id: 7.1.54
+  overrides: [7.1.73, 7.2.100] # नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  # Also, 7.1.95, 7.1.96, 7.1.97
+  condition:
+     - l: [at,it,ut,ft,xt]
+       rp: ?Am  
+     - lp: ?nadI
+       rp: ?Am  
+     - l: At
+       lp: ?Ap
+       rp: ?Am  
+  xform:
+     r: str("nA")
+
+# 338: षट्चतुर्भ्यश्च (7-1-55) 
+- sutra: षट्चतुर्भ्यश्च
+  id: 7.1.55
+  overrides: [7.1.54, 7.1.73, 7.2.100] # नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  condition:
+     - lp:
+        - =catur
+        - ?zaw
+       rp: ?Am  
+  xform:
+     r: str("nA")
+
+
+# 361: उगिदचां सर्वनामस्थानेऽधातोः (7-1-70)
+# nUM insertion for ugit stems (u/ṛ/ḷ as it-marker) before sarvanamasthana.
+# Multiple top-level condition blocks = OR alternatives (pattern from SK277 / 6.4.11).
+# Covers: maGavan→maGavat (SK360 sets ++f, i.e. ṛ-it), bhavant (śatṛ is u-it),
+#         and other ugit stems. kroṣṭu has ?tfc (ṛ is stem-final, NOT an it) → excluded.
+# Also covers añc-type kvin stems (?aYc tag, āc clause of 7.1.70):
+#   numAgama("pratyac")→"pratyanc" (dental n); then 8.3.24 n+c→M+c; then 8.4.58 M→Y → pratyaYc.
+- sutra: उगिदचां सर्वनामस्थानेऽधातोः
+  id: 7.1.70
+#  domain: prakfti
+#  bahiranga: 1
+  condition:
+   - lp:               # non-root ṛ-it stems (e.g., maghavat via SK360 ++f)
+      - and
+      - ?!DAtu
+      - +f
+     rp: ?sarvanAmasTAna
+   - lp:               # non-root u-it stems (e.g., bhavant from śatṛ which is u-it)
+      - and
+      - ?!DAtu
+      - +u
+     rp: ?sarvanAmasTAna
+   - lp:               # non-root ḷ-it stems
+      - and
+      - ?!DAtu
+      - +x
+     rp: ?sarvanAmasTAna
+   - lp: ?aYc          # añc-type kvin stems (āc clause): prāñc, pratyañc, udañc, etc.
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: numAgama(lc+l)
+     l: null
+
+# 376: युजेरसमासे (7-1-71) — nasal (ñ) augment for non-compound yuj before sarvanamasthāna.
+# Inserts palatal nasal Y (ñ=ञ) after stem vowel: yuj → yuñj in strong forms.
+# Restriction (asaṃyoge): compound yuj (e.g. aśvayuk type) has no nUM — excluded by ?!samAsa.
+# yuj_kvin (?yuj, no ?samAsa) → fires; yuj_kvin_samAsa (?yuj, ?samAsa) → blocked.
+# Follows SK257 (1.4.8/1.4.8.1) pattern for pati compound vs non-compound.
+# After num: yuñj+su → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 (Y→N) → yuṅ.
+# Nom/acc du/pl: yuñj+O/jas → yuñjau, yuñjaḥ (no pada-end, no 8.2.23/8.2.62).
+- sutra: युजेरसमासे
+  id: 7.1.71
+  condition:
+     lp:
+       - and
+       - ?yuj
+       - ?!samAsa    # non-compound only; compound yuj (aśvayuk type) uses ?samAsa tag to block nUM
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc+str("Y")
+
+# 368: भस्य टेर्लोपः (7-1-88)
+# ṭi-lopa for paTin-group (paTin/maTin/fBukzin) in bha position.
+# ṭi = final vowel i + following consonant n = "in". Fires before vowel-initial
+# non-sarvanamasthana suffixes: śas (acc pl), TA (inst sg), e (dat sg), as (abl/gen sg), etc.
+# Result: paT (path-), maT (math-), fBukz (ṛbhukṣ-) + vowel suffix.
+- sutra: भस्य टेर्लोपः
+  id: 7.1.88
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?paTin
+     l: n
+     ll: i
+  xform:
+     lc: lc[:-1]
+     l: null
+
+# 367: थो न्थः (7-1-87)
+# nth substituted for th (T in SLP1) in paTin/maTin before sarvanamasthana.
+# Not applicable to fBukzin (no th/T in stem). Tag ?paTinTh restricts to paTin/maTin.
+# APS 71087 > SK366 (71086): fires first; changes lc[-2] from T to nT.
+- sutra: थो न्थः
+  id: 7.1.87
+  condition:
+     lp: ?paTinTh
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc[:-2]+"n"+lc[-2:]
+
+# 366: इतोऽत्सर्वनामस्थाने (7-1-86)
+# a substituted for i of paTin-group (paTin/maTin/fBukzin) before sarvanamasthana.
+# APS 71086 > 6.4.8 (60408): fires before upadhā-dīrgha.
+# After SK367: lc[-1]='i' (for paTin/maTin post-ntha) or lc[-1]='i' (for fBukzin, no SK367).
+# Note: l: n omitted — redundant given ?paTin tag; plain condition dict works fine.
+- sutra: इतोऽत्सर्वनामस्थाने
+  id: 7.1.86
+  condition:
+     lp: ?paTin
+     rp: ?sarvanAmasTAna
+  xform:
+     lc: lc[:-1]+str("a")
+
+# 365: पथिमथ्यृभुक्षामात् (7-1-85)
+# ā substituted for final n of paTin-group before su (both nom and voc sg —
+# no ?!sambudDi restriction; sūtra is unqualified, unlike 7.1.93 for sakhī).
+# After SK366: lc[-1]='a' (from i→a), l='n'. This rule absorbs both into lc:
+# lc[:-1]+ā replaces (lc[-1]='a' + l='n') → single long ā.
+# Result: lc='panTĀ'/'manTĀ'/'fBukzĀ', l=null; +su(s) → 8.2.66 → visarga ('panTĀH').
+# NOTE: 6.4.8 fires for nom/acc du/pl (SK365 not active for them), giving dīrgha there.
+- sutra: पथिमथ्यृभुक्षामात्
+  id: 7.1.85
+  condition:
+     lp: ?paTin
+     rp: ?su
+  xform:
+     lc: lc[:-1]+str("A")
+     l: null
+
+# 314: नपुंसकस्य झलचः (7-1-72)
+- sutra: नपुंसकस्य झलचः
+  id: 7.1.72
+  overrides: 7.1.70
+  condition:
+      l:
+        - _Jal
+        - _ac
+      lp: ?napum
+      rp: ?sarvanAmasTAna
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
+      
+# 320: इकोऽचि विभक्तौ (7-1-73) 
+- sutra: इकोऽचि विभक्तौ
+  id: 7.1.73
+  overrides: [7.1.72, 7.3.109, 7.3.111, 7.3.119]
+  # Vartikas: वृद्ध्यौत्त्वतृज्वद्भावगुणेभ्यो नुम्पूर्वविप्रतिषेधेन
+  #           नुमचिर्-तृज्वद्भावेभ्यो नुट् विप्रतिषेधेन
+  condition:
+      l: _ik
+      lp: ?napum
+      r: _ac
+      rp: ?viBakti
+  xform: 
+      lc: numAgama(lc+l)
+      l: null
+      
+#322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75) 
+- sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
+  id: 7.1.75
+  domain: prakfti
+  bahiranga: 1
+  condition:
+     lp:
+      - =asTi
+      - =daDi
+      - =sakTi
+      - =akzi
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+  update:
+     olp: -Gi
+  xform:
+     l: str("an") # Nicca
+
+# saKi
+# 248: अनङ् सौ (7-1-93) 
+- sutra:  अनङ् सौ
+  id: 7.1.93
+  condition:
+     lp:
+      - ?saKi
+     rp:
+      - and
+      - ?su
+      - ?!sambudDi
+  xform:
+     l: str("an") # Nicca
+
+# prakfti / pratyaya rUpAtideSa
+
+# 306: ऋन्नेभ्यो ङीप् (4-1-5) 
+- sutra:  ऋन्नेभ्यो ङीप् 
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.5
+  condition:
+     l:
+      - ft
+      - n
+     rp:
+      - ?strI_abs
+  update:
+     orp: =NIp 
+
+# 308: न षट्स्वस्रादिभ्यः (4-1-10) 
+- sutra:  न षट्स्वस्रादिभ्यः
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.10
+  overrides: 4.1.5
+  condition:
+     lp:
+      - ?zaw 
+      - ?svasrAdi
+     rp: ?strI_abs
+  update: null
+
+# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
+-   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
+    domain: prakfti
+    bahiranga: 1
+    id: 6.1.63
+    optional: true
+    condition:
+      lp: ?pAdAdi
+      rp: ?!suw  # Sas praBfti
+    xform:
+      lc: pAdAdi_AdeSa(lc+l)
+      l: null
+    update:
+      olp: -Ap
+      # olp: =padAdi_AdeSa_r(olp)  # FIXME! this is cleaner, but needs testing 
+       
+# 274: तृज्वत्क्रोष्टुः (7-1-95) 
+- sutra:  तृज्वत्क्रोष्टुः
+  domain: prakfti
+  bahiranga: 1
+  id: 7.1.95
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - and
+      - ?sarvanAmasTAna
+      - ?!sambudDi
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+      
+# 305: स्त्रियां च (7-1-96)
+- sutra:   स्त्रियां च 
+  domain: prakfti
+  bahiranga: 1
+  id: 7.1.96
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     rp:
+      - ?strI_abs
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+
+# 278: विभाषा तृतीयादिष्वचि (7-1-97) 
+- sutra:  विभाषा तृतीयादिष्वचि
+  id: 7.1.97
+  domain: prakfti
+  bahiranga: 1
+  optional: true
+  condition:
+     lp:
+      - and
+      - =krozwu
+      - ?aNga
+     r: _ac
+     rp:
+      - and
+      - ?!praTamA
+      - ?!dvitIyA
+      - ?!samboDana
+      - ?!Am   # vArtikam नुमचिरतृज्वद्भावेभ्यो नुट् पूर्वविप्रतिषेधेन 
+  xform:
+     l: str("f")
+  update:
+     olp:
+      - -Gi  # FIXME: Should need to do this specifically
+      - +tfc
+
+
+
+
+# saMjYA prakaraRam
+
+# 369: ष्णान्ता षट् (1-1-24) — ṣ/n-final numerals tagged as ?zaT (ṣaṭ-saṃjñā)
+- sutra: ष्णान्ता षट्
+  domain: saMjYA
+  id: 1.1.24
+  bahiranga: 0 
+  condition:
+     l: [z, n]
+     lp:
+       - ?saMKyA
+  update:
+     olp: +zaw
+
+# 259: डति च (1-1-25) 
+- sutra:  डति च
+  domain: saMjYA
+  id: 1.1.25
+  bahiranga: 0 
+  condition:
+     lp:
+       - ?qati
+  update:
+     olp: +zaw
+
+# 213: सर्वादीनि सर्वनामानि (1-1-27)
+- sutra: सर्वादीनि सर्वनामानि
+  domain: saMjYA
+  id: 1.1.27
+  bahiranga: 0 
+  condition:
+     lp:
+       - ?sarvAdi
+  update:
+     olp: +sarvanAma
+
+# 313: शि सर्वनामस्थानम् (1-1-42) 
+- sutra:  शि सर्वनामस्थानम्
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.1.42
+  condition:
+     rp: ?Si
+  update:
+     orp:
+       - +sarvanAmasTAna
+     olp:
+       - -Ba
+       - -pada
+       
+# 229: सुडनपुंसकस्य (1-1-43)
+- sutra: सुडनपुंसकस्य
+  domain: saMjYA
+  id: 1.1.43
+  bahiranga: 0 
+  condition:
+     rp: ?suw
+     lp: ?!napum
+  update:
+     orp: +sarvanAmasTAna
+     
+# 263: न लुमताङ्गस्य (1-1-63)
+- sutra: न लुमताङ्गस्य
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.1.63
+  condition:
+     rp:
+       - ?luk
+       - ?Slu
+       - ?lup
+     lp: ?aNga
+  update:
+     orp: _lu # Strip all tags, prevent pratyayalakzaRa
+
+# 318: ह्रस्वो नपुंसके प्रातिपदिकस्य (1-2-47)
+- sutra: ह्रस्वो नपुंसके प्रातिपदिकस्य
+  domain: prakfti
+  bahiranga: 1
+  id: 1.2.47
+  overrides: 6.4.140 # sannipAtapariBAzA, according to SK
+  condition:
+    - lp:
+       - and
+       - ?aNga
+       - ?napum
+    - lp: anga
+      rp: ?napum_abs
+  xform:
+      l: hrasva(l)
+
+# FIXME - implement upasarjana instead of pum_abs
+# 656: गोस्त्रियोरुपसर्जनस्य (1-2-48)
+- sutra: गोस्त्रियोरुपसर्जनस्य
+  domain: prakfti
+  bahiranga: 1
+  id: 1.2.48
+  condition:
+    - lp:
+       - and
+       - ?aNga
+       - ?NI
+      rp: ?pum_abs
+    - lp:
+       - and
+       - ?aNga
+       - ?Ap
+      rp: ?pum_abs
+    - lp:
+       - and
+       - ?aNga
+       - ?go_p
+      rp: ?pum_abs
+  xform:
+      l: hrasva(l)
+
+
+# 266: यू स्त्र्याख्यौ नदी (1-4-3) 
+- sutra: यू स्त्र्याख्यौ नदी
+  domain: saMjYA
+  id: 1.4.3
+  bahiranga: 0 
+  condition:
+     l: [It, Ut]
+     lp:
+       - ?strI
+       - ?pUrvastrI # प्रथमलिङ्गग्रहणं च 
+  update:
+     olp: +nadI
+
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4)
+- sutra: नेयङुवङ्स्थानावस्त्री
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4
+  overrides: 1.4.3
+  condition:
+    - lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+      l:
+       - It
+       - Ut
+      r: _ac
+      rp: ?sup
+    - lp:
+       - and
+       - ?strI_p     # astrI is only for actual strI - this handles atistrI etc
+       - ?!strI      # which are not nitya-nadI
+      r: _ac
+      rp: ?sup
+  update:
+     olp: -nadI
+
+
+# Overrides for future yaR AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-1)
+- sutra: नेयङुवङ्स्थानावस्त्री (yaR sTAnI)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.1
+  overrides: [1.4.4, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+      l: [i, u]
+      lp:
+       - and
+       - ?DAtu
+       - $$anekAc_asaMyogapUrva
+      r: _ac
+  update: null     
+
+# FIXME  गतिकारकेतरपूर्वपदस्य यण् नेष्यते - implement for above
+# Override for future iyaN AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-2)
+- sutra: नेयङुवङ्स्थानावस्त्री (na BU suDiyO)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.2
+  overrides: 1.4.4.1
+  condition:
+      lp:
+        - ?BU
+        - =suDI
+      r: _ac
+      rp: ?sup
+  update: null
+
+# Overrides for future yaR AdeSa
+# 303: नेयङुवङ्स्थानावस्त्री (1-4-4-3)
+- sutra: नेयङुवङ्स्थानावस्त्री (varzABU)
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.4.3
+  overrides: [1.4.4, 1.4.4.1, 1.4.4.2, 1.4.5, 1.4.6, 1.4.6.1]
+  condition:
+      l: u
+      lp:
+        - =varzABU
+        - =dfnBU       # 6.4.84.1 दृन्करपुनःपूर्वस्य भुवो यण्वक्तव्यः
+        - =karaBU
+        - =punarBU
+      r: _ac
+      rp: ?sup
+  update: null
+
+# 304: वामि (1-4-5) 
+- sutra: वामि
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.5
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: ?Am
+  update:
+     olp: +nadI
+
+
+# 296: ङिति ह्रस्वश्च (1-4-6)
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  bahiranga: 0 
+  optional: true
+  id: 1.4.6
+  condition:
+     l: [it, ut]
+     lp:
+       - ?strI
+       - ?pUrvastrI # प्रथमलिङ्गग्रहणं च
+     rp: +N
+  update:
+     olp: +nadI
+     lp:  +Niti_hrasva_seza
+     
+# 296: ङिति ह्रस्वश्च (1-4-6-1)
+- sutra: ङिति ह्रस्वश्च
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.6.1
+  overrides: [1.4.3, 1.4.4]
+  optional: true
+  condition:
+     lp:
+       - ?Snu
+       - ?DAtu
+       - ?BrU
+     l:
+       - It
+       - Ut
+     rp: +N
+  update:
+     olp: +nadI
+     
+# 243: शेषो घ्यसखि (1-4-7)
+# sezaH - either
+#  a) not strI
+#  b) stri & it & ut but not Niti
+#  c) stri & it & ut & Niti and the not nadI arm.
+- sutra: शेषो घ्यसखि
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.7
+  condition:
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!strI
+        - ?!saKi
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - -N
+   -  l: [it, ut]
+      lp:
+        - "and"
+        - ?!saKi
+        - ?Niti_hrasva_seza
+  update:
+     olp: +Gi
+
+# FIXME - remember to test this when samAsa is implemented
+# 257: पतिः समास एव (1-4-8)
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.8
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?samAsa
+  update:
+     olp: +Gi
+     
+# 257: पतिः समास एव (1-4-8-1)
+- sutra: पतिः समास एव 
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.8.1
+  overrides: 1.4.7
+  condition:
+     lp:
+       - "and"
+       - ?pati
+       - ?!samAsa
+  update: null
+
+
+# 230: स्वादिष्वसर्वनामस्थाने (1-4-17)
+- sutra: स्वादिष्वसर्वनामस्थाने
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.17
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+  update:
+     olp: +pada
+
+# 231: यचि भम् (1-4-18)
+- sutra: यचि भम्
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.18
+  overrides: 1.4.17
+  bahiranga: 0
+  condition:
+     rp:
+       - "and"
+       - ?svAdi
+       - ?!sarvanAmasTAna
+     r: [y, _ac]
+  update:
+     olp:
+       - +Ba
+       - pada
+
+# 199: यस्मात्प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम् (1-4-13)
+- sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्
+  domain: saMjYA
+  bahiranga: 0 
+  id: 1.4.13
+  condition:
+     rp: ?pratyaya
+     lp: ?!pratyaya
+  update:
+     olp: +aNga
+
+#  350: इदमोऽन्वादेशेऽशनुदात्तस्तृतीयादौ (2-4-32) 
+- sutra:  इदमोऽन्वादेशेऽशनुदात्तस्तृतीयादौ
+  id: 2.4.32
+  bahiranga: 1
+  condition:
+     lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+     rp:
+        - and
+        - ?sup
+        - ?!praTamA
+        - ?!dvitIyA
+        - ?!samboDana
+  xform:
+     lc: null
+     l: str("a")
+
+#   351: द्वितीयाटौस्स्वेनः (2-4-34) 
+- sutra: द्वितीयाटौस्स्वेनः 
+  id: 2.4.34
+  bahiranga: 1
+  overrides: 2.4.32
+  condition:
+     - lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+       rp:      
+        - and
+        - ?viBakti
+        - ?dvitIyA
+     - lp:
+        - and
+        - ?idam
+        - ?anvAdeSa
+       rp:      
+        - and
+        - ?viBakti
+        - ?wA
+     - lp:
+        - and
+        - ?anvAdeSa
+        - ?idam
+       rp:      
+        - and
+        - ?viBakti
+        - ?os
+  xform:
+     lc: str("ena")
+     l: null
+
+
+# Handled elsewhere
+# 323: एच इग्घ्रस्वादेशे (1-1-48) - hrasva() of paribhasha.py
+# 348: आद्यन्तवदेकस्मिन् (1-1-21) - natural
+
+# 353: नलोपः सुप्स्वरसंज्ञातुग्विधिषु कृति (8-2-2) - natural + special siddha for kyac + kyaN
+
+# 354: हलि च (8-2-77)
+- sutra: हलि च
+  id: 8.2.77
+  condition:
+    lp: ?DAtu
+    ll: _ik
+    l: [v, r]
+    r: _hal
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
+# Skipping for now
+
+# In
+# अथ अच्सन्धिप्रकरणम्‌ ॥
+# 55: नादिन्याक्रोशे पुत्रस्य (8-4-48)
+# 56: त्रिप्रभृतिषु शाकटायनस्य (8-4-50)
+# 57: सर्वत्र शाकल्यस्य (8-4-51)
+# 58: दीर्घादाचार्याणाम् (8-4-52)
+
+# 75: अन्तादिवच्च (6-1-85)
+# 77: वासुप्यापिशलेः (6-1-92)
+# 81: अव्यक्तानुकरणस्यात इतौ (6-1-98)
+# 82: नाम्रेडितस्यान्त्यस्य तु वा (6-1-99)
+# 87: सर्वत्र विभाषा गोः (6-1-122)
+# 88: अवङ् स्फोटायनस्य (6-1-123)
+# 89: इन्द्रे च (6-1-124)
+
+# प्रकृतिभावप्रकरणम्‌
+# 90-110 barring 90,100,101
+
+# halsandhiप्रकरणम्‌
+# 127: हे मपरे वा (8-3-26)
+# 129: न परे नः (8-3-27) 
+# 130: ङ्णोः कुक् टुक् शरि (8-3-28) 
+# 131: डः सि धुट् (8-3-29)
+# 132: नश्च (8-3-30) 
+
+# विसर्गसन्धिप्रकरणम्‌
+# 8.3.38-42
+
+# For Later
+
+# kvip etc.
+# 126: मो राजि समः क्वौ (8-3-25)
+# ru
+# 135: समः सुटि (8-3-5)
+# 139: पुमः खय्यम्परे (8-3-6)
+# 141: नॄन्पे (8-3-10)
+# 143: कानाम्रेडिते (8-3-12)
+# 144: कस्कादिषु च (8-3-48)
+
+# sarvanAma
+# 218-227
+
+# 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
+# 258: बहुगणवतुडति सङ्ख्या (1-1-23)
+
+# 292: विभाषा दिक्समासे बहुव्रीहौ (1-1-28)
+# 293: विभाषा द्वितीयातृतीयाभ्याम् (7-3-115) 
+
+# Ratva
+# 307: एकाजुत्तरपदे णः (8-4-12)
+
+# 321: तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य (7-1-74)
+
+
