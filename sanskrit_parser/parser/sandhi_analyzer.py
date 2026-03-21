@@ -203,6 +203,16 @@ class LexicalSandhiAnalyzer(object):
         else:
             self.splits.add_roots(roots)
             return self.splits
+    
+    @lru_cache(1000)
+    def _is_valid_word(self, ss):
+        r = self.forms.valid(ss)
+        return r
+
+    def _sandhi_splits_all(self, s, start=None, stop=None):
+        obj = SanskritBase.SanskritImmutableString(s, encoding=sanscript.SLP1)
+        splits = self.sandhi.split_all(obj, start, stop)
+        return splits
 
     def _possible_splits(self, s):
         ''' private method to dynamically compute all sandhi splits
@@ -217,16 +227,6 @@ class LexicalSandhiAnalyzer(object):
         '''
         logger.debug("Splitting " + s)
 
-        @lru_cache(256)
-        def _is_valid_word(ss):
-            r = self.forms.valid(ss)
-            return r
-
-        def _sandhi_splits_all(s, start=None, stop=None):
-            obj = SanskritBase.SanskritImmutableString(s, encoding=sanscript.SLP1)
-            splits = self.sandhi.split_all(obj, start, stop)
-            return splits
-
         roots = set()
 
         # Memoization for dynamic programming - remember substrings that've
@@ -239,7 +239,7 @@ class LexicalSandhiAnalyzer(object):
         spos = s.find(" ")
         stop = None if spos == -1 else spos
 
-        s_c_list = _sandhi_splits_all(s, start=0, stop=stop)
+        s_c_list = self._sandhi_splits_all(s, start=0, stop=stop)
         logger.debug("s_c_list: " + str(s_c_list))
         if s_c_list is None:
             s_c_list = []
@@ -248,7 +248,7 @@ class LexicalSandhiAnalyzer(object):
 
         for (s_c_left, s_c_right) in s_c_list:
             # Is the left side a valid word?
-            if _is_valid_word(s_c_left):
+            if self._is_valid_word(s_c_left):
                 logger.debug("Valid left word: " + s_c_left)
                 # For each split with a valid left part, check it there are
                 # valid splits of the right part

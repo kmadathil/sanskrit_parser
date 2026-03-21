@@ -161,6 +161,10 @@ class SanskritObject(SanskritNormalizedString):
     def getMorphologicalTags(self):
         """ Morphological Tags on object """
         return self.tags
+    
+    # Necessary for heap tie-breaking
+    def __lt__(self, other):
+        return True
 
 
 @contextmanager

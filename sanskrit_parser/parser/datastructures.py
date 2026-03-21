@@ -12,7 +12,6 @@ from itertools import islice, product
 import logging
 import operator
 from copy import copy
-import six
 import time
 from collections import defaultdict
 from os.path import dirname, basename, splitext, join
@@ -28,6 +27,48 @@ dw = DhatuWrapper()
 
 logger = logging.getLogger(__name__)
 
+import heapq
+
+def k_shortest_paths_dag_optimized(G, source, target, k, weight='weight'):
+    # Each node maps to a finalized list of: (cost, parent_node, parent_path_index)
+    final_paths = {node: [] for node in G.nodes()}
+    # Temporary max-heaps to track top K during processing
+    temp_heaps = {node: [] for node in G.nodes()}
+    
+    # Start at source
+    final_paths[source] = [(0, None, None)]
+
+    for u in nx.topological_sort(G):
+        # Once we reach u in topological order, its temp_heap (if any) is full.
+        # But for the source or nodes with specific entry logic, 
+        # we ensure final_paths[u] is populated and sorted.
+        if u != source:
+            # Convert max-heap to a sorted list of (cost, parent, index)
+            final_paths[u] = sorted([(-c, p, idx) for c, p, idx in temp_heaps[u]])
+
+        if not final_paths[u]:
+            continue
+
+        for v in G.successors(u):
+            edge_weight = G[u][v].get(weight, 1)
+            for i, (cost, _, _) in enumerate(final_paths[u]):
+                new_cost = cost + edge_weight
+                if len(temp_heaps[v]) < k:
+                    heapq.heappush(temp_heaps[v], (-new_cost, u, i))
+                elif new_cost < -temp_heaps[v][0][0]:
+                    heapq.heapreplace(temp_heaps[v], (-new_cost, u, i))
+
+    # Path Reconstruction
+    results = []
+    for cost, parent, idx in final_paths[target]:
+        path = [target]
+        curr_p, curr_idx = parent, idx
+        while curr_p is not None:
+            path.append(curr_p)
+            _, curr_p, curr_idx = final_paths[curr_p][curr_idx]
+        results.append((cost, path[::-1]))
+    return results
+
 
 class SandhiGraph(object):
     """ DAG class to hold Sandhi Lexical Analysis Results
@@ -37,6 +78,7 @@ class SandhiGraph(object):
     """
     start = "__start__"
     end = "__end__"
+    scorer = lexical_scorer.Scorer()  # Singleton
 
     def __init__(self):
         ''' DAG Class Init
@@ -47,7 +89,6 @@ class SandhiGraph(object):
         '''
         self.roots = []
         self.G = nx.DiGraph()
-        self.scorer = lexical_scorer.Scorer()
 
     def __iter__(self):
         ''' Iterate over nodes '''
@@ -138,33 +179,14 @@ class SandhiGraph(object):
             self.lock_start()
         if score:
             self.score_graph()
-        # shortest_simple_paths is slow for >1000 paths
-        if max_paths <= 1000:
-            if score:
-                paths = list(six.moves.map(lambda x: x[1:-1],
-                                           islice(nx.shortest_simple_paths(
-                                                        self.G, self.start, self.end, weight='weight'),
-                                                  max_paths)))
-                scores = self.scorer.score_splits(paths)
-                path_scores = zip(paths, scores)
-                sorted_path_scores = sorted(path_scores, key=operator.itemgetter(1), reverse=True)
-                logger.debug("Sorted paths with scores:\n %s", sorted_path_scores)
-                # Strip the scores from the returned result, to be consistent with no-scoring option
-                sorted_paths, _ = zip(*sorted_path_scores)
-                return list(sorted_paths)
-            else:
-                paths = list(six.moves.map(lambda x: x[1:-1],
-                                           islice(nx.shortest_simple_paths(
-                                                        self.G, self.start, self.end),
-                                                  max_paths)))
-                return paths
-        else:  # Fall back to all_simple_paths
-            ps = list(six.moves.map(lambda x: x[1:-1],
-                                    nx.all_simple_paths(self.G, self.start, self.end)))
-            # If we do not intend to display paths, no need to sort them
-            if sort:
-                ps.sort(key=lambda x: len(x))
-            return ps
+        paths = [x[1][1:-1] for x in k_shortest_paths_dag_optimized(self.G, self.start, self.end, max_paths)]
+        if score:
+            scores = self.scorer.score_splits(paths)
+            path_scores = zip(paths, scores)
+            sorted_path_scores = sorted(path_scores, key=operator.itemgetter(1), reverse=True)
+            logger.debug("Sorted paths with scores:\n %s", sorted_path_scores)
+            paths, _ = zip(*sorted_path_scores)
+        return paths
 
     def __str__(self):
         """ Print representation of DAG """
