@@ -1,25 +1,24 @@
-"""
+'''
 Created on Aug 4, 2017
 
 @author: alvarna
-"""
+'''
 
 from sanskrit_parser.util.inriaxmlwrapper import InriaXMLWrapper
 from sanskrit_parser.util.sanskrit_data_wrapper import SanskritDataWrapper
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
-from sanskrit_parser.util.vidyut_kosha_wrapper import VidyutWrapper
 import logging
 
 
 def _merge_tags(tags):
-    """Merge tags from multiple sources
+    ''' Merge tags from multiple sources
 
-    Inputs
-       tags: List of elements of form (baseword, tagset)
-    Outputs
-       list of elements of form (baseword, tagset), with
-       tagsets properly merged
-    """
+        Inputs
+           tags: List of elements of form (baseword, tagset)
+        Outputs
+           list of elements of form (baseword, tagset), with
+           tagsets properly merged
+    '''
     tdict = {}
     # Convert to a dict of sets for proper set union
     for t in tags:
@@ -81,6 +80,4 @@ class LexicalLookupFactory(object):
             return SanskritDataWrapper()
         if name == "combined":
             return CombinedWrapper()
-        if name == "vidyut":
-            return VidyutWrapper()
         raise Exception("invalid type", name)
