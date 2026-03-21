@@ -174,6 +174,9 @@ class Split(Serializable):
         return str(out)
 
     def parse(self, limit=10, min_cost_only=False):
+        for o in self.split:
+            tags = self.parser.sandhi_analyzer.getMorphologicalTags(o)
+            o.setMorphologicalTags(tags)
         self.vgraph = VakyaGraph(self.split,
                                  fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
