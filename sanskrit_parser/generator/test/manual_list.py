@@ -9,7 +9,7 @@ test_list_slp1 = [
     ("rAma", "eti", "rAmEti"),
     ("rAma", "iti", "rAmeti"),
     ("tyaktvA", "uttizWa", "tyaktvottizWa"),
-    ("tava", "ozTaH", "tavOzTaH"),
+    ("tava", "ozTaH", ["tavOzTaH", "taozTaH"]),  # SK406 optional te: tava→te, e+o→taozTaH (6.1.78+8.3.19)
     ("deva", "fzi", "devarzi"),
     ("gavi", "asmAkam", "gavyasmAkam"),
     ("kavI", "etau", "kavyetau"),
@@ -163,8 +163,8 @@ test_list_devanagari = [
     (yuzmad, am, "त्वाम्"),       # SK389 (tva) + SK390 (am→ām) + SK385 → tvām
     (asmad, am, "माम्"),         # SK389 (ma) + SK390 → mām
     # Acc pl (SK391+SK393+SK385)
-    ((yuzmad, Sas), avasAna, "युष्मान् ।"),    # SK391 (śas→n) + SK393 (ā) + SK385 + 8.2.23 → yuṣmān
-    ((asmad, Sas), avasAna, "अस्मान् ।"),     # SK391 + SK393 + 8.2.23 → asmān
+    ((yuzmad, Sas), avasAna, ["युष्मान् ।", "वः ।"]),    # SK391 (śas→n) + SK393 (ā) + SK385 + 8.2.23 → yuṣmān; SK405 optional enclitic vaḥ
+    ((asmad, Sas), avasAna, ["अस्मान् ।", "नः ।"]),     # SK391 + SK393 + 8.2.23 → asmān; SK405 optional enclitic naḥ
     # Inst sg (SK389+SK392+SK385)
     (yuzmad, wA, "त्वया"),        # SK389 (tva) + SK392 (a→ay) + SK385 → tvayā
     (asmad, wA, "मया"),          # SK389 (ma) + SK392 → mayā
@@ -180,9 +180,9 @@ test_list_devanagari = [
     # Dat/abl pl (SK395+SK385)
     (yuzmad, Byas, "युष्मभ्यम्"), # SK395 (Byas→Byam) + SK385 → yuṣmabhyam
     (asmad, Byas, "अस्मभ्यम्"),  # SK395 → asmabhyam
-    # Gen/loc du (SK386+SK392+SK385) — needs avasāna for final visarga
-    ((yuzmad, os), avasAna, "युवयोः ।"),   # SK386 (yuva) + SK392 (a→ay) + SK385 → yuvayoḥ
-    ((asmad, os), avasAna, "आवयोः ।"),    # SK386 (Āva) + SK392 → āvayoḥ
+    # Gen du (SK386+SK392+SK385) — needs avasāna for final visarga; SK404 optional enclitic vāṃ/nau
+    ((yuzmad, os), avasAna, ["युवयोः ।", "वाम् ।"]),   # SK386 (yuva) + SK392 (a→ay) + SK385 → yuvayoḥ; SK404 optional vāṃ
+    ((asmad, os), avasAna, ["आवयोः ।", "नौ ।"]),       # SK386 (Āva) + SK392 → āvayoḥ; SK404 optional nau
     # Loc sg (SK389+SK392+SK385)
     (yuzmad, Ni, "त्वयि"),        # SK389 (tva) + SK392 (a→ay) + SK385 → tvayi
     (asmad, Ni, "मयि"),          # SK389 (ma) + SK392 → mayi

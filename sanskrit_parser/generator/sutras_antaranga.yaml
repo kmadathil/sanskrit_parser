@@ -3161,6 +3161,164 @@
   update:
     orp: -Am
 
+# 407: त्वामौ द्वितीयायाः (8-1-23)
+# Optional tvā/mā enclitic for yuzmad/asmad acc sg.
+# Fires when merged pronoun form (lp) has ?pada tag (from its sup suffix) and matching content.
+# Preceding-pada constraint (padAt, SK402) deferred — fires on any pada with this content for now.
+- sutra: त्वामौ द्वितीयायाः
+  id: 8.1.23
+  optional: true
+  condition:
+    lp:
+      - and
+      - ?pada
+      - =tvAm
+  xform:
+    lc: str("tv")
+    l: str("A")
+# 407.1: asmad acc sg (mAm → mA)
+- sutra: त्वामौ द्वितीयायाः
+  id: 8.1.23.1
+  optional: true
+  condition:
+    lp:
+      - and
+      - ?pada
+      - =mAm
+  xform:
+    lc: str("m")
+    l: str("A")
+
+# 406: तेमयावेकवचनस्य (8-1-22)
+# Optional te/me enclitic for yuzmad/asmad gen/dat sg.
+# yuzmad gen sg tava → te; yuzmad dat sg tuByam → te.
+- sutra: तेमयावेकवचनस्य
+  id: 8.1.22
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =tava
+    - lp:
+        - and
+        - ?pada
+        - =tuByam
+  xform:
+    lc: str("t")
+    l: str("e")
+# 406.1: asmad gen/dat sg (mama → me; mahyam → me)
+- sutra: तेमयावेकवचनस्य
+  id: 8.1.22.1
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =mama
+    - lp:
+        - and
+        - ?pada
+        - =mahyam
+  xform:
+    lc: str("m")
+    l: str("e")
+
+# 405: बहुवचनस्य वस्नसौ (8-1-21)
+# Optional vaH/naH enclitic for yuzmad/asmad gen/dat/acc pl.
+# No case-syncretism: abl pl = yuzmAt (SK397), dat pl = yuzmaByam (unique).
+- sutra: बहुवचनस्य वस्नसौ
+  id: 8.1.21
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =yuzmAkam
+    - lp:
+        - and
+        - ?pada
+        - =yuzmaByam
+    - lp:
+        - and
+        - ?pada
+        - =yuzmAns
+  xform:
+    lc: str("va")
+    l: str("H")
+# 405.1: asmad pl (asmAkam/asmaByam/asmAn → naH)
+- sutra: बहुवचनस्य वस्नसौ
+  id: 8.1.21.1
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =asmAkam
+    - lp:
+        - and
+        - ?pada
+        - =asmaByam
+    - lp:
+        - and
+        - ?pada
+        - =asmAns
+  xform:
+    lc: str("na")
+    l: str("H")
+
+# 404: युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ (8-1-20)
+# Optional vAm/nO enclitic for yuzmad/asmad gen/dat/acc du.
+# Vibhakti tags (propagated via paninian_object.py) disambiguate syncretic dual forms:
+#   yuvAm = nom du (praTamA) + acc du (dvitIyA) → restrict to ?dvitIyA
+#   yuvayor (pre-visarga) = gen du (zazWI) + loc du (saptamI) → restrict to ?zazWI
+#   yuvAByAm = inst du (tftIyA) + dat du (caturTi) + abl du (pancamI) → restrict to ?caturTi
+- sutra: युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ
+  id: 8.1.20
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =yuvAm
+        - ?dvitIyA
+    - lp:
+        - and
+        - ?pada
+        - =yuvayos
+        - ?zazWI
+    - lp:
+        - and
+        - ?pada
+        - =yuvAByAm
+        - ?caturTi
+  xform:
+    lc: str("vA")
+    l: str("m")
+# 404.1: asmad dual (AvAm/AvayoH/AvAByAm → nO)
+- sutra: युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ
+  id: 8.1.20.1
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?pada
+        - =AvAm
+        - ?dvitIyA
+    - lp:
+        - and
+        - ?pada
+        - =Avayos
+        - ?zazWI
+    - lp:
+        - and
+        - ?pada
+        - =AvAByAm
+        - ?caturTi
+  xform:
+    lc: str("n")
+    l: str("O")
+
 # 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः
   id: 7.2.102

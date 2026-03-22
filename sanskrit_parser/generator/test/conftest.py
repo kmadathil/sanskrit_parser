@@ -73,12 +73,18 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
             if isinstance(s[i], str):
                 # Shortcuts for two input tests not using predefined objects
                 # If a string in the first place ends with * it's an anga
+                # If a string in the first place ends with ! it has no tag (raw phonetic input)
                 # Else it's a pada
                 # For everything else, use predefined objects
                 if (i == 0) and (s[i][-1] == "*"):
                     s0 = s[0][:-1]
                     l = PaninianObject(s0, encoding)  # noqa: E741
                     l.setTag("aNga")
+                elif (i == 0) and (s[i][-1] == "!"):
+                    s0 = s[0][:-1]
+                    l = PaninianObject(s0, encoding)  # noqa: E741
+                    # no tag: raw phonetic input, not an anga or pada
+                    return l
                 else:
                     s0 = s[i]
                     l = PaninianObject(s[i], encoding)  # noqa: E741

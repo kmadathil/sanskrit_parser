@@ -102,7 +102,7 @@ sups = [[su, O, jas],
         [Ne, ByAm2, Byas],
         [Nasi, ByAm3, Byas2],
         [Nas, os, Am],
-        [Ni, os, sup],
+        [Ni, os2, sup],
         [su2, O2, jas2]]
 
 for p in sups:

@@ -127,5 +127,12 @@ class PaninianObject(SanskritObject):
                     so.setTag("pUrvastrI")
                 if so.hasTag("napum"):
                     so.deleteTag("napum")
-                    
+
+        # Propagate vibhakti case/number tags from last element (pratyaya)
+        # Needed for case disambiguation in enclitic rules (SK404) where dual forms are syncretic
+        for t in ["praTamA", "dvitIyA", "tftIyA", "caturTi", "pancamI",
+                  "zazWI", "saptamI", "ekavacana", "dvivacana", "bahuvacana", "viBakti"]:
+            if objects[0][-1].hasTag(t):
+                so.setTag(t)
+
         return so
