@@ -340,6 +340,25 @@ def saMyogapUrvaVamanta(lp):
             lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
 
 
+def tyadAdiHasTorD(lp):
+    """True if lp (tyadAdi after 7.2.102, so ending in 'a') has a t or d in non-final position.
+    Used in 7.2.106 condition to confirm a t/d exists for s-substitution."""
+    return any(c in ('t', 'd') for c in lp[:-1])
+
+
+def replaceTorDwithS(lc):
+    """Replace the rightmost t or d in lc with s (7.2.106 tadoḥ saḥ sāvanantyyayoḥ).
+    Handles all tyadAdi stems after 7.2.102 has applied (final d/s → a).
+    When the preceding vowel is in iR (includes e, o, i, u, …), the substitute is z (ṣ)
+    per 8.3.59 (ādeśapratyayayoḥ) applied eagerly — the 's' ādeśa is embedded in lp
+    content after this xform and cannot be reached by the outer 8.3.59 rule."""
+    for i in range(len(lc) - 1, -1, -1):
+        if lc[i] in ('t', 'd'):
+            sub = 'z' if (i > 0 and isInPratyahara('iR', lc[i - 1])) else 's'
+            return lc[:i] + sub + lc[i + 1:]
+    return lc
+
+
 def numAgama(s):
     lastac = -1
     lens = len(s)

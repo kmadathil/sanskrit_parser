@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 400 — 7.1.33 साम आकम् (yuṣmad/asmad gen pl: yuṣmākam, asmākam)
-**Next to implement:** SK 401 (8.1.16 पदस्य — pada-scope rule; skip with SK401–SK413 pada enclitics)
+**Last implemented:** SK 407 — 8.1.23 त्वामौ द्वितीयायाः (yuzmad/asmad sg acc enclitic tvā/mā, optional); also adds out-of-order SK437 / 7.2.107 (adas → asau) and SK381 / 7.2.106 (tad-group nom sg m: saḥ, eṣaḥ, syaḥ)
+**Next to implement:** SK 414 (6.4.130 पादः पत् — skipping SK408–SK413)
 
 ---
 
@@ -12,10 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 138 |
-| SK-numbered sutras, skipped/deferred | 38 |
+| SK-numbered sutras, implemented | 144 |
+| SK-numbered sutras, skipped/deferred | 47 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 86 |
+| Stems with partial vibhakti test tables | 4 |
 
 ---
 
@@ -179,7 +180,13 @@ The "Forms affected" column uses the convention:
 | 396 | 7.1.32 | एकवचनस्य च | Abl sg at-ādeśa: full replacement → tvat (yuzmad), mat (asmad); overrides SK389/SK393/SK392 |
 | 397 | 7.1.31 | पञ्चम्या अत् | Abl pl at-ādeśa: full replacement for ?Byas+?pancamI → yuzmAt, asmAt; wins over SK395 (71031 > 71030 SPSP) |
 | 398 | 7.2.96 | तवममौ ङसि | Gen sg full replacement → tava (yuzmad), mama (asmad); overrides SK389/SK393/SK392 |
+| 381 | 7.2.106 | तदोः सः सावनन्त्ययोः | Non-final t/d of tyadAdi → s before su (nom sg m); tad→saḥ, etad→eṣaḥ, tyad→syaḥ, adas→asa (→asau via SK437) |
 | 400 | 7.1.33 | साम आकम् | Gen pl Am → Akam; SK385 then d-lopa; sandhi a+A→A → yuzmAkam, asmAkam |
+| 404 | 8.1.20 | युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ | yuzmad/asmad du gen/dat/acc → vāṃ/nau (optional) before pada; vibhakti tags disambiguate syncretic du forms |
+| 405 | 8.1.21 | बहुवचनस्य वस्नसौ | yuzmad/asmad pl gen/dat/acc → vaḥ/naḥ (optional) before pada |
+| 406 | 8.1.22 | तेमयावेकवचनस्य | yuzmad/asmad sg gen/dat → te/me (optional) before pada |
+| 407 | 8.1.23 | त्वामौ द्वितीयायाः | yuzmad/asmad sg acc → tvā/mā (optional) before pada |
+| 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 
 ---
 
@@ -283,16 +290,11 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 373 | 3.2.59 | ṛtvigdadhṛksragdiguṣṇigañcuyujikruñcāṃ ca | Natural — handled via pratipadika pre-definitions | kvin formation rule. Stems from sutra compound (8): ṛtvij (m., j-final), dadhṛc (m., c-final, from √dhṛṣ via ścutva), sraj (f., j-final), diś (f., ś-final), uṣṇij (m., j-final), añcu-compounds (prāñc/pratyañc/udañc/tiryañc etc., ñc-final), yuj (m., j-final, nirupapada only per SK376), kruñc (m., ñc-final). SK commentary "कनावितौ": the suffixes KAN and ĀVIT are excluded — only kvin applies (not additional stems). Implemented: ftvij/sraj/yuj/diS. Deferred: dadhṛc (c-final), uṣṇij (j-final, same phonology as ftvij — trivial to add), kruñc (ñc-final), añcu-compounds (compound-specific, many forms). Extending to c/ñc-finals requires SK377 (8.2.62) condition and kvinKutva extension — see SK377 PARTIAL note |
 | 374 | 3.1.93 | कृदतिङ् | Natural | kṛt saṃjñā definition; falls out of generator framework |
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
-| 381 | 7.2.106 | तदोः सः सावनन्त्ययोः | For later | tad-group pronoun: s-substitute for tad/etad nom sg m (gives saḥ, etc.); deferred until tad pratipadika and full tad declension rules are added |
 | 383 | 7.2.91 | मपर्यन्तस्य | Natural Siddha | adhikāra scope indicator ("up to m"); scope encoded directly in SK384's xform (lc replaced = yuzm+a portion); no YAML rule needed |
 | 399 | 7.1.27 | युष्मदस्मद्भ्यां ङसोऽश् | Natural Siddha | gen sg overridden entirely by SK398 (tava/mama); gen/loc du (yuvayoḥ/āvayoḥ) fall out of SK386+SK392; no YAML rule needed |
-| 401 | 8.1.16 | पदस्य | For later — pada enclitics | scope rule for pada-final enclitic pronoun forms (te, me, tvā, mā, vām, nau, vas, nas); whole SK401–SK413 group deferred |
-| 402 | 8.1.17 | पदात् | For later — pada enclitics | pada-from rule; part of SK401–SK413 enclitic group |
+| 401 | 8.1.16 | पदस्य | Natural Siddha | adhikāra — pada-context (preceding pada) constraint; implied once SK401/402 formally implemented; optional SK404–407 currently fire on any preceding pada |
+| 402 | 8.1.17 | पदात् | Natural Siddha | adhikāra — same as SK401; preceding-pada constraint deferred |
 | 403 | 8.1.18 | अनुदात्तं सर्वमपादादौ | For later — accent | unaccented rule; accent not modelled in generator |
-| 404 | 8.1.20 | युष्मदस्मदोः षष्ठीचतुर्थीद्वितीयास्थयोर्वांनावौ | For later — pada enclitics | vām/nau enclitic dual; requires word-boundary/sentence context |
-| 405 | 8.1.21 | बहुवचनस्य वस्नसौ | For later — pada enclitics | vas/nas enclitic pl; requires preceding word context |
-| 406 | 8.1.22 | तेमयावेकवचनस्य | For later — pada enclitics | te/me enclitic sg gen/dat; requires preceding word context |
-| 407 | 8.1.23 | त्वामौ द्वितीयायाः | For later — pada enclitics | tvā/mā enclitic acc sg; requires preceding word context |
 | 408 | 8.1.24 | न चवाहाऽहैवयुक्ते | For later — pada enclitics | exception to SK404–407 with ca/vā/ha/aha/eva |
 | 409 | 8.1.25 | पश्यार्थैश्चाऽनालोचने | For later — pada enclitics | exception: no enclitics with non-visual-perception verbs |
 | 410 | 8.1.26 | सपूर्वायाः प्रथमाया विभाषा | For later — pada enclitics | optional pada-enclitics for certain nom constructions |
@@ -398,3 +400,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
+| tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
+| etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
+| tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |
+| adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg m asau; partial table (nom sg only) |

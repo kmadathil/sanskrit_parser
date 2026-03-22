@@ -106,23 +106,22 @@ class Parser():
             logger.info(f"Input String in SLP1: {s.canonical()}")
             return s
         else:
-            logger.debug("Pre-Segmented")
             s = []
             for seg in input_string.split(" "):
                 o = SanskritObject(seg,
                                    encoding=self.input_encoding,
                                    strict_io=self.strict_io,
                                    replace_ending_visarga='r')
-                ts = self.sandhi_analyzer.getMorphologicalTags(o, tmap=True)
-                if ts is None:
+                valid = self.sandhi_analyzer._is_valid_word(o.canonical())
+                if not valid:
                     # Possible sakaranta
                     # Try by replacing end visarga with 's' instead
                     o = SanskritObject(seg,
                                        encoding=self.input_encoding,
                                        strict_io=self.strict_io,
                                        replace_ending_visarga='s')
-                    ts = self.sandhi_analyzer.getMorphologicalTags(o, tmap=True)
-                if ts is None:
+                    valid = self.sandhi_analyzer._is_valid_word(o.canonical())
+                if not valid:
                     logger.warning(f"Unknown pada {seg} - will be split")
                     _s = list(self.split(seg, pre_segmented=False, limit=1))[0]
                     logger.info(f"Split {_s}")
@@ -142,7 +141,7 @@ class Parser():
               ):
         s = self._maybe_pre_segment(input_string, pre_segmented)
         logger.debug("Start Split")
-        graph = self.sandhi_analyzer.getSandhiSplits(s, tag=True,
+        graph = self.sandhi_analyzer.getSandhiSplits(s, tag=False,
                                                      pre_segmented=pre_segmented)
         logger.debug("End DAG generation")
         if graph is None:
@@ -175,6 +174,9 @@ class Split(Serializable):
         return str(out)
 
     def parse(self, limit=10, min_cost_only=False):
+        for o in self.split:
+            tags = self.parser.sandhi_analyzer.getMorphologicalTags(o)
+            o.setMorphologicalTags(tags)
         self.vgraph = VakyaGraph(self.split,
                                  fast_merge=self.parser.fast_merge,
                                  max_parse_dc=self.parser.split_above)
