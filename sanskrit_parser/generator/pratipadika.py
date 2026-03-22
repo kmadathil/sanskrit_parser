@@ -208,6 +208,12 @@ kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
 idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])
 
+# tyadādi demonstratives (SK381 / 7.2.106): non-final t/d → s before su (nom sg)
+tad  = Pratipadika("tad",  "pum", other_tags=["tad",  "sarvanAma", "tyadAdi"])  # "that"
+etad = Pratipadika("etad", "pum", other_tags=["etad", "sarvanAma", "tyadAdi"])  # "this (near)"
+tyad = Pratipadika("tyad", "pum", other_tags=["tyad", "sarvanAma", "tyadAdi"])  # "that (yonder)"
+adas = Pratipadika("adas", "pum", other_tags=["adas", "sarvanAma", "tyadAdi"])  # "that (far)"
+
 # Personal pronouns — alinga (no gender distinction)
 # SK382-395 (7.1.28, 7.2.86-97): nominative sg forms tvam/aham via SK383-385
 yuzmad = Pratipadika("yuzmad", "pum", other_tags=["yuzmad", "sarvanAma"])  # yuṣmad "you"
