@@ -1240,6 +1240,36 @@ viBakti["mahat_n"] = [
     [['महत्', 'महद्'], 'महती', 'महान्ति'],  # 8 Voc  (= Nom for napum)
 ]
 
+# dhImat (pum): matup (u-it) stem. SK425 (6.4.14) lengthens upadhā before su (nom sg):
+# dhīmat→dhīmāt (SK425), nUM→dhīmānt (SK361), t-drop→dhīmān.
+# SK317 does NOT fire (stem ≠ mahant). Other sarvānāmasthāna: nUM→dhīmant, no lengthening.
+# Acc pl (Sas, non-sarv) + inst–loc sg: weak dhīmat- base.
+prAtipadika["dhImat"] = dhImat  # noqa: F405
+viBakti["dhImat"] = [
+    ['धीमान्', 'धीमन्तौ', 'धीमन्तः'],    # 1 Nom  * SK425+SK361+t-drop sg; SK361 du/pl (no SK317)
+    ['धीमन्तम्', 'धीमन्तौ', 'धीमतः'],    # 2 Acc  * SK361 sg+du; weak pl (Sas)
+    ['धीमता', 'धीमद्भ्याम्', 'धीमद्भिः'],  # 3 Inst * t→d before voiced bh
+    ['धीमते', 'धीमद्भ्याम्', 'धीमद्भ्यः'], # 4 Dat
+    ['धीमतः', 'धीमद्भ्याम्', 'धीमद्भ्यः'], # 5 Abl
+    ['धीमतः', 'धीमतोः', 'धीमताम्'],         # 6 Gen
+    ['धीमति', 'धीमतोः', 'धीमत्सु'],          # 7 Loc
+    ['धीमन्', 'धीमन्तौ', 'धीमन्तः'],    # 8 Voc  * SK361 (no SK425 for sambuddhi); t-drop sg
+]
+
+# gomat (pum): matup (u-it) stem. Same pattern as dhīmat.
+# gomān nom sg (SK425+SK361+t-drop); gomantau nom du; gomatā inst sg; etc.
+prAtipadika["gomat"] = gomat  # noqa: F405
+viBakti["gomat"] = [
+    ['गोमान्', 'गोमन्तौ', 'गोमन्तः'],    # 1 Nom  * SK425+SK361+t-drop sg; SK361 du/pl
+    ['गोमन्तम्', 'गोमन्तौ', 'गोमतः'],    # 2 Acc  * SK361 sg+du; weak pl
+    ['गोमता', 'गोमद्भ्याम्', 'गोमद्भिः'],  # 3 Inst
+    ['गोमते', 'गोमद्भ्याम्', 'गोमद्भ्यः'], # 4 Dat
+    ['गोमतः', 'गोमद्भ्याम्', 'गोमद्भ्यः'], # 5 Abl
+    ['गोमतः', 'गोमतोः', 'गोमताम्'],         # 6 Gen
+    ['गोमति', 'गोमतोः', 'गोमत्सु'],          # 7 Loc
+    ['गोमन्', 'गोमन्तौ', 'गोमन्तः'],    # 8 Voc  * SK361 (no SK425 for sambuddhi); t-drop sg
+]
+
 # Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
 # before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
 # voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).
@@ -1402,8 +1432,23 @@ viBakti["asmad"] = [
     # 8 Voc: pronouns do not have vocative forms
 ]
 
+# SK414 — supAd (m.): su + pAd compound. SK414 (6.4.130) shortens pAd → pad when anga is bha
+# (non-sarvānāmasthāna, vowel-initial sups). Sarvānāmasthāna (su/O/jas/am/Ow) retain supAd base.
+# d at pada-end → t (8.2.39); d before voiced cons → d retained.
+prAtipadika["supAd"] = [su_purva, in_compound(pAd_ut)]   # noqa: F405
+viBakti["supAd"] = [
+    [["सुपात्", "सुपाद्"], "सुपादौ", "सुपादः"],  # 1 Nom  * sarv: no SK414; d→t/d at pause; pl: d+as→daḥ
+    ["सुपादम्", "सुपादौ", "सुपदः"],              # 2 Acc  * am/Ow sarv; acc pl Sas: bha→SK414
+    ["सुपदा", "सुपाद्भ्याम्", "सुपाद्भिः"],       # 3 Inst * inst sg: bha→SK414; cons-initial: no SK414
+    ["सुपदे", "सुपाद्भ्याम्", "सुपाद्भ्यः"],      # 4 Dat  * dat sg Ne: bha→SK414
+    ["सुपदः", "सुपाद्भ्याम्", "सुपाद्भ्यः"],      # 5 Abl  * abl sg Nasi: bha→SK414
+    ["सुपदः", "सुपदोः", "सुपदाम्"],              # 6 Gen  * gen sg/du/pl all bha→SK414
+    ["सुपदि", "सुपदोः", "सुपात्सु"],              # 7 Loc  * loc sg Ni: bha→SK414; loc pl: d→t
+    [["सुपात्", "सुपाद्"], "सुपादौ", "सुपादः"],  # 8 Voc  * = Nom
+]
+
 # samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
-samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj"],
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd"],
           "strI": [], "napum": []}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 

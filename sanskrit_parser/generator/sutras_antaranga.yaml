@@ -1760,7 +1760,10 @@
 - sutra: सान्तमहतः संयोगस्य 
   id: 6.4.10
   condition:
-   - lp: ?aNga
+   - lp:
+       - and
+       - ?aNga
+       - $$ns_upadha_hrasva   # upadhā must be hrasva; blocks no-op re-firing after SK425
      l: s
      ll: n
      rp:
@@ -1886,6 +1889,40 @@
         - ?!sambudDi
     - lp: ?han
       l: n
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
+# 425: अत्वसन्तस्य चाऽधातोः (6.4.14)
+# Lengthen upadhā (penultimate vowel) of a non-dhātu anga before su (nom sg), NOT in sambuddhi,
+# when anga ends in ugit -at (matup/ktavatu) or ugit -as (Iyasun).
+# bahiranga:3 fires this BEFORE numAgama (SK361/7.1.70): dhīmat→dhīmāt, then nUM→dhīmānt, t-drop→dhīmān.
+# The ?!sambudDi guard keeps voc sg as dhīman (no lengthening; nUM fires but SK317/SK425 skip sambuddhi).
+- sutra: अत्वसन्तस्य चाऽधातोः
+  id: 6.4.14
+  bahiranga: 3
+  condition:
+    - lp:                     # -at (u-it): matup, ktavatu — masculine only
+        - and
+        - ?!DAtu
+        - +u
+        - ?pum
+      l: t
+      ll: a
+      rp:
+        - and
+        - ?su
+        - ?!sambudDi
+    - lp:                     # -as (u-it non-dhātu): Iyasun (śreyas etc.) — masculine only
+        - and
+        - ?!DAtu
+        - +u
+        - ?pum
+      l: s
+      ll: a
       rp:
         - and
         - ?su
@@ -3353,6 +3390,21 @@
   xform:
     lc: str("n")
     l: str("O")
+
+# 414: पादः पत् (6-4-130)
+# When a bha-anga ends in the compound-form of pāda (= pAd, with terminal 'a' already dropped),
+# substitute pad for pAd — i.e., shorten ā → a.
+# Example: supAd (bha) + inst-ā → supad + ā → supadā; gen sg → supadaḥ.
+# Does NOT apply to standalone pAda (compound compounds use pAd, not pAda).
+- sutra: पादः पत्
+  id: 6.4.130
+  condition:
+    lp:
+      - and
+      - ?Ba
+      - $$endsWith_pAd
+  xform:
+    lc: lc[:-1]+hrasva(lc[-1])
 
 # 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः

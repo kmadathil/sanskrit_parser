@@ -102,6 +102,9 @@ hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
 mahat = Pratipadika("mahat", "pum", its=['u'])
+# SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
+dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
+gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
 
 atistri = Pratipadika("atistri", "pum", other_tags=["strI_p", "pUrvastrI"])
 
@@ -249,3 +252,7 @@ aSva        = Pratipadika("aSva", "pum")                            # aśva m. �
 viSva       = Pratipadika("viSva", "pum", other_tags=["viSva"])     # viśva — ?viSva tag triggers 6.3.128
 vasu_pum    = Pratipadika("vasu", "pum", other_tags=["vasupada"])   # vasu m. (u-stem) — uttara-pada (?vasupada avoids collision with 8.2.72's ?vasu)
 rAj_kvip    = Pratipadika("rAj", "pum", other_tags=["DAtu", "kvip", "rAj", "vraScAdi"])  # √rāj+kvip; nom sg: rāṭ via SK294(j→ṣ)+8.2.39(ṣ→ḍ)+8.4.56(ḍ→ṭ)
+
+# SK414 (6.4.130) test pratipadikas — pādaḥ pat
+su_purva    = Pratipadika("su", "pum")                                                    # su — pūrva-pada for supAd compound
+pAd_ut      = Pratipadika("pAd", "pum")                                                    # pāda in compound form (terminal a dropped); SK414 shortens pAd→pad when bha

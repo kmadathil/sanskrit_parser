@@ -340,6 +340,20 @@ def saMyogapUrvaVamanta(lp):
             lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
 
 
+def endsWith_pAd(lp):
+    """True if lp ends in the compound-form of pāda (pAd = pād without terminal a).
+    Used in SK414 (6.4.130): pāda → pad when anga is bha."""
+    return len(lp) >= 3 and lp[-3:] == "pAd"
+
+
+def ns_upadha_hrasva(lp):
+    """True if lp ends in hrasva-vowel + n + s (upadhā is short before -ns cluster).
+    Used in SK317 (6.4.10) block 1 to prevent firing when upadhā is already dīrgha
+    (e.g. after SK425 has lengthened śreyas → śreyās before nUM → śreyāns)."""
+    return (len(lp) >= 3 and lp[-1] == 's' and lp[-2] == 'n' and
+            lp[-3] in ['a', 'i', 'u', 'f', 'x'])
+
+
 def tyadAdiHasTorD(lp):
     """True if lp (tyadAdi after 7.2.102, so ending in 'a') has a t or d in non-final position.
     Used in 7.2.106 condition to confirm a t/d exists for s-substitution."""

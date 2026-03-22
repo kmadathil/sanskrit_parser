@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 407 — 8.1.23 त्वामौ द्वितीयायाः (yuzmad/asmad sg acc enclitic tvā/mā, optional); also adds out-of-order SK437 / 7.2.107 (adas → asau) and SK381 / 7.2.106 (tad-group nom sg m: saḥ, eṣaḥ, syaḥ)
-**Next to implement:** SK 414 (6.4.130 पादः पत् — skipping SK408–SK413)
+**Last implemented:** SK 425 — 6.4.14 अत्वसन्तस्य चाऽधातोः (upadhā dīrgha for u-it -at/-as pum angas before su; dhīmān, gomān)
+**Next to implement:** SK 426 (skipping SK415–SK424 añcatir cluster)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 144 |
-| SK-numbered sutras, skipped/deferred | 47 |
+| SK-numbered sutras, implemented | 146 |
+| SK-numbered sutras, skipped/deferred | 53 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 86 |
+| Stems with full vibhakti test tables | 89 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -186,6 +186,8 @@ The "Forms affected" column uses the convention:
 | 405 | 8.1.21 | बहुवचनस्य वस्नसौ | yuzmad/asmad pl gen/dat/acc → vaḥ/naḥ (optional) before pada |
 | 406 | 8.1.22 | तेमयावेकवचनस्य | yuzmad/asmad sg gen/dat → te/me (optional) before pada |
 | 407 | 8.1.23 | त्वामौ द्वितीयायाः | yuzmad/asmad sg acc → tvā/mā (optional) before pada |
+| 414 | 6.4.130 | पादः पत् | pAda → pad (shorten ā→a) when anga is bha; applies to compound pAd-final stems (supAd etc.); inst/dat/abl/gen/loc sg + acc/gen pl all show pad- base |
+| 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 
 ---
@@ -301,6 +303,16 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 411 | 2.3.48 | सामन्त्रितम् | For later | vocative definition; no impact on pronoun declension forms |
 | 412 | 8.1.72 | आमन्त्रितं पूर्वमविद्यमानवत् | For later — accent | vocative accent; accent not modelled |
 | 413 | 8.1.73 | नामन्त्रिते समानाधिकरणे सामान्यवचनम् | For later | vocative co-referential number; not needed for basic paradigm |
+| 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | Natural — pre-applied | n-lopa for anidita hal-stems before kṅit; prAc/udac/tiryac/pratyac stored as post-lopa weak forms; all tests pass |
+| 416 | 6.4.138 | अचः | Natural — pre-applied | a-deletion from añc- after n-lopa; reflected in stored pratipadika content; all tests pass |
+| 417 | 6.3.138 | चौ | Natural — pre-applied | upadhā dīrgha before cau; ā already present in stored añcatir stems (prāc, udac etc.); all tests pass |
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | For later — specialized | viśvag/deva substitution before añcatir without suffix; viśvag compound stored directly |
+| 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | For later — adas pronoun | adas pronoun: d→m before certain forms; grouped near añcatir in SK; separate pratipadika section |
+| 420 | 6.4.139 | उद ईत् | Natural — pre-applied | ud-añc: a→ī after n-lopa (udañc → udīc-); stored content reflects this; udac tests pass |
+| 421 | 6.3.93 | समः समि | For later — specialized | sam- → sami- compound before añcatir (samyak); SK HTML erroneously shows 3-6-93; correct is 6.3.93 |
+| 422 | 6.3.95 | सहस्य सध्रिः | For later — specialized | saha- → sadhr- before añcatir; sadhryak compound stored directly |
+| 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
+| 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 
 ---
 
@@ -398,6 +410,9 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | aSvayuj | m | j-stem (kvin, compound) | SK376 (7.1.71) blocked by ?samAsa; no nUM; phonology as ṛtvij: aśvayug/aśvayuk nom sg |
 | viSvAvasu | m | u-stem (compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?vasu in compound; viśvāvasu |
 | viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |
+| supAd | m | d-stem (pāda compound, SK414) | SK414 (6.4.130): pAd→pad (ā→a) in bha context; inst/dat/abl/gen/loc sg + acc/gen pl use pad- base; nom/voc/acc sg+du+pl use supAd- base |
+| dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
+| gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
