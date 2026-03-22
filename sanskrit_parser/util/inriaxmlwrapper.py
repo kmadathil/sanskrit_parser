@@ -52,6 +52,7 @@ import pickle
 import sqlite3
 import logging
 from collections import namedtuple
+import marisa_trie
 
 from sanskrit_parser.base.sanskrit_base import SanskritImmutableString
 from sanskrit_parser.util.lexical_lookup import LexicalLookup
@@ -96,6 +97,9 @@ class InriaXMLWrapper(LexicalLookup):
         db_file = data_file_path("inria_forms_pos.db")
         pkl_path = data_file_path("inria_stems_tags_buf.pkl")
         self.db = self._load_db(db_file, pkl_path)
+        self.trie = marisa_trie.RecordTrie("<I")
+        trie_file = data_file_path("forms_pos.marisa")
+        self.trie.load(trie_file)
 
     @staticmethod
     def _load_db(db_file, pkl_path):
@@ -108,12 +112,16 @@ class InriaXMLWrapper(LexicalLookup):
 
     def _get_tags(self, word):
         db = self.db
-        conn = sqlite3.connect(db.db_file)
-        cursor = conn.cursor()
-        res = cursor.execute('SELECT * FROM forms WHERE form=?', (word,)).fetchone()
+        # conn = sqlite3.connect(db.db_file)
+        # cursor = conn.cursor()
+        # res = cursor.execute('SELECT * FROM forms WHERE form=?', (word,)).fetchone()
+        # if res is None:
+        #     return None
+        # pos = res[1]
+        res = self.trie.get(word, None)
         if res is None:
             return None
-        pos = res[1]
+        pos = res[0][0]
         tag_index_list = pickle.loads(db.buf[pos:])
         tags = []
         for tag_index in tag_index_list:
@@ -127,10 +135,11 @@ class InriaXMLWrapper(LexicalLookup):
         return (stem, set(t))
 
     def valid(self, word):
-        conn = sqlite3.connect(self.db.db_file)
-        cursor = conn.cursor()
-        res = cursor.execute('SELECT COUNT(1) FROM forms WHERE form = ?', (word,)).fetchone()
-        return res[0] > 0
+        # conn = sqlite3.connect(self.db.db_file)
+        # cursor = conn.cursor()
+        # res = cursor.execute('SELECT COUNT(1) FROM forms WHERE form = ?', (word,)).fetchone()
+        # return res[0] > 0
+        return word in self.trie
 
     def get_tags(self, word, tmap=True):
         tags = self._get_tags(word)
