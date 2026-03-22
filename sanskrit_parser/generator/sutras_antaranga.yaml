@@ -2704,8 +2704,43 @@
   xform:
      l: str("r")
 
+# ---- tad-group demonstrative pronoun rules ----
+# 381: तदोः सः सावनन्त्ययोः (7.2.106)
+# For tyadAdi, the non-final t or d → s before su (nom sg).
+# Fires after 7.2.102 has replaced the stem-final consonant with 'a' (l='a').
+# Helper tyadAdiHasTorD: confirms a t/d exists in non-final position of lp.
+# Helper replaceTorDwithS: replaces the rightmost t/d in lc with 's'.
+# Covers: tad→sa→saḥ, etad→eta→esa→eṣaḥ, tyad→tya→sya→syaḥ, adas→ada→asa (→asau via 7.2.107)
+- sutra: तदोः सः सावनन्त्ययोः
+  id: 7.2.106
+  condition:
+    lp:
+      - and
+      - ?tyadAdi
+      - $$tyadAdiHasTorD
+    l: a
+    rp: ?su
+  xform:
+    lc: replaceTorDwithS(lc)
+
+# 437: अदस औ सुलोपश्च (7.2.107) — out-of-SK-order, added here with SK381
+# For adas after SK381 has given "asa": the final 'a' → 'au' (O in SLP1), su is deleted.
+# ll: s ensures this fires only AFTER SK381 has converted d→s (i.e. lp = "asa" not "ada").
+# Without ll: s, para kāryam would let 7.2.107 fire before 7.2.106, giving wrong "adO".
+# Result: asa + su → asO (SLP1) = asau = असौ
+- sutra: अदस औ सुलोपश्च
+  id: 7.2.107
+  condition:
+    lp: ?adas
+    ll: s
+    l: a
+    rp: ?su
+  xform:
+    l: str("O")
+    r: null
+    rc: null
+
 # ---- yuṣmad / asmad (personal pronoun) rules ----
-# SK381: तदोः सः सावनन्त्ययोः (7-2-106) — tad-group pronoun; deferred (no tad pratipadika yet)
 
 # 382: ङेप्रथमयोरम् (7-1-28)
 # am-ādeśa for yuṣmad/asmad: ṅe (dat sg), prathamā (nom sg/du/pl), and dvitīyā (acc

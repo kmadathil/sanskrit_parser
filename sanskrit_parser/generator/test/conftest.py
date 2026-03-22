@@ -103,9 +103,13 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
     return None
 
 
-def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI):
+_VIBHAKTI_ROW_NAMES = ["pra", "dvi", "tft", "cat", "paY", "zaz", "sap", "sam"]
+_VIBHAKTI_COL_NAMES = ["ek", "dv", "bh"]
+
+
+def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI, stem_key=None):
     t = []
-    
+
     # If we get alist, treat as prefixes + prAtipadika
     if isinstance(pratipadika_i, list):
         plist = pratipadika_i
@@ -113,7 +117,7 @@ def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI):
     else:
         plist = [pratipadika_i]
         pratipadika = pratipadika_i
-  
+
     for ix, pv in enumerate(vibhaktis):
         for jx, pvv in enumerate(pv):
             # For nitya eka/dvi/bahuvacana, generate only the appropriate
@@ -123,11 +127,19 @@ def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI):
                 (not (pratipadika.hasTag("nityEkavacana") or
                       pratipadika.hasTag("nityadvivacana") or
                       pratipadika.hasTag("nityabahuvacana")))):
+                if pvv is None:
+                    continue  # Skip cells with no expected form (partial tables)
                 if isinstance(pvv, str):
                     _pvv = pvv+avasAna.transcoded(encoding)  # noqa: F405
                 else:
                     _pvv = [x+avasAna.transcoded(encoding) for x in pvv]  # noqa: F405
-                t.append([(*plist, sups[ix][jx]), avasAna, _pvv])  # noqa: F405
+                entry = [(*plist, sups[ix][jx]), avasAna, _pvv]  # noqa: F405
+                if stem_key is not None:
+                    row = _VIBHAKTI_ROW_NAMES[ix] if ix < len(_VIBHAKTI_ROW_NAMES) else str(ix)
+                    col = _VIBHAKTI_COL_NAMES[jx] if jx < len(_VIBHAKTI_COL_NAMES) else str(jx)
+                    t.append(pytest.param(entry, id=f"{stem_key}-{row}-{col}"))
+                else:
+                    t.append(entry)
     return t
 
 
@@ -152,7 +164,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                          viBakti[v]))
+                                                          viBakti[v], stem_key=v))
         metafunc.parametrize("halanta_pum", halanta_pum_list)
     if 'halanta_stri' in metafunc.fixturenames:
         halanta_stri_list = []
@@ -161,7 +173,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
-                                                           viBakti[v]))
+                                                           viBakti[v], stem_key=v))
         metafunc.parametrize("halanta_stri", halanta_stri_list)
     if 'halanta_napum' in metafunc.fixturenames:
         halanta_napum_list = []
@@ -170,7 +182,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 halanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                            viBakti[v]))
+                                                            viBakti[v], stem_key=v))
         metafunc.parametrize("halanta_napum", halanta_napum_list)
     if 'ajanta_pum' in metafunc.fixturenames:
         ajanta_pum_list = []
@@ -179,7 +191,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 ajanta_pum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                         viBakti[v]))
+                                                         viBakti[v], stem_key=v))
         metafunc.parametrize("ajanta_pum", ajanta_pum_list)
     if 'ajanta_stri' in metafunc.fixturenames:
         ajanta_stri_list = []
@@ -188,7 +200,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 ajanta_stri_list.extend(generate_vibhakti(prAtipadika[v],
-                                                          viBakti[v]))
+                                                          viBakti[v], stem_key=v))
         metafunc.parametrize("ajanta_stri", ajanta_stri_list)
     if 'ajanta_napum' in metafunc.fixturenames:
         ajanta_napum_list = []
@@ -197,7 +209,7 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 ajanta_napum_list.extend(generate_vibhakti(prAtipadika[v],
-                                                           viBakti[v]))
+                                                           viBakti[v], stem_key=v))
         metafunc.parametrize("ajanta_napum", ajanta_napum_list)
     if 'vibhakti' in metafunc.fixturenames:
         vibhakti_list = []
@@ -206,17 +218,18 @@ def pytest_generate_tests(metafunc):
                 pass
             else:
                 vibhakti_list.extend(generate_vibhakti(prAtipadika[v],
-                                                       viBakti[v]))
+                                                       viBakti[v], stem_key=v))
         metafunc.parametrize("vibhakti", vibhakti_list)
     if 'vibhakti_s' in metafunc.fixturenames:
         vibhakti_s_list = []
         for v in viBakti:
             if (v in encoding) and (encoding[v] == sanscript.SLP1):
                 vibhakti_s_list.extend(generate_vibhakti(prAtipadika[v],
-                                                         viBakti[v], sanscript.SLP1))
+                                                         viBakti[v], sanscript.SLP1,
+                                                         stem_key=v))
         metafunc.parametrize("vibhakti_s", vibhakti_s_list)
     if 'samAsa_pum' in metafunc.fixturenames:
         samAsa_pum_list = []
         for v in samAsa["pum"]:
-            samAsa_pum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v]))
+            samAsa_pum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v], stem_key=v))
         metafunc.parametrize("samAsa_pum", samAsa_pum_list)
