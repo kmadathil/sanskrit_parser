@@ -93,7 +93,7 @@ class PaninianObject(SanskritObject):
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
                 so.setTag(t)
         # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
-        for t in ["samAsa", "vasupada"]:
+        for t in ["samAsa", "vasupada", "adas"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t)
         # Propagate stem-class tags needed for pada-internal sandhi rules

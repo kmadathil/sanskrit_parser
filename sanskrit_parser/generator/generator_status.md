@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 425 — 6.4.14 अत्वसन्तस्य चाऽधातोः (upadhā dīrgha for u-it -at/-as pum angas before su; dhīmān, gomān)
-**Next to implement:** SK 426 (skipping SK415–SK424 añcatir cluster)
+**Last implemented:** SK 419 — 8.2.80 अदसोऽसेर्दादु दो मः (adas sg/du/pl: amum, amū du, amunā inst sg, amīṣāṃ gen pl etc.; pada-level rule with _special_siddha for 1.4.7+7.3.120); also SK 438 (8.2.81 एत ईद्बहुवचने) and SK 439 (8.2.3 न मु ने) implemented out of SK order alongside SK 419
+**Next to implement:** SK 420
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 146 |
+| SK-numbered sutras, implemented | 150 |
 | SK-numbered sutras, skipped/deferred | 53 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 89 |
-| Stems with partial vibhakti test tables | 4 |
+| Stems with full vibhakti test tables | 90 |
+| Stems with partial vibhakti test tables | 3 |
 
 ---
 
@@ -189,6 +189,9 @@ The "Forms affected" column uses the convention:
 | 414 | 6.4.130 | पादः पत् | pAda → pad (shorten ā→a) when anga is bha; applies to compound pAd-final stems (supAd etc.); inst/dat/abl/gen/loc sg + acc/gen pl all show pad- base |
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
+| 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
+| 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
+| 439 | 8.2.3 | न मु ने | adas inst sg amunā: fires at ada\|wA, overrides 7.1.12+6.1.101, sets ?pada on ada enabling SK419; _special_siddha(82080,14007/73120) propagates amu→Gi→nā; out of SK order |
 
 ---
 
@@ -418,4 +421,4 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
 | tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |
-| adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg m asau; partial table (nom sg only) |
+| adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg asau; SK419 (8.2.80): amu sg/du/pl forms; SK438 (8.2.81): amī pl; SK439 (8.2.3): amunā inst sg; full vibhakti table (inst sg amunā, du amūbhyām, gen/loc du amuyoḥ) |

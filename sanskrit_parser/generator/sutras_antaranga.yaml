@@ -2777,6 +2777,60 @@
     r: null
     rc: null
 
+# 419: अदसोऽसेर्दादु दो मः (8.2.80)
+# Fires on the completed pada after aNga+pratyaya sandhi has applied.
+# The adas tag is propagated to the pada via join_objects (paninian_object.py).
+# $$has_adas_amu guards: only fires when 'ad'+non-e vowel is present in the pada.
+# xform: adas_amu_stem returns only 'amu'/'amU' (the stem part).
+# insert l: adas_suffix re-exposes the suffix as a separate element so that
+# downstream sandhi rules (ṣatva, yaṇ) can fire at the amu|suffix junction.
+- sutra: अदसोऽसेर्दादु दो मः
+  id: 8.2.80
+  condition:
+    lp:
+      - and
+      - ?pada
+      - ?adas
+      - $$has_adas_amu
+  xform:
+    l: null
+    lc: adas_amu_stem(lc+l)
+  insert:
+    l: adas_suffix_tagged(lc+l)
+
+# 438: एत ईद्बहुवचने (8.2.81)
+# Fires on the completed pada (after aNga+suffix sandhi).
+# For adas nom/acc/voc pl: ada + śī(I) → guṇa a+I→e (6.1.87) → pada = 'ade'
+# $$has_adas_ami guards: only fires when 'ade' is present in the pada.
+# adas_ami() replaces 'ade' → 'amI' (= amī).
+- sutra: एत ईद्बहुवचने
+  id: 8.2.81
+  condition:
+    lp:
+      - and
+      - ?pada
+      - ?adas
+      - $$has_adas_ami
+  xform:
+    l: null
+    lc: adas_ami(lc+l)
+
+# 439: न मु ने (8.2.3)
+# Fires at ada|A (wA = tṛtīyā ek) for the adas pronoun.
+# Overrides 7.1.12 (wA→ina for a-final stems) and 6.1.101 (a+A→ā) which would
+# obscure the ada|A boundary before SK419 can act.
+# Sets pada on olp so SK419 (8.2.80) can fire on the pada-marked ada stem → amu.
+# Then 1.4.7 sets Gi on amu; 7.3.120 fires at amu|A → r=nA; samhitā → amunā.
+- sutra: न मु ने
+  id: 8.2.3
+  overrides: [7.1.12, 6.1.101]
+  condition:
+    lp: ?adas
+    l: at
+    rp: ?wA
+  update:
+    olp: +pada
+
 # ---- yuṣmad / asmad (personal pronoun) rules ----
 
 # 382: ङेप्रथमयोरम् (7-1-28)
