@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 152 |
-| SK-numbered sutras, skipped/deferred | 51 |
+| SK-numbered sutras, implemented | 153 |
+| SK-numbered sutras, skipped/deferred | 52 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 89 |
 | Stems with partial vibhakti test tables | 4 |
@@ -260,6 +260,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Partial — remaining sarvanāma | etad/idam/adas/sarva etc.; add sarvanAma+sarvanAma_pada tags to auto-extend SK418 |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |
@@ -310,7 +311,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | Implemented | YAML rule fires at (aYc_u\|kvin) window; dynamic añcatir derivation from [prati, aYc_u, kvin, su] |
 | 416 | 6.4.138 | अचः | Implemented | YAML rule; bha context a-deletion; pratyac/tiryac bha forms updated (pratyacā → pratīcā) |
 | 417 | 6.3.138 | चौ | Implemented | YAML rule; fires at (prefix\|c_result) after SK416; l: dirgha(l) lengthens preceding vowel |
-| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | For later — specialized | viśvag/deva substitution before añcatir without suffix; viśvag compound stored directly |
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Implemented | ṭi→adri before añcatir; viṣvag/deva + sarvanAma_pada (tad/yad/kim); ticAdesha_adri helper; bahiranga:1 |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | For later — adas pronoun | adas pronoun: d→m before certain forms; grouped near añcatir in SK; separate pratipadika section |
 | 420 | 6.4.139 | उद ईत् | Implemented | YAML rule, apavāda of SK416; ?udanc tag (in_udanc helper); fixes udac bha forms (udacā → udīcā) |
 | 421 | 6.3.93 | समः समि | Implemented | sam- → sami- before añcatir (bahiranga:1 fires before SK417); samyañc paradigm; samīcā bha via SK417 i→ī |

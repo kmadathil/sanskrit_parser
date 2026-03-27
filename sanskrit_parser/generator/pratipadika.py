@@ -221,6 +221,12 @@ tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarg
 ud_pada    = Pratipadika("ud",    "pum", other_tags=["nipAta", "upasarga", "pada"])
 sam_pada   = Pratipadika("sam",   "pum", other_tags=["sam",  "nipAta", "upasarga", "pada"])
 saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga", "pada"])
+# SK418 (6.3.92) prātipadikas — viṣvag and deva use specific tags; pronouns use sarvanAma_pada
+vizvag_pada = Pratipadika("vizvag", "pum", other_tags=["vizvag", "pada"])
+deva_pada   = Pratipadika("deva",   "pum", other_tags=["deva",   "pada"])
+tad_pada    = Pratipadika("tad",    "pum", other_tags=["tad",    "sarvanAma", "sarvanAma_pada", "pada"])
+yad_pada    = Pratipadika("yad",    "pum", other_tags=["yad",    "sarvanAma", "sarvanAma_pada", "pada"])
+kim_pada    = Pratipadika("kim",    "pum", other_tags=["kim",    "sarvanAma", "sarvanAma_pada", "pada"])
                          
 
 

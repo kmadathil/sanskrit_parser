@@ -340,6 +340,14 @@ def saMyogapUrvaVamanta(lp):
             lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
 
 
+def ticAdesha_adri(s):
+    """SK418: replace ṭi (final portion from last vowel onwards) of s with 'adri'."""
+    for i in range(len(s)-1, -1, -1):
+        if isInPratyahara('ac', SanskritImmutableString(s[i], encoding=sanscript.SLP1)):
+            return s[:i] + "adri"
+    return s  # fallback: no vowel found
+
+
 def endsWith_pAd(lp):
     """True if lp ends in the compound-form of pāda (pAd = pād without terminal a).
     Used in SK414 (6.4.130): pāda → pad when anga is bha."""

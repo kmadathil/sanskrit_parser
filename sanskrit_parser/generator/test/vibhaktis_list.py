@@ -969,6 +969,20 @@ viBakti["saDryac"] = [
     ['सध्र्यङ्', 'सध्र्यञ्चौ', 'सध्र्यञ्चः'],       # 8 Voc  = Nom
 ]
 
+# viṣvadryañc (m.) — añc-type: viṣvag→viṣvadri (SK418, bahiranga:1); bha: viṣvadrī (SK417 i→ī).
+# Strong: viṣvadryañc (yaṇ i+a→y); weak: viṣvadryac; bha: viṣvadrīc.
+prAtipadika["vizvadryac"] = [vizvag_pada, aYc_u, kvin]   # noqa: F405
+viBakti["vizvadryac"] = [
+    ['विष्वद्र्यङ्', 'विष्वद्र्यञ्चौ', 'विष्वद्र्यञ्चः'],       # 1 Nom  — strong (SK361 nUM)
+    ['विष्वद्र्यञ्चम्', 'विष्वद्र्यञ्चौ', 'विष्वद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
+    ['विष्वद्रीचा', 'विष्वद्र्यग्भ्याम्', 'विष्वद्र्यग्भिः'],      # 3 Inst — sg bha (SK418+SK417); du/pl Bh
+    ['विष्वद्रीचे', 'विष्वद्र्यग्भ्याम्', 'विष्वद्र्यग्भ्यः'],      # 4 Dat  — sg bha
+    ['विष्वद्रीचः', 'विष्वद्र्यग्भ्याम्', 'विष्वद्र्यग्भ्यः'],      # 5 Abl  — sg bha
+    ['विष्वद्रीचः', 'विष्वद्रीचोः', 'विष्वद्रीचाम्'],               # 6 Gen  — all bha
+    ['विष्वद्रीचि', 'विष्वद्रीचोः', 'विष्वद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
+    ['विष्वद्र्यङ्', 'विष्वद्र्यञ्चौ', 'विष्वद्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
 # yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
 # ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
 # Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.

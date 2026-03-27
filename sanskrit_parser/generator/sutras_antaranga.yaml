@@ -3475,6 +3475,38 @@
   xform:
     lc: lc[:-1]+str("I")    # a → ī: udac → udIc (= udīc)
 
+# 418: विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये (6-3-92)
+# Before añcatir without suffix: replace ṭi (from last vowel) with adri.
+# viṣvag→viṣvadri, deva→devadri, sarvanāma (tad→tadri, yad→yadri, kim→kadri, etc.)
+# bahiranga:1 ensures SK418 fires before SK417 (default 99):
+# (viṣvag|c) → SK418 → viṣvadri; then SK417 → dirgha(i)=ī → viṣvadrīcā (bha).
+# Deferred: etad/idam/adas/sarva — add sarvanAma_pada tag to extend coverage.
+- sutra: विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये
+  id: 6.3.92
+  bahiranga: 1
+  condition:
+    - lp: ?vizvag
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+    - lp: ?deva
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+    - lp: ?sarvanAma_pada
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+  xform:
+    l: null
+    lc: ticAdesha_adri(lc+l)
+
 # 421: समः समि (6-3-93)
 # Before añcatir: sam- → sami-. Fires in both bha (r:c) and non-bha (r:a) contexts.
 # Non-bha: sami+ac → 6.1.77 yaṇ (i+a→y) → samyac/samyañc.

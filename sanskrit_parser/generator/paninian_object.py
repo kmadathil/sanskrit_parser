@@ -149,5 +149,9 @@ class PaninianObject(SanskritObject):
         for t in ["kvin", "kvip"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t + "_pada")
+        # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
+        for t in ["sarvanAma"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t + "_pada")
 
         return so
