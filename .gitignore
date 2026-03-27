@@ -127,4 +127,5 @@ misc
 /*.iml
 
 #Claude Code
-.claude/
+.claude/*
+!.claude/skills
