@@ -890,20 +890,20 @@ viBakti["daDfc"] = [
 # Nom sg: pratyaYc → 8.2.23 del c (Yc cluster) → pratyaY → 8.2.62 Y→N → प्रत्यङ्.
 # Inst pl: pratyac (weak) → 8.2.39 c→j → 8.2.62 j→g → pratyag+Bis → प्रत्यग्भिः.
 # Loc pl: pratyac → c→j→g → g+su → g→k → k+ṣu (8.3.57) → प्रत्यक्षु.
-prAtipadika["pratyac"] = [pratyac_kvin]   # noqa: F405
+prAtipadika["pratyac"] = [prati_pada, aYc_u, kvin]   # noqa: F405  prati + inner(√añc+kvin); nested so SK415 fires in inner prakriya first
 viBakti["pratyac"] = [
     ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 1 Nom  * nom sg: 8.2.23+8.2.62; du/pl: SK361 num
-    ['प्रत्यञ्चम्', 'प्रत्यञ्चौ', 'प्रत्यचः'],       # 2 Acc  * sg/du: SK361 num; pl (Sas): weak
-    ['प्रत्यचा', 'प्रत्यग्भ्याम्', 'प्रत्यग्भिः'],    # 3 Inst * weak; 8.2.39+8.2.62 before Bh
-    ['प्रत्यचे', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 4 Dat
-    ['प्रत्यचः', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 5 Abl
-    ['प्रत्यचः', 'प्रत्यचोः', 'प्रत्यचाम्'],           # 6 Gen
-    ['प्रत्यचि', 'प्रत्यचोः', 'प्रत्यक्षु'],           # 7 Loc  * pl: c→j→g→k+8.3.57→ṣ
+    ['प्रत्यञ्चम्', 'प्रत्यञ्चौ', 'प्रतीचः'],       # 2 Acc  * sg/du: SK361 num; pl (Sas): bha → pratīcaḥ
+    ['प्रतीचा', 'प्रत्यग्भ्याम्', 'प्रत्यग्भिः'],    # 3 Inst * sg bha: SK416+417 → pratīcā; du/pl: Bh not bha
+    ['प्रतीचे', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 4 Dat  * sg bha → pratīce
+    ['प्रतीचः', 'प्रत्यग्भ्याम्', 'प्रत्यग्भ्यः'],    # 5 Abl  * sg bha → pratīcaḥ
+    ['प्रतीचः', 'प्रतीचोः', 'प्रतीचाम्'],           # 6 Gen  * all bha → pratīcaḥ/oḥ/ām
+    ['प्रतीचि', 'प्रतीचोः', 'प्रत्यक्षु'],           # 7 Loc  * sg/du bha → pratīci/oḥ; pl su: c→j→g→k+ṣu
     ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 8 Voc  = Nom
 ]
 
 # prāñc (m.) — añc-type: weak stem prāc, strong prāñc (SK361 inserts Y). Same paradigm as pratyac.
-prAtipadika["prAc"] = [prAc_kvin]   # noqa: F405
+prAtipadika["prAc"] = [pra_pada, aYc_u, kvin]   # noqa: F405  pra + inner(√añc+kvin) → prAc (6.1.101); nested structure
 viBakti["prAc"] = [
     ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 1 Nom
     ['प्राञ्चम्', 'प्राञ्चौ', 'प्राचः'],       # 2 Acc
@@ -916,29 +916,29 @@ viBakti["prAc"] = [
 ]
 
 # udañc (m.) — añc-type: weak stem udac, strong udañc.
-prAtipadika["udac"] = [udac_kvin]   # noqa: F405
+prAtipadika["udac"] = [ud_pada, in_context(aYc_u,"udanc"), kvin]  
 viBakti["udac"] = [
-    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 1 Nom
-    ['उदञ्चम्', 'उदञ्चौ', 'उदचः'],       # 2 Acc
-    ['उदचा', 'उदग्भ्याम्', 'उदग्भिः'],    # 3 Inst
-    ['उदचे', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 4 Dat
-    ['उदचः', 'उदग्भ्याम्', 'उदग्भ्यः'],    # 5 Abl
-    ['उदचः', 'उदचोः', 'उदचाम्'],           # 6 Gen
-    ['उदचि', 'उदचोः', 'उदक्षु'],           # 7 Loc
-    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],      # 8 Voc
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],           # 1 Nom  — strong (SK361)
+    ['उदञ्चम्', 'उदञ्चौ', 'उदीचः'],           # 2 Acc  — sg/du strong; pl (Sas) bha → udīcaḥ (SK420)
+    ['उदीचा', 'उदग्भ्याम्', 'उदग्भिः'],       # 3 Inst — sg bha → udīcā (SK420)
+    ['उदीचे', 'उदग्भ्याम्', 'उदग्भ्यः'],       # 4 Dat  — sg bha
+    ['उदीचः', 'उदग्भ्याम्', 'उदग्भ्यः'],       # 5 Abl  — sg bha
+    ['उदीचः', 'उदीचोः', 'उदीचाम्'],            # 6 Gen  — all bha
+    ['उदीचि', 'उदीचोः', 'उदक्षु'],            # 7 Loc  — sg/du bha; pl su NOT bha
+    ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],           # 8 Voc  = Nom
 ]
 
-# tiryañc (m.) — añc-type: weak stem tiryac, strong tiryañc.
-prAtipadika["tiryac"] = [tiryac_kvin]   # noqa: F405
+# tiryañc (m.) — añc-type: weak stem tiraSc, strong tiryañc.
+prAtipadika["tiryac"] = [tiras_pada, aYc_u, kvin]   # noqa: F405  pre-formed tiryac (tiras+ac); SK416/417 don't fire (no ?DAtu); bha form tiryacā
 viBakti["tiryac"] = [
-    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 1 Nom
-    ['तिर्यञ्चम्', 'तिर्यञ्चौ', 'तिर्यचः'],       # 2 Acc
-    ['तिर्यचा', 'तिर्यग्भ्याम्', 'तिर्यग्भिः'],    # 3 Inst
-    ['तिर्यचे', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 4 Dat
-    ['तिर्यचः', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],    # 5 Abl
-    ['तिर्यचः', 'तिर्यचोः', 'तिर्यचाम्'],           # 6 Gen
-    ['तिर्यचि', 'तिर्यचोः', 'तिर्यक्षु'],           # 7 Loc
-    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],      # 8 Voc
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],
+    ['तिर्यञ्चम्', 'तिर्यञ्चौ', 'तिरश्चः'],
+    ['तिरश्चा', 'तिर्यग्भ्याम्', 'तिर्यग्भिः'],
+    ['तिरश्चे', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],
+    ['तिरश्चः', 'तिर्यग्भ्याम्', 'तिर्यग्भ्यः'],
+    ['तिरश्चः', 'तिरश्चोः', 'तिरश्चाम्'],
+    ['तिरश्चि', 'तिरश्चोः', 'तिर्यक्षु'],
+    ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],
 ]
 
 # yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
@@ -1459,11 +1459,14 @@ for p in prAtipadika:
     if p in _samAsa_keys:
         continue   # compound entries handled by samAsa dict, not ajanta/halanta
     if isinstance(prAtipadika[p], list):
-        if hasattr(prAtipadika[p][-1], "linga"):
-            linga[p] = prAtipadika[p][-1].linga
-        elif prAtipadika[p][-1].hasTag("strI"):
+        _last = prAtipadika[p][-1]
+        while isinstance(_last, list):
+            _last = _last[-1]
+        if hasattr(_last, "linga"):
+            linga[p] = _last.linga
+        elif _last.hasTag("strI"):
             linga[p] = "strI"
-        elif prAtipadika[p][-1].hasTag("napum"):
+        elif _last.hasTag("napum"):
             linga[p] = "napum"
         else:
             linga[p] = "pum"

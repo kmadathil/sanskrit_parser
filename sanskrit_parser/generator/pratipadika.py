@@ -24,19 +24,21 @@ class Pratipadika(PaninianObject):
     def anta(self):
         return self.canonical()[-1]
 
+# FIXME: Remove this once proper context handling is done
+# solution is to let rules look further left and right for context
+def in_context(p, tag):
+    """Return a deep copy of pratipadika p with ?tag tag set.
 
-def in_compound(p):
-    """Return a deep copy of pratipadika p with ?samAsa tag set.
-
-    Use this in compound test entries (vibhaktis_list.py) to tag the uttara-pada
-    (second member) as being in compound context — without creating permanent
-    _samAsa variants of each pratipadika.
+    test entries (vibhaktis_list.py) to tag a member being in particular context.
 
     Must use deepcopy: shallow copy shares the tags list and would mutate the original.
     """
     pc = copy.deepcopy(p)
-    pc.setTag("samAsa")
+    pc.setTag(tag)
     return pc
+
+def in_compound(p):
+    return in_context(p, "samAsa")
 
 
 rAma = Pratipadika("rAma", "pum")
@@ -201,10 +203,35 @@ yuj_kvin    = Pratipadika("yuj",    "pum",  other_tags=["DAtu", "kvin", "yuj"]) 
 yuj_kvin_samAsa = Pratipadika("yuj", "pum",  other_tags=["DAtu", "kvin", "yuj", "samAsa"])  # aśvayuk type: ?samAsa blocks SK376 nUM augment
 diS_kvin    = Pratipadika("diS",    "strI", other_tags=["DAtu", "kvin"])          # diś f. (direction)
 daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])           # dadhṛc m. (bold one); c→j(8.2.39)→g(8.2.62)→k(8.4.56)
-pratyac_kvin = Pratipadika("pratyac", "pum",  other_tags=["DAtu", "kvin", "aYc"])  # pratyañc m. (westward); ?aYc → SK361 num
-prAc_kvin    = Pratipadika("prAc",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # prāñc m. (eastward/forward)
-udac_kvin    = Pratipadika("udac",    "pum",  other_tags=["DAtu", "kvin", "aYc"])  # udañc m. (northward/upward)
-tiryac_kvin  = Pratipadika("tiryac",  "pum",  other_tags=["DAtu", "kvin", "aYc"])  # tiryañc m. (sideways/transverse)
+
+
+# Generic prefix pratipadikas — reusable with many Dhatus (not tied to añcatir specifically)
+# 6.1.77 fires at (prati|ac) → pratyac; 6.1.101 fires at (pra|ac) → prAc
+#prati = Pratipadika("prati", "pum")
+#pra   = Pratipadika("pra",   "pum")
+#tiras = Pratipadika("tiras", "pum")   # for future SK423 (tiras+ac → tiryac)
+#ud = Pratipadika("ud", "pum")   
+
+
+#Pada versions of above - will be removed later
+# FIXME - remove when we implement SK452/2.4.82
+prati_pada = Pratipadika("prati", "pum", other_tags=["nipAta", "upasarga", "pada"])
+pra_pada   = Pratipadika("pra",   "pum", other_tags=["nipAta", "upasarga", "pada"])
+tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarga", "pada"])
+ud_pada = Pratipadika("ud", "pum", other_tags=["nipAta", "upasarga", "pada"])
+                         
+
+
+# añcatir pre-formed weak stems (used when SK416/417 should NOT fire)
+# NO ?DAtu — SK416 requires ?DAtu; its absence blocks SK416/417.
+tiryac_kvin = Pratipadika("tiryac", "pum", other_tags=["aYc", "kvin"])
+# tiryac = tiras+ac; SK423 (tiry ādeśa when SK416 hasn't run) deferred.
+# Bha form tiryacā is correct (SK416/417 don't apply).
+
+udac_kvin   = Pratipadika("udac",   "pum", other_tags=["aYc", "kvin", "udanc"])
+# ?udanc → SK420 (6.4.139) fires in bha context (apavāda of SK416).
+# SK416 blocked: no ?DAtu and ?udanc guard. SK420 fires → udīcā.
+
 takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])          # √takṣ+kvip; nom sg taṭ/taḍ via 8.2.29 k-deletion
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])

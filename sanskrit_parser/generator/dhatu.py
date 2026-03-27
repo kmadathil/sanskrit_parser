@@ -43,3 +43,5 @@ Sam = Dhatu("Sam", its=[])
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp = Dhatu("u", its=["Y"])
+
+aYc_u = Dhatu("aYc", its=['u'])     # √añc with u-it; anidita → SK415 applies; ?aYc → SK361 nUM
