@@ -381,6 +381,71 @@ def replaceTorDwithS(lc):
     return lc
 
 
+def has_adas_amu(s):
+    """SK419 (8.2.80) condition check: True if pada contains 'ad'+vowel (excluding 'ade').
+    Accepts both str and PaninianObject (calls .canonical() if needed)."""
+    if hasattr(s, 'canonical'):
+        s = s.canonical()
+    long_vowels = set('AIUFXeEoO')
+    short_vowels = set('aiufx')
+    all_vowels = long_vowels | short_vowels
+    for i in range(len(s) - 2):
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+            return True
+    return False
+
+
+def adas_amu_stem(s):
+    """SK419 (8.2.80) xform helper: return replacement stem 'amu' (short) or 'amU' (long).
+    Finds 'ad'+non-e vowel in s and returns the amu/amU stem only (no suffix)."""
+    long_vowels = set('AIUFXeEoO')
+    short_vowels = set('aiufx')
+    all_vowels = long_vowels | short_vowels
+    for i in range(len(s) - 2):
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+            return 'amU' if s[i+2] in long_vowels else 'amu'
+    return s
+
+
+def adas_suffix(s):
+    """SK419 (8.2.80) insert helper: return the suffix portion after 'ad'+non-e vowel.
+    Used with insert: l to re-expose the suffix for downstream sandhi rules."""
+    long_vowels = set('AIUFXeEoO')
+    short_vowels = set('aiufx')
+    all_vowels = long_vowels | short_vowels
+    for i in range(len(s) - 2):
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+            return s[i+3:]
+    return ''
+
+
+def adas_suffix_tagged(s):
+    """SK419 (8.2.80) insert helper: return the suffix as a PaninianObject tagged ?pratyaya.
+    This allows 8.3.59 (ṣatva: ādeśapratyayayoḥ) to fire at the amu|suffix junction,
+    converting s→ṣ in smE/smAt/sya/smin after u."""
+    from indic_transliteration import sanscript
+    suffix = adas_suffix(s)
+    po = PaninianObject(suffix, encoding=sanscript.SLP1)
+    po.setTag("pratyaya")
+    return po
+
+
+def has_adas_ami(s):
+    """SK438 (8.2.81) condition check: True if pada contains 'ade'.
+    Accepts both str and PaninianObject (calls .canonical() if needed)."""
+    if hasattr(s, 'canonical'):
+        s = s.canonical()
+    return 'ade' in s
+
+
+def adas_ami(s):
+    """SK438 (8.2.81) xform: within an adas pada, replace 'ade' → 'amI' (= amī, nom/acc/voc pl)."""
+    idx = s.find('ade')
+    if idx >= 0:
+        return s[:idx] + 'amI' + s[idx+3:]
+    return s
+
+
 def numAgama(s):
     lastac = -1
     lens = len(s)

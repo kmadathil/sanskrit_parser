@@ -216,6 +216,16 @@ class AntarangaPrakriya(PrakriyaBase):
             # maGavan upaDA dIrGa (see Siddhanta Kaumudi on 7.1.70)
             elif ((a1 == 82023) and (a2 == Decimal("64008.1"))):
                 return True
+            # SK439 (8.2.3 न मु ने) marks ada as pada before wA (inst sg), enabling
+            # SK419 (8.2.80 adaso'ser) to convert ada→amu at the aNga+pratyaya boundary.
+            # The downstream rules 1.4.7 (ghyasakhī) and 7.3.120 (āṅo nā) must see
+            # SK419's output (amu) to complete the derivation amu+A → amunā.
+            # These two siddha entries give effect to that intent:
+            #   1.4.7 sees amu (sets Gi); 7.3.120 sees amu+Gi (replaces A→nā).
+            elif (a1 == 82080) and (a2 == 14007):
+                return True
+            elif (a1 == 82080) and (a2 == 73120):
+                return True
             else:
                 return False
 

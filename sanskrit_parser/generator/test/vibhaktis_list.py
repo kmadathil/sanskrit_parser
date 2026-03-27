@@ -1085,14 +1085,14 @@ viBakti["tyad"] = [
 
 prAtipadika["adas"] = adas   # noqa: F405
 viBakti["adas"] = [
-    ['असौ', None, None],  # 1 Nom — asau via 7.2.102 + SK381 + 7.2.107
-    [None, None, None],   # 2 Acc
-    [None, None, None],   # 3 Inst
-    [None, None, None],   # 4 Dat
-    [None, None, None],   # 5 Abl
-    [None, None, None],   # 6 Gen
-    [None, None, None],   # 7 Loc
-    [None, None, None],   # 8 Voc
+    ['असौ',  'अमू',    'अमी'],           # 1 Nom — asau (SK381+SK437); amū (SK419+6.1.102); amī (SK438)
+    ['अमुम्', 'अमू',   'अमून्'],         # 2 Acc — amum (SK419+6.1.107); amū (SK419+6.1.102); amūn (SK439)
+    ['अमुना', 'अमूभ्याम्', 'अमीभिः'],   # 3 Inst — amunā (SK419+7.3.120); amūbhyām (7.3.102 ā before ByAm); amibhiḥ (SK438)
+    ['अमुष्मै', 'अमूभ्याम्', 'अमीभ्यः'],  # 4 Dat — amuṣmai; amūbhyām; amibhyaḥ (SK438)
+    [['अमुष्मात्', 'अमुष्माद्'], 'अमूभ्याम्', 'अमीभ्यः'],  # 5 Abl — amuṣmāt/d; amūbhyām; amibhyaḥ (SK438)
+    ['अमुष्य', 'अमुयोः', 'अमीषाम्'],   # 6 Gen — amuṣya; amuyoḥ (adayos via 7.3.104+6.1.78); amīṣāṃ (SK438)
+    ['अमुष्मिन्', 'अमुयोः', 'अमीषु'],  # 7 Loc — amuṣmin; amuyoḥ; amīṣu (SK438)
+    ['असौ',  'अमू',    None],             # 8 Voc — no vocative for pronouns
 ]
 
 prAtipadika["rAjan"] = rAjan

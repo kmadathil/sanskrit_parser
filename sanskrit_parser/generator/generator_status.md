@@ -3,7 +3,7 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 420 — 6.4.139 उद ईत् (ud+añc bha form: a→ī → udīcā; apavāda of SK416; fixes udac bha forms)
+**Last implemented:** SK 420 — 6.4.139 उद ईत् (ud+añc bha form: a→ī → udīcā; apavāda of SK416; fixes udac bha forms); also SK 419 adas pronoun (8.2.80), SK 438 (8.2.81), SK 439 (8.2.3) out of SK order
 **Next to implement:** SK 426 (SK418/421–423 skipped — compound substitutions; SK424 deferred — pūjā exception)
 
 ---
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 153 |
-| SK-numbered sutras, skipped/deferred | 52 |
+| SK-numbered sutras, implemented | 156 |
+| SK-numbered sutras, skipped/deferred | 51 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 89 |
-| Stems with partial vibhakti test tables | 4 |
+| Stems with full vibhakti test tables | 90 |
+| Stems with partial vibhakti test tables | 3 |
 
 ---
 
@@ -193,6 +193,9 @@ The "Forms affected" column uses the convention:
 | 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; ?udanc tag (via in_udanc helper) identifies ud compounds; fixes udac bha forms |
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
+| 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
+| 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
+| 439 | 8.2.3 | न मु ने | adas inst sg amunā: fires at ada\|wA, overrides 7.1.12+6.1.101, sets ?pada on ada enabling SK419; _special_siddha(82080,14007/73120) propagates amu→Gi→nā; out of SK order |
 
 ---
 
@@ -312,7 +315,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 416 | 6.4.138 | अचः | Implemented | YAML rule; bha context a-deletion; pratyac/tiryac bha forms updated (pratyacā → pratīcā) |
 | 417 | 6.3.138 | चौ | Implemented | YAML rule; fires at (prefix\|c_result) after SK416; l: dirgha(l) lengthens preceding vowel |
 | 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Implemented | ṭi→adri before añcatir; viṣvag/deva + sarvanAma_pada (tad/yad/kim); ticAdesha_adri helper; bahiranga:1 |
-| 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | For later — adas pronoun | adas pronoun: d→m before certain forms; grouped near añcatir in SK; separate pratipadika section |
+| 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | Implemented | pada-level rule, ?adas tag; _special_siddha(82080, 14007+73120); amu sg/du/pl forms; full vibhakti table added |
 | 420 | 6.4.139 | उद ईत् | Implemented | YAML rule, apavāda of SK416; ?udanc tag (in_udanc helper); fixes udac bha forms (udacā → udīcā) |
 | 421 | 6.3.93 | समः समि | Implemented | sam- → sami- before añcatir (bahiranga:1 fires before SK417); samyañc paradigm; samīcā bha via SK417 i→ī |
 | 422 | 6.3.95 | सहस्य सध्रिः | Implemented | saha- → sadhrī- before añcatir (bahiranga:1); sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā |
@@ -427,4 +430,4 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
 | tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |
-| adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg m asau; partial table (nom sg only) |
+| adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg asau; SK419 (8.2.80): amu sg/du/pl forms; SK438 (8.2.81): amī pl; SK439 (8.2.3): amunā inst sg; full vibhakti table (inst sg amunā, du amūbhyām, gen/loc du amuyoḥ) |
