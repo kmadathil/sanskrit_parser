@@ -3,7 +3,7 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 420 — 6.4.139 उद ईत् (ud+añc bha form: a→ī → udīcā; apavāda of SK416; fixes udac bha forms); also SK 419 adas pronoun (8.2.80), SK 438 (8.2.81), SK 439 (8.2.3) out of SK order
+**Last implemented:** SK 425 — 6.4.14 अत्वसन्तस्य चाऽधातोः (upadhā dīrgha for -at/-as stems before su: dhīmān, gomān); also SK 415–420 añcatir cluster, SK 419/438/439 adas pronoun out of SK order
 **Next to implement:** SK 426 (SK418/421–423 skipped — compound substitutions; SK424 deferred — pūjā exception)
 
 ---
