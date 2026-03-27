@@ -218,7 +218,9 @@ daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])      
 prati_pada = Pratipadika("prati", "pum", other_tags=["nipAta", "upasarga", "pada"])
 pra_pada   = Pratipadika("pra",   "pum", other_tags=["nipAta", "upasarga", "pada"])
 tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarga", "pada"])
-ud_pada = Pratipadika("ud", "pum", other_tags=["nipAta", "upasarga", "pada"])
+ud_pada    = Pratipadika("ud",    "pum", other_tags=["nipAta", "upasarga", "pada"])
+sam_pada   = Pratipadika("sam",   "pum", other_tags=["sam",  "nipAta", "upasarga", "pada"])
+saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga", "pada"])
                          
 
 

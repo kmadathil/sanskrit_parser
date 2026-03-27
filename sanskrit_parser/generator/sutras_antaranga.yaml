@@ -3475,6 +3475,42 @@
   xform:
     lc: lc[:-1]+str("I")    # a → ī: udac → udIc (= udīc)
 
+# 421: समः समि (6-3-93)
+# Before añcatir: sam- → sami-. Fires in both bha (r:c) and non-bha (r:a) contexts.
+# Non-bha: sami+ac → 6.1.77 yaṇ (i+a→y) → samyac/samyañc.
+# Bha: bahiranga:1 ensures SK421 fires before SK417 (default 99): sam→sami, then SK417 dirgha(i)=ī → samīcā.
+- sutra: समः समि
+  id: 6.3.93
+  bahiranga: 1
+  condition:
+    lp: ?sam
+    rp:
+      - and
+      - ?aYc
+      - ?kvin_pada
+    r: [a, c]
+  xform:
+    l: null
+    lc: str("sami")
+
+# 422: सहस्य सध्रिः (6-3-95)
+# Before añcatir: saha- → sadhrī-. Same two-context pattern as SK421.
+# Non-bha: sadhrī+ac → 6.1.77 yaṇ (ī+a→y) → sadhryac/sadhryañc.
+# Bha: SK422 (bahiranga:1) fires before SK417: saha→sadhrī, then SK417 dirgha(ī)=ī (no-op) → sadhrīcā.
+- sutra: सहस्य सध्रिः
+  id: 6.3.95
+  bahiranga: 1
+  condition:
+    lp: ?saha
+    rp:
+      - and
+      - ?aYc
+      - ?kvin_pada
+    r: [a, c]
+  xform:
+    l: null
+    lc: str("saDrI")
+
 # 423: तिरसस्तिर्यलोपे (6-3-94)
 - sutra: तिरसस्तिर्यलोपे
   id: 6.3.94

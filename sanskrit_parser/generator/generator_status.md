@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 150 |
-| SK-numbered sutras, skipped/deferred | 53 |
+| SK-numbered sutras, implemented | 152 |
+| SK-numbered sutras, skipped/deferred | 51 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 89 |
 | Stems with partial vibhakti test tables | 4 |
@@ -313,8 +313,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | For later — specialized | viśvag/deva substitution before añcatir without suffix; viśvag compound stored directly |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | For later — adas pronoun | adas pronoun: d→m before certain forms; grouped near añcatir in SK; separate pratipadika section |
 | 420 | 6.4.139 | उद ईत् | Implemented | YAML rule, apavāda of SK416; ?udanc tag (in_udanc helper); fixes udac bha forms (udacā → udīcā) |
-| 421 | 6.3.93 | समः समि | For later — specialized | sam- → sami- compound before añcatir (samyak); SK HTML erroneously shows 3-6-93; correct is 6.3.93 |
-| 422 | 6.3.95 | सहस्य सध्रिः | For later — specialized | saha- → sadhr- before añcatir; sadhryak compound stored directly |
+| 421 | 6.3.93 | समः समि | Implemented | sam- → sami- before añcatir (bahiranga:1 fires before SK417); samyañc paradigm; samīcā bha via SK417 i→ī |
+| 422 | 6.3.95 | सहस्य सध्रिः | Implemented | saha- → sadhrī- before añcatir (bahiranga:1); sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 

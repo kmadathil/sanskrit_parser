@@ -941,6 +941,34 @@ viBakti["tiryac"] = [
     ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],
 ]
 
+# samyañc (m.) — añc-type: sam- → sami- (SK421, bahiranga:1 before SK417); bha → samī (SK417 i→ī).
+# Strong: samyañc (sam+i → yaṇ i+a→y → samy+añc); weak: samyac; bha: samīc.
+prAtipadika["samyac"] = [sam_pada, aYc_u, kvin]   # noqa: F405
+viBakti["samyac"] = [
+    ['सम्यङ्', 'सम्यञ्चौ', 'सम्यञ्चः'],         # 1 Nom  — strong (SK361 nUM)
+    ['सम्यञ्चम्', 'सम्यञ्चौ', 'समीचः'],           # 2 Acc  — sg/du strong; pl bha → samīcaḥ
+    ['समीचा', 'सम्यग्भ्याम्', 'सम्यग्भिः'],        # 3 Inst — sg bha (SK421+SK417 → samī); du/pl Bh
+    ['समीचे', 'सम्यग्भ्याम्', 'सम्यग्भ्यः'],        # 4 Dat  — sg bha
+    ['समीचः', 'सम्यग्भ्याम्', 'सम्यग्भ्यः'],        # 5 Abl  — sg bha
+    ['समीचः', 'समीचोः', 'समीचाम्'],                # 6 Gen  — all bha
+    ['समीचि', 'समीचोः', 'सम्यक्षु'],                # 7 Loc  — sg/du bha; pl su NOT bha
+    ['सम्यङ्', 'सम्यञ्चौ', 'सम्यञ्चः'],         # 8 Voc  = Nom
+]
+
+# sadhryañc (m.) — añc-type: saha- → sadhrī- (SK422, bahiranga:1); bha: sadhrī+c → sadhrīcā (SK417 no-op).
+# Strong: sadhryañc (sadhrī → yaṇ ī+a→y → sadhry+añc); weak: sadhryac; bha: sadhrīc.
+prAtipadika["saDryac"] = [saha_pada, aYc_u, kvin]   # noqa: F405
+viBakti["saDryac"] = [
+    ['सध्र्यङ्', 'सध्र्यञ्चौ', 'सध्र्यञ्चः'],       # 1 Nom  — strong (SK361 nUM)
+    ['सध्र्यञ्चम्', 'सध्र्यञ्चौ', 'सध्रीचः'],         # 2 Acc  — sg/du strong; pl bha → sadhrīcaḥ
+    ['सध्रीचा', 'सध्र्यग्भ्याम्', 'सध्र्यग्भिः'],     # 3 Inst — sg bha (SK422+SK417 no-op → sadhrī); du/pl Bh
+    ['सध्रीचे', 'सध्र्यग्भ्याम्', 'सध्र्यग्भ्यः'],     # 4 Dat  — sg bha
+    ['सध्रीचः', 'सध्र्यग्भ्याम्', 'सध्र्यग्भ्यः'],     # 5 Abl  — sg bha
+    ['सध्रीचः', 'सध्रीचोः', 'सध्रीचाम्'],              # 6 Gen  — all bha
+    ['सध्रीचि', 'सध्रीचोः', 'सध्र्यक्षु'],              # 7 Loc  — sg/du bha; pl su NOT bha
+    ['सध्र्यङ्', 'सध्र्यञ्चौ', 'सध्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
 # yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
 # ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
 # Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.
