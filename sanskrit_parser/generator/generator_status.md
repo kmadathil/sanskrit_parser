@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 425 — 6.4.14 अत्वसन्तस्य चाऽधातोः (upadhā dīrgha for u-it -at/-as pum angas before su; dhīmān, gomān)
-**Next to implement:** SK 426 (skipping SK415–SK424 añcatir cluster)
+**Last implemented:** SK 420 — 6.4.139 उद ईत् (ud+añc bha form: a→ī → udīcā; apavāda of SK416; fixes udac bha forms)
+**Next to implement:** SK 426 (SK418/421–423 skipped — compound substitutions; SK424 deferred — pūjā exception)
 
 ---
 
@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 146 |
-| SK-numbered sutras, skipped/deferred | 53 |
+| SK-numbered sutras, implemented | 153 |
+| SK-numbered sutras, skipped/deferred | 52 |
 | Implemented sutras without SK number yet | ~25 |
 | Stems with full vibhakti test tables | 89 |
 | Stems with partial vibhakti test tables | 4 |
@@ -187,6 +187,10 @@ The "Forms affected" column uses the convention:
 | 406 | 8.1.22 | तेमयावेकवचनस्य | yuzmad/asmad sg gen/dat → te/me (optional) before pada |
 | 407 | 8.1.23 | त्वामौ द्वितीयायाः | yuzmad/asmad sg acc → tvā/mā (optional) before pada |
 | 414 | 6.4.130 | पादः पत् | pAda → pad (shorten ā→a) when anga is bha; applies to compound pAd-final stems (supAd etc.); inst/dat/abl/gen/loc sg + acc/gen pl all show pad- base |
+| 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | anidita hal-stem: drop nasal upadhā (Y=ñ or n) before kit/Ṅit krit suffix; fires at (aYc_u\|kvin) window; aYc → ac; enables dynamic añcatir derivation |
+| 416 | 6.4.138 | अचः | delete 'a' of añc (post-SK415 form 'ac') in bha-anga context; ll:'a' condition excludes prAc (long A); ?!udanc excludes ud-prefix (SK420 apavāda); pratyac/tiryac bha forms use pratīc/tiryc base |
+| 417 | 6.3.138 | चौ | lengthen final vowel of preceding member before añc reduced to 'c'; fires at (prefix\|c_result) after SK416; prati→pratI, pra→prA; yaṇ (6.1.77) blocked by akṛtavyūhā paribhāṣā |
+| 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; ?udanc tag (via in_udanc helper) identifies ud compounds; fixes udac bha forms |
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 
@@ -256,6 +260,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Partial — remaining sarvanāma | etad/idam/adas/sarva etc.; add sarvanAma+sarvanAma_pada tags to auto-extend SK418 |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |
@@ -303,14 +308,14 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 411 | 2.3.48 | सामन्त्रितम् | For later | vocative definition; no impact on pronoun declension forms |
 | 412 | 8.1.72 | आमन्त्रितं पूर्वमविद्यमानवत् | For later — accent | vocative accent; accent not modelled |
 | 413 | 8.1.73 | नामन्त्रिते समानाधिकरणे सामान्यवचनम् | For later | vocative co-referential number; not needed for basic paradigm |
-| 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | Natural — pre-applied | n-lopa for anidita hal-stems before kṅit; prAc/udac/tiryac/pratyac stored as post-lopa weak forms; all tests pass |
-| 416 | 6.4.138 | अचः | Natural — pre-applied | a-deletion from añc- after n-lopa; reflected in stored pratipadika content; all tests pass |
-| 417 | 6.3.138 | चौ | Natural — pre-applied | upadhā dīrgha before cau; ā already present in stored añcatir stems (prāc, udac etc.); all tests pass |
-| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | For later — specialized | viśvag/deva substitution before añcatir without suffix; viśvag compound stored directly |
+| 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | Implemented | YAML rule fires at (aYc_u\|kvin) window; dynamic añcatir derivation from [prati, aYc_u, kvin, su] |
+| 416 | 6.4.138 | अचः | Implemented | YAML rule; bha context a-deletion; pratyac/tiryac bha forms updated (pratyacā → pratīcā) |
+| 417 | 6.3.138 | चौ | Implemented | YAML rule; fires at (prefix\|c_result) after SK416; l: dirgha(l) lengthens preceding vowel |
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Implemented | ṭi→adri before añcatir; viṣvag/deva + sarvanAma_pada (tad/yad/kim); ticAdesha_adri helper; bahiranga:1 |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | For later — adas pronoun | adas pronoun: d→m before certain forms; grouped near añcatir in SK; separate pratipadika section |
-| 420 | 6.4.139 | उद ईत् | Natural — pre-applied | ud-añc: a→ī after n-lopa (udañc → udīc-); stored content reflects this; udac tests pass |
-| 421 | 6.3.93 | समः समि | For later — specialized | sam- → sami- compound before añcatir (samyak); SK HTML erroneously shows 3-6-93; correct is 6.3.93 |
-| 422 | 6.3.95 | सहस्य सध्रिः | For later — specialized | saha- → sadhr- before añcatir; sadhryak compound stored directly |
+| 420 | 6.4.139 | उद ईत् | Implemented | YAML rule, apavāda of SK416; ?udanc tag (in_udanc helper); fixes udac bha forms (udacā → udīcā) |
+| 421 | 6.3.93 | समः समि | Implemented | sam- → sami- before añcatir (bahiranga:1 fires before SK417); samyañc paradigm; samīcā bha via SK417 i→ī |
+| 422 | 6.3.95 | सहस्य सध्रिः | Implemented | saha- → sadhrī- before añcatir (bahiranga:1); sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 
@@ -410,6 +415,10 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | aSvayuj | m | j-stem (kvin, compound) | SK376 (7.1.71) blocked by ?samAsa; no nUM; phonology as ṛtvij: aśvayug/aśvayuk nom sg |
 | viSvAvasu | m | u-stem (compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?vasu in compound; viśvāvasu |
 | viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |
+| pratyac | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [prati, aYc_u, kvin]; SK415 aYc→ac, 6.1.77 prati+ac→pratyac; SK361 nUM strong; SK416+417 bha: pratīcā (not pratyacā — 6.1.77 blocked by akṛtavyūhā) |
+| prAc | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [pra, aYc_u, kvin]; SK415 aYc→ac, 6.1.101 pra+ac→prAc; SK361 nUM; SK416+417 bha: prācā (dirgha('a')=A) |
+| udac | m | añcatir kvin (SK420, dynamic) | Dynamic: in_udanc([ud, aYc_u, kvin]); SK415 aYc→ac; SK420 apavāda of SK416: udac bha→udīcā; fixes previously wrong bha forms |
+| tiryac | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [tiry, aYc_u, kvin]; SK415 aYc→ac; tiry ends in 'y' → dirgha no-op → bha tiryacā unchanged |
 | supAd | m | d-stem (pāda compound, SK414) | SK414 (6.4.130): pAd→pad (ā→a) in bha context; inst/dat/abl/gen/loc sg + acc/gen pl use pad- base; nom/voc/acc sg+du+pl use supAd- base |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |

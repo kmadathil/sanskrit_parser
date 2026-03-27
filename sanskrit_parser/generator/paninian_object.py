@@ -78,6 +78,14 @@ class PaninianObject(SanskritObject):
         # 3.1.32 sannAdyantA dhAtavaH
         if objects[0][-1].hasTag("sannAdi"):
             so.setTag("DAtu")
+        # kvin/kvip krit result is dhatu-like (cf. sannAdi); set DAtu and propagate semantic tags.
+        # Handles both: (aYc_u | kvin) → ac gets DAtu+aYc+kvin;
+        #           and (prati | ac_result) → pratyac gets DAtu+aYc+kvin (ac_result has kvin).
+        if objects[0][-1].hasTag("kvin") or objects[0][-1].hasTag("kvip"):
+            so.setTag("DAtu")
+            for t in ["aYc", "kvin", "kvip"]:
+                if objects[0][-1].hasTag(t):
+                    so.setTag(t)
         # 1.2.46 krttaDitasamAsAsca
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
@@ -89,11 +97,11 @@ class PaninianObject(SanskritObject):
                  so.setTag("UW")
             
         # Custom tag propagation for rule implementation
-        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw"]:
+        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw", "aYc"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
                 so.setTag(t)
         # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
-        for t in ["samAsa", "vasupada"]:
+        for t in ["samAsa", "vasupada", "udanc"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t)
         # Propagate stem-class tags needed for pada-internal sandhi rules
@@ -103,7 +111,7 @@ class PaninianObject(SanskritObject):
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
                 so.setTag(t)
-        for t in ["trc", "trn"]:
+        for t in ["trc", "trn", "kvin", "kvip"]:
             if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
                 so.setTag(t)
         for t in ["NI", "Ap", 'strI_abs']:
@@ -128,11 +136,22 @@ class PaninianObject(SanskritObject):
                 if so.hasTag("napum"):
                     so.deleteTag("napum")
 
-        # Propagate vibhakti case/number tags from last element (pratyaya)
-        # Needed for case disambiguation in enclitic rules (SK404) where dual forms are syncretic
+        # Propagate vibhakti case/number tags from last element (pratyaya) onto merged pada.
+        # Stored as tag+"_pada" to distinguish merged-pada tags from raw suffix tags.
+        # Rules firing at (aNga | raw-suffix) still see the original tags on the suffix.
+        # Rules checking the merged pada on the left (SK404, 1.1.11) use the _pada variants.
+        # This prevents 6.1.102 from firing at (prefix | merged-pada) junctions.
         for t in ["praTamA", "dvitIyA", "tftIyA", "caturTi", "pancamI",
                   "zazWI", "saptamI", "ekavacana", "dvivacana", "bahuvacana", "viBakti"]:
             if objects[0][-1].hasTag(t):
-                so.setTag(t)
+                so.setTag(t + "_pada")
+        # kvin/kvip are on the left (prAtipadika), not the suffix — same _pada pattern
+        for t in ["kvin", "kvip"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t + "_pada")
+        # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
+        for t in ["sarvanAma"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t + "_pada")
 
         return so

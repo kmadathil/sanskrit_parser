@@ -116,10 +116,13 @@ _VIBHAKTI_COL_NAMES = ["ek", "dv", "bh"]
 def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI, stem_key=None):
     t = []
 
-    # If we get alist, treat as prefixes + prAtipadika
+    # If we get a list, treat as prefixes + prAtipadika
     if isinstance(pratipadika_i, list):
         plist = pratipadika_i
         pratipadika = pratipadika_i[-1]
+        # Handle nested lists (e.g. [prati, [aYc_u, kvin]]): drill to innermost scalar
+        while isinstance(pratipadika, list):
+            pratipadika = pratipadika[-1]
     else:
         plist = [pratipadika_i]
         pratipadika = pratipadika_i

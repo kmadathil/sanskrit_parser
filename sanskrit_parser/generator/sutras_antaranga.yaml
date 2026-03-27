@@ -240,7 +240,7 @@
     condition:
        l: a
        lp: ?upasarga
-       r: eN
+       r: _eN
        # rp: ?DAtu
     xform:
        l: null
@@ -427,7 +427,7 @@
     id: 1.1.11
     condition:
       l: [It, Ut, et]
-      lp: ?dvivacana
+      lp: ?dvivacana_pada
     update:
       olp: +pragfhya
       
@@ -3353,17 +3353,17 @@
         - and
         - ?pada
         - =yuvAm
-        - ?dvitIyA
+        - ?dvitIyA_pada
     - lp:
         - and
         - ?pada
         - =yuvayos
-        - ?zazWI
+        - ?zazWI_pada
     - lp:
         - and
         - ?pada
         - =yuvAByAm
-        - ?caturTi
+        - ?caturTi_pada
   xform:
     lc: str("vA")
     l: str("m")
@@ -3376,17 +3376,17 @@
         - and
         - ?pada
         - =AvAm
-        - ?dvitIyA
+        - ?dvitIyA_pada
     - lp:
         - and
         - ?pada
         - =Avayos
-        - ?zazWI
+        - ?zazWI_pada
     - lp:
         - and
         - ?pada
         - =AvAByAm
-        - ?caturTi
+        - ?caturTi_pada
   xform:
     lc: str("n")
     l: str("O")
@@ -3406,6 +3406,164 @@
   xform:
     lc: lc[:-1]+hrasva(lc[-1])
 
+# 415: अनिदितां हल उपधायाः क्ङिति (6-4-24)
+# Anidita hal-stem (e.g. √añc, u-it): drop the nasal upadhā (Y=ñ or n) before kit/Ṅit krit suffix.
+# Fires at krit-formation window (aYc_u | kvin): aYc → ac. Condition lp: ?DAtu ensures this fires
+# only at krit-formation (not later when pratyac is prAtipadika). ll: [Y, n] covers ñ and n.
+# anidita check: engine has no +!i syntax; conditions are narrow enough (aYc_u is u-it, not i-it).
+- sutra: अनिदितां हल उपधायाः क्ङिति
+  id: 6.4.24
+  condition:
+    lp: ?DAtu
+    l: _hal
+    ll:
+      - Y
+      - n
+    rp:
+      - +k
+      - +N
+  xform:
+    lc: lc[:-1]       # drop upadhā nasal: "aYc" → "ac"
+
+# 416: अचः (6-4-138)
+# The 'a' of ac (añcatir after SK415 drops ñ) is elided in bha-anga context.
+# ll: a (short) narrows to post-SK415 forms (pratyac) — excludes prAc (ll='A' long).
+# ?DAtu: fires only on dynamically-derived ac (inner prakriya result); excludes pre-formed tiryac.
+# SK420 (ud ī) is the apavāda for ud-prefix compounds (?!udanc guard).
+# Note: 1.4.18 sets ?Ba on the LEFT (aNga), so condition uses lp: ?Ba, not rp: ?Ba.
+- sutra: अचः
+  id: 6.4.138
+  condition:
+    lp:
+      - and
+      - ?aYc
+      - ?Ba            # 1.4.18 sets ?Ba on the LEFT element (aNga before bha suffix)
+      - ?DAtu          # only dynamically-derived ac from inner prakriya; excludes pre-formed tiryac
+      - ?!udanc        # SK420 (6.4.139) is apavāda for ud+añc compounds
+    l: c
+    ll: a             # short 'a' upadhā: fires on pratyac, not prAc (long A)
+  xform:
+    lc: lc[:-1]       # delete 'a': pratyac → pratyc
+
+# 417: चौ (6-3-138)
+# Before añc reduced to 'c' (ñ and a both elided), lengthen the preceding member's final vowel.
+# Fires at (prefix | c_result) window after SK416; c_result is añcatir with ?aYc, starts with 'c'.
+# Note: yaṇ (6.1.77) is blocked here by akṛtavyūhā paribhāṣā — prati+c gives pratīc, not pratyc.
+# Examples: prati → pratī (pratīcā), pra → prā (prācā), tiry→tiry (dirgha('y')=no-op → tiryacā).
+- sutra: चौ
+  id: 6.3.138
+  condition:
+    rp: ?aYc
+    r: c
+  xform:
+    l: dirgha(l)      # lengthen last char of lp: i→I, a→A, y→y (no-op for consonants)
+
+# 420: उद ईत् (6-4-139)
+# Apavāda of SK416: for ud+añc in bha context, substitute ī for the 'a' of ac (not mere deletion).
+# SK416 is blocked by ?!udanc condition; SK420 fires instead, directly giving udīc.
+# Note: 1.4.18 sets ?Ba on the LEFT (aNga), so condition uses lp: ?Ba, not rp: ?Ba.
+- sutra: उद ईत्
+  id: 6.4.139
+  overrides: 6.4.138
+  condition:
+    lp:
+      - and
+      - ?udanc        # ud+añc compound (tagged on udac_kvin in pratipadika.py)
+      - ?Ba            # 1.4.18 sets ?Ba on LEFT element (aNga before bha suffix)
+    l: c
+    ll: a
+  xform:
+    lc: lc[:-1]+str("I")    # a → ī: udac → udIc (= udīc)
+
+# 418: विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये (6-3-92)
+# Before añcatir without suffix: replace ṭi (from last vowel) with adri.
+# viṣvag→viṣvadri, deva→devadri, sarvanāma (tad→tadri, yad→yadri, kim→kadri, etc.)
+# bahiranga:1 ensures SK418 fires before SK417 (default 99):
+# (viṣvag|c) → SK418 → viṣvadri; then SK417 → dirgha(i)=ī → viṣvadrīcā (bha).
+# Deferred: etad/idam/adas/sarva — add sarvanAma_pada tag to extend coverage.
+- sutra: विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये
+  id: 6.3.92
+  bahiranga: 1
+  condition:
+    - lp: ?vizvag
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+    - lp: ?deva
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+    - lp: ?sarvanAma_pada
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: [a, c]
+  xform:
+    l: null
+    lc: ticAdesha_adri(lc+l)
+
+# 421: समः समि (6-3-93)
+# Before añcatir: sam- → sami-. Fires in both bha (r:c) and non-bha (r:a) contexts.
+# Non-bha: sami+ac → 6.1.77 yaṇ (i+a→y) → samyac/samyañc.
+# Bha: bahiranga:1 ensures SK421 fires before SK417 (default 99): sam→sami, then SK417 dirgha(i)=ī → samīcā.
+- sutra: समः समि
+  id: 6.3.93
+  bahiranga: 1
+  condition:
+    lp: ?sam
+    rp:
+      - and
+      - ?aYc
+      - ?kvin_pada
+    r: [a, c]
+  xform:
+    l: null
+    lc: str("sami")
+
+# 422: सहस्य सध्रिः (6-3-95)
+# Before añcatir: saha- → sadhrī-. Same two-context pattern as SK421.
+# Non-bha: sadhrī+ac → 6.1.77 yaṇ (ī+a→y) → sadhryac/sadhryañc.
+# Bha: SK422 (bahiranga:1) fires before SK417: saha→sadhrī, then SK417 dirgha(ī)=ī (no-op) → sadhrīcā.
+- sutra: सहस्य सध्रिः
+  id: 6.3.95
+  bahiranga: 1
+  condition:
+    lp: ?saha
+    rp:
+      - and
+      - ?aYc
+      - ?kvin_pada
+    r: [a, c]
+  xform:
+    l: null
+    lc: str("saDrI")
+
+# 423: तिरसस्तिर्यलोपे (6-3-94)
+- sutra: तिरसस्तिर्यलोपे
+  id: 6.3.94
+  condition:
+    - lp: ?tiras
+      rp:
+        - and
+        - ?aYc
+        - ?kvin_pada
+      r: a
+    - lp: ?tiras
+      rp:
+        - and
+        - ?aYc
+        - ?kvip_pada
+      r: a
+  xform:
+    l: null
+    lc: str("tiri")
+        
+    
 # 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः
   id: 7.2.102
