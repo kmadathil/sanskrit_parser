@@ -108,6 +108,23 @@ mahat = Pratipadika("mahat", "pum", its=['u'])
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
 
+# SK427+SK428: śatṛ (ṛ-it = f-it) stems.
+# śatṛ suffix is ṛ-it → its=["f"]; SK361 (7.1.70) +f block fires → nUM in sarvanamasthana.
+# Jakshi-class (SK428/6.1.6): also tagged other_tags=["Satf","abhyasta"] →
+#   SK427 (7.1.78) blocks SK361 nUM → no nUM in strong forms.
+# Regular śatṛ (non-abhyasta): tagged other_tags=["Satf"] only → SK361 fires normally.
+jakzat   = Pratipadika("jakzat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])  # SLP1: z=ṣ (जक्षत्)
+jAgrat   = Pratipadika("jAgrat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+daridrat = Pratipadika("daridrat", "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+cakAsat  = Pratipadika("cakAsat",  "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+SAsat    = Pratipadika("SAsat",    "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+dIDyat   = Pratipadika("dIDyat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+vevyat   = Pratipadika("vevyat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+# Regular śatṛ stems — nUM fires (no abhyasta tag, so SK427 does not block SK361)
+Bavat   = Pratipadika("Bavat", "pum", its=["f"], other_tags=["Satf"])   # bhū+śatṛ f-it → bhavant strong
+Bavat_u = Pratipadika("Bavat", "pum", its=["u"])                       # u-it (no Satf) → SK425 fires → bhāvān nom sg
+pacat   = Pratipadika("pacat", "pum", its=["f"], other_tags=["Satf"])  # pac+śatṛ → pacant strong
+
 atistri = Pratipadika("atistri", "pum", other_tags=["strI_p", "pUrvastrI"])
 
 

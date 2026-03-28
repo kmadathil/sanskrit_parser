@@ -1312,6 +1312,87 @@ viBakti["gomat"] = [
     ['गोमन्', 'गोमन्तौ', 'गोमन्तः'],    # 8 Voc  * SK361 (no SK425 for sambuddhi); t-drop sg
 ]
 
+# jakzat (pum): jakshi-class root (SK428/6.1.6), tagged ?abhyasta + ?Satf + f-it.
+# SLP1: z = ṣ (retroflex sibilant); jakzat = जक्षत् (j+a+k+z+a+t).
+# SK427 (7.1.78) blocks SK361 (7.1.70) nUM → no nUM in sarvanamasthana.
+# All forms use the plain -at base (no -ant- in strong forms).
+# Nom/voc sg: at word-final, t can be voiced (→ d) before a following voiced consonant;
+#   both jAkSat (pause) and jAkSad (sandhi) are valid, so a list is used (like mahat_n pattern).
+prAtipadika["jakzat"] = jakzat  # noqa: F405
+viBakti["jakzat"] = [
+    [['जक्षत्', 'जक्षद्'], 'जक्षतौ', 'जक्षतः'],  # 1 Nom  * SK427 blocks nUM; both pause/sandhi sg
+    ['जक्षतम्', 'जक्षतौ', 'जक्षतः'],              # 2 Acc  * no nUM throughout
+    ['जक्षता', 'जक्षद्भ्याम्', 'जक्षद्भिः'],        # 3 Inst
+    ['जक्षते', 'जक्षद्भ्याम्', 'जक्षद्भ्यः'],       # 4 Dat
+    ['जक्षतः', 'जक्षद्भ्याम्', 'जक्षद्भ्यः'],       # 5 Abl
+    ['जक्षतः', 'जक्षतोः', 'जक्षताम्'],               # 6 Gen
+    ['जक्षति', 'जक्षतोः', 'जक्षत्सु'],                # 7 Loc
+    [['जक्षत्', 'जक्षद्'], 'जक्षतौ', 'जक्षतः'],  # 8 Voc  * same alternatives as nom sg
+]
+
+# jAgrat (pum): jakshi-class root jāgṛ (SK428/6.1.6), same abhyasta+Satf pattern.
+# No nUM via SK427 → all forms use plain jAgrat- base.
+prAtipadika["jAgrat"] = jAgrat  # noqa: F405
+viBakti["jAgrat"] = [
+    [['जाग्रत्', 'जाग्रद्'], 'जाग्रतौ', 'जाग्रतः'],  # 1 Nom  * SK427 blocks nUM; both pause/sandhi sg
+    ['जाग्रतम्', 'जाग्रतौ', 'जाग्रतः'],               # 2 Acc
+    ['जाग्रता', 'जाग्रद्भ्याम्', 'जाग्रद्भिः'],         # 3 Inst
+    ['जाग्रते', 'जाग्रद्भ्याम्', 'जाग्रद्भ्यः'],        # 4 Dat
+    ['जाग्रतः', 'जाग्रद्भ्याम्', 'जाग्रद्भ्यः'],        # 5 Abl
+    ['जाग्रतः', 'जाग्रतोः', 'जाग्रताम्'],                # 6 Gen
+    ['जाग्रति', 'जाग्रतोः', 'जाग्रत्सु'],                 # 7 Loc
+    [['जाग्रत्', 'जाग्रद्'], 'जाग्रतौ', 'जाग्रतः'],  # 8 Voc  * same alternatives as nom sg
+]
+
+# Bavat (pum): regular śatṛ stem (bhū+śatṛ → bhavant), tagged ?Satf + f-it, NOT abhyasta.
+# SK427 does NOT block → SK361 (7.1.70) +f block fires → nUM in sarvanamasthana.
+# Strong base: bhavant- (nom sg/du/pl, acc sg/du, voc du/pl). Weak: bhavat-.
+# Nom/voc sg: bhavant → 8.2.23 drops t of -nt cluster → bhavan.
+# SK425 does NOT fire (bhavat is f-it, not u-it → no upadhā dīrgha).
+prAtipadika["Bavat"] = Bavat  # noqa: F405
+viBakti["Bavat"] = [
+    ['भवन्', 'भवन्तौ', 'भवन्तः'],       # 1 Nom  * SK361 nUM → bhavant-; 8.2.23 sg t-drop
+    ['भवन्तम्', 'भवन्तौ', 'भवतः'],      # 2 Acc  * SK361 sg+du; weak pl (Sas)
+    ['भवता', 'भवद्भ्याम्', 'भवद्भिः'],   # 3 Inst
+    ['भवते', 'भवद्भ्याम्', 'भवद्भ्यः'],  # 4 Dat
+    ['भवतः', 'भवद्भ्याम्', 'भवद्भ्यः'],  # 5 Abl
+    ['भवतः', 'भवतोः', 'भवताम्'],          # 6 Gen
+    ['भवति', 'भवतोः', 'भवत्सु'],           # 7 Loc
+    ['भवन्', 'भवन्तौ', 'भवन्तः'],       # 8 Voc  * SK361 fires (s = sarvanāmasthāna); t-drop sg
+]
+
+# Bavat_u (pum): same SLP1 string "Bavat" but u-it (no Satf tag) — tests SK425 vs Bavat (f-it).
+# SK361 (7.1.70) +u block fires → nUM; SK425 (6.4.14) ALSO fires (u-it, ll=a, before su) →
+#   nom sg: BavAt (SK425 dīrgha) → BavAnt (SK361 nUM) → 8.2.23 drop t → BavAn = भवान्.
+# Other sarvanamasthana (du/pl, acc sg/du, voc du/pl): only SK361 fires (no SK425 before O/jas etc.)
+#   → BavAnt- → भवन्त-.
+# Contrast with Bavat (f-it): nom sg भवन् (no SK425, only SK361 +f block).
+prAtipadika["Bavat_u"] = Bavat_u  # noqa: F405
+viBakti["Bavat_u"] = [
+    ['भवान्', 'भवन्तौ', 'भवन्तः'],      # 1 Nom  * SK425+SK361 sg → bhāvān; SK361 du/pl → bhavant-
+    ['भवन्तम्', 'भवन्तौ', 'भवतः'],      # 2 Acc  * SK361 sg+du; weak pl
+    ['भवता', 'भवद्भ्याम्', 'भवद्भिः'],   # 3 Inst
+    ['भवते', 'भवद्भ्याम्', 'भवद्भ्यः'],  # 4 Dat
+    ['भवतः', 'भवद्भ्याम्', 'भवद्भ्यः'],  # 5 Abl
+    ['भवतः', 'भवतोः', 'भवताम्'],          # 6 Gen
+    ['भवति', 'भवतोः', 'भवत्सु'],           # 7 Loc
+    ['भवन्', 'भवन्तौ', 'भवन्तः'],       # 8 Voc  * no SK425 (sambuddhi); SK361 fires → bhavant-; t-drop sg
+]
+
+# pacat (pum): regular śatṛ stem (pac+śatṛ → pacant), tagged ?Satf + f-it, NOT abhyasta.
+# Same nUM pattern as Bavat: strong pacant-, weak pacat-.
+prAtipadika["pacat"] = pacat  # noqa: F405
+viBakti["pacat"] = [
+    ['पचन्', 'पचन्तौ', 'पचन्तः'],       # 1 Nom  * SK361 nUM → pacant-; 8.2.23 sg t-drop
+    ['पचन्तम्', 'पचन्तौ', 'पचतः'],      # 2 Acc  * SK361 sg+du; weak pl
+    ['पचता', 'पचद्भ्याम्', 'पचद्भिः'],   # 3 Inst
+    ['पचते', 'पचद्भ्याम्', 'पचद्भ्यः'],  # 4 Dat
+    ['पचतः', 'पचद्भ्याम्', 'पचद्भ्यः'],  # 5 Abl
+    ['पचतः', 'पचतोः', 'पचताम्'],          # 6 Gen
+    ['पचति', 'पचतोः', 'पचत्सु'],           # 7 Loc
+    ['पचन्', 'पचन्तौ', 'पचन्तः'],       # 8 Voc  * SK361 fires; t-drop sg
+]
+
 # Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
 # before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
 # voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).

@@ -4270,10 +4270,25 @@
       lp: ?napum
       r: _ac
       rp: ?viBakti
-  xform: 
+  xform:
       lc: numAgama(lc+l)
       l: null
-      
+
+# 427: नाभ्यस्ताच्छतुः (7.1.78) — abhyasta (reduplicated) śatṛ stems do not take nUM.
+# Apavāda of SK361 (7.1.70): blocks nUM for stems with both ?abhyasta and ?Satf tags.
+# ?Satf distinguishes śatṛ-derived stems from other ṛ-it forms (e.g. maghavan ++f via SK360).
+# jakshi-class (SK428/6.1.6): jakshat, jAgrat, etc. → jakshat/jAgrtat (no nUM in strong forms).
+- sutra: नाभ्यस्ताच्छतुः
+  id: 7.1.78
+  overrides: 7.1.70
+  condition:
+    lp:
+      - and
+      - ?abhyasta
+      - ?Satf
+    rp: ?sarvanAmasTAna
+  xform: null
+
 #322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75) 
 - sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
   id: 7.1.75

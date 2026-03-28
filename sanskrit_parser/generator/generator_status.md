@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 425 — 6.4.14 अत्वसन्तस्य चाऽधातोः (upadhā dīrgha for -at/-as stems before su: dhīmān, gomān); also SK 415–420 añcatir cluster, SK 419/438/439 adas pronoun out of SK order
-**Next to implement:** SK 426 (SK418/421–423 skipped — compound substitutions; SK424 deferred — pūjā exception)
+**Last implemented:** SK 428 — 6.1.6 जक्षित्यादयः षट् (jakshi-class roots tagged abhyasta; SK427 blocks nUM for śatṛ abhyasta stems); SK426 deferred
+**Next to implement:** SK 429 (3.2.60 — kṛt suffix kañ/kvin after dṛś, for later; skip ahead)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 156 |
-| SK-numbered sutras, skipped/deferred | 51 |
+| SK-numbered sutras, implemented | 158 |
+| SK-numbered sutras, skipped/deferred | 52 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 90 |
+| Stems with full vibhakti test tables | 94 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -192,6 +192,8 @@ The "Forms affected" column uses the convention:
 | 417 | 6.3.138 | चौ | lengthen final vowel of preceding member before añc reduced to 'c'; fires at (prefix\|c_result) after SK416; prati→pratI, pra→prA; yaṇ (6.1.77) blocked by akṛtavyūhā paribhāṣā |
 | 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; ?udanc tag (via in_udanc helper) identifies ud compounds; fixes udac bha forms |
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
+| 427 | 7.1.78 | नाभ्यस्ताच्छतुः | Blocks nUM for abhyasta+śatṛ (–at) stems; apavāda of SK361 (7.1.70); condition: ?abhyasta + ?Satf; jakshat, jAgrat (and other jakshi-class) nom sg = plain -at form (no -an) |
+| 428 | 6.1.6 | जक्षित्यादयः षट् | Tags 7 jakshi-class roots as inherently abhyasta: jakzat (SLP1 z=ṣ), jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat; its=["f"]+other_tags=["Satf","abhyasta"] in pratipadika.py |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
 | 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
@@ -263,6 +265,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
+| 426 | 6.1.5 | उभे अभ्यस्तम् | Natural + manual tagging; dvitva engine not yet implemented | abhyasta saṁjñā for all forms resulting from reduplication (dadat, bibhrat, etc.); jakshi-class manually tagged via SK428 |
 | 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Partial — remaining sarvanāma | etad/idam/adas/sarva etc.; add sarvanAma+sarvanAma_pada tags to auto-extend SK418 |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
@@ -425,6 +428,10 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | supAd | m | d-stem (pāda compound, SK414) | SK414 (6.4.130): pAd→pad (ā→a) in bha context; inst/dat/abl/gen/loc sg + acc/gen pl use pad- base; nom/voc/acc sg+du+pl use supAd- base |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
+| jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |
+| jAgrat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | same as jakshat; nom sg जाग्रत् (not *जाग्रन्) |
+| Bavat | m | -at stem (śatṛ f-it, regular, SK361) | SK361 +f block fires nUM → bhavant strong forms; nom sg भवन् (no SK425 — not u-it) |
+| pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
