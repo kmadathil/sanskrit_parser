@@ -36,8 +36,15 @@ class AntarangaPrakriya(PrakriyaBase):
        sutra_list: list of Sutra objects
        inputs    : PrakriyaVakya object
     """
-    def __init__(self, sutra_list, inputs):
+    def __init__(self, sutra_list, inputs, initially_disabled=None):
         super().__init__(sutra_list, inputs)
+        # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
+        # are visible inside this prakriya.  Used by insert hier prakriyas to honour
+        # the triggering sutra's `overrides:` list (the outer disabled_sutras update
+        # only runs after the hier prakriya completes, so we must seed it here).
+        if initially_disabled is not None:
+            for aps in initially_disabled:
+                self.inputs[0].disabled_sutras.append(aps)
         self.hier_prakriyas = []
         self.need_hier = False
         # List of alternatives
@@ -111,7 +118,8 @@ class AntarangaPrakriya(PrakriyaBase):
                         # need hierarchy here if we get list back
                         # hierarchy needed here
                         hp = AntarangaPrakriya(self.sutra_list,
-                                               PrakriyaVakya(r[i]))
+                                               PrakriyaVakya(r[i]),
+                                               initially_disabled=s.overrides)
                         # This will execute hierarchically as needed
                         hp.execute()
                         hpo = hp.output()
@@ -323,15 +331,25 @@ class AntarangaPrakriya(PrakriyaBase):
                 if not _isScalar(r[i]):
                     logger.debug(f"Insertion hier prakriya for {r[i]} {[_r.tags for _r in r[i]]}")
                     pada_p = False
+                    ru_p = False
                     # Temporarily remove pada tag (not relevant here)
                     if r[i][0].isPada():
                         pada_p = True
                         r[i][0].deleteTag("pada")
                         logger.debug(f"Temporary pada deletion {r[i]} {[_r.tags for _r in r[i]]}")
-                    # need hierarchy here if we get list back
-                    # hierarchy needed here
+                    # Temporarily remove ru tag: ru marks a pada-boundary s→r substitution
+                    # and must not trigger 6.1.113/114 inside an insert hier prakriya
+                    if r[i][0].hasTag("ru"):
+                        ru_p = True
+                        r[i][0].deleteTag("ru")
+                        logger.debug(f"Temporary ru deletion {r[i]} {[_r.tags for _r in r[i]]}")
+                    # Pass the triggering sutra's overrides as initially_disabled so
+                    # they take effect inside the insert hier prakriya.  We cannot
+                    # pre-modify r[i][0].disabled_sutras because PrakriyaVakya deepcopies
+                    # its inputs, so any such modification would be lost.
                     hp = AntarangaPrakriya(self.sutra_list,
-                                           PrakriyaVakya(r[i]))
+                                           PrakriyaVakya(r[i]),
+                                           initially_disabled=s.overrides)
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = hp.output()
@@ -350,6 +368,10 @@ class AntarangaPrakriya(PrakriyaBase):
                     if pada_p:
                         r[i].setTag("pada")
                         logger.debug(f"Restored pada {r[i]} {r[i].tags}")
+                    # Restore ru
+                    if ru_p:
+                        r[i].setTag("ru")
+                        logger.debug(f"Restored ru {r[i]} {r[i].tags}")
 
             logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
             

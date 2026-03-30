@@ -29,6 +29,7 @@ def enable_console_logger(level=logging.INFO,
            fmt  : log format
     '''
     logger = logging.getLogger(__name__)
+    logger.setLevel(level)
     console = logging.StreamHandler()
     console.setLevel(level)
     # set a format which is simpler for console use
@@ -50,6 +51,7 @@ def enable_file_logger(log_file_name='SanskritParser.log',
            fmt  : log format
     '''
     logger = logging.getLogger(__name__)
+    logger.setLevel(level)
     # create file handler which logs even debug messages
     formatter = logging.Formatter(fmt)
     fh = logging.FileHandler(log_file_name, encoding='utf-8')

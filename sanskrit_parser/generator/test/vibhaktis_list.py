@@ -208,6 +208,22 @@ viBakti["mAtf"] = [
      ["मातरि", "मात्रोः", "मातृषु"],
      ["मातः", "मातरौ", "मातरः"],
 ]
+# ap (f.) — p-final nityabahuvacana stem "water". SK442 (7.4.48): p→t before bhi-initial suffix.
+# Then 8.4.53 (jhaśca) voices t→d before voiced bh → adbhiḥ/adbhyaḥ/adbhyām.
+# Nom/voc pl: āpaḥ (ā lengthening before jas — 6.1.43 applies for strI stem).
+# Loc pl: apsu (p stays before s khar; no SK442 since r≠b; 8.3.57 ṣatva not triggered here).
+prAtipadika["ap"] = ap  # noqa: F405
+viBakti["ap"] = [
+    [None, None, 'आपः'],      # 1 Nom  * ā before jas
+    [None, None, 'अपः'],      # 2 Acc  * no lengthening before śas (non-sarv)
+    [None, None, 'अद्भिः'],   # 3 Inst * SK442 p→t before b → t+bh → d+bh (jaśtva)
+    [None, None, 'अद्भ्यः'],  # 4 Dat  * SK442 p→t
+    [None, None, 'अद्भ्यः'],  # 5 Abl  * SK442 p→t
+    [None, None, 'अपाम्'],    # 6 Gen  * vowel-initial (Am); no SK442
+    [None, None, 'अप्सु'],    # 7 Loc  * p before su (khar); no SK442
+    [None, None, 'आपः'],      # 8 Voc  * = Nom
+]
+
 prAtipadika["krozwu"] = krozwu    # noqa: F405
 viBakti["krozwu"] = [
      ["क्रोष्टा", "क्रोष्टारौ", "क्रोष्टारः"],
@@ -1119,6 +1135,25 @@ viBakti["parvan"] = [
     ['पर्व', 'पर्वणी', 'पर्वाणि'],       # 8 Vocative
 ]
 
+# ahan (n.) — neuter "day" stem. SK443 (8.2.68): n→ru at pada-end (apavāda of 8.2.7).
+# Nom/acc/voc sg: ahan → n→r (ru, via SK443) → r→visarga (8.3.15) → ahaḥ.
+# Bha forms (vowel-initial non-sarvānāmasthāna): 6.4.134 a-lopa → ahn- base.
+#   Inst sg: ahnā; dat sg: ahne; abl/gen sg: ahnaḥ; loc sg: ahni; gen/loc du: ahnoḥ; gen pl: ahnām.
+# Du/pl sarvānāmasthāna (au/ni): 6.4.8 upadhā-dīrgha a→ā before sarv → ahān + ī/i.
+# Consonant-initial (bhyAm etc.): n→r (ru), r before voiced bh → 6.1.114 u inserted → aho+Bh.
+# Loc pl (su): n→r (ru) → r before s → 8.3.15 visarga → ahaḥ+su.
+prAtipadika["ahan"] = ahan  # noqa: F405
+viBakti["ahan"] = [
+    ['अहः', ['अह्नी', 'अहनी'], 'अहानि'],              # 1 Nom  * SK443 n→r→visarga sg; 6.4.8+7.1.24 du/pl
+    ['अहः', ['अह्नी', 'अहनी'], 'अहानि'],              # 2 Acc  * = Nom for napum
+    ['अह्ना', 'अहोभ्याम्', 'अहोभिः'],      # 3 Inst * bha sg (6.4.134+6.4.135); ru+voiced du/pl
+    ['अह्ने', 'अहोभ्याम्', 'अहोभ्यः'],     # 4 Dat  * bha sg; ru+voiced du/pl
+    ['अह्नः', 'अहोभ्याम्', 'अहोभ्यः'],     # 5 Abl  * bha sg; ru+voiced du/pl
+    ['अह्नः', 'अह्नोः', 'अह्नाम्'],         # 6 Gen  * bha all (vowel-initial)
+    [['अह्नि', 'अहनि'], 'अह्नोः', ['अहःसु', 'अहस्सु']],  # 7 Loc  * bha sg: 6.4.136 vibhāṣā → ahni/ahani; du/pl
+    ['अहः', ['अह्नी', 'अहनी'], 'अहानि'],              # 8 Voc  * = Nom for napum
+]
+
 prAtipadika["yajvan"] = yajvan
 viBakti["yajvan"] = [
     ['यज्वा', 'यज्वानौ', 'यज्वानः'],         # 1 Nominative   (strong stem)
@@ -1154,6 +1189,23 @@ viBakti["vftrahan"] = [
     ['वृत्रघ्नः', 'वृत्रघ्नोः', 'वृत्रघ्नाम्'],                 # 6 Genitive     * 7.3.54 sg/du/pl; 8.4.22 blocks ṇatva after G
     [['वृत्रहणि', 'वृत्रघ्नि'], 'वृत्रघ्नोः', 'वृत्रहसु'],     # 7 Locative     * two sg forms; 7.3.54 du
     ['वृत्रहन्', 'वृत्रहणौ', 'वृत्रहणः'],                       # 8 Vocative     * bare stem sg; ṇatva du/pl
+]
+
+# upAnah (m.) — nah-stem "sandal/shoe". SK440 (8.2.34): h→dh at pada-end or before jhal.
+# Nom/voc sg: upAnaD→t (8.4.56 car at avasāna) / upAnaD→d (sandhi before voiced).
+# Vowel-initial suffixes (acc/inst/dat/abl/gen sg, nom/acc/voc du, nom/acc/gen/loc pl): no SK440.
+# Consonant-initial (bhyAm/bhiH/bhyaH): SK440 h→D, then D+Bh → voiced dh before voiced bh.
+# Loc pl: SK440 h→D, then D before s(khar)→t(8.4.56) → upānatsu.
+prAtipadika["upAnah"] = upAnah  # noqa: F405
+viBakti["upAnah"] = [
+    [['उपानत्', 'उपानद्'], 'उपानहौ', 'उपानहः'],  # 1 Nom  * SK440 h→D→t sg; vowel-initial du/pl
+    ['उपानहम्', 'उपानहौ', 'उपानहः'],              # 2 Acc  * vowel-initial throughout
+    ['उपानहा', 'उपानद्भ्याम्', 'उपानद्भिः'],       # 3 Inst * SK440 du/pl (D before voiced Bh)
+    ['उपानहे', 'उपानद्भ्याम्', 'उपानद्भ्यः'],      # 4 Dat  * SK440 du/pl
+    ['उपानहः', 'उपानद्भ्याम्', 'उपानद्भ्यः'],      # 5 Abl  * SK440 du/pl
+    ['उपानहः', 'उपानहोः', 'उपानहाम्'],             # 6 Gen  * vowel-initial throughout
+    ['उपानहि', 'उपानहोः', 'उपानत्सु'],             # 7 Loc  * sg vowel-initial; pl SK440 h→D→t before su
+    [['उपानत्', 'उपानद्'], 'उपानहौ', 'उपानहः'],  # 8 Voc  * = Nom
 ]
 
 # SvanType stems: śvan/yuvan/maGavan — SK362 (6.4.133) samprasāraṇa in bha position,
@@ -1422,6 +1474,45 @@ viBakti["Sreyas_n"] = [
     ['श्रेयसः', 'श्रेयसोः', 'श्रेयसाम्'],          # 6 Gen
     ['श्रेयसि', 'श्रेयसोः', ['श्रेयःसु', 'श्रेयस्सु']],  # 7 Loc * two pl forms
     ['श्रेयः', 'श्रेयसी', 'श्रेयांसि'],            # 8 Voc (= Nom for napum)
+]
+
+# vidvas (m.) — kvasu/vas suffix stem (perfect active participle "having known").
+# SK435 (6.4.131): v→u in bha position, simultaneously s→ṣ(z) (ṣatva).
+# SK334 (8.2.72): s→d at pada-end before consonant-initial non-sarvānāmasthāna.
+# SK425 (6.4.14): u-it, ll=a, l=s → upadhā-dīrgha before su → vidvAs.
+# SK361 (7.1.70): u-it nUM before sarvānāmasthāna → vidvāṃs strong forms.
+# Strong forms: vidvāṃs (nom/acc sg/du, nom pl) via SK361+SK123.
+# Bha forms: viduṣ- (SK435) → viduṣaḥ/ā/e/i/oḥ/ām (vowel-initial non-sarvānāmasthāna).
+# Pada forms: vidvad- (SK334, s→d before consonant-initial) → vidvadbhyām/bhiḥ/bhyaḥ.
+# Loc pl: SK334 s→d, then 8.4.56 d→t before s(khar) → vidvat+su = vidvatsu.
+prAtipadika["vidvas"] = vidvas  # noqa: F405
+viBakti["vidvas"] = [
+    ['विद्वान्', 'विद्वांसौ', 'विद्वांसः'],      # 1 Nom  * SK425+SK361+8.2.23 sg; SK361+SK123 du/pl
+    ['विद्वांसम्', 'विद्वांसौ', 'विदुषः'],       # 2 Acc  * SK361+SK123 sg+du; SK435 pl (bha Sas=vowel-initial)
+    ['विदुषा', 'विद्वद्भ्याम्', 'विद्वद्भिः'],   # 3 Inst * SK435 sg (bha); SK334 du/pl
+    ['विदुषे', 'विद्वद्भ्याम्', 'विद्वद्भ्यः'],  # 4 Dat  * SK435 sg; SK334 du/pl
+    ['विदुषः', 'विद्वद्भ्याम्', 'विद्वद्भ्यः'],  # 5 Abl  * SK435 sg; SK334 du/pl
+    ['विदुषः', 'विदुषोः', 'विदुषाम्'],            # 6 Gen  * SK435 all (bha)
+    ['विदुषि', 'विदुषोः', 'विद्वत्सु'],           # 7 Loc  * SK435 sg/du (bha); SK334→t+su pl
+    ['विद्वन्', 'विद्वांसौ', 'विद्वांसः'],      # 8 Voc  * SK361(no SK425) sg → vidvan; du/pl = nom
+]
+
+# pums (m.) — puṃs stem "man". SK436 (7.1.89): s → as (asun, u-it) before sarvānāmasthāna.
+# After asun, stem = pumas; u-it → SK361 nUM → pumāṃs strong forms.
+# SK425 (6.4.14): u-it, ll=a, l=s → upadhā-dīrgha before su → pumAs; SK361 → pumAns → pumān.
+# Non-sarvānāmasthāna (bha or pada): uses base pums directly (no SK436).
+# pums + vowel-initial: 8.2.66 s → ru → puṃsā etc. via SK123.
+# pums + consonant-initial (ByAm etc.): 8.2.23 drops s → pum; SK123 m→M → puṃbhyām.
+prAtipadika["pums"] = pums  # noqa: F405
+viBakti["pums"] = [
+    ['पुमान्', 'पुमांसौ', 'पुमांसः'],                              # 1 Nom  * sarvānāmasthāna (SK436+SK425+SK361)
+    ['पुमांसम्', 'पुमांसौ', 'पुंसः'],                              # 2 Acc  * acc pl = bha vowel-initial (SK123: puMsas)
+    ['पुंसा', ['पुंभ्याम्', 'पुम्भ्याम्'], ['पुंभिः', 'पुम्भिः']],    # 3 Inst * sg=vowel (SK123); du/pl=conson (2 forms: 8.4.58/59)
+    ['पुंसे', ['पुंभ्याम्', 'पुम्भ्याम्'], ['पुंभ्यः', 'पुम्भ्यः']],  # 4 Dat
+    ['पुंसः', ['पुंभ्याम्', 'पुम्भ्याम्'], ['पुंभ्यः', 'पुम्भ्यः']],  # 5 Abl
+    ['पुंसः', 'पुंसोः', 'पुंसाम्'],                                # 6 Gen  * all vowel-initial (SK123)
+    ['पुंसि', 'पुंसोः', 'पुंसु'],                                  # 7 Loc  * sg/du=vowel (SK123); pl=conson → puMsu (SK122)
+    ['पुमन्', 'पुमांसौ', 'पुमांसः'],                              # 8 Voc
 ]
 
 # ---------------------------------------------------------------------------

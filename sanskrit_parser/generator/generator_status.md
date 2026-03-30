@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 428 — 6.1.6 जक्षित्यादयः षट् (jakshi-class roots tagged abhyasta; SK427 blocks nUM for śatṛ abhyasta stems); SK426 deferred
-**Next to implement:** SK 429 (3.2.60 — kṛt suffix kañ/kvin after dṛś, for later; skip ahead)
+**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK429–434 and SK441 deferred
+**Next to implement:** SK 444 (7.1.79 — vā napuṃsakasya; defer if not needed for current stems)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 158 |
-| SK-numbered sutras, skipped/deferred | 52 |
+| SK-numbered sutras, implemented | 163 |
+| SK-numbered sutras, skipped/deferred | 59 |
 | Implemented sutras without SK number yet | ~25 |
-| Stems with full vibhakti test tables | 94 |
+| Stems with full vibhakti test tables | 100 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -194,6 +194,11 @@ The "Forms affected" column uses the convention:
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 427 | 7.1.78 | नाभ्यस्ताच्छतुः | Blocks nUM for abhyasta+śatṛ (–at) stems; apavāda of SK361 (7.1.70); condition: ?abhyasta + ?Satf; jakshat, jAgrat (and other jakshi-class) nom sg = plain -at form (no -an) |
 | 428 | 6.1.6 | जक्षित्यादयः षट् | Tags 7 jakshi-class roots as inherently abhyasta: jakzat (SLP1 z=ṣ), jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat; its=["f"]+other_tags=["Satf","abhyasta"] in pratipadika.py |
+| 435 | 6.4.131 | वसोः संप्रसारणम् | samprasāraṇa v→u + ṣatva (s→ṣ/z) in bha for ?vasAnta (kvasu) stems; viduṣaḥ/ā/e/oḥ/ām bha forms of vidvas |
+| 436 | 7.1.89 | पुंसोऽसुङ् | s→as (asun, u-it) before sarvānāmasthāna for ?puMs; SK425+SK361 give pumān nom sg; bha forms: puṃsaḥ/ā etc. |
+| 440 | 8.2.34 | नहो धः | h→dh (D) before jhal or at pada-end for ?nah stems; upānat nom sg (via 8.4.56), upānadbhyām du/pl |
+| 442 | 7.4.48 | अपो भि | p→t before bhi-initial suffix for ?ap (nityabahuvacana feminine); 8.4.53 gives t→d before voiced bh → adbhiḥ, adbhyaḥ |
+| 443 | 8.2.68 | अहन् | n→ru at pada-end for ?ahan (neuter day stem); ahaḥ nom/acc/voc sg via ru→visarga; apavāda of 8.2.7 (n-lopa) |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
 | 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
@@ -324,6 +329,13 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 422 | 6.3.95 | सहस्य सध्रिः | Implemented | saha- → sadhrī- before añcatir (bahiranga:1); sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
+| 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | For later — kṛt | kañ/kvin after tyādi+dṛś; requires kṛt suffix machinery |
+| 430 | 6.3.91 | सर्वनाम्नः पूर्वपदस्य | For later — compounds | ā for sarvanāma pūrva-pada before dṛg/dṛś/vat (tādṛk etc.); compound-only |
+| 431 | 8.2.63 | नशेर्वा | For later | optional ś→ṣ for naś at pada-end; no naś prātipadika yet |
+| 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
+| 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
+| 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | For later — verbal | ṣatva with intervening chars; mainly verbal/intensive, not needed for nominal test suite |
+| 441 | 7.2.110 | इदोऽय् पुंसि | For later | d→y of idam before su for feminine iyam; requires separate feminine idam prātipadika and several additional rules |
 
 ---
 

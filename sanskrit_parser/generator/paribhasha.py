@@ -288,6 +288,34 @@ def has_ratva_vyavaya(s):
     return ratva_string(s, awkupnumvyavaya=True, apply=False)
 
 
+def anusvara_jhal_string(s, apply=True):
+    """8.3.24 naścāpadāntasya jhali: m or n (not at string-final position) → M before Jal.
+
+    Scans s for every m or n at position i (i < len(s)-1). Qualifies when s[i+1] is in
+    the Jal pratyahara. Replaces qualifying m/n with M (anusvāra).
+
+    apply=True  (xform use):       return modified string
+    apply=False (condition check): return True if any m/n would be changed
+    """
+    result = list(s)
+    changed = False
+    k = 0
+    for i in range(len(s) - 1):    # āpadāntasya: exclude final position
+        if s[i] in ('m', 'n') and isInPratyahara('Jal', s[i + 1]):
+            result[i] = 'M'
+            changed = True
+            k = i
+    if apply:
+        return "".join(result[0:k+1]), "".join(result[k+1:])
+    else:
+        return changed
+
+
+def has_anusvara_jhal(s):
+    """Condition check: True if s contains m or n (non-final) before Jal (8.3.24)."""
+    return anusvara_jhal_string(s, apply=False)
+
+
 def has_ratva_non_at(s):
     """For han-stems (8.4.22): True if s has ṛ/ṣ/r→(aṭkup vyavāya)→n where 'a' does NOT
     directly precede 'n'. Returns True to block ṇatva (non-at-pūrva case);

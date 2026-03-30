@@ -154,4 +154,10 @@ class PaninianObject(SanskritObject):
             if objects[0][0].hasTag(t):
                 so.setTag(t + "_pada")
 
+        # vApadAntasya / monoDatoH must block further naScApadAntasya on pada creation
+        for t in ["na_pada"]:
+            if objects[0][0].hasTag(t):
+                so.setTag("na_pada")
+      
+                
         return so

@@ -798,6 +798,9 @@
      r: _yay
   xform:
      l: anunasika(r)
+  update:
+     olp: +na_pada   # Prevent mo'nusvAra/naScha... from firing again 
+    
 
 # 122: मोऽनुस्वारः (8-3-23)
 - sutra: मोऽनुस्वारः
@@ -809,21 +812,23 @@
      l: str("M")
 
 # 123: नश्चापदान्तस्य झलि (8-3-24)
-# n (not at pada-anta) → M (anusvāra) before jhal.
-# Fires after 6.4.10 has produced lp like "SreyAns" (ll="n", l="s").
-# Restricted to sibilants and palatal c [S, Z, s, c]:
-#   - Sibilants: main use case (SreyAMs etc.)
-#   - c added for añc-stems: numAgama("pratyac")→"pratyanc"; n+c→M+c here;
-#     then 8.4.58 M+c → Y (anunasika(c)=Y) → "pratyaYc" = pratyañc ✓
-#     n before dental stops (e.g., bhavant: n+t) remains dental nasal — not extended there.
+# m or n (not at pada-anta) → M (anusvāra) before jhal anywhere in the pada string.
+# Full-string scan via anusvara_jhal_string — same pattern as ratva_string (8.4.1).
+# Handles: SreyAns→SreyAMs, pratyac→pratyaMc (→pratyaYc via 8.4.58),
+#           pums-merged forms: pumse→puMse, pumsas→puMsas, pumsi→puMsi, etc.
 - sutra: नश्चापदान्तस्य झलि
   id: 8.3.24
   condition:
-     ll: n
-     l: [S, Z, s, c]
+    lp:
+      - and
+      - ?pada
+      - ?!na_pada   # na at pada boundary has been seen by other sutras
+      - $$has_anusvara_jhal
   xform:
-     lc: lc[:-1]+str("M")
-
+    l: null
+    lc: anusvara_jhal_string(lc+l)[0]
+  insert:
+    l: anusvara_jhal_string(lc+l)[1]
 # 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45
@@ -994,7 +999,10 @@
         - ?prAtipadika
         - ?pada
       l: n
-    - lp: ?prAtipadika
+    - lp:
+        - and
+        - ?prAtipadika
+        - ?!ahan   #vArtikam - ahno nalopasya pratizeDo vAcyaH
       l: n
       rp: ?sup
       r: $$null
@@ -1190,6 +1198,24 @@
      l: str("Q")
 
 
+# 440: नहो धः (8-2-34)
+# h of nah-final stems → dh (D in SLP1) before jhal consonants or at pada-end.
+# Gives: upānat (nom sg via D→t), upānad (acc sg via D→d), upānadbhyāmityādi.
+- sutra: नहो धः
+  id: 8.2.34
+  overrides: 8.2.31
+  condition:
+    - lp: ?nah
+      l: h
+      r: _Jal
+    - lp:
+        - and
+        - ?pada
+        - ?nah
+      l: h
+  xform:
+    l: str("D")
+
 # 294: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः (8-2-36)
 - sutra: व्रश्चभ्रस्जसृजमृजयजराजभ्राजच्छशां षः
   id: 8.2.36
@@ -1266,6 +1292,8 @@
      l: m
   xform:
      l: str("n")
+  update:
+     olp: +na_pada
 
 # 134: ङमो ह्रस्वादचि ङमुण्नित्यम् (8-3-32)
 - sutra: ङमोः ह्रस्वादचि ङमुण् नित्यम्
@@ -1402,6 +1430,25 @@
      # Have to do this to back-trigger 6.1.113
      lp: +ru
 
+# 443: अहन् (8-2-68)
+# n of ahan → r (ru substitution) at pada-end; apavāda of 8.2.7 (n-lopa).
+# n→r (with ?ru tag) → then existing SK162 / 8.3.15 give r→visarga → ahaḥ (nom/acc/voc sg).
+# Before voiced consonant (ByAm etc.): ru + haś → u replaces r (6.1.114) → aho+Bh → ahobhyām.
+- sutra: अहन्
+  id: 8.2.68
+  overrides: 8.2.7
+  condition:
+    lp:
+      - and
+      - ?pada
+      - ?ahan
+    l: n
+  xform:
+    l: str("r")
+  update:
+    olp: +ru
+    lp: +ru
+
 # 334: वसुस्रंसुध्वंस्वनडुहां दः (8-2-72)
 - sutra: वसुस्रंसुध्वंस्वनडुहां 
   id: 8.2.72
@@ -1485,11 +1532,11 @@
   id: 8.3.17
   condition:
      - ll: a
-       #l:  r
+       l:  r
        lp: ?ru
        r: _aS
      - lc: [=Bo, =Bago, =aGo]
-       #l:  r
+       l:  r
        lp: ?ru
        r: _aS
   xform:
@@ -1507,7 +1554,7 @@
        rp: ?avasAna
   xform:
      l: str("H")
-
+     
 #339: रोः सुपि (8-3-16) 
 - sutra: रोः सुपि
   id: 8.3.16
@@ -1585,7 +1632,7 @@
 - sutra: अचो रहाभ्यां द्वे
   id: 8.4.46
   optional: true
-  condition:  
+  condition:
      ll:  _ac
      l: [r, h]
      r: _yar
@@ -2124,6 +2171,25 @@
      lc: samprasArana_van(lc)
      # l (= n) unchanged
 
+# 435: वसोः संप्रसारणम् (6-4-131)
+# In bha position, v of the vasu/kvasu suffix undergoes samprasāraṇa (v→u).
+# ṣatva applied simultaneously in xform: s→ṣ(z) since u(iṇ) now precedes the prātipadika-final s,
+# but 8.3.59 ādeśapratyayoḥ wouldn't fire via a separate rule (s is prātipadika-final, not pratyaya).
+# Gives: viduṣaḥ (gen sg), viduṣā (inst sg), viduṣe (dat sg), viduṣoḥ (gen/loc du), viduṣām (gen pl).
+- sutra: वसोः संप्रसारणम्
+  id: 6.4.131
+  condition:
+    lp:
+      - and
+      - ?aNga
+      - ?Ba
+      - ?vasAnta
+    l: s
+    ll: a
+  xform:
+    lc: samprasArana_van(lc)
+    l: str("z")    # s→ṣ (SLP1 z=ṣ): ṣatva since u (iṇ) now precedes s
+
 # 363: न संप्रसारणे संप्रसारणम् (6-1-37) — DEFERRED
 # Blocks a second samprasāraṇa from applying after a first has already been applied.
 # Not needed for nominal declension: samprasArana_van() produces Su-/yU-/maGo- which
@@ -2158,6 +2224,7 @@
 # 234: अल्लोपोऽनः (6-4-134)
 - sutra: अल्लोपोऽनः
   id: 6.4.134
+  overrides: 8.4.46
   condition:
      lp:
        - and
@@ -2174,7 +2241,7 @@
 # 237: विभाषा ङिश्योः (6-4-136)
 - sutra: विभाषा ङिश्योः
   id: 6.4.136
-  overrides: 6.4.134
+  overrides: [6.4.134, 8.4.46]
   optional: true
   condition:
      lp:
@@ -2491,6 +2558,7 @@
       - ?am  
   update:
      orp: =luk_sup
+     olp: [-Ba, +pada]
 
 # 309: अतोऽम् (7-1-24) 
 - sutra: अतोऽम् 
@@ -2565,7 +2633,23 @@
 
 
 
-# 284: गोतो णित् (7-1-90) 
+# 436: पुंसोऽसुङ् (7-1-89)
+# Before sarvānāmasthāna, final s of puṃs is replaced by as (the asun suffix, u-it).
+# u-it (from asun) → SK361 (7.1.70) inserts nUM → pumāṃs strong forms.
+# SK425 (6.4.14) fires for nom sg: puMas → upadhā-dīrgha a→ā → pumās; SK361 → pumāṃs; → pumān.
+- sutra: पुंसोऽसुङ्
+  id: 7.1.89
+  condition:
+    lp:
+      - and
+      - ?aNga
+      - ?pums
+    rp: ?sarvanAmasTAna
+  xform:
+    lc: lc + str("a")
+    # l (= s) unchanged → produces puMas (puṃas)
+
+# 284: गोतो णित् (7-1-90)
 - sutra:  गोतो णित् 
   id: 7.1.90
   # Bahiranga class set to 2, since this is not varRakAryam 
@@ -4064,8 +4148,21 @@
          - +g
   xform: null
 
+# 442: अपो भि (7-4-48)
+# Final p of the ap stem → t before bhi-initial (b-initial) suffixes.
+# Then 8.4.53 (jhaśca): t (jhal) before b (jhaś/voiced) → d.
+# Gives: adbhiḥ (inst pl), adbhyaḥ (dat/abl pl), adbhyām (inst/dat/abl du).
+- sutra: अपो भि
+  id: 7.4.48
+  condition:
+    lp: ?ap
+    l: p
+    r: B
+  xform:
+    l: str("t")
+
 # TadDita aDikAra
-    
+
 # 1075: तद्धितेष्वचामादेः (7-2-117)
 - sutra: तद्धितेष्वचामादेः
   id: 7.2.117

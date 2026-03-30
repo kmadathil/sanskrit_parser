@@ -75,6 +75,11 @@ aryaman = Pratipadika("aryaman", "pum")    # Aryaman (Vedic deity)
 # SK359 (8.4.22): n→ṇ when preceded by short a
 vftrahan = Pratipadika("vftrahan", "pum", other_tags=["han"])
 
+# nah-stems (ending in √nah "bind/tie")
+# SK440 (8.2.34): h→D (dh) before jhal or at pada-end.
+# Nom/voc sg: upAnaD→t (8.4.56 car at avasāna); inst/dat/abl du/pl: upAnaD+Bh.
+upAnah = Pratipadika("upAnah", "pum", other_tags=["nah"])
+
 # f
 pitf = Pratipadika("pitf", "pum")
 nf = Pratipadika("nf", "pum")
@@ -93,7 +98,8 @@ senAnI = Pratipadika("senAnI", "pum", other_tags=["DAtu", "kvip"])
 nI = Pratipadika("nI", "pum", other_tags=["DAtu", "kvip"])
 KalapU = Pratipadika("KalapU", "pum", other_tags=["DAtu", "kvip"])
 varzABU = Pratipadika("varzABU", "pum", other_tags=["DAtu", "BU", "kvip"])
-dfnBU = Pratipadika("dfnBU", "pum", other_tags=["DAtu", "BU", "kvip"])
+# na_pada needs to be set to preserve mo'no DAtoH
+dfnBU = Pratipadika("dfnBU", "pum", other_tags=["DAtu", "BU", "kvip", "na_pada"])
 karaBU = Pratipadika("karaBU", "pum", other_tags=["DAtu", "BU", "kvip"])
 punarBU = Pratipadika("punarBU", "pum", other_tags=["DAtu", "BU", "kvip"])
 svayamBU = Pratipadika("svayamBU", "pum", other_tags=["DAtu", "BU", "kvip"])
@@ -150,7 +156,7 @@ dvi_s = Pratipadika("dvi", "strI", other_tags=["saMKyA", "nityadvivacana",
                                                'tyadAdi', "Ap"])
 
 # Stri
-ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana"])
+ap = Pratipadika("ap", "strI", other_tags=["nityabahuvacana", "ap"])  # SK442: ?ap tag for p→t before bhi (7.4.48)
 mAtf = Pratipadika("mAtf", "strI", other_tags=["svasrAdi"])
 svasf = Pratipadika("svasf", "strI", other_tags=["svasrAdi", "naptrAdi"])
 tisf = Pratipadika("tisf", "strI", other_tags=["svasrAdi", "saMKyA",
@@ -276,6 +282,12 @@ asmad  = Pratipadika("asmad",  "pum", other_tags=["asmad",  "sarvanAma"])  # asm
 
 rAjan = Pratipadika("rAjan", "pum", other_tags=["rAjan"])
 parvan_napum = Pratipadika("parvan", "napum")
+
+# SK443 (8.2.68 ahan n→ru at pada-end): apavāda of 8.2.7 (n-lopa).
+# Nom/acc/voc sg: ahan → n→r (ru) → visarga → ahaḥ.
+# Bha forms (vowel-initial non-sarvānāmasthāna): existing 6.4.134 a-lopa → ahn-.
+# Consonant-initial (bhyAm etc.): ru+voiced → 6.1.114 r-drops, u inserted → aho-.
+ahan = Pratipadika("ahan", "napum", other_tags=["ahan"])
 yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])
 
 # SvanType: Svan, yuvan, maGavan — -an stems with samprasāraṇa in bha position (SK362 / 6.4.133)
@@ -295,6 +307,20 @@ arvan = Pratipadika("arvan", "pum", other_tags=["arvan"])
 #   so only 7.1.72 fires for napum pl nUM (no double nUM). See overrides: 7.1.70 in sutras_antaranga.yaml.
 Sreyas   = Pratipadika("Sreyas", "pum",   its=['u'], other_tags=["Iyasun"])
 Sreyas_n = Pratipadika("Sreyas", "napum", its=['u'], other_tags=["Iyasun"])
+
+# SK435 (6.4.131 vasoḥ samprasāraṇam): kvasu/vas suffix stems — v→u in bha position.
+# SK334 (8.2.72): s→d at pada-end before non-sarvānāmasthāna (consonant-initial suffixes).
+# SK425 (6.4.14): u-it, ll=a, l=s → upadhā-dīrgha before su (nom sg) → vidvAs.
+# its=['u']: u-it → SK361 (7.1.70) nUM fires before sarvānāmasthāna → vidvāṃs strong forms.
+# ?vasAnta: triggers SK435 in bha position.
+# ?vasu: triggers SK334 (8.2.72) s→d at pada-end (consonant-initial non-sarvānāmasthāna).
+vidvas = Pratipadika("vidvas", "pum", its=["u"], other_tags=["vasu", "vasAnta"])
+
+# SK436 (7.1.89 puṃso'suṅ): before sarvānāmasthāna, the s of puṃs → as (asun suffix, u-it).
+# its=['u']: u-it → SK361 nUM fires → pumāṃs strong forms.
+# ?pums: triggers SK436 condition.
+# SK425 (6.4.14): u-it, ll=a, l=s → upadhā-dīrgha before su → pumAs; SK361 → pumAns → pumān.
+pums = Pratipadika("pums", "pum", its=["u"], other_tags=["pums"])
 
 # Compound test pratipadikas (pūrva-pada candidates — used with in_compound() on the uttara-pada)
 gaRa        = Pratipadika("gaRa", "pum")                            # gaṇa m. — pūrva-pada for gaṇapati (SK257)
