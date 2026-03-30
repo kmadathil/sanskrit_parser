@@ -103,7 +103,7 @@ setup(
   install_requires=['indic_transliteration!=1.9.5,!=1.9.6', 'lxml', 'networkx', 'tinydb',
                     'six', 'flask', 'flask_restx', 'flask_cors',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy>=1.4',
-                    'pydot', 'pandas', 'xlrd', 'importlib_resources',
+                    'pydot', 'pandas', 'xlrd', 'importlib_resources', "marisa_trie",
                     # Remove when https://github.com/python-restx/flask-restx/issues/460 is fixed
                     'werkzeug==3.1.6'
                     ],
