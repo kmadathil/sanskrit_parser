@@ -267,6 +267,7 @@ takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])      
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])
+idam_strI = Pratipadika("idam", "strI", other_tags=["idam", "sarvanAma", "tyadAdi"])
 idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])
 
 # tyadādi demonstratives (SK381 / 7.2.106): non-final t/d → s before su (nom sg)
@@ -312,9 +313,9 @@ Sreyas_n = Pratipadika("Sreyas", "napum", its=['u'], other_tags=["Iyasun"])
 # SK334 (8.2.72): s→d at pada-end before non-sarvānāmasthāna (consonant-initial suffixes).
 # SK425 (6.4.14): u-it, ll=a, l=s → upadhā-dīrgha before su (nom sg) → vidvAs.
 # its=['u']: u-it → SK361 (7.1.70) nUM fires before sarvānāmasthāna → vidvāṃs strong forms.
-# ?vasAnta: triggers SK435 in bha position.
+# ?vasanta: triggers SK435 in bha position.
 # ?vasu: triggers SK334 (8.2.72) s→d at pada-end (consonant-initial non-sarvānāmasthāna).
-vidvas = Pratipadika("vidvas", "pum", its=["u"], other_tags=["vasu", "vasAnta"])
+vidvas = Pratipadika("vidvas", "pum", its=["u"], other_tags=["vasu", "vasanta"])
 
 # SK436 (7.1.89 puṃso'suṅ): before sarvānāmasthāna, the s of puṃs → as (asun suffix, u-it).
 # its=['u']: u-it → SK361 nUM fires → pumāṃs strong forms.

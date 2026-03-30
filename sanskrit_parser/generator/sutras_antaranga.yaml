@@ -2183,7 +2183,7 @@
       - and
       - ?aNga
       - ?Ba
-      - ?vasAnta
+      - ?vasanta
     l: s
     ll: a
   xform:
@@ -3752,6 +3752,19 @@
      l: null
   insert:
      l: l
+
+# 441: यः सौ (7-2-110)
+- sutra: यः सौ
+  id: 7.2.110
+  overrides: 7.2.109
+  condition:
+     lp:
+       - and
+       - ?idam
+       - ?strI
+     rp: ?su
+  xform:
+     lc: str("iya")
      
 #  344: इदोऽय् पुंसि (7-2-111) 
 - sutra:  इदोऽय् पुंसि
