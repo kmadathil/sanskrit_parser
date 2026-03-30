@@ -3,7 +3,7 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK429–434 and SK441 deferred
+**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented; SK429–434 deferred
 **Next to implement:** SK 444 (7.1.79 — vā napuṃsakasya; defer if not needed for current stems)
 
 ---
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 177 |
-| SK-numbered sutras, skipped/deferred | 59 |
+| SK-numbered sutras, implemented | 178 |
+| SK-numbered sutras, skipped/deferred | 58 |
 | Implemented sutras without SK number yet | ~92 |
 | Stems with full vibhakti test tables | 100 |
-| Stems with partial vibhakti test tables | 3 |
+| Stems with partial vibhakti test tables | 4 |
 
 ---
 
@@ -200,6 +200,7 @@ The "Forms affected" column uses the convention:
 | 435 | 6.4.131 | वसोः संप्रसारणम् | samprasāraṇa v→u + ṣatva (s→ṣ/z) in bha for ?vasAnta (kvasu) stems; viduṣaḥ/ā/e/oḥ/ām bha forms of vidvas |
 | 436 | 7.1.89 | पुंसोऽसुङ् | s→as (asun, u-it) before sarvānāmasthāna for ?puMs; SK425+SK361 give pumān nom sg; bha forms: puṃsaḥ/ā etc. |
 | 440 | 8.2.34 | नहो धः | h→dh (D) before jhal or at pada-end for ?nah stems; upānat nom sg (via 8.4.56), upānadbhyām du/pl |
+| 441 | 7.2.110 | यः सौ | idam + strī before su: lc → "iya" (idam f nom sg iyam); fires on ?idam+?strI before ?su; overrides 7.2.109; manually implemented |
 | 442 | 7.4.48 | अपो भि | p→t before bhi-initial suffix for ?ap (nityabahuvacana feminine); 8.4.53 gives t→d before voiced bh → adbhiḥ, adbhyaḥ |
 | 443 | 8.2.68 | अहन् | n→ru at pada-end for ?ahan (neuter day stem); ahaḥ nom/acc/voc sg via ru→visarga; apavāda of 8.2.7 (n-lopa) |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
@@ -373,7 +374,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
 | 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
 | 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | For later — verbal | ṣatva with intervening chars; mainly verbal/intensive, not needed for nominal test suite |
-| 441 | 7.2.110 | इदोऽय् पुंसि | For later | d→y of idam before su for feminine iyam; requires separate feminine idam prātipadika and several additional rules |
 
 ---
 
@@ -484,6 +484,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
+| idam_strI | f | sarvanāma (idam feminine) | SK441 (7.2.110): nom sg iyam; partial table (nom sg only) |
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
 | tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |

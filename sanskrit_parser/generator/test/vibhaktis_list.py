@@ -1043,6 +1043,18 @@ viBakti["kim"] = [
     ['क', 'कौ', 'के'],
 ]
 
+prAtipadika["idam_strI"] = idam_strI
+viBakti["idam_strI"] = [
+    ["इयम्", None, None],
+    [None, None, None],
+    [None, None, None],
+    [None, None, None],
+    [None, None, None],
+    [None, None, None],
+    [None, None, None],
+    [None, None, None],
+]
+
 prAtipadika["idam"] = idam
 viBakti["idam"] = [
     ['अयम्', 'इमौ', 'इमे'],
