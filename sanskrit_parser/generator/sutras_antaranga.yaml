@@ -1096,6 +1096,19 @@
   xform:
      l: kvinKutva(l)
 
+# 431: नशेर्वा (8-2-63)
+- sutra: नशेर्वा
+  id: 8.2.63
+  optional: true
+  condition:
+     lp:
+       - and
+       - ?pada
+       - ?naS
+     l: [S, z, wu, cu]
+  xform:
+     l: kvinKutva(l)
+
 # 380: स्कोः संयोगाद्योरन्ते च (8-2-29) — s or k, when first member of a conjunct, is deleted at pada-end.
 # Vasu examples: √lasj+kvip → लक् (s deleted from sj→j→k via 8.2.30);
 #                √masj+kvip → मक् (same); √takṣ+kvip → तट्/तड् (k deleted from kṣ→ṣ→ḍ→ṭ).
@@ -1228,7 +1241,9 @@
        r: _Jal
      - lp: ?pada
        l: [C, S]
-       r: _Jal
+       r:
+         - _Jal
+         - $$null
      - lp:
         - and
         - ?pada

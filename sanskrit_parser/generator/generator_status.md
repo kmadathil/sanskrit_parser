@@ -197,6 +197,7 @@ The "Forms affected" column uses the convention:
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 427 | 7.1.78 | नाभ्यस्ताच्छतुः | Blocks nUM for abhyasta+śatṛ (–at) stems; apavāda of SK361 (7.1.70); condition: ?abhyasta + ?Satf; jakshat, jAgrat (and other jakshi-class) nom sg = plain -at form (no -an) |
 | 428 | 6.1.6 | जक्षित्यादयः षट् | Tags 7 jakshi-class roots as inherently abhyasta: jakzat (SLP1 z=ṣ), jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat; its=["f"]+other_tags=["Satf","abhyasta"] in pratipadika.py |
+| 431 | 8.2.63 | नशेर्वा | optional kutva at pada-end for ?naS (naś+kvip); apavāda of SK294 (8.2.36); two pakṣas: nak/nag (kutva) and naṭ/naḍ (ṣatva); naś_kvip pratipadika added |
 | 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | ṣatva with vyavāya: s→ṣ after iṇ/ku even when num(M)/visarga(H)/śar(S/z/s) intervenes; ādeśa/pratyaya context; dhanus nom/acc plu dhanūṃṣi |
 | 435 | 6.4.131 | वसोः संप्रसारणम् | samprasāraṇa v→u + ṣatva (s→ṣ/z) in bha for ?vasAnta (kvasu) stems; viduṣaḥ/ā/e/oḥ/ām bha forms of vidvas |
 | 436 | 7.1.89 | पुंसोऽसुङ् | s→as (asun, u-it) before sarvānāmasthāna for ?puMs; SK425+SK361 give pumān nom sg; bha forms: puṃsaḥ/ā etc. |
@@ -371,7 +372,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | For later — kṛt | kañ/kvin after tyādi+dṛś; requires kṛt suffix machinery |
 | 430 | 6.3.91 | सर्वनाम्नः पूर्वपदस्य | For later — compounds | ā for sarvanāma pūrva-pada before dṛg/dṛś/vat (tādṛk etc.); compound-only |
-| 431 | 8.2.63 | नशेर्वा | For later | optional ś→ṣ for naś at pada-end; no naś prātipadika yet |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
 | 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
 

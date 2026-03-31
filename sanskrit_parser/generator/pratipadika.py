@@ -265,6 +265,7 @@ udac_kvin   = Pratipadika("udac",   "pum", other_tags=["aYc", "kvin", "udanc"])
 # SK416 blocked: no ?DAtu and ?udanc guard. SK420 fires → udīcā.
 
 takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])          # √takṣ+kvip; nom sg taṭ/taḍ via 8.2.29 k-deletion
+naS_kvip     = Pratipadika("naS",     "pum",  other_tags=["DAtu", "kvip", "naS"])   # √naś+kvip; optional kutva 8.2.63
 
 kim = Pratipadika("kim", "pum", other_tags=["kim", "sarvanAma"])
 idam = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"])

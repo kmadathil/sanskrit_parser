@@ -1043,6 +1043,23 @@ viBakti["takz"] = [
     [['तट्', 'तड्'], 'तक्षौ', 'तक्षः'],   # 8 Voc  = Nom
 ]
 
+# naŚ + kvip (m.) — destroyer
+# SK431 (8.2.63 - naśer vā): optional kutva at pada-end.
+# Pakṣa 1 (8.2.36): S→ṣ→ḍ(q) → naṭ/naḍ (nom sg). Loc pl: ḍ+su → ṭ+su → naṭsu.
+# Pakṣa 2 (8.2.63): S→k(kvinKutva)→g(jaśtva) → nak/nag (nom sg). Loc pl: g+su → k(ṭ)→kṣu → nakṣu.
+# Inst/dat/abl bhyām etc: ḍ/g before voiced bh → naḍ+bh / nag+bh.
+prAtipadika["naS"] = [naS_kvip]   # noqa: F405
+viBakti["naS"] = [
+    [['नक्', 'नग्', 'नट्', 'नड्'], 'नशौ', 'नशः'],   # 1 Nom
+    ['नशम्', 'नशौ', 'नशः'],                             # 2 Acc
+    ['नशा', ['नग्भ्याम्', 'नड्भ्याम्'], ['नग्भिः', 'नड्भिः']],  # 3 Inst
+    ['नशे', ['नग्भ्याम्', 'नड्भ्याम्'], ['नग्भ्यः', 'नड्भ्यः']],  # 4 Dat
+    ['नशः', ['नग्भ्याम्', 'नड्भ्याम्'], ['नग्भ्यः', 'नड्भ्यः']],  # 5 Abl
+    ['नशः', 'नशोः', 'नशाम्'],                           # 6 Gen
+    ['नशि', 'नशोः', ['नक्षु', 'नट्सु']],                # 7 Loc
+    [['नक्', 'नग्', 'नट्', 'नड्'], 'नशौ', 'नशः'],   # 8 Voc
+]
+
 prAtipadika["kim"] = [kim]
 viBakti["kim"] = [
     ['कः', 'कौ', 'के'],
