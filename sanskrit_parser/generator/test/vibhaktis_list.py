@@ -600,6 +600,18 @@ viBakti["payas"] = [
     ['पयः', 'पयसी', 'पयांसि'],
 ]
 
+prAtipadika["Danus"] = Danus   # noqa: F405
+viBakti["Danus"] = [
+    ['धनुः', 'धनुषी', 'धनूंषि'],                                                     # 1 Nom  * SK434.1: plu (M vyavāya)
+    ['धनुः', 'धनुषी', 'धनूंषि'],                                                     # 2 Acc (= Nom for napum)
+    ['धनुषा', ['धनुर्भ्याम्', 'धनुर्भ्भ्याम्'], ['धनुर्भिः', 'धनुर्भ्भिः']],       # 3 Inst  SK212.1 sg; r-allomorph du/pl (dvitva variant)
+    ['धनुषे', ['धनुर्भ्याम्', 'धनुर्भ्भ्याम्'], ['धनुर्भ्यः', 'धनुर्भ्भ्यः']],     # 4 Dat   SK212.1 sg; r-allomorph du/pl (dvitva variant)
+    ['धनुषः', ['धनुर्भ्याम्', 'धनुर्भ्भ्याम्'], ['धनुर्भ्यः', 'धनुर्भ्भ्यः']],     # 5 Abl   SK212.1 sg; r-allomorph du/pl (dvitva variant)
+    ['धनुषः', 'धनुषोः', 'धनुषाम्'],                                                  # 6 Gen   SK212.1
+    ['धनुषि', 'धनुषोः', ['धनुःषु', 'धनुष्षु']],                                     # 7 Loc   SK212.1; plu: visarga/double-ṣ variants
+    ['धनुः', 'धनुषी', 'धनूंषि'],                                                     # 8 Voc (= Nom for napum)
+]
+
 prAtipadika["SrIpA"] = SrIpA   # noqa: F405
 viBakti["SrIpA"] = [
     ['श्रीपम्', 'श्रीपे', 'श्रीपाणि'],

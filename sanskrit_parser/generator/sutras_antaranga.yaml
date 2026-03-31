@@ -1327,9 +1327,45 @@
         - ?AdeSa_s
   xform:
      r: str("z")
-     
-# FIXME Get apadAntasya done
-# FIXME नुम्विसर्जनीयशर्व्यवायेऽपि (8-3-58) 
+
+# 212.1: आदेशप्रत्यययोः (8.3.59) — stem-final s, direct iṇ/ku preceding (l-variant)
+- sutra: आदेशप्रत्यययोः
+  id: 8.3.59.1
+  condition:
+    lp: ?AdeSa_s
+    ll:
+      - _iR
+      - ku
+    l: s
+    rp:
+      - ?pratyaya
+      - ?AdeSa_s
+  xform:
+    l: str("z")
+
+# 434: नुम्विसर्जनीयशर्व्यवायेऽपि (8.3.58)
+- sutra: नुम्विसर्जनीयशर्व्यवायेऽपि
+  id: 8.3.58
+  condition:
+    lp: $$has_satva_vyavaya
+    r: s
+    rc: $$notnull
+    rp:
+      - ?pratyaya
+      - ?AdeSa_s
+  xform:
+    r: str("z")
+
+# 434.1: नुम्विसर्जनीयशर्व्यवायेऽपि (8.3.58) — stem-final s with vyavāya (l-variant)
+- sutra: नुम्विसर्जनीयशर्व्यवायेऽपि
+  id: 8.3.58.1
+  condition:
+    lp: ?AdeSa_s
+    lc: $$has_satva_vyavaya
+    l: s
+    r: $$notnull
+  xform:
+    l: str("z")
 
 # end mUrDanyAdeza aDikAra
 

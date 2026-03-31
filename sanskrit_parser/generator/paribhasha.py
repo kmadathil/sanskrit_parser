@@ -288,6 +288,23 @@ def has_ratva_vyavaya(s):
     return ratva_string(s, awkupnumvyavaya=True, apply=False)
 
 
+def has_satva_vyavaya(s):
+    """Return True if s ends in iṇ/ku with intervening num(M/n)/visarga(H)/śar(S/z/s) (8.3.58)."""
+    if not s:
+        return False
+    i = len(s) - 1
+    # Must have at least one vyavāya char (num=M/n, visarga=H, or śar sibilant=S/z/s)
+    if s[i] not in ('n', 'H', 'S', 'z', 's'):
+        return False
+    # Skip all vyavāya chars backward
+    while i >= 0 and s[i] in ('n', 'H', 'S', 'z', 's'):
+        i -= 1
+    # Preceding char must be iṇ or ku-class
+    if i >= 0 and (isInPratyahara('iR', s[i]) or isSavarna('ku', s[i])):
+        return True
+    return False
+
+
 def anusvara_jhal_string(s, apply=True):
     """8.3.24 naścāpadāntasya jhali: m or n (not at string-final position) → M before Jal.
 

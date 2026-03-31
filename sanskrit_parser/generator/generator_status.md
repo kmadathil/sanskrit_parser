@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 178 |
-| SK-numbered sutras, skipped/deferred | 58 |
+| SK-numbered sutras, implemented | 179 |
+| SK-numbered sutras, skipped/deferred | 57 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 100 |
+| Stems with full vibhakti test tables | 101 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -197,6 +197,7 @@ The "Forms affected" column uses the convention:
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
 | 427 | 7.1.78 | नाभ्यस्ताच्छतुः | Blocks nUM for abhyasta+śatṛ (–at) stems; apavāda of SK361 (7.1.70); condition: ?abhyasta + ?Satf; jakshat, jAgrat (and other jakshi-class) nom sg = plain -at form (no -an) |
 | 428 | 6.1.6 | जक्षित्यादयः षट् | Tags 7 jakshi-class roots as inherently abhyasta: jakzat (SLP1 z=ṣ), jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat; its=["f"]+other_tags=["Satf","abhyasta"] in pratipadika.py |
+| 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | ṣatva with vyavāya: s→ṣ after iṇ/ku even when num(M)/visarga(H)/śar(S/z/s) intervenes; ādeśa/pratyaya context; dhanus nom/acc plu dhanūṃṣi |
 | 435 | 6.4.131 | वसोः संप्रसारणम् | samprasāraṇa v→u + ṣatva (s→ṣ/z) in bha for ?vasAnta (kvasu) stems; viduṣaḥ/ā/e/oḥ/ām bha forms of vidvas |
 | 436 | 7.1.89 | पुंसोऽसुङ् | s→as (asun, u-it) before sarvānāmasthāna for ?puMs; SK425+SK361 give pumān nom sg; bha forms: puṃsaḥ/ā etc. |
 | 440 | 8.2.34 | नहो धः | h→dh (D) before jhal or at pada-end for ?nah stems; upānat nom sg (via 8.4.56), upānadbhyām du/pl |
@@ -373,7 +374,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 431 | 8.2.63 | नशेर्वा | For later | optional ś→ṣ for naś at pada-end; no naś prātipadika yet |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
 | 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
-| 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | For later — verbal | ṣatva with intervening chars; mainly verbal/intensive, not needed for nominal test suite |
 
 ---
 
@@ -443,6 +443,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | jYAna | n | a-stem | |
 | vAri | n | i-stem | |
 | payas | n | s-stem | |
+| Danus | n | us-stem | SK434 nom/acc/voc plu dhanūṃṣi (M vyavāya); SK212 all other ṣatva forms |
 | SrIpA | n | ā-stem (neuter) | |
 | akzi | n | i-stem (akṣi) | |
 | atinO | n | u-stem (nau-type) | |
