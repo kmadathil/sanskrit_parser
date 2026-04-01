@@ -154,6 +154,9 @@ kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip"])
 # NOTE: no "aYc" tag here — kvin is generic; aYc propagates from the Dhatu via join_objects
 kvin = Pratyaya("", its=['k'], other_tags=["kvin", "krt"])
 
+# kaY — creates vowel-final stems from tyadAdi + dṛś (SK429)
+kaY = Pratyaya("a", its=["k", "Y"], other_tags=["kaY", "krt"])
+
 # UW
 UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 

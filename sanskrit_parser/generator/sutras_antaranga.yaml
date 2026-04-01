@@ -3751,8 +3751,28 @@
   xform:
     l: null
     lc: str("tiri")
-        
-    
+
+# 430: आ सर्वनाम्नः (6.3.91) — ā for sarvanāma pūrva-pada before dṛg/dṛś/vat
+# tyadAdi (tad/yad/kim) + dfS (dṛś) + kvin/kaY → tādṛk/tādṛśa forms
+- sutra: आ सर्वनाम्नः
+  id: 6.3.91
+  condition:
+    - lp: ?sarvanAma_pada
+      rp: 
+        - and
+        - ?samAsa
+        - ?dfS_pada
+        - ?kvin_pada
+    - lp: ?sarvanAma_pada
+      rp: 
+        - and
+        - ?samAsa
+        - ?dfS_pada
+        - ?kaY_pada
+  xform:
+    l: null
+    lc: lc[:-1] + str("A")  # tad → tA
+
 # 265: त्यदादीनामः (7-2-102)
 - sutra:  त्यदादीनामः
   id: 7.2.102

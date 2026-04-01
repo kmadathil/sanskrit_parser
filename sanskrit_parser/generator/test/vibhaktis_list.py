@@ -1703,7 +1703,65 @@ viBakti["supAd"] = [
 ]
 
 # samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
-samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd"],
+# SK429/SK430 — tādṛk/tādṛśa forms: tyadAdi + dfS (dṛś) + kvin/kaY + SK430 (tad→tA)
+# Base stem: tAdfS (तादृश्) — after SK430 (ā-substitution) + dfS + kvin/kaY
+# kvin: j→g before bh (8.2.62); kaY: no j→g
+# tAdfk (kvin): Nom sg has alternatives तादृक् / तादृग् (8.2.62 + 8.4.56 opt)
+# tAdfSa (kaY): Nom sg is तादृशः (regular a-stem)
+
+# tādṛk (m.) — [tad_pada in_compound(dfS) kvin]
+prAtipadika["tAdfk"] = [tad_pada, in_compound(dfS), kvin]   # noqa: F405
+viBakti["tAdfk"] = [
+    [['तादृक्', 'तादृग्'], 'तादृशौ', 'तादृशः'],    # 1 Nom  * kvin: 8.2.62 j→g, 8.4.56 opt g→k
+    ['तादृशम्', 'तादृशौ', 'तादृशः'],                # 2 Acc
+    ['तादृशा', 'तादृग्भ्याम्', 'तादृग्भिः'],       # 3 Inst * kvin: j→g before Bh
+    ['तादृशे', 'तादृग्भ्याम्', 'तादृग्भ्यः'],       # 4 Dat
+    ['तादृशः', 'तादृग्भ्याम्', 'तादृग्भ्यः'],       # 5 Abl
+    ['तादृशः', 'तादृशोः', 'तादृशाम्'],            # 6 Gen
+    ['तादृशि', 'तादृशोः', 'तादृक्षु'],             # 7 Loc  * pl: j→g→k+8.3.57→ṣ
+    [['तादृक्', 'तादृग्'], 'तादृशौ', 'तादृशः'],    # 8 Voc  = Nom
+]
+
+# tādṛśa (m.) — [tad_pada in_compound(dfS) kaY] — kaY uses a-stem endings like rAma
+prAtipadika["tAdfSa"] = [tad_pada, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
+viBakti["tAdfSa"] = [
+    ['तादृशः', 'तादृशौ', 'तादृशाः'],                # 1 Nom
+    ['तादृशम्', 'तादृशौ', 'तादृशान्'],               # 2 Acc
+    ['तादृशेन', 'तादृशाभ्याम्', 'तादृशैः'],          # 3 Inst
+    ['तादृशाय', 'तादृशाभ्याम्', 'तादृशेभ्यः'],       # 4 Dat
+    [['तादृशात्', 'तादृशाद्'], 'तादृशाभ्याम्', 'तादृशेभ्यः'],      # 5 Abl
+    ['तादृशस्य', 'तादृशयोः', 'तादृशानाम्'],          # 6 Gen
+    ['तादृशे', 'तादृशयोः', 'तादृशेषु'],              # 7 Loc
+    ['तादृश', 'तादृशौ', 'तादृशाः'],                 # 8 Voc
+]
+
+# yādṛk (m.) — [yad_pada in_compound(dfS) kvin]
+prAtipadika["yAdfk"] = [yad_pada, in_compound(dfS), kvin]   # noqa: F405
+viBakti["yAdfk"] = [
+    [['यादृक्', 'यादृग्'], 'यादृशौ', 'यादृशः'],    # 1 Nom  * kvin: 8.2.62 j→g, 8.4.56 opt g→k
+    ['यादृशम्', 'यादृशौ', 'यादृशः'],                # 2 Acc
+    ['यादृशा', 'यादृग्भ्याम्', 'यादृग्भिः'],       # 3 Inst * kvin: j→g before Bh
+    ['यादृशे', 'यादृग्भ्याम्', 'यादृग्भ्यः'],       # 4 Dat
+    ['यादृशः', 'यादृग्भ्याम्', 'यादृग्भ्यः'],       # 5 Abl
+    ['यादृशः', 'यादृशोः', 'यादृशाम्'],            # 6 Gen
+    ['यादृशि', 'यादृशोः', 'यादृक्षु'],             # 7 Loc  * pl: j→g→k+8.3.57→ṣ
+    [['यादृक्', 'यादृग्'], 'यादृशौ', 'यादृशः'],    # 8 Voc  = Nom
+]
+
+# yādṛśa (m.) — [yad_pada in_compound(dfS) kaY] — kaY uses a-stem endings like rAma
+prAtipadika["yAdfSa"] = [yad_pada, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
+viBakti["yAdfSa"] = [
+    ['यादृशः', 'यादृशौ', 'यादृशाः'],                # 1 Nom
+    ['यादृशम्', 'यादृशौ', 'यादृशान्'],               # 2 Acc
+    ['यादृशेन', 'यादृशाभ्याम्', 'यादृशैः'],          # 3 Inst
+    ['यादृशाय', 'यादृशाभ्याम्', 'यादृशेभ्यः'],       # 4 Dat
+    [['यादृशात्', 'यादृशाद्'], 'यादृशाभ्याम्', 'यादृशेभ्यः'],      # 5 Abl
+    ['यादृशस्य', 'यादृशयोः', 'यादृशानाम्'],          # 6 Gen
+    ['यादृशे', 'यादृशयोः', 'यादृशेषु'],              # 7 Loc
+    ['यादृश', 'यादृशौ', 'यादृशाः'],                 # 8 Voc
+]
+
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa"],
           "strI": [], "napum": []}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 

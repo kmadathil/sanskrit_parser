@@ -37,7 +37,7 @@ qulaBaz = Dhatu("laB", its=["~a", "z", "qu"])
 guhU = Dhatu("guh", its=["~u"])
 sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
-dfS = Dhatu("dfS", its=[])
+dfS = Dhatu("dfS", its=[], other_tags=["dfS"])
 vah = Dhatu("vah", its=[])
 Sam = Dhatu("Sam", its=[])
 

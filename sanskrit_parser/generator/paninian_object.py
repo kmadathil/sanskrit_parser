@@ -90,6 +90,19 @@ class PaninianObject(SanskritObject):
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
 
+        # Propagate gender tags (pum/strI/napum) for pratipadika + kft situations
+        # 1. If kft (last element) has pum/strI/napum, use that
+        # 2. Else, if pratipadika (first element) has pum/strI/napum, propagate that
+        for t in ["pum", "strI", "napum"]:
+            if objects[0][-1].hasTag(t):
+                so.setTag(t)
+                break
+        else:
+            for t in ["pum", "strI", "napum"]:
+                if objects[0][0].hasTag(t):
+                    so.setTag(t)
+                    break
+
         if objects[0][0].hasTag("samprasAraRam"):
             for tt in objects[0][1].tags:
                     so.setTag(tt)
@@ -97,7 +110,7 @@ class PaninianObject(SanskritObject):
                  so.setTag("UW")
             
         # Custom tag propagation for rule implementation
-        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw", "aYc"]:
+        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw", "aYc", "dfS"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
                 so.setTag(t)
         # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
@@ -111,7 +124,7 @@ class PaninianObject(SanskritObject):
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
                 so.setTag(t)
-        for t in ["trc", "trn", "kvin", "kvip"]:
+        for t in ["trc", "trn", "kvin", "kvip", "kaY"]:
             if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
                 so.setTag(t)
         for t in ["NI", "Ap", 'strI_abs']:
@@ -145,8 +158,8 @@ class PaninianObject(SanskritObject):
                   "zazWI", "saptamI", "ekavacana", "dvivacana", "bahuvacana", "viBakti"]:
             if objects[0][-1].hasTag(t):
                 so.setTag(t + "_pada")
-        # kvin/kvip are on the left (prAtipadika), not the suffix — same _pada pattern
-        for t in ["kvin", "kvip"]:
+        # kvin/kvip/kaY are on the left (prAtipadika), not the suffix — same _pada pattern
+        for t in ["kvin", "kvip", "kaY", "dfS"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t + "_pada")
         # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
