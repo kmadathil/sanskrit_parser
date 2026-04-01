@@ -4,7 +4,7 @@ Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
 **Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented
-**Deferred:** SK429 (3.2.60 त्यदादिषु दृशोऽनालोचने कञ्च), SK430 (6.3.91 आ सर्वनाम्नः), SK431-434 — tādṛk/tādṛśa compound forms; SK444 (7.1.79 — vā napuṃsakasya)
+**Deferred:** SK429 (3.2.60 त्यदादिषु दृशोऽनालोचने कञ्च), SK431-434 — tādṛk/tādṛśa compound forms; SK444 (7.1.79 — vā napuṃsakasya)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 180 |
-| SK-numbered sutras, skipped/deferred | 56 |
+| SK-numbered sutras, implemented | 181 |
+| SK-numbered sutras, skipped/deferred | 55 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 105 |
+| Stems with full vibhakti test tables | 109 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -372,7 +372,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya added; tādṛk/tādṛśa compound stems implemented via SK430 |
-| 430 | 6.3.91 | आ सर्वनाम्नः | Implemented | ā-substitution for sarvanāma before dṛg/dṛś/vat compounds; YAML rule + test entries added |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
 | 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
 
@@ -491,3 +490,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
 | tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |
 | adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg asau; SK419 (8.2.80): amu sg/du/pl forms; SK438 (8.2.81): amī pl; SK439 (8.2.3): amunā inst sg; full vibhakti table (inst sg amunā, du amūbhyām, gen/loc du amuyoḥ) |
+| tAdfk | m | j-stem (kvin, compound, SK430) | SK430 (6.3.91): tad→tA before dfS+kvin; SK377 j→g before bh; 8.4.56 opt g→k; nom sg tAdfk/tAdfg |
+| tAdfSa | m | a-stem (kaY, compound, SK430) | SK430 (6.3.91): tad→tA before dfS+kaY; regular a-stem endings like rAma |
+| yAdfk | m | j-stem (kvin, compound, SK430) | SK430 (6.3.91): yad→yA before dfS+kvin; same phonology as tAdfk |
+| yAdfSa | m | a-stem (kaY, compound, SK430) | SK430 (6.3.91): yad→yA before dfS+kaY; regular a-stem endings like rAma |

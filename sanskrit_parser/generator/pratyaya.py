@@ -157,6 +157,10 @@ kvin = Pratyaya("", its=['k'], other_tags=["kvin", "krt"])
 # kaY — creates vowel-final stems from tyadAdi + dṛś (SK429)
 kaY = Pratyaya("a", its=["k", "Y"], other_tags=["kaY", "krt"])
 
+# vatup — वतुप् affix (5.2.39): after yad/tad/etad for "measure of volume"
+# u, p are it markers; content is "vat" (वत्). krt → join_objects produces prAtipadika.
+vatup = Pratyaya("vat", its=["u", "p"], other_tags=["vatup", "krt"])
+
 # UW
 UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 

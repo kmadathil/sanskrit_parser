@@ -245,6 +245,10 @@ tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarg
 ud_pada    = Pratipadika("ud",    "pum", other_tags=["nipAta", "upasarga", "pada"])
 sam_pada   = Pratipadika("sam",   "pum", other_tags=["sam",  "nipAta", "upasarga", "pada"])
 saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga", "pada"])
+# SK430 (6.3.91) — dṛkṣa stem: दृश् + क्स affix (क् is it, स् remains → क्ष)
+# dfS and ksa tags propagate to dfS_pada + ksa_pada on the merged compound form
+dfkza = Pratipadika("dfkza", "pum", other_tags=["dfS", "ksa"])
+
 # SK418 (6.3.92) prātipadikas — viṣvag and deva use specific tags; pronouns use sarvanAma_pada
 vizvag_pada = Pratipadika("vizvag", "pum", other_tags=["vizvag", "pada"])
 deva_pada   = Pratipadika("deva",   "pum", other_tags=["deva",   "pada"])
@@ -275,6 +279,7 @@ idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"
 # tyadādi demonstratives (SK381 / 7.2.106): non-final t/d → s before su (nom sg)
 tad  = Pratipadika("tad",  "pum", other_tags=["tad",  "sarvanAma", "tyadAdi"])  # "that"
 etad = Pratipadika("etad", "pum", other_tags=["etad", "sarvanAma", "tyadAdi"])  # "this (near)"
+yad  = Pratipadika("yad",  "pum", other_tags=["yad",  "sarvanAma", "tyadAdi"])  # "which/who" (relative)
 tyad = Pratipadika("tyad", "pum", other_tags=["tyad", "sarvanAma", "tyadAdi"])  # "that (yonder)"
 adas = Pratipadika("adas", "pum", other_tags=["adas", "sarvanAma", "tyadAdi"])  # "that (far)"
 

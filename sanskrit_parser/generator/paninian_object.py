@@ -89,6 +89,10 @@ class PaninianObject(SanskritObject):
         # 1.2.46 krttaDitasamAsAsca
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
+            # Propagate it-markers from kṛt/taddhita suffix to merged stem
+            # Needed for SK425 (6.4.14) which checks +u on u-it stems like vatup
+            for it in objects[0][-1].its:
+                so.setIt(it)
 
         # Propagate gender tags (pum/strI/napum) for pratipadika + kft situations
         # 1. If kft (last element) has pum/strI/napum, use that
@@ -159,7 +163,7 @@ class PaninianObject(SanskritObject):
             if objects[0][-1].hasTag(t):
                 so.setTag(t + "_pada")
         # kvin/kvip/kaY are on the left (prAtipadika), not the suffix — same _pada pattern
-        for t in ["kvin", "kvip", "kaY", "dfS"]:
+        for t in ["kvin", "kvip", "kaY", "dfS", "ksa", "vatup"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t + "_pada")
         # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form

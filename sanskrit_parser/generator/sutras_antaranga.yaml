@@ -3752,23 +3752,34 @@
     l: null
     lc: str("tiri")
 
-# 430: आ सर्वनाम्नः (6.3.91) — ā for sarvanāma pūrva-pada before dṛg/dṛś/vat
-# tyadAdi (tad/yad/kim) + dfS (dṛś) + kvin/kaY → tādṛk/tādṛśa forms
+# 430: आ सर्वनाम्नः (6.3.91) — ā for sarvanāma pūrva-pada before dṛg/dṛś/dṛkṣ/vatup
+# tyadAdi (tad/yad/kim) + dfS (dṛś) + kvin/kaY/ksa → tādṛk/tādṛśa/tādṛkṣa forms
+# tyadAdi + vatup → tAvat/yAvat/etAvat (measure of volume, 5.2.39)
 - sutra: आ सर्वनाम्नः
   id: 6.3.91
   condition:
     - lp: ?sarvanAma_pada
-      rp: 
+      rp:
         - and
         - ?samAsa
         - ?dfS_pada
         - ?kvin_pada
     - lp: ?sarvanAma_pada
-      rp: 
+      rp:
         - and
         - ?samAsa
         - ?dfS_pada
         - ?kaY_pada
+    - lp: ?sarvanAma_pada           # vārttika: dṛkṣ context (दृक्षे च)
+      rp:
+        - and
+        - ?samAsa
+        - ?dfS_pada
+        - ?ksa_pada
+    - lp: ?sarvanAma              # vatup context (वतुप्, 5.2.39) — direct pronoun, not compound
+      rp:
+        - and
+        - ?vatup
   xform:
     l: null
     lc: lc[:-1] + str("A")  # tad → tA

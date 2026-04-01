@@ -1761,7 +1761,123 @@ viBakti["yAdfSa"] = [
     ['यादृश', 'यादृशौ', 'यादृशाः'],                 # 8 Voc
 ]
 
-samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa"],
+# tādṛkṣa (m.) — [tad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
+prAtipadika["tAdfkza"] = [tad_pada, in_compound(dfkza)]   # noqa: F405
+viBakti["tAdfkza"] = [
+    ['तादृक्षः', 'तादृक्षौ', 'तादृक्षाः'],                # 1 Nom
+    ['तादृक्षम्', 'तादृक्षौ', 'तादृक्षान्'],               # 2 Acc
+    ['तादृक्षेण', 'तादृक्षाभ्याम्', 'तादृक्षैः'],          # 3 Inst * a-stem: a+ByAm→AByAm
+    ['तादृक्षाय', 'तादृक्षाभ्याम्', 'तादृक्षेभ्यः'],       # 4 Dat
+    [['तादृक्षात्', 'तादृक्षाद्'], 'तादृक्षाभ्याम्', 'तादृक्षेभ्यः'],  # 5 Abl * s→d optional
+    ['तादृक्षस्य', 'तादृक्षयोः', 'तादृक्षाणाम्'],          # 6 Gen * a-stem: A+Am→ARAm (णाम्)
+    ['तादृक्षे', 'तादृक्षयोः', 'तादृक्षेषु'],              # 7 Loc
+    ['तादृक्ष', 'तादृक्षौ', 'तादृक्षाः'],                  # 8 Voc
+]
+
+# yādṛkṣa (m.) — [yad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
+prAtipadika["yAdfkza"] = [yad_pada, in_compound(dfkza)]   # noqa: F405
+viBakti["yAdfkza"] = [
+    ['यादृक्षः', 'यादृक्षौ', 'यादृक्षाः'],                # 1 Nom
+    ['यादृक्षम्', 'यादृक्षौ', 'यादृक्षान्'],               # 2 Acc
+    ['यादृक्षेण', 'यादृक्षाभ्याम्', 'यादृक्षैः'],          # 3 Inst * a-stem
+    ['यादृक्षाय', 'यादृक्षाभ्याम्', 'यादृक्षेभ्यः'],       # 4 Dat
+    [['यादृक्षात्', 'यादृक्षाद्'], 'यादृक्षाभ्याम्', 'यादृक्षेभ्यः'],  # 5 Abl * s→d optional
+    ['यादृक्षस्य', 'यादृक्षयोः', 'यादृक्षाणाम्'],          # 6 Gen * a-stem: A+Am→ARAm
+    ['यादृक्षे', 'यादृक्षयोः', 'यादृक्षेषु'],              # 7 Loc
+    ['यादृक्ष', 'यादृक्षौ', 'यादृक्षाः'],                  # 8 Voc
+]
+
+# yādṛkṣa (m.) — [yad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
+prAtipadika["yAdfkza"] = [yad_pada, in_compound(dfkza)]   # noqa: F405
+viBakti["yAdfkza"] = [
+    ['यादृक्षः', 'यादृक्षौ', 'यादृक्षाः'],                # 1 Nom
+    ['यादृक्षम्', 'यादृक्षौ', 'यादृक्षान्'],               # 2 Acc
+    ['यादृक्षेण', 'यादृक्षाभ्याम्', 'यादृक्षैः'],          # 3 Inst * a-stem
+    ['यादृक्षाय', 'यादृक्षाभ्याम्', 'यादृक्षेभ्यः'],       # 4 Dat
+    [['यादृक्षात्', 'यादृक्षाद्'], 'यादृक्षाभ्याम्', 'यादृक्षेभ्यः'],  # 5 Abl * s→d optional
+    ['यादृक्षस्य', 'यादृक्षयोः', 'यादृक्षाणाम्'],          # 6 Gen * a-stem: A+Am→ARAm
+    ['यादृक्षे', 'यादृक्षयोः', 'यादृक्षेषु'],              # 7 Loc
+    ['यादृक्ष', 'यादृक्षौ', 'यादृक्षाः'],                  # 8 Voc
+]
+
+# SK430 vatup arm — measure-of-volume neuter stems (5.2.39)
+# tad + vatup → tAvat (तावत्); yad + vatup → yAvat (यावत्); etad + vatup → etAvat (एतावत्)
+# Consonant-final neuter paradigm (like mahat_n): nUM in strong cases (nom/acc/voc du+pl)
+prAtipadika["tAvat_n"] = [tad, in_context(vatup, "napum")]   # noqa: F405
+viBakti["tAvat_n"] = [
+    [['तावत्', 'तावद्'], 'तावती', 'तावन्ति'],  # 1 Nom  * nUM fires du+pl
+    [['तावत्', 'तावद्'], 'तावती', 'तावन्ति'],  # 2 Acc  (= Nom for napum)
+    ['तावता', 'तावद्भ्याम्', 'तावद्भिः'],      # 3 Inst
+    ['तावते', 'तावद्भ्याम्', 'तावद्भ्यः'],     # 4 Dat
+    ['तावतः', 'तावद्भ्याम्', 'तावद्भ्यः'],     # 5 Abl
+    ['तावतः', 'तावतोः', 'तावताम्'],            # 6 Gen
+    ['तावति', 'तावतोः', 'तावत्सु'],             # 7 Loc
+    [['तावत्', 'तावद्'], 'तावती', 'तावन्ति'],  # 8 Voc  (= Nom for napum)
+]
+
+prAtipadika["yAvat_n"] = [yad, in_context(vatup, "napum")]   # noqa: F405
+viBakti["yAvat_n"] = [
+    [['यावत्', 'यावद्'], 'यावती', 'यावन्ति'],  # 1 Nom
+    [['यावत्', 'यावद्'], 'यावती', 'यावन्ति'],  # 2 Acc  (= Nom for napum)
+    ['यावता', 'यावद्भ्याम्', 'यावद्भिः'],      # 3 Inst
+    ['यावते', 'यावद्भ्याम्', 'यावद्भ्यः'],     # 4 Dat
+    ['यावतः', 'यावद्भ्याम्', 'यावद्भ्यः'],     # 5 Abl
+    ['यावतः', 'यावतोः', 'यावताम्'],            # 6 Gen
+    ['यावति', 'यावतोः', 'यावत्सु'],             # 7 Loc
+    [['यावत्', 'यावद्'], 'यावती', 'यावन्ति'],  # 8 Voc  (= Nom for napum)
+]
+
+prAtipadika["etAvat_n"] = [etad, in_context(vatup, "napum")]   # noqa: F405
+viBakti["etAvat_n"] = [
+    [['एतावत्', 'एतावद्'], 'एतावती', 'एतावन्ति'],  # 1 Nom
+    [['एतावत्', 'एतावद्'], 'एतावती', 'एतावन्ति'],  # 2 Acc  (= Nom for napum)
+    ['एतावता', 'एतावद्भ्याम्', 'एतावद्भिः'],      # 3 Inst
+    ['एतावते', 'एतावद्भ्याम्', 'एतावद्भ्यः'],     # 4 Dat
+    ['एतावतः', 'एतावद्भ्याम्', 'एतावद्भ्यः'],     # 5 Abl
+    ['एतावतः', 'एतावतोः', 'एतावताम्'],            # 6 Gen
+    ['एतावति', 'एतावतोः', 'एतावत्सु'],             # 7 Loc
+    [['एतावत्', 'एतावद्'], 'एतावती', 'एतावन्ति'],  # 8 Voc  (= Nom for napum)
+]
+
+# SK430 vatup arm — masculine forms (5.2.39)
+# tad + vatup → tAvat → tAvAn (SK425: upadhā dīrgha + nUM + t-lopa); same pattern as dhImat
+prAtipadika["tAvAn"] = [tad, in_context(vatup, "pum")]   # noqa: F405
+viBakti["tAvAn"] = [
+    ['तावान्', 'तावन्तौ', 'तावन्तः'],    # 1 Nom  * SK425+SK361+t-drop sg; SK361 du/pl
+    ['तावन्तम्', 'तावन्तौ', 'तावतः'],    # 2 Acc  * SK361 sg+du; weak pl (Sas)
+    ['तावता', 'तावद्भ्याम्', 'तावद्भिः'],  # 3 Inst * t→d before voiced bh
+    ['तावते', 'तावद्भ्याम्', 'तावद्भ्यः'], # 4 Dat
+    ['तावतः', 'तावद्भ्याम्', 'तावद्भ्यः'], # 5 Abl
+    ['तावतः', 'तावतोः', 'तावताम्'],        # 6 Gen
+    ['तावति', 'तावतोः', 'तावत्सु'],         # 7 Loc
+    ['तावन्', 'तावन्तौ', 'तावन्तः'],    # 8 Voc  * SK361 (no SK425 for sambuddhi); t-drop sg
+]
+
+prAtipadika["yAvAn"] = [yad, in_context(vatup, "pum")]   # noqa: F405
+viBakti["yAvAn"] = [
+    ['यावान्', 'यावन्तौ', 'यावन्तः'],    # 1 Nom
+    ['यावन्तम्', 'यावन्तौ', 'यावतः'],    # 2 Acc
+    ['यावता', 'यावद्भ्याम्', 'यावद्भिः'],  # 3 Inst
+    ['यावते', 'यावद्भ्याम्', 'यावद्भ्यः'], # 4 Dat
+    ['यावतः', 'यावद्भ्याम्', 'यावद्भ्यः'], # 5 Abl
+    ['यावतः', 'यावतोः', 'यावताम्'],        # 6 Gen
+    ['यावति', 'यावतोः', 'यावत्सु'],         # 7 Loc
+    ['यावन्', 'यावन्तौ', 'यावन्तः'],    # 8 Voc
+]
+
+prAtipadika["etAvAn"] = [etad, in_context(vatup, "pum")]   # noqa: F405
+viBakti["etAvAn"] = [
+    ['एतावान्', 'एतावन्तौ', 'एतावन्तः'],    # 1 Nom
+    ['एतावन्तम्', 'एतावन्तौ', 'एतावतः'],    # 2 Acc
+    ['एतावता', 'एतावद्भ्याम्', 'एतावद्भिः'],  # 3 Inst
+    ['एतावते', 'एतावद्भ्याम्', 'एतावद्भ्यः'], # 4 Dat
+    ['एतावतः', 'एतावद्भ्याम्', 'एतावद्भ्यः'], # 5 Abl
+    ['एतावतः', 'एतावतोः', 'एतावताम्'],        # 6 Gen
+    ['एतावति', 'एतावतोः', 'एतावत्सु'],         # 7 Loc
+    ['एतावन्', 'एतावन्तौ', 'एतावन्तः'],    # 8 Voc
+]
+
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza"],
           "strI": [], "napum": []}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 
