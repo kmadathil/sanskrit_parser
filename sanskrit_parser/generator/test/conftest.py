@@ -35,6 +35,10 @@ def pytest_addoption(parser):
     # # TODO: Solve "ValueError: option names {'--test-count'} already added" below
     # parser.addoption("--test-count", action="store", default=0,
     #                help="Number of tests to generate")
+    parser.addoption("--verbose-prakriya", action="store_true", default=False,
+                    help="Print prakriya trace on test failure")
+    parser.addoption("--tag-display", action="store_true", default=False,
+                    help="Display tags and its on objects in prakriya trace")
     pass
 
 
@@ -64,7 +68,7 @@ def _test(output, s, enc):
     return (set(j) == set(_s))
 
 
-def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
+def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False, config=None):
     pl = []
     print(f"Testing {s}")
     # Assemble list of inputs
@@ -102,10 +106,14 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False):
     print(f"Canonical Input {pl} - ")
     p = PrakriyaFactory(prakriya_name, sutra_list, PrakriyaVakya(pl))
     p.execute()
-    #if verbose:
-    #    p.describe()
     o = p.output(copy=True)
-    assert _test(o, s, encoding)
+    try:
+        assert _test(o, s, encoding)
+    except AssertionError:
+        if config and config.getoption("--verbose-prakriya"):
+            tag_display = config.getoption("--tag-display")
+            p.describe(tag_display=tag_display)
+        raise
     return None
 
 
@@ -153,16 +161,16 @@ def generate_vibhakti(pratipadika_i, vibhaktis, encoding=sanscript.DEVANAGARI, s
 
 
 # Manual test
-def check_vibhakti(t, sutra_list, encoding=sanscript.DEVANAGARI, verbose=False):
+def check_vibhakti(t, sutra_list, encoding=sanscript.DEVANAGARI, verbose=False, config=None):
     for s in t:
-        run_test(s, sutra_list, encoding=encoding, verbose=verbose)
+        run_test(s, sutra_list, encoding=encoding, verbose=verbose, config=config)
 
 
-def test_prakriya(sutra_list, test_list, test_list_d, verbose=False):
+def test_prakriya(sutra_list, test_list, test_list_d, verbose=False, config=None):
     for s in test_list:
-        run_test(s, sutra_list, sanscript.SLP1, verbose=verbose)
+        run_test(s, sutra_list, sanscript.SLP1, verbose=verbose, config=config)
     for s in test_list_d:
-        run_test(s, sutra_list, sanscript.DEVANAGARI, verbose=verbose)
+        run_test(s, sutra_list, sanscript.DEVANAGARI, verbose=verbose, config=config)
 
 
 def pytest_generate_tests(metafunc):

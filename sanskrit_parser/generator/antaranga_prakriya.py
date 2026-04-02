@@ -472,7 +472,7 @@ class AntarangaPrakriya(PrakriyaBase):
         logger.debug(f"Final Result: {r}\n")
         return r
 
-    def describe(self, indent="  "):
+    def describe(self, indent="  ", tag_display=False):
         slp1 = "".join(str(x) for x in self.inputs.v)
         dev = sanscript.transliterate(slp1, sanscript.SLP1, sanscript.DEVANAGARI)
         bar = indent + "\u2500" * 62
@@ -482,7 +482,7 @@ class AntarangaPrakriya(PrakriyaBase):
         for hp in self.hier_prakriyas:
             if not getattr(hp, 'triggering_sutra_aps', None):
                 print(f"{indent}  \u250c Inner prakriya (hierarchical):")
-                hp.describe(indent=indent + "  \u2502 ")
+                hp.describe(indent=indent + "  \u2502 ", tag_display=tag_display)
                 print(f"{indent}  \u2514\u2500")
         # 2. Build hier_map for inline (execution-time) hierarchical prakriyas
         from collections import defaultdict
@@ -491,7 +491,7 @@ class AntarangaPrakriya(PrakriyaBase):
             aps = getattr(hp, 'triggering_sutra_aps', None)
             if aps:
                 hier_map[aps].append(hp)
-        self.tree.describe(indent=indent, hier_map=hier_map)
+        self.tree.describe(indent=indent, hier_map=hier_map, tag_display=tag_display)
         outputs = ["".join(str(x) for x in y) for y in self.outputs]
         out_devs = [
             sanscript.transliterate(o, sanscript.SLP1, sanscript.DEVANAGARI)

@@ -29,7 +29,7 @@ from sanskrit_parser import enable_file_logger, enable_console_logger
 logger = logging.getLogger(__name__)
 
 
-def run_pp(s, prakriya, sutra_list, verbose=False):
+def run_pp(s, prakriya, sutra_list, verbose=False, tag_display=False):
     pl = []
     # Assemble list of inputs
     for i in range(len(s)):
@@ -44,14 +44,14 @@ def run_pp(s, prakriya, sutra_list, verbose=False):
     p = PrakriyaFactory(prakriya, sutra_list, PrakriyaVakya(pl))
     p.execute()
     if verbose:
-        p.describe()
+        p.describe(tag_display=tag_display)
     o = p.output()
     return o
 
 
 # Insert all sup vibhaktis one after the other, with avasAnas
 # Return results with avasAnas stripped as 8x3 list of lists
-def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
+def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False, tag_display=False):
     r = []
     if isinstance(pratipadika, list):
         pratipadikax = pratipadika [-1]
@@ -78,7 +78,7 @@ def generate_vibhakti(pratipadika, prakriya, sutra_list, verbose=False):
                     t = [*pratipadika, ss, avasAna]  # noqa: F405
                 else:
                     t = [(pratipadika, ss), avasAna]  # noqa: F405
-                _r = run_pp(t, prakriya, sutra_list, verbose)
+                _r = run_pp(t, prakriya, sutra_list, verbose, tag_display=tag_display)
                 r[-1].append(_r)
                 p = [''.join([str(x) for x in y]) for y in _r]
                 pp = ", ".join([x.strip('.') for x in p])
@@ -226,6 +226,7 @@ def get_args(argv=None):
     parser.add_argument("--prakriya", default="AntarangaPrakriya", help="Prakriya type")
     parser.add_argument("--sutra-file", default="sutras_antaranga.yaml", help="Sutra File Name")
     parser.add_argument("--verbose", action="store_true", help="verbose")
+    parser.add_argument("--tag-display", action="store_true", help="display tags and its on objects (requires --verbose)")
 
     return parser.parse_args(argv)
 
@@ -255,14 +256,14 @@ def cmd_line():
         elif ((len(args.inputs) != 1) or (not isinstance(args.inputs[0], Pratipadika))):  # noqa: F405
             logger.info(f"Need a single pratipadika for vibhaktis, got {len(args.inputs)} inputs, first one of type {type(args.inputs[0])}")
             logger.info("Simplifying")
-            r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose)
+            r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose, tag_display=args.tag_display)
             logger.debug(f"Output: {[''.join([str(x) for x in y]) for y in r]}")
             assert len(r) == 1, "Got multiple outputs"
             pp = PaninianObject.join_objects(r)
             logger.info(f"Output {pp} {pp.tags}")
         else:
             pp = args.inputs[0]
-        r = generate_vibhakti(pp,  args.prakriya, sutra_list, args.verbose)
+        r = generate_vibhakti(pp,  args.prakriya, sutra_list, args.verbose, tag_display=args.tag_display)
         print("Output")
         if args.gen_test:
             rr = [[[y[0].transcoded(sanscript.DEVANAGARI).strip('।') for y in va] if len(va) > 1
@@ -276,5 +277,5 @@ def cmd_line():
             for ix, vi in enumerate(r):
                 print(f"{', '.join(['/'.join([''.join([x.transcoded(sanscript.DEVANAGARI) for x in y]).strip('।') for y in va]) for va in vi])}")
     else:
-        r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose)
+        r = run_pp(args.inputs, args.prakriya, sutra_list, args.verbose, tag_display=args.tag_display)
         print(f"Output: {[''.join([str(x) for x in y]) for y in r]}")
