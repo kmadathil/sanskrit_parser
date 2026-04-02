@@ -18,7 +18,7 @@ class PaninianObject(SanskritObject):
     Attributes:
     """
     def __init__(self, thing=None, encoding=None, unicode_encoding='utf-8',
-                 strict_io=True, replace_ending_visarga='s', its=[]):
+                 strict_io=True, replace_ending_visarga='s', its=None):
         super().__init__(thing, encoding, unicode_encoding, strict_io,
                          replace_ending_visarga)
         self.inPrakriya = True
@@ -27,7 +27,7 @@ class PaninianObject(SanskritObject):
         # Prakriya Related Tags are ephemeral
         # it-markers (anubandha): used by Pratyaya (e.g. śatṛ u-it) and by Pratipadika
         # when an it is added dynamically during prakriyā (e.g. SK360 adds f-it to maghavat).
-        self.its = its
+        self.its = its if its is not None else []
 
     def hasIt(self, it):
         return it in self.its

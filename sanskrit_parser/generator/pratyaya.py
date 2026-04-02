@@ -7,13 +7,13 @@ class Pratyaya(PaninianObject):
 
      Attributes:
     """
-    def __init__(self, thing=None, its=[], other_tags=[], encoding=sanscript.SLP1,
+    def __init__(self, thing=None, its=None, other_tags=None, encoding=sanscript.SLP1,
                  unicode_encoding='utf-8',
                  strict_io=True, replace_ending_visarga='s'):
         super().__init__(thing, encoding, unicode_encoding, strict_io, replace_ending_visarga, its=its)
         self.inPrakriya = True
         self.setTag("pratyaya")
-        for t in other_tags:
+        for t in (other_tags if other_tags is not None else []):
             self.setTag(t)
 
     def luTags(self):
