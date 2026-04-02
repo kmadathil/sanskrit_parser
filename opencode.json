@@ -1,0 +1,71 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "feature_owner",
+  "instructions": [
+    "./AGENTS.md"
+  ],
+  "agent": {
+    "feature_owner": {
+      "description": "Primary agent that owns end-to-end feature delivery by planning, delegating specialist work, and validating completion.",
+      "mode": "primary",
+      "model": "opencode/qwen3.6-plus-free",
+      "prompt": "./prompts/feature-owner.md",
+      "permission": {
+	  "task": {
+	      "*": "deny",
+	      "implementer": "allow",
+	      "tester": "allow",
+	      "debugger": "allow"
+	  } 
+      }
+    },
+    "implementer": {
+      "description": "Subagent for code implementation using the add-feature skill and existing project architecture.",
+      "mode": "subagent",
+      "model": "opencode/minimax-m2.5-free",
+      "prompt": "./prompts/implementer.md"
+    },
+    "tester": {
+      "description": "Subagent for adding tests, running focused test commands, and summarizing results using the add-test skill.",
+      "mode": "subagent",
+      "model": "opencode/minimax-m2.5-free",
+      "prompt": "./prompts/tester.md"
+    },
+    "debugger": {
+      "description": "Subagent for diagnosing failures, forming hypotheses, and applying minimal root-cause fixes using the debug skill.",
+      "mode": "subagent",
+      "model": "opencode/qwen3.6-plus-free",
+      "prompt": "./prompts/debugger.md"
+    },
+    "committer": {
+      "description": "Subagent for committing changes to git",
+      "mode": "subagent",
+      "model": "opencode/minimax-m2.5-free",
+      "prompt": "./prompts/committer.md"
+    },
+  },
+  "command": {
+    "feature": {
+      "description": "Plan and deliver a feature end-to-end using implementer, tester, and debugger.",
+      "template": "./commands/feature.md",
+      "agent": "feature_owner"
+    },
+    "test-fix": {
+      "description": "Investigate a failing test or command, patch the root cause, and hand back a re-test plan.",
+      "template": "./commands/test-fix.md",
+      "agent": "debugger",
+      "subtask": true
+    },
+    "ship-feature": {
+      "description": "Run a final acceptance pass on an implemented feature and confirm whether it is ready to merge.",
+      "template": "./commands/ship-feature.md",
+      "agent": "feature_owner"
+    },
+    "commit-feature": {
+      "description": "Commit changes for a feature to git",
+      "template": "./commands/commit-feature.md",
+      "agent": "committer",
+      "subtask": true
+    },
+  }
+}
