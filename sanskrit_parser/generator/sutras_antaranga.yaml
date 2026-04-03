@@ -5060,6 +5060,17 @@
   xform:
     lc: lc[:-1]+dirgha(lc[-1])
 
+# 433: र्वोरुपधाया दीर्घ इकः (8-2-76) — upadhā-dīrgha for r/v-final dhātu at pada-end (before su)
+- sutra: र्वोरुपधाया दीर्घ इकः
+  id: 8.2.76
+  condition:
+    lp: ?DAtu
+    ll: _ik
+    l: [v, r]
+    rp: ?su
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
 # Skipping for now
 
 # In

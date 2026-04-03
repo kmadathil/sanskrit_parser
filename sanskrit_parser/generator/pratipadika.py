@@ -229,6 +229,10 @@ yuj_kvin_samAsa = Pratipadika("yuj", "pum",  other_tags=["DAtu", "kvin", "yuj", 
 diS_kvin    = Pratipadika("diS",    "strI", other_tags=["DAtu", "kvin"])          # diś f. (direction)
 daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])           # dadhṛc m. (bold one); c→j(8.2.39)→g(8.2.62)→k(8.4.56)
 
+# r/v-final kvip stems — SK433 (8.2.76) upadhā-dīrgha at pada-end; SK354 (8.2.77) before hal
+gir_kvip     = Pratipadika("gir",     "pum",  other_tags=["DAtu", "kvip"])           # √gṝ+kvip; nom sg gīḥ
+pur_kvip     = Pratipadika("pur",     "pum",  other_tags=["DAtu", "kvip"])           # √pū+kvip; nom sg pūḥ
+
 
 # Generic prefix pratipadikas — reusable with many Dhatus (not tied to añcatir specifically)
 # 6.1.77 fires at (prati|ac) → pratyac; 6.1.101 fires at (pra|ac) → prAc

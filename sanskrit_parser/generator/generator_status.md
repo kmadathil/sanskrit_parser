@@ -3,7 +3,7 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented
+**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented; SK433 (8.2.76 र्वोरुपधाया दीर्घ इकः) upadhā-dīrgha for r/v-final dhātu
 **Deferred:** SK429 (3.2.60 त्यदादिषु दृशोऽनालोचने कञ्च), SK431-434 — tādṛk/tādṛśa compound forms; SK444 (7.1.79 — vā napuṃsakasya)
 
 ---
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 181 |
-| SK-numbered sutras, skipped/deferred | 55 |
+| SK-numbered sutras, implemented | 182 |
+| SK-numbered sutras, skipped/deferred | 54 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 110 |
+| Stems with full vibhakti test tables | 112 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -373,7 +373,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya added; tādṛk/tādṛśa compound stems implemented via SK430 |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt framework pending | kvin after √spṛś in compounds (ghṛtaspṛk etc.); tested via compound pratipadika with existing kvin machinery |
-| 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
+| 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | Implemented — see SK434 row above | ṣatva with vyavāya: s→ṣ after iṇ/ku even when num(M)/visarga(H)/śar(S/z/s) intervenes; ādeśa/pratyaya context; dhanus nom/acc plu dhanūṃṣi |
 
 ---
 
@@ -462,6 +462,8 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | paTin | m | paTin-group | SK365–368: panthāḥ nom/voc sg, panTāna- strong, paṭha- bha |
 | maTin | m | paTin-group | same rules as paTin; manthāḥ nom/voc sg |
 | fBukzin | m | paTin-group | SK365/366/368 only (no SK367 — no th); ṛbhukṣāḥ nom/voc sg; ṇatva in strong forms |
+| gir | m | r-stem (kvip) | SK433 (8.2.76): upadhā-dīrgha at pada-end → gīḥ nom/voc sg; SK354 (8.2.77): before hal → gīrbhiḥ, gīrbhyām, gīrbhyaḥ, gīrṣu |
+| pur | m | r-stem (kvip) | SK433 (8.2.76): upadhā-dīrgha at pada-end → pūḥ nom/voc sg; SK354 (8.2.77): before hal → pūrbhiḥ, pūrbhyām, pūrbhyaḥ, pūrṣu |
 | ftvij | m | j-stem (kvin) | SK377 (8.2.62): j→g at pada-end; 8.4.56 opt g→k; ṛtvig/ṛtvik nom sg |
 | sraj | f | j-stem (kvin) | SK377 (8.2.62): same as ftvij; srag/srak nom sg |
 | yuj | m | j-stem (kvin, non-compound) | SK376 (7.1.71): num (Y=ñ) before sarvanāmasthāna; SK377 (8.2.62)+8.2.23: yuṅ nom sg |
