@@ -1761,6 +1761,21 @@ viBakti["yAdfSa"] = [
     ['यादृश', 'यादृशौ', 'यादृशाः'],                 # 8 Voc
 ]
 
+# SK432 — ghṛtaspṛk (m.): [Gfta in_compound(spfS) kvin]
+# √spṛś + kvin after Gfta ("clarified butter") → घृतस्पृक् "one who touches ghee"
+# Same phonology as tAdfk (dfS+kvin): 8.2.62 j→g at pada-end; 8.4.56 opt g→k
+prAtipadika["Gftaspfk"] = [Gfta, in_compound(spfS), kvin]   # noqa: F405
+viBakti["Gftaspfk"] = [
+    [['घृतस्पृक्', 'घृतस्पृग्'], 'घृतस्पृशौ', 'घृतस्पृशः'],  # 1 Nom  * kvin: 8.2.62 j→g, 8.4.56 opt g→k
+    ['घृतस्पृशम्', 'घृतस्पृशौ', 'घृतस्पृशः'],               # 2 Acc
+    ['घृतस्पृशा', 'घृतस्पृग्भ्याम्', 'घृतस्पृग्भिः'],        # 3 Inst * kvin: j→g before Bh
+    ['घृतस्पृशे', 'घृतस्पृग्भ्याम्', 'घृतस्पृग्भ्यः'],        # 4 Dat
+    ['घृतस्पृशः', 'घृतस्पृग्भ्याम्', 'घृतस्पृग्भ्यः'],        # 5 Abl
+    ['घृतस्पृशः', 'घृतस्पृशोः', 'घृतस्पृशाम्'],              # 6 Gen
+    ['घृतस्पृशि', 'घृतस्पृशोः', 'घृतस्पृक्षु'],              # 7 Loc  * pl: j→g→k+8.3.57→ṣ
+    [['घृतस्पृक्', 'घृतस्पृग्'], 'घृतस्पृशौ', 'घृतस्पृशः'],  # 8 Voc  = Nom
+]
+
 # tādṛkṣa (m.) — [tad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
 prAtipadika["tAdfkza"] = [tad_pada, in_compound(dfkza)]   # noqa: F405
 viBakti["tAdfkza"] = [
@@ -1877,7 +1892,7 @@ viBakti["etAvAn"] = [
     ['एतावन्', 'एतावन्तौ', 'एतावन्तः'],    # 8 Voc
 ]
 
-samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza"],
+samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza", "Gftaspfk"],
           "strI": [], "napum": []}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 

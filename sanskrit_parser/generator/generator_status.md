@@ -15,7 +15,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 | SK-numbered sutras, implemented | 181 |
 | SK-numbered sutras, skipped/deferred | 55 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 109 |
+| Stems with full vibhakti test tables | 110 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -372,7 +372,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya added; tādṛk/tādṛśa compound stems implemented via SK430 |
-| 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt | kvin after √spṛś; requires kṛt suffix machinery |
+| 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt framework pending | kvin after √spṛś in compounds (ghṛtaspṛk etc.); tested via compound pratipadika with existing kvin machinery |
 | 433 | 8.2.76 | इटोऽत् | For later — verbal | upadhā-dīrgha for intensive/kṛdanta forms; not needed for current nominal test suite |
 
 ---
@@ -487,6 +487,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
 | idam_strI | f | sarvanāma (idam feminine) | SK441 (7.2.110): nom sg iyam; partial table (nom sg only) |
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
+| Gftaspfk | m | kvin compound (samāsa) | SK432: √spṛś+kvin after Gfta; ghṛtaspṛk paradigm; SK377 (8.2.62) pada-end kutva |
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |
 | tyad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m syaḥ; partial table (nom sg only) |
 | adas | m | tyadAdi demonstrative | SK381+SK437 (7.2.106+7.2.107): nom sg asau; SK419 (8.2.80): amu sg/du/pl forms; SK438 (8.2.81): amī pl; SK439 (8.2.3): amunā inst sg; full vibhakti table (inst sg amunā, du amūbhyām, gen/loc du amuyoḥ) |

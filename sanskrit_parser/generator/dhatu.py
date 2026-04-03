@@ -38,6 +38,7 @@ guhU = Dhatu("guh", its=["~u"])
 sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
 dfS = Dhatu("dfS", its=[], other_tags=["dfS"])
+spfS = Dhatu("spfS", its=[], other_tags=["spfS"])  # √spṛś "to touch" (SLP1: spfS = स्पृश्)
 vah = Dhatu("vah", its=[])
 Sam = Dhatu("Sam", its=[])
 
