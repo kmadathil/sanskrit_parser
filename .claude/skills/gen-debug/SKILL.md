@@ -35,10 +35,10 @@ export PYTHONPATH=/Users/karthik/personal_projects/sanskrit_parser
 
 cd /Users/karthik/personal_projects/sanskrit_parser
 # Single form: pratipadika + pratyaya
-python scripts/sanskrit_generator -t <pratipadika> -p <pratyaya> -a --verbose
+python scripts/sanskrit_generator -t <pratipadika> -p <pratyaya> -a --verbose --show-tags
 
 # All vibhaktis for a pratipadika
-python scripts/sanskrit_generator -t <pratipadika> --vibhakti --verbose
+python scripts/sanskrit_generator -t <pratipadika> --vibhakti --verbose 
 
 # Generate vibhakti test skeleton
 python scripts/sanskrit_generator -t <pratipadika> --vibhakti --gen-test

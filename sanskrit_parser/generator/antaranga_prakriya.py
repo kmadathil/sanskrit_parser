@@ -24,6 +24,17 @@ from copy import deepcopy, copy
 import logging
 logger = logging.getLogger(__name__)
 
+
+def _deduplicate_hier_outputs(outputs):
+    """If all PrakriyaVakya outputs produce the same canonical string,
+    return a single-element list. Otherwise return the original list."""
+    if len(outputs) <= 1:
+        return outputs
+    canonicals = ["".join(str(x) for x in y) for y in outputs]
+    if all(c == canonicals[0] for c in canonicals):
+        return [outputs[0]]
+    return outputs
+
     
 class AntarangaPrakriya(PrakriyaBase):
     """
@@ -62,7 +73,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
-                hpo = hp.output()
+                hpo = _deduplicate_hier_outputs(hp.output())
                 self.hier_outputs[ix] = hpo  # accumulate hierarchical outputs
         if self.need_hier:
             for ix, ol in enumerate(self.hier_outputs):
@@ -122,7 +133,7 @@ class AntarangaPrakriya(PrakriyaBase):
                                                initially_disabled=s.overrides)
                         # This will execute hierarchically as needed
                         hp.execute()
-                        hpo = hp.output()
+                        hpo = _deduplicate_hier_outputs(hp.output())
                         logger.debug(f"Nitya check: Hypothetical Hier output for r[{i}] {hpo}")
                         assert len(hpo)==1, f"Unexpected multiple output {hpo} for insertion hier prakriya"
                         # Don't use join_object, since this is not a promotion but a replacement
@@ -352,7 +363,7 @@ class AntarangaPrakriya(PrakriyaBase):
                                            initially_disabled=s.overrides)
                     # This will execute hierarchically as needed
                     hp.execute()
-                    hpo = hp.output()
+                    hpo = _deduplicate_hier_outputs(hp.output())
                     hp.triggering_sutra_aps = s.aps
                     self.hier_prakriyas.append(hp)
                     logger.debug(f"Hier output for r[{i}] {hpo}")

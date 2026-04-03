@@ -484,7 +484,29 @@ The main helper is `generate_vibhakti(pratipadika, prakriya, sutra_list)`, which
 
 Run from the `generator` branch:
 
+To run all tests
+
 ```bash
-cd sanskrit_parser/generator/test
-. run.sh
+source ~/venv/sanskrit/bin/activate
+source sourceme
+pytest -n 6 sanskrit_parser/generator/test/
 ```
+
+To run one test file (for example)
+
+```bash
+source ~/venv/sanskrit/bin/activate
+source sourceme
+pytest -n 6 sanskrit_parser/generator/test/test_halanta.py
+```
+
+To run tests for one pratipadika (for example)
+```bash
+source ~/venv/sanskrit/bin/activate
+source sourceme
+pytest -k "rAma" sanskrit_parser/generator/test/test_ajanta_pum.py
+```
+
+
+Use the `--verbose-prakriya` and `--tag-display` options for more
+details when tests fail

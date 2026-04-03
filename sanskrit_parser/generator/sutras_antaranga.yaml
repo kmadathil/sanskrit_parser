@@ -829,6 +829,7 @@
     lc: anusvara_jhal_string(lc+l)[0]
   insert:
     l: anusvara_jhal_string(lc+l)[1]
+    
 # 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45
@@ -1687,8 +1688,8 @@
      ll:  _ac
      l: [r, h]
      r: _yar
-  xform:
-     r: r+r
+  insert:
+     r: r
 
 
 # FIXME -causes too many problems. We'll go with sarvatra SAkalyasya on this

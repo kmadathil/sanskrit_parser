@@ -168,8 +168,10 @@ viBakti["<name>"] = [
 
 Run the test for just this pratipadika:
 ```bash
+source ~/venv/sanskrit/bin/activate
 cd /Users/karthik/personal_projects/sanskrit_parser
-python -m pytest sanskrit_parser/generator/test/test_vibhaktis.py -k <name> -v
+source sourceme
+python -m pytest sanskrit_parser/generator/test/ -k <name> -v
 ```
 
 If tests fail:
