@@ -4,7 +4,7 @@ Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
 **Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented; SK433 (8.2.76 र्वोरुपधाया दीर्घ इकः) upadhā-dīrgha for r/v-final dhātu
-**Deferred:** SK429 (3.2.60 त्यदादिषु दृशोऽनालोचने कञ्च), SK431-434 — tādṛk/tādṛśa compound forms; SK444 (7.1.79 — vā napuṃsakasya)
+**Next to be implemented:** SK444 (7.1.79 — vā napuṃsakasya)
 
 ---
 
@@ -51,7 +51,7 @@ The "Forms affected" column uses the convention:
 | 207 | 7.3.104 | ओसि च | a-stem before os: guṇa → e (gen/loc du: rāmayoḥ) |
 | 208 | 7.1.54 | ह्रस्वनद्यापो नुट् | nadī/āp-stems + am/āṁ: inserts nut (n) — gen pl nadīnām, rāmāṇām |
 | 209 | 6.4.3 | नामि | aṅga lengthening before nāmī (gen pl am) — rājñām |
-| 211 | 8.3.57 | इण्कोः | n→ṇ after iṇ or ku (ṇatva) in ādeśa/pratyaya context |
+| 211 | 8.3.57 | इण्कोः | Adhikāra — enables ṇatva in ādeśa/pratyaya context; active sutras are SK434 (8.3.58) and SK212 (8.3.59) |
 | 213 | 1.1.27 | सर्वादीनि सर्वनामानि | Defines the sarvanāma class (sarva, viśva, etc.) |
 | 214 | 7.1.17 | जसः शी | ī-final feminine nom pl: jas → śī (nadyaḥ → nadyaḥ via śī+sandhi) |
 | 216 | 7.1.15 | ङसिङ्योः स्मात्स्मिनौ | sarvanāma abl sg → smāt; loc sg → smin (sarvasmāt, sarvasmin) |
@@ -199,6 +199,7 @@ The "Forms affected" column uses the convention:
 | 428 | 6.1.6 | जक्षित्यादयः षट् | Tags 7 jakshi-class roots as inherently abhyasta: jakzat (SLP1 z=ṣ), jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat; its=["f"]+other_tags=["Satf","abhyasta"] in pratipadika.py |
 | 430 | 6.3.91 | आ सर्वनाम्नः | ā-substitution for sarvanāma pūrva-pada before dṛg/dṛś/vat compounds; creates tādṛk/tādṛśa forms from tyadAdi + dfS + kvin/kaY |
 | 431 | 8.2.63 | नशेर्वा | optional kutva at pada-end for ?naS (naś+kvip); apavāda of SK294 (8.2.36); two pakṣas: nak/nag (kutva) and naṭ/naḍ (ṣatva); naś_kvip pratipadika added |
+| 433 | 8.2.76 | र्वोरुपधाया दीर्घ इकः | upadhā-dīrgha for r/v-final dhātu upadhā-ik before pada-end; r/v-final dhātu stems (gir, pur etc.) get long vowel in nom/voc sg |
 | 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | ṣatva with vyavāya: s→ṣ after iṇ/ku even when num(M)/visarga(H)/śar(S/z/s) intervenes; ādeśa/pratyaya context; dhanus nom/acc plu dhanūṃṣi |
 | 435 | 6.4.131 | वसोः संप्रसारणम् | samprasāraṇa v→u + ṣatva (s→ṣ/z) in bha for ?vasAnta (kvasu) stems; viduṣaḥ/ā/e/oḥ/ām bha forms of vidvas |
 | 436 | 7.1.89 | पुंसोऽसुङ् | s→as (asun, u-it) before sarvānāmasthāna for ?puMs; SK425+SK361 give pumān nom sg; bha forms: puṃsaḥ/ā etc. |
@@ -371,9 +372,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 413 | 8.1.73 | नामन्त्रिते समानाधिकरणे सामान्यवचनम् | For later | vocative co-referential number; not needed for basic paradigm |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied | tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
-| 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya added; tādṛk/tādṛśa compound stems implemented via SK430 |
+| 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya implemented; SK430 (6.3.91) is the active sutra for tādṛk/tādṛśa forms |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt framework pending | kvin after √spṛś in compounds (ghṛtaspṛk etc.); tested via compound pratipadika with existing kvin machinery |
-| 434 | 8.3.58 | नुम्विसर्जनीयशर्व्यवायेऽपि | Implemented — see SK434 row above | ṣatva with vyavāya: s→ṣ after iṇ/ku even when num(M)/visarga(H)/śar(S/z/s) intervenes; ādeśa/pratyaya context; dhanus nom/acc plu dhanūṃṣi |
 
 ---
 
