@@ -21,6 +21,14 @@ from sanskrit_parser.generator.sutras_yaml import SutraFactory
 sutra_list = SutraFactory("sutras_antaranga.yaml")
 prakriya_name = "AntarangaPrakriya"
 
+# Store pytest config globally so run_test can access it
+_pytest_config = None
+
+
+def pytest_configure(config):
+    global _pytest_config
+    _pytest_config = config
+
 
 
 # @pytest.fixture(scope="module")
@@ -110,9 +118,11 @@ def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False, config=None)
     try:
         assert _test(o, s, encoding)
     except AssertionError:
-        if config and config.getoption("--verbose-prakriya"):
-            tag_display = config.getoption("--tag-display")
-            p.describe(tag_display=tag_display)
+        if config or _pytest_config:
+            cfg = config or _pytest_config
+            if cfg.getoption("--verbose-prakriya"):
+                tag_display = cfg.getoption("--tag-display")
+                p.describe(tag_display=tag_display)
         raise
     return None
 
