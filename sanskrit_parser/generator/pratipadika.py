@@ -126,6 +126,9 @@ cakAsat  = Pratipadika("cakAsat",  "pum", its=["f"], other_tags=["Satf", "abhyas
 SAsat    = Pratipadika("SAsat",    "pum", its=["f"], other_tags=["Satf", "abhyasta"])
 dIDyat   = Pratipadika("dIDyat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])
 vevyat   = Pratipadika("vevyat",   "pum", its=["f"], other_tags=["Satf", "abhyasta"])
+# SK444 (7.1.79): neuter abhyasta Satf stem → optional nUM before sarvnāmasthāna (plural only)
+# dadat = present participle of reduplicated dā (dadāti); used as neuter kliba.
+dadat_napum = Pratipadika("dadat", "napum", its=["f"], other_tags=["Satf", "abhyasta"])
 # Regular śatṛ stems — nUM fires (no abhyasta tag, so SK427 does not block SK361)
 Bavat   = Pratipadika("Bavat", "pum", its=["f"], other_tags=["Satf"])   # bhū+śatṛ f-it → bhavant strong
 Bavat_u = Pratipadika("Bavat", "pum", its=["u"])                       # u-it (no Satf) → SK425 fires → bhāvān nom sg

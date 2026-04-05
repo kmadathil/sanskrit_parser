@@ -52,7 +52,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     Sreyas, Sreyas_n,
     # New imports
     upAnah, dhImat, gomat,
-    jakzat, jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat,
+    jakzat, jAgrat, daridrat, cakAsat, SAsat, dIDyat, vevyat, dadat_napum,
     Bavat, Bavat_u, pacat,
     Danus, ahan, vidvas, pums,
     tad, etad, yad, tyad, adas,
@@ -136,8 +136,9 @@ _STEMS_RAW = [
     ("gomat",    gomat,       "matup-stems",      "gomat  (gomat-)  [SK425 u-it]"),
 
     # ── śatṛ-stems ─────────────────────────────────────────────────────────
-    ("jakzat",   jakzat,      "śatṛ-stems (abhyasta)", "jakṣat  (jakṣat-)  [SK428 abhyasta]"),
-    ("jAgrat",   jAgrat,      "śatṛ-stems (abhyasta)", "jāgrat  (jāgrat-)  [SK428 abhyasta]"),
+    ("jakzat",    jakzat,      "śatṛ-stems (abhyasta)", "jakṣat  (jakṣat-)  [SK428 abhyasta]"),
+    ("jAgrat",    jAgrat,      "śatṛ-stems (abhyasta)", "jāgrat  (jāgrat-)  [SK428 abhyasta]"),
+    ("dadat_napum", dadat_napum, "śatṛ-stems (abhyasta napum)", "dadat  (dadat-)  [SK444 opt nUM]"),
     ("Bavat",    Bavat,       "śatṛ-stems (regular)",  "bhavat  (bhavant-)  [SK361 nUM]"),
     ("Bavat_u",  Bavat_u,     "śatṛ-stems (u-it)",     "bhavat  (bhavat-)  [SK425 u-it]"),
     ("pacat",    pacat,       "śatṛ-stems (regular)",  "pacat  (pacant-)  [SK361 nUM]"),

@@ -1462,6 +1462,23 @@ viBakti["jAgrat"] = [
     [['जाग्रत्', 'जाग्रद्'], 'जाग्रतौ', 'जाग्रतः'],  # 8 Voc  * same alternatives as nom sg
 ]
 
+# dadat_napum (napum): neuter abhyasta śatṛ stem (SK444/7.1.79), optional nUM before sarvnāmasthāna.
+# For napum, only the plural (śi = -i) is sarvnāmasthāna → optional nUM applies only to pl.
+# With nUM (SK444 fires): dadant+i = dadanti (ददन्ति)
+# Without nUM (SK427 fires, SK444 skipped): dadat+i = dadati (ददति)
+# Nom/acc sg: su dropped for halant napum → dadat; du: I ending → dadatī; pl: both forms valid.
+prAtipadika["dadat_napum"] = dadat_napum  # noqa: F405
+viBakti["dadat_napum"] = [
+    [['ददत्', 'ददद्'], 'ददती', ['ददति', 'ददन्ति']],   # 1 Nom  * sg: pausal/sandhi; pl: optional nUM
+    [['ददत्', 'ददद्'], 'ददती', ['ददति', 'ददन्ति']],   # 2 Acc  * = Nom for napum
+    ['ददता', 'ददद्भ्याम्', 'ददद्भिः'],                 # 3 Inst * weak stem dadat-; t voiced before bh
+    ['ददते', 'ददद्भ्याम्', 'ददद्भ्यः'],                 # 4 Dat
+    ['ददतः', 'ददद्भ्याम्', 'ददद्भ्यः'],                 # 5 Abl
+    ['ददतः', 'ददतोः', 'ददताम्'],                        # 6 Gen
+    ['ददति', 'ददतोः', 'ददत्सु'],                        # 7 Loc  * sg/du weak; pl: dadat+su → ts
+    [['ददत्', 'ददद्'], 'ददती', ['ददति', 'ददन्ति']],   # 8 Voc  * = Nom for napum
+]
+
 # Bavat (pum): regular śatṛ stem (bhū+śatṛ → bhavant), tagged ?Satf + f-it, NOT abhyasta.
 # SK427 does NOT block → SK361 (7.1.70) +f block fires → nUM in sarvanamasthana.
 # Strong base: bhavant- (nom sg/du/pl, acc sg/du, voc du/pl). Weak: bhavat-.

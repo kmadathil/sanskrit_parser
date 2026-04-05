@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 443 — 8.2.68 अहन् (ahan n→ru at pada-end; neuter day stem); SK441 (7.2.110 यः सौ) manually implemented; SK433 (8.2.76 र्वोरुपधाया दीर्घ इकः) upadhā-dīrgha for r/v-final dhātu
-**Next to be implemented:** SK444 (7.1.79 — vā napuṃsakasya)
+**Last implemented:** SK 444 — 7.1.79 वा नपुंसकस्य (optional nUM for neuter abhyasta śatṛ stems before sarvnāmasthāna plural)
+**Next to be implemented:** SK445 (7.1.80 — āc-chīnadyoḥ nuM)
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 182 |
+| SK-numbered sutras, implemented | 183 |
 | SK-numbered sutras, skipped/deferred | 54 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 112 |
+| Stems with full vibhakti test tables | 113 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -207,6 +207,7 @@ The "Forms affected" column uses the convention:
 | 441 | 7.2.110 | यः सौ | idam + strī before su: lc → "iya" (idam f nom sg iyam); fires on ?idam+?strI before ?su; overrides 7.2.109; manually implemented |
 | 442 | 7.4.48 | अपो भि | p→t before bhi-initial suffix for ?ap (nityabahuvacana feminine); 8.4.53 gives t→d before voiced bh → adbhiḥ, adbhyaḥ |
 | 443 | 8.2.68 | अहन् | n→ru at pada-end for ?ahan (neuter day stem); ahaḥ nom/acc/voc sg via ru→visarga; apavāda of 8.2.7 (n-lopa) |
+| 444 | 7.1.79 | वा नपुंसकस्य | Optional nUM for neuter abhyasta Śatṛ stems before sarvnāmasthāna (plural only); apavāda of SK427 (7.1.78); ददन्ति/ददति both valid for neuter pl of dadat |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
 | 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
@@ -483,6 +484,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |
 | jAgrat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | same as jakshat; nom sg जाग्रत् (not *जाग्रन्) |
+| dadat_napum | n | -at stem (śatṛ f-it, abhyasta napum, SK444) | SK444 optional nUM → pl: ददन्ति/ददति both valid; sg/du: no nUM (not sarvnāmasthāna for napum) |
 | Bavat | m | -at stem (śatṛ f-it, regular, SK361) | SK361 +f block fires nUM → bhavant strong forms; nom sg भवन् (no SK425 — not u-it) |
 | pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |

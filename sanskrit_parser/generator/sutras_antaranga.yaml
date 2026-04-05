@@ -4468,12 +4468,14 @@
       l: null
 
 # 427: नाभ्यस्ताच्छतुः (7.1.78) — abhyasta (reduplicated) śatṛ stems do not take nUM.
-# Apavāda of SK361 (7.1.70): blocks nUM for stems with both ?abhyasta and ?Satf tags.
+# Blocks both SK361 (7.1.70, ugit nUM) and SK372 (7.1.72, napum Jhal nUM) for abhyasta Satf.
 # ?Satf distinguishes śatṛ-derived stems from other ṛ-it forms (e.g. maghavan ++f via SK360).
-# jakshi-class (SK428/6.1.6): jakshat, jAgrat, etc. → jakshat/jAgrtat (no nUM in strong forms).
+# jakshi-class (SK428/6.1.6): jakshat, jAgrat, etc. → no nUM in strong forms.
+# SK372 added to overrides so napum abhyasta stems (dadat_napum) also get no nUM by default,
+# leaving room for SK444 (7.1.79) optional exception.
 - sutra: नाभ्यस्ताच्छतुः
   id: 7.1.78
-  overrides: 7.1.70
+  overrides: [7.1.70, 7.1.72]
   condition:
     lp:
       - and
@@ -4482,7 +4484,28 @@
     rp: ?sarvanAmasTAna
   xform: null
 
-#322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75) 
+# 444: वा नपुंसकस्य (7.1.79) — optional nUM for neuter abhyasta śatṛ stems before sarvnāmasthāna
+# Apavāda of SK427: inserts nUM itself (same as SK372) when optional fires.
+# overrides: [7.1.70, 7.1.72] → SK361/SK372 disabled on BOTH fires and skip paths (engine behavior).
+# - Fires path: SK444 inserts nUM → dadant; SK427 fires null (no change) → dadanti ✓
+# - Skip path:  dadat unchanged; SK427 fires null (no change) → dadati ✓
+# SK427 is NOT in overrides, so it fires on both paths (null, harmless).
+- sutra: वा नपुंसकस्य
+  id: 7.1.79
+  overrides: [7.1.70, 7.1.72]
+  optional: true
+  condition:
+    lp:
+      - and
+      - ?abhyasta
+      - ?Satf
+      - ?napum
+    rp: ?sarvanAmasTAna
+  xform:
+    lc: numAgama(lc+l)
+    l: null
+
+#322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75)
 - sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
   id: 7.1.75
   domain: prakfti
