@@ -9,6 +9,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
+from sanskrit_parser.generator.avyaya import *  # noqa: F403, F401
 from indic_transliteration import sanscript
 
 from vibhaktis_list import ajanta, halanta, samAsa, viBakti, prAtipadika, encoding

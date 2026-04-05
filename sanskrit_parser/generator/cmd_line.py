@@ -23,6 +23,7 @@ from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from sanskrit_parser.generator.dhatu import *  # noqa: F403
 from sanskrit_parser.generator.pratipadika import *  # noqa: F403
+from sanskrit_parser.generator.avyaya import *  # noqa: F403, F401
 from sanskrit_parser.generator.sutras_yaml import SutraFactory
 from sanskrit_parser import enable_file_logger, enable_console_logger
 

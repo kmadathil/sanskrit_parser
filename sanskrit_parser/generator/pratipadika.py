@@ -239,11 +239,12 @@ pur_kvip     = Pratipadika("pur",     "pum",  other_tags=["DAtu", "kvip"])      
 
 # Generic prefix pratipadikas — reusable with many Dhatus (not tied to añcatir specifically)
 # 6.1.77 fires at (prati|ac) → pratyac; 6.1.101 fires at (pra|ac) → prAc
-#prati = Pratipadika("prati", "pum")
-#pra   = Pratipadika("pra",   "pum")
-#tiras = Pratipadika("tiras", "pum")   # for future SK423 (tiras+ac → tiryac)
-#ud = Pratipadika("ud", "pum")   
-
+prati = Pratipadika("prati", "pum", other_tags=["nipAta"])
+pra   = Pratipadika("pra",   "pum", other_tags=["nipAta"])
+tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras"])
+ud    = Pratipadika("ud",    "pum", other_tags=["nipAta"])
+sam   = Pratipadika("sam",   "pum", other_tags=["nipAta", "sam"])
+saha  = Pratipadika("saha",  "pum", other_tags=["nipAta", "saha"])
 
 #Pada versions of above - will be removed later
 # FIXME - remove when we implement SK452/2.4.82

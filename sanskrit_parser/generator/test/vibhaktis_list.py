@@ -1,6 +1,7 @@
 from sanskrit_parser.generator.pratyaya import *  # noqa: F403, F401
 from sanskrit_parser.generator.dhatu import *  # noqa: F403, F401
 from sanskrit_parser.generator.pratipadika import *  # noqa: F403, F401
+from sanskrit_parser.generator.avyaya import *  # noqa: F403, F401
 
 viBakti = {}
 prAtipadika = {}
@@ -1932,6 +1933,44 @@ viBakti["etAvAn"] = [
     ['एतावतः', 'एतावतोः', 'एतावताम्'],        # 6 Gen
     ['एतावति', 'एतावतोः', 'एतावत्सु'],         # 7 Loc
     ['एतावन्', 'एतावन्तौ', 'एतावन्तः'],    # 8 Voc
+]
+
+# avyaya (indeclinable) — SK447 + SK452: all sup suffixes deleted, all forms identical to stem
+# antar ends in hal → visarga at avasāna → antaḥ
+prAtipadika["antar"] = antar   # noqa: F405
+viBakti["antar"] = [
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+    ['अन्तः', 'अन्तः', 'अन्तः'],
+]
+
+prAtipadika["prati"] = prati   # noqa: F405
+viBakti["prati"] = [
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+    ['प्रति', 'प्रति', 'प्रति'],
+]
+
+prAtipadika["pra"] = pra   # noqa: F405
+viBakti["pra"] = [
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
+    ['प्र', 'प्र', 'प्र'],
 ]
 
 samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza", "Gftaspfk"],

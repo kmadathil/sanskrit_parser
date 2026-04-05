@@ -4505,6 +4505,31 @@
     lc: numAgama(lc+l)
     l: null
 
+# 447: स्वरादिनिपातमव्ययम् (1.1.37) — svarAdi gaṇa and nipAta words get avyaya saṁjñā
+- sutra: स्वरादिनिपातमव्ययम्
+  id: 1.1.37
+  domain: saMjYA
+  bahiranga: 0
+  condition:
+    lp:
+      - ?nipAta
+      - ?svarAdi
+  update:
+    olp: +avyaya
+
+# 452: अव्ययादाप्सुपः (2.4.82) — sup suffixes deleted after avyaya
+# Replaces suffix with luk_sup (empty content, ?sup tag retained) so that
+# specific-suffix rules (?jas, ?am etc.) no longer match, but the window
+# structure is preserved.
+- sutra: अव्ययादाप्सुपः
+  id: 2.4.82
+  bahiranga: 2
+  condition:
+    lp: ?avyaya
+    rp: ?sup
+  update:
+    orp: =luk_sup
+
 #322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75)
 - sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
   id: 7.1.75
