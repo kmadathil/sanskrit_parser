@@ -4118,6 +4118,7 @@
         - and
         - ?aNga
         - ?Ap
+        - ?!syAw
        rp: +N
     insert:
        m: yAw
@@ -4137,6 +4138,28 @@
        m: syAw
     xform:
        l: hrasva(l)
+
+# 293: विभाषा द्वितीयातृतीयाभ्याम् (7-3-115)
+# Optionally extends SK291's syāw rule to dvitīyā and tṛtīyā (ordinal numerals).
+# When optional fires: syāw inserted → dvitīyasyai/tṛtīyasyai
+# When optional not chosen: SK290 (yāṭ) fires → dvitīyāyai/tṛtīyāyai
+-   sutra:  विभाषा द्वितीयातृतीयाभ्याम्
+    id: 7.3.115
+    optional: true
+    overrides: [7.1.12.1, 7.1.12.2, 7.1.13, 7.1.14, 7.1.15, 7.1.15.1]
+    condition:
+       lp:
+        - and
+        - ?aNga
+        - ?Ap
+        - ?dvitIyAdi
+       rp: +N
+    insert:
+       m: syAw
+    xform:
+       l: hrasva(l)
+    update:
+       olp: +syAw
 
 # 270: ङेराम्नद्याम्नीभ्यः (7-3-116)        
 -   sutra:  ङेराम्नद्याम्नीभ्यः

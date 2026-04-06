@@ -184,6 +184,10 @@ yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
 
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
+# SK293 (7.3.115): dvitīyā and tṛtīyā optionally get syāw (like sarvanāma āp) before ṅ-marked suffixes.
+# Used as [dvitIya, Ap] / [tftIya, Ap] in test fixtures (same pattern as [sarva, Ap] for sarva_A).
+dvitIya = Pratipadika("dvitIya", "pum", other_tags=["dvitIyAdi"])
+tftIya  = Pratipadika("tftIya",  "pum", other_tags=["dvitIyAdi"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
