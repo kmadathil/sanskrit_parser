@@ -134,6 +134,18 @@ Bavat   = Pratipadika("Bavat", "pum", its=["f"], other_tags=["Satf"])   # bhū+�
 Bavat_u = Pratipadika("Bavat", "pum", its=["u"])                       # u-it (no Satf) → SK425 fires → bhāvān nom sg
 pacat   = Pratipadika("pacat", "pum", its=["f"], other_tags=["Satf"])  # pac+śatṛ → pacant strong
 
+# SK445/SK446 test stems
+# Feminine (strī): NIp is passed separately as a right element (rp: ?NI triggers SK445/446).
+# xform numAgama(lc+l) receives lp = "pacat" → inserts nUM → "pacant"; joined with NIp → "pacantI".
+pacat_strI  = Pratipadika("pacat",  "strI", its=["f"], other_tags=["Satf", "Sap"])   # SK446 mandatory (class 1 śap)
+dIvyat_strI = Pratipadika("dIvyat", "strI", its=["f"], other_tags=["Satf", "Syan"])  # SK446 mandatory (class 4 śyan)
+tudat_strI  = Pratipadika("tudat",  "strI", its=["f"], other_tags=["Satf", "Sa"])    # SK445 optional  (class 6 śap)
+BAt_strI    = Pratipadika("BAt",    "strI", its=["f"], other_tags=["Satf"])           # SK445 optional  (ā-final root)
+# Neuter (napum): dual SI (from 7.1.19 O→SI) gets SK445/446; plural uses SK361 mandatory nUM.
+pacat_napum  = Pratipadika("pacat",  "napum", its=["f"], other_tags=["Satf", "Sap"])           # SK446 mandatory dual
+dIvyat_napum = Pratipadika("dIvyat", "napum", its=["f"], other_tags=["Satf", "Syan"])          # SK446 mandatory dual
+tudat_napum  = Pratipadika("tudat",  "napum", its=["f"], other_tags=["Satf", "Sa"])            # SK445 optional dual
+
 atistri = Pratipadika("atistri", "pum", other_tags=["strI_p", "pUrvastrI"])
 
 

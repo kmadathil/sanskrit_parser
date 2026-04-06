@@ -1528,6 +1528,107 @@ viBakti["pacat"] = [
     ['पचन्', 'पचन्तौ', 'पचन्तः'],       # 8 Voc  * SK361 fires; t-drop sg
 ]
 
+# ───── SK445/SK446 test stems ─────
+
+# pacat_strI (strI): class 1 śap fem. stem, SK446 mandatory nUM → always pacantī.
+# Sequence: [pacat_strI, NIp, su]. SK446 fires (lp ?Satf+?Sap, rp ?NI) → numAgama("pacat")="pacant".
+# After join: pacant+I = pacantI. Declines as nadī (ī-final feminine).
+prAtipadika["pacat_strI"] = [pacat_strI, NIp]  # noqa: F405
+viBakti["pacat_strI"] = [
+    ['पचन्ती', 'पचन्त्यौ', 'पचन्त्यः'],           # 1 Nom  * SK446 → pacantI; nadī nom sg = ī
+    ['पचन्तीम्', 'पचन्त्यौ', 'पचन्तीः'],           # 2 Acc
+    ['पचन्त्या', 'पचन्तीभ्याम्', 'पचन्तीभिः'],     # 3 Inst
+    ['पचन्त्यै', 'पचन्तीभ्याम्', 'पचन्तीभ्यः'],    # 4 Dat
+    ['पचन्त्याः', 'पचन्तीभ्याम्', 'पचन्तीभ्यः'],   # 5 Abl
+    ['पचन्त्याः', 'पचन्त्योः', 'पचन्तीनाम्'],      # 6 Gen
+    ['पचन्त्याम्', 'पचन्त्योः', 'पचन्तीषु'],       # 7 Loc
+    ['पचन्ति', 'पचन्त्यौ', 'पचन्त्यः'],            # 8 Voc  * weak vocative = pacanti
+]
+
+# pacat_napum (napum): class 1 śap neuter stem, SK446 mandatory nUM before SI (dual); SK361 for plural.
+# Nom/acc sg: pacat + su → su luk (7.1.23) → pacat → 8.2.39 final t pauses → pacat/pacad.
+# Nom/acc du: pacat + O → 7.1.19 O→SI → SK446 fires → pacant+I = pacantī (ī).
+# Nom/acc pl: pacat + jas → 7.1.20 jas→Si (sarvanAmasTAna) → SK361 fires → pacant+i = pacanti.
+prAtipadika["pacat_napum"] = pacat_napum  # noqa: F405
+viBakti["pacat_napum"] = [
+    [['पचत्', 'पचद्'], 'पचन्ती', 'पचन्ति'],   # 1 Nom  * sg pause/sandhi; du SK446; pl SK361
+    [['पचत्', 'पचद्'], 'पचन्ती', 'पचन्ति'],   # 2 Acc  * = Nom for napum
+    ['पचता', 'पचद्भ्याम्', 'पचद्भिः'],          # 3 Inst
+    ['पचते', 'पचद्भ्याम्', 'पचद्भ्यः'],          # 4 Dat
+    ['पचतः', 'पचद्भ्याम्', 'पचद्भ्यः'],          # 5 Abl
+    ['पचतः', 'पचतोः', 'पचताम्'],                 # 6 Gen
+    ['पचति', 'पचतोः', 'पचत्सु'],                  # 7 Loc
+    [['पचत्', 'पचद्'], 'पचन्ती', 'पचन्ति'],   # 8 Voc  * = Nom for napum
+]
+
+# dIvyat_strI (strI): class 4 śyan fem. stem, SK446 mandatory nUM → always dīvyantī.
+# Sequence: [dIvyat_strI, NIp, su]. SK446 fires (lp ?Satf+?Syan, rp ?NI) → numAgama("dIvyat")="dIvyant".
+prAtipadika["dIvyat_strI"] = [dIvyat_strI, NIp]  # noqa: F405
+viBakti["dIvyat_strI"] = [
+    ['दीव्यन्ती', 'दीव्यन्त्यौ', 'दीव्यन्त्यः'],           # 1 Nom  * SK446 → dIvyantI
+    ['दीव्यन्तीम्', 'दीव्यन्त्यौ', 'दीव्यन्तीः'],           # 2 Acc
+    ['दीव्यन्त्या', 'दीव्यन्तीभ्याम्', 'दीव्यन्तीभिः'],     # 3 Inst
+    ['दीव्यन्त्यै', 'दीव्यन्तीभ्याम्', 'दीव्यन्तीभ्यः'],    # 4 Dat
+    ['दीव्यन्त्याः', 'दीव्यन्तीभ्याम्', 'दीव्यन्तीभ्यः'],   # 5 Abl
+    ['दीव्यन्त्याः', 'दीव्यन्त्योः', 'दीव्यन्तीनाम्'],      # 6 Gen
+    ['दीव्यन्त्याम्', 'दीव्यन्त्योः', 'दीव्यन्तीषु'],       # 7 Loc
+    ['दीव्यन्ति', 'दीव्यन्त्यौ', 'दीव्यन्त्यः'],            # 8 Voc
+]
+
+# dIvyat_napum (napum): class 4 śyan neuter, SK446 mandatory dual; SK361 plural.
+prAtipadika["dIvyat_napum"] = dIvyat_napum  # noqa: F405
+viBakti["dIvyat_napum"] = [
+    [['दीव्यत्', 'दीव्यद्'], 'दीव्यन्ती', 'दीव्यन्ति'],   # 1 Nom
+    [['दीव्यत्', 'दीव्यद्'], 'दीव्यन्ती', 'दीव्यन्ति'],   # 2 Acc
+    ['दीव्यता', 'दीव्यद्भ्याम्', 'दीव्यद्भिः'],              # 3 Inst
+    ['दीव्यते', 'दीव्यद्भ्याम्', 'दीव्यद्भ्यः'],             # 4 Dat
+    ['दीव्यतः', 'दीव्यद्भ्याम्', 'दीव्यद्भ्यः'],             # 5 Abl
+    ['दीव्यतः', 'दीव्यतोः', 'दीव्यताम्'],                    # 6 Gen
+    ['दीव्यति', 'दीव्यतोः', 'दीव्यत्सु'],                     # 7 Loc
+    [['दीव्यत्', 'दीव्यद्'], 'दीव्यन्ती', 'दीव्यन्ति'],   # 8 Voc
+]
+
+# tudat_strI (strI): class 6 śap (?Sa) fem. stem, SK445 optional nUM → [tudantī, tudatī].
+# Sequence: [tudat_strI, NIp, su]. SK446 does NOT fire (?Sa ≠ ?Sap/?Syan); SK445 optional (rp ?NI).
+prAtipadika["tudat_strI"] = [tudat_strI, NIp]  # noqa: F405
+viBakti["tudat_strI"] = [
+    [['तुदन्ती', 'तुदती'], ['तुदन्त्यौ', 'तुदत्यौ'], ['तुदन्त्यः', 'तुदत्यः']],     # 1 Nom  * SK445 optional
+    [['तुदन्तीम्', 'तुदतीम्'], ['तुदन्त्यौ', 'तुदत्यौ'], ['तुदन्तीः', 'तुदतीः']],   # 2 Acc
+    [['तुदन्त्या', 'तुदत्या'], ['तुदन्तीभ्याम्', 'तुदतीभ्याम्'], ['तुदन्तीभिः', 'तुदतीभिः']],   # 3 Inst
+    [['तुदन्त्यै', 'तुदत्यै'], ['तुदन्तीभ्याम्', 'तुदतीभ्याम्'], ['तुदन्तीभ्यः', 'तुदतीभ्यः']], # 4 Dat
+    [['तुदन्त्याः', 'तुदत्याः'], ['तुदन्तीभ्याम्', 'तुदतीभ्याम्'], ['तुदन्तीभ्यः', 'तुदतीभ्यः']], # 5 Abl
+    [['तुदन्त्याः', 'तुदत्याः'], ['तुदन्त्योः', 'तुदत्योः'], ['तुदन्तीनाम्', 'तुदतीनाम्']],    # 6 Gen
+    [['तुदन्त्याम्', 'तुदत्याम्'], ['तुदन्त्योः', 'तुदत्योः'], ['तुदन्तीषु', 'तुदतीषु']],      # 7 Loc
+    [['तुदन्ति', 'तुदति'], ['तुदन्त्यौ', 'तुदत्यौ'], ['तुदन्त्यः', 'तुदत्यः']],     # 8 Voc
+]
+
+# tudat_napum (napum): class 6 śap (?Sa) neuter, SK445 optional dual; SK361 mandatory plural.
+prAtipadika["tudat_napum"] = tudat_napum  # noqa: F405
+viBakti["tudat_napum"] = [
+    [['तुदत्', 'तुदद्'], ['तुदती', 'तुदन्ती'], 'तुदन्ति'],   # 1 Nom  * du SK445 optional; pl SK361
+    [['तुदत्', 'तुदद्'], ['तुदती', 'तुदन्ती'], 'तुदन्ति'],   # 2 Acc
+    ['तुदता', 'तुदद्भ्याम्', 'तुदद्भिः'],                      # 3 Inst
+    ['तुदते', 'तुदद्भ्याम्', 'तुदद्भ्यः'],                      # 4 Dat
+    ['तुदतः', 'तुदद्भ्याम्', 'तुदद्भ्यः'],                      # 5 Abl
+    ['तुदतः', 'तुदतोः', 'तुदताम्'],                              # 6 Gen
+    ['तुदति', 'तुदतोः', 'तुदत्सु'],                               # 7 Loc
+    [['तुदत्', 'तुदद्'], ['तुदती', 'तुदन्ती'], 'तुदन्ति'],   # 8 Voc
+]
+
+# BAt_strI (strI): ā-final root fem. stem (no ?Sap/?Syan), SK445 optional nUM → [bhāntī, bhātī].
+# Sequence: [BAt_strI, NIp, su]. SK446 does NOT fire (no ?Sap/?Syan); SK445 optional (rp ?NI).
+prAtipadika["BAt_strI"] = [BAt_strI, NIp]  # noqa: F405
+viBakti["BAt_strI"] = [
+    [['भान्ती', 'भाती'], ['भान्त्यौ', 'भात्यौ'], ['भान्त्यः', 'भात्यः']],         # 1 Nom  * SK445 optional
+    [['भान्तीम्', 'भातीम्'], ['भान्त्यौ', 'भात्यौ'], ['भान्तीः', 'भातीः']],       # 2 Acc
+    [['भान्त्या', 'भात्या'], ['भान्तीभ्याम्', 'भातीभ्याम्'], ['भान्तीभिः', 'भातीभिः']],     # 3 Inst
+    [['भान्त्यै', 'भात्यै'], ['भान्तीभ्याम्', 'भातीभ्याम्'], ['भान्तीभ्यः', 'भातीभ्यः']],  # 4 Dat
+    [['भान्त्याः', 'भात्याः'], ['भान्तीभ्याम्', 'भातीभ्याम्'], ['भान्तीभ्यः', 'भातीभ्यः']], # 5 Abl
+    [['भान्त्याः', 'भात्याः'], ['भान्त्योः', 'भात्योः'], ['भान्तीनाम्', 'भातीनाम्']],      # 6 Gen
+    [['भान्त्याम्', 'भात्याम्'], ['भान्त्योः', 'भात्योः'], ['भान्तीषु', 'भातीषु']],        # 7 Loc
+    [['भान्ति', 'भाति'], ['भान्त्यौ', 'भात्यौ'], ['भान्त्यः', 'भात्यः']],         # 8 Voc
+]
+
 # Sreyas (pum): Iyasun (comparative suffix) is u-it → ugit → SK361 (7.1.70) nUM fires
 # before sarvanamasthāna (su/am/au/jas). Strong forms: śreyāṃs- base (nom/acc sg+du, nom pl,
 # voc du+pl). Weak/bha forms: śreyas- (acc pl, inst–loc).

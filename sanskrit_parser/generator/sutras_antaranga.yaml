@@ -4505,6 +4505,60 @@
     lc: numAgama(lc+l)
     l: null
 
+# 445: आच्छीनद्योर्नुम् (7.1.80) — optional nUM for śatṛ stems before SI (neuter dual via 7.1.19) or NI (nadī feminine)
+# Fires for: (a) neuter dual: rp ?SI (from 7.1.19 O→SI substitution), lp ?Satf + ?!abhyasta
+#            (b) feminine nadī: rp ?NI (NIp suffix), lp ?Satf + ?!abhyasta
+# abhyasta (class 3 reduplicated) stems are excluded — they use SK444 before sarvanāmasthāna only.
+# SK446 overrides for ?Sap (class 1 śap) and ?Syan (class 4 śyan), making nUM mandatory.
+# xform: lp = "pacat" → numAgama("pacat") = "pacant"; l=null. Joined with rp (NI/SI) → "pacantI"/"pacantI".
+- sutra: आच्छीनद्योर्नुम्
+  id: 7.1.80
+  optional: true
+  condition:
+    - lp:
+        - and
+        - ?Satf
+        - ?!abhyasta
+      rp: ?SI
+    - lp:
+        - and
+        - ?Satf
+        - ?!abhyasta
+      rp: ?NI
+  xform:
+    lc: numAgama(lc+l)
+    l: null
+
+# 446: शप्श्यनोर्नित्यम् (7.1.81) — mandatory nUM for class 1 śap (?Sap) and class 4 śyan (?Syan) śatṛ stems
+# Class 6 (?Sa) remains optional via SK445. Overrides SK445.
+- sutra: शप्श्यनोर्नित्यम्
+  id: 7.1.81
+  overrides: 7.1.80
+  condition:
+    - lp:
+        - and
+        - ?Satf
+        - ?Sap
+      rp: ?NI
+    - lp:
+        - and
+        - ?Satf
+        - ?Syan
+      rp: ?NI
+    - lp:
+        - and
+        - ?Satf
+        - ?Sap
+      rp: ?SI
+    - lp:
+        - and
+        - ?Satf
+        - ?Syan
+      rp: ?SI
+  xform:
+    lc: numAgama(lc+l)
+    l: null
+
 #322: अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः (7-1-75)
 - sutra:  अस्थिदधिसक्थ्यक्ष्णामनङुदात्तः
   id: 7.1.75

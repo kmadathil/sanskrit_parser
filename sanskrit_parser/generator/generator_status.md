@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 444 — 7.1.79 वा नपुंसकस्य (optional nUM for neuter abhyasta śatṛ stems before sarvnāmasthāna plural)
-**Next to be implemented:** SK445 (7.1.80 — āc-chīnadyoḥ nuM)
+**Last implemented:** SK 446 — 7.1.81 शप्श्यनोर्नित्यम् (mandatory nUM for class 1 śap and class 4 śyan śatṛ stems before SI/nadī)
+**Next to be implemented:** SK447
 
 ---
 
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 183 |
+| SK-numbered sutras, implemented | 185 |
 | SK-numbered sutras, skipped/deferred | 54 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 113 |
+| Stems with full vibhakti test tables | 120 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -208,6 +208,8 @@ The "Forms affected" column uses the convention:
 | 442 | 7.4.48 | अपो भि | p→t before bhi-initial suffix for ?ap (nityabahuvacana feminine); 8.4.53 gives t→d before voiced bh → adbhiḥ, adbhyaḥ |
 | 443 | 8.2.68 | अहन् | n→ru at pada-end for ?ahan (neuter day stem); ahaḥ nom/acc/voc sg via ru→visarga; apavāda of 8.2.7 (n-lopa) |
 | 444 | 7.1.79 | वा नपुंसकस्य | Optional nUM for neuter abhyasta Śatṛ stems before sarvnāmasthāna (plural only); apavāda of SK427 (7.1.78); ददन्ति/ददति both valid for neuter pl of dadat |
+| 445 | 7.1.80 | आच्छीनद्योर्नुम् | Optional nUM for śatṛ stems before SI (neuter dual, via 7.1.19 O→SI) and nadī-type feminine (lp ?nadI); SK446 overrides for ?Sap/?Syan making nUM mandatory |
+| 446 | 7.1.81 | शप्श्यनोर्नित्यम् | Mandatory nUM for class 1 śap (?Sap) and class 4 śyan (?Syan) śatṛ stems before SI/nadī; overrides SK445; class 6 (?Sa) remains optional via SK445 |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
 | 438 | 8.2.81 | एत ईद्बहुवचने | adas nom/acc/voc pl: pada-level rule, ade→amI (amī); out of SK order |
@@ -487,6 +489,13 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | dadat_napum | n | -at stem (śatṛ f-it, abhyasta napum, SK444) | SK444 optional nUM → pl: ददन्ति/ददति both valid; sg/du: no nUM (not sarvnāmasthāna for napum) |
 | Bavat | m | -at stem (śatṛ f-it, regular, SK361) | SK361 +f block fires nUM → bhavant strong forms; nom sg भवन् (no SK425 — not u-it) |
 | pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
+| pacat_strI | f | -antī stem (śatṛ class 1, SK446) | SK446 mandatory nUM → always pacantī; nadī paradigm |
+| pacat_napum | n | -at stem (śatṛ class 1, SK446+SK361) | du SK446 mandatory → पचन्ती; pl SK361 mandatory → पचन्ति |
+| dIvyat_strI | f | -antī stem (śatṛ class 4, SK446) | SK446 mandatory nUM (?Syan) → always dīvyantī |
+| dIvyat_napum | n | -at stem (śatṛ class 4, SK446+SK361) | du SK446 mandatory → दीव्यन्ती; pl SK361 mandatory → दीव्यन्ति |
+| tudat_strI | f | -atī/-antī stem (śatṛ class 6, SK445) | SK445 optional (?Sa not ?Sap) → [tudantī, tudatī] both valid |
+| tudat_napum | n | -at stem (śatṛ class 6, SK445+SK361) | du SK445 optional → [तुदती, तुदन्ती]; pl SK361 mandatory → तुदन्ति |
+| BAt_strI | f | -ātī/-āntī stem (śatṛ ā-root, SK445) | SK445 optional (no ?Sap/?Syan) → [bhāntī, bhātī] both valid |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
 | idam_strI | f | sarvanāma (idam feminine) | SK441 (7.2.110): nom sg iyam; partial table (nom sg only) |
