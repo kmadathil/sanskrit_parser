@@ -1,4 +1,5 @@
 from sanskrit_parser.generator.pratipadika import Pratipadika
+from sanskrit_parser.generator.pratyaya import Pratyaya
 
 # svarAdi gaṇa (1.1.37) — avyaya (indeclinable) words
 # These do not take vibhakti suffixes (SK452: 2.4.82)
