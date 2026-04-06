@@ -113,6 +113,7 @@ class PaninianObject(SanskritObject):
             if objects[0][0].hasTag("UW"):
                  so.setTag("UW")
             
+        
         # Custom tag propagation for rule implementation
         for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw", "aYc", "dfS"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
@@ -170,6 +171,12 @@ class PaninianObject(SanskritObject):
         for t in ["sarvanAma"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t + "_pada")
+
+        # Propagate sam_pada/saha_pada/tiras_pada for aYc_u forms
+        for t in ["sam", "saha", "tiras"]:
+            if objects[0][0].hasTag(t):
+                so.setTag(t+"_pada")
+
 
         # vApadAntasya / monoDatoH must block further naScApadAntasya on pada creation
         for t in ["na_pada"]:

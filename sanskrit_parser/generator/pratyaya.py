@@ -51,13 +51,13 @@ sip = Pratyaya("si", its=["p"], other_tags=["tiN", "sArvaDAtuka"])
 
 
 # nIpAtAs
-AN = Pratyaya("A", its=["N"], other_tags=["nipAta", "upasarga", "pada"])
-mAN = Pratyaya("mA", its=["N"], other_tags=["nipAta", "upasarga", "pada"])
-upa = Pratyaya("upa", other_tags=["nipAta", "upasarga", "pada"])
-pra = Pratyaya("pra", other_tags=["nipAta", "upasarga", "pada"])
-ava = Pratyaya("ava", other_tags=["nipAta", "upasarga", "pada"])
-ud = Pratyaya("ud", other_tags=["nipAta", "upasarga", "pada"])
-ati = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
+AN_upasarga = Pratyaya("A", its=["N"], other_tags=["nipAta", "upasarga", "pada"])
+mAN_upasarga = Pratyaya("mA", its=["N"], other_tags=["nipAta", "upasarga", "pada"])
+upa_upasarga = Pratyaya("upa", other_tags=["nipAta", "upasarga", "pada"])
+pra_upasarga = Pratyaya("pra", other_tags=["nipAta", "upasarga", "pada"])
+ava_upasarga = Pratyaya("ava", other_tags=["nipAta", "upasarga", "pada"])
+ud_upasarga = Pratyaya("ud", other_tags=["nipAta", "upasarga", "pada"])
+ati_upasarga = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 
 
 # bha when applied to prAtipadikas only!

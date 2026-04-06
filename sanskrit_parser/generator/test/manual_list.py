@@ -2,6 +2,7 @@
 from sanskrit_parser.generator.pratyaya import *
 from sanskrit_parser.generator.dhatu import *
 from sanskrit_parser.generator.pratipadika import *
+from sanskrit_parser.generator.avyaya import *
 
 test_list_slp1 = [
     ("kArt*", "tikaH", ["kArtikaH", "kArttikaH"]),
@@ -40,7 +41,7 @@ test_list_slp1 = [
     ("brah*", "mA", ["brahmA", "brahmmA"]),
     ((mud, Ric), Sap, tip, "modayati"),
     (BU, Sap, tip, "Bavati"),
-    (ava, (AN, "ihi"), "avehi"), # 6.1.95
+    (ava_upasarga, (AN_upasarga, "ihi"), "avehi"), # 6.1.95
     ("SivAya", "om", "SivAyom"), # 6.1.95
     (kavi, O, "kavI"),
     (catur, Am, avasAna, ['caturRAm .', 'caturRnAm .']), #8.4.1
@@ -100,10 +101,10 @@ test_list_devanagari = [
     ("भवान्", "चरति", "भवांश्चरति"),
     ("सन्", "शम्भुः", ["सञ्च्छम्भुः", 'सञ्शम्भुः', 'सञ्च्शम्भुः']),
     ("स्व", "छाया", "स्वच्छाया"),
-    (AN, "छाया", "आच्छाया"),
-    (AN, ((Cad, Ric), Sap, tip), "आच्छादयति"),
+    (AN_upasarga, "छाया", "आच्छाया"),
+    (AN_upasarga, ((Cad, Ric), Sap, tip), "आच्छादयति"),
 #    (AN, "छादयति", "आच्छादयति"),
-    (mAN, "छिदत्", "माच्छिदत्"),
+    (mAN_upasarga, "छिदत्", "माच्छिदत्"),
     ("सा", "छाया", ["साच्छाया", "साछाया"]),
     ("कार्*", "यम्", ["कार्य्यम्", "कार्यम्"]),
     ("आदित्य्", "य", ["आदित्य", "आदित्य्य"]),
@@ -127,9 +128,9 @@ test_list_devanagari = [
     ("आ", (veY_smp, yak), "ओय"),
     ("प्र", (eDa, Sap, "te"), "प्रैधते"),
     ("उप", (iR,  tip), "उपैति"),
-    (pra, (fcCa, Sap, tip), "प्रार्च्छति"),
+    (pra_upasarga, (fcCa, Sap, tip), "प्रार्च्छति"),
     ("ब्रह्म", "ऋषि", "ब्रह्मर्षि"),
-    (AN, ((Cad, Ric), Sap, tip), "आच्छादयति"),
+    (AN_upasarga, ((Cad, Ric), Sap, tip), "आच्छादयति"),
     (("राम", su), "आसीत्", "राम आसीत्"),
     (gfj, Sap, tip, "गर्जति"),
     (vid, tip, "वेत्ति"),
@@ -146,7 +147,7 @@ test_list_devanagari = [
     ("पुनर्", "रमते", "पुना रमते"),
     (("अग्नि", su), "रोचते", "अग्नी रोचते"),
     # FIXME: correct when we can do uttizTati, move to utTAna
-    (ud, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
+    (ud_upasarga, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
     ("तृंह्*", "अनीय", su, avasAna, "तृंहणीयः ।"), # 8.4.2
     # SK382-395: yuṣmad/asmad full declension

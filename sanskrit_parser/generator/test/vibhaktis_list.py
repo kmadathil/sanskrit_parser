@@ -944,7 +944,7 @@ viBakti["daDfc"] = [
 # Nom sg: pratyaYc → 8.2.23 del c (Yc cluster) → pratyaY → 8.2.62 Y→N → प्रत्यङ्.
 # Inst pl: pratyac (weak) → 8.2.39 c→j → 8.2.62 j→g → pratyag+Bis → प्रत्यग्भिः.
 # Loc pl: pratyac → c→j→g → g+su → g→k → k+ṣu (8.3.57) → प्रत्यक्षु.
-prAtipadika["pratyac"] = [prati_pada, aYc_u, kvin]   # noqa: F405  prati + inner(√añc+kvin); nested so SK415 fires in inner prakriya first
+prAtipadika["pratyac"] = [prati, su, aYc_u, kvin]   # noqa: F405  prati + aYc → pratyac (6.1.77); kvin → stem
 viBakti["pratyac"] = [
     ['प्रत्यङ्', 'प्रत्यञ्चौ', 'प्रत्यञ्चः'],      # 1 Nom  * nom sg: 8.2.23+8.2.62; du/pl: SK361 num
     ['प्रत्यञ्चम्', 'प्रत्यञ्चौ', 'प्रतीचः'],       # 2 Acc  * sg/du: SK361 num; pl (Sas): bha → pratīcaḥ
@@ -957,7 +957,7 @@ viBakti["pratyac"] = [
 ]
 
 # prāñc (m.) — añc-type: weak stem prāc, strong prāñc (SK361 inserts Y). Same paradigm as pratyac.
-prAtipadika["prAc"] = [pra_pada, aYc_u, kvin]   # noqa: F405  pra + inner(√añc+kvin) → prAc (6.1.101); nested structure
+prAtipadika["prAc"] = [pra, su, aYc_u, kvin]   # noqa: F405  pra + su → SK452 deletes su; pra+aYc → prAc (6.1.101); kvin → stem
 viBakti["prAc"] = [
     ['प्राङ्', 'प्राञ्चौ', 'प्राञ्चः'],      # 1 Nom
     ['प्राञ्चम्', 'प्राञ्चौ', 'प्राचः'],       # 2 Acc
@@ -970,7 +970,7 @@ viBakti["prAc"] = [
 ]
 
 # udañc (m.) — añc-type: weak stem udac, strong udañc.
-prAtipadika["udac"] = [ud_pada, in_context(aYc_u,"udanc"), kvin]  
+prAtipadika["udac"] = [ud, su, in_context(aYc_u,"udanc"), kvin]  
 viBakti["udac"] = [
     ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],           # 1 Nom  — strong (SK361)
     ['उदञ्चम्', 'उदञ्चौ', 'उदीचः'],           # 2 Acc  — sg/du strong; pl (Sas) bha → udīcaḥ (SK420)
@@ -983,7 +983,7 @@ viBakti["udac"] = [
 ]
 
 # tiryañc (m.) — añc-type: weak stem tiraSc, strong tiryañc.
-prAtipadika["tiryac"] = [tiras_pada, aYc_u, kvin]   # noqa: F405  pre-formed tiryac (tiras+ac); SK416/417 don't fire (no ?DAtu); bha form tiryacā
+prAtipadika["tiryac"] = [tiras, su, aYc_u, kvin]   # noqa: F405  tiras + su → SK452 deletes su; tiras+aYc → tiryac; kvin → stem
 viBakti["tiryac"] = [
     ['तिर्यङ्', 'तिर्यञ्चौ', 'तिर्यञ्चः'],
     ['तिर्यञ्चम्', 'तिर्यञ्चौ', 'तिरश्चः'],
@@ -997,7 +997,7 @@ viBakti["tiryac"] = [
 
 # samyañc (m.) — añc-type: sam- → sami- (SK421, bahiranga:1 before SK417); bha → samī (SK417 i→ī).
 # Strong: samyañc (sam+i → yaṇ i+a→y → samy+añc); weak: samyac; bha: samīc.
-prAtipadika["samyac"] = [sam_pada, aYc_u, kvin]   # noqa: F405
+prAtipadika["samyac"] = [sam, su, aYc_u, kvin]   # noqa: F405
 viBakti["samyac"] = [
     ['सम्यङ्', 'सम्यञ्चौ', 'सम्यञ्चः'],         # 1 Nom  — strong (SK361 nUM)
     ['सम्यञ्चम्', 'सम्यञ्चौ', 'समीचः'],           # 2 Acc  — sg/du strong; pl bha → samīcaḥ
@@ -1011,7 +1011,7 @@ viBakti["samyac"] = [
 
 # sadhryañc (m.) — añc-type: saha- → sadhrī- (SK422, bahiranga:1); bha: sadhrī+c → sadhrīcā (SK417 no-op).
 # Strong: sadhryañc (sadhrī → yaṇ ī+a→y → sadhry+añc); weak: sadhryac; bha: sadhrīc.
-prAtipadika["saDryac"] = [saha_pada, aYc_u, kvin]   # noqa: F405
+prAtipadika["saDryac"] = [saha, su, aYc_u, kvin]   # noqa: F405
 viBakti["saDryac"] = [
     ['सध्र्यङ्', 'सध्र्यञ्चौ', 'सध्र्यञ्चः'],       # 1 Nom  — strong (SK361 nUM)
     ['सध्र्यञ्चम्', 'सध्र्यञ्चौ', 'सध्रीचः'],         # 2 Acc  — sg/du strong; pl bha → sadhrīcaḥ

@@ -3705,7 +3705,7 @@
   id: 6.3.93
   bahiranga: 1
   condition:
-    lp: ?sam
+    lp: ?sam_pada
     rp:
       - and
       - ?aYc
@@ -3723,7 +3723,7 @@
   id: 6.3.95
   bahiranga: 1
   condition:
-    lp: ?saha
+    lp: ?saha_pada
     rp:
       - and
       - ?aYc
@@ -3737,13 +3737,13 @@
 - sutra: तिरसस्तिर्यलोपे
   id: 6.3.94
   condition:
-    - lp: ?tiras
+    - lp: ?tiras_pada
       rp:
         - and
         - ?aYc
         - ?kvin_pada
       r: a
-    - lp: ?tiras
+    - lp: ?tiras_pada
       rp:
         - and
         - ?aYc
