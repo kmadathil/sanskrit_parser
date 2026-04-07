@@ -318,6 +318,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 2282 | 7.2.116 | अत उपधायाः | a-upadhā anga before Ñit/Ṇit suffix: vṛddhi of upadhā a |
 | 2335 | 8.3.13 | ढो ढे लोपः | ḍh before ḍh: lopa of first ḍh |
 | 297 | 7.3.117 | इदुद्भ्याम् | i/u-final nadī anga before Ṅi: suffix → ām (nadī loc sg: nadyām, vadhvām); overrides SK256 (7.3.118) and 7.3.116 |
+| 293 | 7.3.115 | विभाषा द्वितीयातृतीयाभ्याम् | Optionally extends SK291 syāṭ to dvitīyā/tṛtīyā f. dat sg: dvitīyasyai/tṛtīyasyai (optional) vs dvitīyāyai/tṛtīyāyai (yāṭ) |
+| 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 
 ---
 
@@ -354,8 +356,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | For later | ahna/ahan in compounds |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
 | 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |
-| 293 | 7.3.115 | विभाषा द्वितीयातृतीयाभ्याम् | For later | sarvanāma f. dat/ins |
-| 307 | 8.4.12 | एकाजुत्तरपदे णः | For later | ṇatva in compounds |
 | 321 | 7.1.74 | तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य | For later | Gālava's option for neuter |
 | 323 | 1.1.48 | एच इग्घ्रस्वादेशे | Handled elsewhere | `hrasva()` in paribhāṣā.py |
 | 348 | 1.1.21 | आद्यन्तवदेकस्मिन् | Natural | Falls out of engine behaviour |

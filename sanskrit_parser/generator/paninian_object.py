@@ -8,6 +8,8 @@ Derived from SanskritObject
 """
 from indic_transliteration import sanscript
 from sanskrit_parser.base.sanskrit_base import SanskritObject
+
+_SLP1_VOWELS = set("aAiIuUfFxXeEoO")
 import logging
 logger = logging.getLogger(__name__)
 
@@ -72,9 +74,19 @@ class PaninianObject(SanskritObject):
         # 1.4.14 suptiNantaM padam
         if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN") or objects[0][-1].hasTag("pada"):
             so.setTag("pada")
+            # SK307 (8.4.12): tag the pada if its anga is monosyllabic (ekāc).
+            # Use the ?ekac tag (set at Pratipadika init and preserved through
+            # phonological transformations) rather than re-counting vowels in
+            # the post-guṇa/vṛddhi string (which may have lost its vowel).
+            if objects[0][0].hasTag("ekac"):
+                so.setTag("ekac_anga_pada")
         # 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam
         elif objects[0][0].hasTag("aNga"):
             so.setTag("aNga")
+            # Propagate ekac to anga results (e.g. kvin forms) so SK307 can
+            # fire when the anga later takes a sup/tiN suffix.
+            if sum(1 for ch in s if ch in _SLP1_VOWELS) == 1:
+                so.setTag("ekac")
         # 3.1.32 sannAdyantA dhAtavaH
         if objects[0][-1].hasTag("sannAdi"):
             so.setTag("DAtu")
@@ -119,9 +131,18 @@ class PaninianObject(SanskritObject):
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
                 so.setTag(t)
         # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
-        for t in ["samAsa", "vasupada", "udanc", "adas"]:
+        for t in ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t)
+        # Final compound merge: when L has samAsaPurva+pada and R has samAsa+pada,
+        # the compound is complete — set samasta_pada and consume the compound tags.
+        if (objects[0][0].hasTag("samAsaPurva") and objects[0][0].hasTag("pada")
+                and objects[0][-1].hasTag("samAsa") and objects[0][-1].hasTag("pada")):
+            so.setTag("samasta_pada")
+            if so.hasTag("samAsa"):
+                so.deleteTag("samAsa")
+            if so.hasTag("samAsaPurva"):
+                so.deleteTag("samAsaPurva")
         # Propagate stem-class tags needed for pada-internal sandhi rules
         for t in ["han"]:
             if objects[0][0].hasTag(t):
@@ -132,6 +153,10 @@ class PaninianObject(SanskritObject):
         for t in ["trc", "trn", "kvin", "kvip", "kaY"]:
             if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
                 so.setTag(t)
+        # Propagate samasta_Ratva from uttara-pada to merged compound as samasta_Ratva_pada
+        for t in ["samasta_Ratva"]:
+            if objects[0][-1].hasTag(t):
+                so.setTag(t + "_pada")
         for t in ["NI", "Ap", 'strI_abs']:
             if objects[0][-1].hasTag(t):
                 so.setTag("strI")

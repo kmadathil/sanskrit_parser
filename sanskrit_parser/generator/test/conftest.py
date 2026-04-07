@@ -261,3 +261,13 @@ def pytest_generate_tests(metafunc):
         for v in samAsa["pum"]:
             samAsa_pum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v], stem_key=v))
         metafunc.parametrize("samAsa_pum", samAsa_pum_list)
+    if 'samAsa_strI' in metafunc.fixturenames:
+        samAsa_stri_list = []
+        for v in samAsa["strI"]:
+            samAsa_stri_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v], stem_key=v))
+        metafunc.parametrize("samAsa_strI", samAsa_stri_list)
+    if 'samAsa_napum' in metafunc.fixturenames:
+        samAsa_napum_list = []
+        for v in samAsa["napum"]:
+            samAsa_napum_list.extend(generate_vibhakti(prAtipadika[v], viBakti[v], stem_key=v))
+        metafunc.parametrize("samAsa_napum", samAsa_napum_list)

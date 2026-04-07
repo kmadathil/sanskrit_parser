@@ -161,6 +161,31 @@ class CustomActionSamasa(Action):
             getattr(namespace, "pointer")[-1].append(in_compound(globals()[v]))  # noqa: F405
 
 
+class CustomActionPurvaPada(Action):
+    """Like CustomAction but wraps each looked-up pratipadika with as_purva_pada().
+
+    Used for -u / --purva-pada: marks a pratipadika as the pūrva-pada in a
+    compound by deep-copying and setting the ?samAsaPurva tag.
+    """
+    def __init__(self, option_strings, dest, nargs=None, **kwargs):
+        super(CustomActionPurvaPada, self).__init__(option_strings, dest, nargs, **kwargs)
+        logger.debug(f"Initializing CustomActionPurvaPada {option_strings}, {dest}")
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        logger.debug('%r %r %r' % (namespace, values, option_string))
+        global last_option
+        assert not last_option, f"Option {option_string} added after avasana"
+        if getattr(namespace, self.dest) is None:
+            _n = []
+            setattr(namespace, self.dest, _n)
+            setattr(namespace, "pointer", [_n])
+        if isinstance(values, str):
+            values = [values]
+        for v in values:
+            assert v in globals(), f"{v} is not defined!"
+            getattr(namespace, "pointer")[-1].append(as_purva_pada(globals()[v]))  # noqa: F405
+
+
 class CustomActionString(Action):
     def __init__(self, option_strings, dest, nargs=None, encoding=sanscript.SLP1, **kwargs):
         # if nargs is not None:
@@ -218,6 +243,7 @@ def get_args(argv=None):
     parser.add_argument('-d', '--dhatu', dest="inputs", action=CustomAction)
     parser.add_argument('-t', '--pratipadika', dest="inputs", action=CustomAction)
     parser.add_argument('-m', '--samasta-pratipadika', nargs="+", dest="inputs", action=CustomActionSamasa)
+    parser.add_argument('-u', '--purva-pada', nargs="+", dest="inputs", action=CustomActionPurvaPada)
     parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=sanscript.SLP1, action=CustomActionString)
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")

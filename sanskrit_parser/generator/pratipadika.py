@@ -20,6 +20,12 @@ class Pratipadika(PaninianObject):
         # self.setTag("aNga")
         for t in (other_tags if other_tags is not None else []):
             self.setTag(t)
+        # Auto-tag monosyllabic pratipadikas (ekāc) — survives phonological
+        # transformations (update() preserves tags) so downstream rules can
+        # check ?ekac even after guṇa/vṛddhi strips the vowel from the string.
+        _vowels = set("aAiIuUfFxXeEoO")
+        if sum(1 for ch in self.canonical() if ch in _vowels) == 1:
+            self.setTag("ekac")
 
     def anta(self):
         return self.canonical()[-1]
@@ -39,6 +45,14 @@ def in_context(p, tag):
 
 def in_compound(p):
     return in_context(p, "samAsa")
+
+def as_purva_pada(p):
+    """Return a deep copy of pratipadika p with samAsaPurva tag set.
+
+    Marks the pūrva-pada in a compound so that join_objects() can detect
+    the final compound merge (samAsaPurva+pada + samAsa+pada → samasta_pada).
+    """
+    return in_context(p, "samAsaPurva")
 
 
 rAma = Pratipadika("rAma", "pum")
@@ -367,3 +381,14 @@ rAj_kvip    = Pratipadika("rAj", "pum", other_tags=["DAtu", "kvip", "rAj", "vraS
 # SK414 (6.4.130) test pratipadikas — pādaḥ pat
 su_purva    = Pratipadika("su", "pum")                                                    # su — pūrva-pada for supAd compound
 pAd_ut      = Pratipadika("pAd", "pum")                                                    # pāda in compound form (terminal a dropped); SK414 shortens pAd→pad when bha
+
+# SK307 (8.4.12) test pratipadikas — एकाजुत्तरपदे णः
+
+# Component pratipadikas for dynamic compound test: Sūrpa (m.) + naKī (f.)
+# The compound SūrpanaKī should NOT get Ratva because it is a samasta (compound).
+SUrpa = Pratipadika("SUrpa", "pum")   # śūrpa (winnowing basket), m. a-stem
+naKI  = Pratipadika("naKI",  "strI", other_tags=["NI"])  # naḳī (basket-maker's wife), f. ī-stem
+
+# Positive test: kṣīra (milk) + monosyllabic uttara-pada with n → ṇatva via SK307
+kzIra = Pratipadika("kzIra", "napum")  # kṣīra (milk), neuter a-stem
+pa = Pratipadika("pa", "napum", other_tags=["samAsa"])  # monosyllabic uttara-pada (pā = hand)

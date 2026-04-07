@@ -1871,6 +1871,37 @@ viBakti["supAd"] = [
 ]
 
 # samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
+# SK307 negative test: Sūrpa + naKī compound → SūrpanaKī
+# The compound has ?samasta_pada after merge, so 8.4.1/8.4.2 Ratva must NOT fire.
+# Expected: regular ī-stem inflection with Sūrpa- prefix, no Ratva.
+prAtipadika["SUrpanaKI"] = [as_purva_pada(SUrpa), luk_sup, in_compound(naKI)]   # noqa: F405
+viBakti["SUrpanaKI"] = [
+    ["शूर्पनखी", "शूर्पनख्यौ", "शूर्पनख्यः"],                     # 1 Nom  ī-stem, no Ratva (न not ण)
+    ["शूर्पनखीम्", "शूर्पनख्यौ", "शूर्पनखीः"],  # 2 Acc
+    ["शूर्पनख्या", "शूर्पनखीभ्याम्", "शूर्पनखीभिः"],               # 3 Inst
+    ["शूर्पनख्यै", "शूर्पनखीभ्याम्", "शूर्पनखीभ्यः"],              # 4 Dat
+    ["शूर्पनख्याः", "शूर्पनखीभ्याम्", "शूर्पनखीभ्यः"],             # 5 Abl
+    ["शूर्पनख्याः", "शूर्पनख्योः", "शूर्पनखीनाम्"],                # 6 Gen
+    ["शूर्पनख्याम्", "शूर्पनख्योः", "शूर्पनखीषु"],                 # 7 Loc
+    ["शूर्पनखि", "शूर्पनख्यौ", "शूर्पनख्यः"],                     # 8 Voc
+]
+
+# SK307 test: kṣīra + pa compound → kṣīrapā (like jYAna napum paradigm)
+# SK307 (8.4.12): ekāc uttara-pada with n → ṇatva when pūrva has ratva cause (r/ṣ/ṛ).
+# Ratva in nom/acc/voc pl, sg instr, gen pl; rest like jYAna
+prAtipadika["kzIrapa"] = [as_purva_pada(kzIra), luk_sup, in_compound(pa)]   # noqa: F405
+viBakti["kzIrapa"] = [
+    ["क्षीरपम्", "क्षीरपे", "क्षीरपाणि"],                  # 1 Nom: sg jYAna, du jYAna, pl Ratva
+    ["क्षीरपम्", "क्षीरपे", "क्षीरपाणि"],                  # 2 Acc: same as Nom (neuter)
+    ["क्षीरपेण", "क्षीरपाभ्याम्", "क्षीरपैः"],             # 3 Instr: jYAna
+    ["क्षीरपाय", "क्षीरपाभ्याम्", "क्षीरपेभ्यः"],          # 4 Dat: jYAna
+    [["क्षीरपाद्", "क्षीरपात्"], "क्षीरपाभ्याम्", "क्षीरपेभ्यः"],  # 5 Abl
+    ["क्षीरपस्य", "क्षीरपयोः", "क्षीरपाणाम्"],             # 6 Gen: sg/du jYAna, pl Ratva
+    ["क्षीरपे", "क्षीरपयोः", "क्षीरपेषु"],                 # 7 Loc: jYAna
+    ["क्षीरपम्", "क्षीरपे", "क्षीरपाणि"],                  # 8 Voc: same as Nom (neuter)
+]
+
+# samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
 # SK429/SK430 — tādṛk/tādṛśa forms: tyadAdi + dfS (dṛś) + kvin/kaY + SK430 (tad→tA)
 # Base stem: tAdfS (तादृश्) — after SK430 (ā-substitution) + dfS + kvin/kaY
 # kvin: j→g before bh (8.2.62); kaY: no j→g
@@ -2099,7 +2130,7 @@ viBakti["pra"] = [
 ]
 
 samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza", "Gftaspfk"],
-          "strI": [], "napum": []}
+          "strI": ["SUrpanaKI"], "napum": ["kzIrapa"]}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 
 ajanta = {"pum": [], "strI": [], "napum": []}

@@ -921,14 +921,21 @@
 # Apavāda of 8.4.2: fires first when both conditions hold; 8.4.2 handles
 # any remaining vyavāya 'n' positions in the subsequent iteration.
 # xform: l:null + lc:ratva_string(lc+l) rewrites entire element string.
+# Two parallel arms: Arm A excludes samasta_pada; Arm B uses samasta_Ratva_pada.
 - sutra: रषाभ्यां नो णः समानपदे
   id: 8.4.1
   overrides: 8.4.2
   condition:
-    lp:
-      - and
-      - ?pada
-      - $$has_ratva_simple
+    - lp:
+        - and
+        - ?pada
+        - $$has_ratva_simple
+        - ?!samasta_pada
+    - lp:
+        - and
+        - ?pada
+        - $$has_ratva_simple
+        - ?samasta_Ratva_pada
   xform:
     l: null
     lc: ratva_string(lc+l)
@@ -937,13 +944,20 @@
 # Vyavāya extension: ṛ/ṣ/r may be separated from 'n' by aṭkupvāṅnum chars
 # (vowels, ku/pu-class, anusvara). lp: ?pada (samānapade). Subsumes old
 # cross-boundary 8.4.2 and old 8.4.2.1 (which only checked lp-final 'n').
+# Two parallel arms: Arm A excludes samasta_pada; Arm B uses samasta_Ratva_pada.
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2
   condition:
-    lp:
-      - and
-      - ?pada
-      - $$has_ratva_vyavaya
+    - lp:
+        - and
+        - ?pada
+        - $$has_ratva_vyavaya
+        - ?!samasta_pada
+    - lp:
+        - and
+        - ?pada
+        - $$has_ratva_vyavaya
+        - ?samasta_Ratva_pada
   xform:
     l: null
     lc: ratva_string(lc+l, True)
@@ -4672,6 +4686,22 @@
      rp: ?strI_abs
   update: null
 
+# 307: एकाजुत्तरपदे णः (8-4-12)
+# In a compound with monosyllabic uttara-pada, n in the second member becomes ṇ
+# if the first member contains a ratva cause (r/ṛ/ṣ). Sets samasta_Ratva on orp
+# so downstream rules can apply ṇatva.
+- sutra: एकाजुत्तरपदे णः
+  id: 8.4.12
+  condition:
+    lp: $$lp_has_ratva_cause
+    rp:
+      - and
+      - ?samAsa
+      - ?ekac_anga_pada
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
     domain: prakfti
@@ -5087,12 +5117,11 @@
      olp: +pada
 
 # 231: यचि भम् (1-4-18)
-- sutra: यचि भम्
+- sutra: यचि भम
   domain: saMjYA
   bahiranga: 0 
   id: 1.4.18
   overrides: 1.4.17
-  bahiranga: 0
   condition:
      rp:
        - "and"

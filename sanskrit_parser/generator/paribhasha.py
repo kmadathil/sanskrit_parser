@@ -352,6 +352,61 @@ def has_ratva_non_at(s):
     return False
 
 
+def is_ekac(s):
+    """Return True if s contains exactly one vowel (ekāc = monosyllabic stem)."""
+    if not s:
+        return False
+    vowel_count = 0
+    vowels = set("aAiIuUfFxXeEoO")
+    for ch in s:
+        if ch in vowels:
+            vowel_count += 1
+            if vowel_count > 1:
+                return False
+    return vowel_count == 1
+
+
+def lp_has_ratva_cause(lp):
+    """Return True if lp contains a ratva cause (r, ṛ=f, ṣ=z) with ONLY vyavāya
+    characters (aṭkupvāṅnum) to its right.
+    
+    Scans left-to-right for r/z/f/F. If found, checks that all characters to its
+    right are vyavāya (vowels, ku/pu-class, anusvara). Returns False if any
+    non-vyavāya character appears after the ratva cause."""
+    if not lp:
+        return False
+    # Scan left-to-right for r/z/f/F
+    for i, ch in enumerate(lp):
+        if ch in ('r', 'f', 'F', 'z'):
+            # Found ratva cause at position i
+            # Check that all characters to the right are vyavāya
+            for j in range(i + 1, len(lp)):
+                if not awkupvaNnum(lp[j]):
+                    return False
+            return True
+    return False
+
+
+def rp_has_ratva_effect(rp):
+    """Return True if rp contains 'n' with ONLY vyavāya characters to its left.
+    
+    Scans left-to-right for n. If found, checks that all characters to its left
+    are vyavāya (vowels, ku/pu-class, anusvara). Returns False if any
+    non-vyavāya character appears before the n."""
+    if not rp:
+        return False
+    # Scan left-to-right for n
+    for i, ch in enumerate(rp):
+        if ch == 'n':
+            # Found n at position i
+            # Check that all characters to the left are vyavāya
+            for j in range(0, i):
+                if not awkupvaNnum(rp[j]):
+                    return False
+            return True
+    return False
+
+
 def Ratva(s):
     return s.replace("n", "R", 1)
 

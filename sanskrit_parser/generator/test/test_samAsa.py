@@ -13,3 +13,9 @@ from conftest import sutra_list, run_test
 
 def test_samAsa_pum(samAsa_pum):
     run_test(samAsa_pum, sutra_list, encoding=sanscript.DEVANAGARI)
+
+def test_samAsa_strI(samAsa_strI):
+    run_test(samAsa_strI, sutra_list, encoding=sanscript.DEVANAGARI)
+
+def test_samAsa_napum(samAsa_napum):
+    run_test(samAsa_napum, sutra_list, encoding=sanscript.DEVANAGARI)
