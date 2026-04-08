@@ -17,6 +17,11 @@ class Dhatu(PaninianObject):
         self.setTag(self.canonical())
         for t in other_tags:
             self.setTag(t)
+        # Auto-tag monosyllabic dhātus (ekāc) so SK307 and downstream rules can
+        # detect a monosyllabic uttara-pada when the dhātu takes a krit suffix.
+        _vowels = set("aAiIuUfFxXeEoO")
+        if sum(1 for ch in self.canonical() if ch in _vowels) == 1:
+            self.setTag("ekac")
 
 
 iR = Dhatu("i", its=["R"], other_tags=["eti"])
@@ -38,6 +43,7 @@ guhU = Dhatu("guh", its=["~u"])
 sTA = Dhatu("sTA", other_tags=["sTA"])
 duh = Dhatu("duh", its=[])
 dfS = Dhatu("dfS", its=[], other_tags=["dfS"])
+han = Dhatu("han", its=[], other_tags=["han"])   # √han "to kill"; ?han → SK359 (8.4.22)
 spfS = Dhatu("spfS", its=[], other_tags=["spfS"])  # √spṛś "to touch" (SLP1: spfS = स्पृश्)
 vah = Dhatu("vah", its=[])
 Sam = Dhatu("Sam", its=[])

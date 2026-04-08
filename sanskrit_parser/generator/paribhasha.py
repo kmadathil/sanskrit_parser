@@ -375,15 +375,12 @@ def lp_has_ratva_cause(lp):
     non-vyavāya character appears after the ratva cause."""
     if not lp:
         return False
-    # Scan left-to-right for r/z/f/F
-    for i, ch in enumerate(lp):
-        if ch in ('r', 'f', 'F', 'z'):
-            # Found ratva cause at position i
-            # Check that all characters to the right are vyavāya
-            for j in range(i + 1, len(lp)):
-                if not awkupvaNnum(lp[j]):
-                    return False
-            return True
+    # Scan right-to-left: find the rightmost ratva cause first.
+    # If it fails the vyavāya check, no cause further left can succeed either
+    # (the same blocking char would be in its right-hand range too).
+    for i in range(len(lp) - 1, -1, -1):
+        if lp[i] in ('r', 'f', 'F', 'z'):
+            return all(awkupvaNnum(lp[j]) for j in range(i + 1, len(lp)))
     return False
 
 

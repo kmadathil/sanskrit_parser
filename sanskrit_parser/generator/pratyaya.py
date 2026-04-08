@@ -147,7 +147,7 @@ pum_abs = Pratyaya("", its=[], other_tags=["pum_abs", "pum"])
 napum_abs = Pratyaya("", its=[], other_tags=["napum_abs", "napum"])
 
 # kvip
-kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip"])
+kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip", "krt"])
 
 # kvin — kit krt suffix (phonologically zero); aYc + kvin → SK415 drops Y → ac
 # its=['k'] → kit; "krt" → join_objects produces ?prAtipadika; "kvin" → SK377 (8.2.62 ku)

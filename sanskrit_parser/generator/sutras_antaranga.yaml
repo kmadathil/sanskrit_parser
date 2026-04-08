@@ -962,18 +962,43 @@
     l: null
     lc: ratva_string(lc+l, True)
 
+# 307: एकाजुत्तरपदे णः (8-4-12)
+# In a compound with monosyllabic uttara-pada, n in the second member becomes ṇ
+# if the first member contains a ratva cause (r/ṛ/ṣ). Sets samasta_Ratva on orp
+# so downstream rules can apply ṇatva.
+- sutra: एकाजुत्तरपदे णः
+  id: 8.4.12
+  condition:
+    lp: $$lp_has_ratva_cause
+    rp:
+      - and
+      - ?samAsa
+      - ?ekac_anga_pada
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
 # 359: हन्तेरत्पूर्वस्य (8-4-22)
 # No n → ṇ in han-stems unless preceded by short a (at-pūrvasya).
-# Pada-internal form: block when lp is a ?han ?pada with ṛ/ṣ/r→n but 'a' ≠ immediate predecessor.
+# Arm A: pada-internal (non-compound pada): block when lp is ?han ?pada, not samasta_pada.
+# Arm B: compound pada: block when lp has samasta_Ratva_pada (SK307 set it), meaning
+#         the ṇatva would come from the compound path — still blocked by 8.4.22.
 - sutra: हन्तेरत्पूर्वस्य
   id: 8.4.22
   overrides: [8.4.1, 8.4.2]
   condition:
-    lp:
-      - and
-      - ?han
-      - ?pada
-      - $$has_ratva_non_at
+    - lp:
+        - and
+        - ?han
+        - ?pada
+        - $$has_ratva_non_at
+        - ?!samasta_pada
+    - lp:
+        - and
+        - ?han
+        - ?pada
+        - $$has_ratva_non_at
+        - ?samasta_Ratva_pada
   xform: null
    
 # 359: हन्तेरात्पूर्वस्य (8-4-22)
@@ -4685,22 +4710,6 @@
       - ?svasrAdi
      rp: ?strI_abs
   update: null
-
-# 307: एकाजुत्तरपदे णः (8-4-12)
-# In a compound with monosyllabic uttara-pada, n in the second member becomes ṇ
-# if the first member contains a ratva cause (r/ṛ/ṣ). Sets samasta_Ratva on orp
-# so downstream rules can apply ṇatva.
-- sutra: एकाजुत्तरपदे णः
-  id: 8.4.12
-  condition:
-    lp: $$lp_has_ratva_cause
-    rp:
-      - and
-      - ?samAsa
-      - ?ekac_anga_pada
-      - $$rp_has_ratva_effect
-  update:
-    orp: +samasta_Ratva
 
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु

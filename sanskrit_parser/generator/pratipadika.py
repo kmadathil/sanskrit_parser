@@ -87,7 +87,8 @@ aryaman = Pratipadika("aryaman", "pum")    # Aryaman (Vedic deity)
 # han-stems (upapada tatpuruṣa compounds ending in √han "killer")
 # SK358 (7.3.54): h→G before ñit/ṇit/n-initial suffixes
 # SK359 (8.4.22): n→ṇ when preceded by short a
-vftrahan = Pratipadika("vftrahan", "pum", other_tags=["han"])
+# vftrahan is built dynamically: [as_purva_pada(vftra), luk_sup, in_compound(han), kvip]
+vftra = Pratipadika("vftra", "pum")   # pūrva-pada; ṛ provides ratva cause for SK307
 
 # nah-stems (ending in √nah "bind/tie")
 # SK440 (8.2.34): h→D (dh) before jhal or at pada-end.

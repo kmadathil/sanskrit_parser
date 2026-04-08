@@ -98,6 +98,10 @@ class PaninianObject(SanskritObject):
             for t in ["aYc", "kvin", "kvip"]:
                 if objects[0][-1].hasTag(t):
                     so.setTag(t)
+            # Propagate ekac from the anga through kvin/kvip so SK307 can detect
+            # a monosyllabic uttara-pada after the krit suffix join.
+            if objects[0][0].hasTag("ekac"):
+                so.setTag("ekac")
         # 1.2.46 krttaDitasamAsAsca
         if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
             so.setTag("prAtipadika")
@@ -144,8 +148,13 @@ class PaninianObject(SanskritObject):
             if so.hasTag("samAsaPurva"):
                 so.deleteTag("samAsaPurva")
         # Propagate stem-class tags needed for pada-internal sandhi rules
+        # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip)
         for t in ["han"]:
-            if objects[0][0].hasTag(t):
+            if objects[0][0].hasTag(t) and objects[0][0].hasTag("aNga"):
+                so.setTag(t)
+        # 3b: compound merge: ?han on uttara-pada (samAsa+pada) propagates to samasta_pada
+        for t in ["han"]:
+            if objects[0][-1].hasTag(t) and objects[0][-1].hasTag("pada") and objects[0][-1].hasTag("samAsa"):
                 so.setTag(t)
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):

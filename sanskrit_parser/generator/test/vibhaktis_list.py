@@ -1270,7 +1270,7 @@ viBakti["hastin"] = [
     ['हस्तिन्', 'हस्तिनौ', 'हस्तिनः'],          # 8 Vocative     (bare stem sg, du/pl = nom)
 ]
 
-prAtipadika["vftrahan"] = vftrahan  # noqa: F405
+prAtipadika["vftrahan"] = [as_purva_pada(vftra), luk_sup, in_compound(han), kvip]  # noqa: F405
 viBakti["vftrahan"] = [
     ['वृत्रहा', 'वृत्रहणौ', 'वृत्रहणः'],                        # 1 Nominative   * 6.4.13 sg; 6.4.12 blocks du/pl; ṇatva du/pl
     ['वृत्रहणम्', 'वृत्रहणौ', 'वृत्रघ्नः'],                     # 2 Accusative   * 6.4.12 blocks sg; 7.3.54 pl (h→G, dental n after G)
