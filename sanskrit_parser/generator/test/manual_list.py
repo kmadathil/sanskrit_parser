@@ -190,5 +190,17 @@ test_list_devanagari = [
     # Loc pl (SK393+SK385)
     (yuzmad, sup, "युष्मासु"),    # SK393 (ā) + SK385 → yuṣmāsu
     (asmad, sup, "अस्मासु"),     # SK393 → asmāsu
+    # SK127: हे मपरे वा (8.3.26) — M before h+m: kiṃhmalyati (8.3.23) or kim्hmalyati
+    ("किम्", "ह्मल्यति", ["किंह्मल्यति", "किम्ह्मल्यति"]),
+    # SK129: न परे नः (8.3.27) — M before h+n: kiṃhnute (8.3.23) or kinhnute
+    ("किम्", "ह्नुते", ["किंह्नुते", "किन्ह्नुते"]),
+    # SK130: ङ्णोः कुक् टुक् शरि (8.3.28) — N before ṣ: prāṅṣaṣṭhaḥ or prāṅkṣaṣṭhaḥ
+    ("प्राङ्", "षष्ठः", ["प्राङ्षष्ठः", "प्राङ्क्षष्ठः"]),
+    # SK130: R before ṣ: suguṇṣaṣṭhaḥ or suguṇṭṣaṣṭhaḥ (virama on ट् → no inherent vowel)
+    ("सुगण्", "षष्ठः", ["सुगण्षष्ठः", "सुगण्ट्षष्ठः"]),
+    # SK131: डः सि धुट् (8.3.29) — ḍ before s: ṣaṭsantaḥ or ṣaṭtsantaḥ
+    ("षड्", "सन्तः", ["षट्सन्तः", "षट्त्सन्तः"]),
+    # SK132: नश्च (8.3.30) — n before s: sansaḥ or santsaḥ
+    ("सन्", "सः", ["सन्सः", "सन्त्सः"]),
      ]
 

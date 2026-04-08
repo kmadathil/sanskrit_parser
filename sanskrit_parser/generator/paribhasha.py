@@ -179,6 +179,11 @@ def anunasika(s: str):
     else:
         return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "NNNNYYYYRRRRnnnnmmmm")
 
+def kuk_Tuk(s: str):
+    """8.3.28: kuk augment for ṅ (N→k), ṭuk augment for ṇ (R→w/ṭ) before śar."""
+    return adesha(s, "NR", "kw")
+
+
 #kutva for h in han
 def han_kutva(lc: str):
     return lc.replace("h","G")

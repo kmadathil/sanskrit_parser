@@ -829,7 +829,78 @@
     lc: anusvara_jhal_string(lc+l)[0]
   insert:
     l: anusvara_jhal_string(lc+l)[1]
-    
+
+# 127: हे मपरे वा (8-3-26)
+# After 8.3.23 converts m→M, optionally revert M→m before h when h is m-para (rr=m).
+# overrides: 8.3.23 prevents re-application of m→M on the reverted form (no cycling).
+- sutra: हे मपरे वा
+  id: 8.3.26
+  overrides: 8.3.23
+  optional: True
+  condition:
+     lp: ?pada
+     l: M
+     r: h
+     rr: m
+  xform:
+     l: str("m")
+
+# 129: न परे नः (8-3-27)
+# After 8.3.23 converts m→M, optionally convert M→n before h when h is n-para (rr=n).
+# overrides: 8.3.23 prevents 8.3.23 re-firing on any residual m context.
+- sutra: न परे नः
+  id: 8.3.27
+  overrides: 8.3.23
+  optional: True
+  condition:
+     lp: ?pada
+     l: M
+     r: h
+     rr: n
+  xform:
+     l: str("n")
+
+# 130: ङ्णोः कुक् टुक् शरि (8-3-28)
+# ṅ (N) or ṇ (R) at pada-end before śar (S/z/s): optionally append k (kuk for N) or
+# w/ṭ (ṭuk for R) to the left pada via kuk_Tuk(). The hier-prakriya handles further sandhi.
+- sutra: ङ्णोः कुक् टुक् शरि
+  id: 8.3.28
+  optional: True
+  condition:
+     lp: ?pada
+     l: [N, R]
+     r: _Sar
+  insert:
+     l: kuk_Tuk(l)
+
+# 131: डः सि धुट् (8-3-29)
+# ḍ (q) at pada-end before s: optionally prepend dhuṭ (D=dh) to right pada before s.
+# Inner hier-prakriya: 8.4.55 converts D→t before khar s. Outer: 8.4.55 converts q→w before t.
+# Result: q+D+s → w+t+s (ṣaṭtsantaḥ).
+- sutra: डः सि धुट्
+  id: 8.3.29
+  optional: True
+  condition:
+     lp: ?pada
+     l: q
+     r: s
+  insert:
+     r: str("D")
+
+# 132: नश्च (8-3-30)
+# n at pada-end before s: optionally prepend dhuṭ (D=dh) to right pada (extends SK131 to n).
+# Inner hier-prakriya: 8.4.55 converts D→t before khar s. Outer: n stays before t.
+# Result: n+D+s → n+t+s (santsaḥ).
+- sutra: नश्च
+  id: 8.3.30
+  optional: True
+  condition:
+     lp: ?pada
+     l: n
+     r: s
+  insert:
+     r: str("D")
+
 # 116: यरोऽनुनासिकेऽनुनासिको वा (8-4-45)
 - sutra: यरोऽनुनासिकेऽनुनासिको वा 
   id: 8.4.45
@@ -5254,13 +5325,6 @@
 
 # प्रकृतिभावप्रकरणम्‌
 # 90-110 barring 90,100,101
-
-# halsandhiप्रकरणम्‌
-# 127: हे मपरे वा (8-3-26)
-# 129: न परे नः (8-3-27) 
-# 130: ङ्णोः कुक् टुक् शरि (8-3-28) 
-# 131: डः सि धुट् (8-3-29)
-# 132: नश्च (8-3-30) 
 
 # विसर्गसन्धिप्रकरणम्‌
 # 8.3.38-42
