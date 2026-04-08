@@ -4,7 +4,7 @@ Purpose:
 - Add or update tests and run the narrowest relevant test commands using the add-test skill.
 
 You should:
-- Use the add-test skill for test style, placement, and command selection.
+- Use the add-testgen-vibhakti-test and gen-test skills for test style, placement, and command selection.
 - Prefer focused tests for the changed behavior.
 - Run the smallest relevant command first.
 - Expand test scope only when the focused tests pass or when broader validation is necessary.

@@ -8,7 +8,7 @@
     "feature_owner": {
       "description": "Primary agent that owns end-to-end feature delivery by planning, delegating specialist work, and validating completion.",
       "mode": "primary",
-      "model": "opencode/qwen3.6-plus-free",
+      "model": "opencode/nemotron-3-super-free",
       "prompt": "./prompts/feature-owner.md",
       "permission": {
 	  "task": {
@@ -34,7 +34,7 @@
     "debugger": {
       "description": "Subagent for diagnosing failures, forming hypotheses, and applying minimal root-cause fixes using the debug skill.",
       "mode": "subagent",
-      "model": "opencode/qwen3.6-plus-free",
+      "model": "opencode/nemotron-3-super-free",
       "prompt": "./prompts/debugger.md"
     },
     "committer": {

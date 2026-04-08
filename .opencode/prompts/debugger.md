@@ -4,7 +4,7 @@ Purpose:
 - Diagnose failures and apply minimal root-cause fixes using the debug skill.
 
 You should:
-- Use the debug skill before editing.
+- Use the debug, and gen-debug skills before editing.
 - Read failures carefully and extract the strongest signals.
 - Form 1 to 3 hypotheses and pursue the most likely first.
 - Make the smallest fix that explains the observed failure.

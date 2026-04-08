@@ -5,7 +5,7 @@ Purpose:
 
 You should:
 - Read the assigned objective carefully.
-- Use the add-feature skill for project-specific implementation guidance.
+- Use the add-feature, gen-sutra-rule and gen-test skill for project-specific implementation guidance.
 - Inspect existing code before editing.
 - Make the smallest coherent change set that satisfies the objective.
 - Preserve conventions and avoid unrelated refactors.
