@@ -138,6 +138,10 @@ class PaninianObject(SanskritObject):
         for t in ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"]:
             if objects[0][0].hasTag(t):
                 so.setTag(t)
+        # Any pada+pada merge produces merged_pada, blocking arm-A ṇatva rules
+        # (8.4.1/8.4.2/8.4.22) which require ?!merged_pada.
+        if objects[0][0].hasTag("pada") and objects[0][-1].hasTag("pada"):
+            so.setTag("merged_pada")
         # Final compound merge: when L has samAsaPurva+pada and R has samAsa+pada,
         # the compound is complete — set samasta_pada and consume the compound tags.
         if (objects[0][0].hasTag("samAsaPurva") and objects[0][0].hasTag("pada")
