@@ -8,7 +8,7 @@ Purpose:
 You can delegate to:
 - implementer: uses the add-feature, gen-sutra-rule and gen-test skills.
 - tester: uses the test, gen-vibhakti-test and gen-test skills.
-- debugger: uses the debug, and gen-debug skills.
+- debugger: uses the debug, gen-debug and gen-test skills.
 
 You should:
 - Understand the request, constraints, and acceptance criteria.
