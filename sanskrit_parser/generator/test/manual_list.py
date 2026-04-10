@@ -149,7 +149,7 @@ test_list_devanagari = [
     # FIXME: correct when we can do uttizTati, move to utTAna
     (ud_upasarga, (sTA, tip), ["उत्थाति", "उत्थ्थाति"]),
     ("पुष्*", "ना", "ति", "पुष्णाति"), # 8.4.1
-    ("तृंह्*", "अनीय", su, avasAna, "तृंहणीयः ।"), # 8.4.2
+    ("तृंह्*", anIya, su, avasAna, "तृंहणीयः ।"), # 8.4.2
     # SK382-395: yuṣmad/asmad full declension
     # Nom sg (SK384+SK382+SK385)
     (yuzmad, su, "त्वम्"),         # SK384 (tv) + SK382 (su→am) + SK385 (d-lopa) → tvam

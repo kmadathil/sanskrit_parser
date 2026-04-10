@@ -440,8 +440,12 @@ class AntarangaPrakriya(PrakriyaBase):
             # Craft inputs and outputs based on viewed inputs
             # And generated outputs
             pnv = node.outputs
-            # Merge element at index
-            mobj = PaninianObject.join_objects([pnv[ix:ix+2]])
+            if pnv[ix].hasTag("Adya"):
+                # When the Adya object is merged, simply replace by the successor object
+                mobj = pnv[ix+1]
+            else:
+                # Merge element at index
+                mobj = PaninianObject.join_objects([pnv[ix:ix+2]])
             # Replace element at ix with merged element and delete next
             pnr = node.outputs.copy_replace_at(ix, mobj).delete_at(ix+1)
             _ps = PrakriyaNode(pnv, pnr, dummySamhitaSutra, ix, [])

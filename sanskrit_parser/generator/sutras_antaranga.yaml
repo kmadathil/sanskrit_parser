@@ -997,19 +997,19 @@
   id: 8.4.1
   overrides: 8.4.2
   condition:
-    - lp:
+    - rp:
         - and
         - ?pada
         - $$has_ratva_simple
         - ?!merged_pada
-    - lp:
+    - rp:
         - and
         - ?pada
         - $$has_ratva_simple
         - ?samasta_Ratva_pada
   xform:
-    l: null
-    lc: ratva_string(lc+l)
+    r: null
+    rc: ratva_string(r+rc)
 
 # 197: अट्कुप्वाङ्नुम्व्यवायेऽपि (8-4-2)
 # Vyavāya extension: ṛ/ṣ/r may be separated from 'n' by aṭkupvāṅnum chars
@@ -1019,19 +1019,19 @@
 - sutra: अट्कुप्वाङ्नुम्व्यवायेऽपि
   id: 8.4.2
   condition:
-    - lp:
+    - rp:
         - and
         - ?pada
         - $$has_ratva_vyavaya
         - ?!merged_pada
-    - lp:
+    - rp:
         - and
         - ?pada
         - $$has_ratva_vyavaya
         - ?samasta_Ratva_pada
   xform:
-    l: null
-    lc: ratva_string(lc+l, True)
+    r: null
+    rc: ratva_string(r+rc, True)
 
 # 307: एकाजुत्तरपदे णः (8-4-12)
 # In a compound with monosyllabic uttara-pada, n in the second member becomes ṇ
@@ -1058,13 +1058,13 @@
   id: 8.4.22
   overrides: [8.4.1, 8.4.2]
   condition:
-    - lp:
+    - rp:
         - and
         - ?han
         - ?pada
         - $$has_ratva_non_at
         - ?!merged_pada
-    - lp:
+    - rp:
         - and
         - ?han
         - ?pada
@@ -1093,11 +1093,11 @@
   id: 8.4.37
   overrides: [8.4.1, 8.4.2]
   condition:
-    lp:
+    rp:
       - and
       - ?pada
       - $$has_ratva_vyavaya
-    l: n
+      - $$has_n_final
   xform: null
 
 #  FIXME: Collect Pada aDikAra from 8.1.16

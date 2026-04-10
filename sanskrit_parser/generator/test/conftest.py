@@ -78,7 +78,7 @@ def _test(output, s, enc):
 
 
 def run_test(s, sutra_list, encoding=sanscript.SLP1, verbose=False, config=None):
-    pl = []
+    pl = [Adya]
     print(f"Testing {s}")
     # Assemble list of inputs
     for i in range(len(s)-1):

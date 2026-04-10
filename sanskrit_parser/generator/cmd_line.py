@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 def run_pp(s, prakriya, sutra_list, verbose=False, tag_display=False):
-    pl = []
+    pl = [Adya]
     # Assemble list of inputs
     for i in range(len(s)):
         def _gen_obj(s, i):

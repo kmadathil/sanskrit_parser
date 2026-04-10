@@ -282,6 +282,9 @@ def ratva_string(s, awkupnumvyavaya=False, apply=True):
     else:
         return changed
 
+def has_n_final(s):
+    """ Return true if final char is n - to suppress Ratva"""
+    return (s[-1]=='n')
 
 def has_ratva_simple(s):
     """Return True if s has ṛ/ṣ/r directly before 'n' (8.4.1, no vyavāya)."""

@@ -164,10 +164,16 @@ vatup = Pratyaya("vat", its=["u", "p"], other_tags=["vatup", "krt"])
 # UW
 UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 
-# Anta
-avasAna = PaninianObject(".")
-avasAna.setTag("avasAna")
-
 
 #
 kanin = Pratyaya("an", its=["k", "i", "n"], other_tags=["kanin"])
+
+# anIYa
+anIya= Pratyaya("anIya", its=[], other_tags=["kft", "anIYa"])
+
+# Adya / Anta
+avasAna = PaninianObject(".")
+avasAna.setTag("avasAna")
+
+Adya = PaninianObject("")
+Adya.setTag("Adya")
