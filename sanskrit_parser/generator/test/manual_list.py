@@ -98,7 +98,7 @@ test_list_devanagari = [
     ('देवास्',  'गच्छन्ति', "देवागच्छन्ति"),
     ("रामस्", "आसीत्", "राम आसीत्"),
     ("रामस्", "ईशः", "रामईशः"),
-    ("भवान्", "चरति", "भवांश्चरति"),
+    ("भवान्", "चरति", ["भवांश्चरति", "भवाँश्चरति"]),
     ("सन्", "शम्भुः", ["सञ्च्छम्भुः", 'सञ्शम्भुः', 'सञ्च्शम्भुः']),
     ("स्व", "छाया", "स्वच्छाया"),
     (AN_upasarga, "छाया", "आच्छाया"),
@@ -203,4 +203,20 @@ test_list_devanagari = [
     # SK132: नश्च (8.3.30) — n before s: sansaḥ or santsaḥ
     ("सन्", "सः", ["सन्सः", "सन्त्सः"]),
      ]
+
+test_list_slp1_ru = [
+    # SK135: समः सुटि (8.3.5) — sam m→ru before suw-tagged s
+    # 8.3.2 always: ~r; 8.3.4 optional: Mr. Then 8.3.15 r→H; 8.3.36(vā) or 8.3.34 H→s
+    (sam_pada, in_context(PaninianObject("skartA"), "suw"),   # noqa: F405
+     ["saMsskartA", "saMHskartA", "sa~sskartA", "sa~HskartA"]),
+    # SK139: पुमः खय्यम्परे (8.3.6) — 8.2.23 pums→pum, then m→ru before khay+vowel
+    # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15 r→H; 8.3.34 H→s; 8.4.40 ścutva before c
+    (in_context(pums, "pada"), "cakravAka", ["puMScakravAka", "pu~ScakravAka"]),   # noqa: F405
+    # SK141: नॄन्पे (8.3.10) — nṝn → ru before p
+    # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15→H; 8.3.37 (kupvoḥ) before p
+    ("nFn", "pAhi", ["nFMHpAhi", "nF~HpAhi"]),
+    # SK143: कानाम्रेडिते (8.3.12) — n of kān → ru before āmreḍita kān
+    # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15 r→H before k (khar)
+    ("kAn", "kAn", ["kAMHkAn", "kA~HkAn"]),
+]
 

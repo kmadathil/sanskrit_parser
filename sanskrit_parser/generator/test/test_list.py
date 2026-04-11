@@ -9,7 +9,7 @@ from conftest import run_test, generate_vibhakti, sutra_list
 import pytest
 import logging
 
-from manual_list import  test_list_slp1, test_list_devanagari
+from manual_list import  test_list_slp1, test_list_devanagari, test_list_slp1_ru
 
 @pytest.mark.parametrize("tlst_d", test_list_devanagari)
 def test_list_d(tlst_d):
@@ -18,3 +18,7 @@ def test_list_d(tlst_d):
 @pytest.mark.parametrize("tlst", test_list_slp1)
 def test_list(tlst):
     run_test(tlst, sutra_list, encoding=sanscript.SLP1)
+
+@pytest.mark.parametrize("tlst_ru", test_list_slp1_ru)
+def test_list_ru(tlst_ru):
+    run_test(tlst_ru, sutra_list, encoding=sanscript.SLP1)

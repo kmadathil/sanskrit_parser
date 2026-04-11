@@ -1541,26 +1541,66 @@
 
 
 # Sutras in this aDikAra set the ru_anu tag to backtrigger 8.3.2/3/4
-# - sutra: अत्रानुनासिकः पूर्वस्य तु वा
-#   id: 8.3.2
-#   optional: True
-#   condition:
-#       lp: ?ru_anu
-#   xform:
-#       l: str("~r")
-#   update:
-#       olp: -ru_anu
+# 136: अत्रानुनासिकः पूर्वस्य तु वा (8-3-2) — anunāsika variant for ru (non-optional: always fires)
+# Keeps ?ru_anu on output (via deepcopy) so 8.3.4 can see it
+- sutra: अत्रानुनासिकः पूर्वस्य तु वा
+  id: 8.3.2
+  condition:
+      lp: ?ru_anu
+  xform:
+      l: str("~r")
 
 # 137: अनुनासिकात्परोऽनुस्वारः (8-3-4)
+# Optional: fires on 8.3.2's output (?ru_anu still present via deepcopy).
+# Replaces ~r → Mr by: l: Mr (replaces r) + lc: lc[:-1] (strips the ~ from left context).
 - sutra: अनुनासिकात् परोऽनुस्वारः
   id: 8.3.4
+  optional: True
   condition:
       lp: ?ru_anu
   xform:
       l: str("Mr")
+      lc: lc[:-1]
   update:
       olp: -ru_anu
-      
+
+# 135: समः सुटि (8-3-5)
+# prefix sam (l=m, ?sam+?pada) → ru before s-initial right pada with ?suw tag
+# Pipeline: sam m→r; backtrigger 8.3.4/8.3.2 via ?ru_anu (same as SK140)
+- sutra: समः सुटि
+  id: 8.3.5
+  condition:
+     l: m
+     lp:
+       - and
+       - ?sam
+       - ?pada
+     r: s
+     rp: ?suw
+  xform:
+     l: str("r")
+  update:
+     lp: [+ru, +ru_anu]
+
+# 139: पुमः खय्यम्परे (8-3-6)
+# 8.2.23 deletes final s of pums at pada-end → pum. SK139 then fires on m → ru.
+# amparE condition: khay followed by vowel (rr=_am)
+# Counterexample: pum+kṣīra → rr=ṣ (consonant) → rule doesn't fire → puṃkṣīram
+- sutra: पुमः खय्यम्परे
+  id: 8.3.6
+  condition:
+     l: m
+     lp:
+       - and
+       - ?pums
+       - ?pada
+     r: _Kay
+     rr: _am
+  xform:
+     l: str("r")
+  update:
+     lp: [+ru, +ru_anu]
+
 # 140: नश्छव्यप्रशान् (8-3-7)
 - sutra: नश्छव्यप्रशान्
   id: 8.3.7
@@ -1572,6 +1612,38 @@
      l: str("r")
   update:
      # Set on input to backtrigger 8.3.2/3/4
+     lp: [+ru, +ru_anu]
+
+# 141: नॄन्पे (8-3-10)
+# nṝn (acc pl of nṛ, lp=nFn) optionally → ru before p
+- sutra: नॄन्पे
+  id: 8.3.10
+  condition:
+     lp:
+       - and
+       - ?pada
+       - =nFn
+     l: n
+     r: p
+  xform:
+     l: str("r")
+  update:
+     lp: [+ru, +ru_anu]
+
+# 143: कानाम्रेडिते (8-3-12)
+# n of kān → ru before āmreḍita kān (same word repeated)
+# Condition: left=kAn (lc=kA, l=n), right=kAn (r=k, rc=An)
+- sutra: कानाम्रेडिते
+  id: 8.3.12
+  condition:
+     lc: kA
+     l: n
+     r: k
+     rc: An
+     lp: ?pada
+  xform:
+     l: str("r")
+  update:
      lp: [+ru, +ru_anu]
 
 
