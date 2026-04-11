@@ -253,8 +253,13 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 125 | 8.4.59 | वा पदान्तस्य | Pada-final anusvāra: parasavarna optional |
 | 133 | 8.3.31 | शि तुक् | śi (neuter pl marker): tuk inserted before it after certain stems |
 | 134 | 8.3.32 | ङमो ह्रस्वादचि ङमुण् नित्यम् | Ṅam after hrasva before vowel: ṅamuṇ (kam-api → kamapi) |
-| 137 | 8.3.4 | अनुनासिकात् परोऽनुस्वारः | After anunāsika: anusvāra |
+| 136 | 8.3.2 | अत्रानुनासिकः पूर्वस्य तु वा | Non-optional: r → ~r (anunāsika) after any ru substitution; keeps ?ru_anu so 8.3.4 fires next |
+| 135 | 8.3.5 | समः सुटि | sam prefix m→ru before suw-tagged pada (backtrigger 8.3.2/4 via ?ru_anu) |
+| 137 | 8.3.4 | अनुनासिकात् परोऽनुस्वारः | Optional: ~r → Mr (anusvāra), strips ~ from lc; fires on 8.3.2's output |
+| 139 | 8.3.6 | पुमः खय्यम्परे | 8.2.23 deletes pums→pum first; m→ru before khay+vowel (backtrigger 8.3.2/4) |
 | 140 | 8.3.7 | नश्छव्यप्रशान् | n before ch-group: ś inserted (rāmāṃś ca) |
+| 141 | 8.3.10 | नॄन्पे | nṝn (acc pl nṛ) n→ru before p (backtrigger 8.3.2/4) |
+| 143 | 8.3.12 | कानाम्रेडिते | n of kān → ru before āmreḍita kān (backtrigger 8.3.2/4) |
 | 146 | 6.1.73 | छे च | c-initial pratyaya: insert t (tuk) before it |
 | 147 | 6.1.74 | आङ्माङोश्च | āṅ/māṅ before vowel: chandas/veda usage |
 | 148 | 6.1.75 | दीर्घात् | Long vowel + ch: tuk inserted |
@@ -348,11 +353,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 130 | 8.3.28 | ङ्णोः कुक् टुक् शरि | Skipping for now | hal-sandhi |
 | 131 | 8.3.29 | डः सि धुट् | Skipping for now | hal-sandhi |
 | 132 | 8.3.30 | नश्च | Skipping for now | hal-sandhi |
-| 135 | 8.3.5 | समः सुटि | For later | ru-sandhi |
-| 139 | 8.3.6 | पुमः खय्यम्परे | For later | ru-sandhi |
-| 141 | 8.3.10 | नॄन्पे | For later | ru-sandhi |
-| 143 | 8.3.12 | कानाम्रेडिते | For later | ru-sandhi |
-| 144 | 8.3.48 | कस्कादिषु च | For later | ru-sandhi |
+| 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
 | 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | For later | ahna/ahan in compounds |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
 | 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |

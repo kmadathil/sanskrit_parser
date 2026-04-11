@@ -1546,9 +1546,22 @@
 - sutra: अत्रानुनासिकः पूर्वस्य तु वा
   id: 8.3.2
   condition:
-      lp: ?ru_anu
+      lp:
+        - and
+        - ?ru_anu
+        - ?!ru_s
   xform:
       l: str("~r")
+      
+- sutra: अत्रानुनासिकः पूर्वस्य तु वा
+  id: 8.3.2.1
+  condition:
+      lp:
+        - and
+        - ?ru_anu
+        - ?ru_s
+  xform:
+      l: str("~s")
 
 # 137: अनुनासिकात्परोऽनुस्वारः (8-3-4)
 # Optional: fires on 8.3.2's output (?ru_anu still present via deepcopy).
@@ -1557,12 +1570,29 @@
   id: 8.3.4
   optional: True
   condition:
-      lp: ?ru_anu
+      lp:
+        - and
+        - ?ru_anu
+        - ?!ru_s
   xform:
       l: str("Mr")
       lc: lc[:-1]
   update:
       olp: -ru_anu
+      
+- sutra: अनुनासिकात् परोऽनुस्वारः
+  id: 8.3.4.1
+  optional: True
+  condition:
+      lp:
+        - and
+        - ?ru_anu
+        - ?ru_s
+  xform:
+      l: str("Ms")
+      lc: lc[:-1]
+  update:
+      olp: [-ru_anu, -ru_s]
 
 # 135: समः सुटि (8-3-5)
 # prefix sam (l=m, ?sam+?pada) → ru before s-initial right pada with ?suw tag
@@ -1578,9 +1608,50 @@
      r: s
      rp: ?suw
   xform:
-     l: str("r")
+     l: str("s")
   update:
-     lp: [+ru, +ru_anu]
+     lp: [+ru_s, +ru_anu]
+
+     
+- sutra: समो वा लोपमित्येके (vArtikam)
+  id: 8.3.5.1
+  optional: true
+  condition:
+     l: s
+     lc:
+       - str("saM")
+     lp:
+       - and
+       - ?sam
+       - ?pada
+       - ?!ru_anu
+     r: s
+     rp: ?suw
+  xform:
+     l: null
+  update:
+     lp: [-ru_s, -ru_anu]
+     
+- sutra: समो वा लोपमित्येके (vArtikam)
+  id: 8.3.5.2
+  optional: true
+  condition:
+     l: s
+     lc:
+       - str("sa~")
+     lp:
+       - and
+       - ?sam
+       - ?pada
+     r: s
+     rp: ?suw
+  xform:
+     l: null
+  update:
+     lp: [-ru_s, -ru_anu]
+
+
+     
 
 # 139: पुमः खय्यम्परे (8-3-6)
 # 8.2.23 deletes final s of pums at pada-end → pum. SK139 then fires on m → ru.
@@ -1597,9 +1668,9 @@
      r: _Kay
      rr: _am
   xform:
-     l: str("r")
+     l: str("s")
   update:
-     lp: [+ru, +ru_anu]
+     lp: [+ru_s, +ru_anu]
 
 # 140: नश्छव्यप्रशान् (8-3-7)
 - sutra: नश्छव्यप्रशान्
@@ -1642,9 +1713,9 @@
      rc: An
      lp: ?pada
   xform:
-     l: str("r")
+     l: str("s")
   update:
-     lp: [+ru, +ru_anu]
+     lp: [+ru_s, +ru_anu]
 
 
 # 8.3.12 - End of 8.3.2 aDikAra
