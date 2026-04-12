@@ -190,7 +190,7 @@ The "Forms affected" column uses the convention:
 | 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | anidita hal-stem: drop nasal upadhā (Y=ñ or n) before kit/Ṅit krit suffix; fires at (aYc_u\|kvin) window; aYc → ac; enables dynamic añcatir derivation |
 | 416 | 6.4.138 | अचः | delete 'a' of añc (post-SK415 form 'ac') in bha-anga context; ll:'a' condition excludes prAc (long A); ?!udanc excludes ud-prefix (SK420 apavāda); pratyac/tiryac bha forms use pratīc/tiryc base |
 | 417 | 6.3.138 | चौ | lengthen final vowel of preceding member before añc reduced to 'c'; fires at (prefix\|c_result) after SK416; prati→pratI, pra→prA; yaṇ (6.1.77) blocked by akṛtavyūhā paribhāṣā |
-| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | ṭi→adri before añcatir (viṣvag/deva forms); fires on ?sarvanAma_pada (tad/yad/kim) using ticAdesha_adri helper; bahiranga:1 fires before SK417 |
+| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | ṭi→adri before añcatir (viṣvag/deva/tad/yad/kim/etad/idam/adas/sarva); ticAdesha_adri helper; luk_sup propagates sarvanAma→sarvanAma_pada; bahiranga:1 fires before SK417 |
 | 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; ?udanc tag (via in_udanc helper) identifies ud compounds; fixes udac bha forms |
 | 421 | 6.3.93 | समः समि | sam- → sami- before añcatir; bahiranga:1 fires before SK417; samyañc paradigm: samīcā bha via SK417 i→ī |
 | 422 | 6.3.95 | सहस्य सध्रिः | saha- → sadhrī- before añcatir; bahiranga:1; sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā bha |
@@ -340,7 +340,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
 | 210 | 8.3.55 | अपदान्तस्य मूर्धन्यः | Natural — adhikāra comment only; no rule block in YAML | Retroflexion adhikāra header; actual ṇatva logic handled by SK235 (8.4.1) and SK212 (8.3.59) |
 | 426 | 6.1.5 | उभे अभ्यस्तम् | Natural + manual tagging; dvitva engine not yet implemented | abhyasta saṁjñā for all forms resulting from reduplication (dadat, bibhrat, etc.); jakshi-class manually tagged via SK428 |
-| 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | Partial — remaining sarvanāma | etad/idam/adas/sarva etc.; add sarvanAma+sarvanAma_pada tags to auto-extend SK418 |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |

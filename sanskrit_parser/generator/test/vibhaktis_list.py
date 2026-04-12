@@ -1073,6 +1073,58 @@ viBakti["vizvadryac"] = [
     ['विष्वद्र्यङ्', 'विष्वद्र्यञ्चौ', 'विष्वद्र्यञ्चः'],       # 8 Voc  = Nom
 ]
 
+# etadryañc (m.) — SK418: etad→etadri; bha: etadrī (SK417 i→ī).
+prAtipadika["etadryac"] = [etad, luk_sup, aYc_u, kvin]   # noqa: F405
+viBakti["etadryac"] = [
+    ['एतद्र्यङ्', 'एतद्र्यञ्चौ', 'एतद्र्यञ्चः'],       # 1 Nom  — strong
+    ['एतद्र्यञ्चम्', 'एतद्र्यञ्चौ', 'एतद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
+    ['एतद्रीचा', 'एतद्र्यग्भ्याम्', 'एतद्र्यग्भिः'],      # 3 Inst — sg bha; du/pl Bh
+    ['एतद्रीचे', 'एतद्र्यग्भ्याम्', 'एतद्र्यग्भ्यः'],      # 4 Dat  — sg bha
+    ['एतद्रीचः', 'एतद्र्यग्भ्याम्', 'एतद्र्यग्भ्यः'],      # 5 Abl  — sg bha
+    ['एतद्रीचः', 'एतद्रीचोः', 'एतद्रीचाम्'],               # 6 Gen  — all bha
+    ['एतद्रीचि', 'एतद्रीचोः', 'एतद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
+    ['एतद्र्यङ्', 'एतद्र्यञ्चौ', 'एतद्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
+# idadryañc (m.) — SK418: idam→idadri; bha: idadrī (SK417 i→ī).
+prAtipadika["idadryac"] = [idam, luk_sup, aYc_u, kvin]   # noqa: F405
+viBakti["idadryac"] = [
+    ['इदद्र्यङ्', 'इदद्र्यञ्चौ', 'इदद्र्यञ्चः'],       # 1 Nom  — strong
+    ['इदद्र्यञ्चम्', 'इदद्र्यञ्चौ', 'इदद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
+    ['इदद्रीचा', 'इदद्र्यग्भ्याम्', 'इदद्र्यग्भिः'],      # 3 Inst — sg bha; du/pl Bh
+    ['इदद्रीचे', 'इदद्र्यग्भ्याम्', 'इदद्र्यग्भ्यः'],      # 4 Dat  — sg bha
+    ['इदद्रीचः', 'इदद्र्यग्भ्याम्', 'इदद्र्यग्भ्यः'],      # 5 Abl  — sg bha
+    ['इदद्रीचः', 'इदद्रीचोः', 'इदद्रीचाम्'],               # 6 Gen  — all bha
+    ['इदद्रीचि', 'इदद्रीचोः', 'इदद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
+    ['इदद्र्यङ्', 'इदद्र्यञ्चौ', 'इदद्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
+# amudryañc (m.) — SK418: adas→amu (adas-substitution) →amudri; bha: amudrī (SK417 i→ī).
+prAtipadika["amudryac"] = [adas, luk_sup, aYc_u, kvin]   # noqa: F405
+viBakti["amudryac"] = [
+    ['अमुद्र्यङ्', 'अमुद्र्यञ्चौ', 'अमुद्र्यञ्चः'],       # 1 Nom  — strong
+    ['अमुद्र्यञ्चम्', 'अमुद्र्यञ्चौ', 'अमुद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
+    ['अमुद्रीचा', 'अमुद्र्यग्भ्याम्', 'अमुद्र्यग्भिः'],      # 3 Inst — sg bha; du/pl Bh
+    ['अमुद्रीचे', 'अमुद्र्यग्भ्याम्', 'अमुद्र्यग्भ्यः'],      # 4 Dat  — sg bha
+    ['अमुद्रीचः', 'अमुद्र्यग्भ्याम्', 'अमुद्र्यग्भ्यः'],      # 5 Abl  — sg bha
+    ['अमुद्रीचः', 'अमुद्रीचोः', 'अमुद्रीचाम्'],               # 6 Gen  — all bha
+    ['अमुद्रीचि', 'अमुद्रीचोः', 'अमुद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
+    ['अमुद्र्यङ्', 'अमुद्र्यञ्चौ', 'अमुद्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
+# sarvadryañc (m.) — SK418: sarva→sarvadri; bha: sarvadrī (SK417 i→ī).
+prAtipadika["sarvadryac"] = [sarva, luk_sup, aYc_u, kvin]   # noqa: F405
+viBakti["sarvadryac"] = [
+    ['सर्वद्र्यङ्', 'सर्वद्र्यञ्चौ', 'सर्वद्र्यञ्चः'],       # 1 Nom  — strong
+    ['सर्वद्र्यञ्चम्', 'सर्वद्र्यञ्चौ', 'सर्वद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
+    ['सर्वद्रीचा', 'सर्वद्र्यग्भ्याम्', 'सर्वद्र्यग्भिः'],      # 3 Inst — sg bha; du/pl Bh
+    ['सर्वद्रीचे', 'सर्वद्र्यग्भ्याम्', 'सर्वद्र्यग्भ्यः'],      # 4 Dat  — sg bha
+    ['सर्वद्रीचः', 'सर्वद्र्यग्भ्याम्', 'सर्वद्र्यग्भ्यः'],      # 5 Abl  — sg bha
+    ['सर्वद्रीचः', 'सर्वद्रीचोः', 'सर्वद्रीचाम्'],               # 6 Gen  — all bha
+    ['सर्वद्रीचि', 'सर्वद्रीचोः', 'सर्वद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
+    ['सर्वद्र्यङ्', 'सर्वद्र्यञ्चौ', 'सर्वद्र्यञ्चः'],       # 8 Voc  = Nom
+]
+
 # yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
 # ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
 # Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.
