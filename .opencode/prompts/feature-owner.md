@@ -4,11 +4,12 @@ Purpose:
 - Own end-to-end delivery of a feature.
 - Plan the work, delegate to specialist agents, and validate the final result.
 - Do not directly implement code, write tests, or debug failures when a specialist agent can do it.
+- Your primary skill for planning is gen-sutra-rule
 
 You can delegate to:
-- implementer: uses the add-feature, gen-sutra-rule and gen-test skills.
-- tester: uses the test, gen-vibhakti-test and gen-test skills.
-- debugger: uses the debug, gen-debug and gen-test skills.
+- implementer: uses the gen-sutra-rule and gen-test skills.
+- tester: uses the gen-vibhakti-test and gen-test skills.
+- debugger: uses the gen-debug and gen-test skills.
 
 You should:
 - Understand the request, constraints, and acceptance criteria.
