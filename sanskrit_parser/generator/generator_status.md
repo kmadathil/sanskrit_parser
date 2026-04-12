@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 190 |
-| SK-numbered sutras, skipped/deferred | 59 |
+| SK-numbered sutras, implemented | 191 |
+| SK-numbered sutras, skipped/deferred | 58 |
 | Implemented sutras without SK number yet | ~92 |
-| Stems with full vibhakti test tables | 120 |
+| Stems with full vibhakti test tables | 121 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -58,6 +58,7 @@ The "Forms affected" column uses the convention:
 | 217 | 7.1.52 | आमि सर्वनाम्नः सुट् | sarvanāma + āṁ: inserts su → sām (gen pl sarveṣām) |
 | 228 | 6.1.63 | पद्दन्नोमास्… | Samprasāraṇa: special alternants for pada, danta, nāman etc. stems in certain forms |
 | 234 | 6.4.134 | अल्लोपोऽनः | n-final stem: delete n before yāsut (gen pl rājñām) |
+| 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | optional ahani substitute for pUrvapada ahan before ṅit; dvya-hni/dvya-hani variants |
 | 240 | 6.4.140 | आतो धातोः | ā-final dhātu + kta: ā deleted (sthā + ta → sthita) |
 | 241 | 7.3.109 | जसि च | ī/ū-final feminine + jas: guṇa (suDiyaḥ, BrūvaḥÀ) |
 | 242 | 7.3.108 | ह्रस्वस्य गुणः | Short ī/ū-final: guṇa before certain sup (nadī → nade in loc sg) |
@@ -363,7 +364,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | For later — ṣatva cluster; word-list rule (visarjanīya→s, not ṣ) | ayaskāraḥ, ayaskāmaḥ (a-final + specific following roots) |
 | 161 | 8.3.47 | अधः शिरसी पदे | For later — ṣatva cluster; two-word rule (visarjanīya→s before pāda) | adhaspadam, śiraspadam |
 | 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
-| 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | For later | ahna/ahan in compounds |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
 | 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |
 | 321 | 7.1.74 | तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य | For later | Gālava's option for neuter |
@@ -523,3 +523,4 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | tAdfSa | m | a-stem (kaY, compound, SK430) | SK430 (6.3.91): tad→tA before dfS+kaY; regular a-stem endings like rAma |
 | yAdfk | m | j-stem (kvin, compound, SK430) | SK430 (6.3.91): yad→yA before dfS+kvin; same phonology as tAdfk |
 | yAdfSa | m | a-stem (kaY, compound, SK430) | SK430 (6.3.91): yad→yA before dfS+kaY; regular a-stem endings like rAma |
+| dvyahna | m | an-stem (compound) | [dvi, luk_sup, in_compound(ahan), wac]; SK238 → dvyahne/dvyahni/dvyahani variants |

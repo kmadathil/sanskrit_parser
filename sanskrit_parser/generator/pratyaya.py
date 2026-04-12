@@ -165,6 +165,11 @@ vatup = Pratyaya("vat", its=["u", "p"], other_tags=["vatup", "krt"])
 UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 
 
+# wac - for rAjan, ahan and saKi in samAsa
+wac = Pratyaya("a", its=["w", "c"], other_tags=["svAdi", "wac", "pum"])
+
+
+
 #
 kanin = Pratyaya("an", its=["k", "i", "n"], other_tags=["kanin"])
 

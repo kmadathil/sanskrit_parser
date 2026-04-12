@@ -1309,6 +1309,22 @@ viBakti["ahan"] = [
     ['अहः', ['अह्नी', 'अहनी'], 'अहानि'],              # 8 Voc  * = Nom for napum
 ]
 
+# dvya-han (m.) — [dvi, luk_sup, in_compound(ahan), wac] for SK238 testing.
+# SK238 (6.3.110): ahan preceded by numeral (dvi) → optionally restores ahani before ṅit.
+# Forms: dvyahna (a ending), except Ni where: dvyahne, dvyahni, dvyahani.
+prAtipadika["dvyahna"] = [as_purva_pada(dvi), luk_sup, in_compound(ahan), wac]  # noqa: F405
+viBakti["dvyahna"] = [
+    ['द्व्यह्नः', 'द्व्यह्नौ', 'द्व्यह्नाः'],
+    ['द्व्यह्नम्', 'द्व्यह्नौ', 'द्व्यह्नान्'],
+    ['द्व्यह्नेन', 'द्व्यह्नाभ्याम्', 'द्व्यह्नैः'],
+    ['द्व्यह्नाय', 'द्व्यह्नाभ्याम्', 'द्व्यह्नेभ्यः'],
+    [['द्व्यह्नाद्', 'द्व्यह्नात्'], 'द्व्यह्नाभ्याम्', 'द्व्यह्नेभ्यः'],
+    ['द्व्यह्नस्य', 'द्व्यह्नयोः', 'द्व्यह्नानाम्'],
+    [['द्व्यह्नि', 'द्व्यह्ने', 'द्व्यहनि'], 'द्व्यह्नयोः', 'द्व्यह्नेषु'],
+    ['द्व्यह्न', 'द्व्यह्नौ', 'द्व्यह्नाः'],
+]
+
+
 prAtipadika["yajvan"] = yajvan
 viBakti["yajvan"] = [
     ['यज्वा', 'यज्वानौ', 'यज्वानः'],         # 1 Nominative   (strong stem)

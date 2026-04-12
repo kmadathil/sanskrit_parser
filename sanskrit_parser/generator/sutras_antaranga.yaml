@@ -2563,7 +2563,25 @@
      l: null
   insert:
      l:  str("n")
- 
+  
+
+# 238: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ (6-3-110)
+- sutra: सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ
+  id: 6.3.110
+  optional: true
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?samAsa
+     lc: ahn
+     l: a
+     rp: ?Ni
+  xform:
+     lc: str("ahan")
+     l: null
+
 
 # 355: न संयोगाद्वमन्तात् (6-4-137)
 - sutra: न संयोगाद्वमन्तात्
@@ -5340,7 +5358,7 @@
      olp: +pada
 
 # 231: यचि भम् (1-4-18)
-- sutra: यचि भम
+- sutra: यचि भम्
   domain: saMjYA
   bahiranga: 0 
   id: 1.4.18
