@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 185 |
-| SK-numbered sutras, skipped/deferred | 54 |
+| SK-numbered sutras, implemented | 190 |
+| SK-numbered sutras, skipped/deferred | 59 |
 | Implemented sutras without SK number yet | ~92 |
 | Stems with full vibhakti test tables | 120 |
 | Stems with partial vibhakti test tables | 4 |
@@ -285,6 +285,11 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 71 | 8.4.65 | झरो झरि सवर्णे | jhar before savarna jhar: lopa of first |
 | 76 | 8.3.15 | खरवसानयोर्विसर्जनीयः | ru/r before khar or at avasāna → visarjanīya (ḥ) |
 | 123 | 8.3.24 | नश्चापदान्तस्य झलि | non-pada-final n before jhal → anusvāra |
+| 127 | 8.3.26 | हे मपरे वा | optional reversion: anusvāra M → m before h when h is m-para (rr=m); overrides SK123 |
+| 129 | 8.3.27 | न परे नः | optional: anusvāra M → n before h when h is n-para (rr=n); overrides SK123 |
+| 130 | 8.3.28 | ङ्णोः कुक् टुक् शरि | optional: ṅ/ṇ at pada-end before śar → append kuk (k) or ṭuk (ṭ) |
+| 131 | 8.3.29 | डः सि धुट् | optional: ḍ at pada-end before s → prepend dhuṭ (dh) to right pada |
+| 132 | 8.3.30 | नश्च | optional: n at pada-end before s → prepend dhuṭ (extends SK131 to n) |
 | 138 | 8.3.34 | विसर्जनीयस्य सः | visarjanīya → s before khar (prathama tripādī) |
 | 142 | 8.3.37 | कुप्वोः कपौ च | visarjanīya before ku/pu consonants → ka |
 | 150 | 8.3.35 | शर्परे विसर्जनीयः | visarjanīya before śar group preserved as visarjanīya |
@@ -348,11 +353,16 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 88 | 6.1.123 | अवङ् स्फोटायनस्य | Skipping for now | Sphoṭāyana option |
 | 89 | 6.1.124 | इन्द्रे च | Skipping for now | indra compounds |
 | 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
-| 127 | 8.3.26 | हे मपरे वा | Skipping for now | hal-sandhi |
-| 129 | 8.3.27 | न परे नः | Skipping for now | hal-sandhi |
-| 130 | 8.3.28 | ङ्णोः कुक् टुक् शरि | Skipping for now | hal-sandhi |
-| 131 | 8.3.29 | डः सि धुट् | Skipping for now | hal-sandhi |
-| 132 | 8.3.30 | नश्च | Skipping for now | hal-sandhi |
+| 152 | 8.3.38 | सोऽपदादौ | Likely natural — pada never starts with visarjanīya; restriction implicit in engine | ṣatva restriction (precondition for SK153) |
+| 153 | 8.3.39 | इणः षः | For later — ṣatva cluster; needs _iṇ sound class in sutra_domains.yaml | Core visarjanīya ṣatva: sarpis+kalpam→sarpiṣkalpam, dhanus+pātra→dhanuṣpātram |
+| 154 | 8.3.40 | नमस्पुरसोर्गत्योः | For later — needs gati-saṃjñā tagging (namas/puras as gati) | namaskaroti, puraskārī |
+| 155 | 8.3.41 | इदुदुपधस्य चाप्रत्ययस्य | For later — needs pratyaya/non-pratyaya distinction at sandhi time | i/u-upadha ṣatva (non-suffix words) |
+| 156 | 8.3.42 | तिरसोऽन्यतरस्याम् | For later — ṣatva cluster; word-specific optional rule | tiras: tiraskartā (ṣatva) or tiraḥkartā (no change) |
+| 157 | 8.3.43 | द्विस्त्रिश्चतुरिति कृत्वोऽर्थे | Skipping for now — kṛtvas-artha context not in engine | dvis/tris/catur kṛtvas ṣatva |
+| 158 | 8.3.44 | इसुसोः सामर्थ्ये | For later — largely subsumed by SK159 in practice; sāmarthya not tracked separately | is/us compound ṣatva (sāmarthya context) |
+| 159 | 8.3.45 | नित्यं समासेऽनुत्तरपदस्थस्य | For later — ṣatva cluster; needs ?samAsa + is/us-final condition | sarpiṣkuṇḍikā, dhanuṣkapālakam (non-final compound) |
+| 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | For later — ṣatva cluster; word-list rule (visarjanīya→s, not ṣ) | ayaskāraḥ, ayaskāmaḥ (a-final + specific following roots) |
+| 161 | 8.3.47 | अधः शिरसी पदे | For later — ṣatva cluster; two-word rule (visarjanīya→s before pāda) | adhaspadam, śiraspadam |
 | 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
 | 238 | 6.3.110 | सङ्ख्याविसायपूर्वस्याह्नस्याऽहन्नन्यतरस्यां ङौ | For later | ahna/ahan in compounds |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
