@@ -203,16 +203,20 @@ class PaninianObject(SanskritObject):
                 so.setTag(t + "_pada")
         # kvin/kvip/kaY are on the left (prAtipadika), not the suffix — same _pada pattern
         for t in ["kvin", "kvip", "kaY", "dfS", "ksa", "vatup"]:
-            if objects[0][0].hasTag(t):
+            if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
         # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
         for t in ["sarvanAma"]:
-            if objects[0][0].hasTag(t):
+            if objects[0][0].hasTag(t) and so.hasTag("pada"):
+                so.setTag(t + "_pada")
+        # indra propagation: indra carries indra_pada on the merged form
+        for t in ["indra"]:
+            if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
 
         # Propagate sam_pada/saha_pada/tiras_pada for aYc_u forms
         for t in ["sam", "saha", "tiras"]:
-            if objects[0][0].hasTag(t):
+            if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t+"_pada")
 
 

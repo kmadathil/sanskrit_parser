@@ -50,7 +50,11 @@ test_list_slp1 = [
     ("Dvas*", kta, "Dvasta"),
     ("sras*", kta, "srasta"),
     (duh, kta, "dugDa"),
-   ]
+    # SK87/SK88/SK89 — go-stem sandhi
+    ("go", "agram", ["gavAgram", "gogram", "goagram"]),  # SK87 optional: gav+agra vs go+agra
+    ("go", "odanam", ["gavOdanam", "gavodanam"]),  # SK87/SK88 optional: o+o→O or av+o→av
+    ("go", (indra, su), "gavendras"),  # SK89 mandatory: avaN before indra
+    ]
 
 test_list_devanagari = [
     ("मरुत्", "टीकते", "मरुट्टीकते"),
