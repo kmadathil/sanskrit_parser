@@ -66,6 +66,7 @@ sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
 krozwu = Pratipadika("krozwu", "pum")
 SamBu = Pratipadika("SamBu", "pum")
 go = Pratipadika("go", "pum")
+indra = Pratipadika("indra", "pum", other_tags=["indra"])
 rE = Pratipadika("rE", "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
@@ -228,6 +229,8 @@ qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
 vAri = Pratipadika("vAri", "napum")
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")
+agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
+odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
 Gfta = Pratipadika("Gfta", "napum")  # घृत n. "clarified butter" (ghee)
 Danus = Pratipadika("Danus", "napum", other_tags=["AdeSa_s"])
 SrIpA = Pratipadika("SrIpA", "napum", other_tags=["DAtu", "kvip"])

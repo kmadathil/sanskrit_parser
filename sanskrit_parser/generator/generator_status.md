@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 191 |
-| SK-numbered sutras, skipped/deferred | 58 |
+| SK-numbered sutras, implemented | 193 |
+| SK-numbered sutras, skipped/deferred | 56 |
 | Implemented sutras without SK number yet | ~92 |
 | Stems with full vibhakti test tables | 121 |
 | Stems with partial vibhakti test tables | 4 |
@@ -238,6 +238,9 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 84 | 8.2.39 | झलां जशोऽन्ते | Jhal at pada-end → jaś (k→g, t→d, etc.) |
 | 85 | 6.1.101 | अकः सवर्णे दीर्घः | Savarna vowels merge to dīrgha (ā+a→ā, i+i→ī etc.) |
 | 86 | 6.1.109 | एङः पदान्तादति | Pada-final e/o before short a: e/o preserved, a elided |
+| 87 | 6.1.122 | सर्वत्र विभाषा गोः | Optional: skip SK86 (r:null) when go-stem (lc=g, l=o) at pada-end before a |
+| 88 | 6.1.123 | अवङ् स्फोटायनस्य | Optional avayav for go-stems before vowel |
+| 89 | 6.1.124 | इन्द्रे च | Mandatory avayav before indra-pada |
 | 111 | 8.4.40 | स्तोः श्चुना श्चुः | s/t-group + ś-group → ś-group (śaśca → śaśca; rāmasya+janī → °śjanī) |
 | 112 | 8.4.44 | शात् | After ś: exception to ścutva |
 | 113 | 8.4.41 | ष्टुना ष्टुः | s/t-group + ṣ-group → ṣ-group (ṣṭutva) |
@@ -349,9 +352,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 77 | 6.1.92 | वासुप्यापिशलेः | Skipping for now | Āpiśali dialect |
 | 81 | 6.1.98 | अव्यक्तानुकरणस्यात इतौ | Skipping for now | Sound-imitation words |
 | 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |
-| 87 | 6.1.122 | सर्वत्र विभाषा गोः | Skipping for now | go-stem optional sandhi |
 | 88 | 6.1.123 | अवङ् स्फोटायनस्य | Skipping for now | Sphoṭāyana option |
-| 89 | 6.1.124 | इन्द्रे च | Skipping for now | indra compounds |
 | 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
 | 152 | 8.3.38 | सोऽपदादौ | Likely natural — pada never starts with visarjanīya; restriction implicit in engine | ṣatva restriction (precondition for SK153) |
 | 153 | 8.3.39 | इणः षः | For later — ṣatva cluster; needs _iṇ sound class in sutra_domains.yaml | Core visarjanīya ṣatva: sarpis+kalpam→sarpiṣkalpam, dhanus+pātra→dhanuṣpātram |
