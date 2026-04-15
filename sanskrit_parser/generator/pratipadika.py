@@ -230,6 +230,7 @@ vAri = Pratipadika("vAri", "napum")
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
+
 agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
 odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
 Gfta = Pratipadika("Gfta", "napum")  # घृत n. "clarified butter" (ghee)
