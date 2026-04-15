@@ -206,7 +206,7 @@ class PaninianObject(SanskritObject):
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
         # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
-        for t in ["sarvanAma"]:
+        for t in ["sarvanAma", "avyaya"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
         # indra propagation: indra carries indra_pada on the merged form

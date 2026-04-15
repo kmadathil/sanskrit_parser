@@ -228,11 +228,14 @@ qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
 vAri = Pratipadika("vAri", "napum")
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
-payas = Pratipadika("payas", "napum")
+payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
+yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
 agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
 odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
 Gfta = Pratipadika("Gfta", "napum")  # घृत n. "clarified butter" (ghee)
-Danus = Pratipadika("Danus", "napum", other_tags=["AdeSa_s"])
+Danus  = Pratipadika("Danus",  "napum", other_tags=["AdeSa_s"])
+sarpis = Pratipadika("sarpis", "napum", other_tags=["AdeSa_s"])  # ghee (i+s-stem); SK153
+yajus  = Pratipadika("yajus",  "napum", other_tags=["AdeSa_s"])  # Veda (u+s-stem); SK153
 SrIpA = Pratipadika("SrIpA", "napum", other_tags=["DAtu", "kvip"])
 asTi = Pratipadika("asTi", "napum")
 daDi = Pratipadika("daDi", "napum")

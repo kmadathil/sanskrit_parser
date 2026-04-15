@@ -176,6 +176,16 @@ kanin = Pratyaya("an", its=["k", "i", "n"], other_tags=["kanin"])
 # anIYa
 anIya= Pratyaya("anIya", its=[], other_tags=["kft", "anIYa"])
 
+
+# Taddhita pratyayas for SK152/SK153 (8.3.38-39): visarjanīya sandhi before ku/pu
+# pāśap, kalpap, kap, kāmyac — share tag "satva_t" used as condition in YAML
+pASap  = Pratyaya("pASa",  its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
+kalpap = Pratyaya("kalpa", its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
+kap  = Pratyaya("ka",     its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
+kAmyac = Pratyaya("kAmya", its=["c"], other_tags=["svAdi", "tadDita", "satva_t"])
+
+
+
 # Adya / Anta
 avasAna = PaninianObject(".")
 avasAna.setTag("avasAna")

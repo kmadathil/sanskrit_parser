@@ -1972,7 +1972,39 @@
      lp: ?pada
   xform:
      l: l
- 
+
+# 152: सोऽपदादौ (8.3.38) — visarjanīya → s before pāśap/kalpap/kap/kāmyac (non-iṇ stems)
+# Apavāda to 8.3.37: fires when rp∈satva_t; SK153 (8.3.39) further overrides for the iṇ case.
+# Blocked for avyaya padas (prātaḥ kalpam, punaḥ kalpam — H stays).
+# Examples: payaH+pāśap → payaspāśa; yaśaH+kalpap → yaśaskalpa
+- sutra: सोऽपदादौ
+  id: 8.3.38
+  overrides: [8.3.37, 8.3.34]
+  condition:
+    l: H
+    rp: ?satva_t
+    lp:
+      - and
+      - ?pada
+      - ?!avyaya_pada
+      - ?!avyaya
+  xform:
+    l: str("s")
+
+# 153: इणः षः (8.3.39) — visarjanīya → ṣ after iṇ before pāśap/kalpap/kap/kāmyac
+# Apavāda to 8.3.38: fires when iṇ (i/u/ṛ/ḷ) precedes H and right is a satva_t pratyaya.
+# Examples: sarpiH+pāśap → sarpiṣpāśa; yajuH+kalpap → yajuṣkalpa
+- sutra: इणः षः
+  id: 8.3.39
+  overrides: [8.3.38, 8.3.37, 8.3.34]
+  condition:
+    l: H
+    ll: _iR
+    rp: ?satva_t
+    lp: ?pada
+  xform:
+    l: str("z")
+
 # 59: अचो रहाभ्यां द्वे (8-4-46)
 - sutra: अचो रहाभ्यां द्वे
   id: 8.4.46

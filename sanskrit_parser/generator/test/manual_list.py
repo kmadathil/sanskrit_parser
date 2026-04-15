@@ -223,5 +223,21 @@ test_list_slp1_ru = [
     # SK143: कानाम्रेडिते (8.3.12) — n of kān → ru before āmreḍita kān
     # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15 r→H before k (khar)
     ("kAn", "kAn", ["kAMskAn", "kA~skAn"]),
+    # SK152: सोऽपदादौ (8.3.38) — H → s before pāśap/kalpap/kap/kāmyac (non-iṇ, non-avyaya stems)
+    # Positive: s-stem neuters — payaH/yaśaH + satva_t → s
+    (payas, pASap,  "payaspASa"),   # payaH + pāśap → payaspāśa
+    (payas, kalpap, "payaskalpa"),  # payaH + kalpap → payaskalpa
+    (yaSas, pASap,  "yaSaspASa"),   # yaśaH + pāśap → yaśaspāśa
+    (yaSas, kalpap, "yaSaskalpa"),  # yaśaH + kalpap → yaśaskalpa
+    # Negative: avyaya padas — SK152 blocked by ?!avyaya_pada; H stays (SK142 identity)
+    (prAtar, kalpap, "prAtaHkalpa"),  # prātaḥ kalpam
+    (punar, kalpap, "punaHkalpa"),   # punaḥ kalpam
+    # SK153: इणः षः (8.3.39) — iṇ+H → ṣ before pāśap/kalpap/kap/kāmyac (satva_t pratyayas)
+    # i+s stem (sarpis): sarpi-H before ku/pu satva_t pratyaya → sarpiṣ (H→z)
+    (sarpis, pASap,  "sarpizpASa"),   # sarpiH + pāśap → sarpiṣpāśa
+    (sarpis, kalpap, "sarpizkalpa"),  # sarpiH + kalpap → sarpiṣkalpa
+    # u+s stem (yajus): yaju-H before ku/pu satva_t pratyaya → yajuṣ (H→z)
+    (yajus, pASap,  "yajuzpASa"),    # yajuH + pāśap → yajuṣpāśa
+    (yajus, kalpap, "yajuzkalpa"),   # yajuH + kalpap → yajuṣkalpa
 ]
 
