@@ -239,5 +239,15 @@ test_list_slp1_ru = [
     # u+s stem (yajus): yaju-H before ku/pu satva_t pratyaya → yajuṣ (H→z)
     (yajus, pASap,  "yajuzpASa"),    # yajuH + pāśap → yajuṣpāśa
     (yajus, kalpap, "yajuzkalpa"),   # yajuH + kalpap → yajuṣkalpa
+    # SK154: नमस्पुरसोर्गत्योः (8.3.40) — namas/puras gati H → s before ku/pu
+    (namas, "kftam", "namaskftam"),   # namaH + kṛtam → namaskṛtam
+    (namas, "pAta",  "namaspAta"),    # namaH + pāta  → namaspāta
+    (puras, "kftam", "puraskftam"),   # puraH + kṛtam → puraskṛtam
+    (puras, "pAta",  "puraspAta"),    # puraH + pāta  → puraspāta
+    # SK155: इदुदुपधस्य चाप्रत्ययस्य (8.3.41) — i/u-upadha non-suffix H → ṣ before ku/pu
+    (nis_pada,   "kftam", "nizkftam"),      # niH + kṛtam → niṣkṛtam
+    (nis_pada,   "pAta",  "nizpAta"),       # niH + pāta  → niṣpāta
+    (dus_pada,   "kftam", "duzkftam"),      # duH + kṛtam → duṣkṛtam
+    (bahis_pada, "kftam", "bahizkftam"),    # bahiH + kṛtam → bahiṣkṛtam
 ]
 

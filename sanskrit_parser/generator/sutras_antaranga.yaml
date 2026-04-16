@@ -2005,6 +2005,37 @@
   xform:
     l: str("z")
 
+# 154: नमस्पुरसोर्गत्योः (8.3.40) — namas/puras gati visarjanīya → s before ku/pu
+# anuvritti of apAdAdau ceases; fires before any ku/pu consonant (not only satva_t).
+# Examples: namaH+kftam → namaskftam; puraH+pAta → puraspAta
+- sutra: नमस्पुरसोर्गत्योः
+  id: 8.3.40
+  overrides: 8.3.37
+  condition:
+    l: H
+    lp: ?gati
+    r: [ku, pu]
+  xform:
+    l: str("s")
+
+# 155: इदुदुपधस्य चाप्रत्ययस्य (8.3.41) — i/u-upadha non-suffix visarjanīya → ṣ before ku/pu
+# Applies to stem-H (upasargas, indeclinables); excluded when H is from sup suffix (?viBakti_pada).
+# Examples: niH+kftam → nizkftam; duH+kftam → duzkftam; bahiH+kftam → bahizkftam
+# Deferred: muhus exception (Vārtika); vfddhi forms (Vārtika naizkUlyam/dauzkUlyam)
+- sutra: इदुदुपधस्य चाप्रत्ययस्य
+  id: 8.3.41
+  overrides: [8.3.37, 8.3.34]
+  condition:
+    l: H
+    ll: [i, I, u, U]
+    lp:
+      - and
+      - ?pada
+      - ?!viBakti_pada
+    r: [ku, pu]
+  xform:
+    l: str("z")
+
 # 59: अचो रहाभ्यां द्वे (8-4-46)
 - sutra: अचो रहाभ्यां द्वे
   id: 8.4.46

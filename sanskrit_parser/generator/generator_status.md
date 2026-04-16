@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| SK-numbered sutras, implemented | 195 |
-| SK-numbered sutras, skipped/deferred | 54 |
+| SK-numbered sutras, implemented | 197 |
+| SK-numbered sutras, skipped/deferred | 53 |
 | Implemented sutras without SK number yet | ~92 |
 | Stems with full vibhakti test tables | 121 |
 | Stems with partial vibhakti test tables | 4 |
@@ -300,6 +300,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 151 | 8.3.36 | वा शरि | optionally visarjanīya before śar (vibhāṣā to SK150) |
 | 152 | 8.3.38 | सोऽपदादौ | visarjanīya → s before pāśap/kalpap/kap/kāmyac pratyayas (non-iṇ stems); rāmas+pāśap→rāmaspāśa |
 | 153 | 8.3.39 | इणः षः | visarjanīya → ṣ after iṇ (i/u/ṛ/ḷ) before pāśap/kalpap/kap/kāmyac pratyayas (satva_t tag); sarpis+pāśap→sarpiṣpāśa, yajus+kalpap→yajuṣkalpa |
+| 154 | 8.3.40 | नमस्पुरसोर्गत्योः | visarjanīya → s for namas/puras (tagged ?gati) before any ku/pu; namas+kṛtam→namaskṛtam, puras+pāta→puraspāta |
+| 155 | 8.3.41 | इदुदुपधस्य चाप्रत्ययस्य | visarjanīya → ṣ for i/u-upadha non-suffix stems (?!viBakti_pada) before any ku/pu; niH+kṛtam→niṣkṛtam, duH+kṛtam→duṣkṛtam; muhus exception deferred |
 | 165 | 6.1.104 | नादिचि | pragṛhya ā-final: no sandhi before vowel (ā preserved) |
 | 166 | 6.1.114 | हशि च | e/o-final + h-initial: pararūpa sandhi (also covers haśi before śi) |
 | 167 | 8.3.17 | भोभगोअघोअपूर्वस्य योऽशि | bho/bhago/agho etc.: y inserted before aśi vowels |
@@ -356,8 +358,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |
 | 88 | 6.1.123 | अवङ् स्फोटायनस्य | Skipping for now | Sphoṭāyana option |
 | 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
-| 154 | 8.3.40 | नमस्पुरसोर्गत्योः | For later — needs gati-saṃjñā tagging (namas/puras as gati) | namaskaroti, puraskārī |
-| 155 | 8.3.41 | इदुदुपधस्य चाप्रत्ययस्य | For later — needs pratyaya/non-pratyaya distinction at sandhi time | i/u-upadha ṣatva (non-suffix words) |
+| 155 | 8.3.41 | इदुदुपधस्य चाप्रत्ययस्य | Partial — muhus exception (Vārtika: muhuḥkāmā not muhuṣkāmā) and vṛddhi forms pending | muhuH before ku/pu; naiṣkulyam/dauṣkulyam type forms |
 | 156 | 8.3.42 | तिरसोऽन्यतरस्याम् | For later — ṣatva cluster; word-specific optional rule | tiras: tiraskartā (ṣatva) or tiraḥkartā (no change) |
 | 157 | 8.3.43 | द्विस्त्रिश्चतुरिति कृत्वोऽर्थे | Skipping for now — kṛtvas-artha context not in engine | dvis/tris/catur kṛtvas ṣatva |
 | 158 | 8.3.44 | इसुसोः सामर्थ्ये | For later — largely subsumed by SK159 in practice; sāmarthya not tracked separately | is/us compound ṣatva (sāmarthya context) |

@@ -230,6 +230,8 @@ vAri = Pratipadika("vAri", "napum")
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
+namas = Pratipadika("namas", "napum", other_tags=["avyaya", "gati"])   # नमस् n. "obeisance" — SK154 (gati by 1.4.74)
+puras = Pratipadika("puras", "napum", other_tags=["avyaya", "gati"])   # पुरस् adv. "in front" — SK154 (gati by 1.4.67)
 
 agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
 odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
@@ -292,6 +294,9 @@ tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarg
 ud_pada    = Pratipadika("ud",    "pum", other_tags=["nipAta", "upasarga", "pada"])
 sam_pada   = Pratipadika("sam",   "pum", other_tags=["sam",  "nipAta", "upasarga", "pada"])
 saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga", "pada"])
+nis_pada   = Pratipadika("niH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # निस् prefix — SK155
+dus_pada   = Pratipadika("duH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # दुस् prefix — SK155
+bahis_pada = Pratipadika("bahiH", "pum", other_tags=["nipAta", "avyaya", "pada"])     # बहिस् indeclinable — SK155
 # SK430 (6.3.91) — dṛkṣa stem: दृश् + क्स affix (क् is it, स् remains → क्ष)
 # dfS and ksa tags propagate to dfS_pada + ksa_pada on the merged compound form
 dfkza = Pratipadika("dfkza", "pum", other_tags=["dfS", "ksa"])
