@@ -309,6 +309,32 @@ catur_kftvas_pada = Pratipadika("catuH", "pum", other_tags=["kftvas", "avyaya", 
 sarpis_pada = Pratipadika("sarpiH", "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
 yajus_pada  = Pratipadika("yajuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
 Danus_pada  = Pratipadika("DanuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
+# SK160 (8.3.46) — a-final samāsa pūrva + {kāra/kāma/kaṃsa/kumbha/pātra/kuśā/karṇī}
+# Bare pratipadikas used by samāsa vibhakti fixture (item 5); tag propagates to _pada via join_objects.
+ayas  = Pratipadika("ayas",  "napum")                                           # test pūrva (iron/metal)
+kAra  = Pratipadika("kAra",  "pum",   other_tags=["satva_kfkamkaMsAdi"])        # placeholder for √kṛ-form
+kAma  = Pratipadika("kAma",  "pum",   other_tags=["satva_kfkamkaMsAdi"])        # placeholder for √kam-form
+kaMsa = Pratipadika("kaMsa", "pum",   other_tags=["satva_kfkamkaMsAdi"])
+kumBa = Pratipadika("kumBa", "pum",   other_tags=["satva_kfkamkaMsAdi"])
+pAtra = Pratipadika("pAtra", "napum", other_tags=["satva_kfkamkaMsAdi"])
+kuSA  = Pratipadika("kuSA",  "strI",  other_tags=["satva_kfkamkaMsAdi"])
+karRI = Pratipadika("karRI", "strI",  other_tags=["satva_kfkamkaMsAdi"])
+# Pre-tagged _pada forms for manual_list.py spot-tests (uttara not inflected by runner).
+kAra_pada  = Pratipadika("kAra",  "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+kAma_pada  = Pratipadika("kAma",  "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+kaMsa_pada = Pratipadika("kaMsa", "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+kumBa_pada = Pratipadika("kumBa", "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+pAtra_pada = Pratipadika("pAtra", "napum", other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+kuSA_pada  = Pratipadika("kuSA",  "strI",  other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+karRI_pada = Pratipadika("karRI", "strI",  other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+
+# SK161 (8.3.47) — aDas/Siras samāsa pūrva before any viBakti form of pada
+aDas  = Pratipadika("aDas",  "pum",   other_tags=["avyaya"])
+Siras = Pratipadika("Siras", "napum")
+pada  = Pratipadika("pada",  "napum", other_tags=["pada_p"])                    # tag propagates to pada_p_pada
+# Pre-tagged _pada form for manual_list.py spot-tests.
+pada_pada = Pratipadika("pada", "napum", other_tags=["pada_p_pada", "pada", "viBakti_pada"])
+
 # SK430 (6.3.91) — dṛkṣa stem: दृश् + क्स affix (क् is it, स् remains → क्ष)
 # dfS and ksa tags propagate to dfS_pada + ksa_pada on the merged compound form
 dfkza = Pratipadika("dfkza", "pum", other_tags=["dfS", "ksa"])

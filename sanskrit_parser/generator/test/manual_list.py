@@ -51,9 +51,9 @@ test_list_slp1 = [
     ("sras*", kta, "srasta"),
     (duh, kta, "dugDa"),
     # SK87/SK88/SK89 — go-stem sandhi
-    ("go", "agram", ["gavAgram", "gogram", "goagram"]),  # SK87 optional: gav+agra vs go+agra
-    ("go", "odanam", ["gavOdanam", "gavodanam"]),  # SK87/SK88 optional: o+o→O or av+o→av
-    ("go", (indra, su), "gavendras"),  # SK89 mandatory: avaN before indra
+    (go, luk_sup, "agram", ["gavAgram", "gogram", "goagram"]),  # SK87 optional: gav+agra vs go+agra
+    (go, luk_sup, "odanam", ["gavOdanam", "gavodanam"]),  # SK87/SK88 optional: o+o→O or av+o→av
+    (go, luk_sup, indra, su, "gavendras"),  # SK89 mandatory: avaN before indra
     ]
 
 test_list_devanagari = [
@@ -263,5 +263,22 @@ test_list_slp1_ru = [
     # SK159: नित्यं समासेऽनुत्तरपदस्थस्य (8.3.45) — is/us-pūrva-pada H → ṣ mandatorily in samāsa
     (as_purva_pada(sarpis_pada), "kuRqikA",   "sarpizkuRqikA"),
     (as_purva_pada(Danus_pada),  "kapAlakam", "DanuzkapAlakam"),
+    # SK160: अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य (8.3.46)
+    # a-final samāsa pūrva (non-avyaya) + word-list uttara → H → s
+    (as_purva_pada(ayas), luk_sup, kAra_pada,  "ayaskAra"),
+    (as_purva_pada(ayas), luk_sup, kAma_pada,  "ayaskAma"),
+    (as_purva_pada(ayas), luk_sup, kaMsa_pada, "ayaskaMsa"),
+    (as_purva_pada(ayas), luk_sup,  kumBa_pada, "ayaskumBa"),
+    (as_purva_pada(ayas), luk_sup,  pAtra_pada, "ayaspAtra"),
+    (as_purva_pada(ayas), luk_sup,  kuSA_pada,  "ayaskuSA"),
+    (as_purva_pada(ayas), luk_sup,  karRI_pada, "ayaskarRI"),
+    (as_purva_pada(payas), luk_sup, kAra_pada,  "payaskAra"),
+    # Negative: uttarapada not in word-list → H stays (SK142/8.3.37 identity)
+    (as_purva_pada(payas), luk_sup, "gamana", "payogamana"),
+    # SK161: अधः शिरसी पदे (8.3.47) — aDas/Siras pūrva + pada uttara → H → s
+    (as_purva_pada(aDas),  pada, su, "aDaspadam"),
+    (as_purva_pada(Siras), pada, su,  "Siraspadam"),
+    # Negative: uttarapada is not pada → H stays
+    (as_purva_pada(Siras), luk_sup, "gamana", "Sirogamana"),
 ]
 

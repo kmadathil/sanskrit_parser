@@ -2209,8 +2209,34 @@ viBakti["pra"] = [
     ['प्र', 'प्र', 'प्र'],
 ]
 
+# SK161 (8.3.47) — aDas/Siras + pada compounds: visarjanīya → s before any vibhakti form of pada
+# pada_p tag on the `pada` pratipadika propagates to pada_p_pada on its vibhakti forms,
+# which SK161 checks as rp: ?pada_p_pada.
+prAtipadika["aDaspada"]  = [as_purva_pada(aDas),  in_compound(pada)]   # noqa: F405
+prAtipadika["Siraspada"] = [as_purva_pada(Siras), in_compound(pada)]   # noqa: F405
+viBakti["aDaspada"] = [
+    ["अधस्पदम्",  "अधस्पदे",      "अधस्पदानि"],    # 1 Nom
+    ["अधस्पदम्",  "अधस्पदे",      "अधस्पदानि"],    # 2 Acc
+    ["अधस्पदेन",  "अधस्पदाभ्याम्", "अधस्पदैः"],    # 3 Ins
+    ["अधस्पदाय",  "अधस्पदाभ्याम्", "अधस्पदेभ्यः"], # 4 Dat
+    [["अधस्पदात्", "अधस्पदाद्"], "अधस्पदाभ्याम्", "अधस्पदेभ्यः"], # 5 Abl
+    ["अधस्पदस्य", "अधस्पदयोः",    "अधस्पदानाम्"],  # 6 Gen
+    ["अधस्पदे",   "अधस्पदयोः",    "अधस्पदेषु"],    # 7 Loc
+    ["अधस्पदम्",    "अधस्पदे",      "अधस्पदानि"],    # 8 Voc
+]
+viBakti["Siraspada"] = [
+    ["शिरस्पदम्",  "शिरस्पदे",      "शिरस्पदानि"],    # 1 Nom
+    ["शिरस्पदम्",  "शिरस्पदे",      "शिरस्पदानि"],    # 2 Acc
+    ["शिरस्पदेन",  "शिरस्पदाभ्याम्", "शिरस्पदैः"],    # 3 Ins
+    ["शिरस्पदाय",  "शिरस्पदाभ्याम्", "शिरस्पदेभ्यः"], # 4 Dat
+    [["शिरस्पदात्", "शिरस्पदाद्"], "शिरस्पदाभ्याम्", "शिरस्पदेभ्यः"], # 5 Abl
+    ["शिरस्पदस्य", "शिरस्पदयोः",    "शिरस्पदानाम्"],  # 6 Gen
+    ["शिरस्पदे",   "शिरस्पदयोः",    "शिरस्पदेषु"],    # 7 Loc
+    ["शिरस्पदम्",    "शिरस्पदे",      "शिरस्पदानि"],    # 8 Voc
+]
+
 samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza", "Gftaspfk"],
-          "strI": ["SUrpanaKI"], "napum": ["kzIrapa"]}
+          "strI": ["SUrpanaKI"], "napum": ["kzIrapa", "aDaspada", "Siraspada"]}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 
 ajanta = {"pum": [], "strI": [], "napum": []}

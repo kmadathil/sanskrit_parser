@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 304 |
-| Sutras skipped / deferred | 39 |
+| Sutras implemented | 306 |
+| Sutras skipped / deferred | 38 |
 | Sutras uncatalogued / not yet planned | ~69 |
 | **Total sutras accounted for** | **~411** |
-| Stems with full vibhakti test tables | 157 |
+| Stems with full vibhakti test tables | 159 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -104,6 +104,8 @@ The "Forms affected" column uses the convention:
 | 157 | 8.3.43 | द्विस्त्रिश्चतुरिति कृत्वोऽर्थे | dvis/tris/catur as kṛtvas-adverbs: visarjanīya → ṣ optionally before ku/pu; dviH+karoti → dviṣkaroti / dviḥkaroti |
 | 158 | 8.3.44 | इसुसोः सामर्थ्ये | is/us-final pada visarjanīya → ṣ optionally before ku/pu in vyapekṣā (sāmarthya); sarpiH+karoti → sarpiṣkaroti / sarpiḥkaroti |
 | 159 | 8.3.45 | नित्यं समासेऽनुत्तरपदस्थस्य | is/us-final pūrva-pada in samāsa: visarjanīya → ṣ mandatorily before ku/pu (anuttarapadastha via rp:?!samAsaPurva); sarpis+kuṇḍikā → sarpiṣkuṇḍikā |
+| 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | a-final samāsa pūrvapada (non-avyaya) H → s before {kāra, kāma, kaṃsa, kumbha, pātra, kuśā, karṇī} (tag satva_kfkamkaMsAdi_pada on uttara); partial — kṛ/kam kṛdanta forms deferred |
+| 161 | 8.3.47 | अधः शिरसी पदे | aDas/Siras samāsa pūrvapada H → s before any vibhakti form of pada (tag pada_p_pada on uttara via pada_p propagation); full 8×3 vibhakti test for aDaspada and Siraspada |
 | 162 | 8.2.66 | ससजुषो रुः | s/sajuṣ at pada-end → ru (visarga source: rāmaḥ) |
 | 163 | 6.1.113 | अतो रोरप्लुतादप्लुते | a-final pada + ru before a: ro'r (rāmaH + asti → rāmo'sti) |
 | 164 | 6.1.102 | प्रथमयोः पूर्वसवर्णः | nom/acc du: stem-final a/ā + O ending → long vowel (e.g. rāma + O → rāmau) |
@@ -365,8 +367,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |
 | 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
 | 156 | 8.3.42 | तिरसोऽन्यतरस्याम् | Partial — non-gati tiras context (tiraḥ kṛtvā) not distinguishable with current tagging | tiras as non-gati adverb: no ṣatva (should stay tiraḥ) |
-| 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | For later — ṣatva cluster; word-list rule (visarjanīya→s, not ṣ) | ayaskāraḥ, ayaskāmaḥ (a-final + specific following roots) |
-| 161 | 8.3.47 | अधः शिरसी पदे | For later — ṣatva cluster; two-word rule (visarjanīya→s before pāda) | adhaspadam, śiraspadam |
+| 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | Partial — kāra and kāma are fixed-form pratipadika placeholders; kṛ/kam dhātu-derived kṛdanta forms (karaṇa, karman, kṛtya, kāmana, kāmya, …) not yet auto-tagged satva_kfkamkaMsAdi | all kṛt-derivative forms of √kṛ/√kam as uttarapada |
 | 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
 | 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |
@@ -603,3 +604,5 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | yAdfkza | m | a-stem (compound, SK430) | (samāsa) [yad_pada, in_compound(dfkza)]; SK430 kṣa arm; yādṛkṣaḥ nom sg |
 | SUrpanaKI | f | ī-stem (nadī compound) | (samāsa) [as_purva_pada(SUrpa), luk_sup, in_compound(naKI)]; Śūrpaṇakhā paradigm |
 | kzIrapa | n | a-stem (compound) | (samāsa) [as_purva_pada(kzIra), luk_sup, in_compound(pa)]; kṣīrapa neuter a-stem |
+| aDaspada | n | a-stem (compound) | (samāsa) [as_purva_pada(aDas), in_compound(pada)]; SK161 test — adhas+pada → adhaspadam |
+| Siraspada | n | a-stem (compound) | (samāsa) [as_purva_pada(Siras), in_compound(pada)]; SK161 test — śiras+pada → śiraspadam |

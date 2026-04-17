@@ -151,6 +151,9 @@ class PaninianObject(SanskritObject):
                 so.deleteTag("samAsa")
             if so.hasTag("samAsaPurva"):
                 so.deleteTag("samAsaPurva")
+            for t in ["pada_p_pada", "satva_kfkamkaMsAdi_pada"]:
+                if so.hasTag(t):
+                    so.deleteTag(t)
         # Propagate stem-class tags needed for pada-internal sandhi rules
         # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip)
         for t in ["han"]:
@@ -215,7 +218,8 @@ class PaninianObject(SanskritObject):
                 so.setTag(t + "_pada")
 
         # Propagate sam_pada/saha_pada/tiras_pada for aYc_u forms
-        for t in ["sam", "saha", "tiras"]:
+        # Also propagate satva_kfkamkaMsAdi (SK160) and pada_p (SK161) to _pada variants.
+        for t in ["sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t+"_pada")
 

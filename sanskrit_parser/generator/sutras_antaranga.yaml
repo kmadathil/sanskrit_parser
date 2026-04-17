@@ -2095,6 +2095,56 @@
   xform:
     l: str("z")
 
+# 160: अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य (8.3.46)
+# Mandatory apavāda to 8.3.37/8.3.34 for a-final, non-avyaya samāsa-pūrva
+# before {kāra, kāma, kaṃsa, kumbha, pātra, kuśā, karṇī} (tag: satva_kfkamkaMsAdi).
+# Partial: kāra/kāma are fixed-form placeholders; full kṛ/kam kṛdanta coverage deferred.
+- sutra: अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य
+  id: 8.3.46
+  overrides: [8.3.37, 8.3.34]
+  condition:
+    l: H
+    ll: a
+    lp:
+      - and
+      - ?samAsaPurva
+      - ?!avyaya
+    rp:
+      - and
+      - ?satva_kfkamkaMsAdi_pada
+      - ?!samAsaPurva
+  xform:
+    l: str("s")
+
+# 161: अधः शिरसी पदे (8.3.47)
+# Mandatory apavāda to 8.3.37/8.3.34 for aDas/Siras samāsa-pūrva before
+# any vibhakti form of pada (tag: pada_p_pada). Anuttarapadastha via ?!samAsaPurva on rp.
+# No anavyaya restriction — aDas IS avyaya and the sutra still applies.
+- sutra: अधः शिरसी पदे
+  id: 8.3.47
+  overrides: [8.3.37, 8.3.34]
+  condition:
+    - l: H
+      lp:
+       - and
+       - ?samAsaPurva
+       - =aDaH
+      rp:
+       - and
+       - ?pada_p_pada
+       - ?!samAsaPurva
+    - l: H
+      lp:
+       - and
+       - ?samAsaPurva
+       - =SiraH
+      rp:
+       - and
+       - ?pada_p_pada
+       - ?!samAsaPurva
+  xform:
+    l: str("s")
+
 # 59: अचो रहाभ्यां द्वे (8-4-46)
 - sutra: अचो रहाभ्यां द्वे
   id: 8.4.46
