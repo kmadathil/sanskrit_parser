@@ -166,7 +166,7 @@ class PaninianObject(SanskritObject):
         for t in ["AN"]:
             if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
                 so.setTag(t)
-        for t in ["trc", "trn", "kvin", "kvip", "kaY"]:
+        for t in ["trc", "trn", "kvin", "kvip", "kaY", "suc"]:
             if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
                 so.setTag(t)
         # Propagate samasta_Ratva from uttara-pada to merged compound as samasta_Ratva_pada
@@ -205,21 +205,23 @@ class PaninianObject(SanskritObject):
             if objects[0][-1].hasTag(t):
                 so.setTag(t + "_pada")
         # kvin/kvip/kaY are on the left (prAtipadika), not the suffix — same _pada pattern
-        for t in ["kvin", "kvip", "kaY", "dfS", "ksa", "vatup"]:
+        for t in ["kvin", "kvip", "kaY", "dfS", "ksa", "vatup", "suc"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
         # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
         for t in ["sarvanAma", "avyaya"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
+                
         # indra propagation: indra carries indra_pada on the merged form
-        for t in ["indra"]:
+        # pums propagation: pums carries pums_pada on the merged form
+        for t in ["indra", "pums"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t + "_pada")
 
         # Propagate sam_pada/saha_pada/tiras_pada for aYc_u forms
         # Also propagate satva_kfkamkaMsAdi (SK160) and pada_p (SK161) to _pada variants.
-        for t in ["sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p"]:
+        for t in ["sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p", "vizvag", "deva"]:
             if objects[0][0].hasTag(t) and so.hasTag("pada"):
                 so.setTag(t+"_pada")
 
@@ -228,6 +230,11 @@ class PaninianObject(SanskritObject):
         for t in ["na_pada"]:
             if objects[0][0].hasTag(t):
                 so.setTag("na_pada")
-      
+
+
+        # Adesa_s
+        for t in ["AdeSa_s"]:
+            if objects[0][0].hasTag(t) and (not objects[0][0].hasTag("viBakti_pada")):
+                so.setTag(t)
                 
         return so

@@ -211,12 +211,12 @@ test_list_devanagari = [
 test_list_slp1_ru = [
     # SK135: समः सुटि (8.3.5) — sam m→ru before suw-tagged s
     # 8.3.2 always: ~r; 8.3.4 optional: Mr. Then 8.3.15 r→H; 8.3.36(vā) or 8.3.34 H→s
-    (sam_pada, in_context(PaninianObject("skartA"), "suw"),   # noqa: F405
+    (sam, luk_sup, in_context(PaninianObject("skartA"), "suw"),   # noqa: F405
      ["sa~sskartA", "saMsskartA", "sa~skartA", "saMskartA"]),
     # SK139: पुमः खय्यम्परे (8.3.6) — 8.2.23 pums→pum, then m→ru before khay+vowel
     # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15 r→H; 8.3.34 H→s; 8.4.40 ścutva before c
-    (in_context(pums, "pada"), "cakravAka", ["puMScakravAka", "pu~ScakravAka"]),   # noqa: F405
-    (in_context(pums, "pada"), "kokila", ["puMskokila", "pu~skokila"]),   # noqa: F405
+    (pums, luk_sup, "cakravAka", ["puMScakravAka", "pu~ScakravAka"]),   # noqa: F405
+    (pums, luk_sup, "kokila", ["puMskokila", "pu~skokila"]),   # noqa: F405
     # SK141: नॄन्पे (8.3.10) — nṝn → ru before p
     # 8.3.2: ~r; 8.3.4 optional: Mr. 8.3.15→H; 8.3.37 (kupvoḥ) before p
     ("nFn", "pAhi", ["nFMHpAhi", "nF~HpAhi"]),
@@ -245,34 +245,34 @@ test_list_slp1_ru = [
     (puras, "kftam", "puraskftam"),   # puraH + kṛtam → puraskṛtam
     (puras, "pAta",  "puraspAta"),    # puraH + pāta  → puraspāta
     # SK155: इदुदुपधस्य चाप्रत्ययस्य (8.3.41) — i/u-upadha non-suffix H → ṣ before ku/pu
-    (nis_pada,   "kftam", "nizkftam"),      # niH + kṛtam → niṣkṛtam
-    (nis_pada,   "pAta",  "nizpAta"),       # niH + pāta  → niṣpāta
-    (dus_pada,   "kftam", "duzkftam"),      # duH + kṛtam → duṣkṛtam
-    (bahis_pada, "kftam", "bahizkftam"),    # bahiH + kṛtam → bahiṣkṛtam
+    (nis, luk_sup, "kftam", "nizkftam"),      # niH + kṛtam → niṣkṛtam
+    (nis, luk_sup, "pAta",  "nizpAta"),       # niH + pāta  → niṣpāta
+    (dus, luk_sup, "kftam", "duzkftam"),      # duH + kṛtam → duṣkṛtam
+    (bahis, luk_sup, "kftam", "bahizkftam"),    # bahiH + kṛtam → bahiṣkṛtam
     # SK156: तिरसोऽन्यतरस्याम् (8.3.42) — tiras (gati) H → s optionally before ku/pu
-    (tiras_pada, "kartA", ["tiraskartA", "tiraHkartA"]),
-    (tiras_pada, "pAnam", ["tiraspAnam", "tiraHpAnam"]),
-    # SK157: द्विस्त्रिश्चतुरिति कृत्वोऽर्थे (8.3.43) — dvis/tris/catur kṛtvas H → ṣ optionally before ku/pu
-    (dvis_kftvas_pada,  "karoti", ["dvizkaroti",  "dviHkaroti"]),
-    (tris_kftvas_pada,  "karoti", ["trizkaroti",  "triHkaroti"]),
-    (catur_kftvas_pada, "karoti", ["catuzkaroti", "catuHkaroti"]),
+    (tiras, luk_sup, "kartA", ["tiraskartA", "tiraHkartA"]),
+    (tiras, luk_sup, "pAnam", ["tiraspAnam", "tiraHpAnam"]),
+    # SK157: द्विस्त्रिश्चतुरिति कृत्वोऽर्थे (8.3.43) — dvis/tris/catur suc (kṛtvas arthe) H → ṣ optionally before ku/pu
+    (dvi, suc, luk_sup,  "karoti", ["dvizkaroti",  "dviHkaroti"]),
+    (tri, suc, luk_sup,  "karoti", ["trizkaroti",  "triHkaroti"]),
+    (catur, suc, luk_sup,  "karoti", ["catuzkaroti", "catuHkaroti"]),
     # SK158: इसुसोः सामर्थ्ये (8.3.44) — is/us-final pada H → ṣ optionally before ku/pu (vyapekṣā)
-    (sarpis_pada, "karoti", ["sarpizkaroti", "sarpiHkaroti"]),
-    (yajus_pada,  "karoti", ["yajuzkaroti",  "yajuHkaroti"]),
-    (Danus_pada,  "karoti", ["Danuzkaroti",  "DanuHkaroti"]),
+    (sarpis, su, "karoti", ["sarpizkaroti", "sarpiHkaroti"]),
+    (yajus,  su, "karoti", ["yajuzkaroti",  "yajuHkaroti"]),
+    (Danus,  su, "karoti", ["Danuzkaroti",  "DanuHkaroti"]),
     # SK159: नित्यं समासेऽनुत्तरपदस्थस्य (8.3.45) — is/us-pūrva-pada H → ṣ mandatorily in samāsa
-    (as_purva_pada(sarpis_pada), "kuRqikA",   "sarpizkuRqikA"),
-    (as_purva_pada(Danus_pada),  "kapAlakam", "DanuzkapAlakam"),
+    (as_purva_pada(sarpis), luk_sup,  "kuRqikA",   "sarpizkuRqikA"),
+    (as_purva_pada(Danus), luk_sup,  "kapAlakam", "DanuzkapAlakam"),
     # SK160: अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य (8.3.46)
     # a-final samāsa pūrva (non-avyaya) + word-list uttara → H → s
-    (as_purva_pada(ayas), luk_sup, kAra_pada,  "ayaskAra"),
-    (as_purva_pada(ayas), luk_sup, kAma_pada,  "ayaskAma"),
-    (as_purva_pada(ayas), luk_sup, kaMsa_pada, "ayaskaMsa"),
-    (as_purva_pada(ayas), luk_sup,  kumBa_pada, "ayaskumBa"),
-    (as_purva_pada(ayas), luk_sup,  pAtra_pada, "ayaspAtra"),
-    (as_purva_pada(ayas), luk_sup,  kuSA_pada,  "ayaskuSA"),
-    (as_purva_pada(ayas), luk_sup,  karRI_pada, "ayaskarRI"),
-    (as_purva_pada(payas), luk_sup, kAra_pada,  "payaskAra"),
+    (as_purva_pada(ayas), luk_sup, kAra, su,  "ayaskAras"),
+    (as_purva_pada(ayas), luk_sup, kAma, su, "ayaskAmas"),
+    (as_purva_pada(ayas), luk_sup, kaMsa, su,  "ayaskaMsas"),
+    (as_purva_pada(ayas), luk_sup,  kumBa, su,  "ayaskumBas"),
+    (as_purva_pada(ayas), luk_sup,  pAtra, su, "ayaspAtram"),
+    (as_purva_pada(ayas), luk_sup,  kuSA, su,   "ayaskuSA"),
+    (as_purva_pada(ayas), luk_sup,  karRI, su,  "ayaskarRI"),
+    (as_purva_pada(payas), luk_sup, kAra, su,  "payaskAras"),
     # Negative: uttarapada not in word-list → H stays (SK142/8.3.37 identity)
     (as_purva_pada(payas), luk_sup, "gamana", "payogamana"),
     # SK161: अधः शिरसी पदे (8.3.47) — aDas/Siras pūrva + pada uttara → H → s

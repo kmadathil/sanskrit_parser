@@ -1216,6 +1216,18 @@
      lp: ?pada
      ll: r
   xform: null
+  
+# 280: रात्सस्य (8-2-24-2)
+- sutra: रात्सस्य
+  id: 8.2.24.2
+  overrides: 8.2.23
+  condition:
+     lp: ?pada
+     l: r
+     r: s
+     rc: $$null
+  xform:
+     r: null
 
 # 377: क्विन्प्रत्ययस्य कुः (8-2-62) — ku-substitution for kvin-derived stems at pada-end.
 # Covers cu-final kvin stems (j→g, same as 8.2.30) and ś-final path.
@@ -1502,9 +1514,8 @@
       - _iR
       - ku
     l: s
-    rp:
-      - ?pratyaya
-      - ?AdeSa_s
+    rp: ?pratyaya
+    r: $$notnull  # apadAntasya
   xform:
     l: str("z")
 
@@ -1640,10 +1651,7 @@
   id: 8.3.5
   condition:
      l: m
-     lp:
-       - and
-       - ?sam
-       - ?pada
+     lp: ?sam_pada
      r: s
      rp: ?suw
   xform:
@@ -1661,8 +1669,7 @@
        - str("saM")
      lp:
        - and
-       - ?sam
-       - ?pada
+       - ?sam_pada
        - ?!ru_anu
      r: s
      rp: ?suw
@@ -1680,8 +1687,7 @@
        - str("sa~")
      lp:
        - and
-       - ?sam
-       - ?pada
+       - ?sam_pada
      r: s
      rp: ?suw
   xform:
@@ -1700,10 +1706,7 @@
   id: 8.3.6
   condition:
      l: m
-     lp:
-       - and
-       - ?pums
-       - ?pada
+     lp: ?pums_pada
      r: _Kay
      rr: _am
   xform:
@@ -2030,7 +2033,7 @@
     lp:
       - and
       - ?pada
-      - ?!viBakti_pada
+      - ?avyaya_pada
     r: [ku, pu]
   xform:
     l: str("z")
@@ -2043,7 +2046,7 @@
   optional: true
   condition:
     l: H
-    lp: ?tiras
+    lp: ?tiras_pada
     r: [ku, pu]
   xform:
     l: str("s")
@@ -2056,7 +2059,12 @@
   optional: true
   condition:
     l: H
-    lp: ?kftvas
+    lc:
+       - =dvi
+       - =tri
+       - =catu
+    #lp: ?kftvas
+    lp: ?suc_pada
     r: [ku, pu]
   xform:
     l: str("z")
@@ -4158,13 +4166,13 @@
   id: 6.3.92
   bahiranga: 1
   condition:
-    - lp: ?vizvag
+    - lp: ?vizvag_pada
       rp:
         - and
         - ?aYc
         - ?kvin_pada
       r: [a, c]
-    - lp: ?deva
+    - lp: ?deva_pada
       rp:
         - and
         - ?aYc

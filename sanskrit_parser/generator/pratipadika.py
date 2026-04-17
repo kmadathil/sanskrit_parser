@@ -285,30 +285,10 @@ tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras"])
 ud    = Pratipadika("ud",    "pum", other_tags=["nipAta"])
 sam   = Pratipadika("sam",   "pum", other_tags=["nipAta", "sam"])
 saha  = Pratipadika("saha",  "pum", other_tags=["nipAta", "saha"])
+nis  = Pratipadika("nis",  "napum", other_tags=["nipAta", "nis"])
+dus  = Pratipadika("dus",  "napum", other_tags=["nipAta", "dus"])
+bahis  = Pratipadika("bahis",  "napum", other_tags=["nipAta", "tiras"])
 
-#Pada versions of above - will be removed later
-# FIXME - remove when we implement SK452/2.4.82
-prati_pada = Pratipadika("prati", "pum", other_tags=["nipAta", "upasarga", "pada"])
-pra_pada   = Pratipadika("pra",   "pum", other_tags=["nipAta", "upasarga", "pada"])
-tiras_pada = Pratipadika("tiras", "pum", other_tags=["tiras", "nipAta", "upasarga", "pada"])
-ud_pada    = Pratipadika("ud",    "pum", other_tags=["nipAta", "upasarga", "pada"])
-sam_pada   = Pratipadika("sam",   "pum", other_tags=["sam",  "nipAta", "upasarga", "pada"])
-saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga", "pada"])
-nis_pada   = Pratipadika("niH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # निस् prefix — SK155
-dus_pada   = Pratipadika("duH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # दुस् prefix — SK155
-bahis_pada = Pratipadika("bahiH", "pum", other_tags=["nipAta", "avyaya", "pada"])     # बहिस् indeclinable — SK155
-
-# SK157 — kṛtvas-artha numeral adverbs (dvis, tris, catur + sUc)
-# visarga is from sUc affix on dvi/tri; non-affix on catur; handled uniformly via ?kftvas.
-# ?viBakti_pada blocks SK155 from firing compulsorily on catuH.
-dvis_kftvas_pada  = Pratipadika("dviH",  "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
-tris_kftvas_pada  = Pratipadika("triH",  "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
-catur_kftvas_pada = Pratipadika("catuH", "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
-
-# SK158/SK159 — is/us-ending padas; ?viBakti_pada blocks SK155 (?!viBakti_pada).
-sarpis_pada = Pratipadika("sarpiH", "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
-yajus_pada  = Pratipadika("yajuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
-Danus_pada  = Pratipadika("DanuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
 # SK160 (8.3.46) — a-final samāsa pūrva + {kāra/kāma/kaṃsa/kumbha/pātra/kuśā/karṇī}
 # Bare pratipadikas used by samāsa vibhakti fixture (item 5); tag propagates to _pada via join_objects.
 ayas  = Pratipadika("ayas",  "napum")                                           # test pūrva (iron/metal)
@@ -317,36 +297,22 @@ kAma  = Pratipadika("kAma",  "pum",   other_tags=["satva_kfkamkaMsAdi"])        
 kaMsa = Pratipadika("kaMsa", "pum",   other_tags=["satva_kfkamkaMsAdi"])
 kumBa = Pratipadika("kumBa", "pum",   other_tags=["satva_kfkamkaMsAdi"])
 pAtra = Pratipadika("pAtra", "napum", other_tags=["satva_kfkamkaMsAdi"])
-kuSA  = Pratipadika("kuSA",  "strI",  other_tags=["satva_kfkamkaMsAdi"])
-karRI = Pratipadika("karRI", "strI",  other_tags=["satva_kfkamkaMsAdi"])
-# Pre-tagged _pada forms for manual_list.py spot-tests (uttara not inflected by runner).
-kAra_pada  = Pratipadika("kAra",  "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-kAma_pada  = Pratipadika("kAma",  "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-kaMsa_pada = Pratipadika("kaMsa", "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-kumBa_pada = Pratipadika("kumBa", "pum",   other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-pAtra_pada = Pratipadika("pAtra", "napum", other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-kuSA_pada  = Pratipadika("kuSA",  "strI",  other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
-karRI_pada = Pratipadika("karRI", "strI",  other_tags=["satva_kfkamkaMsAdi_pada", "pada", "viBakti_pada"])
+kuSA  = Pratipadika("kuSA",  "strI",  other_tags=["satva_kfkamkaMsAdi", "Ap"])
+karRI = Pratipadika("karRI", "strI",  other_tags=["satva_kfkamkaMsAdi", "NI"])
+
 
 # SK161 (8.3.47) — aDas/Siras samāsa pūrva before any viBakti form of pada
 aDas  = Pratipadika("aDas",  "pum",   other_tags=["avyaya"])
 Siras = Pratipadika("Siras", "napum")
 pada  = Pratipadika("pada",  "napum", other_tags=["pada_p"])                    # tag propagates to pada_p_pada
-# Pre-tagged _pada form for manual_list.py spot-tests.
-pada_pada = Pratipadika("pada", "napum", other_tags=["pada_p_pada", "pada", "viBakti_pada"])
 
 # SK430 (6.3.91) — dṛkṣa stem: दृश् + क्स affix (क् is it, स् remains → क्ष)
 # dfS and ksa tags propagate to dfS_pada + ksa_pada on the merged compound form
 dfkza = Pratipadika("dfkza", "pum", other_tags=["dfS", "ksa"])
 
-# SK418 (6.3.92) prātipadikas — viṣvag and deva use specific tags; pronouns use sarvanAma_pada
-vizvag_pada = Pratipadika("vizvag", "pum", other_tags=["vizvag", "pada"])
-deva_pada   = Pratipadika("deva",   "pum", other_tags=["deva",   "pada"])
-tad_pada    = Pratipadika("tad",    "pum", other_tags=["tad",    "sarvanAma", "sarvanAma_pada", "pada"])
-yad_pada    = Pratipadika("yad",    "pum", other_tags=["yad",    "sarvanAma", "sarvanAma_pada", "pada"])
-kim_pada    = Pratipadika("kim",    "pum", other_tags=["kim",    "sarvanAma", "sarvanAma_pada", "pada"])
-                         
-
+# # SK418 (6.3.92) prātipadikas — viṣvag and deva use specific tags; pronouns use sarvanAma_pada
+vizvag = Pratipadika("vizvag", "pum", other_tags=["vizvag"])
+deva   = Pratipadika("deva",   "pum", other_tags=["deva"])
 
 # añcatir pre-formed weak stems (used when SK416/417 should NOT fire)
 # NO ?DAtu — SK416 requires ?DAtu; its absence blocks SK416/417.

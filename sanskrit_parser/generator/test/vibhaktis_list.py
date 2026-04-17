@@ -1061,7 +1061,7 @@ viBakti["saDryac"] = [
 
 # viṣvadryañc (m.) — añc-type: viṣvag→viṣvadri (SK418, bahiranga:1); bha: viṣvadrī (SK417 i→ī).
 # Strong: viṣvadryañc (yaṇ i+a→y); weak: viṣvadryac; bha: viṣvadrīc.
-prAtipadika["vizvadryac"] = [vizvag_pada, aYc_u, kvin]   # noqa: F405
+prAtipadika["vizvadryac"] = [vizvag, luk_sup, aYc_u, kvin]   # noqa: F405
 viBakti["vizvadryac"] = [
     ['विष्वद्र्यङ्', 'विष्वद्र्यञ्चौ', 'विष्वद्र्यञ्चः'],       # 1 Nom  — strong (SK361 nUM)
     ['विष्वद्र्यञ्चम्', 'विष्वद्र्यञ्चौ', 'विष्वद्रीचः'],         # 2 Acc  — sg/du strong; pl bha
@@ -1989,7 +1989,7 @@ viBakti["kzIrapa"] = [
 # tAdfSa (kaY): Nom sg is तादृशः (regular a-stem)
 
 # tādṛk (m.) — [tad_pada in_compound(dfS) kvin]
-prAtipadika["tAdfk"] = [tad_pada, in_compound(dfS), kvin]   # noqa: F405
+prAtipadika["tAdfk"] = [tad, luk_sup, in_compound(dfS), kvin]   # noqa: F405
 viBakti["tAdfk"] = [
     [['तादृक्', 'तादृग्'], 'तादृशौ', 'तादृशः'],    # 1 Nom  * kvin: 8.2.62 j→g, 8.4.56 opt g→k
     ['तादृशम्', 'तादृशौ', 'तादृशः'],                # 2 Acc
@@ -2002,7 +2002,7 @@ viBakti["tAdfk"] = [
 ]
 
 # tādṛśa (m.) — [tad_pada in_compound(dfS) kaY] — kaY uses a-stem endings like rAma
-prAtipadika["tAdfSa"] = [tad_pada, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
+prAtipadika["tAdfSa"] = [tad, luk_sup, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
 viBakti["tAdfSa"] = [
     ['तादृशः', 'तादृशौ', 'तादृशाः'],                # 1 Nom
     ['तादृशम्', 'तादृशौ', 'तादृशान्'],               # 2 Acc
@@ -2014,8 +2014,8 @@ viBakti["tAdfSa"] = [
     ['तादृश', 'तादृशौ', 'तादृशाः'],                 # 8 Voc
 ]
 
-# yādṛk (m.) — [yad_pada in_compound(dfS) kvin]
-prAtipadika["yAdfk"] = [yad_pada, in_compound(dfS), kvin]   # noqa: F405
+# yādṛk (m.) — [yad, su, in_compound(dfS) kvin]
+prAtipadika["yAdfk"] = [yad, su, in_compound(dfS), kvin]   # noqa: F405
 viBakti["yAdfk"] = [
     [['यादृक्', 'यादृग्'], 'यादृशौ', 'यादृशः'],    # 1 Nom  * kvin: 8.2.62 j→g, 8.4.56 opt g→k
     ['यादृशम्', 'यादृशौ', 'यादृशः'],                # 2 Acc
@@ -2027,8 +2027,8 @@ viBakti["yAdfk"] = [
     [['यादृक्', 'यादृग्'], 'यादृशौ', 'यादृशः'],    # 8 Voc  = Nom
 ]
 
-# yādṛśa (m.) — [yad_pada in_compound(dfS) kaY] — kaY uses a-stem endings like rAma
-prAtipadika["yAdfSa"] = [yad_pada, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
+# yādṛśa (m.) — [yad, su, in_compound(dfS) kaY] — kaY uses a-stem endings like rAma
+prAtipadika["yAdfSa"] = [yad, su, in_compound(dfS), in_context(kaY, "pum")]   # noqa: F405
 viBakti["yAdfSa"] = [
     ['यादृशः', 'यादृशौ', 'यादृशाः'],                # 1 Nom
     ['यादृशम्', 'यादृशौ', 'यादृशान्'],               # 2 Acc
@@ -2056,7 +2056,7 @@ viBakti["Gftaspfk"] = [
 ]
 
 # tādṛkṣa (m.) — [tad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
-prAtipadika["tAdfkza"] = [tad_pada, in_compound(dfkza)]   # noqa: F405
+prAtipadika["tAdfkza"] = [tad, luk_sup, in_compound(dfkza)]   # noqa: F405
 viBakti["tAdfkza"] = [
     ['तादृक्षः', 'तादृक्षौ', 'तादृक्षाः'],                # 1 Nom
     ['तादृक्षम्', 'तादृक्षौ', 'तादृक्षान्'],               # 2 Acc
@@ -2068,8 +2068,8 @@ viBakti["tAdfkza"] = [
     ['तादृक्ष', 'तादृक्षौ', 'तादृक्षाः'],                  # 8 Voc
 ]
 
-# yādṛkṣa (m.) — [yad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
-prAtipadika["yAdfkza"] = [yad_pada, in_compound(dfkza)]   # noqa: F405
+# yādṛkṣa (m.) — [yad, su, in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
+prAtipadika["yAdfkza"] = [yad, su, in_compound(dfkza)]   # noqa: F405
 viBakti["yAdfkza"] = [
     ['यादृक्षः', 'यादृक्षौ', 'यादृक्षाः'],                # 1 Nom
     ['यादृक्षम्', 'यादृक्षौ', 'यादृक्षान्'],               # 2 Acc
@@ -2081,8 +2081,8 @@ viBakti["yAdfkza"] = [
     ['यादृक्ष', 'यादृक्षौ', 'यादृक्षाः'],                  # 8 Voc
 ]
 
-# yādṛkṣa (m.) — [yad_pada in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
-prAtipadika["yAdfkza"] = [yad_pada, in_compound(dfkza)]   # noqa: F405
+# yādṛkṣa (m.) — [yad, su, in_compound(dfkza)] — a-stem like rAma; SK430 ksa arm
+prAtipadika["yAdfkza"] = [yad, su, in_compound(dfkza)]   # noqa: F405
 viBakti["yAdfkza"] = [
     ['यादृक्षः', 'यादृक्षौ', 'यादृक्षाः'],                # 1 Nom
     ['यादृक्षम्', 'यादृक्षौ', 'यादृक्षान्'],               # 2 Acc

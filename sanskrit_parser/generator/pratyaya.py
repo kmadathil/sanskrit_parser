@@ -116,7 +116,9 @@ for ix, v in enumerate(["praTamA", "dvitIyA", "tftIyA", "caturTi",
         p.setTag("viBakti")
 
 # SI - jasaH SI
-SI = Pratyaya("I", its=["S"], other_tags=["svAdi", "sup", "SI"])
+# Handled in rule - commenting out
+#SI = Pratyaya("I", its=["S"], other_tags=["svAdi", "sup", "SI"])
+
 # Si - jasSasaH Si
 Si = Pratyaya("i", its=["S"], other_tags=["svAdi", "sup", "Si", "viBakti",
                                           "praTamA",
@@ -184,6 +186,9 @@ kalpap = Pratyaya("kalpa", its=["p"], other_tags=["svAdi", "tadDita", "satva_t"]
 kap  = Pratyaya("ka",     its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
 kAmyac = Pratyaya("kAmya", its=["c"], other_tags=["svAdi", "tadDita", "satva_t"])
 
+
+# suc - SK2086
+suc =  Pratyaya("s", its=["c", "u"], other_tags=["svAdi", "tadDita", "suc"])
 
 
 # Adya / Anta
