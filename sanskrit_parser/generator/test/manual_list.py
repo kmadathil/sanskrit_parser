@@ -249,5 +249,19 @@ test_list_slp1_ru = [
     (nis_pada,   "pAta",  "nizpAta"),       # niH + pāta  → niṣpāta
     (dus_pada,   "kftam", "duzkftam"),      # duH + kṛtam → duṣkṛtam
     (bahis_pada, "kftam", "bahizkftam"),    # bahiH + kṛtam → bahiṣkṛtam
+    # SK156: तिरसोऽन्यतरस्याम् (8.3.42) — tiras (gati) H → s optionally before ku/pu
+    (tiras_pada, "kartA", ["tiraskartA", "tiraHkartA"]),
+    (tiras_pada, "pAnam", ["tiraspAnam", "tiraHpAnam"]),
+    # SK157: द्विस्त्रिश्चतुरिति कृत्वोऽर्थे (8.3.43) — dvis/tris/catur kṛtvas H → ṣ optionally before ku/pu
+    (dvis_kftvas_pada,  "karoti", ["dvizkaroti",  "dviHkaroti"]),
+    (tris_kftvas_pada,  "karoti", ["trizkaroti",  "triHkaroti"]),
+    (catur_kftvas_pada, "karoti", ["catuzkaroti", "catuHkaroti"]),
+    # SK158: इसुसोः सामर्थ्ये (8.3.44) — is/us-final pada H → ṣ optionally before ku/pu (vyapekṣā)
+    (sarpis_pada, "karoti", ["sarpizkaroti", "sarpiHkaroti"]),
+    (yajus_pada,  "karoti", ["yajuzkaroti",  "yajuHkaroti"]),
+    (Danus_pada,  "karoti", ["Danuzkaroti",  "DanuHkaroti"]),
+    # SK159: नित्यं समासेऽनुत्तरपदस्थस्य (8.3.45) — is/us-pūrva-pada H → ṣ mandatorily in samāsa
+    (as_purva_pada(sarpis_pada), "kuRqikA",   "sarpizkuRqikA"),
+    (as_purva_pada(Danus_pada),  "kapAlakam", "DanuzkapAlakam"),
 ]
 

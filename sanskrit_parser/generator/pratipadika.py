@@ -297,6 +297,18 @@ saha_pada  = Pratipadika("saha",  "pum", other_tags=["saha", "nipAta", "upasarga
 nis_pada   = Pratipadika("niH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # निस् prefix — SK155
 dus_pada   = Pratipadika("duH",   "pum", other_tags=["nipAta", "upasarga", "pada"])   # दुस् prefix — SK155
 bahis_pada = Pratipadika("bahiH", "pum", other_tags=["nipAta", "avyaya", "pada"])     # बहिस् indeclinable — SK155
+
+# SK157 — kṛtvas-artha numeral adverbs (dvis, tris, catur + sUc)
+# visarga is from sUc affix on dvi/tri; non-affix on catur; handled uniformly via ?kftvas.
+# ?viBakti_pada blocks SK155 from firing compulsorily on catuH.
+dvis_kftvas_pada  = Pratipadika("dviH",  "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
+tris_kftvas_pada  = Pratipadika("triH",  "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
+catur_kftvas_pada = Pratipadika("catuH", "pum", other_tags=["kftvas", "avyaya", "pada", "viBakti_pada"])   # SK157
+
+# SK158/SK159 — is/us-ending padas; ?viBakti_pada blocks SK155 (?!viBakti_pada).
+sarpis_pada = Pratipadika("sarpiH", "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
+yajus_pada  = Pratipadika("yajuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
+Danus_pada  = Pratipadika("DanuH",  "napum", other_tags=["AdeSa_s", "pada", "viBakti_pada"])   # SK158/SK159
 # SK430 (6.3.91) — dṛkṣa stem: दृश् + क्स affix (क् is it, स् remains → क्ष)
 # dfS and ksa tags propagate to dfS_pada + ksa_pada on the merged compound form
 dfkza = Pratipadika("dfkza", "pum", other_tags=["dfS", "ksa"])
