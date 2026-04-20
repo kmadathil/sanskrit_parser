@@ -68,173 +68,174 @@ class PaninianObject(SanskritObject):
         # Passthrough
         if len(objects[0]) == 1:
             return objects[0][0]
-        s = "".join([o.canonical() for o in objects[0]])
+        parts = objects[0]
+        first, last = parts[0], parts[-1]
+        s = "".join([o.canonical() for o in parts])
         so = PaninianObject(s, encoding=sanscript.SLP1)
-        # Tag rules
-        # 1.4.14 suptiNantaM padam
-        if objects[0][-1].hasTag("sup") or objects[0][-1].hasTag("tiN") or objects[0][-1].hasTag("pada"):
+
+        def _propagate(src, tags, suffix=""):
+            """For each t in `tags`: if `src` has it, set `t + suffix` on `so`."""
+            for t in tags:
+                if src.hasTag(t):
+                    so.setTag(t + suffix)
+
+        def _delete_if_present(tags):
+            """Bulk-delete any of `tags` that are currently set on `so`."""
+            for t in tags:
+                if so.hasTag(t):
+                    so.deleteTag(t)
+
+        # --- 1.4.14 suptiNantaM padam: word ending in sup/tiN (or already pada) is a pada ---
+        if last.hasTag("sup") or last.hasTag("tiN") or last.hasTag("pada"):
             so.setTag("pada")
             # SK307 (8.4.12): tag the pada if its anga is monosyllabic (ekāc).
             # Use the ?ekac tag (set at Pratipadika init and preserved through
             # phonological transformations) rather than re-counting vowels in
             # the post-guṇa/vṛddhi string (which may have lost its vowel).
-            if objects[0][0].hasTag("ekac"):
+            if first.hasTag("ekac"):
                 so.setTag("ekac_anga_pada")
-        # 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam
-        elif objects[0][0].hasTag("aNga"):
+        # --- 1.4.13 yasmAtpratyayaviDistadAdipratyayeNgam ---
+        elif first.hasTag("aNga"):
             so.setTag("aNga")
             # Propagate ekac to anga results (e.g. kvin forms) so SK307 can
             # fire when the anga later takes a sup/tiN suffix.
             if sum(1 for ch in s if ch in _SLP1_VOWELS) == 1:
                 so.setTag("ekac")
-        # 3.1.32 sannAdyantA dhAtavaH
-        if objects[0][-1].hasTag("sannAdi"):
+
+        # --- 3.1.32 sannAdyantA dhAtavaH ---
+        if last.hasTag("sannAdi"):
             so.setTag("DAtu")
-        # kvin/kvip krit result is dhatu-like (cf. sannAdi); set DAtu and propagate semantic tags.
+
+        # --- kvin/kvip kṛt result is dhātu-like (cf. sannAdi) ---
         # Handles both: (aYc_u | kvin) → ac gets DAtu+aYc+kvin;
         #           and (prati | ac_result) → pratyac gets DAtu+aYc+kvin (ac_result has kvin).
-        if objects[0][-1].hasTag("kvin") or objects[0][-1].hasTag("kvip"):
+        if last.hasTag("kvin") or last.hasTag("kvip"):
             so.setTag("DAtu")
-            for t in ["aYc", "kvin", "kvip"]:
-                if objects[0][-1].hasTag(t):
-                    so.setTag(t)
+            _propagate(last, ["aYc", "kvin", "kvip"])
             # Propagate ekac from the anga through kvin/kvip so SK307 can detect
-            # a monosyllabic uttara-pada after the krit suffix join.
-            if objects[0][0].hasTag("ekac"):
+            # a monosyllabic uttara-pada after the kṛt suffix join.
+            if first.hasTag("ekac"):
                 so.setTag("ekac")
-        # 1.2.46 krttaDitasamAsAsca
-        if objects[0][-1].hasTag("krt") or objects[0][-1].hasTag("tadDita"):
+
+        # --- 1.2.46 krttaDitasamAsAsca ---
+        if last.hasTag("krt") or last.hasTag("tadDita"):
             so.setTag("prAtipadika")
-            # Propagate it-markers from kṛt/taddhita suffix to merged stem
-            # Needed for SK425 (6.4.14) which checks +u on u-it stems like vatup
-            for it in objects[0][-1].its:
+            # Propagate it-markers from kṛt/taddhita suffix to merged stem.
+            # Needed for SK425 (6.4.14) which checks +u on u-it stems like vatup.
+            for it in last.its:
                 so.setIt(it)
 
-        # Propagate gender tags (pum/strI/napum) for pratipadika + kft situations
-        # 1. If kft (last element) has pum/strI/napum, use that
-        # 2. Else, if pratipadika (first element) has pum/strI/napum, propagate that
+        # --- Gender propagation for pratipadika + kṛt ---
+        # Prefer last element's gender; else fall back to first's.
         for t in ["pum", "strI", "napum"]:
-            if objects[0][-1].hasTag(t):
+            if last.hasTag(t):
                 so.setTag(t)
                 break
         else:
             for t in ["pum", "strI", "napum"]:
-                if objects[0][0].hasTag(t):
+                if first.hasTag(t):
                     so.setTag(t)
                     break
 
-        if objects[0][0].hasTag("samprasAraRam"):
-            for tt in objects[0][1].tags:
-                    so.setTag(tt)
-            if objects[0][0].hasTag("UW"):
-                 so.setTag("UW")
-            
-        
-        # Custom tag propagation for rule implementation
-        for t in ["eti", "eDati", "UW", "sTA", "sTamB", "rAj", "rAw", "aYc", "dfS"]:
-            if objects[0][0].hasTag(t) and objects[0][0].hasTag("DAtu"):
-                so.setTag(t)
-        # Propagate compound-context tags (needed for SK379 pūrva-pada rule)
-        for t in ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"]:
-            if objects[0][0].hasTag(t):
-                so.setTag(t)
-        # Any pada+pada merge produces merged_pada, blocking arm-A ṇatva rules
-        # (8.4.1/8.4.2/8.4.22) which require ?!merged_pada.
-        if objects[0][0].hasTag("pada") and objects[0][-1].hasTag("pada"):
+        # --- samprasāraṇam: inherit all tags from the middle element (parts[1]) ---
+        if first.hasTag("samprasAraRam"):
+            for tt in parts[1].tags:
+                so.setTag(tt)
+            if first.hasTag("UW"):
+                so.setTag("UW")
+
+        # --- DAtu-gated semantic tag propagation (custom dhātu identifiers) ---
+        if first.hasTag("DAtu"):
+            _propagate(first, ["eti", "eDati", "UW", "sTA", "sTamB",
+                               "rAj", "rAw", "aYc", "dfS"])
+
+        # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
+        _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"])
+
+        # --- pada+pada merge → merged_pada ---
+        # Blocks arm-A ṇatva rules (8.4.1/8.4.2/8.4.22) which require ?!merged_pada.
+        if first.hasTag("pada") and last.hasTag("pada"):
             so.setTag("merged_pada")
-        # Final compound merge: when L has samAsaPurva+pada and R has samAsa+pada,
-        # the compound is complete — set samasta_pada and consume the compound tags.
-        if (objects[0][0].hasTag("samAsaPurva") and objects[0][0].hasTag("pada")
-                and objects[0][-1].hasTag("samAsa") and objects[0][-1].hasTag("pada")):
+
+        # --- samasta_pada: compound complete ---
+        # L has samAsaPurva+pada and R has samAsa+pada → compound is done:
+        # set samasta_pada and consume the in-progress compound tags.
+        if (first.hasTag("samAsaPurva") and first.hasTag("pada")
+                and last.hasTag("samAsa") and last.hasTag("pada")):
             so.setTag("samasta_pada")
-            if so.hasTag("samAsa"):
-                so.deleteTag("samAsa")
-            if so.hasTag("samAsaPurva"):
-                so.deleteTag("samAsaPurva")
-            for t in ["pada_p_pada", "satva_kfkamkaMsAdi_pada"]:
-                if so.hasTag(t):
-                    so.deleteTag(t)
-        # Propagate stem-class tags needed for pada-internal sandhi rules
-        # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip)
-        for t in ["han"]:
-            if objects[0][0].hasTag(t) and objects[0][0].hasTag("aNga"):
-                so.setTag(t)
-        # 3b: compound merge: ?han on uttara-pada (samAsa+pada) propagates to samasta_pada
-        for t in ["han"]:
-            if objects[0][-1].hasTag(t) and objects[0][-1].hasTag("pada") and objects[0][-1].hasTag("samAsa"):
-                so.setTag(t)
-        for t in ["AN"]:
-            if objects[0][0].hasTag(t) and objects[0][0].hasTag("upasarga"):
-                so.setTag(t)
-        for t in ["trc", "trn", "kvin", "kvip", "kaY", "suc"]:
-            if objects[0][-1].hasTag(t) and objects[0][0].hasTag("aNga"):
-                so.setTag(t)
-        # Propagate samasta_Ratva from uttara-pada to merged compound as samasta_Ratva_pada
-        for t in ["samasta_Ratva"]:
-            if objects[0][-1].hasTag(t):
-                so.setTag(t + "_pada")
-        for t in ["NI", "Ap", 'strI_abs']:
-            if objects[0][-1].hasTag(t):
+            _delete_if_present(["samAsa", "samAsaPurva"])
+
+        # --- Stem-class tags for pada-internal sandhi ---
+        # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip).
+        if first.hasTag("han") and first.hasTag("aNga"):
+            so.setTag("han")
+        # 3b: compound merge: ?han on uttara-pada (samAsa+pada) → samasta_pada.
+        if last.hasTag("han") and last.hasTag("pada") and last.hasTag("samAsa"):
+            so.setTag("han")
+        # AN upasarga propagation.
+        if first.hasTag("AN") and first.hasTag("upasarga"):
+            so.setTag("AN")
+
+        # --- kṛt suffix tags from last, gated by first being an aNga ---
+        if first.hasTag("aNga"):
+            _propagate(last, ["trc", "trn", "kvin", "kvip", "kaY", "suc"])
+
+        # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
+        if last.hasTag("samasta_Ratva"):
+            so.setTag("samasta_Ratva_pada")
+
+        # --- strī forms (NI/Ap/strI_abs on last) ---
+        # Set strI, copy all tags from first, drop pum/napum.
+        for t in ["NI", "Ap", "strI_abs"]:
+            if last.hasTag(t):
                 so.setTag("strI")
                 so.setTag(t)
-                for tt in objects[0][0].tags:
+                for tt in first.tags:
                     so.setTag(tt)
-                if so.hasTag("pum"):
-                    so.deleteTag("pum")
-                if so.hasTag("napum"):
-                    so.deleteTag("napum")
-        for t in ['pum_abs']:
-            if objects[0][-1].hasTag(t):
-                so.setTag("pum")
-                for tt in objects[0][-2].tags:
-                    so.setTag(tt)
-                for tt in ["NI", "Ap", 'strI_abs', "strI"]:
-                    if so.hasTag(tt):
-                        so.deleteTag(tt)
-                    so.setTag("pUrvastrI")
-                if so.hasTag("napum"):
-                    so.deleteTag("napum")
+                _delete_if_present(["pum", "napum"])
 
-        # Propagate vibhakti case/number tags from last element (pratyaya) onto merged pada.
+        # --- pum_abs on last: restore pum, drop strī-markers, flag pUrvastrI ---
+        if last.hasTag("pum_abs"):
+            so.setTag("pum")
+            for tt in parts[-2].tags:
+                so.setTag(tt)
+            _delete_if_present(["NI", "Ap", "strI_abs", "strI"])
+            so.setTag("pUrvastrI")
+            if so.hasTag("napum"):
+                so.deleteTag("napum")
+
+        # --- Vibhakti case/number from pratyaya (last) → merged pada (_pada suffix) ---
         # Stored as tag+"_pada" to distinguish merged-pada tags from raw suffix tags.
         # Rules firing at (aNga | raw-suffix) still see the original tags on the suffix.
         # Rules checking the merged pada on the left (SK404, 1.1.11) use the _pada variants.
         # This prevents 6.1.102 from firing at (prefix | merged-pada) junctions.
-        for t in ["praTamA", "dvitIyA", "tftIyA", "caturTi", "pancamI",
-                  "zazWI", "saptamI", "ekavacana", "dvivacana", "bahuvacana", "viBakti"]:
-            if objects[0][-1].hasTag(t):
-                so.setTag(t + "_pada")
-        # kvin/kvip/kaY are on the left (prAtipadika), not the suffix — same _pada pattern
-        for t in ["kvin", "kvip", "kaY", "dfS", "ksa", "vatup", "suc"]:
-            if objects[0][0].hasTag(t) and so.hasTag("pada"):
-                so.setTag(t + "_pada")
-        # sarvanAma propagation: pronouns carry sarvanAma_pada on the merged form
-        for t in ["sarvanAma", "avyaya"]:
-            if objects[0][0].hasTag(t) and so.hasTag("pada"):
-                so.setTag(t + "_pada")
-                
-        # indra propagation: indra carries indra_pada on the merged form
-        # pums propagation: pums carries pums_pada on the merged form
-        for t in ["indra", "pums"]:
-            if objects[0][0].hasTag(t) and so.hasTag("pada"):
-                so.setTag(t + "_pada")
+        _propagate(last, ["praTamA", "dvitIyA", "tftIyA", "caturTi", "pancamI",
+                          "zazWI", "saptamI", "ekavacana", "dvivacana",
+                          "bahuvacana", "viBakti"], suffix="_pada")
 
-        # Propagate sam_pada/saha_pada/tiras_pada for aYc_u forms
-        # Also propagate satva_kfkamkaMsAdi (SK160) and pada_p (SK161) to _pada variants.
-        for t in ["sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p", "vizvag", "deva"]:
-            if objects[0][0].hasTag(t) and so.hasTag("pada"):
-                so.setTag(t+"_pada")
+        # --- First-element tags that get a "_pada" counterpart when result is a pada ---
+        # Mechanics are identical; comments mark each origin group so SK references
+        # and rule provenance are preserved.
+        if so.hasTag("pada"):
+            _propagate(first, [
+                # kvin/kvip/kaY/etc. are on the left (prAtipadika), not the suffix
+                "kvin", "kvip", "kaY", "dfS", "ksa", "vatup", "suc",
+                # sarvanAma/avyaya: pronouns carry sarvanAma_pada on merged form
+                "sarvanAma", "avyaya",
+                # indra/pums: carry *_pada on merged form
+                "indra", "pums",
+                # aYc_u forms: sam_pada/saha_pada/tiras_pada;
+                # satva_kfkamkaMsAdi (SK160) and pada_p (SK161) propagate as _pada
+                "sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p",
+                "vizvag", "deva",
+            ], suffix="_pada")
 
+        # --- na_pada: vApadAntasya/monoDatoH blocks further naScApadAntasya on pada creation ---
+        if first.hasTag("na_pada"):
+            so.setTag("na_pada")
 
-        # vApadAntasya / monoDatoH must block further naScApadAntasya on pada creation
-        for t in ["na_pada"]:
-            if objects[0][0].hasTag(t):
-                so.setTag("na_pada")
+        # --- AdeSa_s (skipped when first is already viBakti_pada) ---
+        if first.hasTag("AdeSa_s") and not first.hasTag("viBakti_pada"):
+            so.setTag("AdeSa_s")
 
-
-        # Adesa_s
-        for t in ["AdeSa_s"]:
-            if objects[0][0].hasTag(t) and (not objects[0][0].hasTag("viBakti_pada")):
-                so.setTag(t)
-                
         return so
