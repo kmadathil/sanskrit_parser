@@ -85,6 +85,8 @@ class PaninianObject(SanskritObject):
                 if so.hasTag(t):
                     so.deleteTag(t)
 
+        # ── Phase 1: Word-class assignment (pada / aNga / DAtu / prAtipadika / gender) ──
+
         # --- 1.4.14 suptiNantaM padam: word ending in sup/tiN (or already pada) is a pada ---
         if last.hasTag("sup") or last.hasTag("tiN") or last.hasTag("pada"):
             so.setTag("pada")
@@ -102,7 +104,7 @@ class PaninianObject(SanskritObject):
             if sum(1 for ch in s if ch in _SLP1_VOWELS) == 1:
                 so.setTag("ekac")
 
-        # --- 3.1.32 sannAdyantA dhAtavaH ---
+        # --- 3.1.32 sannAdyantA dhātavaḥ ---
         if last.hasTag("sannAdi"):
             so.setTag("DAtu")
 
@@ -117,7 +119,7 @@ class PaninianObject(SanskritObject):
             if first.hasTag("ekac"):
                 so.setTag("ekac")
 
-        # --- 1.2.46 krttaDitasamAsAsca ---
+        # --- 1.2.46 kṛttaddhitasamāsāśca ---
         if last.hasTag("krt") or last.hasTag("tadDita"):
             so.setTag("prAtipadika")
             # Propagate it-markers from kṛt/taddhita suffix to merged stem.
@@ -125,8 +127,7 @@ class PaninianObject(SanskritObject):
             for it in last.its:
                 so.setIt(it)
 
-        # --- Gender propagation for pratipadika + kṛt ---
-        # Prefer last element's gender; else fall back to first's.
+        # --- Gender: prefer last element's; fall back to first's ---
         for t in ["pum", "strI", "napum"]:
             if last.hasTag(t):
                 so.setTag(t)
@@ -137,17 +138,34 @@ class PaninianObject(SanskritObject):
                     so.setTag(t)
                     break
 
-        # --- samprasāraṇam: inherit all tags from the middle element (parts[1]) ---
-        if first.hasTag("samprasAraRam"):
-            for tt in parts[1].tags:
-                so.setTag(tt)
-            if first.hasTag("UW"):
-                so.setTag("UW")
+        # ── Phase 2: Stem identity markers ────────────────────────────────────────
 
         # --- DAtu-gated semantic tag propagation (custom dhātu identifiers) ---
         if first.hasTag("DAtu"):
             _propagate(first, ["eti", "eDati", "UW", "sTA", "sTamB",
                                "rAj", "rAw", "aYc", "dfS"])
+
+        # --- Stem-class tags for pada-internal sandhi ---
+        # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip).
+        if first.hasTag("han") and first.hasTag("aNga"):
+            so.setTag("han")
+        # 3b: compound merge: ?han on uttara-pada (samāsa+pada) → samasta_pada.
+        if last.hasTag("han") and last.hasTag("pada") and last.hasTag("samAsa"):
+            so.setTag("han")
+        # AN upasarga propagation.
+        if first.hasTag("AN") and first.hasTag("upasarga"):
+            so.setTag("AN")
+
+        # --- kṛt suffix classifier tags from last, gated by first being an aNga ---
+        # kvin/kvip are omitted here: already propagated by the kvin/kvip DAtu block above.
+        if first.hasTag("aNga"):
+            _propagate(last, ["trc", "trn", "kaY", "suc"])
+
+        # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
+        if last.hasTag("samasta_Ratva"):
+            so.setTag("samasta_Ratva_pada")
+
+        # ── Phase 3: Compound lifecycle ───────────────────────────────────────────
 
         # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
         _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"])
@@ -165,24 +183,14 @@ class PaninianObject(SanskritObject):
             so.setTag("samasta_pada")
             _delete_if_present(["samAsa", "samAsaPurva"])
 
-        # --- Stem-class tags for pada-internal sandhi ---
-        # 3a: dhātu→kṛt: ?han flows from aNga (dhātu) to derived stem (han+kvip).
-        if first.hasTag("han") and first.hasTag("aNga"):
-            so.setTag("han")
-        # 3b: compound merge: ?han on uttara-pada (samAsa+pada) → samasta_pada.
-        if last.hasTag("han") and last.hasTag("pada") and last.hasTag("samAsa"):
-            so.setTag("han")
-        # AN upasarga propagation.
-        if first.hasTag("AN") and first.hasTag("upasarga"):
-            so.setTag("AN")
+        # ── Phase 4: Gender-morphology transformations ────────────────────────────
 
-        # --- kṛt suffix tags from last, gated by first being an aNga ---
-        if first.hasTag("aNga"):
-            _propagate(last, ["trc", "trn", "kvin", "kvip", "kaY", "suc"])
-
-        # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
-        if last.hasTag("samasta_Ratva"):
-            so.setTag("samasta_Ratva_pada")
+        # --- samprasāraṇam: inherit all tags from the middle element (parts[1]) ---
+        if first.hasTag("samprasAraRam"):
+            for tt in parts[1].tags:
+                so.setTag(tt)
+            if first.hasTag("UW"):
+                so.setTag("UW")
 
         # --- strī forms (NI/Ap/strI_abs on last) ---
         # Set strI, copy all tags from first, drop pum/napum.
@@ -203,6 +211,8 @@ class PaninianObject(SanskritObject):
             so.setTag("pUrvastrI")
             if so.hasTag("napum"):
                 so.deleteTag("napum")
+
+        # ── Phase 5: Pada-indexed tags (_pada variants, blocking/sandhi guards) ─────
 
         # --- Vibhakti case/number from pratyaya (last) → merged pada (_pada suffix) ---
         # Stored as tag+"_pada" to distinguish merged-pada tags from raw suffix tags.
