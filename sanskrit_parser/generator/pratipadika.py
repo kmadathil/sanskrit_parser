@@ -390,6 +390,8 @@ pums = Pratipadika("pums", "pum", its=["u"], other_tags=["pums"])
 gaRa        = Pratipadika("gaRa", "pum")                            # gaṇa m. — pūrva-pada for gaṇapati (SK257)
 aSva        = Pratipadika("aSva", "pum")                            # aśva m. — pūrva-pada for aśvayuj (SK376)
 
+vizRu      = Pratipadika("vizRu", "pum")              # viṣṇu m. (u-stem) — test target for SK176
+
 # SK379 (6.3.128) pratipadikas — viśva's final a lengthens before vasu/rāṭ in compound
 viSva       = Pratipadika("viSva", "pum", other_tags=["viSva"])     # viśva — ?viSva tag triggers 6.3.128
 vasu_pum    = Pratipadika("vasu", "pum", other_tags=["vasupada"])   # vasu m. (u-stem) — uttara-pada (?vasupada avoids collision with 8.2.72's ?vasu)

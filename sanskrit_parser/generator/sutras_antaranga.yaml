@@ -1796,6 +1796,20 @@
     olp: +ru
     lp: +ru
 
+# 172: रोऽसुपि (8.2.69) — ahan's ?ru stays as r before non-sup; apavāda of 6.1.113/114/8.3.17
+# Examples: ahar+ahaH (r stays), ahar+gaNaH (r stays). Exception: ahan+ByAm → ahobhyAm (sup → applies).
+# Vārttikās (ahorUpam, ahorAtriH, ahorathantaram; optional r before pati etc.) deferred.
+- sutra: रोऽसुपि
+  id: 8.2.69
+  overrides: [6.1.113, 6.1.114, 8.3.17]
+  condition:
+    l: n
+    lc: =aha
+    lp: ?ahan_pada
+    rp: ?!pratyaya
+  xform:
+    l: str("r")
+
 # 334: वसुस्रंसुध्वंस्वनडुहां दः (8-2-72)
 - sutra: वसुस्रंसुध्वंस्वनडुहां 
   id: 8.2.72
@@ -1873,7 +1887,32 @@
      l: null
   insert:
      l: str("u")
- 
+
+# 176: एतत्तदोः सुलोपोऽकोरनञ्समासे हलि (6.1.132)
+# For tad and etad, delete su (= r with ?ru after 8.2.66) before consonant.
+# Fires at (r | hal) junction after 8.2.66 converts su's s→r(?ru), before 6.1.114 or 8.3.15 act.
+# Priority: SPSP 61132 > 61114 (6.1.114) by para kāryam; 61132 < 83015 (8.3.15) by tripādi rule.
+# akoH (ll=k) and nañsamāsa exceptions deferred.
+- sutra: एतत्तदोः सुलोपोऽकोरनञ्समासे हलि
+  id: 6.1.132
+  condition:
+    - lp:
+        - and
+        - ?tad_pada
+      l: s
+      lc: =sa
+      r: _hal
+    - lp:
+        - and
+        - ?etad_pada
+      l: s
+      lc: =eza
+      r: _hal
+  xform:
+    l: null
+  update:
+    olp: -ru
+
 # 167: भोभगोअघोअपूर्वस्य योऽशि (8-3-17)
 - sutra: भोभगोअघोअपूर्वस्य योऽशि
   id: 8.3.17

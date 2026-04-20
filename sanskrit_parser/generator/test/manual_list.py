@@ -280,5 +280,10 @@ test_list_slp1_ru = [
     (as_purva_pada(Siras), pada, su,  "Siraspadam"),
     # Negative: uttarapada is not pada → H stays
     (as_purva_pada(Siras), luk_sup, "gamana", "Sirogamana"),
+    # SK172: रोऽसुपि (8.2.69) — ahan's ?ru stays as r before non-sup (word boundary)
+    (ahan, luk_sup, gaRa, su, ["ahargaRas","aharggaRas"] ),
+    # SK176: एतत्तदोः सुलोपोऽकोरनञ्समासे हलि (6.1.132) — tad su-lopa (H deleted) before consonant
+    (tad, su, vizRu, su, "savizRus"),
+    (etad, su, vizRu, su, "ezavizRus"),
 ]
 

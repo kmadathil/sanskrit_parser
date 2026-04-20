@@ -3,7 +3,7 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 452 — 2.4.82 अव्ययादाप्सुपः (sup lopa after avyaya)
+**Last implemented:** SK 176 — 6.1.132 एतत्तदोः सुलोपोऽकोरनञ्समासे हलि (su-lopa of tad/etad before consonant)
 **Next to be implemented:** SK 453 (4.1.3 — strī-liṅga feminine suffix adhikāra)
 
 ---
@@ -12,10 +12,10 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 306 |
-| Sutras skipped / deferred | 38 |
-| Sutras uncatalogued / not yet planned | ~69 |
-| **Total sutras accounted for** | **~411** |
+| Sutras implemented | 308 |
+| Sutras skipped / deferred | 40 |
+| Sutras uncatalogued / not yet planned | ~67 |
+| **Total sutras accounted for** | **~413** |
 | Stems with full vibhakti test tables | 159 |
 | Stems with partial vibhakti test tables | 4 |
 
@@ -113,8 +113,10 @@ The "Forms affected" column uses the convention:
 | 166 | 6.1.114 | हशि च | e/o-final + h-initial: pararūpa sandhi (also covers haśi before śi) |
 | 167 | 8.3.17 | भोभगोअघोअपूर्वस्य योऽशि | bho/bhago/agho etc.: y inserted before aśi vowels |
 | 169 | 8.3.20 | ओतो गार्ग्यस्य | Gārgya's option for o |
+| 172 | 8.2.69 | रोऽसुपि | ahan's ?ru stays as r in non-sup contexts; blocks 6.1.113/114/8.3.17 at word boundaries. Partial: vārttikās (ahorUpam/ahorAtriH/ahorathantaram; pati-group optional r) deferred |
 | 173 | 8.3.14 | रो रि | ru (=r) before r: lopa of ru, pūrva-dīrgha |
 | 174 | 6.3.111 | ढ्रलोपे पूर्वस्य दीर्घोऽणः | Compensatory lengthening after ḍh/r lopa |
+| 176 | 6.1.132 | एतत्तदोः सुलोपोऽकोरनञ्समासे हलि | tad/etad: r (su→r via 8.2.66) deleted before consonant at word boundary, blocking 6.1.114/8.3.15. Partial: akoH (ll=k, e.g. eṣaka+su) and nañsamāsa exceptions deferred |
 | 191 | 6.1.97 | अतो गुणे | a + guṇa vowel (e/o/ai/au): pūrvarūpa (a absorbed) |
 | 193 | 6.1.69 | एङ्ह्रस्वात्संबुद्धेः | voc sg of ī/ū-final stems: drop su (śe drops) — rāma→rāma, e→e |
 | 194 | 6.1.107 | अमिपूर्वः | Stem vowel before am: pūrvarūpa (e.g. go + am → gām) |
@@ -380,6 +382,8 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 374 | 3.1.93 | कृदतिङ् | Natural | kṛt saṃjñā definition; falls out of generator framework |
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
 | 383 | 7.2.91 | मपर्यन्तस्य | Natural | adhikāra scope indicator ("up to m"); scope encoded directly in SK384's xform (lc replaced = yuzm+a portion); no YAML rule needed |
+| 172 | 8.2.69 | रोऽसुपि | Partial — vārttikās not implemented | ahorUpam/ahorAtriH/ahorathantaram: the ru→o transformation IS wanted for these three specific words despite SK172 blocking it in general (vā rūpārttikam). Optional-r before pati-group (aharādInAM patyAdiSu vA rephaH) also deferred |
+| 176 | 6.1.132 | एतत्तदोः सुलोपोऽकोरनञ्समासे हलि | Partial — akoH and nañsamāsa exceptions not implemented | akoH (ll=k): no H-deletion for eṣaka+su before consonant (ka-affix stems). anañsamAse: no H-deletion for nañ-compound forms like a-saH (both require negative-phonological or compound-type conditions not yet in DSL) |
 | 401 | 8.1.16 | पदस्य | Natural | adhikāra — pada-context (preceding pada) constraint; implied once SK401/402 formally implemented; optional SK404–407 currently fire on any preceding pada |
 | 402 | 8.1.17 | पदात् | Natural | adhikāra — same as SK401; preceding-pada constraint deferred |
 | 403 | 8.1.18 | अनुदात्तं सर्वमपादादौ | For later — accent | unaccented rule; accent not modelled in generator |
@@ -415,11 +419,9 @@ SK numbers ≤ 452 absent from both the implemented and skipped/deferred tables,
 | 102–110 | — | pragṛhya, Vedic |
 | 128 | 1.3.10 | paribhāṣā |
 | 168 | 8.3.18 | |
-| 170 | 8.3.21 | |
+| 170 | 8.3.21 |Handled by SK67/8.3.19 |
 | 171 | 8.3.22 | |
-| 172 | 8.2.69 | |
 | 175 | 1.4.2 | vipratiṣedha paribhāṣā |
-| 176 | 6.1.132 | |
 | 177 | 6.1.134 | |
 | 178–190 | — | technical definitions: prātipadika, pratyaya, vibhakti, etc. |
 | 192 | 2.3.49 | |

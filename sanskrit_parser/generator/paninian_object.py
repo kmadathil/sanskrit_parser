@@ -232,12 +232,15 @@ class PaninianObject(SanskritObject):
                 "kvin", "kvip", "kaY", "dfS", "ksa", "vatup", "suc",
                 # sarvanAma/avyaya: pronouns carry sarvanAma_pada on merged form
                 "sarvanAma", "avyaya",
+                # tad/etad: SK176 su-lopa needs to identify these specifically post-merge
+                "tad", "etad",
                 # indra/pums: carry *_pada on merged form
                 "indra", "pums",
                 # aYc_u forms: sam_pada/saha_pada/tiras_pada;
                 # satva_kfkamkaMsAdi (SK160) and pada_p (SK161) propagate as _pada
                 "sam", "saha", "tiras", "satva_kfkamkaMsAdi", "pada_p",
                 "vizvag", "deva",
+                "ahan"
             ], suffix="_pada")
 
         # --- na_pada: vApadAntasya/monoDatoH blocks further naScApadAntasya on pada creation ---
