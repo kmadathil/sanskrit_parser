@@ -69,7 +69,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     Gfta,
     aDas, Siras, pada,
 )
-from sanskrit_parser.generator.pratyaya import avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, Ap, luk_sup  # noqa: E402
+from sanskrit_parser.generator.pratyaya import avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, Ap, luk_sup, Adya  # noqa: E402
 from sanskrit_parser.generator.dhatu import dfS, aYc_u, han, spfS  # noqa: E402
 from sanskrit_parser.generator.sutras_yaml import SutraFactory          # noqa: E402
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory  # noqa: E402
@@ -431,9 +431,9 @@ def _generate_cell(plist, sup, enc, tag_display=False):
     # pūrva-pada rules (e.g. SK379) fire *after* the uttara-pada + sup merge,
     # matching the test infrastructure: [[*plist, sup], avasāna].
     if len(plist) > 1:
-        inputs = [[*plist, sup], avasAna]
+        inputs = [Adya, [*plist, sup], avasAna]
     else:
-        inputs = [*plist, sup, avasAna]
+        inputs = [Adya, *plist, sup, avasAna]
     pv = PrakriyaVakya(inputs)
     p = PrakriyaFactory("AntarangaPrakriya", sutra_list, pv)
     p.execute()
