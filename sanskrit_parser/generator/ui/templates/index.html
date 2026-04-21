@@ -400,12 +400,19 @@
                    border-radius: 3px; padding: 0 3px; }
 
     /* ── Tag display ─────────────────────────────────────── */
-    .ts-tags    { margin-top: 3px; font-size: .7rem; color: #555; line-height: 1.6; }
-    .ts-tag-lbl { color: #888; font-style: italic; }
+    .ts-tag-tbl { border-collapse: collapse; font-size: .7rem; margin-top: 5px; }
+    .ts-tag-tbl th { color: #888; font-weight: 600; font-style: italic;
+                     padding: 1px 8px 2px; border-bottom: 1px solid #ddd;
+                     text-align: left; }
+    .ts-tag-tbl .tbl-sub-hdr th { color: #aaa; font-weight: normal; font-size: .65rem; }
+    .ts-tag-tbl td { padding: 2px 8px; vertical-align: top; }
+    .ts-tag-tbl .tbl-row-lbl { color: #888; font-style: italic; font-size: .65rem;
+                                padding-right: 4px; white-space: nowrap; }
+    .ts-tag-tbl .tbl-sep { border-left: 1px solid #eee; }
     .ts-tag     { background: #e8f0fb; border-radius: 3px; padding: 0 3px;
-                  color: #1a4aaa; margin: 0 1px; }
+                  color: #1a4aaa; margin: 0 1px; display: inline-block; }
     .ts-it      { background: #fbeae8; border-radius: 3px; padding: 0 3px;
-                  color: #a03020; margin: 0 1px; }
+                  color: #a03020; margin: 0 1px; display: inline-block; }
     .ts-tag-none{ color: #bbb; }
 
     /* ── Loading spinner ──────────────────────────────────── */
@@ -931,19 +938,37 @@
         contextHtml = `<div class="ts-context">${bHtml}<span class="ts-ctx-win">\u00ab${esc(winL)} | ${esc(winR)}\u00bb</span>${aHtml}</div>`;
       }
 
-      // Tag rows
+      // Tag rows → 2×2 table (rows: in/out, cols: l/r, sub-cols: tags/its)
       let tagsHtml = '';
       if (s.tagRows && s.tagRows.length > 0) {
-        const rows = s.tagRows.map(r => {
-          const tStr = r.tags.length
-            ? r.tags.map(tg => `<span class="ts-tag">${esc(tg)}</span>`).join(' ')
-            : '<span class="ts-tag-none">—</span>';
-          const iStr = r.its.length
-            ? ' its: ' + r.its.map(i => `<span class="ts-it">${esc(i)}</span>`).join(' ')
-            : '';
-          return `<span class="ts-tag-lbl">${esc(r.label)}</span> ${tStr}${iStr}`;
-        }).join(' &nbsp;│&nbsp; ');
-        tagsHtml = `<div class="ts-tags">${rows}</div>`;
+        const byKey = {};
+        s.tagRows.forEach(r => { byKey[r.label] = r; });
+        const tagSpans = tags => tags.length
+          ? tags.map(t => `<span class="ts-tag">${esc(t)}</span>`).join(' ')
+          : '<span class="ts-tag-none">—</span>';
+        const itsSpans = its => its.length
+          ? its.map(i => `<span class="ts-it">${esc(i)}</span>`).join(' ')
+          : '<span class="ts-tag-none">—</span>';
+        const cellL = key => {
+          const r = byKey[key];
+          if (!r) return '<td></td><td></td>';
+          return `<td>${tagSpans(r.tags)}</td><td>${itsSpans(r.its)}</td>`;
+        };
+        const cellR = key => {
+          const r = byKey[key];
+          if (!r) return '<td class="tbl-sep"></td><td></td>';
+          return `<td class="tbl-sep">${tagSpans(r.tags)}</td><td>${itsSpans(r.its)}</td>`;
+        };
+        tagsHtml = `<table class="ts-tag-tbl">
+          <thead>
+            <tr><th></th><th colspan="2">l</th><th class="tbl-sep" colspan="2">r</th></tr>
+            <tr class="tbl-sub-hdr"><th></th><th>tags</th><th>its</th><th class="tbl-sep">tags</th><th>its</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-row-lbl">in</td>${cellL('in l')}${cellR('in r')}</tr>
+            <tr><td class="tbl-row-lbl">out</td>${cellL('out l')}${cellR('out r')}</tr>
+          </tbody>
+        </table>`;
       }
 
       h += `<div class="ts-step ${cls}">
