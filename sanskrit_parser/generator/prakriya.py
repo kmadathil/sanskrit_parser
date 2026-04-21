@@ -585,14 +585,44 @@ class PrakriyaTree(object):
     def describe(self, indent="  ", hier_map=None, tag_display=False):
         step = [0]
 
-        def _desc(n):
+        def _leaf_output_dev(n):
+            cur = n
+            while self.children.get(cur):
+                cur = self.children[cur][0]
+            parts = []
+            for i in range(len(cur.outputs)):
+                obj = cur.outputs[i]
+                s = str(obj)
+                if not s.strip('.'):
+                    continue
+                parts.append(obj.devanagari() if hasattr(obj, 'devanagari') else s)
+            return "".join(parts)
+
+        def _branch_line(idx, total, dev_form):
+            print(f"{indent}~ branch {idx}/{total}  \u2192  {dev_form}")
+
+        def _desc(n, branch_info=None):
+            if branch_info:
+                _branch_line(*branch_info)
             step[0] += 1
             n.describe(step=step[0], indent=indent, hier_map=hier_map, tag_display=tag_display)
-            for c in self.children[n]:
-                _desc(c)
+            children = self.children[n]
+            if len(children) > 1:
+                total = len(children)
+                for i, c in enumerate(children):
+                    _desc(c, branch_info=(i + 1, total, _leaf_output_dev(c)))
+            elif children:
+                _desc(children[0])
 
-        for r in self.roots:
-            _desc(r)
+        roots = self.roots
+        if len(roots) > 1:
+            total = len(roots)
+            for i, r in enumerate(roots):
+                _branch_line(i + 1, total, _leaf_output_dev(r))
+                _desc(r)
+        else:
+            for r in roots:
+                _desc(r)
 
     def dict(self):
         def _dict(n):

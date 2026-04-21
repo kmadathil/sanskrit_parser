@@ -393,6 +393,15 @@
     .ts-out-dev { color: #7a4d0a; font-size: 1.2rem; font-weight: 700; }
     .ts-out-sep { color: #666; margin: 0 4px; }
 
+    /* ── Branch dividers ────────────────────────────────── */
+    .ts-branch-div  { display: flex; align-items: center; gap: 8px;
+                      margin: 8px 0 2px; padding: 3px 8px;
+                      background: #f0f4ff; border-left: 3px solid #4a7adf;
+                      border-radius: 0 4px 4px 0; }
+    .ts-branch-lbl  { font-size: .68rem; color: #4a7adf; font-weight: 700;
+                      text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+    .ts-branch-form { font-size: .9rem; color: #1a3a8a; }
+
     /* ── Window context ──────────────────────────────────── */
     .ts-context  { font-size: .85rem; margin: 2px 0 4px; }
     .ts-ctx-side { color: #888; }
@@ -746,6 +755,14 @@
       const om = t.match(/^Output:\s+(.+)$/);
       if (om) { output = om[1].trim(); continue; }
 
+      // Branch divider: "~ branch N/M  →  dev_form"
+      const brm = t.match(/^~\s*branch\s+(\d+)\/(\d+)\s*\u2192\s*(.+)$/);
+      if (brm) {
+        if (cur) { steps.push(cur); cur = null; }
+        steps.push({ type: 'branch', idx: parseInt(brm[1]), total: parseInt(brm[2]), form: brm[3].trim() });
+        continue;
+      }
+
       // Special step ⟨...⟩
       const sm = t.match(/^Step\s+(\d+)\s+⟨(.+)⟩\s*$/);
       if (sm) {
@@ -884,6 +901,15 @@
 
     // Steps
     for (const s of steps) {
+      // Branch divider
+      if (s.type === 'branch') {
+        h += `<div class="ts-branch-div">
+          <span class="ts-branch-lbl">branch ${s.idx}/${s.total}</span>
+          <span class="ts-branch-form">${esc(s.form)}</span>
+        </div>`;
+        continue;
+      }
+
       const isCh = s.form && s.form.changed;
       const isNC = s.form && !s.form.changed;
       const cls  = s.special ? 'sp' : (isCh ? 'ch' : (isNC ? 'nc' : ''));
