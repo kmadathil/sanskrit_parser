@@ -30,7 +30,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     svan, yuvan, maGavan, arvan,
     hastin, yogin,
     paTin, maTin, fBukzin,
-    vftrahan,
+    vftra, as_purva_pada,
     asTi, daDi, akzi,
     kim, idam, idam_anu, yuzmad, asmad,
     sarva, anya,
@@ -57,11 +57,20 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     Danus, ahan, vidvas, pums,
     tad, etad, yad, tyad, adas,
     naS_kvip, idam_strI, dfkza,
-    tad_pada, yad_pada, prati_pada, pra_pada, tiras_pada, ud_pada, sam_pada, saha_pada,
     in_context,
+    pra, prati, tiras, ud, sam, saha,
+    ap,
+    pacat_strI, dIvyat_strI, tudat_strI, BAt_strI,
+    pacat_napum, dIvyat_napum, tudat_napum,
+    dvitIya, tftIya,
+    vizvag,
+    SUrpa, naKI,
+    kzIra, pa,
+    Gfta,
+    aDas, Siras, pada,
 )
-from sanskrit_parser.generator.pratyaya import avasAna, sups, pra, kvin, kaY, vatup  # noqa: E402
-from sanskrit_parser.generator.dhatu import dfS, aYc_u  # noqa: E402
+from sanskrit_parser.generator.pratyaya import avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, Ap, luk_sup  # noqa: E402
+from sanskrit_parser.generator.dhatu import dfS, aYc_u, han, spfS  # noqa: E402
 from sanskrit_parser.generator.sutras_yaml import SutraFactory          # noqa: E402
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory  # noqa: E402
 from sanskrit_parser.generator.prakriya import PrakriyaVakya            # noqa: E402
@@ -94,12 +103,12 @@ _viSvArAj_cpd  = [viSva, in_compound(rAj_kvip)]  # SK379 viśvārāj
 _praVAh_cpd    = [pra,   vAh_kvip]               # pravāh (upasarga + √vāh+kvip)
 
 # SK429/SK430 — tādṛk/yādṛk compounds (tyadAdi + dṛś + kvin/kaY)
-_tAdfk_cpd     = [tad_pada, in_compound(dfS), kvin]
-_yAdfk_cpd     = [yad_pada, in_compound(dfS), kvin]
-_tAdfSa_cpd    = [tad_pada, in_compound(dfS), in_context(kaY, "pum")]
-_yAdfSa_cpd    = [yad_pada, in_compound(dfS), in_context(kaY, "pum")]
-_tAdfkza_cpd   = [tad_pada, in_compound(dfkza)]
-_yAdfkza_cpd   = [yad_pada, in_compound(dfkza)]
+_tAdfk_cpd     = [tad, luk_sup, in_compound(dfS), kvin]
+_yAdfk_cpd     = [yad, su, in_compound(dfS), kvin]
+_tAdfSa_cpd    = [tad, luk_sup, in_compound(dfS), in_context(kaY, "pum")]
+_yAdfSa_cpd    = [yad, su, in_compound(dfS), in_context(kaY, "pum")]
+_tAdfkza_cpd   = [tad, luk_sup, in_compound(dfkza)]
+_yAdfkza_cpd   = [yad, su, in_compound(dfkza)]
 
 # SK430 vatup arm — measure stems
 _tAvat_n_cpd   = [tad, in_context(vatup, "napum")]
@@ -109,14 +118,40 @@ _tAvAn_cpd     = [tad, in_context(vatup, "pum")]
 _yAvAn_cpd     = [yad, in_context(vatup, "pum")]
 _etAvAn_cpd    = [etad, in_context(vatup, "pum")]
 
-# añcatir compounds (prefix + aYc + kvin)
-# Note: These use dynamic derivation via aYc_u from dhatu module
-_pratyac_cpd   = [prati_pada, in_context(aYc_u, "aYc"), kvin]
-_prAc_cpd      = [pra_pada, in_context(aYc_u, "aYc"), kvin]
-_udac_cpd      = [ud_pada, in_context(aYc_u, "udanc"), kvin]
-_tiryac_cpd    = [tiras_pada, in_context(aYc_u, "aYc"), kvin]
-_samyac_cpd    = [sam_pada, in_context(aYc_u, "aYc"), kvin]
-_saDryac_cpd   = [saha_pada, in_context(aYc_u, "aYc"), kvin]
+# añcatir compounds (prefix + aYc + kvin); upasargas take su (deleted by SK452)
+_pratyac_cpd   = [prati, su, aYc_u, kvin]
+_prAc_cpd      = [pra,   su, aYc_u, kvin]
+_udac_cpd      = [ud,    su, in_context(aYc_u, "udanc"), kvin]
+_tiryac_cpd    = [tiras, su, aYc_u, kvin]
+_samyac_cpd    = [sam,   su, aYc_u, kvin]
+_saDryac_cpd   = [saha,  su, aYc_u, kvin]
+
+# vṛtrahān — dynamic compound (as_purva_pada = in_context(·, "samAsaPurva"))
+_vftrahan_cpd  = [as_purva_pada(vftra), luk_sup, in_compound(han), kvip]
+
+# Ordinal (dvitīyādi) feminine compounds
+_dvitIyA_cpd   = [dvitIya, Ap]
+_tftIyA_cpd    = [tftIya,  Ap]
+
+# viśvadryañc — viśvag + añc + kvin
+_vizvadryac_cpd = [vizvag, luk_sup, in_context(aYc_u, "aYc"), kvin]
+
+# Luk-sup compounds (pūrva-pada with empty sup)
+_SUrpanaKI_cpd = [as_purva_pada(SUrpa), luk_sup, in_compound(naKI)]
+_kzIrapa_cpd   = [as_purva_pada(kzIra), luk_sup, in_compound(pa)]
+
+# ghṛtaspṛk — SK432 (8.2.76): upadhā-dīrgha for spṛś+kvin
+_Gftaspfk_cpd  = [Gfta, in_compound(spfS), kvin]
+
+# pada-compounds — SK161 (8.3.47): visarjanīya → s before any pada-form
+_aDaspada_cpd  = [as_purva_pada(aDas), in_compound(pada)]
+_Siraspada_cpd = [as_purva_pada(Siras), in_compound(pada)]
+
+# Feminine śatṛ-stems (with NI-p pratyaya)
+_pacat_strI_cpd  = [pacat_strI,  NIp]
+_dIvyat_strI_cpd = [dIvyat_strI, NIp]
+_tudat_strI_cpd  = [tudat_strI,  NIp]
+_BAt_strI_cpd    = [BAt_strI,    NIp]
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
@@ -142,6 +177,13 @@ _STEMS_RAW = [
     ("Bavat",    Bavat,       "śatṛ-stems (regular)",  "bhavat  (bhavant-)  [SK361 nUM]"),
     ("Bavat_u",  Bavat_u,     "śatṛ-stems (u-it)",     "bhavat  (bhavat-)  [SK425 u-it]"),
     ("pacat",    pacat,       "śatṛ-stems (regular)",  "pacat  (pacant-)  [SK361 nUM]"),
+    ("pacat_napum",  pacat_napum,      "śatṛ-stems (napum)",  "pacat  (napum)  [SK446 mandatory nUM]"),
+    ("dIvyat_napum", dIvyat_napum,     "śatṛ-stems (napum)",  "dīvyat  (napum)  [SK446 mandatory nUM]"),
+    ("tudat_napum",  tudat_napum,      "śatṛ-stems (napum)",  "tudat  (napum)  [SK445 optional nUM]"),
+    ("pacat_strI",   _pacat_strI_cpd,  "śatṛ-stems (strī)",   "pacat  (strī)  [SK446 mandatory → pacantī]"),
+    ("dIvyat_strI",  _dIvyat_strI_cpd, "śatṛ-stems (strī)",   "dīvyat  (strī)  [SK446 mandatory → dīvyantī]"),
+    ("tudat_strI",   _tudat_strI_cpd,  "śatṛ-stems (strī)",   "tudat  (strī)  [SK445 optional]"),
+    ("BAt_strI",     _BAt_strI_cpd,    "śatṛ-stems (strī)",   "bhāt  (strī)  [SK445 optional]"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),
@@ -201,7 +243,7 @@ _STEMS_RAW = [
     ("fBukzin",  fBukzin,     "paTin-group",      "ṛbhukṣin  (ṛbhukṣin-)  [SK365–368]"),
 
     # ── han-stems ─────────────────────────────────────────────────────────
-    ("vftrahan", vftrahan,    "han-stems",        "vṛtrahān  (vṛtrahān-)  [SK358–359]"),
+    ("vftrahan", _vftrahan_cpd, "han-stems",      "vṛtrahān  [vṛtra+han+kvip, SK358–359]"),
 
     # ── ahan-stems (SK443) ────────────────────────────────────────────────
     ("ahan",     ahan,        "ahan-stems",       "ahan  (ahan-)  [SK443]"),
@@ -212,6 +254,9 @@ _STEMS_RAW = [
     # ── vasanta/pums-stems ─────────────────────────────────────────────────
     ("vidvas",   vidvas,      "vasanta-stems",    "vidvas  (vidvas-)  [SK435 kvasu]"),
     ("pums",     pums,        "puṃs-stems",       "puṃs  (puṃs-)  [SK436]"),
+
+    # ── ap-stems (p-final, nityabahuvacana) ──────────────────────────────
+    ("ap",       ap,          "ap-stems",         "ap  (strī, nityabahuvacana)  [SK442]"),
 
     # ── napum i-stems ─────────────────────────────────────────────────────
     ("asTi",     asTi,        "i-stems (napum)",  "asthi  (asthi-)"),
@@ -234,6 +279,10 @@ _STEMS_RAW = [
     ("yad",      yad,         "Pronouns",         "yad  (yad-)  [tyadādi]"),
     ("tyad",     tyad,        "Pronouns",         "tyad  (tyad-)  [tyadādi]"),
     ("adas",     adas,        "Pronouns",         "adas  (adas-)  [tyadādi]"),
+
+    # ── dvitīyādi ordinal compounds ───────────────────────────────────────
+    ("dvitIyA",  _dvitIyA_cpd,  "dvitīyādi (ordinals)", "dvitīyā  [dvitīya+Āp]"),
+    ("tftIyA",   _tftIyA_cpd,   "dvitīyādi (ordinals)", "tṛtīyā  [tṛtīya+Āp]"),
 
     # ── kvip / special ────────────────────────────────────────────────────
     ("div",      div_kvip,    "kvip-stems",       "div  (div-)"),
@@ -276,6 +325,7 @@ _STEMS_RAW = [
     ("tiryac_cpd",   _tiryac_cpd,   "kvin-stems",  "tiryañc  [tiras+añc+kvin]"),
     ("samyac_cpd",   _samyac_cpd,   "kvin-stems",  "samyañc  [sam+añc+kvin]"),
     ("saDryac_cpd",  _saDryac_cpd,  "kvin-stems",  "sadhryañc  [saha+añc+kvin]"),
+    ("vizvadryac",   _vizvadryac_cpd, "kvin-stems", "viśvadryañc  [viśvag+añc+kvin]"),
 
     # ── samāsa (compounds) ────────────────────────────────────────────────
     ("gaRapati",  _gaRapati_cpd,  "samāsa",  "gaṇapati  [SK257 pati-in-cpd]"),
@@ -296,6 +346,14 @@ _STEMS_RAW = [
     ("tAvAn",    _tAvAn_cpd,     "samāsa",  "tāvān  (pum)  [tad+vatup]"),
     ("yAvAn",    _yAvAn_cpd,     "samāsa",  "yāvān  (pum)  [yad+vatup]"),
     ("etAvAn",   _etAvAn_cpd,    "samāsa",  "etāvān  (pum)  [etad+vatup]"),
+    # luk-sup compounds (pūrva-pada with empty sup)
+    ("SUrpanaKI",  _SUrpanaKI_cpd,  "samāsa",  "śūrpaṇakhī  [śūrpa+naḳī]"),
+    ("kzIrapa",    _kzIrapa_cpd,    "samāsa",  "kṣīrapā  [kṣīra+pa]  [SK176]"),
+    # SK432: ghṛtaspṛk (spṛś+kvin after ghṛta)
+    ("Gftaspfk",   _Gftaspfk_cpd,   "samāsa",  "ghṛtaspṛk  [ghṛta+spṛś+kvin]  [SK432]"),
+    # SK161 pada-compounds
+    ("aDaspada",   _aDaspada_cpd,   "samāsa",  "adaḥpada  [adas+pada]  [SK161]"),
+    ("Siraspada",  _Siraspada_cpd,  "samāsa",  "śiraḥpada  [śiras+pada]  [SK161]"),
 
     # ── Numerals ──────────────────────────────────────────────────────────
     ("tri",      tri,         "Numerals",         "tri  [nityabahuvacana]"),
