@@ -419,7 +419,7 @@ def _slp1_to_display(slp1_form, enc):
     return sanscript.transliterate(form, sanscript.SLP1, enc)
 
 
-def _generate_cell(plist, sup, enc):
+def _generate_cell(plist, sup, enc, tag_display=False):
     """
     Run the prakriyā for one declension cell.
 
@@ -442,7 +442,7 @@ def _generate_cell(plist, sup, enc):
     # Capture describe() which prints to stdout
     buf = io.StringIO()
     with redirect_stdout(buf):
-        p.describe()
+        p.describe(tag_display=tag_display)
     trace = buf.getvalue()
 
     # Convert outputs to display strings
@@ -454,7 +454,7 @@ def _generate_cell(plist, sup, enc):
     return forms, trace
 
 
-def generate_table(stem_key, enc):
+def generate_table(stem_key, enc, tag_display=False):
     """
     Generate the full 8×3 declension table for a stem.
 
@@ -490,7 +490,7 @@ def generate_table(stem_key, enc):
 
             sup = sups[vib_idx][vac_idx]
             try:
-                forms, trace = _generate_cell(plist, sup, enc)
+                forms, trace = _generate_cell(plist, sup, enc, tag_display=tag_display)
                 row.append(" | ".join(forms) if forms else "?")
                 row_traces.append(trace)
             except Exception as exc:  # noqa: BLE001
@@ -520,8 +520,9 @@ def index():
 
 @app.route("/api/generate")
 def api_generate():
-    stem_key = request.args.get("stem", "")
-    enc_name = request.args.get("encoding", "devanagari")
+    stem_key   = request.args.get("stem", "")
+    enc_name   = request.args.get("encoding", "devanagari")
+    tag_display = request.args.get("tags", "") == "true"
 
     if stem_key not in STEM_MAP:
         return jsonify({"error": f"Unknown stem: {stem_key!r}"}), 400
@@ -529,7 +530,7 @@ def api_generate():
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
 
     try:
-        table, traces = generate_table(stem_key, enc)
+        table, traces = generate_table(stem_key, enc, tag_display=tag_display)
     except Exception as exc:  # noqa: BLE001
         return jsonify({"error": str(exc)}), 500
 

@@ -493,6 +493,25 @@ class PrakriyaNode(object):
         else:
             change_str = f"{dev_in}  (no change)  ({pair_in})"
         print(f"{indent}{step_label}  {sutra_label}")
+        # Context line: full compound with window highlighted (only when > 2 objects)
+        n_in = len(self.inputs)
+        if n_in > 2:
+            def _obj_dev(obj):
+                if obj is None:
+                    return ""
+                if isinstance(obj, list):
+                    return " ".join(o.devanagari() for o in obj if hasattr(o, 'devanagari'))
+                # Skip sentence-boundary / zero-form markers (avasāna = ".")
+                slp1 = str(obj)
+                if not slp1.strip('.'):
+                    return ""
+                return obj.devanagari() if hasattr(obj, 'devanagari') else slp1
+            parts_before = [d for i in range(ix)          if (d := _obj_dev(self.inputs[i]))]
+            parts_after  = [d for i in range(min(ix + 2, n_in), n_in) if (d := _obj_dev(self.inputs[i]))]
+            before_str = " \u2502 ".join(parts_before) + "  " if parts_before else ""
+            after_str  = "  " + " \u2502 ".join(parts_after) if parts_after else ""
+            if before_str or after_str:
+                print(f"{indent}           context: {before_str}\u00ab{dl_in} | {dr_in}\u00bb{after_str}")
         print(f"{indent}           {change_str}")
         if self.other_sutras:
             others = ",  ".join(

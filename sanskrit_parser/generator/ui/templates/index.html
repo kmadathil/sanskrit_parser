@@ -393,6 +393,21 @@
     .ts-out-dev { color: #7a4d0a; font-size: 1.2rem; font-weight: 700; }
     .ts-out-sep { color: #666; margin: 0 4px; }
 
+    /* ── Window context ──────────────────────────────────── */
+    .ts-context  { font-size: .85rem; margin: 2px 0 4px; }
+    .ts-ctx-side { color: #888; }
+    .ts-ctx-win  { color: #7a4d0a; font-weight: 600; background: #fff8ee;
+                   border-radius: 3px; padding: 0 3px; }
+
+    /* ── Tag display ─────────────────────────────────────── */
+    .ts-tags    { margin-top: 3px; font-size: .7rem; color: #555; line-height: 1.6; }
+    .ts-tag-lbl { color: #888; font-style: italic; }
+    .ts-tag     { background: #e8f0fb; border-radius: 3px; padding: 0 3px;
+                  color: #1a4aaa; margin: 0 1px; }
+    .ts-it      { background: #fbeae8; border-radius: 3px; padding: 0 3px;
+                  color: #a03020; margin: 0 1px; }
+    .ts-tag-none{ color: #bbb; }
+
     /* ── Loading spinner ──────────────────────────────────── */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
@@ -457,6 +472,16 @@
         <label class="option">
           <input type="radio" name="encoding" value="slp1">
           SLP1 (internal)
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <h2>Options</h2>
+      <div class="encoding-group">
+        <label class="option">
+          <input type="checkbox" id="opt-tags">
+          Show object tags
         </label>
       </div>
     </div>
@@ -572,7 +597,8 @@
     clearTrace();
 
     try {
-      const res  = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}`);
+      const showTags = document.getElementById('opt-tags').checked;
+      const res  = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}&tags=${showTags}`);
       const data = await res.json();
 
       if (data.error) {
@@ -773,6 +799,28 @@
             const dm0 = t.match(/^(.+?)\s+\(no change\)/);
             cur.form = { changed: false, dev: dm0 ? dm0[1].trim() : t, slp1: '' };
           }
+        } else if (t.startsWith('context:')) {
+          // "context: {before}«{winL} | {winR}»{after}"
+          const cm = t.match(/^context:\s*(.*?)\u00ab(.*?)\s*\|\s*(.*?)\u00bb(.*)$/);
+          if (cm) {
+            cur.context = {
+              before: cm[1].trim(),
+              winL:   cm[2].trim(),
+              winR:   cm[3].trim(),
+              after:  cm[4].trim()
+            };
+          }
+        } else if (/^(in\s+[lr]|out\s+[lr]):\s+tags=/.test(t)) {
+          // "in  l: tags={aNga, DAtu} its={A}"
+          const tm = t.match(/^(in\s+[lr]|out\s+[lr]):\s+tags=\{([^}]*)\}\s+its=\{([^}]*)\}/);
+          if (tm) {
+            if (!cur.tagRows) cur.tagRows = [];
+            cur.tagRows.push({
+              label: tm[1].replace(/\s+/g, ' '),
+              tags:  tm[2] ? tm[2].split(/,\s*/).filter(Boolean) : [],
+              its:   tm[3] ? tm[3].split(/,\s*/).filter(Boolean) : []
+            });
+          }
         }
       }
     }
@@ -874,11 +922,35 @@
         alsoHtml = `<div class="ts-also">↳ also applicable: ${items.join('')}</div>`;
       }
 
+      // Window context
+      let contextHtml = '';
+      if (s.context) {
+        const { before, winL, winR, after } = s.context;
+        const bHtml = before ? `<span class="ts-ctx-side">${esc(before)}</span>  ` : '';
+        const aHtml = after  ? `  <span class="ts-ctx-side">${esc(after)}</span>`  : '';
+        contextHtml = `<div class="ts-context">${bHtml}<span class="ts-ctx-win">\u00ab${esc(winL)} | ${esc(winR)}\u00bb</span>${aHtml}</div>`;
+      }
+
+      // Tag rows
+      let tagsHtml = '';
+      if (s.tagRows && s.tagRows.length > 0) {
+        const rows = s.tagRows.map(r => {
+          const tStr = r.tags.length
+            ? r.tags.map(tg => `<span class="ts-tag">${esc(tg)}</span>`).join(' ')
+            : '<span class="ts-tag-none">—</span>';
+          const iStr = r.its.length
+            ? ' its: ' + r.its.map(i => `<span class="ts-it">${esc(i)}</span>`).join(' ')
+            : '';
+          return `<span class="ts-tag-lbl">${esc(r.label)}</span> ${tStr}${iStr}`;
+        }).join(' &nbsp;│&nbsp; ');
+        tagsHtml = `<div class="ts-tags">${rows}</div>`;
+      }
+
       h += `<div class="ts-step ${cls}">
         <span class="ts-n">${esc(s.num)}</span>
         <div class="ts-content">
           <div class="ts-hdr">${hdrHtml}</div>
-          ${xformHtml}${alsoHtml}
+          ${contextHtml}${xformHtml}${alsoHtml}${tagsHtml}
         </div>
       </div>`;
     }
@@ -971,6 +1043,10 @@
   });
 
   document.getElementById('stem-select').addEventListener('change', loadTable);
+
+  document.getElementById('opt-tags').addEventListener('change', () => {
+    if (tableData) loadTable();
+  });
 
   window.addEventListener('DOMContentLoaded', loadTable);
 </script>
