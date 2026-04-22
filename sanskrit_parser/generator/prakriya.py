@@ -227,6 +227,40 @@ class HierPrakriya(PrakriyaBase):
             w = _winner(w, s)
         return w
 
+    def sutra_priority_detail(self, sutras: list):
+        """Like sutra_priority but returns (winner, trace) for display.
+        trace entries: {"s1": aps, "s2": aps, "winner": aps, "reason": str}
+        """
+        if len(sutras) <= 1:
+            return (sutras[0] if sutras else None), []
+        trace = []
+
+        def _winner_reason(s1, s2):
+            if (s2.overrides is not None) and (s1.aps in s2.overrides):
+                return s2, f"apavāda: {s2.aps} overrides {s1.aps}"
+            elif (s1.overrides is not None) and (s2.aps in s1.overrides):
+                return s1, f"apavāda: {s1.aps} overrides {s2.aps}"
+            elif s1.bahiranga < s2.bahiranga:
+                return s1, f"antaraṅga: {s1.aps} (score {s1.bahiranga}) beats {s2.aps}"
+            elif s2.bahiranga < s1.bahiranga:
+                return s2, f"antaraṅga: {s2.aps} (score {s2.bahiranga}) beats {s1.aps}"
+            elif (s1._aps_num < 14000) or (s2._aps_num < 14000):
+                w = s1 if s1._aps_num < s2._aps_num else s2
+                return w, f"saṃjñā: lower APS wins ({w.aps})"
+            elif (s1._aps_num > 82000) or (s2._aps_num > 82000):
+                w = s1 if s1._aps_num < s2._aps_num else s2
+                return w, f"tripadī: lower APS wins ({w.aps})"
+            else:
+                w = s1 if s1._aps_num > s2._aps_num else s2
+                return w, f"para-pūrva: higher APS wins ({w.aps})"
+
+        w = sutras[0]
+        for s in sutras[1:]:
+            winner, reason = _winner_reason(w, s)
+            trace.append({"s1": w.aps, "s2": s.aps, "winner": winner.aps, "reason": reason})
+            w = winner
+        return w, trace
+
     def view(self, s, node, ix=0):
         """
         Current view as seen by sutra s
@@ -278,13 +312,17 @@ class HierPrakriya(PrakriyaBase):
         return _l[ix:ix+2]
 
     def _eval_sutras_at_window(self, node, ix):
-        """Non-mutating evaluation pass. Returns per-sutra records for one window position."""
+        """Non-mutating evaluation pass. Returns {"sutras": [...], "priority_trace": [...]}."""
         records = []
+        triggered = []
         for s in self.sutra_list:
             disabled = s.aps in node.outputs[ix].disabled_sutras
             disabled_by = node.outputs[ix].disabled_by.get(s.aps) if disabled else None
             domain_pass = s.isInDomain(self.domains) if not disabled else None
-            cond_pass = s.isTriggered(*self.view(s, node, ix)) if (not disabled and domain_pass) else None
+            if not disabled and domain_pass:
+                cond_pass, cond_detail = s.evalConditionDetail(*self.view(s, node, ix))
+            else:
+                cond_pass, cond_detail = None, []
             dev = s.name.devanagari() if not isinstance(s.name, str) else s.name
             records.append({
                 "aps": s.aps,
@@ -293,8 +331,12 @@ class HierPrakriya(PrakriyaBase):
                 "disabled_by": disabled_by,
                 "domain_pass": domain_pass,
                 "condition_pass": cond_pass,
+                "condition_detail": cond_detail,
             })
-        return records
+            if cond_pass:
+                triggered.append(s)
+        _, priority_trace = self.sutra_priority_detail(triggered) if len(triggered) > 1 else (None, [])
+        return {"sutras": records, "priority_trace": priority_trace}
 
     def _exec_single(self, node):
         l = self.sutra_list  # noqa: E741

@@ -263,5 +263,7 @@ def process_yaml(y):
                                       optional=sopt,
                                       bahiranga=s["bahiranga"],
                                       overrides=soverrides)
+        sutra_dict[s["id"]]._cond_dict     = s["condition"]  # raw YAML for per-subcondition detail
+        sutra_dict[s["id"]]._cond_globals   = globals()       # eval namespace (includes all imports)
 
     return sutra_dict

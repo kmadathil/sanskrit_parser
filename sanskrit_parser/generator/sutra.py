@@ -111,6 +111,63 @@ class LRSutra(Sutra):
         logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
         return c
 
+    def evalConditionDetail(self, s1, s2):
+        """Re-evaluates condition with per-subcondition detail. Short-circuit preserved.
+        Returns (passed: bool, detail: list[dict])
+        where detail entries are {"var": str, "check": str, "result": bool}.
+        """
+        _cond_dict    = getattr(self, '_cond_dict',    None)
+        _cond_globals = getattr(self, '_cond_globals', {})
+        if _cond_dict is None:
+            result = self.cond(_env(s1, s2)) if self.cond else True
+            return result, []
+        env = _env(s1, s2)
+        detail = []
+        _isInPratyahara = _cond_globals.get('isInPratyahara')
+        _isSavarna      = _cond_globals.get('isSavarna')
+
+        def _single(sk, var_name):
+            k = env[var_name]
+            if sk[0] == "_":       r = _isInPratyahara(sk[1:], k)
+            elif sk[:2] == "$$":   r = eval(f"{sk[2:]}(k)", _cond_globals, {"k": k})
+            elif sk[0] == "$":     r = _isSavarna(env[sk[1:]], k)
+            elif sk[:2] == "=!":   r = (sk[2:] != k.canonical())
+            elif sk[0] == "=":     r = (sk[1:] == k.canonical())
+            elif sk[:2] == "?!":   r = not k.hasTag(sk[2:])
+            elif sk[0] == "?":     r = k.hasTag(sk[1:])
+            elif sk[0] == "+":     r = hasattr(k, 'hasIt') and k.hasIt(sk[1:])
+            else:                  r = _isSavarna(sk, k)
+            detail.append({"var": var_name, "check": sk, "result": r})
+            return r
+
+        def _eval_one(_s):
+            x = True
+            for kv in _s:
+                if isinstance(_s[kv], list):
+                    if _s[kv][0] == "and":
+                        _x = True
+                        for sk in _s[kv][1:]:
+                            _x = _x and _single(sk, kv)
+                            if not _x:
+                                break
+                    else:
+                        _x = False
+                        for sk in _s[kv]:
+                            _x = _x or _single(sk, kv)
+                            if _x:
+                                break
+                else:
+                    _x = _single(_s[kv], kv)
+                x = x and _x
+            return x
+
+        _cd = _cond_dict
+        if isinstance(_cd, list):
+            passed = any(_eval_one(_s) for _s in _cd)
+        else:
+            passed = _eval_one(_cd)
+        return passed, detail
+
     def update(self, s1, s2, o1, o2):
         env = _env(s1, s2)
         env["olp"] = o1

@@ -431,11 +431,39 @@
     }
     .ts-eval-toggle:hover { color: #666; }
     .ts-eval-toggle.open  { color: #c17f24; }
-    .ts-eval-panel { margin-top: 4px; max-height: 220px; overflow-y: auto; }
-    .ts-eval-tbl { border-collapse: collapse; font-size: .7rem; width: 100%; }
-    .ts-eval-tbl th { background: #f0ece0; padding: 2px 6px; text-align: left;
+
+    /* Popup overlay + modal */
+    #eval-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.45); z-index: 200;
+    }
+    #eval-popup {
+      display: none; position: fixed; top: 8%; left: 50%;
+      transform: translateX(-50%); width: min(720px, 94vw);
+      max-height: 80vh; overflow-y: auto;
+      background: #fff; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,.25);
+      z-index: 201; padding: 16px 18px 18px;
+    }
+    #eval-popup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    #eval-popup-title { font-weight: 700; font-size: .85rem; color: #444; }
+    #eval-popup-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 1rem; color: #888; padding: 2px 6px;
+    }
+    #eval-popup-close:hover { color: #333; }
+    #eval-search {
+      width: 100%; box-sizing: border-box; margin-bottom: 8px;
+      padding: 5px 8px; font-size: .78rem; border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .ts-eval-tbl { border-collapse: collapse; font-size: .72rem; width: 100%; }
+    .ts-eval-tbl th { background: #f0ece0; padding: 3px 8px; text-align: left;
                       font-weight: 600; border-bottom: 1px solid #ddd; white-space: nowrap; }
-    .ts-eval-tbl td { padding: 2px 6px; border-bottom: 1px solid #eee; }
+    .ts-eval-tbl td { padding: 3px 8px; border-bottom: 1px solid #eee; }
     .ev-aps    { font-family: monospace; font-weight: 600; white-space: nowrap; font-size: .68rem; }
     .ev-dev    { min-width: 80px; }
     .ev-status { font-weight: 600; white-space: nowrap; font-size: .68rem; }
@@ -445,6 +473,19 @@
     .eval-cond      td { background: #fce4ec; }
     .eval-domain    td { background: #f3e5f5; }
     .eval-disabled  td { background: #f5f5f5; color: #bbb; }
+    tr.ev-hidden    { display: none; }
+    .ev-detail-row td { background: #fafaf7 !important; padding: 4px 10px; }
+    .ev-sub-cond    { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 0; }
+    .ev-sub-item    { font-size: .72rem; font-family: monospace; padding: 1px 5px;
+                      border-radius: 3px; white-space: nowrap; }
+    .ev-sub-item code { font-size: .72rem; }
+    .ev-sub-pass    { background: #e8f5e9; color: #2e7d32; }
+    .ev-sub-fail    { background: #fce4ec; color: #c62828; }
+    .ev-pri-trace   { display: flex; flex-direction: column; gap: 3px; padding: 2px 0; }
+    .ev-pri-step    { font-size: .72rem; }
+    .ev-pri-vs      { font-family: monospace; color: #555; }
+    .ev-pri-reason  { color: #777; margin-left: 4px; }
+    .ev-expand      { font-size: .65rem; color: #999; margin-left: 2px; }
 
     /* ── Loading spinner ──────────────────────────────────── */
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -577,6 +618,18 @@
 
 </div><!-- /.layout -->
 
+<!-- ── Eval popup ──────────────────────────────────────────── -->
+<div id="eval-overlay" onclick="closeEvalPopup()"></div>
+<div id="eval-popup">
+  <div id="eval-popup-header">
+    <span id="eval-popup-title"></span>
+    <button id="eval-popup-close" onclick="closeEvalPopup()">✕</button>
+  </div>
+  <input id="eval-search" type="text" placeholder="Search sutra number or name…"
+         oninput="filterEvalRows(this.value)">
+  <div id="eval-popup-body"></div>
+</div>
+
 <script>
   // ── Label sets ───────────────────────────────────────────
   const LABELS = {
@@ -622,6 +675,7 @@
 
   // ── State ────────────────────────────────────────────────
   let tableData    = null;
+  let currentEvalLogs = null;  // eval logs for the currently displayed cell
   let selectedCell = null;
 
   // ── Load table via API ────────────────────────────────────
@@ -892,6 +946,7 @@
   }
 
   function formatTrace(raw, data = null, evalLogs = null) {
+    currentEvalLogs = evalLogs;
     if (!data) data = parseTrace(raw);
     if (!data) return '<em style="color:#888">No trace available.</em>';
     const { header, steps, output, innerPrakriyas } = data;
@@ -1028,13 +1083,16 @@
 
       // Eval inspector panel (opt-in)
       let evalHtml = '';
-      const stepEval = evalLogs ? evalLogs[evalStepIdx] : null;
-      if (stepEval && Array.isArray(stepEval)) {
+      const stepEvalRaw = evalLogs ? evalLogs[evalStepIdx] : null;
+      // stepEvalRaw is now {sutras, priority_trace} or null
+      const stepSutras = stepEvalRaw?.sutras;
+      if (stepSutras && Array.isArray(stepSutras)) {
         const appliedAps = s.special ? null : s.aps;
         const alsoAps   = s.also ? s.also.map(a => a.aps) : [];
-        const n = stepEval.filter(r => !r.disabled && r.domain_pass !== false && r.condition_pass !== false).length;
-        evalHtml = `<div class="ts-eval-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'">🔍 ${n} evaluated</div>` +
-                   `<div class="ts-eval-panel" style="display:none">${renderEvalPanel(stepEval, appliedAps, alsoAps)}</div>`;
+        const n = stepSutras.filter(r => !r.disabled && r.domain_pass !== false && r.condition_pass !== false).length;
+        const stepLabel  = s.special ? String(s.num || 'step') : `Step ${s.num} \u2014 ${s.aps}`;
+        // Use single-quoted onclick to avoid conflicts with JSON double-quotes
+        evalHtml = `<div class="ts-eval-toggle" onclick='showEvalPopup(${evalStepIdx},${JSON.stringify(appliedAps)},${JSON.stringify(alsoAps)},${JSON.stringify(stepLabel)})'>🔍 ${n} evaluated</div>`;
       }
       evalStepIdx++;
 
@@ -1066,46 +1124,106 @@
   }
 
   // ── Eval inspector ────────────────────────────────────────
-  function renderEvalPanel(records, appliedAps, alsoAps) {
+  const EVAL_SORT = { applied: 0, triggered: 1, 'eval-cond': 2, 'eval-domain': 2, disabled: 3 };
+
+  function _evalRowInfo(r, appliedAps, alsoAps) {
+    if (r.disabled) {
+      return { status: 'Disabled', reason: r.disabled_by === r.aps ? 'Previously fired' : `By ${r.disabled_by}`,
+               rowClass: 'eval-disabled', sortKey: 3 };
+    } else if (r.domain_pass === false) {
+      return { status: 'Skipped', reason: 'Domain failed',    rowClass: 'eval-domain',   sortKey: 2 };
+    } else if (r.condition_pass === false) {
+      return { status: 'Skipped', reason: 'Condition failed', rowClass: 'eval-cond',     sortKey: 2 };
+    } else if (r.aps === appliedAps) {
+      return { status: 'Applied',   reason: 'Won priority',  rowClass: 'eval-applied',   sortKey: 0 };
+    } else if (alsoAps.includes(r.aps)) {
+      return { status: 'Triggered', reason: 'Lost priority', rowClass: 'eval-triggered', sortKey: 1 };
+    }
+    return { status: '?', reason: '', rowClass: '', sortKey: 2 };
+  }
+
+  function renderEvalTable(records, appliedAps, alsoAps, priorityTrace) {
+    priorityTrace = priorityTrace || [];
+    const annotated = records.map(r => ({ r, ...(_evalRowInfo(r, appliedAps, alsoAps)) }));
+    annotated.sort((a, b) => a.sortKey - b.sortKey);
     let rows = '';
-    for (const r of records) {
-      let status, reason, rowClass;
-      if (r.disabled) {
-        status   = 'Disabled';
-        reason   = r.disabled_by === r.aps ? 'Previously fired' : `By ${r.disabled_by}`;
-        rowClass = 'eval-disabled';
-      } else if (r.domain_pass === false) {
-        status   = 'Skipped';
-        reason   = 'Domain failed';
-        rowClass = 'eval-domain';
-      } else if (r.condition_pass === false) {
-        status   = 'Skipped';
-        reason   = 'Condition failed';
-        rowClass = 'eval-cond';
-      } else if (r.aps === appliedAps) {
-        status   = 'Applied';
-        reason   = 'Won priority';
-        rowClass = 'eval-applied';
-      } else if (alsoAps.includes(r.aps)) {
-        status   = 'Triggered';
-        reason   = 'Lost priority';
-        rowClass = 'eval-triggered';
-      } else {
-        status   = '?';
-        reason   = '';
-        rowClass = '';
+    for (const { r, status, reason, rowClass, sortKey } of annotated) {
+      const hasCondDetail   = (sortKey === 2) && r.condition_pass === false && r.condition_detail?.length > 0;
+      const hasPriorityInfo = (sortKey === 0 || sortKey === 1) && priorityTrace.length > 0;
+      const clickable       = hasCondDetail || hasPriorityInfo;
+      const detailRowId     = `ev-det-${esc(r.aps).replace(/\./g,'-')}`;
+
+      let detailHtml = '';
+      if (hasCondDetail) {
+        const checks = r.condition_detail.map(d =>
+          `<span class="ev-sub-item ${d.result ? 'ev-sub-pass' : 'ev-sub-fail'}">${esc(d.var)}:<code>${esc(d.check)}</code>${d.result ? '✓' : '✗'}</span>`
+        ).join(' ');
+        detailHtml = `<tr id="${detailRowId}" class="ev-detail-row" style="display:none"><td colspan="4"><div class="ev-sub-cond">${checks}</div></td></tr>`;
+      } else if (hasPriorityInfo) {
+        const relevant = priorityTrace.filter(t => t.s1 === r.aps || t.s2 === r.aps);
+        if (relevant.length > 0) {
+          const steps = relevant.map(t =>
+            `<div class="ev-pri-step"><span class="ev-pri-vs">${esc(t.s1)} vs ${esc(t.s2)}</span> → <strong>${esc(t.winner)}</strong> <span class="ev-pri-reason">${esc(t.reason)}</span></div>`
+          ).join('');
+          detailHtml = `<tr id="${detailRowId}" class="ev-detail-row" style="display:none"><td colspan="4"><div class="ev-pri-trace">${steps}</div></td></tr>`;
+        }
       }
-      rows += `<tr class="${rowClass}">
-        <td class="ev-aps">${esc(r.aps)}</td>
+
+      const onclickAttr = (clickable && detailHtml) ? `onclick="toggleEvalDetail('${detailRowId}',this)" style="cursor:pointer"` : '';
+      rows += `<tr class="${rowClass}" data-aps="${esc(r.aps)}" data-dev="${esc(r.dev)}" ${onclickAttr}>
+        <td class="ev-aps">${esc(r.aps)}${clickable && detailHtml ? ' <span class="ev-expand">▸</span>' : ''}</td>
         <td class="ev-dev">${esc(r.dev)}</td>
         <td class="ev-status">${status}</td>
         <td class="ev-reason">${esc(reason)}</td>
-      </tr>`;
+      </tr>${detailHtml}`;
     }
     return `<table class="ts-eval-tbl">
       <thead><tr><th>Sutra</th><th>Name</th><th>Status</th><th>Reason</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+  }
+
+  function toggleEvalDetail(id, row) {
+    const det = document.getElementById(id);
+    if (!det) return;
+    const arrow = row.querySelector('.ev-expand');
+    const hidden = det.style.display === 'none';
+    det.style.display = hidden ? '' : 'none';
+    if (arrow) arrow.textContent = hidden ? '▾' : '▸';
+  }
+
+  function showEvalPopup(stepIdx, appliedAps, alsoAps, stepLabel) {
+    if (!currentEvalLogs) return;
+    const stepData = currentEvalLogs[stepIdx];
+    if (!stepData) return;
+    const records       = stepData.sutras       || stepData;  // fallback for old shape
+    const priorityTrace = stepData.priority_trace || [];
+    if (!Array.isArray(records)) return;
+    document.getElementById('eval-popup-title').textContent = stepLabel;
+    document.getElementById('eval-search').value = '';
+    document.getElementById('eval-popup-body').innerHTML = renderEvalTable(records, appliedAps, alsoAps, priorityTrace);
+    document.getElementById('eval-overlay').style.display = 'block';
+    document.getElementById('eval-popup').style.display   = 'block';
+  }
+
+  function closeEvalPopup() {
+    document.getElementById('eval-overlay').style.display = 'none';
+    document.getElementById('eval-popup').style.display   = 'none';
+  }
+
+  function filterEvalRows(query) {
+    const q = query.toLowerCase();
+    const rows = document.querySelectorAll('#eval-popup-body .ts-eval-tbl tbody tr');
+    for (const row of rows) {
+      const aps = (row.dataset.aps || '').toLowerCase();
+      const dev = (row.dataset.dev || '').toLowerCase();
+      row.classList.toggle('ev-hidden', q.length > 0 && !aps.includes(q) && !dev.includes(q));
+    }
+  }
+
+  // keep old name as alias (used nowhere now, but safe)
+  function renderEvalPanel(records, appliedAps, alsoAps) {
+    return renderEvalTable(records, appliedAps, alsoAps);
   }
 
   // ── Helpers ───────────────────────────────────────────────
