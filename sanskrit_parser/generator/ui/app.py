@@ -419,13 +419,14 @@ def _slp1_to_display(slp1_form, enc):
     return sanscript.transliterate(form, sanscript.SLP1, enc)
 
 
-def _generate_cell(plist, sup, enc, tag_display=False):
+def _generate_cell(plist, sup, enc, tag_display=False, capture_eval=False):
     """
     Run the prakriyā for one declension cell.
 
     Returns:
-        forms  (list[str]) : output form(s) in the requested encoding
-        trace  (str)       : multi-line sutra-trace text from p.describe()
+        forms     (list[str])        : output form(s) in the requested encoding
+        trace     (str)              : multi-line sutra-trace text from p.describe()
+        eval_logs (list | None)      : per-step evaluation records (if capture_eval)
     """
     # Compound (multi-element plist) requires hierarchical structure so that
     # pūrva-pada rules (e.g. SK379) fire *after* the uttara-pada + sup merge,
@@ -436,6 +437,7 @@ def _generate_cell(plist, sup, enc, tag_display=False):
         inputs = [Adya, *plist, sup, avasAna]
     pv = PrakriyaVakya(inputs)
     p = PrakriyaFactory("AntarangaPrakriya", sutra_list, pv)
+    p._capture_eval = capture_eval
     p.execute()
     output = p.output()
 
@@ -445,22 +447,25 @@ def _generate_cell(plist, sup, enc, tag_display=False):
         p.describe(tag_display=tag_display)
     trace = buf.getvalue()
 
+    eval_logs = p.tree.get_eval_logs_dfs() if capture_eval else None
+
     # Convert outputs to display strings
     forms = []
     for o in output:
         slp1 = "".join(obj.transcoded(sanscript.SLP1) for obj in list(o))
         forms.append(_slp1_to_display(slp1, enc))
 
-    return forms, trace
+    return forms, trace, eval_logs
 
 
-def generate_table(stem_key, enc, tag_display=False):
+def generate_table(stem_key, enc, tag_display=False, capture_eval=False):
     """
     Generate the full 8×3 declension table for a stem.
 
     Returns:
-        table  : list of 8 rows, each a list of 3 display strings
-        traces : matching list of 8 rows × 3 trace strings
+        table     : list of 8 rows, each a list of 3 display strings
+        traces    : matching list of 8 rows × 3 trace strings
+        eval_logs : matching 8×3 list of eval_log lists (or None if not requested)
     """
     obj = STEM_MAP[stem_key]
     plist = obj if isinstance(obj, list) else [obj]
@@ -473,9 +478,11 @@ def generate_table(stem_key, enc, tag_display=False):
 
     table = []
     traces = []
+    eval_logs_grid = []
     for vib_idx in range(8):
         row = []
         row_traces = []
+        row_evals = []
         for vac_idx in range(3):
             # Skip non-applicable vacana for nitya stems
             skip = (
@@ -486,21 +493,26 @@ def generate_table(stem_key, enc, tag_display=False):
             if skip:
                 row.append("—")
                 row_traces.append("")
+                row_evals.append(None)
                 continue
 
             sup = sups[vib_idx][vac_idx]
             try:
-                forms, trace = _generate_cell(plist, sup, enc, tag_display=tag_display)
+                forms, trace, elogs = _generate_cell(plist, sup, enc, tag_display=tag_display,
+                                                     capture_eval=capture_eval)
                 row.append(" | ".join(forms) if forms else "?")
                 row_traces.append(trace)
+                row_evals.append(elogs)
             except Exception as exc:  # noqa: BLE001
                 row.append("[error]")
                 row_traces.append(str(exc))
+                row_evals.append(None)
 
         table.append(row)
         traces.append(row_traces)
+        eval_logs_grid.append(row_evals)
 
-    return table, traces
+    return table, traces, eval_logs_grid
 
 
 # ---------------------------------------------------------------------------
@@ -520,9 +532,10 @@ def index():
 
 @app.route("/api/generate")
 def api_generate():
-    stem_key   = request.args.get("stem", "")
-    enc_name   = request.args.get("encoding", "devanagari")
-    tag_display = request.args.get("tags", "") == "true"
+    stem_key     = request.args.get("stem", "")
+    enc_name     = request.args.get("encoding", "devanagari")
+    tag_display  = request.args.get("tags", "") == "true"
+    capture_eval = request.args.get("eval", "") == "true"
 
     if stem_key not in STEM_MAP:
         return jsonify({"error": f"Unknown stem: {stem_key!r}"}), 400
@@ -530,7 +543,8 @@ def api_generate():
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
 
     try:
-        table, traces = generate_table(stem_key, enc, tag_display=tag_display)
+        table, traces, eval_logs_grid = generate_table(stem_key, enc, tag_display=tag_display,
+                                                       capture_eval=capture_eval)
     except Exception as exc:  # noqa: BLE001
         return jsonify({"error": str(exc)}), 500
 
@@ -539,6 +553,7 @@ def api_generate():
         "enc":       enc_name,
         "table":     table,
         "traces":    traces,
+        "eval_logs": eval_logs_grid if capture_eval else None,
         "vibhaktis": VIBHAKTI_NAMES,
         "vacanas":   VACANA_NAMES,
     })

@@ -104,6 +104,8 @@ class AntarangaPrakriya(PrakriyaBase):
         self.disabled_sutras = []
         # Sliding window counter
         self.windowIdx = 0
+        # Set to True to capture per-step evaluation data (opt-in; slower)
+        self._capture_eval = False
 
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list, v):
@@ -283,6 +285,21 @@ class AntarangaPrakriya(PrakriyaBase):
             ix = len(_l) - 2
         return _l[ix:ix+2]
 
+    def _eval_sutras_at_window(self, node, ix):
+        """Non-mutating evaluation pass. Returns per-sutra records for one window."""
+        records = []
+        for s in self.sutra_list:
+            disabled = s.aps in node.outputs[ix].disabled_sutras
+            disabled_by = node.outputs[ix].disabled_by.get(s.aps) if disabled else None
+            domain_pass = None  # AntarangaPrakriya does not use domain filtering
+            cond_pass = s.isTriggered(*self.view(s, node, ix)) if not disabled else None
+            dev = s.name.devanagari() if not isinstance(s.name, str) else s.name
+            records.append({
+                "aps": s.aps, "dev": dev, "disabled": disabled,
+                "disabled_by": disabled_by, "domain_pass": domain_pass, "condition_pass": cond_pass,
+            })
+        return records
+
     def _exec(self, node):
         l = self.sutra_list  # noqa: E741
         found_pratyaya = False
@@ -392,17 +409,21 @@ class AntarangaPrakriya(PrakriyaBase):
 
             # Using sutra id in the disabled list to get round paninian object deepcopy
             r0.disabled_sutras.append(s.aps)
+            r0.disabled_by[s.aps] = s.aps  # fired — disabled itself
             if s.optional:
                 # Prevent optional sutra from executing on the same node again
                 v0.disabled_sutras.append(s.aps)
+                v0.disabled_by[s.aps] = s.aps
             # Overridden sutras disabled
             if s.overrides is not None:
                 for so in l:
                     if so.aps in s.overrides:
                         r0.disabled_sutras.append(so.aps)
+                        r0.disabled_by[so.aps] = s.aps  # disabled by overriding sutra
                         if s.optional:
                             # Prevent optional sutra's overridden sutras from executing on the same node again
                             v0.disabled_sutras.append(so.aps)
+                            v0.disabled_by[so.aps] = s.aps
                         logger.debug(f"Disabling overriden {so}")
             # FIXME: disable sutras for AkaqArAdekA saMjYA
 
@@ -417,7 +438,8 @@ class AntarangaPrakriya(PrakriyaBase):
             if len(r) > 2:
                 for i in range(len(r)-2):
                     pnr = pnr.copy_insert_at(ix+i+2, r[i+2])
-            _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s])
+            eval_log = self._eval_sutras_at_window(node, ix) if self._capture_eval else None
+            _ps = PrakriyaNode(pnv, pnr, s, ix, [t for t in triggered if t != s], eval_log=eval_log)
             logger.debug(f'O Node: {_ps.id} [{s.aps}]')
             if node is not None:
                 self.tree.add_child(node, _ps, opt=s.optional)

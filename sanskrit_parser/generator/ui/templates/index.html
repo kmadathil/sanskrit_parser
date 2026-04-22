@@ -424,6 +424,28 @@
                   color: #a03020; margin: 0 1px; display: inline-block; }
     .ts-tag-none{ color: #bbb; }
 
+    /* ── Evaluation inspector ───────────────────────────────── */
+    .ts-eval-toggle {
+      cursor: pointer; font-size: .68rem; color: #aaa;
+      margin-top: 4px; user-select: none; display: inline-block;
+    }
+    .ts-eval-toggle:hover { color: #666; }
+    .ts-eval-toggle.open  { color: #c17f24; }
+    .ts-eval-panel { margin-top: 4px; max-height: 220px; overflow-y: auto; }
+    .ts-eval-tbl { border-collapse: collapse; font-size: .7rem; width: 100%; }
+    .ts-eval-tbl th { background: #f0ece0; padding: 2px 6px; text-align: left;
+                      font-weight: 600; border-bottom: 1px solid #ddd; white-space: nowrap; }
+    .ts-eval-tbl td { padding: 2px 6px; border-bottom: 1px solid #eee; }
+    .ev-aps    { font-family: monospace; font-weight: 600; white-space: nowrap; font-size: .68rem; }
+    .ev-dev    { min-width: 80px; }
+    .ev-status { font-weight: 600; white-space: nowrap; font-size: .68rem; }
+    .ev-reason { color: #666; font-size: .67rem; }
+    .eval-applied   td { background: #e8f5e9; }
+    .eval-triggered td { background: #fff3e0; }
+    .eval-cond      td { background: #fce4ec; }
+    .eval-domain    td { background: #f3e5f5; }
+    .eval-disabled  td { background: #f5f5f5; color: #bbb; }
+
     /* ── Loading spinner ──────────────────────────────────── */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
@@ -498,6 +520,10 @@
         <label class="option">
           <input type="checkbox" id="opt-tags">
           Show object tags
+        </label>
+        <label class="option">
+          <input type="checkbox" id="opt-eval">
+          Show evaluation
         </label>
       </div>
     </div>
@@ -614,7 +640,8 @@
 
     try {
       const showTags = document.getElementById('opt-tags').checked;
-      const res  = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}&tags=${showTags}`);
+      const showEval = document.getElementById('opt-eval').checked;
+      const res  = await fetch(`/api/generate?stem=${encodeURIComponent(stem)}&encoding=${encoding}&tags=${showTags}&eval=${showEval}`);
       const data = await res.json();
 
       if (data.error) {
@@ -679,10 +706,11 @@
     td.classList.add('selected');
     selectedCell = [r, c];
 
-    const traceEl = document.getElementById('trace-panel');
-    const raw     = tableData.traces[r][c];
+    const traceEl  = document.getElementById('trace-panel');
+    const raw      = tableData.traces[r][c];
+    const evalLogs = tableData.eval_logs ? tableData.eval_logs[r][c] : null;
     if (raw && raw.trim()) {
-      traceEl.innerHTML = formatTrace(raw);
+      traceEl.innerHTML = formatTrace(raw, null, evalLogs);
       traceEl.classList.remove('empty');
     } else {
       clearTrace();
@@ -863,7 +891,7 @@
     return { header, steps, output, innerPrakriyas };
   }
 
-  function formatTrace(raw, data = null) {
+  function formatTrace(raw, data = null, evalLogs = null) {
     if (!data) data = parseTrace(raw);
     if (!data) return '<em style="color:#888">No trace available.</em>';
     const { header, steps, output, innerPrakriyas } = data;
@@ -900,6 +928,7 @@
     }
 
     // Steps
+    let evalStepIdx = 0;
     for (const s of steps) {
       // Branch divider
       if (s.type === 'branch') {
@@ -997,11 +1026,23 @@
         </table>`;
       }
 
+      // Eval inspector panel (opt-in)
+      let evalHtml = '';
+      const stepEval = evalLogs ? evalLogs[evalStepIdx] : null;
+      if (stepEval && Array.isArray(stepEval)) {
+        const appliedAps = s.special ? null : s.aps;
+        const alsoAps   = s.also ? s.also.map(a => a.aps) : [];
+        const n = stepEval.filter(r => !r.disabled && r.domain_pass !== false && r.condition_pass !== false).length;
+        evalHtml = `<div class="ts-eval-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'">🔍 ${n} evaluated</div>` +
+                   `<div class="ts-eval-panel" style="display:none">${renderEvalPanel(stepEval, appliedAps, alsoAps)}</div>`;
+      }
+      evalStepIdx++;
+
       h += `<div class="ts-step ${cls}">
         <span class="ts-n">${esc(s.num)}</span>
         <div class="ts-content">
           <div class="ts-hdr">${hdrHtml}</div>
-          ${contextHtml}${xformHtml}${alsoHtml}${tagsHtml}
+          ${contextHtml}${xformHtml}${alsoHtml}${tagsHtml}${evalHtml}
         </div>
       </div>`;
     }
@@ -1022,6 +1063,49 @@
     }
 
     return h;
+  }
+
+  // ── Eval inspector ────────────────────────────────────────
+  function renderEvalPanel(records, appliedAps, alsoAps) {
+    let rows = '';
+    for (const r of records) {
+      let status, reason, rowClass;
+      if (r.disabled) {
+        status   = 'Disabled';
+        reason   = r.disabled_by === r.aps ? 'Previously fired' : `By ${r.disabled_by}`;
+        rowClass = 'eval-disabled';
+      } else if (r.domain_pass === false) {
+        status   = 'Skipped';
+        reason   = 'Domain failed';
+        rowClass = 'eval-domain';
+      } else if (r.condition_pass === false) {
+        status   = 'Skipped';
+        reason   = 'Condition failed';
+        rowClass = 'eval-cond';
+      } else if (r.aps === appliedAps) {
+        status   = 'Applied';
+        reason   = 'Won priority';
+        rowClass = 'eval-applied';
+      } else if (alsoAps.includes(r.aps)) {
+        status   = 'Triggered';
+        reason   = 'Lost priority';
+        rowClass = 'eval-triggered';
+      } else {
+        status   = '?';
+        reason   = '';
+        rowClass = '';
+      }
+      rows += `<tr class="${rowClass}">
+        <td class="ev-aps">${esc(r.aps)}</td>
+        <td class="ev-dev">${esc(r.dev)}</td>
+        <td class="ev-status">${status}</td>
+        <td class="ev-reason">${esc(reason)}</td>
+      </tr>`;
+    }
+    return `<table class="ts-eval-tbl">
+      <thead><tr><th>Sutra</th><th>Name</th><th>Status</th><th>Reason</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
   }
 
   // ── Helpers ───────────────────────────────────────────────
@@ -1096,6 +1180,10 @@
   document.getElementById('stem-select').addEventListener('change', loadTable);
 
   document.getElementById('opt-tags').addEventListener('change', () => {
+    if (tableData) loadTable();
+  });
+
+  document.getElementById('opt-eval').addEventListener('change', () => {
     if (tableData) loadTable();
   });
 

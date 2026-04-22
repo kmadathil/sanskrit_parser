@@ -26,6 +26,7 @@ class PaninianObject(SanskritObject):
         self.inPrakriya = True
         # FIXME: I don't like this being here
         self.disabled_sutras = []
+        self.disabled_by = {}  # aps -> aps of the sutra that caused disabling
         # Prakriya Related Tags are ephemeral
         # it-markers (anubandha): used by Pratyaya (e.g. śatṛ u-it) and by Pratipadika
         # when an it is added dynamically during prakriyā (e.g. SK360 adds f-it to maghavat).
