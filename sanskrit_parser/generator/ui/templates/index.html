@@ -675,7 +675,7 @@
 
   // ── State ────────────────────────────────────────────────
   let tableData    = null;
-  let currentEvalLogs = null;  // eval logs for the currently displayed cell
+  let _evalRegistry = [];  // per-cell popup data, keyed by monotonic index
   let selectedCell = null;
 
   // ── Load table via API ────────────────────────────────────
@@ -945,8 +945,8 @@
     return { header, steps, output, innerPrakriyas };
   }
 
-  function formatTrace(raw, data = null, evalLogs = null) {
-    currentEvalLogs = evalLogs;
+  function formatTrace(raw, data = null, evalLogs = null, isInner = false) {
+    if (!isInner) _evalRegistry = [];
     if (!data) data = parseTrace(raw);
     if (!data) return '<em style="color:#888">No trace available.</em>';
     const { header, steps, output, innerPrakriyas } = data;
@@ -971,13 +971,18 @@
 
     // Inner (hierarchical) prakriyas — shown before outer steps
     if (innerPrakriyas && innerPrakriyas.length > 0) {
-      for (const ip of innerPrakriyas) {
+      const innerEvalList = (evalLogs && !Array.isArray(evalLogs) && evalLogs.inner) ? evalLogs.inner : [];
+      for (let ipIdx = 0; ipIdx < innerPrakriyas.length; ipIdx++) {
+        const ip = innerPrakriyas[ipIdx];
+        const ipEval = ipIdx < innerEvalList.length
+          ? { outer: innerEvalList[ipIdx], inner: [] }
+          : null;
         const ipLabel = ip.header
           ? `inner prakriya: ${ip.header.dev}`
           : 'inner prakriya';
         h += `<details class="ts-inner-prakriya" open>
           <summary>${esc(ipLabel)}</summary>
-          <div class="ts-inner-body">${formatTrace(null, ip)}</div>
+          <div class="ts-inner-body">${formatTrace(null, ip, ipEval, true)}</div>
         </details>`;
       }
     }
@@ -1083,7 +1088,10 @@
 
       // Eval inspector panel (opt-in)
       let evalHtml = '';
-      const stepEvalRaw = evalLogs ? evalLogs[evalStepIdx] : null;
+      const _stepEvalLogs = evalLogs
+        ? (Array.isArray(evalLogs) ? evalLogs : (evalLogs.outer || null))
+        : null;
+      const stepEvalRaw = _stepEvalLogs ? _stepEvalLogs[evalStepIdx] : null;
       // stepEvalRaw is now {sutras, priority_trace} or null
       const stepSutras = stepEvalRaw?.sutras;
       if (stepSutras && Array.isArray(stepSutras)) {
@@ -1091,8 +1099,9 @@
         const alsoAps   = s.also ? s.also.map(a => a.aps) : [];
         const n = stepSutras.filter(r => !r.disabled && r.domain_pass !== false && r.condition_pass !== false).length;
         const stepLabel  = s.special ? String(s.num || 'step') : `Step ${s.num} \u2014 ${s.aps}`;
-        // Use single-quoted onclick to avoid conflicts with JSON double-quotes
-        evalHtml = `<div class="ts-eval-toggle" onclick='showEvalPopup(${evalStepIdx},${JSON.stringify(appliedAps)},${JSON.stringify(alsoAps)},${JSON.stringify(stepLabel)})'>🔍 ${n} evaluated</div>`;
+        const regKey = _evalRegistry.length;
+        _evalRegistry.push(stepEvalRaw);
+        evalHtml = `<div class="ts-eval-toggle" onclick='showEvalPopup(${regKey},${JSON.stringify(appliedAps)},${JSON.stringify(alsoAps)},${JSON.stringify(stepLabel)})'>🔍 ${n} evaluated</div>`;
       }
       evalStepIdx++;
 
@@ -1126,7 +1135,7 @@
   // ── Eval inspector ────────────────────────────────────────
   const EVAL_SORT = { applied: 0, triggered: 1, 'eval-cond': 2, 'eval-domain': 2, disabled: 3 };
 
-  function _evalRowInfo(r, appliedAps, alsoAps) {
+  function _evalRowInfo(r, appliedAps, alsoAps, priorityTrace) {
     if (r.disabled) {
       return { status: 'Disabled', reason: r.disabled_by === r.aps ? 'Previously fired' : `By ${r.disabled_by}`,
                rowClass: 'eval-disabled', sortKey: 3 };
@@ -1138,13 +1147,18 @@
       return { status: 'Applied',   reason: 'Won priority',  rowClass: 'eval-applied',   sortKey: 0 };
     } else if (alsoAps.includes(r.aps)) {
       return { status: 'Triggered', reason: 'Lost priority', rowClass: 'eval-triggered', sortKey: 1 };
+    } else if (r.condition_pass === true) {
+      // Triggered but removed by apavāda before the comparison loop (winner=—)
+      const pt = (priorityTrace || []).find(t => t.s1 === r.aps && t.winner === '—');
+      const reason = pt ? pt.reason : 'Overridden by apavāda';
+      return { status: 'Triggered', reason, rowClass: 'eval-triggered', sortKey: 1 };
     }
     return { status: '?', reason: '', rowClass: '', sortKey: 2 };
   }
 
   function renderEvalTable(records, appliedAps, alsoAps, priorityTrace) {
     priorityTrace = priorityTrace || [];
-    const annotated = records.map(r => ({ r, ...(_evalRowInfo(r, appliedAps, alsoAps)) }));
+    const annotated = records.map(r => ({ r, ...(_evalRowInfo(r, appliedAps, alsoAps, priorityTrace)) }));
     annotated.sort((a, b) => a.sortKey - b.sortKey);
     let rows = '';
     for (const { r, status, reason, rowClass, sortKey } of annotated) {
@@ -1192,9 +1206,8 @@
     if (arrow) arrow.textContent = hidden ? '▾' : '▸';
   }
 
-  function showEvalPopup(stepIdx, appliedAps, alsoAps, stepLabel) {
-    if (!currentEvalLogs) return;
-    const stepData = currentEvalLogs[stepIdx];
+  function showEvalPopup(key, appliedAps, alsoAps, stepLabel) {
+    const stepData = _evalRegistry[key];
     if (!stepData) return;
     const records       = stepData.sutras       || stepData;  // fallback for old shape
     const priorityTrace = stepData.priority_trace || [];

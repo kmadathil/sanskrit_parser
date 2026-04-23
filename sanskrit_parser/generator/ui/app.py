@@ -74,6 +74,7 @@ from sanskrit_parser.generator.dhatu import dfS, aYc_u, han, spfS  # noqa: E402
 from sanskrit_parser.generator.sutras_yaml import SutraFactory          # noqa: E402
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory  # noqa: E402
 from sanskrit_parser.generator.prakriya import PrakriyaVakya            # noqa: E402
+from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # App setup
@@ -436,8 +437,7 @@ def _generate_cell(plist, sup, enc, tag_display=False, capture_eval=False):
     else:
         inputs = [Adya, *plist, sup, avasAna]
     pv = PrakriyaVakya(inputs)
-    p = PrakriyaFactory("AntarangaPrakriya", sutra_list, pv)
-    p._capture_eval = capture_eval
+    p = AntarangaPrakriya(sutra_list, pv, capture_eval=capture_eval)
     p.execute()
     output = p.output()
 
@@ -447,7 +447,13 @@ def _generate_cell(plist, sup, enc, tag_display=False, capture_eval=False):
         p.describe(tag_display=tag_display)
     trace = buf.getvalue()
 
-    eval_logs = p.tree.get_eval_logs_dfs() if capture_eval else None
+    outer_eval = p.tree.get_eval_logs_dfs() if capture_eval else None
+    inner_eval = []
+    if capture_eval:
+        for hp in p.hier_prakriyas:
+            if not getattr(hp, 'triggering_sutra_aps', None):
+                inner_eval.append(hp.tree.get_eval_logs_dfs())
+    eval_logs = {"outer": outer_eval, "inner": inner_eval} if capture_eval else None
 
     # Convert outputs to display strings
     forms = []

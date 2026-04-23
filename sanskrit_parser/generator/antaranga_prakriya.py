@@ -47,8 +47,11 @@ class AntarangaPrakriya(PrakriyaBase):
        sutra_list: list of Sutra objects
        inputs    : PrakriyaVakya object
     """
-    def __init__(self, sutra_list, inputs, initially_disabled=None):
+    def __init__(self, sutra_list, inputs, initially_disabled=None, capture_eval=False):
         super().__init__(sutra_list, inputs)
+        # Set to True to capture per-step evaluation data (opt-in; slower)
+        # Must be set before the inner prakriya loop so inner prakriyas inherit it.
+        self._capture_eval = capture_eval
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update
@@ -69,7 +72,8 @@ class AntarangaPrakriya(PrakriyaBase):
                 self.need_hier = True
                 # hierarchy needed here
                 hp = AntarangaPrakriya(sutra_list,
-                                       PrakriyaVakya(self.inputs[ix]))
+                                       PrakriyaVakya(self.inputs[ix]),
+                                       capture_eval=self._capture_eval)
                 self.hier_prakriyas.append(hp)
                 # This will execute hierarchically as needed
                 hp.execute()
@@ -104,8 +108,6 @@ class AntarangaPrakriya(PrakriyaBase):
         self.disabled_sutras = []
         # Sliding window counter
         self.windowIdx = 0
-        # Set to True to capture per-step evaluation data (opt-in; slower)
-        self._capture_eval = False
 
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list, v):
@@ -458,7 +460,8 @@ class AntarangaPrakriya(PrakriyaBase):
                     # its inputs, so any such modification would be lost.
                     hp = AntarangaPrakriya(self.sutra_list,
                                            PrakriyaVakya(r[i]),
-                                           initially_disabled=s.overrides)
+                                           initially_disabled=s.overrides,
+                                           capture_eval=self._capture_eval)
                     # This will execute hierarchically as needed
                     hp.execute()
                     hpo = _deduplicate_hier_outputs(hp.output())
