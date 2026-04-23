@@ -272,14 +272,16 @@ class AntarangaPrakriya(PrakriyaBase):
 
         # Strip apavāda-overridden sutras first (mirrors sutra_priority)
         _s = list(sutras)
-        overrides = []
+        override_by = {}  # removed_aps -> overrider_aps
         for s in _s:
             if s.overrides is not None:
-                overrides.extend(s.overrides)
+                for o in s.overrides:
+                    override_by[o] = s.aps
         for so in list(_s):
-            if so.aps in overrides:
+            if so.aps in override_by:
+                overrider = override_by[so.aps]
                 trace.append({"s1": so.aps, "s2": "—", "winner": "—",
-                              "reason": f"apavāda: {so.aps} removed before comparison"})
+                              "reason": f"Removed: {overrider} is an apavāda of {so.aps}"})
                 _s.remove(so)
         if not _s:
             return sutras[0], trace

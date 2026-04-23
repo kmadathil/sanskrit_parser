@@ -1162,26 +1162,32 @@
     annotated.sort((a, b) => a.sortKey - b.sortKey);
     let rows = '';
     for (const { r, status, reason, rowClass, sortKey } of annotated) {
-      const hasCondDetail   = (sortKey === 2) && r.condition_pass === false && r.condition_detail?.length > 0;
+      // Condition detail: skipped (condition failed) OR applied (show what passed)
+      const hasCondDetail   = r.condition_detail?.length > 0 &&
+                              (r.condition_pass === false || sortKey === 0);
       const hasPriorityInfo = (sortKey === 0 || sortKey === 1) && priorityTrace.length > 0;
       const clickable       = hasCondDetail || hasPriorityInfo;
       const detailRowId     = `ev-det-${esc(r.aps).replace(/\./g,'-')}`;
 
-      let detailHtml = '';
+      let detailInner = '';
       if (hasCondDetail) {
         const checks = r.condition_detail.map(d =>
           `<span class="ev-sub-item ${d.result ? 'ev-sub-pass' : 'ev-sub-fail'}">${esc(d.var)}:<code>${esc(d.check)}</code>${d.result ? '✓' : '✗'}</span>`
         ).join(' ');
-        detailHtml = `<tr id="${detailRowId}" class="ev-detail-row" style="display:none"><td colspan="4"><div class="ev-sub-cond">${checks}</div></td></tr>`;
-      } else if (hasPriorityInfo) {
+        detailInner += `<div class="ev-sub-cond">${checks}</div>`;
+      }
+      if (hasPriorityInfo) {
         const relevant = priorityTrace.filter(t => t.s1 === r.aps || t.s2 === r.aps);
         if (relevant.length > 0) {
           const steps = relevant.map(t =>
             `<div class="ev-pri-step"><span class="ev-pri-vs">${esc(t.s1)} vs ${esc(t.s2)}</span> → <strong>${esc(t.winner)}</strong> <span class="ev-pri-reason">${esc(t.reason)}</span></div>`
           ).join('');
-          detailHtml = `<tr id="${detailRowId}" class="ev-detail-row" style="display:none"><td colspan="4"><div class="ev-pri-trace">${steps}</div></td></tr>`;
+          detailInner += `<div class="ev-pri-trace">${steps}</div>`;
         }
       }
+      const detailHtml = detailInner
+        ? `<tr id="${detailRowId}" class="ev-detail-row" style="display:none"><td colspan="4">${detailInner}</td></tr>`
+        : '';
 
       const onclickAttr = (clickable && detailHtml) ? `onclick="toggleEvalDetail('${detailRowId}',this)" style="cursor:pointer"` : '';
       rows += `<tr class="${rowClass}" data-aps="${esc(r.aps)}" data-dev="${esc(r.dev)}" ${onclickAttr}>
