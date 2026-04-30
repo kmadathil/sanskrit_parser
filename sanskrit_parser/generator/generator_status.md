@@ -396,6 +396,10 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya implemented; SK430 (6.3.91) is the active sutra for tādṛk/tādṛśa forms |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt framework pending | kvin after √spṛś in compounds (ghṛtaspṛk etc.); tested via compound pratipadika with existing kvin machinery |
+| 448 | 1.1.38 | तद्धितश्चाऽसर्वविभक्तिः | For later — taddhita engine pending | avyaya saṁjñā for taddhita-ending words that lack full vibhakti paradigms (tasil and similar) |
+| 449 | 1.1.39 | कृन्मेजन्तः | For later — kṛt engine pending | avyaya saṁjñā for kṛt suffixes ending in m or ec (smāram smāram, jīvase, pibadhai) |
+| 450 | 1.1.40 | क्त्वातोसुन्कसुनः | For later — kṛdanta forms not yet generated | avyaya saṁjñā for gerunds/absolutives: ktvā (kṛtvā), tosun (udetoḥ), kasun (visṛpaḥ) |
+| 451 | 1.1.41 | अव्ययीभावश्च | For later — avyayībhāva samāsa not yet implemented | avyaya saṁjñā for avyayībhāva compounds (adhihari, upakṛṣṇam etc.) |
 
 ---
 
