@@ -230,7 +230,7 @@ vAri = Pratipadika("vAri", "napum")
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
-namas = Pratipadika("namas", "napum", other_tags=["avyaya", "gati"])   # नमस् n. "obeisance" — SK154 (gati by 1.4.74)
+namas = Pratipadika("namas", "napum", other_tags=["avyaya", "gati", "svarAdi"])   # नमस् n. "obeisance" — SK154 (gati by 1.4.74); svarAdi per SK447
 puras = Pratipadika("puras", "napum", other_tags=["avyaya", "gati"])   # पुरस् adv. "in front" — SK154 (gati by 1.4.67)
 
 agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
@@ -281,7 +281,7 @@ pur_kvip     = Pratipadika("pur",     "pum",  other_tags=["DAtu", "kvip"])      
 # 6.1.77 fires at (prati|ac) → pratyac; 6.1.101 fires at (pra|ac) → prAc
 prati = Pratipadika("prati", "pum", other_tags=["nipAta"])
 pra   = Pratipadika("pra",   "pum", other_tags=["nipAta"])
-tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras"])
+tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras", "svarAdi"])  # svarAdi per SK447
 ud    = Pratipadika("ud",    "pum", other_tags=["nipAta"])
 sam   = Pratipadika("sam",   "pum", other_tags=["nipAta", "sam"])
 saha  = Pratipadika("saha",  "pum", other_tags=["nipAta", "saha"])

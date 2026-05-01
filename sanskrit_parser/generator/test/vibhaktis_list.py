@@ -2174,40 +2174,52 @@ viBakti["etAvAn"] = [
 # avyaya (indeclinable) — SK447 + SK452: all sup suffixes deleted, all forms identical to stem
 # antar ends in hal → visarga at avasāna → antaḥ
 prAtipadika["antar"] = antar   # noqa: F405
-viBakti["antar"] = [
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-    ['अन्तः', 'अन्तः', 'अन्तः'],
-]
+viBakti["antar"] = [['अन्तः']*3]*8
 
 prAtipadika["prati"] = prati   # noqa: F405
-viBakti["prati"] = [
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-    ['प्रति', 'प्रति', 'प्रति'],
-]
+viBakti["prati"] = [['प्रति']*3]*8 
 
 prAtipadika["pra"] = pra   # noqa: F405
-viBakti["pra"] = [
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-    ['प्र', 'प्र', 'प्र'],
-]
+viBakti["pra"] = [['प्र']*3]*8 
+
+# svarAdi gaṇa (SK447) — subset of remaining words; all 24 vibhakti forms = avasāna form
+prAtipadika["prAtar"] = prAtar   # noqa: F405
+viBakti["prAtar"] = [['प्रातः']*3]*8
+
+prAtipadika["punar"] = punar   # noqa: F405
+viBakti["punar"] = [['पुनः']*3]*8
+
+prAtipadika["bahiS"] = bahiS   # noqa: F405
+viBakti["bahiS"] = [['बहिः']*3]*8
+
+prAtipadika["naktam"] = naktam   # noqa: F405
+viBakti["naktam"] = [['नक्तम्']*3]*8
+
+prAtipadika["svayam"] = svayam   # noqa: F405
+viBakti["svayam"] = [['स्वयम्']*3]*8
+
+prAtipadika["svar"] = svar   # noqa: F405
+viBakti["svar"] = [['स्वः']*3]*8
+
+prAtipadika["sanutar"] = sanutar   # noqa: F405
+viBakti["sanutar"] = [['सनुतः']*3]*8
+
+prAtipadika["uccEs"] = uccEs   # noqa: F405
+viBakti["uccEs"] = [['उच्चैः']*3]*8
+
+prAtipadika["nIcEs"] = nIcEs   # noqa: F405
+viBakti["nIcEs"] = [['नीचैः']*3]*8
+
+prAtipadika["SanEs"] = SanEs   # noqa: F405
+viBakti["SanEs"] = [['शनैः']*3]*8
+
+prAtipadika["fDak"] = fDak   # noqa: F405
+viBakti["fDak"] = [[['ऋधक्', 'ऋधग्']]*3]*8
+
+prAtipadika["fte"] = fte   # noqa: F405
+viBakti["fte"] = [['ऋते']*3]*8
+
+
 
 # SK161 (8.3.47) — aDas/Siras + pada compounds: visarjanīya → s before any vibhakti form of pada
 # pada_p tag on the `pada` pratipadika propagates to pada_p_pada on its vibhakti forms,
