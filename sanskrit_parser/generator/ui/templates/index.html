@@ -505,6 +505,113 @@
       .layout { grid-template-columns: 1fr; height: auto; }
       .controls { border-right: none; border-bottom: 1px solid #ddd; }
     }
+
+    /* Ensure the HTML `hidden` attribute wins over component display rules */
+    [hidden] { display: none !important; }
+
+    /* ── Sidebar grid placement (both share column 1) ───────── */
+    #sidebar-catalog, #sidebar-custom {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .main {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* ── Tab navigation ───────────────────────────────────── */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      background: #1a1a2e;
+      padding: 0 24px;
+      border-bottom: 2px solid #c17f24;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #a8a8c0;
+      padding: 9px 20px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color .15s, border-color .15s;
+      letter-spacing: .03em;
+    }
+    .tab-btn:hover { color: #e8d5b0; }
+    .tab-btn.active { color: #e8d5b0; border-bottom-color: #c17f24; }
+
+    /* ── Token builder (custom sidebar) ──────────────────── */
+    .token-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .token-row {
+      display: grid;
+      grid-template-columns: 90px 1fr auto auto;
+      gap: 4px;
+      align-items: center;
+    }
+    .token-row select,
+    .token-row input[type=text] {
+      padding: 5px 7px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: .82rem;
+      background: #fafafa;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .token-row select:focus,
+    .token-row input:focus { outline: 2px solid #c17f24; }
+    .tok-name-wrap { display: flex; flex-direction: column; gap: 3px; }
+    .tok-filter {
+      padding: 3px 7px; border: 1px solid #ccc; border-radius: 4px;
+      font-size: .8rem; width: 100%; box-sizing: border-box; background: #fafafa;
+    }
+    .tok-filter:focus { outline: 2px solid #c17f24; }
+    .tok-modifier { font-size: .78rem; }
+    .tok-context {
+      padding: 3px 7px; border: 1px solid #c17f24; border-radius: 4px;
+      font-size: .8rem; width: 100%; box-sizing: border-box; background: #fffbf4;
+      font-style: italic;
+    }
+    .tok-context:focus { outline: 2px solid #c17f24; }
+    .tok-del {
+      background: none; border: 1px solid #ddd; border-radius: 4px;
+      color: #aaa; cursor: pointer; padding: 3px 6px; font-size: .8rem;
+    }
+    .tok-del:hover { color: #c0392b; border-color: #c0392b; }
+    .btn-add-token {
+      width: 100%; padding: 7px;
+      background: #f0ede6; border: 1px dashed #bbb;
+      border-radius: 6px; color: #666;
+      font-size: .82rem; cursor: pointer;
+      transition: background .12s;
+      margin-top: 4px;
+    }
+    .btn-add-token:hover { background: #e8e0d0; }
+    .mode-group {
+      display: flex;
+      gap: 12px;
+    }
+    .mode-group label {
+      display: flex; align-items: center; gap: 5px;
+      font-weight: 400; font-size: .9rem; cursor: pointer;
+    }
+    .mode-group input[type=radio] { accent-color: #c17f24; }
+
+    /* ── Single-form result ───────────────────────────────── */
+    .single-output-forms {
+      font-size: 1.5rem;
+      color: #7a4d0a;
+      font-weight: 700;
+      padding: 14px 0 6px;
+    }
+    .single-output-forms.empty { color: #999; font-size: .9rem; font-weight: 400; }
   </style>
 </head>
 <body>
@@ -514,10 +621,15 @@
   <span class="sanskrit-title">शब्दरूपप्रदर्शकः</span>
 </header>
 
+<nav class="tab-nav">
+  <button class="tab-btn active" id="tab-catalog" onclick="switchTab('catalog')">Catalog</button>
+  <button class="tab-btn"        id="tab-custom"  onclick="switchTab('custom')">Custom</button>
+</nav>
+
 <div class="layout">
 
-  <!-- ── Left sidebar ─────────────────────────────────────── -->
-  <aside class="controls">
+  <!-- ── Catalog sidebar ──────────────────────────────────── -->
+  <aside class="controls" id="sidebar-catalog">
 
     <div>
       <h2>Stem</h2>
@@ -577,11 +689,86 @@
 
   </aside>
 
+  <!-- ── Custom sidebar ───────────────────────────────────── -->
+  <aside class="controls" id="sidebar-custom" hidden>
+
+    <div>
+      <h2>Mode</h2>
+      <div class="mode-group">
+        <label>
+          <input type="radio" name="custom-mode" value="vibhakti" checked>
+          Vibhakti table
+        </label>
+        <label>
+          <input type="radio" name="custom-mode" value="single">
+          Single form
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <h2>Input tokens</h2>
+      <div class="token-list" id="token-list"></div>
+      <button class="btn-add-token" onclick="addToken()">+ Add token</button>
+    </div>
+
+    <div>
+      <h2>Script</h2>
+      <div class="encoding-group">
+        <label class="option">
+          <input type="radio" name="encoding-custom" value="devanagari" checked>
+          Devanāgarī
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding-custom" value="iast">
+          IAST (romanized)
+        </label>
+        <label class="option">
+          <input type="radio" name="encoding-custom" value="slp1">
+          SLP1 (internal)
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <h2>Options</h2>
+      <div class="encoding-group">
+        <label class="option">
+          <input type="checkbox" id="opt-tags-custom">
+          Show object tags
+        </label>
+        <label class="option">
+          <input type="checkbox" id="opt-eval-custom">
+          Show evaluation
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btn-run" onclick="runCustom()">
+      Generate
+    </button>
+
+    <div class="status" id="status-custom"></div>
+
+  </aside>
+
   <!-- ── Main content ─────────────────────────────────────── -->
   <main class="main">
 
     <div class="table-title" id="table-title">
       Select a stem and click <em>Generate Table</em>
+    </div>
+
+    <!-- Single-form result (shown in custom single mode) -->
+    <div id="single-result" hidden>
+      <div class="table-title" id="single-title">Custom result</div>
+      <div class="single-output-forms empty" id="single-forms">Generate to see output.</div>
+      <div>
+        <div class="trace-label">Sutra trace</div>
+        <div class="trace-panel empty" id="single-trace-panel">
+          Generate to see the derivation trace.
+        </div>
+      </div>
     </div>
 
     <div class="declension-wrap">
@@ -607,7 +794,7 @@
       </table>
     </div>
 
-    <div>
+    <div id="cell-trace-wrap">
       <div class="trace-label">Sutra trace — click a cell to inspect</div>
       <div class="trace-panel empty" id="trace-panel">
         Click any declension cell to see the detailed sutra derivation trace.
@@ -690,6 +877,10 @@
     status.className = 'status';
     status.innerHTML = '<span class="spinner"></span> Generating…';
     title.innerHTML  = 'Generating…';
+    title.hidden     = false;
+    document.getElementById('cell-trace-wrap').hidden = false;
+    document.getElementById('single-result').hidden   = true;
+    document.querySelector('.declension-wrap').hidden = false;
     clearTrace();
 
     try {
@@ -1325,6 +1516,292 @@
   });
 
   window.addEventListener('DOMContentLoaded', loadTable);
+
+  // ══════════════════════════════════════════════════════════
+  // Custom tab
+  // ══════════════════════════════════════════════════════════
+
+  // ── Tab switching ─────────────────────────────────────────
+  function switchTab(name) {
+    const isCatalog = name === 'catalog';
+    document.getElementById('sidebar-catalog').hidden = !isCatalog;
+    document.getElementById('sidebar-custom').hidden  =  isCatalog;
+    document.getElementById('tab-catalog').classList.toggle('active',  isCatalog);
+    document.getElementById('tab-custom').classList.toggle('active',  !isCatalog);
+
+    if (isCatalog) {
+      // Restore catalog view
+      document.getElementById('single-result').hidden = true;
+      document.querySelector('.declension-wrap').hidden = false;
+    } else {
+      // Sync encoding radios so applyLabels works correctly
+      const encVal = document.querySelector('input[name=encoding]:checked').value;
+      document.querySelectorAll('input[name=encoding-custom]').forEach(r => {
+        r.checked = (r.value === encVal);
+      });
+    }
+  }
+
+  // ── Object catalog ────────────────────────────────────────
+  let _objects = { pratipadika: [], pratyaya: [], dhatu: [] };
+
+  async function loadObjects() {
+    try {
+      const res = await fetch('/api/objects');
+      _objects = await res.json();
+    } catch (e) { /* non-critical */ }
+  }
+
+  // ── Token builder ─────────────────────────────────────────
+  let _tokenSeq = 0;
+
+  function addToken() {
+    const list = document.getElementById('token-list');
+    const row  = document.createElement('div');
+    row.className  = 'token-row';
+    row.dataset.id = ++_tokenSeq;
+    row.innerHTML  = `
+      <select class="tok-type" onchange="updateTokenRow(this.closest('.token-row'))">
+        <option value="pratipadika">Pratp.</option>
+        <option value="pratyaya">Pratyaya</option>
+        <option value="dhatu">Dhatu</option>
+        <option value="string">String</option>
+      </select>
+      <div class="tok-name-wrap">
+        <input type="search" class="tok-filter" placeholder="Filter…" autocomplete="off" spellcheck="false">
+        <select class="tok-name"></select>
+        <input type="text" class="tok-value" placeholder="SLP1  (e.g. rAma*)" style="display:none">
+        <select class="tok-modifier" style="display:none">
+          <option value="">— no modifier</option>
+          <option value="in_compound">in_compound</option>
+          <option value="as_purva_pada">as_purva_pada</option>
+          <option value="in_context">in_context →</option>
+        </select>
+        <input type="text" class="tok-context" placeholder="context tag (SLP1)  e.g. udanc, pum, napum" style="display:none" title="Tag string passed to in_context() — e.g. udanc, aYc, pum, napum, samAsa">
+      </div>
+      <button class="tok-del" onclick="deleteToken(this)" title="Remove token">✕</button>`;
+    list.appendChild(row);
+    updateTokenRow(row);
+  }
+
+  function deleteToken(btn) {
+    btn.closest('.token-row').remove();
+  }
+
+  function _populateTokSelect(selectEl, groups, filter, preserveValue) {
+    selectEl.innerHTML = '';
+    let firstVal = null;
+    let preservedFound = false;
+    const q = filter ? filter.toLowerCase() : '';
+    for (const grp of groups) {
+      const groupMatch = q && grp.group.toLowerCase().includes(q);
+      const items = q
+        ? (groupMatch ? grp.items : grp.items.filter(([k, lbl]) => lbl.toLowerCase().includes(q) || k.toLowerCase().includes(q)))
+        : grp.items;
+      if (!items.length) continue;
+      const og = document.createElement('optgroup');
+      og.label = grp.group;
+      for (const [k, lbl] of items) {
+        const opt = document.createElement('option');
+        opt.value = k; opt.textContent = lbl;
+        if (k === preserveValue) { opt.selected = true; preservedFound = true; }
+        if (firstVal === null) firstVal = k;
+        og.appendChild(opt);
+      }
+      selectEl.appendChild(og);
+    }
+    if (!preservedFound && firstVal !== null) selectEl.value = firstVal;
+  }
+
+  function _updateModContext(row) {
+    const modEl = row.querySelector('.tok-modifier');
+    const ctxEl = row.querySelector('.tok-context');
+    const show  = modEl && modEl.value === 'in_context';
+    if (ctxEl) {
+      ctxEl.style.display = show ? '' : 'none';
+      if (!show) ctxEl.value = '';
+    }
+  }
+
+  function updateTokenRow(row) {
+    const type     = row.querySelector('.tok-type').value;
+    const nameEl   = row.querySelector('.tok-name');
+    const valEl    = row.querySelector('.tok-value');
+    const modEl    = row.querySelector('.tok-modifier');
+    const ctxEl    = row.querySelector('.tok-context');
+    const filterEl = row.querySelector('.tok-filter');
+
+    if (type === 'string') {
+      filterEl.style.display = 'none';
+      nameEl.style.display   = 'none';
+      valEl.style.display    = '';
+      modEl.style.display    = 'none';
+      if (ctxEl) ctxEl.style.display = 'none';
+      filterEl.value = '';
+      return;
+    }
+
+    filterEl.style.display = '';
+    filterEl.value = '';
+    nameEl.style.display = '';
+    valEl.style.display  = 'none';
+
+    // Show modifier for all catalog types; rebuild options to match type
+    const curMod = modEl.value;
+    modEl.innerHTML = '<option value="">— no modifier</option>';
+    if (type === 'pratipadika') {
+      modEl.innerHTML +=
+        '<option value="in_compound">in_compound</option>' +
+        '<option value="as_purva_pada">as_purva_pada</option>';
+    }
+    modEl.innerHTML += '<option value="in_context">in_context →</option>';
+    // Restore previous selection if still valid
+    if ([...modEl.options].some(o => o.value === curMod)) modEl.value = curMod;
+    modEl.style.display = '';
+    modEl.onchange = () => _updateModContext(row);
+    _updateModContext(row);
+
+    const groups = _objects[type] || [];
+    const cur = nameEl.value;
+    _populateTokSelect(nameEl, groups, '', cur);
+
+    filterEl.oninput = () =>
+      _populateTokSelect(nameEl, groups, filterEl.value, nameEl.value);
+    filterEl.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { filterEl.value = ''; filterEl.dispatchEvent(new Event('input')); }
+    });
+  }
+
+  function buildTokenPayload() {
+    const tokens = [];
+    for (const row of document.querySelectorAll('#token-list .token-row')) {
+      const type = row.querySelector('.tok-type').value;
+      if (type === 'string') {
+        let v = row.querySelector('.tok-value').value.trim();
+        if (!v) continue;
+        let tag = '';
+        if (v.endsWith('*')) { tag = 'aNga'; v = v.slice(0, -1); }
+        else if (v.endsWith('_')) { tag = 'pada'; v = v.slice(0, -1); }
+        tokens.push({ type: 'string', value: v, tag });
+      } else {
+        const name = row.querySelector('.tok-name').value;
+        if (!name) continue;
+        const tok = { type, name };
+        const modEl = row.querySelector('.tok-modifier');
+        const mod   = modEl ? modEl.value : '';
+        if (mod) {
+          tok.modifier = mod;
+          if (mod === 'in_context') {
+            tok.context = (row.querySelector('.tok-context')?.value || '').trim();
+          }
+        }
+        tokens.push(tok);
+      }
+    }
+    return tokens;
+  }
+
+  // ── Custom generate ───────────────────────────────────────
+  async function runCustom() {
+    const tokens = buildTokenPayload();
+    const status = document.getElementById('status-custom');
+    if (!tokens.length) {
+      status.className = 'status error';
+      status.textContent = 'Add at least one token first.';
+      return;
+    }
+
+    const mode     = document.querySelector('input[name=custom-mode]:checked').value;
+    const encoding = document.querySelector('input[name=encoding-custom]:checked').value;
+    const tags     = document.getElementById('opt-tags-custom').checked;
+    const evalMode = document.getElementById('opt-eval-custom').checked;
+
+    const btn = document.getElementById('btn-run');
+    btn.disabled = true;
+    status.className = 'status';
+    status.innerHTML = '<span class="spinner"></span> Generating…';
+
+    try {
+      const res = await fetch('/api/run', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ tokens, mode, encoding, tags, eval: evalMode }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        status.className = 'status error';
+        status.textContent = 'Error: ' + data.error;
+        btn.disabled = false;
+        return;
+      }
+
+      const tableWrap    = document.querySelector('.declension-wrap');
+      const singleDiv    = document.getElementById('single-result');
+      const titleEl      = document.getElementById('table-title');
+      const cellTraceWrap = document.getElementById('cell-trace-wrap');
+
+      if (mode === 'vibhakti') {
+        tableWrap.hidden    = false;
+        singleDiv.hidden    = true;
+        titleEl.hidden      = false;
+        cellTraceWrap.hidden = false;
+        tableData    = data;
+        selectedCell = null;
+        // Sync catalog encoding radios so applyLabels uses the right script
+        document.querySelectorAll('input[name=encoding]').forEach(r => {
+          r.checked = (r.value === encoding);
+        });
+        renderTable(data);
+        applyLabels();
+        const desc = tokens.map(t => t.name || t.value || t.type).join(' + ');
+        document.getElementById('table-title').innerHTML =
+          `Vibhakti table: <span class="stem-label">${esc(desc)}</span>`;
+        clearTrace();
+        status.textContent = 'Done — click a cell for the sutra trace.';
+      } else {
+        tableWrap.hidden     = true;
+        singleDiv.hidden     = false;
+        titleEl.hidden       = true;
+        cellTraceWrap.hidden = true;
+        _renderSingleResult(data, tokens);
+        status.textContent = 'Done.';
+      }
+    } catch (err) {
+      status.className = 'status error';
+      status.textContent = 'Network error: ' + err.message;
+    }
+
+    btn.disabled = false;
+  }
+
+  function _renderSingleResult(data, tokens) {
+    const formsEl = document.getElementById('single-forms');
+    const traceEl = document.getElementById('single-trace-panel');
+    const titleEl = document.getElementById('single-title');
+
+    const desc = tokens.map(t => t.name || t.value || t.type).join(' + ');
+    titleEl.textContent = `Result: ${desc}`;
+
+    if (data.forms && data.forms.length) {
+      formsEl.textContent = data.forms.join(' | ');
+      formsEl.className = 'single-output-forms';
+    } else {
+      formsEl.textContent = '(no output)';
+      formsEl.className = 'single-output-forms empty';
+    }
+
+    const raw = data.trace || '';
+    if (raw.trim()) {
+      traceEl.innerHTML = formatTrace(raw, null, data.eval_logs || null);
+      traceEl.classList.remove('empty');
+    } else {
+      traceEl.textContent = 'No trace available.';
+      traceEl.classList.add('empty');
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadObjects);
 </script>
 
 </body>
