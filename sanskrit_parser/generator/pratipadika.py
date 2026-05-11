@@ -56,6 +56,7 @@ def as_purva_pada(p):
 
 
 rAma = Pratipadika("rAma", "pum")
+kruYc = Pratipadika("kruYc", "pum", other_tags=["ajAdi"])   # ajādi gaṇa item 28: SK454 test (consonant-final)
 kavi = Pratipadika("kavi", "pum")
 hari = Pratipadika("hari", "pum")
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi"])

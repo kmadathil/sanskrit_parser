@@ -16,7 +16,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 | Sutras skipped / deferred | 41 |
 | Sutras uncatalogued / not yet planned | ~67 |
 | **Total sutras accounted for** | **~415** |
-| Stems with full vibhakti test tables | 161 |
+| Stems with full vibhakti test tables | 163 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -213,8 +213,8 @@ The "Forms affected" column uses the convention:
 | 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
 | 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 | 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
-| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final OR ?ajAdi + strI_abs → Ap (TAp); rAma+strI_abs → rāmā; test: rAma_A |
-| 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; pacat+strI_abs → pacantī; test: pacat_NI |
+| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); tests: rAma_A (l:at), kruYc_A (?ajAdi consonant-final) |
+| 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
 | 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
@@ -486,7 +486,8 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | hAhA | m | ā-stem | Interjection |
 | nadI | f | ī-stem (nadī) | |
 | ramA | f | ā-stem (āp) | |
-| rAma_A | f | ā-stem (SK454 TAp via strI_abs) | rAma+strI_abs → Ap → rāmā; tests SK454 dynamic feminine |
+| rAma_A | f | ā-stem (SK454 TAp via strI_abs) | rAma+strI_abs → Ap → rāmā; tests SK454 l:at branch |
+| kruYc_A | f | ā-stem (SK454 TAp via strI_abs, ajādi) | kruYc+strI_abs → Ap → kruñcā; tests SK454 ?ajAdi branch (consonant-final); no ṇatva (ñ blocks) |
 | sarva_A | f | ā-stem (sarvanāma) | |
 | nAsikA | f | ā-stem | |
 | niSA | f | ā-stem | |
@@ -559,7 +560,8 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | Bavat | m | -at stem (śatṛ f-it, regular, SK361) | SK361 +f block fires nUM → bhavant strong forms; nom sg भवन् (no SK425 — not u-it) |
 | pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
 | pacat_strI | f | -antī stem (śatṛ class 1, SK446) | SK446 mandatory nUM → always pacantī; nadī paradigm |
-| pacat_NI | f | -antī stem (SK455 NIp via strI_abs) | pacat+strI_abs → NIp → pacantī; tests SK455 ugit rule |
+| pacat_NI | f | -antī stem (SK455 NIp via strI_abs, f-it) | pacat+strI_abs → NIp → pacantī; tests SK455 f-it (ṛ∈uk) branch |
+| Bavat_uNI | f | -atī stem (SK455 NIp via strI_abs, u-it) | Bavat_u+strI_abs → NIp → BavatI; tests SK455 u-it branch; no nUM (no Satf/Sap) |
 | pacat_napum | n | -at stem (śatṛ class 1, SK446+SK361) | du SK446 mandatory → पचन्ती; pl SK361 mandatory → पचन्ति |
 | dIvyat_strI | f | -antī stem (śatṛ class 4, SK446) | SK446 mandatory nUM (?Syan) → always dīvyantī |
 | dIvyat_napum | n | -at stem (śatṛ class 4, SK446+SK361) | du SK446 mandatory → दीव्यन्ती; pl SK361 mandatory → दीव्यन्ति |

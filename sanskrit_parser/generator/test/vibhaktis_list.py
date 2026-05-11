@@ -323,6 +323,21 @@ viBakti["rAma_A"] = [
      ["रामे",     "रामे",     "रामाः"],
 ]
 
+# kruYc (pum) + strI_abs: SK454 ajādi test — consonant-final ajādi gaṇa member + strI_abs → Ap (TAp).
+# SK454 ?ajAdi branch fires (kruYc has ajAdi tag). Join: kruYc+A = kruYcA (ā-final strī).
+# No ṇatva in Gen pl: ñ (Y) between r and n in kruYcānām blocks 8.4.1 → क्रुञ्चानाम् (NOT क्रुञ्चाणाम्).
+prAtipadika["kruYc_A"] = [kruYc, strI_abs]   # noqa: F405
+viBakti["kruYc_A"] = [
+    ["क्रुञ्चा",     "क्रुञ्चे",     "क्रुञ्चाः"],
+    ["क्रुञ्चाम्",   "क्रुञ्चे",     "क्रुञ्चाः"],
+    ["क्रुञ्चया",    "क्रुञ्चाभ्याम्", "क्रुञ्चाभिः"],
+    ["क्रुञ्चायै",   "क्रुञ्चाभ्याम्", "क्रुञ्चाभ्यः"],
+    ["क्रुञ्चायाः",  "क्रुञ्चाभ्याम्", "क्रुञ्चाभ्यः"],
+    ["क्रुञ्चायाः",  "क्रुञ्चयोः",   "क्रुञ्चानाम्"],
+    ["क्रुञ्चायाम्", "क्रुञ्चयोः",   "क्रुञ्चासु"],
+    ["क्रुञ्चे",     "क्रुञ्चे",     "क्रुञ्चाः"],
+]
+
 prAtipadika["sarva_A"] = [sarva, Ap]
 viBakti["sarva_A"] = [
     ['सर्वा', 'सर्वे', 'सर्वाः'],
@@ -1676,6 +1691,22 @@ viBakti["pacat_NI"] = [
     ['पचन्त्याः', 'पचन्त्योः',  'पचन्तीनाम्'],
     ['पचन्त्याम्','पचन्त्योः',  'पचन्तीषु'],
     ['पचन्ति',    'पचन्त्यौ',   'पचन्त्यः'],
+]
+
+# Bavat_u (pum) + strI_abs: SK455 test — u-it (not f-it) ugit + strI_abs → NIp → BavatI.
+# Bavat_u has its=["u"] but NO Satf/Sap → SK446/445 do NOT fire → no nUM → stem stays "Bavat".
+# Join: Bavat+I = BavatI. Declines as plain ī-final strī (nadī pattern, no nUM insertion).
+# Contrast with pacat_NI (f-it, Sap → nUM → pacantī).
+prAtipadika["Bavat_uNI"] = [Bavat_u, strI_abs]   # noqa: F405
+viBakti["Bavat_uNI"] = [
+    ['भवती',    'भवत्यौ',   'भवत्यः'],
+    ['भवतीम्',  'भवत्यौ',   'भवतीः'],
+    ['भवत्या',  'भवतीभ्याम्', 'भवतीभिः'],
+    ['भवत्यै',  'भवतीभ्याम्', 'भवतीभ्यः'],
+    ['भवत्याः', 'भवतीभ्याम्', 'भवतीभ्यः'],
+    ['भवत्याः', 'भवत्योः',  'भवतीनाम्'],
+    ['भवत्याम्','भवत्योः',  'भवतीषु'],
+    ['भवति',    'भवत्यौ',   'भवत्यः'],
 ]
 
 # pacat_napum (napum): class 1 śap neuter stem, SK446 mandatory nUM before SI (dual); SK361 for plural.
