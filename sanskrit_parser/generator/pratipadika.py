@@ -56,45 +56,6 @@ def as_purva_pada(p):
 
 
 rAma = Pratipadika("rAma", "pum")
-# ── ajādi gaṇa (SK454 / 4.1.4) — all 34 members ──────────────────────────────────────
-# Items 1–27, 31–34 end in short 'a' → TAp via l:at (ajAdi tag redundant but correct).
-# Items 28–30 end in consonants → TAp via ?ajAdi condition specifically.
-# Source: Vasu commentary on 4.1.4.
-aja           = Pratipadika("aja",           "pum", other_tags=["ajAdi"])  #  1 अज   (he-goat)
-eqaka         = Pratipadika("eqaka",         "pum", other_tags=["ajAdi"])  #  2 एडक  (sheep)
-kokila        = Pratipadika("kokila",        "pum", other_tags=["ajAdi"])  #  3 कोकिल (cuckoo)
-cawaka        = Pratipadika("cawaka",        "pum", other_tags=["ajAdi"])  #  4 चटक  (sparrow)
-aSva          = Pratipadika("aSva",          "pum", other_tags=["ajAdi"])  #  5 अश्व  (horse)
-mUzika        = Pratipadika("mUzika",        "pum", other_tags=["ajAdi"])  #  6 मूषिक (mouse)
-bAla          = Pratipadika("bAla",          "pum", other_tags=["ajAdi"])  #  7 बाल  (young/child)
-hoqa          = Pratipadika("hoqa",          "pum", other_tags=["ajAdi"])  #  8 होड  (young)
-pAka          = Pratipadika("pAka",          "pum", other_tags=["ajAdi"])  #  9 पाक  (young)
-vatsa         = Pratipadika("vatsa",         "pum", other_tags=["ajAdi"])  # 10 वत्स (calf)
-manda         = Pratipadika("manda",         "pum", other_tags=["ajAdi"])  # 11 मन्द (slow)
-vilAta        = Pratipadika("vilAta",        "pum", other_tags=["ajAdi"])  # 12 विलात (foreigner)
-pUrvApaharaRa = Pratipadika("pUrvApaharaRa","pum", other_tags=["ajAdi"])  # 13 पूर्वापहरण (lyuT compound)
-aparApaharaRa = Pratipadika("aparApaharaRa","pum", other_tags=["ajAdi"])  # 14 अपरापहरण  (lyuT compound)
-saMPala       = Pratipadika("saMPala",       "pum", other_tags=["ajAdi"])  # 15 संफल
-BastraPala    = Pratipadika("BastraPala",    "pum", other_tags=["ajAdi"])  # 16 भस्त्रफल
-ajinaPala     = Pratipadika("ajinaPala",     "pum", other_tags=["ajAdi"])  # 17 अजिनफल
-SaRaPala      = Pratipadika("SaRaPala",      "pum", other_tags=["ajAdi"])  # 18 शणफल
-piRqaPala     = Pratipadika("piRqaPala",     "pum", other_tags=["ajAdi"])  # 19 पिण्डफल
-triPala       = Pratipadika("triPala",       "pum", other_tags=["ajAdi"])  # 20 त्रिफल
-satpuzpa      = Pratipadika("satpuzpa",      "pum", other_tags=["ajAdi"])  # 21 सत्पुष्प
-prAkpuzpa     = Pratipadika("prAkpuzpa",    "pum", other_tags=["ajAdi"])  # 22 प्राक्पुष्प
-kARqapuzpa    = Pratipadika("kARqapuzpa",   "pum", other_tags=["ajAdi"])  # 23 काण्डपुष्प
-prAntapuzpa   = Pratipadika("prAntapuzpa",  "pum", other_tags=["ajAdi"])  # 24 प्रान्तपुष्प
-Satapuzpa     = Pratipadika("Satapuzpa",    "pum", other_tags=["ajAdi"])  # 25 शतपुष्प
-ekapuzpa      = Pratipadika("ekapuzpa",     "pum", other_tags=["ajAdi"])  # 26 एकपुष्प
-SUdra         = Pratipadika("SUdra",        "pum", other_tags=["ajAdi"])  # 27 शूद्र
-kruYc         = Pratipadika("kruYc",        "pum", other_tags=["ajAdi"])  # 28 क्रुञ्च् (consonant-final)
-uzRih         = Pratipadika("uzRih",        "pum", other_tags=["ajAdi"])  # 29 उष्णिह् (consonant-final)
-devaviS       = Pratipadika("devaviS",      "pum", other_tags=["ajAdi"])  # 30 देवविश् (consonant-final; iS = i+ś)
-jyezWa        = Pratipadika("jyezWa",       "pum", other_tags=["ajAdi"])  # 31 ज्येष्ठ (eldest)
-kanizWa       = Pratipadika("kanizWa",      "pum", other_tags=["ajAdi"])  # 32 कनिष्ठ (youngest)
-maDyama       = Pratipadika("maDyama",      "pum", other_tags=["ajAdi"])  # 33 मध्यम (middle)
-amUla         = Pratipadika("amUla",        "pum", other_tags=["ajAdi"])  # 34 अमूल  (nan+mūla)
-# ──────────────────────────────────────────────────────────────────────────────────────
 kavi = Pratipadika("kavi", "pum")
 hari = Pratipadika("hari", "pum")
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi"])
@@ -450,3 +411,43 @@ naKI  = Pratipadika("naKI",  "strI", other_tags=["NI"])  # naḳī (basket-maker
 # Positive test: kṣīra (milk) + monosyllabic uttara-pada with n → ṇatva via SK307
 kzIra = Pratipadika("kzIra", "napum")  # kṣīra (milk), neuter a-stem
 pa = Pratipadika("pa", "napum", other_tags=["samAsa"])  # monosyllabic uttara-pada (pā = hand)
+
+# ── ajādi gaṇa (SK454 / 4.1.4) — all 34 members ──────────────────────────────────────
+# Items 1–27, 31–34 end in short 'a' → TAp via l:at (ajAdi tag redundant but correct).
+# Items 28–30 end in consonants → TAp via ?ajAdi condition specifically.
+# Source: Vasu commentary on 4.1.4.
+aja           = Pratipadika("aja",           "pum", other_tags=["ajAdi"])  #  1 अज   (he-goat)
+eqaka         = Pratipadika("eqaka",         "pum", other_tags=["ajAdi"])  #  2 एडक  (sheep)
+kokila        = Pratipadika("kokila",        "pum", other_tags=["ajAdi"])  #  3 कोकिल (cuckoo)
+cawaka        = Pratipadika("cawaka",        "pum", other_tags=["ajAdi"])  #  4 चटक  (sparrow)
+aSva          = Pratipadika("aSva",          "pum", other_tags=["ajAdi"])  #  5 अश्व  (horse)
+mUzika        = Pratipadika("mUzika",        "pum", other_tags=["ajAdi"])  #  6 मूषिक (mouse)
+bAla          = Pratipadika("bAla",          "pum", other_tags=["ajAdi"])  #  7 बाल  (young/child)
+hoqa          = Pratipadika("hoqa",          "pum", other_tags=["ajAdi"])  #  8 होड  (young)
+pAka          = Pratipadika("pAka",          "pum", other_tags=["ajAdi"])  #  9 पाक  (young)
+vatsa         = Pratipadika("vatsa",         "pum", other_tags=["ajAdi"])  # 10 वत्स (calf)
+manda         = Pratipadika("manda",         "pum", other_tags=["ajAdi"])  # 11 मन्द (slow)
+vilAta        = Pratipadika("vilAta",        "pum", other_tags=["ajAdi"])  # 12 विलात (foreigner)
+pUrvApaharaRa = Pratipadika("pUrvApaharaRa","pum", other_tags=["ajAdi"])  # 13 पूर्वापहरण (lyuT compound)
+aparApaharaRa = Pratipadika("aparApaharaRa","pum", other_tags=["ajAdi"])  # 14 अपरापहरण  (lyuT compound)
+saMPala       = Pratipadika("saMPala",       "pum", other_tags=["ajAdi"])  # 15 संफल
+BastraPala    = Pratipadika("BastraPala",    "pum", other_tags=["ajAdi"])  # 16 भस्त्रफल
+ajinaPala     = Pratipadika("ajinaPala",     "pum", other_tags=["ajAdi"])  # 17 अजिनफल
+SaRaPala      = Pratipadika("SaRaPala",      "pum", other_tags=["ajAdi"])  # 18 शणफल
+piRqaPala     = Pratipadika("piRqaPala",     "pum", other_tags=["ajAdi"])  # 19 पिण्डफल
+triPala       = Pratipadika("triPala",       "pum", other_tags=["ajAdi"])  # 20 त्रिफल
+satpuzpa      = Pratipadika("satpuzpa",      "pum", other_tags=["ajAdi"])  # 21 सत्पुष्प
+prAkpuzpa     = Pratipadika("prAkpuzpa",    "pum", other_tags=["ajAdi"])  # 22 प्राक्पुष्प
+kARqapuzpa    = Pratipadika("kARqapuzpa",   "pum", other_tags=["ajAdi"])  # 23 काण्डपुष्प
+prAntapuzpa   = Pratipadika("prAntapuzpa",  "pum", other_tags=["ajAdi"])  # 24 प्रान्तपुष्प
+Satapuzpa     = Pratipadika("Satapuzpa",    "pum", other_tags=["ajAdi"])  # 25 शतपुष्प
+ekapuzpa      = Pratipadika("ekapuzpa",     "pum", other_tags=["ajAdi"])  # 26 एकपुष्प
+SUdra         = Pratipadika("SUdra",        "pum", other_tags=["ajAdi"])  # 27 शूद्र
+kruYc         = Pratipadika("kruYc",        "pum", other_tags=["ajAdi"])  # 28 क्रुञ्च् (consonant-final)
+uzRih         = Pratipadika("uzRih",        "pum", other_tags=["ajAdi"])  # 29 उष्णिह् (consonant-final)
+devaviS       = Pratipadika("devaviS",      "pum", other_tags=["ajAdi"])  # 30 देवविश् (consonant-final; iS = i+ś)
+jyezWa        = Pratipadika("jyezWa",       "pum", other_tags=["ajAdi"])  # 31 ज्येष्ठ (eldest)
+kanizWa       = Pratipadika("kanizWa",      "pum", other_tags=["ajAdi"])  # 32 कनिष्ठ (youngest)
+maDyama       = Pratipadika("maDyama",      "pum", other_tags=["ajAdi"])  # 33 मध्यम (middle)
+amUla         = Pratipadika("amUla",        "pum", other_tags=["ajAdi"])  # 34 अमूल  (nan+mūla)
+# ──────────────────────────────────────────────────────────────────────────────────────
