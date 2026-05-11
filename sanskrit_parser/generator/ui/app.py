@@ -177,6 +177,10 @@ _dIvyat_strI_cpd = [dIvyat_strI, NIp]
 _tudat_strI_cpd  = [tudat_strI,  NIp]
 _BAt_strI_cpd    = [BAt_strI,    NIp]
 
+# SK454/SK455 — strI_abs flow demonstrations (using pum pratipadikas)
+_rAma_A_cpd   = [rAma,  strI_abs]   # SK454: a-final → Ap → rāmā
+_pacat_NI_cpd = [pacat, strI_abs]   # SK455: f-it ugit → NIp → pacantī
+
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
     ("rAma",     rAma,        "a-stems (pum)",    "rāma  (rāma-)"),
@@ -216,6 +220,10 @@ _STEMS_RAW = [
     ("dIvyat_strI",  _dIvyat_strI_cpd, "śatṛ-stems (strī)",   "dīvyat  (strī)  [SK446 mandatory → dīvyantī]"),
     ("tudat_strI",   _tudat_strI_cpd,  "śatṛ-stems (strī)",   "tudat  (strī)  [SK445 optional]"),
     ("BAt_strI",     _BAt_strI_cpd,    "śatṛ-stems (strī)",   "bhāt  (strī)  [SK445 optional]"),
+
+    # ── Strī-pratyaya (SK454-455) — strI_abs flow demos ──────────────────
+    ("rAma_A",   _rAma_A_cpd,   "Strī-pratyaya (SK454-455)", "rāmā  (SK454 TAp: rāma+strI_abs → rāmā)"),
+    ("pacat_NI", _pacat_NI_cpd, "Strī-pratyaya (SK454-455)", "pacantī  (SK455 NIp: pacat+strI_abs → pacantī)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),

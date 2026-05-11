@@ -148,7 +148,7 @@ dadat_napum = Pratipadika("dadat", "napum", its=["f"], other_tags=["Satf", "abhy
 # Regular śatṛ stems — nUM fires (no abhyasta tag, so SK427 does not block SK361)
 Bavat   = Pratipadika("Bavat", "pum", its=["f"], other_tags=["Satf"])   # bhū+śatṛ f-it → bhavant strong
 Bavat_u = Pratipadika("Bavat", "pum", its=["u"])                       # u-it (no Satf) → SK425 fires → bhāvān nom sg
-pacat   = Pratipadika("pacat", "pum", its=["f"], other_tags=["Satf"])  # pac+śatṛ → pacant strong
+pacat   = Pratipadika("pacat", "pum", its=["f"], other_tags=["Satf", "Sap"])  # pac+śatṛ → pacant strong; Sap: SK446 mandatory nUM
 
 # SK445/SK446 test stems
 # Feminine (strī): NIp is passed separately as a right element (rp: ?NI triggers SK445/446).

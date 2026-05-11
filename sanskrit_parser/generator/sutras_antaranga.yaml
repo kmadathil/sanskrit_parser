@@ -5202,7 +5202,35 @@
      rp: ?strI_abs
   update: null
 
-# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63) 
+# 453: स्त्रियाम् (4-1-3) — adhikāra only; no YAML rule needed.
+# Commentary: अधिकारोऽयम् — "in the feminine"; scope for SK454+.
+# The domain: prakfti mechanism covers this.
+
+# 454: अजाद्यतष्टाप् (4-1-4)
+- sutra:  अजाद्यतष्टाप्
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.4
+  condition:
+    - l: at         # short-a-final only (sutra uses 'at' = one mātrā; ā-final excluded per Vasu)
+      rp: ?strI_abs
+    - lp: ?ajAdi    # ajādi gaṇa consonant-final members (kruñc, uṣṇih, devaviz etc.)
+      rp: ?strI_abs
+  update:
+     orp: =Ap
+
+# 455: उगितश्च (4-1-6)
+- sutra:  उगितश्च
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.6
+  condition:
+     lp: [+u, +U, +f, +F, +x]   # uk pratyāhāra (u, ū, ṛ, ṝ, ḷ) as it-letter = ugit
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
+# 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63)
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
     domain: prakfti
     bahiranga: 1

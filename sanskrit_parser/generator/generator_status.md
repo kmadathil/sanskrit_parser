@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 176 — 6.1.132 एतत्तदोः सुलोपोऽकोरनञ्समासे हलि (su-lopa of tad/etad before consonant)
-**Next to be implemented:** SK 453 (4.1.3 — strī-liṅga feminine suffix adhikāra)
+**Last implemented:** SK 455 — 4.1.6 उगितश्च (uk-it/ugit stem + strI_abs → ṅīp NIp)
+**Next to be implemented:** SK 456 (4.1.7 — वनो र च — van-stem + strI_abs → ṅīp + r-substitution for stem-final n)
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 308 |
-| Sutras skipped / deferred | 40 |
+| Sutras implemented | 310 |
+| Sutras skipped / deferred | 41 |
 | Sutras uncatalogued / not yet planned | ~67 |
-| **Total sutras accounted for** | **~413** |
-| Stems with full vibhakti test tables | 159 |
+| **Total sutras accounted for** | **~415** |
+| Stems with full vibhakti test tables | 161 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -213,6 +213,8 @@ The "Forms affected" column uses the convention:
 | 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
 | 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 | 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
+| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final OR ?ajAdi + strI_abs → Ap (TAp); rAma+strI_abs → rāmā; test: rAma_A |
+| 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; pacat+strI_abs → pacantī; test: pacat_NI |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
 | 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
@@ -356,6 +358,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
+| 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
 | 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
 | 210 | 8.3.55 | अपदान्तस्य मूर्धन्यः | Natural — adhikāra comment only; no rule block in YAML | Retroflexion adhikāra header; actual ṇatva logic handled by SK235 (8.4.1) and SK212 (8.3.59) |
 | 426 | 6.1.5 | उभे अभ्यस्तम् | Natural + manual tagging; dvitva engine not yet implemented | abhyasta saṁjñā for all forms resulting from reduplication (dadat, bibhrat, etc.); jakshi-class manually tagged via SK428 |
@@ -483,6 +486,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | hAhA | m | ā-stem | Interjection |
 | nadI | f | ī-stem (nadī) | |
 | ramA | f | ā-stem (āp) | |
+| rAma_A | f | ā-stem (SK454 TAp via strI_abs) | rAma+strI_abs → Ap → rāmā; tests SK454 dynamic feminine |
 | sarva_A | f | ā-stem (sarvanāma) | |
 | nAsikA | f | ā-stem | |
 | niSA | f | ā-stem | |
@@ -555,6 +559,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | Bavat | m | -at stem (śatṛ f-it, regular, SK361) | SK361 +f block fires nUM → bhavant strong forms; nom sg भवन् (no SK425 — not u-it) |
 | pacat | m | -at stem (śatṛ f-it, regular, SK361) | same as Bavat; nom sg पचन् |
 | pacat_strI | f | -antī stem (śatṛ class 1, SK446) | SK446 mandatory nUM → always pacantī; nadī paradigm |
+| pacat_NI | f | -antī stem (SK455 NIp via strI_abs) | pacat+strI_abs → NIp → pacantī; tests SK455 ugit rule |
 | pacat_napum | n | -at stem (śatṛ class 1, SK446+SK361) | du SK446 mandatory → पचन्ती; pl SK361 mandatory → पचन्ति |
 | dIvyat_strI | f | -antī stem (śatṛ class 4, SK446) | SK446 mandatory nUM (?Syan) → always dīvyantī |
 | dIvyat_napum | n | -at stem (śatṛ class 4, SK446+SK361) | du SK446 mandatory → दीव्यन्ती; pl SK361 mandatory → दीव्यन्ति |

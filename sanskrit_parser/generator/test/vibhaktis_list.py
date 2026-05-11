@@ -309,6 +309,20 @@ viBakti["ramA"] = [
      ["रमे", "रमे", "रमाः"]
 ]
 
+# rAma (pum) + strI_abs: SK454 test — a-final + strI_abs → Ap (TAp) → rāmā.
+# Join: rAma+A → rAmA via 6.1.101 (savarna dīrgha). NOT same as ramā: first vowel is long (rā vs ra).
+prAtipadika["rAma_A"] = [rAma, strI_abs]   # noqa: F405
+viBakti["rAma_A"] = [
+     ["रामा",     "रामे",     "रामाः"],
+     ["रामाम्",   "रामे",     "रामाः"],
+     ["रामया",    "रामाभ्याम्", "रामाभिः"],
+     ["रामायै",   "रामाभ्याम्", "रामाभ्यः"],
+     ["रामायाः",  "रामाभ्याम्", "रामाभ्यः"],
+     ["रामायाः",  "रामयोः",   "रामाणाम्"],
+     ["रामायाम्", "रामयोः",   "रामासु"],
+     ["रामे",     "रामे",     "रामाः"],
+]
+
 prAtipadika["sarva_A"] = [sarva, Ap]
 viBakti["sarva_A"] = [
     ['सर्वा', 'सर्वे', 'सर्वाः'],
@@ -1648,6 +1662,20 @@ viBakti["pacat_strI"] = [
     ['पचन्त्याः', 'पचन्त्योः', 'पचन्तीनाम्'],      # 6 Gen
     ['पचन्त्याम्', 'पचन्त्योः', 'पचन्तीषु'],       # 7 Loc
     ['पचन्ति', 'पचन्त्यौ', 'पचन्त्यः'],            # 8 Voc  * weak vocative = pacanti
+]
+
+# pacat (pum) + strI_abs: SK455 test — f-it ugit + strI_abs → NIp → pacantī.
+# pum pacat now has Sap → SK446 mandatory nUM fires → forms match pacat_strI.
+prAtipadika["pacat_NI"] = [pacat, strI_abs]   # noqa: F405
+viBakti["pacat_NI"] = [
+    ['पचन्ती',    'पचन्त्यौ',   'पचन्त्यः'],
+    ['पचन्तीम्',  'पचन्त्यौ',   'पचन्तीः'],
+    ['पचन्त्या',  'पचन्तीभ्याम्', 'पचन्तीभिः'],
+    ['पचन्त्यै',  'पचन्तीभ्याम्', 'पचन्तीभ्यः'],
+    ['पचन्त्याः', 'पचन्तीभ्याम्', 'पचन्तीभ्यः'],
+    ['पचन्त्याः', 'पचन्त्योः',  'पचन्तीनाम्'],
+    ['पचन्त्याम्','पचन्त्योः',  'पचन्तीषु'],
+    ['पचन्ति',    'पचन्त्यौ',   'पचन्त्यः'],
 ]
 
 # pacat_napum (napum): class 1 śap neuter stem, SK446 mandatory nUM before SI (dual); SK361 for plural.
