@@ -16,7 +16,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 | Sutras skipped / deferred | 41 |
 | Sutras uncatalogued / not yet planned | ~67 |
 | **Total sutras accounted for** | **~415** |
-| Stems with full vibhakti test tables | 163 |
+| Stems with full vibhakti test tables | 167 |
 | Stems with partial vibhakti test tables | 4 |
 
 ---
@@ -213,7 +213,7 @@ The "Forms affected" column uses the convention:
 | 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
 | 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 | 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
-| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); tests: rAma_A (l:at), kruYc_A (?ajAdi consonant-final) |
+| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); all 34 gaṇa members in pratipadika.py; tests: rAma_A, aja_A, kokila_A, SUdra_A, kruYc_A, uzRih_A |
 | 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
@@ -488,6 +488,10 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | ramA | f | ā-stem (āp) | |
 | rAma_A | f | ā-stem (SK454 TAp via strI_abs) | rAma+strI_abs → Ap → rāmā; tests SK454 l:at branch |
 | kruYc_A | f | ā-stem (SK454 TAp via strI_abs, ajādi) | kruYc+strI_abs → Ap → kruñcā; tests SK454 ?ajAdi branch (consonant-final); no ṇatva (ñ blocks) |
+| aja_A | f | ā-stem (SK454 TAp, ajādi item 1) | aja+strI_abs → ajā; no r/ṣ/ṛ → no ṇatva; gen pl अजानाम् |
+| kokila_A | f | ā-stem (SK454 TAp, ajādi item 3) | kokila+strI_abs → kokilā; l before n is a blocker, not trigger → no ṇatva; gen pl कोकिलानाम् |
+| SUdra_A | f | ā-stem (SK454 TAp, ajādi item 27) | SUdra+strI_abs → śūdrā; r before n, no blocker → ṇatva fires; gen pl शूद्राणाम् |
+| uzRih_A | f | ā-stem (SK454 TAp, ajādi item 29) | uzRih+strI_abs → uṣṇihā (?ajAdi, h-final); ṇ (R) blocks ṇatva; gen pl उष्णिहानाम् |
 | sarva_A | f | ā-stem (sarvanāma) | |
 | nAsikA | f | ā-stem | |
 | niSA | f | ā-stem | |
