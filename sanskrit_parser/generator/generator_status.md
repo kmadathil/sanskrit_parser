@@ -16,8 +16,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 | Sutras skipped / deferred | 41 |
 | Sutras uncatalogued / not yet planned | ~67 |
 | **Total sutras accounted for** | **~415** |
-| Stems with full vibhakti test tables | 167 |
-| Stems with partial vibhakti test tables | 4 |
+| Stems with full vibhakti test tables | 172 |
+| Stems with partial vibhakti test tables | 3 |
 
 ---
 
@@ -213,7 +213,7 @@ The "Forms affected" column uses the convention:
 | 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
 | 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 | 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
-| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); all 34 gaṇa members in pratipadika.py; tests: rAma_A, aja_A, kokila_A, SUdra_A, kruYc_A, uzRih_A |
+| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); all 34 gaṇa members in pratipadika.py; tests: rAma_A, aja_A, kokila_A, SUdra_A, kruYc_A, uzRih_A. Also covers tyadAdi/kim feminine via SK441/SK440 commentary ("त्यदाद्यत्वं टाप्"): 7.2.102/103/109 extended to fire before ?strI_abs (in addition to ?viBakti), exposing a short-a stem to SK454; SK454 sets +TAp_added on olp so 7.2.102/103 don't re-fire post-TAp (et+Am after 6.1.107). Tests: tad_strI, etad_strI, yad_strI, kim_strI (sā/tā/etā/yā/kā paradigms) |
 | 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
@@ -574,7 +574,11 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | BAt_strI | f | -ātī/-āntī stem (śatṛ ā-root, SK445) | SK445 optional (no ?Sap/?Syan) → [bhāntī, bhātī] both valid |
 | yuzmad | — | 2nd person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom tvam, acc tvām, abl sg tvat, gen sg tava, gen pl yuṣmākam etc. |
 | asmad | — | 1st person pronoun (alinga) | SK382–SK400: full pronoun paradigm; nom aham, acc mām, abl sg mat, gen sg mama, gen pl asmākam etc. |
-| idam_strI | f | sarvanāma (idam feminine) | SK441 (7.2.110): nom sg iyam; partial table (nom sg only) |
+| idam_strI | f | sarvanāma (idam feminine) | Full paradigm via [idam, strI_abs] TAp path; iyam, ime, imāḥ, anayā, asyai, āsām, etc. Nom sg iyam emerges from a 2-step apavāda chain on the post-TAp stem (idā|s): 7.2.110 (yas sau) sets lc='iya' keeping l='A' → "iyaA", then 7.2.108 (idamo maḥ) replaces final A with m → iyam. |
+| tad_strI  | f | tyadAdi feminine (TAp via SK454) | SK454+SK441 path: tad+strI_abs → 7.2.102 → ta+strI_abs → SK454 → tA → vibhakti; 7.2.106 (sā), 8.3.59 etc. |
+| etad_strI | f | tyadAdi feminine (TAp via SK454) | Same path as tad_strI; nom sg eṣā via 7.2.106 + 8.3.59 ṣ-substitution |
+| yad_strI  | f | tyadAdi feminine (TAp via SK454) | Same path; nom sg yā |
+| kim_strI  | f | kim feminine (TAp via SK454) | SK454+SK440 path: kim+strI_abs → 7.2.103 → ka+strI_abs → SK454 → kā |
 | tad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m saḥ; partial table (nom sg only) |
 | Gftaspfk | m | kvin compound (samāsa) | SK432: √spṛś+kvin after Gfta; ghṛtaspṛk paradigm; SK377 (8.2.62) pada-end kutva |
 | etad | m | tyadAdi demonstrative | SK381 (7.2.106): nom sg m eṣaḥ; partial table (nom sg only) |

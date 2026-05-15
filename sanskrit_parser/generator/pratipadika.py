@@ -333,6 +333,8 @@ idam_strI = Pratipadika("idam", "strI", other_tags=["idam", "sarvanAma", "tyadAd
 idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi", "anvAdeSa"])
 
 # tyadādi demonstratives (SK381 / 7.2.106): non-final t/d → s before su (nom sg)
+# Feminines of tad/etad/yad/kim are formed in tests as [stem, strI_abs] —
+# SK441 commentary ("त्यदाद्यत्वं टाप्"): 7.2.102/103 fires first, then SK454 TAp.
 tad  = Pratipadika("tad",  "pum", other_tags=["tad",  "sarvanAma", "tyadAdi"])  # "that"
 etad = Pratipadika("etad", "pum", other_tags=["etad", "sarvanAma", "tyadAdi"])  # "this (near)"
 yad  = Pratipadika("yad",  "pum", other_tags=["yad",  "sarvanAma", "tyadAdi"])  # "which/who" (relative)

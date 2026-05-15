@@ -1272,15 +1272,69 @@ viBakti["kim"] = [
     ['क', 'कौ', 'के'],
 ]
 
-prAtipadika["idam_strI"] = idam_strI
+prAtipadika["idam_strI"] = [idam, strI_abs]   # noqa: F405
+# Full paradigm via SK454 TAp path. Surprisingly, the engine produces nom sg iyam
+# correctly too: at (imā | su), 7.2.110 (yas sau) fires and produces iyam, not iyā.
+# (The 7.2.110 xform replaces lc with "iya" while leaving l='m' intact through the
+# prakriya — net result iyam.)
 viBakti["idam_strI"] = [
-    ["इयम्", None, None],
+    ["इयम्",    "इमे",         "इमाः"],
+    ["इमाम्",   "इमे",         "इमाः"],
+    ["अनया",    "आभ्याम्",     "आभिः"],
+    ["अस्यै",   "आभ्याम्",     "आभ्यः"],
+    ["अस्याः",  "आभ्याम्",     "आभ्यः"],
+    ["अस्याः",  "अनयोः",       "आसाम्"],
+    ["अस्याम्", "अनयोः",       "आसु"],
     [None, None, None],
+]
+
+# tyadAdi feminines via SK454 + 7.2.102 chain.
+# [stem, strI_abs] form so the engine sees (stem | strI_abs) for SK454 to fire.
+prAtipadika["tad_strI"] = [tad, strI_abs]   # noqa: F405
+viBakti["tad_strI"] = [
+    ["सा",      "ते",         "ताः"],
+    ["ताम्",    "ते",         "ताः"],
+    ["तया",     "ताभ्याम्",   "ताभिः"],
+    ["तस्यै",   "ताभ्याम्",   "ताभ्यः"],
+    ["तस्याः",  "ताभ्याम्",   "ताभ्यः"],
+    ["तस्याः",  "तयोः",       "तासाम्"],
+    ["तस्याम्", "तयोः",       "तासु"],
     [None, None, None],
+]
+
+prAtipadika["etad_strI"] = [etad, strI_abs]   # noqa: F405
+viBakti["etad_strI"] = [
+    ["एषा",      "एते",        "एताः"],
+    ["एताम्",    "एते",        "एताः"],
+    ["एतया",     "एताभ्याम्",  "एताभिः"],
+    ["एतस्यै",   "एताभ्याम्",  "एताभ्यः"],
+    ["एतस्याः",  "एताभ्याम्",  "एताभ्यः"],
+    ["एतस्याः",  "एतयोः",      "एतासाम्"],
+    ["एतस्याम्", "एतयोः",      "एतासु"],
     [None, None, None],
+]
+
+prAtipadika["yad_strI"] = [yad, strI_abs]   # noqa: F405
+viBakti["yad_strI"] = [
+    ["या",      "ये",         "याः"],
+    ["याम्",    "ये",         "याः"],
+    ["यया",     "याभ्याम्",   "याभिः"],
+    ["यस्यै",   "याभ्याम्",   "याभ्यः"],
+    ["यस्याः",  "याभ्याम्",   "याभ्यः"],
+    ["यस्याः",  "ययोः",       "यासाम्"],
+    ["यस्याम्", "ययोः",       "यासु"],
     [None, None, None],
-    [None, None, None],
-    [None, None, None],
+]
+
+prAtipadika["kim_strI"] = [kim, strI_abs]   # noqa: F405
+viBakti["kim_strI"] = [
+    ["का",      "के",         "काः"],
+    ["काम्",    "के",         "काः"],
+    ["कया",     "काभ्याम्",   "काभिः"],
+    ["कस्यै",   "काभ्याम्",   "काभ्यः"],
+    ["कस्याः",  "काभ्याम्",   "काभ्यः"],
+    ["कस्याः",  "कयोः",       "कासाम्"],
+    ["कस्याम्", "कयोः",       "कासु"],
     [None, None, None],
 ]
 

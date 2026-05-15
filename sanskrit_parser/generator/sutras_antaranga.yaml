@@ -4320,20 +4320,37 @@
   id: 7.2.102
   # FIXME: this needs to happen first, before daSca but unclear how. using this for now
   bahiranga: 1
+  # Also fires before strI_abs: SK441 commentary ("त्यदाद्यत्वं टाप्") prescribes
+  # tyadAdi-a-substitution before TAp addition for fem of tad/etad/yad/idam/adas.
+  # ?!TAp_added blocks re-firing after SK454 has marked the stem as post-TAp
+  # (e.g. (etA | am) → 6.1.107 → (et | Am), where l='t' looks raw again).
   condition:
-     lp: ?tyadAdi
-     rp: ?viBakti
+     lp:
+       - and
+       - ?tyadAdi
+       - ?!TAp_added
+     rp:
+       - ?viBakti
+       - ?strI_abs
   xform:
      l: null
   insert:
      l: str("a")
 
-# 342: किमः कः (7-2-103) 
+# 342: किमः कः (7-2-103)
 - sutra:  किमः कः
   id: 7.2.103
+  # Also fires before strI_abs: SK440 commentary ("किमः कादेशे टाप्") prescribes
+  # kim→ka before TAp addition for kim_strI.
+  # ?!TAp_added guard same rationale as 7.2.102.
   condition:
-     lp: ?kim
-     rp: ?viBakti
+     lp:
+       - and
+       - ?kim
+       - ?!TAp_added
+     rp:
+       - ?viBakti
+       - ?strI_abs
   xform:
      lc: str("ka")
      l: null
@@ -4349,17 +4366,21 @@
   xform:
      l: str("m")
 
-# 345: दश्च (7-2-109) 
+# 345: दश्च (7-2-109)
 - sutra:  दश्च
   id: 7.2.109
   # we use a general d check instead of specific position to maintain nityatva
   # wrt 6.1.107 ami pUrvaH
+  # Also fires before strI_abs (after 7.2.102) so idam→ida→ima for idam_strI,
+  # yielding imā via SK454 TAp. SK441 commentary: "दश्च इति मः । इमे । इमाः ।"
   condition:
      lp:
        - and
        - ?idam
        - $$idam_d_p   # check for d
-     rp: ?viBakti
+     rp:
+       - ?viBakti
+       - ?strI_abs
   xform:
      lc: str("im")
      l: null
@@ -5207,6 +5228,9 @@
 # The domain: prakfti mechanism covers this.
 
 # 454: अजाद्यतष्टाप् (4-1-4)
+# olp: +TAp_added marks the stem so 7.2.102/103 can avoid re-firing on the post-TAp
+# stem (etA/imā/kā etc.). This is distinct from a pre-baked ?Ap tag on stems like
+# dvi_s, where 7.2.102 must still fire (dvi → dva).
 - sutra:  अजाद्यतष्टाप्
   domain: prakfti
   bahiranga: 1
@@ -5217,6 +5241,7 @@
     - lp: ?ajAdi    # ajādi gaṇa consonant-final members (kruñc, uṣṇih, devaviz etc.)
       rp: ?strI_abs
   update:
+     olp: +TAp_added
      orp: =Ap
 
 # 455: उगितश्च (4-1-6)
