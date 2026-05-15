@@ -487,39 +487,45 @@ def replaceTorDwithS(lc):
 
 
 def has_adas_amu(s):
-    """SK419 (8.2.80) condition check: True if pada contains 'ad'+vowel (excluding 'ade').
-    Accepts both str and PaninianObject (calls .canonical() if needed)."""
+    """SK419 (8.2.80) condition check: True if pada contains 'ad'+vowel.
+    Accepts both str and PaninianObject (calls .canonical() if needed).
+    'ade' is included; SK438 (8.2.81) overrides 8.2.80 in bahuvacana (producing
+    amī instead of amū). Outside bahuvacana — e.g. fem-du adas where 7.1.18 +
+    6.1.87 produce 'ade' — 8.2.80 fires and correctly yields amū."""
     if hasattr(s, 'canonical'):
         s = s.canonical()
     long_vowels = set('AIUFXeEoO')
     short_vowels = set('aiufx')
     all_vowels = long_vowels | short_vowels
     for i in range(len(s) - 2):
-        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels:
             return True
     return False
 
 
 def adas_amu_stem(s):
     """SK419 (8.2.80) xform helper: return replacement stem 'amu' (short) or 'amU' (long).
-    Finds 'ad'+non-e vowel in s and returns the amu/amU stem only (no suffix)."""
+    Finds 'ad'+vowel in s and returns the amu/amU stem only (no suffix).
+    'e' is treated as long — for fem-du adas the merged stem 'ade' yields 'amU'."""
     long_vowels = set('AIUFXeEoO')
     short_vowels = set('aiufx')
     all_vowels = long_vowels | short_vowels
     for i in range(len(s) - 2):
-        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels:
             return 'amU' if s[i+2] in long_vowels else 'amu'
     return s
 
 
 def adas_suffix(s):
-    """SK419 (8.2.80) insert helper: return the suffix portion after 'ad'+non-e vowel.
-    Used with insert: l to re-expose the suffix for downstream sandhi rules."""
+    """SK419 (8.2.80) insert helper: return the suffix portion after 'ad'+vowel.
+    Used with insert: l to re-expose the suffix for downstream sandhi rules.
+    When the post-'ad' vowel is 'e' (fem-du path), the suffix consumed itself
+    into the vowel via 7.1.18 + 6.1.87, so there is no remaining suffix tail."""
     long_vowels = set('AIUFXeEoO')
     short_vowels = set('aiufx')
     all_vowels = long_vowels | short_vowels
     for i in range(len(s) - 2):
-        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels and s[i+2] != 'e':
+        if s[i] == 'a' and s[i+1] == 'd' and s[i+2] in all_vowels:
             return s[i+3:]
     return ''
 

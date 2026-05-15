@@ -3471,12 +3471,29 @@
 # adas_ami() replaces 'ade' → 'amI' (= amī).
 - sutra: एत ईद्बहुवचने
   id: 8.2.81
+  # Bahuvacana guard: honor the sūtra's restriction. Without it the rule also
+  # fires on fem-du adas (adA + O → adA+ī → ad+e via 6.1.87 → 'ade'), producing
+  # the wrong amī instead of amū. Two branches because the bahuvacana signal
+  # may live on lp (post-merge: ?bahuvacana_pada) or on rp (pre-merge: the
+  # sup pratyaya is tagged ?bahuvacana). Without the rp branch, masc-pl with a
+  # consonant-initial sup (Bis/Byas/sup-locpl) escapes 8.2.81 at the (ade|Bis)
+  # window and 8.2.80 fires first → wrong amU.
+  # overrides 8.2.80 because 8.2.80 now also matches 'ade' (so fem-du gets
+  # amū); bahuvacana cases must still route through this rule to amī.
+  overrides: 8.2.80
   condition:
-    lp:
-      - and
-      - ?pada
-      - ?adas
-      - $$has_adas_ami
+    - lp:
+        - and
+        - ?pada
+        - ?adas
+        - $$has_adas_ami
+      rp: ?bahuvacana
+    - lp:
+        - and
+        - ?pada
+        - ?adas
+        - ?bahuvacana_pada
+        - $$has_adas_ami
   xform:
     l: null
     lc: adas_ami(lc+l)

@@ -1338,6 +1338,22 @@ viBakti["kim_strI"] = [
     [None, None, None],
 ]
 
+prAtipadika["adas_strI"] = [adas, strI_abs]   # noqa: F405
+# adas feminine via SK442 commentary ("त्यदाद्यत्वं टाप्" + औङः शी + उत्वमत्वे).
+# Path: adas → ada (7.2.102) → adA (TAp via SK454) → vibhakti; nom du amū via
+# 7.1.18 + utvam-atve (SK419). Requires 8.2.81 bahuvacana_pada guard to avoid
+# misfiring on the dual (otherwise produces masc-pl 'amī').
+viBakti["adas_strI"] = [
+    ["असौ",      "अमू",         "अमूः"],
+    ["अमूम्",    "अमू",         "अमूः"],
+    ["अमुया",    "अमूभ्याम्",   "अमूभिः"],
+    ["अमुष्यै",  "अमूभ्याम्",   "अमूभ्यः"],
+    ["अमुष्याः", "अमूभ्याम्",   "अमूभ्यः"],
+    ["अमुष्याः", "अमुयोः",      "अमूषाम्"],
+    ["अमुष्याम्","अमुयोः",      "अमूषु"],
+    [None, None, None],
+]
+
 prAtipadika["idam"] = idam
 viBakti["idam"] = [
     ['अयम्', 'इमौ', 'इमे'],
