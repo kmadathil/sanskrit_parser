@@ -2136,6 +2136,41 @@ viBakti["supAd"] = [
     [["सुपात्", "सुपाद्"], "सुपादौ", "सुपादः"],  # 8 Voc  * = Nom
 ]
 
+# SK456 (4.1.7 वनो र च) — full derivation chain test:
+#   Sf + vanip → SK2168 (7.3.84) guṇa → Sar+van → join (van tag propagates) = Sarvan
+#   Sarvan + strI_abs → SK456 NIp + n→r → SarvarI, then nadī-style ī-stem inflection.
+# Every cell also produces an alternative geminated form via SK 8.4.46 (aco rahAbhyāṃ dve,
+# optional) — Sar | van → Sar | vvan → Sarvvan → SarvvarI etc. Both are valid; we accept both.
+prAtipadika["Sf_vanip_strI"] = [Sf, vanip, strI_abs]   # noqa: F405
+viBakti["Sf_vanip_strI"] = [
+    [["शर्वरी",      "शर्व्वरी"],      ["शर्वर्यौ",    "शर्व्वर्यौ"],    ["शर्वर्यः",   "शर्व्वर्यः"]],    # 1 Nom
+    [["शर्वरीम्",    "शर्व्वरीम्"],    ["शर्वर्यौ",    "शर्व्वर्यौ"],    ["शर्वरीः",    "शर्व्वरीः"]],    # 2 Acc
+    [["शर्वर्या",    "शर्व्वर्या"],    ["शर्वरीभ्याम्", "शर्व्वरीभ्याम्"], ["शर्वरीभिः",  "शर्व्वरीभिः"]],  # 3 Ins
+    [["शर्वर्यै",    "शर्व्वर्यै"],    ["शर्वरीभ्याम्", "शर्व्वरीभ्याम्"], ["शर्वरीभ्यः", "शर्व्वरीभ्यः"]], # 4 Dat
+    [["शर्वर्याः",   "शर्व्वर्याः"],   ["शर्वरीभ्याम्", "शर्व्वरीभ्याम्"], ["शर्वरीभ्यः", "शर्व्वरीभ्यः"]], # 5 Abl
+    [["शर्वर्याः",   "शर्व्वर्याः"],   ["शर्वर्योः",   "शर्व्वर्योः"],   ["शर्वरीणाम्",  "शर्व्वरीणाम्"]], # 6 Gen
+    [["शर्वर्याम्",  "शर्व्वर्याम्"],  ["शर्वर्योः",   "शर्व्वर्योः"],   ["शर्वरीषु",   "शर्व्वरीषु"]],   # 7 Loc
+    [["शर्वरि",      "शर्व्वरि"],      ["शर्वर्यौ",    "शर्व्वर्यौ"],    ["शर्वर्यः",   "शर्व्वर्यः"]],   # 8 Voc
+]
+
+# SK457 (4.1.8 पादोऽन्यतरस्याम्) — pāda-final compound feminine, optional NIp test:
+#   [dvi (as_purva_pada) | luk_sup | pAd_ut (in_compound) | strI_abs]
+#   SK457 fires optionally → two paradigms:
+#     A) NIp branch: dvipad+I → dvipadī etc. (bha triggers SK414 pAd→pad)
+#     B) No-NIp branch: dvipAd halanta, same as supAd masculine but feminine
+# Many cells produce both branches; nom/voc sg additionally produce dvipāt/dvipād pause variants.
+prAtipadika["dvipAd_strI"] = [as_purva_pada(dvi), luk_sup, in_compound(pAd_ut), strI_abs]   # noqa: F405
+viBakti["dvipAd_strI"] = [
+    [["द्विपात्", "द्विपाद्", "द्विपदी"], ["द्विपादौ", "द्विपद्यौ"],     ["द्विपादः", "द्विपद्यः"]],   # 1 Nom
+    [["द्विपादम्", "द्विपदीम्"],          ["द्विपादौ", "द्विपद्यौ"],     ["द्विपदः",  "द्विपदीः"]],   # 2 Acc
+    [["द्विपदा",   "द्विपद्या"],          ["द्विपाद्भ्याम्", "द्विपदीभ्याम्"], ["द्विपाद्भिः", "द्विपदीभिः"]],  # 3 Ins
+    [["द्विपदे",   "द्विपद्यै"],          ["द्विपाद्भ्याम्", "द्विपदीभ्याम्"], ["द्विपाद्भ्यः", "द्विपदीभ्यः"]], # 4 Dat
+    [["द्विपदः",   "द्विपद्याः"],         ["द्विपाद्भ्याम्", "द्विपदीभ्याम्"], ["द्विपाद्भ्यः", "द्विपदीभ्यः"]], # 5 Abl
+    [["द्विपदः",   "द्विपद्याः"],         ["द्विपदोः",      "द्विपद्योः"],     ["द्विपदाम्",   "द्विपदीनाम्"]], # 6 Gen
+    [["द्विपदि",   "द्विपद्याम्"],        ["द्विपदोः",      "द्विपद्योः"],     ["द्विपात्सु",  "द्विपदीषु"]],   # 7 Loc
+    [["द्विपात्", "द्विपाद्", "द्विपदि"], ["द्विपादौ",      "द्विपद्यौ"],      ["द्विपादः",    "द्विपद्यः"]],  # 8 Voc
+]
+
 # samAsa category dict — identifies compound test keys (kept separate from ajanta/halanta)
 # SK307 negative test: Sūrpa + naKī compound → SūrpanaKī
 # The compound has ?samasta_pada after merge, so 8.4.1/8.4.2 Ratva must NOT fire.
@@ -2434,7 +2469,7 @@ viBakti["Siraspada"] = [
 ]
 
 samAsa = {"pum": ["gaRapati", "aSvayuj", "viSvAvasu", "viSvArAj", "supAd", "tAdfk", "tAdfSa", "yAdfk", "yAdfSa", "tAdfkza", "yAdfkza", "Gftaspfk"],
-          "strI": ["SUrpanaKI"], "napum": ["kzIrapa", "aDaspada", "Siraspada"]}
+          "strI": ["SUrpanaKI", "dvipAd_strI"], "napum": ["kzIrapa", "aDaspada", "Siraspada"]}
 _samAsa_keys = {k for ks in samAsa.values() for k in ks}
 
 ajanta = {"pum": [], "strI": [], "napum": []}

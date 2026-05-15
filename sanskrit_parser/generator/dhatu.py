@@ -47,6 +47,7 @@ han = Dhatu("han", its=[], other_tags=["han"])   # √han "to kill"; ?han → SK
 spfS = Dhatu("spfS", its=[], other_tags=["spfS"])  # √spṛś "to touch" (SLP1: spfS = स्पृश्)
 vah = Dhatu("vah", its=[])
 Sam = Dhatu("Sam", its=[])
+Sf = Dhatu("Sf", its=[])   # √śṛ "to break/destroy"; ig-anta — SK2168 guṇa fires before vanip
 
 # FIXME: temporary for testing, samprasarana version of veY. Remove later
 veY_smp = Dhatu("u", its=["Y"])

@@ -5272,6 +5272,42 @@
   update:
      orp: =NIp
 
+# 456: वनो र च (4-1-7)
+# van-ending stems → NIp + final n→r. Overrides 4.1.5 (which would only add NIp,
+# leaving the wrong stem dhīvan-/śarvan-). The "van" tag is set on vanip/kvanip/Dvanip
+# and propagated to the merged stem by paninian_object.join_objects.
+# Vārttikas "vano na haśaḥ" and "bahuvrīhau vā" deferred.
+- sutra: वनो र च
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.7
+  overrides: 4.1.5
+  condition:
+     lp: ?van
+     rp: ?strI_abs
+  xform:
+     l: str("r")
+  update:
+     orp: =NIp
+
+# 457: पादोऽन्यतरस्याम् (4-1-8)
+# pAd-final compound stems → optional NIp. ?samAsa is set on the uttara-pada via
+# in_compound(pAd_ut) and propagated to the merged stem; ll:A + l:d narrow this to
+# -Ad-ending compounds (i.e., pāda-final). NIp branch: bha triggers SK414 pAd→pad
+# giving dvipadī. No-NIp branch: su + sandhi → dvipāt for nom sg.
+- sutra: पादोऽन्यतरस्याम्
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.8
+  optional: true
+  condition:
+     lp: ?samAsa
+     ll: A
+     l: d
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63)
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
     domain: prakfti

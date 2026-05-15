@@ -160,7 +160,7 @@ class PaninianObject(SanskritObject):
         # --- kṛt suffix classifier tags from last, gated by first being an aNga ---
         # kvin/kvip are omitted here: already propagated by the kvin/kvip DAtu block above.
         if first.hasTag("aNga"):
-            _propagate(last, ["trc", "trn", "kaY", "suc"])
+            _propagate(last, ["trc", "trn", "kaY", "suc", "van"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
         if last.hasTag("samasta_Ratva"):

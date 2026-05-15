@@ -163,6 +163,15 @@ kaY = Pratyaya("a", its=["k", "Y"], other_tags=["kaY", "krt"])
 # u, p are it markers; content is "vat" (वत्). krt → join_objects produces prAtipadika.
 vatup = Pratyaya("vat", its=["u", "p"], other_tags=["vatup", "krt"])
 
+# van-class kṛt suffixes (3.2.74 vanip, 3.2.103 ṅvanip; kvanip is also van-class).
+# All three carry "van" so SK456 (4.1.7 वनो र च) can fire on lp: ?van + rp: ?strI_abs.
+# ArDaDAtuka enables SK2168 (7.3.84) guṇa for ig-anta dhātus (e.g. SF + vanip → Sar+van).
+# 1.1.5 (k(N)iti ca) blocks guṇa for kvanip (kit) and Dvanip (ṅit); vanip (only p-it)
+# admits guṇa. "van" tag is propagated to the merged stem by paninian_object.join_objects.
+vanip  = Pratyaya("van", its=["p"],       other_tags=["van", "krt", "ArDaDAtuka"])
+kvanip = Pratyaya("van", its=["k", "p"],  other_tags=["van", "krt", "ArDaDAtuka"])
+Dvanip = Pratyaya("van", its=["N", "p"],  other_tags=["van", "krt", "ArDaDAtuka"])
+
 # UW
 UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 
