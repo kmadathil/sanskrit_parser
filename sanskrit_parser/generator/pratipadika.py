@@ -349,6 +349,13 @@ asmad  = Pratipadika("asmad",  "pum", other_tags=["asmad",  "sarvanAma"])  # asm
 rAjan = Pratipadika("rAjan", "pum", other_tags=["rAjan"])
 parvan_napum = Pratipadika("parvan", "napum")
 
+# SK459 (4.1.11 मनः): man-final stem; ṅīp blocked → halanta feminine सीमा.
+sIman = Pratipadika("sIman", "strI")
+# SK460/SK461: prebuilt an-final bahuvrīhi. ?van so SK456 (4.1.7) is a live competitor
+# that SK460/SK461 must override; ?samasta_pada marks the completed compound.
+bahuyajvan = Pratipadika("bahuyajvan", "pum",
+                         other_tags=["bahuvrIhi", "samasta_pada", "van"])
+
 # SK443 (8.2.68 ahan n→ru at pada-end): apavāda of 8.2.7 (n-lopa).
 # Nom/acc/voc sg: ahan → n→r (ru) → visarga → ahaḥ.
 # Bha forms (vowel-initial non-sarvānāmasthāna): existing 6.4.134 a-lopa → ahn-.

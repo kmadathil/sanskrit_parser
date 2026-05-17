@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 457 — 4.1.8 पादोऽन्यतरस्याम् (pAd-final compound + strI_abs → optional NIp)
-**Next to be implemented:** SK 458 (4.1.9 — टाबृचि — ṭāp after pād-final stems in ṛk context)
+**Last implemented:** SK 461 — 4.1.13 डाबुभाभ्यामन्यतरस्याम् (optional DAp after man-final / an-bahuvrīhi)
+**Next to be implemented:** SK 462 (4.1.28 — अन उपधालोपिनोऽन्यतरस्याम्)
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 312 |
-| Sutras skipped / deferred | 42 |
+| Sutras implemented | 315 |
+| Sutras skipped / deferred | 43 |
 | Sutras uncatalogued / not yet planned | ~67 |
-| **Total sutras accounted for** | **~417** |
-| Stems with full vibhakti test tables | 174 |
+| **Total sutras accounted for** | **~421** |
+| Stems with full vibhakti test tables | 176 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -217,6 +217,9 @@ The "Forms affected" column uses the convention:
 | 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
 | 456 | 4.1.7 | वनो र च | van-final stems (vanip/kvanip/Dvanip) + strI_abs → NIp and final n→r; e.g. Sf+vanip → Sarvan → SarvarI (vārttikas "vano na haśaḥ" and "bahuvrīhau vā" deferred) |
 | 457 | 4.1.8 | पादोऽन्यतरस्याम् | pAd-final compound stem + strI_abs → optional NIp; e.g. dvi+pAd → dvipadī (NIp+SK414) ~ dvipāt (no-NIp) |
+| 459 | 4.1.11 | मनः | man-final stems → ṅīp blocked (apavāda to 4.1.5); सीमन्+strI_abs → halanta n-stem feminine सीमा |
+| 460 | 4.1.12 | अनो बहुव्रीहेः | an-final bahuvrīhi (?bahuvrIhi tag) → ṅīp blocked (apavāda to 4.1.5/4.1.7); बहुयज्वन्→बहुयज्वा |
+| 461 | 4.1.13 | डाबुभाभ्यामन्यतरस्याम् | optional DAp after man-final / an-bahuvrīhi; DAp q-it → ṭi-lopa (6.4.143) → ramā-type ā-stem (सीमे, बहुयज्वे) |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
 | 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
@@ -361,6 +364,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
 | 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
+| 458 | 4.1.9 | टाबृचि | For later — requires ṛk-meter semantic context (ऋचि वाच्यायाम्) | TAp after pād-final feminine in the sense of an ṛk verse (द्विपदा ऋक्); engine has no semantic tracking, would emit a spurious द्विपदा for dvipAd_strI |
 | 456 | 4.1.7 | वनो र च | Partial — vārttikas pending | "vano na haśaḥ" (no NIp/n→r when van follows a haś-pratyāhāra consonant in the underlying dhātu, e.g. sahayudhvan f. = sahayudhvā) and "bahuvrīhau vā" (optional NIp in bahuvrīhi, e.g. bahudhīvarī ~ bahudhīvā via ḍāp) — deferred; require dhātu-history tracking and a bahuvrīhi tag respectively |
 | 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
 | 210 | 8.3.55 | अपदान्तस्य मूर्धन्यः | Natural — adhikāra comment only; no rule block in YAML | Retroflexion adhikāra header; actual ṇatva logic handled by SK235 (8.4.1) and SK212 (8.3.59) |
@@ -558,6 +562,8 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | supAd | m | d-stem (pāda compound, SK414) | SK414 (6.4.130): pAd→pad (ā→a) in bha context; inst/dat/abl/gen/loc sg + acc/gen pl use pad- base; nom/voc/acc sg+du+pl use supAd- base |
 | Sf_vanip_strI | f | van-stem (SK456, dynamic) | Dynamic: [Sf, vanip, strI_abs]; SK2168 guṇa Sf→Sar; SK456 (4.1.7) NIp + n→r → SarvarI; each cell also accepts geminated SK 8.4.46 variant (Sarv-/Sarvv-) |
 | dvipAd_strI | f | d-stem (pāda compound, SK457) | Dynamic: [as_purva_pada(dvi), luk_sup, in_compound(pAd_ut), strI_abs]; SK457 (4.1.8) optional NIp produces both dvipadī (NIp + SK414 bha pAd→pad) and dvipāt (no-NIp halanta) branches |
+| sIman | f | man-final n-stem (SK459/461) | [sIman, strI_abs]; SK459 (4.1.11) blocks ṅīp → halanta n-stem feminine (सीमा, सीमानौ, सीम्नः); SK461 (4.1.13) optional DAp → ramā-type ā-stem (सीमा, सीमे) |
+| bahuyajvan_strI | f | an-final bahuvrīhi (SK460/461) | [bahuyajvan, strI_abs]; prebuilt ?bahuvrIhi/?samasta_pada/?van; SK460 (4.1.12) blocks ṅīp (overrides 4.1.5/4.1.7) → halanta (बहुयज्वा, 6.4.137 keeps weak stem यज्वन्); SK461 optional DAp → बहुयज्वे |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |

@@ -843,9 +843,12 @@
     
 
 # 122: मोऽनुस्वारः (8-3-23)
+# पदस्य adhikāra (8.1.16): only pada-final m → anusvāra. The ?pada guard prevents
+# misfiring on stem-internal m before a consonant (e.g. weak man-stem सीम्न्).
 - sutra: मोऽनुस्वारः
   id: 8.3.23
   condition:
+     lp: ?pada
      l: m
      r: _hal
   xform:
@@ -5307,6 +5310,48 @@
      rp: ?strI_abs
   update:
      orp: =NIp
+
+# 459: मनः (4-1-11) — no ṅīp after man-final stems. Apavāda to 4.1.5 ऋन्नेभ्यो ङीप्.
+# सीमन् + strI_abs → halanta n-stem feminine (सीमा), not सीम्नी.
+- sutra: मनः
+  bahiranga: 1
+  id: 4.1.11
+  overrides: 4.1.5
+  condition:
+     lp: $$manAnta
+     rp: ?strI_abs
+  update: null
+
+# 460: अनो बहुव्रीहेः (4-1-12) — no ṅīp after an an-final bahuvrīhi.
+# Apavāda to 4.1.5 and 4.1.7 (बहुयज्वन् carries ?van, so SK456 is a live competitor).
+- sutra: अनो बहुव्रीहेः
+  bahiranga: 1
+  id: 4.1.12
+  overrides: [4.1.5, 4.1.7]
+  condition:
+     lp: ?bahuvrIhi
+     ll: a
+     l: n
+     rp: ?strI_abs
+  update: null
+
+# 461: डाबुभाभ्यामन्यतरस्याम् (4-1-13) — optional DAp after the two preceding classes
+# (man-final / an-bahuvrīhi). DAp's q-it → ṭi-lopa via 6.4.143 → ramā-type ā-stem
+# (सीमे, बहुयज्वे). Non-DAp fork: SK459/SK460 block ṅīp → halanta (सीमा, बहुयज्वा).
+- sutra: डाबुभाभ्यामन्यतरस्याम्
+  bahiranga: 1
+  id: 4.1.13
+  optional: true
+  overrides: [4.1.5, 4.1.7]
+  condition:
+    - lp: $$manAnta
+      rp: ?strI_abs
+    - lp: ?bahuvrIhi
+      ll: a
+      l: n
+      rp: ?strI_abs
+  update:
+     orp: =DAp
 
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63)
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु

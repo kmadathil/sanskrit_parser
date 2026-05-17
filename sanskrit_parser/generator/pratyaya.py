@@ -134,6 +134,9 @@ adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])
 NIp = Pratyaya("I", its=["N", "p"], other_tags=["svAdi", "NI", "strI"])
 NIz = Pratyaya("I", its=["N", "z"], other_tags=["svAdi", "NI", "strI"])
 Ap = Pratyaya("A", its=["p"], other_tags=["svAdi", "Ap", "strI"])
+# DAp — डाप् (4.1.13): optional feminine affix after man-final / an-bahuvrīhi stems.
+# q-it (ḍit) triggers ṭi-lopa via 6.4.143 टेः; "Ap" tag → ramā-type ā-stem declension.
+DAp = Pratyaya("A", its=["q", "p"], other_tags=["svAdi", "Ap", "DAp", "strI"])
 strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
 
 # Sup Luk

@@ -459,6 +459,12 @@ def endsWith_pAd(lp):
     return len(lp) >= 3 and lp[-3:] == "pAd"
 
 
+def manAnta(s):
+    """True if s ends in the literal sequence 'man' (the man-affix: sīman, dāman, …).
+    Used in SK459 (4.1.11 मनः) / SK461 to act on man-final stems."""
+    return len(s) >= 3 and s[-3:] == "man"
+
+
 def ns_upadha_hrasva(lp):
     """True if lp ends in hrasva-vowel + n + s (upadhā is short before -ns cluster).
     Used in SK317 (6.4.10) block 1 to prevent firing when upadhā is already dīrgha
