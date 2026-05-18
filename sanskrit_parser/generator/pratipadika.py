@@ -68,6 +68,7 @@ SamBu = Pratipadika("SamBu", "pum")
 go = Pratipadika("go", "pum")
 indra = Pratipadika("indra", "pum", other_tags=["indra"])
 rE = Pratipadika("rE", "pum")
+bahu = Pratipadika("bahu", "pum")  # SK462: pūrva-pada of बहुराजन् bahuvrīhi
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

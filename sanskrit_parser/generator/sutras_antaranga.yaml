@@ -5353,6 +5353,25 @@
   update:
      orp: =DAp
 
+# 462: अन उपधालोपिनोऽन्यतरस्याम् (4-1-28) — optional ṅīp for an-final upadhālopin
+# bahuvrīhi. Re-permits the ṅīp SK460 (4.1.12) blocked. ṅīp ṅit → 6.4.134 al-lopa
+# + śacutva → बहुराज्ञी. $$upaDAlopI excludes बहुयज्वन् (6.4.137 blocks al-lopa).
+- sutra: अन उपधालोपिनोऽन्यतरस्याम्
+  bahiranga: 1
+  id: 4.1.28
+  optional: true
+  overrides: [4.1.5, 4.1.12]
+  condition:
+     lp:
+       - and
+       - ?bahuvrIhi
+       - $$upaDAlopI
+     ll: a
+     l: n
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63)
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु
     domain: prakfti

@@ -68,6 +68,9 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     kzIra, pa,
     Gfta,
     aDas, Siras, pada,
+    # SK454-462 strī-pratyaya stems
+    aja, kokila, SUdra, kruYc, uzRih,
+    sIman, bahuyajvan, bahu, pAd_ut,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -85,6 +88,8 @@ from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     pum_abs, napum_abs, strI_abs,
     # taddhita from prātipadika
     yat_t, zyaY_t, yaY_t, aR_t,
+    # van-class kṛt
+    vanip,
     # luk / UW
     luk, UW,
 )
@@ -92,6 +97,7 @@ from sanskrit_parser.generator.dhatu import (  # noqa: E402
     dfS, aYc_u, han, spfS,
     BU, iR, sTA, ji, vid, kzI, lUY, vah, duh, mud, Cad, Sam,
     eDa, fcCa, gfj, guhU, qukrIY, qulaBaz, veY, veY_smp, as_dhatu,
+    Sf,
 )
 from sanskrit_parser.generator.sutras_yaml import SutraFactory          # noqa: E402
 from sanskrit_parser.generator.prakriya_factory import PrakriyaFactory  # noqa: E402
@@ -177,9 +183,28 @@ _dIvyat_strI_cpd = [dIvyat_strI, NIp]
 _tudat_strI_cpd  = [tudat_strI,  NIp]
 _BAt_strI_cpd    = [BAt_strI,    NIp]
 
-# SK454/SK455 — strI_abs flow demonstrations (using pum pratipadikas)
+# SK454-462 — strI-pratyaya (strI_abs) flow demonstrations
 _rAma_A_cpd   = [rAma,  strI_abs]   # SK454: a-final → Ap → rāmā
 _pacat_NI_cpd = [pacat, strI_abs]   # SK455: f-it ugit → NIp → pacantī
+_aja_A_cpd    = [aja,    strI_abs]  # SK454 ajādi → TAp → ajā
+_kokila_A_cpd = [kokila, strI_abs]  # SK454 ajādi → TAp → kokilā
+_SUdra_A_cpd  = [SUdra,  strI_abs]  # SK454 ajādi → TAp → śūdrā
+_kruYc_A_cpd  = [kruYc,  strI_abs]  # SK454 ajādi (consonant-final)
+_uzRih_A_cpd  = [uzRih,  strI_abs]  # SK454 ajādi (consonant-final)
+_tad_strI_cpd  = [tad,  strI_abs]   # SK454 tyadādi feminine
+_etad_strI_cpd = [etad, strI_abs]
+_yad_strI_cpd  = [yad,  strI_abs]
+_kim_strI_cpd  = [kim,  strI_abs]
+_adas_strI_cpd = [adas, strI_abs]
+_Bavat_uNI_cpd = [Bavat_u, strI_abs]        # SK455 u-it → NIp → bhavatī
+_Sf_vanip_strI_cpd = [Sf, vanip, strI_abs]  # SK456 (4.1.7 vano ra ca): van → NIp + n→r
+_sIman_strI_cpd      = [sIman,      strI_abs]  # SK459 (4.1.11 manaH): man-final, ṅīp blocked
+_bahuyajvan_strI_cpd = [bahuyajvan, strI_abs]  # SK460/461 an-bahuvrīhi
+# SK457 — dvipād (dvi + pād) feminine compound
+_dvipAd_strI_cpd = [as_purva_pada(dvi), luk_sup, in_compound(pAd_ut), strI_abs]
+# SK462 — bahurājan (bahu + rājan) an-final upadhālopin bahuvrīhi feminine
+_bahurAjan_strI_cpd = [as_purva_pada(bahu), luk_sup,
+                       in_context(in_compound(rAjan), "bahuvrIhi"), strI_abs]
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
@@ -221,9 +246,25 @@ _STEMS_RAW = [
     ("tudat_strI",   _tudat_strI_cpd,  "śatṛ-stems (strī)",   "tudat  (strī)  [SK445 optional]"),
     ("BAt_strI",     _BAt_strI_cpd,    "śatṛ-stems (strī)",   "bhāt  (strī)  [SK445 optional]"),
 
-    # ── Strī-pratyaya (SK454-455) — strI_abs flow demos ──────────────────
-    ("rAma_A",   _rAma_A_cpd,   "Strī-pratyaya (SK454-455)", "rāmā  (SK454 TAp: rāma+strI_abs → rāmā)"),
-    ("pacat_NI", _pacat_NI_cpd, "Strī-pratyaya (SK454-455)", "pacantī  (SK455 NIp: pacat+strI_abs → pacantī)"),
+    # ── Strī-pratyaya (SK454-462) — strI_abs flow demos ──────────────────
+    ("rAma_A",   _rAma_A_cpd,   "Strī-pratyaya (SK454-462)", "rāmā  (SK454 TAp: rāma+strI_abs → rāmā)"),
+    ("aja_A",    _aja_A_cpd,    "Strī-pratyaya (SK454-462)", "ajā  (SK454 ajādi → TAp)"),
+    ("kokila_A", _kokila_A_cpd, "Strī-pratyaya (SK454-462)", "kokilā  (SK454 ajādi → TAp)"),
+    ("SUdra_A",  _SUdra_A_cpd,  "Strī-pratyaya (SK454-462)", "śūdrā  (SK454 ajādi → TAp)"),
+    ("kruYc_A",  _kruYc_A_cpd,  "Strī-pratyaya (SK454-462)", "kruñcā  (SK454 ajādi, consonant-final)"),
+    ("uzRih_A",  _uzRih_A_cpd,  "Strī-pratyaya (SK454-462)", "uṣṇihā  (SK454 ajādi, consonant-final)"),
+    ("pacat_NI", _pacat_NI_cpd, "Strī-pratyaya (SK454-462)", "pacantī  (SK455 NIp: pacat+strI_abs → pacantī)"),
+    ("Bavat_uNI", _Bavat_uNI_cpd, "Strī-pratyaya (SK454-462)", "bhavatī  (SK455 u-it → NIp)"),
+    ("tad_strI",  _tad_strI_cpd,  "Strī-pratyaya (SK454-462)", "sā  (SK454 tyadādi feminine)"),
+    ("etad_strI", _etad_strI_cpd, "Strī-pratyaya (SK454-462)", "eṣā  (SK454 tyadādi feminine)"),
+    ("yad_strI",  _yad_strI_cpd,  "Strī-pratyaya (SK454-462)", "yā  (SK454 tyadādi feminine)"),
+    ("kim_strI",  _kim_strI_cpd,  "Strī-pratyaya (SK454-462)", "kā  (SK454 kim feminine)"),
+    ("adas_strI", _adas_strI_cpd, "Strī-pratyaya (SK454-462)", "asau  (SK454 adas feminine)"),
+    ("Sf_vanip_strI", _Sf_vanip_strI_cpd, "Strī-pratyaya (SK454-462)", "śarvarī  (SK456 4.1.7 vano ra ca: van → NIp + n→r)"),
+    ("dvipAd_strI",   _dvipAd_strI_cpd,   "Strī-pratyaya (SK454-462)", "dvipadī/dvipād  (SK457 4.1.8 pādo'nyatarasyām)"),
+    ("sIman_strI",    _sIman_strI_cpd,    "Strī-pratyaya (SK454-462)", "sīmā  (SK459 4.1.11 manaH: man-final, ṅīp blocked)"),
+    ("bahuyajvan_strI", _bahuyajvan_strI_cpd, "Strī-pratyaya (SK454-462)", "bahuyajvā  (SK460/461 an-bahuvrīhi: ṅīp blocked / opt DAp)"),
+    ("bahurAjan_strI",  _bahurAjan_strI_cpd,  "Strī-pratyaya (SK454-462)", "bahurājñī  (SK462 4.1.28: an-upadhālopin bahuvrīhi, opt ṅīp)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),

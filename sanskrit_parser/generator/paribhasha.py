@@ -465,6 +465,15 @@ def manAnta(s):
     return len(s) >= 3 and s[-3:] == "man"
 
 
+def upaDAlopI(lp):
+    """True if lp is an upadhā-lopin an-final stem: ends in 'an' and 6.4.134
+    (अल्लोपोऽनः) al-lopa is NOT blocked by 6.4.137 (न संयोगाद्वमन्तात्).
+    Encodes 6.4.134's applicability as a precondition for SK462 (4.1.28),
+    which gives optional ṅīp only to upadhālopin an-bahuvrīhi
+    (बहुराजन्→बहुराज्ञी; excludes बहुयज्वन्, where 6.4.137 blocks al-lopa)."""
+    return len(lp) >= 2 and lp[-2:] == "an" and not saMyogapUrvaVamanta(lp)
+
+
 def ns_upadha_hrasva(lp):
     """True if lp ends in hrasva-vowel + n + s (upadhā is short before -ns cluster).
     Used in SK317 (6.4.10) block 1 to prevent firing when upadhā is already dīrgha
