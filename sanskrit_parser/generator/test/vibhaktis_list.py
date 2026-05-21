@@ -1605,12 +1605,15 @@ viBakti["parivrAjaka_strI"] = [
     ['परिव्राजिके',    'परिव्राजिके',       'परिव्राजिकाः'],       # 8 Voc
 ]
 
-# SK463 asuwapaH exception (?!bahuvrIhi guard): the SAME ka-pratyaya stem at the
-# end of a bahuvrīhi takes NO idādeśa → बहुपरिव्राजका (cf. SK example
-# बहुपरिव्राजका नगरी), NOT बहुपरिव्राजिका. Declines like ramA.
-prAtipadika["bahuparivrAjaka_strI"] = [as_purva_pada(bahu), luk_sup,
-                                       in_context(in_compound(parivrAjaka), "bahuvrIhi"),
-                                       strI_abs]   # noqa: F405
+# SK463 asuwapaH exception (?!bahuvrIhi guard): a ka-pratyaya stem at the end of a
+# bahuvrīhi takes NO idādeśa → बहुपरिव्राजका (cf. SK example बहुपरिव्राजका नगरी),
+# NOT बहुपरिव्राजिका. Built RAW (bahu+pari+vrAja+kap) — no pre-formed aka-stem — so
+# this exercises ?bahuvrIhi propagation (like samAsa) through the vrAja+kap merge:
+# bahuvrIhi is set on vrAja, survives the ka-pratyaya merge, and reaches the
+# (bahuparivrAjaka | Ap) window where the guard blocks SK463. Declines like ramA.
+prAtipadika["bahuparivrAjaka_strI"] = [as_purva_pada(bahu), as_purva_pada(pari), luk_sup,
+                                       in_context(in_compound(vrAja), "bahuvrIhi"),
+                                       kap, strI_abs]   # noqa: F405
 viBakti["bahuparivrAjaka_strI"] = [
     ['बहुपरिव्राजका',    'बहुपरिव्राजके',       'बहुपरिव्राजकाः'],       # 1 Nom — idādeśa blocked
     ['बहुपरिव्राजकाम्',  'बहुपरिव्राजके',       'बहुपरिव्राजकाः'],       # 2 Acc

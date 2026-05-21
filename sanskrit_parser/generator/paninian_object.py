@@ -169,7 +169,12 @@ class PaninianObject(SanskritObject):
         # ── Phase 3: Compound lifecycle ───────────────────────────────────────────
 
         # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
-        _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"])
+        # bahuvrIhi rides along like samAsa so it survives intermediate merges
+        # (e.g. vrAja+kap → vrājaka) and reaches the completed compound stem,
+        # letting SK463 (7.3.44) asuwapaH ?!bahuvrIhi guard fire on a derived
+        # bahuvrīhi (बहुपरिव्राजका, not बहुपरिव्राजिका).
+        _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas",
+                           "bahuvrIhi"])
 
         # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
         # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya

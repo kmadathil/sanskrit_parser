@@ -71,8 +71,8 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     # SK454-462 strī-pratyaya stems
     aja, kokila, SUdra, kruYc, uzRih,
     sIman, bahuyajvan, bahu, pAd_ut,
-    # SK463 ka-pratyaya stem (asuwapaH demo)
-    parivrAjaka,
+    # SK463 ka-pratyaya stem (asuwapaH demo) + raw pieces (bahuvrIhi propagation)
+    parivrAjaka, pari, vrAja,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -214,9 +214,11 @@ _sarvika_cpd   = [sarva, kan, strI_abs]  # SK463 idādeśa fires → sarvika
 _yaka_strI_cpd = [yad,   kan, strI_abs]  # SK464 blocks SK463 → yakā
 _saka_strI_cpd = [tad,   kan, strI_abs]  # SK464 blocks; nom sg sakā (7.2.106)
 _parivrAjaka_strI_cpd = [parivrAjaka, strI_abs]  # SK463 fires → parivrājikā
-_bahuparivrAjaka_strI_cpd = [as_purva_pada(bahu), luk_sup,             # SK463 asuwapaH:
-                             in_context(in_compound(parivrAjaka), "bahuvrIhi"),
-                             strI_abs]                                  # ?!bahuvrIhi blocks → bahuparivrājakā
+# SK463 asuwapaH, RAW derivation (bahu+pari+vrAja+kap): ?bahuvrIhi propagates
+# through the vrAja+kap merge → ?!bahuvrIhi guard blocks → bahuparivrājakā.
+_bahuparivrAjaka_strI_cpd = [as_purva_pada(bahu), as_purva_pada(pari), luk_sup,
+                             in_context(in_compound(vrAja), "bahuvrIhi"),
+                             kap, strI_abs]
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────

@@ -577,7 +577,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | yaka_strI | f | yad-derived ka-stem (SK464) | [yad, kan, strI_abs]; yad→ya (7.2.102 before kan), +kan → yaka; SK464 (7.3.45) blocks SK463 → यका (NOT यिका) |
 | saka_strI | f | tad-derived ka-stem (SK464) | [tad, kan, strI_abs]; tad→ta (7.2.102), +kan → taka; SK464 blocks SK463 → takā; nom sg सका via 7.2.106 (tyadAdi propagated through kan), rest त-forms |
 | parivrAjaka_strI | f | ka-pratyaya stem (SK463) | [parivrAjaka, strI_abs]; ṇvul-derivative (aka-final, ?ka_pratyaya); SK463 idādeśa fires → परिव्राजिका (ramā-type) |
-| bahuparivrAjaka_strI | f | bahuvrīhi ka-stem (SK463 asuwapaH) | [as_purva_pada(bahu), luk_sup, in_context(in_compound(parivrAjaka),"bahuvrIhi"), strI_abs]; ?!bahuvrIhi guard blocks SK463 → बहुपरिव्राजका (no idādeśa), declines like ramā |
+| bahuparivrAjaka_strI | f | bahuvrīhi ka-stem (SK463 asuwapaH) | RAW derivation [as_purva_pada(bahu), as_purva_pada(pari), luk_sup, in_context(in_compound(vrAja),"bahuvrIhi"), kap, strI_abs] — no pre-formed aka-stem. ?bahuvrIhi propagates (like samAsa, from first) through the vrAja+kap merge to the (bahuparivrAjaka\|Ap) window where ?!bahuvrIhi blocks SK463 → बहुपरिव्राजका (no idādeśa), declines like ramā |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |

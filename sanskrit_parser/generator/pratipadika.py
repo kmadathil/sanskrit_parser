@@ -73,6 +73,10 @@ bahu = Pratipadika("bahu", "pum")  # SK462: pūrva-pada of बहुराजन
 # SK463 (7.3.44) idādeśa fires standalone (परिव्राजिका) but is blocked by ?!bahuvrIhi
 # when it ends a bahuvrīhi (बहुपरिव्राजका — asuwapaH exception).
 parivrAjaka = Pratipadika("parivrAjaka", "pum", other_tags=["ka_pratyaya"])
+# Raw pieces for deriving (bahu+pari+vrAja+kap) without a pre-formed stem — used to
+# test that ?bahuvrIhi propagates (like samAsa) through the vrAja+kap ka-pratyaya merge.
+pari  = Pratipadika("pari",  "pum")
+vrAja = Pratipadika("vrAja", "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
