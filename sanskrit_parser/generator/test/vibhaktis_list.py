@@ -1590,6 +1590,38 @@ viBakti["saka_strI"] = [
     ['तके',     'तके',         'तकाः'],            # 8 Voc
 ]
 
+# SK463 (7.3.44) fires for a standalone ka-pratyaya stem: parivrAjaka + strI_abs
+# → parivrAjaka + Ap → idādeśa a→i before ka → परिव्राजिका. (ṇvul 'aka' is a
+# pratyaya-stha ka, so SK463 applies; declines like ramA.)
+prAtipadika["parivrAjaka_strI"] = [parivrAjaka, strI_abs]   # noqa: F405
+viBakti["parivrAjaka_strI"] = [
+    ['परिव्राजिका',    'परिव्राजिके',       'परिव्राजिकाः'],       # 1 Nom — idādeśa fires
+    ['परिव्राजिकाम्',  'परिव्राजिके',       'परिव्राजिकाः'],       # 2 Acc
+    ['परिव्राजिकया',   'परिव्राजिकाभ्याम्', 'परिव्राजिकाभिः'],     # 3 Ins
+    ['परिव्राजिकायै',  'परिव्राजिकाभ्याम्', 'परिव्राजिकाभ्यः'],    # 4 Dat
+    ['परिव्राजिकायाः', 'परिव्राजिकाभ्याम्', 'परिव्राजिकाभ्यः'],    # 5 Abl
+    ['परिव्राजिकायाः', 'परिव्राजिकयोः',     'परिव्राजिकानाम्'],    # 6 Gen
+    ['परिव्राजिकायाम्','परिव्राजिकयोः',     'परिव्राजिकासु'],      # 7 Loc
+    ['परिव्राजिके',    'परिव्राजिके',       'परिव्राजिकाः'],       # 8 Voc
+]
+
+# SK463 asuwapaH exception (?!bahuvrIhi guard): the SAME ka-pratyaya stem at the
+# end of a bahuvrīhi takes NO idādeśa → बहुपरिव्राजका (cf. SK example
+# बहुपरिव्राजका नगरी), NOT बहुपरिव्राजिका. Declines like ramA.
+prAtipadika["bahuparivrAjaka_strI"] = [as_purva_pada(bahu), luk_sup,
+                                       in_context(in_compound(parivrAjaka), "bahuvrIhi"),
+                                       strI_abs]   # noqa: F405
+viBakti["bahuparivrAjaka_strI"] = [
+    ['बहुपरिव्राजका',    'बहुपरिव्राजके',       'बहुपरिव्राजकाः'],       # 1 Nom — idādeśa blocked
+    ['बहुपरिव्राजकाम्',  'बहुपरिव्राजके',       'बहुपरिव्राजकाः'],       # 2 Acc
+    ['बहुपरिव्राजकया',   'बहुपरिव्राजकाभ्याम्', 'बहुपरिव्राजकाभिः'],     # 3 Ins
+    ['बहुपरिव्राजकायै',  'बहुपरिव्राजकाभ्याम्', 'बहुपरिव्राजकाभ्यः'],    # 4 Dat
+    ['बहुपरिव्राजकायाः', 'बहुपरिव्राजकाभ्याम्', 'बहुपरिव्राजकाभ्यः'],    # 5 Abl
+    ['बहुपरिव्राजकायाः', 'बहुपरिव्राजकयोः',     'बहुपरिव्राजकानाम्'],    # 6 Gen
+    ['बहुपरिव्राजकायाम्','बहुपरिव्राजकयोः',     'बहुपरिव्राजकासु'],      # 7 Loc
+    ['बहुपरिव्राजके',    'बहुपरिव्राजके',       'बहुपरिव्राजकाः'],       # 8 Voc
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

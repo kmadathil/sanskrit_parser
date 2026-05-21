@@ -285,5 +285,10 @@ test_list_slp1_ru = [
     # SK176: एतत्तदोः सुलोपोऽकोरनञ्समासे हलि (6.1.132) — tad su-lopa (H deleted) before consonant
     (tad, su, vizRu, su, "savizRus"),
     (etad, su, vizRu, su, "ezavizRus"),
+    # SK176 akoḥ exception (अकोः): no su-lopa when the tad/etad stem ends in a
+    # ka-pratyaya (saka/eṣaka via kan, SK463/464). lc is "saka"/"eṣaka", not the
+    # bare "sa"/"eṣa" that 6.1.132 requires, so su-r is preserved → 6.1.114 → 'o'.
+    (tad, kan, su, vizRu, su, "sakovizRus"),    # saka(ḥ) viṣṇuḥ → sako viṣṇuḥ (NOT sa viṣṇuḥ)
+    (etad, kan, su, vizRu, su, "ezakovizRus"),  # eṣaka(ḥ) viṣṇuḥ → eṣako viṣṇuḥ
 ]
 

@@ -1895,7 +1895,9 @@
 # For tad and etad, delete su (= r with ?ru after 8.2.66) before consonant.
 # Fires at (r | hal) junction after 8.2.66 converts su's s→r(?ru), before 6.1.114 or 8.3.15 act.
 # Priority: SPSP 61132 > 61114 (6.1.114) by para kāryam; 61132 < 83015 (8.3.15) by tripādi rule.
-# akoH (ll=k) and nañsamāsa exceptions deferred.
+# akoH (अकोः) exception is handled by the exact lc match (=sa / =eza): a ka-pratyaya
+# stem (saka/eṣaka via kan, SK463/464) has lc "saka"/"eṣaka" ≠ "sa"/"eṣa", so su-r is
+# preserved (sako viṣṇuḥ) — see manual_list.py SK176 akoḥ tests. nañsamāsa still deferred.
 - sutra: एतत्तदोः सुलोपोऽकोरनञ्समासे हलि
   id: 6.1.132
   condition:
@@ -5376,9 +5378,10 @@
 # 463: प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः (7-3-44) — idādeśa
 # 'a' before 'k' of a pratyaya (?ka_pratyaya) → 'i' when Ap follows.
 # Test: sarva + kan + strI_abs → sarvaka + Ap → SK463 → sarvika + Ap → सर्विका.
-# Deferred: bahuvrīhi-interior restriction (asuwapaH) and the vārttikas
-# (māmaka, naraka, dākṣiṇātya/ihatya, kṣipakādi, tārakā, varṇakā, vartakā,
-# aṣṭakā, sūtaka/putrikā/vṛndāraka).
+# asuwapaH (असुपः): no idādeśa when the aka-stem ends a bahuvrīhi (an internal
+# sup intervenes), e.g. बहुपरिव्राजका नगरी. Implemented via the ?!bahuvrIhi guard.
+# Deferred: the vārttikas (māmaka, naraka, dākṣiṇātya/ihatya, kṣipakādi, tārakā,
+# varṇakā, vartakā, aṣṭakā, sūtaka/putrikā/vṛndāraka).
 - sutra: प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः
   id: 7.3.44
   bahiranga: 1   # left-prātipadika substitution; must precede 6.1.101 savarṇa-dīrgha
@@ -5387,6 +5390,7 @@
       - and
       - ?ka_pratyaya
       - $$aka_anta
+      - ?!bahuvrIhi   # asuwapaH: aka-stem at the end of a bahuvrīhi takes no idādeśa
     ll: k
     l: a
     rp: ?Ap

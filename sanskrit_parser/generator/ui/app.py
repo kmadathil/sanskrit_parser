@@ -71,6 +71,8 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     # SK454-462 strī-pratyaya stems
     aja, kokila, SUdra, kruYc, uzRih,
     sIman, bahuyajvan, bahu, pAd_ut,
+    # SK463 ka-pratyaya stem (asuwapaH demo)
+    parivrAjaka,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -211,6 +213,10 @@ _bahurAjan_strI_cpd = [as_purva_pada(bahu), luk_sup,
 _sarvika_cpd   = [sarva, kan, strI_abs]  # SK463 idādeśa fires → sarvika
 _yaka_strI_cpd = [yad,   kan, strI_abs]  # SK464 blocks SK463 → yakā
 _saka_strI_cpd = [tad,   kan, strI_abs]  # SK464 blocks; nom sg sakā (7.2.106)
+_parivrAjaka_strI_cpd = [parivrAjaka, strI_abs]  # SK463 fires → parivrājikā
+_bahuparivrAjaka_strI_cpd = [as_purva_pada(bahu), luk_sup,             # SK463 asuwapaH:
+                             in_context(in_compound(parivrAjaka), "bahuvrIhi"),
+                             strI_abs]                                  # ?!bahuvrIhi blocks → bahuparivrājakā
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
@@ -274,6 +280,8 @@ _STEMS_RAW = [
     ("sarvika",   _sarvika_cpd,   "Strī-pratyaya (SK454-464)", "sarvika  (SK463 7.3.44 idādeśa: sarva+kan → sarvika)"),
     ("yaka_strI", _yaka_strI_cpd, "Strī-pratyaya (SK454-464)", "yakā  (SK464 7.3.45 blocks SK463: yad+kan)"),
     ("saka_strI", _saka_strI_cpd, "Strī-pratyaya (SK454-464)", "sakā/takā  (SK464 blocks SK463: tad+kan)"),
+    ("parivrAjaka_strI", _parivrAjaka_strI_cpd, "Strī-pratyaya (SK454-464)", "parivrājikā  (SK463 idādeśa: ṇvul aka-stem)"),
+    ("bahuparivrAjaka_strI", _bahuparivrAjaka_strI_cpd, "Strī-pratyaya (SK454-464)", "bahuparivrājakā  (SK463 asuwapaH: ?!bahuvrīhi blocks)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),
