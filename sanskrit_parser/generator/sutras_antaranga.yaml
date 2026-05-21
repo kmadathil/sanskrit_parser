@@ -4352,6 +4352,7 @@
      rp:
        - ?viBakti
        - ?strI_abs
+       - ?ka_pratyaya   # SK463/464: yad+kan/tad+kan → ya/sa + kan → SK464 blocks SK463
   xform:
      l: null
   insert:
@@ -5371,6 +5372,41 @@
      rp: ?strI_abs
   update:
      orp: =NIp
+
+# 463: प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः (7-3-44) — idādeśa
+# 'a' before 'k' of a pratyaya (?ka_pratyaya) → 'i' when Ap follows.
+# Test: sarva + kan + strI_abs → sarvaka + Ap → SK463 → sarvika + Ap → सर्विका.
+# Deferred: bahuvrīhi-interior restriction (asuwapaH) and the vārttikas
+# (māmaka, naraka, dākṣiṇātya/ihatya, kṣipakādi, tārakā, varṇakā, vartakā,
+# aṣṭakā, sūtaka/putrikā/vṛndāraka).
+- sutra: प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः
+  id: 7.3.44
+  bahiranga: 1   # left-prātipadika substitution; must precede 6.1.101 savarṇa-dīrgha
+  condition:
+    lp:
+      - and
+      - ?ka_pratyaya
+      - $$aka_anta
+    ll: k
+    l: a
+    rp: ?Ap
+  xform:
+    lc: lc[:-2]+str("ik")
+
+# 464: न यासयोः (7-3-45) — blocks SK463 for yad-/tad-derived stems (यका, सका).
+- sutra: न यासयोः
+  id: 7.3.45
+  bahiranga: 1   # same window as SK463; must also beat 6.1.101 to block in time
+  overrides: 7.3.44
+  condition:
+    lp:
+      - and
+      - ?ka_pratyaya
+      - $$yas_ka_anta
+    ll: k
+    l: a
+    rp: ?Ap
+  xform: null
 
 # 228: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु (6-1-63)
 -   sutra: पद्दन्नोमास्हृन्निशसन्यूषन्दोषन्यकञ्छकन्नुदन्नासञ्छस्प्रभृतिषु

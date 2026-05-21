@@ -160,7 +160,7 @@ class PaninianObject(SanskritObject):
         # --- kṛt suffix classifier tags from last, gated by first being an aNga ---
         # kvin/kvip are omitted here: already propagated by the kvin/kvip DAtu block above.
         if first.hasTag("aNga"):
-            _propagate(last, ["trc", "trn", "kaY", "suc", "van"])
+            _propagate(last, ["trc", "trn", "kaY", "suc", "van", "ka_pratyaya"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
         if last.hasTag("samasta_Ratva"):
@@ -170,6 +170,15 @@ class PaninianObject(SanskritObject):
 
         # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
         _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas"])
+
+        # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
+        # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya
+        # so ordinary tyadāra compounds (tāvat = tad+vatup, tādṛk = tad+dṛś+kvin)
+        # do NOT inherit tyadAdi and keep their normal declension. sarvanAma is
+        # intentionally not propagated either: taka declines as a plain a-stem
+        # (takāyai, not tasyai).
+        if last.hasTag("ka_pratyaya"):
+            _propagate(first, ["tyadAdi"])
 
         # --- pada+pada merge → merged_pada ---
         # Blocks arm-A ṇatva rules (8.4.1/8.4.2/8.4.22) which require ?!merged_pada.

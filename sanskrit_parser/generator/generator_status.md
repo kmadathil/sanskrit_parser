@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 462 — 4.1.28 अन उपधालोपिनोऽन्यतरस्याम् (optional ṅīp for an-final upadhālopin bahuvrīhi)
-**Next to be implemented:** SK 463 (7.3.44 — प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः)
+**Last implemented:** SK 464 — 7.3.45 न यासयोः (blocks the 7.3.44 idādeśa for yad-/tad-derived ka-stems)
+**Next to be implemented:** SK 469 (4.1.14 — अनुपसर्जनात्); skipping SK 465-468 (7.3.46-49, northern-grammarian variants — deferred)
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 316 |
-| Sutras skipped / deferred | 43 |
+| Sutras implemented | 318 |
+| Sutras skipped / deferred | 48 |
 | Sutras uncatalogued / not yet planned | ~67 |
-| **Total sutras accounted for** | **~421** |
-| Stems with full vibhakti test tables | 177 |
+| **Total sutras accounted for** | **~423** |
+| Stems with full vibhakti test tables | 180 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -221,6 +221,8 @@ The "Forms affected" column uses the convention:
 | 460 | 4.1.12 | अनो बहुव्रीहेः | an-final bahuvrīhi (?bahuvrIhi tag) → ṅīp blocked (apavāda to 4.1.5/4.1.7); बहुयज्वन्→बहुयज्वा |
 | 461 | 4.1.13 | डाबुभाभ्यामन्यतरस्याम् | optional DAp after man-final / an-bahuvrīhi; DAp q-it → ṭi-lopa (6.4.143) → ramā-type ā-stem (सीमे, बहुयज्वे) |
 | 462 | 4.1.28 | अन उपधालोपिनोऽन्यतरस्याम् | optional ṅīp for an-final upadhālopin bahuvrīhi (re-permits ṅīp SK460 blocked); ṅīp ṅit → 6.4.134 al-lopa + śacutva → बहुराज्ञी; $$upaDAlopI excludes बहुयज्वन् |
+| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | idādeśa: 'a' before 'k' of a pratyaya (?ka_pratyaya stems via kap/kan) → 'i' when Ap follows. sarva+kan+strI_abs → sarvaka+Ap → सर्विका. bahiranga:1 (beats 6.1.101 savarṇa-dīrgha). $$aka_anta + xform lc[:-2]+"ik" |
+| 464 | 7.3.45 | न यासयोः | blocks 7.3.44 for yad-/tad-derived ka-stems (yad→ya, tad→ta via 7.2.102, +kan → yaka/taka). $$yas_ka_anta (yaka/taka/saka). yakā, takā (nom sg sakā via 7.2.106; tyadAdi propagated through kan) |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
 | 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
@@ -365,6 +367,11 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
 | 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
+| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | Partial — bahuvrīhi-interior (asuwapaH) restriction + vārttikas pending | Standalone non-compound idādeśa implemented (sarvika). Deferred: the "asuw" exclusion (no idādeśa when the aka-stem ends a bahuvrīhi, e.g. बहुपरिव्राजका नगरी) needs internal-sup tracking; vārttikas (māmaka/naraka, dākṣiṇātya/ihatya) not handled |
+| 465 | 7.3.46 | उदीचामातः स्थाने यकपूर्वायाः | For later — northern-grammarian variant | Optional id for the shortened-ā (केऽणः 7.4.13) when preceded by yak/ka (āryikā, caṭakikā). Needs the केऽणः ka-hrasva chain + preceding-yak detection; same ka-affix infra as SK463 plus extra context |
+| 466 | 7.3.47 | भस्त्रैषाजाज्ञाद्वास्वा नञ्पूर्वाणामपि | For later — northern-grammarian variant | Optional id for the listed stems (bhastrā, eṣā, ajā, jñā, dvā, svā) and their nañ-compounds; lexically-restricted, needs the same shortened-ā chain |
+| 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
+| 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
 | 458 | 4.1.9 | टाबृचि | For later — requires ṛk-meter semantic context (ऋचि वाच्यायाम्) | TAp after pād-final feminine in the sense of an ṛk verse (द्विपदा ऋक्); engine has no semantic tracking, would emit a spurious द्विपदा for dvipAd_strI |
 | 456 | 4.1.7 | वनो र च | Partial — vārttikas pending | "vano na haśaḥ" (no NIp/n→r when van follows a haś-pratyāhāra consonant in the underlying dhātu, e.g. sahayudhvan f. = sahayudhvā) and "bahuvrīhau vā" (optional NIp in bahuvrīhi, e.g. bahudhīvarī ~ bahudhīvā via ḍāp) — deferred; require dhātu-history tracking and a bahuvrīhi tag respectively |
 | 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
@@ -566,6 +573,9 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | sIman | f | man-final n-stem (SK459/461) | [sIman, strI_abs]; SK459 (4.1.11) blocks ṅīp → halanta n-stem feminine (सीमा, सीमानौ, सीम्नः); SK461 (4.1.13) optional DAp → ramā-type ā-stem (सीमा, सीमे) |
 | bahuyajvan_strI | f | an-final bahuvrīhi (SK460/461) | [bahuyajvan, strI_abs]; prebuilt ?bahuvrIhi/?samasta_pada/?van; SK460 (4.1.12) blocks ṅīp (overrides 4.1.5/4.1.7) → halanta (बहुयज्वा, 6.4.137 keeps weak stem यज्वन्); SK461 optional DAp → बहुयज्वे |
 | bahurAjan_strI | f | an-final upadhālopin bahuvrīhi (SK462) | [as_purva_pada(bahu), luk_sup, in_context(in_compound(rAjan),"bahuvrīhi"), strI_abs]; real बहु+राजन् compound; 3-way fork — ṅīp (SK462→बहुराज्ञी), DAp (SK461→बहुराजा), an-stem niṣedha (SK460→बहुराजानौ) |
+| sarvika | f | ka-pratyaya a-stem (SK463) | [sarva, kan, strI_abs]; SK463 (7.3.44) idādeśa: sarva+kan → sarvaka, then a→i before ka-pratyaya when Ap follows → सर्विका (ramā-type; gen pl सर्विकाणाम् via ṇatva) |
+| yaka_strI | f | yad-derived ka-stem (SK464) | [yad, kan, strI_abs]; yad→ya (7.2.102 before kan), +kan → yaka; SK464 (7.3.45) blocks SK463 → यका (NOT यिका) |
+| saka_strI | f | tad-derived ka-stem (SK464) | [tad, kan, strI_abs]; tad→ta (7.2.102), +kan → taka; SK464 blocks SK463 → takā; nom sg सका via 7.2.106 (tyadAdi propagated through kan), rest त-forms |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |

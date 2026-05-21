@@ -195,7 +195,10 @@ anIya= Pratyaya("anIya", its=[], other_tags=["kft", "anIYa"])
 # pāśap, kalpap, kap, kāmyac — share tag "satva_t" used as condition in YAML
 pASap  = Pratyaya("pASa",  its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
 kalpap = Pratyaya("kalpa", its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
-kap  = Pratyaya("ka",     its=["p"], other_tags=["svAdi", "tadDita", "satva_t"])
+kap  = Pratyaya("ka",     its=["p"], other_tags=["svAdi", "tadDita", "satva_t", "ka_pratyaya"])
+# kan (5.3.75 saMjJAyAm kan; 5.3.87 etc.) — ka with anubandha n. SK463 (7.3.44)
+# idādeśa applies before Ap on ?ka_pratyaya stems (sarva+kan → sarvika+Ap).
+kan  = Pratyaya("ka",     its=["n"], other_tags=["svAdi", "tadDita", "ka_pratyaya"])
 kAmyac = Pratyaya("kAmya", its=["c"], other_tags=["svAdi", "tadDita", "satva_t"])
 
 

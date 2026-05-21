@@ -1546,6 +1546,50 @@ viBakti["bahurAjan_strI"] = [
     [['बहुराजन्', 'बहुराजे', 'बहुराज्ञि'],            ['बहुराजानौ', 'बहुराजे', 'बहुराज्ञ्यौ'], ['बहुराजाः', 'बहुराजानः', 'बहुराज्ञ्यः']],   # 8 Voc
 ]
 
+# SK463 (7.3.44 idādeśa) test: sarva + kan + strI_abs → sarvaka + Ap →
+# a→i before ka-pratyaya → sarvika + Ap → सर्विका. Declines like ramA.
+prAtipadika["sarvika"] = [sarva, kan, strI_abs]   # noqa: F405
+viBakti["sarvika"] = [
+    ['सर्विका',     'सर्विके',         'सर्विकाः'],            # 1 Nom
+    ['सर्विकाम्',   'सर्विके',         'सर्विकाः'],            # 2 Acc
+    ['सर्विकया',    'सर्विकाभ्याम्',   'सर्विकाभिः'],          # 3 Ins
+    ['सर्विकायै',   'सर्विकाभ्याम्',   'सर्विकाभ्यः'],         # 4 Dat
+    ['सर्विकायाः',  'सर्विकाभ्याम्',   'सर्विकाभ्यः'],         # 5 Abl
+    ['सर्विकायाः',  'सर्विकयोः',       'सर्विकाणाम्'],         # 6 Gen — 8.4.1 ṇatva (r…n→ṇ)
+    ['सर्विकायाम्', 'सर्विकयोः',       'सर्विकासु'],           # 7 Loc
+    ['सर्विके',     'सर्विके',         'सर्विकाः'],            # 8 Voc
+]
+
+# SK464 (7.3.45) blocker: yad + kan + strI_abs → ya (7.2.102) + kan →
+# yaka + Ap → yakā (NOT yikā — SK464 blocks SK463 for yaka-/saka-stems).
+prAtipadika["yaka_strI"] = [yad, kan, strI_abs]   # noqa: F405
+viBakti["yaka_strI"] = [
+    ['यका',     'यके',         'यकाः'],            # 1 Nom
+    ['यकाम्',   'यके',         'यकाः'],            # 2 Acc
+    ['यकया',    'यकाभ्याम्',   'यकाभिः'],          # 3 Ins
+    ['यकायै',   'यकाभ्याम्',   'यकाभ्यः'],         # 4 Dat
+    ['यकायाः',  'यकाभ्याम्',   'यकाभ्यः'],         # 5 Abl
+    ['यकायाः',  'यकयोः',       'यकानाम्'],         # 6 Gen
+    ['यकायाम्', 'यकयोः',       'यकासु'],           # 7 Loc
+    ['यके',     'यके',         'यकाः'],            # 8 Voc
+]
+
+# SK464 (7.3.45) blocker: tad + kan + strI_abs → ta (7.2.102) + kan →
+# taka + Ap → takā. 7.2.106 (तदोः सः सावनन्त्ययोः) fires only before सु
+# (nom sg), so the nom-sg form is सका but all other vibhaktis keep the
+# 't' (cf. existing tad_strI paradigm — nom sg सा, rest ता-).
+prAtipadika["saka_strI"] = [tad, kan, strI_abs]   # noqa: F405
+viBakti["saka_strI"] = [
+    ['सका',     'तके',         'तकाः'],            # 1 Nom — 7.2.106 t→s before su (tyadAdi propagated through kan)
+    ['तकाम्',   'तके',         'तकाः'],            # 2 Acc
+    ['तकया',    'तकाभ्याम्',   'तकाभिः'],          # 3 Ins
+    ['तकायै',   'तकाभ्याम्',   'तकाभ्यः'],         # 4 Dat
+    ['तकायाः',  'तकाभ्याम्',   'तकाभ्यः'],         # 5 Abl
+    ['तकायाः',  'तकयोः',       'तकानाम्'],         # 6 Gen
+    ['तकायाम्', 'तकयोः',       'तकासु'],           # 7 Loc
+    ['तके',     'तके',         'तकाः'],            # 8 Voc
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

@@ -465,6 +465,23 @@ def manAnta(s):
     return len(s) >= 3 and s[-3:] == "man"
 
 
+def aka_anta(s):
+    """SK463 (7.3.44): True if s ends in 'aka' (literal). Used together with
+    ?ka_pratyaya to confirm the 'a' before pratyaya-k exists so the idādeśa
+    a→i can fire (sarva+kan → sarvaka → sarvika)."""
+    return len(s) >= 3 and s[-3:] == "aka"
+
+
+def yas_ka_anta(s):
+    """SK464 (7.3.45 न यासयोः): True if s ends in a yad-/tad-class ka-stem.
+    Pāṇini's "yas" = ya (from yad) + sa (from tad via t→s). In the engine
+    pipeline, 7.2.106 (तदोः सः सावनन्त्ययोः) fires only before सु, so at the
+    SK463 (7.3.44) firing window the tad-stem is still 'ta' — not 'sa'.
+    We therefore match yaka, taka, AND saka (the latter for safety in case
+    t→s ever fires earlier in a future refactor)."""
+    return len(s) >= 4 and s[-4:] in ("yaka", "taka", "saka")
+
+
 def upaDAlopI(lp):
     """True if lp is an upadhā-lopin an-final stem: ends in 'an' and 6.4.134
     (अल्लोपोऽनः) al-lopa is NOT blocked by 6.4.137 (न संयोगाद्वमन्तात्).
