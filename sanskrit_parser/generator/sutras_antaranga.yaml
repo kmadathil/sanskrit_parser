@@ -2917,18 +2917,16 @@
   xform:
      l: null
 
-# 472: हलस्तद्धितस्य (6-4-150) — the taddhita ya-kāra (yañ), after hal, is elided
-# before ṅīp ī. No bahiranga needed: 6.4.148 (यस्येति च) fires first on gArgya|ī
-# dropping the 'a' → gArgy|ī; then 6.4.150 fires on gArgy|ī (l='y' now) and deletes
-# the 'y' → gArg|ī → गार्गी.
+# 472: हलस्तद्धितस्य (6-4-150) — a taddhita ya-kāra after hal is elided before ṅīp ī.
+# General rule (any taddhita-ya, not only yañ). No bahiranga needed: 6.4.148
+# (यस्येति च) fires first on gArgya|ī dropping the 'a' → gArgy|ī; then 6.4.150 fires
+# on gArgy|ī (ll=hal 'g', l='y') and deletes the 'y' → gArg|ī → गार्गी.
 - sutra: हलस्तद्धितस्य
   id: 6.4.150
   condition:
-     lp:
-       - and
-       - ?aNga
-       - ?yaY
-       - $$hal_taddhita_ya   # lp ends hal + 'y' (the 'a' already gone via 6.4.148)
+     lp: ?aNga
+     ll: _hal   # ya preceded by a consonant (हलः)
+     l: y       # the taddhita ya, now final after 6.4.148 dropped its 'a'
      rp: ?NI
   xform:
      l: null   # delete the now-final taddhita 'y'
@@ -5411,23 +5409,23 @@
      orp: =NIp
 
 # 470: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः (4-1-15)
-# ṅīp for a-final stems ending in a ṭiṭ/ḍha/aṇ/añ/dvayasac/daghnac/mātrac/tayap/
-# ṭhak/ṭhañ/kañ/kvarap taddhita affix. Apavāda to 4.1.4 (ṭāp). The 11 explicitly
-# named affixes carry ?NIp_taddhita (propagated to the merged stem); the ṭiṭ class
-# is matched by the +w it-marker (survives via the taddhita setIt loop).
-# Examples: ऐन्द्री (aṇ), औत्सी (añ), ऊरुद्वयसी, पञ्चतयी, आक्षिकी (ṭhak), यादृशी (kañ).
+# ṅīp for a-final stems ending in a named taddhita affix. Apavāda to 4.1.4 (ṭāp).
+# Implemented affixes carry ?NIp_taddhita (propagated to the merged stem):
+# aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री),
+# tayap (पञ्चतयी), kañ (यादृशी, reuses kaY).
+# DEFERRED arms of the sūtra (see generator_status.md Skipped table):
+#   ṭiṭ — the only ṭ-it affix (wac) is pum-only and does not propagate its ṭ-it,
+#         so a +w condition would be dead code; ḍha (needs 7.1.2 ḍh→eya),
+#         ṭhak/ṭhañ (8.2.29 misfire), kvarap (needs 6.1.71 tuk).
 - sutra: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः
   domain: prakfti
   bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.15
   overrides: 4.1.4
   condition:
-    - lp: ?NIp_taddhita
-      l: a
-      rp: ?strI_abs
-    - lp: +w               # ṭiṭ class: any ṭ-it affix, a-final
-      l: a
-      rp: ?strI_abs
+     lp: ?NIp_taddhita
+     l: a
+     rp: ?strI_abs
   update:
      orp: =NIp
 
