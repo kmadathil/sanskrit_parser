@@ -83,6 +83,13 @@ utsa  = Pratipadika("utsa",  "pum")
 Uru   = Pratipadika("Uru",   "pum")
 paYca = Pratipadika("paYca", "pum")
 garga = Pratipadika("garga", "pum")
+# vidyA: SK472 negative test base — विद्या + अण् → वैद्य (the 'ya' is base-internal,
+# NOT a taddhita ya), so ṅīp gives वैद्यी (no ya-lopa), cf. SC Vasu.
+vidyA = Pratipadika("vidyA", "strI")
+# kuru + car: SK470 ṭiṭ (टित्) test — कुरुचर + ṅīp → कुरुचरी. The ṭit affix is modelled
+# with wac (टच्, the available ṭ-it samāsānta affix); strictly कुरुचर is चरेष्टः (3.2.16) ट.
+kuru = Pratipadika("kuru", "pum")
+car  = Pratipadika("car",  "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

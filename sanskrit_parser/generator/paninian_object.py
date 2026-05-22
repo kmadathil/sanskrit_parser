@@ -165,7 +165,7 @@ class PaninianObject(SanskritObject):
             # The ṭiṭ-class needs no entry — the ṭ-it survives via the taddhita setIt
             # loop (line ~128), so SK470's +w condition matches the merged stem.
             _propagate(last, ["trc", "trn", "kaY", "suc", "van", "ka_pratyaya",
-                              "NIp_taddhita", "yaY"])
+                              "NIp_taddhita", "yaY", "tadDita_ya"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
         if last.hasTag("samasta_Ratva"):

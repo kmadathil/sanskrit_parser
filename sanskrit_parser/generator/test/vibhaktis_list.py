@@ -1727,6 +1727,36 @@ viBakti["gArgI"] = [
     ["गार्गि", "गार्ग्यौ", "गार्ग्यः"],
 ]
 
+# SK472 NEGATIVE test (SC Vasu): vidyā + aṇ → वैद्य — the 'ya' is base-internal, NOT
+# a taddhita ya-affix, so the ?tadDita_ya guard blocks 6.4.150: ṅīp gives वैद्यी
+# (the 'य' is RETAINED throughout: वैद्यी/वैद्य्यौ), NOT वैदी.
+prAtipadika["vEdyI"] = [vidyA, aR_t, strI_abs]   # noqa: F405
+viBakti["vEdyI"] = [
+    ["वैद्यी", "वैद्य्यौ", "वैद्य्यः"],
+    ["वैद्यीम्", "वैद्य्यौ", "वैद्यीः"],
+    ["वैद्य्या", "वैद्यीभ्याम्", "वैद्यीभिः"],
+    ["वैद्य्यै", "वैद्यीभ्याम्", "वैद्यीभ्यः"],
+    ["वैद्य्याः", "वैद्यीभ्याम्", "वैद्यीभ्यः"],
+    ["वैद्य्याः", "वैद्य्योः", "वैद्यीनाम्"],
+    ["वैद्य्याम्", "वैद्य्योः", "वैद्यीषु"],
+    ["वैद्यि", "वैद्य्यौ", "वैद्य्यः"],
+]
+
+# SK470 ṭiṭ (टित्) arm: कुरुचर + ṅīp → कुरुचरी. The ṭ-it of the affix propagates to the
+# merged stem (via the krt/tadDita setIt loop) so the SK470 +w block fires. The affix
+# is modelled with wac (टच्); strictly कुरुचर is चरेष्टः (3.2.16) ट. Declines nadī-type.
+prAtipadika["kurucarI"] = [as_purva_pada(kuru), luk_sup, in_compound(car), wac, strI_abs]   # noqa: F405
+viBakti["kurucarI"] = [
+    ["कुरुचरी", "कुरुचर्यौ", "कुरुचर्यः"],
+    ["कुरुचरीम्", "कुरुचर्यौ", "कुरुचरीः"],
+    ["कुरुचर्या", "कुरुचरीभ्याम्", "कुरुचरीभिः"],
+    ["कुरुचर्यै", "कुरुचरीभ्याम्", "कुरुचरीभ्यः"],
+    ["कुरुचर्याः", "कुरुचरीभ्याम्", "कुरुचरीभ्यः"],
+    ["कुरुचर्याः", "कुरुचर्योः", "कुरुचरीणाम्"],
+    ["कुरुचर्याम्", "कुरुचर्योः", "कुरुचरीषु"],
+    ["कुरुचरि", "कुरुचर्यौ", "कुरुचर्यः"],
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

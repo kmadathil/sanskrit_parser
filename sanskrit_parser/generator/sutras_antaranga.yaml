@@ -2918,15 +2918,19 @@
      l: null
 
 # 472: हलस्तद्धितस्य (6-4-150) — a taddhita ya-kāra after hal is elided before ṅīp ī.
-# General rule (any taddhita-ya, not only yañ). No bahiranga needed: 6.4.148
-# (यस्येति च) fires first on gArgya|ī dropping the 'a' → gArgy|ī; then 6.4.150 fires
-# on gArgy|ī (ll=hal 'g', l='y') and deletes the 'y' → gArg|ī → गार्गी.
+# General over the taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a
+# base-internal 'y' is NOT elided (विद्या+अण् → वैद्य → वैद्यी, not वैदी — SC Vasu).
+# No bahiranga needed: 6.4.148 (यस्येति च) fires first on gArgya|ī dropping the 'a'
+# → gArgy|ī; then 6.4.150 fires on gArgy|ī (ll=hal 'g', l='y') deleting 'y' → गार्गी.
 - sutra: हलस्तद्धितस्य
   id: 6.4.150
   condition:
-     lp: ?aNga
-     ll: _hal   # ya preceded by a consonant (हलः)
-     l: y       # the taddhita ya, now final after 6.4.148 dropped its 'a'
+     lp:
+       - and
+       - ?aNga
+       - ?tadDita_ya   # the final ya must be a taddhita ya-affix, not a base 'y'
+     ll: _hal          # ya preceded by a consonant (हलः)
+     l: y              # the taddhita ya, now final after 6.4.148 dropped its 'a'
      rp: ?NI
   xform:
      l: null   # delete the now-final taddhita 'y'
@@ -5413,19 +5417,22 @@
 # Implemented affixes carry ?NIp_taddhita (propagated to the merged stem):
 # aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री),
 # tayap (पञ्चतयी), kañ (यादृशी, reuses kaY).
-# DEFERRED arms of the sūtra (see generator_status.md Skipped table):
-#   ṭiṭ — the only ṭ-it affix (wac) is pum-only and does not propagate its ṭ-it,
-#         so a +w condition would be dead code; ḍha (needs 7.1.2 ḍh→eya),
-#         ṭhak/ṭhañ (8.2.29 misfire), kvarap (needs 6.1.71 tuk).
+# The ṭiṭ (टित्) class is matched by the +w it-marker on the merged stem (it
+# propagates via the krt/tadDita setIt loop): e.g. कुरुचरी (kuru+√car+wac).
+# DEFERRED arms (see generator_status.md Skipped table): ḍha (needs 7.1.2 ḍh→eya),
+# ṭhak/ṭhañ (8.2.29 misfire), kvarap (needs 6.1.71 tuk).
 - sutra: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः
   domain: prakfti
   bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.15
   overrides: 4.1.4
   condition:
-     lp: ?NIp_taddhita
-     l: a
-     rp: ?strI_abs
+    - lp: ?NIp_taddhita    # named affixes: aṇ/añ/dvayasac/daghnac/mātrac/tayap/kañ
+      l: a
+      rp: ?strI_abs
+    - lp: +w               # ṭiṭ class: stem ending in a ṭ-it affix (e.g. wac → kurucarī)
+      l: a
+      rp: ?strI_abs
   update:
      orp: =NIp
 

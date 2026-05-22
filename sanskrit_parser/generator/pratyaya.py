@@ -62,11 +62,14 @@ ati_upasarga = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 
 # bha when applied to prAtipadikas only!
 # FIXME - maybe have two yats?
-yat_t = Pratyaya("ya", its=["t"], other_tags=["svAdi", "tadDita"])
-zyaY_t = Pratyaya("ya", its=["z", "Y"], other_tags=["svAdi", "tadDita"])
-# yaY_t (yañ): SK471 (4.1.16 यञश्च) → ṅīp. The yaY tag is propagated to the merged
-# stem (like NIp_taddhita) so SK471 / SK472 can detect a yañ-derived stem.
-yaY_t = Pratyaya("ya", its=["Y"], other_tags=["svAdi", "tadDita", "yaY"])
+# tadDita_ya: shared tag on the taddhita affixes whose content is "ya" (yat/ṣyañ/yañ).
+# SK472 (6.4.150 हलस्तद्धितस्य) elides only this taddhita ya-kāra before ṅīp ī — NOT a
+# base-internal 'y' (e.g. विद्या+अण् → वैद्य, where the ya is from the base, gives वैद्यी).
+yat_t = Pratyaya("ya", its=["t"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
+zyaY_t = Pratyaya("ya", its=["z", "Y"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
+# yaY_t (yañ): SK471 (4.1.16 यञश्च) → ṅīp (needs the yañ-specific ?yaY tag); SK472
+# elides its ya via ?tadDita_ya. Both tags propagate to the merged stem.
+yaY_t = Pratyaya("ya", its=["Y"], other_tags=["svAdi", "tadDita", "yaY", "tadDita_ya"])
 # aR_t (aṇ): one of the SK470 (4.1.15) ṅīp-triggering taddhita affixes.
 aR_t = Pratyaya("a", its=["R"], other_tags=["svAdi", "tadDita", "NIp_taddhita"])
 
@@ -199,7 +202,10 @@ UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 
 
 # wac - for rAjan, ahan and saKi in samAsa
-wac = Pratyaya("a", its=["w", "c"], other_tags=["svAdi", "wac", "pum"])
+# wac (टच्): samāsānta affix. Tagged tadDita (समासान्त affixes are taddhita) so the
+# krt/tadDita-gated setIt loop in join_objects propagates its ṭ-it (w) to the merged
+# stem — enabling SK470's ṭiṭ (+w) arm (kurucarī etc.).
+wac = Pratyaya("a", its=["w", "c"], other_tags=["svAdi", "tadDita", "wac", "pum"])
 
 
 
