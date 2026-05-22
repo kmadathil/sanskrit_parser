@@ -77,6 +77,12 @@ parivrAjaka = Pratipadika("parivrAjaka", "pum", other_tags=["ka_pratyaya"])
 # test that ?bahuvrIhi propagates (like samAsa) through the vrAja+kap ka-pratyaya merge.
 pari  = Pratipadika("pari",  "pum")
 vrAja = Pratipadika("vrAja", "pum")
+# SK470/471 (4.1.15/16) taddhita-ṅīp test bases: aindra (indra+aṇ), autsa (utsa+añ),
+# ūru+dvayasac/daghnac/mātrac, pañca+tayap, gārga (garga+yañ). indra/yad/dfS exist.
+utsa  = Pratipadika("utsa",  "pum")
+Uru   = Pratipadika("Uru",   "pum")
+paYca = Pratipadika("paYca", "pum")
+garga = Pratipadika("garga", "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

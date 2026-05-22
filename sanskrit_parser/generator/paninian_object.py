@@ -160,7 +160,12 @@ class PaninianObject(SanskritObject):
         # --- kṛt suffix classifier tags from last, gated by first being an aNga ---
         # kvin/kvip are omitted here: already propagated by the kvin/kvip DAtu block above.
         if first.hasTag("aNga"):
-            _propagate(last, ["trc", "trn", "kaY", "suc", "van", "ka_pratyaya"])
+            # NIp_taddhita (SK470 4.1.15) and yaY (SK471 4.1.16) ride along so the
+            # ṅīp-triggering affix class reaches the merged stem (aindra, gārgya …).
+            # The ṭiṭ-class needs no entry — the ṭ-it survives via the taddhita setIt
+            # loop (line ~128), so SK470's +w condition matches the merged stem.
+            _propagate(last, ["trc", "trn", "kaY", "suc", "van", "ka_pratyaya",
+                              "NIp_taddhita", "yaY"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
         if last.hasTag("samasta_Ratva"):

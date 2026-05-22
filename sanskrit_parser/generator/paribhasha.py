@@ -482,6 +482,15 @@ def yas_ka_anta(s):
     return len(s) >= 4 and s[-4:] in ("yaka", "taka", "saka")
 
 
+def hal_taddhita_ya(lp):
+    """SK472 (6.4.150 हलस्तद्धितस्य): True if lp ends in hal + 'y' + 'a' — i.e. the
+    taddhita ya-kāra (yañ) is upadhā ('y' penultimate, before final 'a') and
+    preceded by a consonant (hal). gArgya → True (…r-g-y-a); excludes a ya
+    preceded by a vowel. The 'y' is then elided before ṅīp ī → गार्गी."""
+    return (len(lp) >= 3 and lp[-1] in "aAiIuUfFxXeEoO"
+            and lp[-2] == "y" and isInPratyahara("hal", lp[-3]))
+
+
 def upaDAlopI(lp):
     """True if lp is an upadhā-lopin an-final stem: ends in 'an' and 6.4.134
     (अल्लोपोऽनः) al-lopa is NOT blocked by 6.4.137 (न संयोगाद्वमन्तात्).

@@ -2900,8 +2900,8 @@
   xform:
      l: guna(l)
 
-# 311: यस्येति च (6-4-148) 
-- sutra: यस्येति च 
+# 311: यस्येति च (6-4-148)
+- sutra: यस्येति च
   id: 6.4.148
   condition:
     -  lp:
@@ -2916,6 +2916,23 @@
         - ?NI  # औङः श्यां प्रतिषेधो वाच्यः rules out SI. That leaves only NIp/z/n
   xform:
      l: null
+
+# 472: हलस्तद्धितस्य (6-4-150) — the taddhita ya-kāra (yañ), upadhā and preceded by
+# hal, is elided before ṅīp ī. bahiranga:1 so it fires before 6.4.148 at the shared
+# (gArgya|ī) window: 6.4.150 drops the upadhā 'y' → gArga|ī, then 6.4.148 drops the
+# 'a' → gArg|ī → गार्गी. (Default priority lets 6.4.148 win the window otherwise.)
+- sutra: हलस्तद्धितस्य
+  id: 6.4.150
+  bahiranga: 1
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?yaY
+       - $$hal_taddhita_ya
+     rp: ?NI
+  xform:
+     lc: lc[:-1]   # drop the upadhā 'y' (lc ends "…Cy" → "…C"); final 'a' stays for 6.4.148
 
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
@@ -4874,6 +4891,18 @@
   xform:
      lc: adivriddhi(lc)
 
+# SK1170 (7.3.50 ठस्येकः) — the ठ (ṭh) of a taddhita affix → इक.
+# Pulled in out-of-SK-order: prerequisite for SK470's ṭhak/ṭhañ arm (आक्षिकी, लावणिकी).
+# At the (aṅga | Wak/WaY) window r='W' (ठ); replace with "ik" so r+rc = "ik"+"a" = "ika".
+- sutra: ठस्येकः
+  id: 7.3.50
+  condition:
+     lp: ?aNga
+     r: W
+     rp: ?tadDita
+  xform:
+     r: str("ik")
+
 
 # End taddhita aDikAra
 # End aNga aDikAra
@@ -5250,6 +5279,13 @@
 # Commentary: अधिकारोऽयम् — "in the feminine"; scope for SK454+.
 # The domain: prakfti mechanism covers this.
 
+# 469: अनुपसर्जनात् (4-1-14) — adhikāra only; no YAML rule needed.
+# Governs that the strī affixes apply to an anupasarjana (non-subordinate)
+# prātipadika, and (per the commentary's jñāpana) by तदन्तविधि to a stem *ending
+# in* the affixes named by SK470 (4.1.15) — which is what lets aindra/gārgya etc.
+# take ṅīp. The anupasarjana restriction is naturally honoured: strī affixes
+# attach to the head stem, not to a compound-internal upasarjana member.
+
 # 454: अजाद्यतष्टाप् (4-1-4)
 # olp: +TAp_added marks the stem so 7.2.102/103 can avoid re-firing on the post-TAp
 # stem (etA/imā/kā etc.). This is distinct from a pre-baked ?Ap tag on stems like
@@ -5371,6 +5407,42 @@
        - $$upaDAlopI
      ll: a
      l: n
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
+# 470: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः (4-1-15)
+# ṅīp for a-final stems ending in a ṭiṭ/ḍha/aṇ/añ/dvayasac/daghnac/mātrac/tayap/
+# ṭhak/ṭhañ/kañ/kvarap taddhita affix. Apavāda to 4.1.4 (ṭāp). The 11 explicitly
+# named affixes carry ?NIp_taddhita (propagated to the merged stem); the ṭiṭ class
+# is matched by the +w it-marker (survives via the taddhita setIt loop).
+# Examples: ऐन्द्री (aṇ), औत्सी (añ), ऊरुद्वयसी, पञ्चतयी, आक्षिकी (ṭhak), यादृशी (kañ).
+- sutra: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.15
+  overrides: 4.1.4
+  condition:
+    - lp: ?NIp_taddhita
+      l: a
+      rp: ?strI_abs
+    - lp: +w               # ṭiṭ class: any ṭ-it affix, a-final
+      l: a
+      rp: ?strI_abs
+  update:
+     orp: =NIp
+
+# 471: यञश्च (4-1-16) — ṅīp after a yañ-final stem. Apavāda to 4.1.4.
+# ?yaY is set on yaY_t and propagated to the merged stem (गार्ग्य). The taddhita-ya
+# is then elided by SK472 (6.4.150) before ī → गार्गी.
+- sutra: यञश्च
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.16
+  overrides: 4.1.4
+  condition:
+     lp: ?yaY
+     l: a
      rp: ?strI_abs
   update:
      orp: =NIp

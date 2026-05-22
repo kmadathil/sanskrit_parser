@@ -73,6 +73,8 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     sIman, bahuyajvan, bahu, pAd_ut,
     # SK463 ka-pratyaya stem (asuwapaH demo) + raw pieces (bahuvrIhi propagation)
     parivrAjaka, pari, vrAja,
+    # SK470/471 taddhita-ṅīp test bases
+    indra, utsa, paYca, garga,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -90,6 +92,8 @@ from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     pum_abs, napum_abs, strI_abs,
     # taddhita from prātipadika
     yat_t, zyaY_t, yaY_t, aR_t,
+    # SK470 taddhita ṅīp-triggering affixes
+    aY_t, dvayasac, tayap,
     # ka-pratyaya taddhita (SK463/464)
     kan,
     # van-class kṛt
@@ -220,6 +224,13 @@ _bahuparivrAjaka_strI_cpd = [as_purva_pada(bahu), as_purva_pada(pari), luk_sup,
                              in_context(in_compound(vrAja), "bahuvrIhi"),
                              kap, strI_abs]
 
+# SK470/471 (4.1.15/16) taddhita-ṅīp demos — a-final taddhita stems → ṅīp (nadī-type)
+_aindra_strI_cpd = [indra, aR_t, strI_abs]            # SK470 aṇ → ऐन्द्री
+_autsa_strI_cpd  = [utsa, aY_t, strI_abs]             # SK470 añ → औत्सी
+_paYcatayI_cpd   = [paYca, tayap, strI_abs]           # SK470 tayap → पञ्चतयी
+_yAdfSI_cpd      = [yad, su, in_compound(dfS), kaY, strI_abs]  # SK470 kañ → यादृशी
+_gArgI_cpd       = [garga, yaY_t, strI_abs]           # SK471+SK472 yañ → गार्गी
+
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
     ("rAma",     rAma,        "a-stems (pum)",    "rāma  (rāma-)"),
@@ -284,6 +295,11 @@ _STEMS_RAW = [
     ("saka_strI", _saka_strI_cpd, "Strī-pratyaya (SK454-464)", "sakā/takā  (SK464 blocks SK463: tad+kan)"),
     ("parivrAjaka_strI", _parivrAjaka_strI_cpd, "Strī-pratyaya (SK454-464)", "parivrājikā  (SK463 idādeśa: ṇvul aka-stem)"),
     ("bahuparivrAjaka_strI", _bahuparivrAjaka_strI_cpd, "Strī-pratyaya (SK454-464)", "bahuparivrājakā  (SK463 asuwapaH: ?!bahuvrīhi blocks)"),
+    ("aindra_strI", _aindra_strI_cpd, "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "aindrī  (SK470 aṇ)"),
+    ("autsa_strI",  _autsa_strI_cpd,  "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "autsī  (SK470 añ)"),
+    ("paYcatayI",   _paYcatayI_cpd,   "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "pañcatayī  (SK470 tayap)"),
+    ("yAdfSI",      _yAdfSI_cpd,      "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "yādṛśī  (SK470 kañ)"),
+    ("gArgI",       _gArgI_cpd,       "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "gārgī  (SK471 yañ + SK472 ya-lopa)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),

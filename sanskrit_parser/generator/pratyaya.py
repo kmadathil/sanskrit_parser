@@ -64,8 +64,25 @@ ati_upasarga = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 # FIXME - maybe have two yats?
 yat_t = Pratyaya("ya", its=["t"], other_tags=["svAdi", "tadDita"])
 zyaY_t = Pratyaya("ya", its=["z", "Y"], other_tags=["svAdi", "tadDita"])
-yaY_t = Pratyaya("ya", its=["Y"], other_tags=["svAdi", "tadDita"])
-aR_t = Pratyaya("a", its=["R"], other_tags=["svAdi", "tadDita"])
+# yaY_t (yañ): SK471 (4.1.16 यञश्च) → ṅīp. The yaY tag is propagated to the merged
+# stem (like NIp_taddhita) so SK471 / SK472 can detect a yañ-derived stem.
+yaY_t = Pratyaya("ya", its=["Y"], other_tags=["svAdi", "tadDita", "yaY"])
+# aR_t (aṇ): one of the SK470 (4.1.15) ṅīp-triggering taddhita affixes.
+aR_t = Pratyaya("a", its=["R"], other_tags=["svAdi", "tadDita", "NIp_taddhita"])
+
+# SK470 (4.1.15 टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः): a-final stems ending in
+# these taddhita affixes take ṅīp (apavāda to 4.1.4 ṭāp). Shared tag NIp_taddhita
+# drives one SK470 condition block; ādivṛddhi (7.2.117) fires for the +R/+Y ones.
+# (aṇ = aR_t above; kañ = kaY below, reused from SK429; ṭiṭ-class = +w it-marker.)
+aY_t     = Pratyaya("a",       its=["Y"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # añ
+dvayasac = Pratyaya("dvayasa", its=["c"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # द्वयसच्
+daGnac   = Pratyaya("daGna",   its=["c"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # दघ्नच्
+mAtrac   = Pratyaya("mAtra",   its=["c"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # मात्रच्
+tayap    = Pratyaya("taya",    its=["p"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # तयप्
+Wak      = Pratyaya("Wa",      its=["k"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ठक् → इक (SK1170)
+WaY      = Pratyaya("Wa",      its=["Y"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ठञ् → इक + ādivṛddhi
+kvarap   = Pratyaya("vara",    its=["k", "p"], other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # क्वरप् (kit → no guṇa)
+Qhak     = Pratyaya("Q",       its=["k"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ढक्: ढ → एय् (SK475 partial)
 
 # sup
 # स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्
@@ -160,7 +177,9 @@ kvip = Pratyaya("", its=["k", "p"], other_tags=["kvip", "krt"])
 kvin = Pratyaya("", its=['k'], other_tags=["kvin", "krt"])
 
 # kaY — creates vowel-final stems from tyadAdi + dṛś (SK429)
-kaY = Pratyaya("a", its=["k", "Y"], other_tags=["kaY", "krt"])
+# kaY (कञ्): kṛt used by SK429 (tādṛśa/yādṛśa); also one of the SK470 (4.1.15)
+# ṅīp-triggering affixes → NIp_taddhita gives yādṛśī etc.
+kaY = Pratyaya("a", its=["k", "Y"], other_tags=["kaY", "krt", "NIp_taddhita"])
 
 # vatup — वतुप् affix (5.2.39): after yad/tad/etad for "measure of volume"
 # u, p are it markers; content is "vat" (वत्). krt → join_objects produces prAtipadika.
