@@ -5250,7 +5250,7 @@
 # 306: ऋन्नेभ्यो ङीप् (4-1-5) 
 - sutra:  ऋन्नेभ्यो ङीप् 
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.5
   condition:
      l:
@@ -5264,7 +5264,7 @@
 # 308: न षट्स्वस्रादिभ्यः (4-1-10) 
 - sutra:  न षट्स्वस्रादिभ्यः
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.10
   overrides: 4.1.5
   condition:
@@ -5291,7 +5291,7 @@
 # dvi_s, where 7.2.102 must still fire (dvi → dva).
 - sutra:  अजाद्यतष्टाप्
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.4
   condition:
     - l: at         # short-a-final only (sutra uses 'at' = one mātrā; ā-final excluded per Vasu)
@@ -5305,7 +5305,7 @@
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.6
   condition:
      lp: [+u, +U, +f, +F, +x]   # uk pratyāhāra (u, ū, ṛ, ṝ, ḷ) as it-letter = ugit
@@ -5320,7 +5320,7 @@
 # Vārttikas "vano na haśaḥ" and "bahuvrīhau vā" deferred.
 - sutra: वनो र च
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.7
   overrides: 4.1.5
   condition:
@@ -5338,7 +5338,7 @@
 # giving dvipadī. No-NIp branch: su + sandhi → dvipāt for nom sg.
 - sutra: पादोऽन्यतरस्याम्
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.8
   optional: true
   condition:
@@ -5352,7 +5352,7 @@
 # 459: मनः (4-1-11) — no ṅīp after man-final stems. Apavāda to 4.1.5 ऋन्नेभ्यो ङीप्.
 # सीमन् + strI_abs → halanta n-stem feminine (सीमा), not सीम्नी.
 - sutra: मनः
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.11
   overrides: 4.1.5
   condition:
@@ -5363,7 +5363,7 @@
 # 460: अनो बहुव्रीहेः (4-1-12) — no ṅīp after an an-final bahuvrīhi.
 # Apavāda to 4.1.5 and 4.1.7 (बहुयज्वन् carries ?van, so SK456 is a live competitor).
 - sutra: अनो बहुव्रीहेः
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.12
   overrides: [4.1.5, 4.1.7]
   condition:
@@ -5377,7 +5377,7 @@
 # (man-final / an-bahuvrīhi). DAp's q-it → ṭi-lopa via 6.4.143 → ramā-type ā-stem
 # (सीमे, बहुयज्वे). Non-DAp fork: SK459/SK460 block ṅīp → halanta (सीमा, बहुयज्वा).
 - sutra: डाबुभाभ्यामन्यतरस्याम्
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.13
   optional: true
   overrides: [4.1.5, 4.1.7]
@@ -5395,7 +5395,7 @@
 # bahuvrīhi. Re-permits the ṅīp SK460 (4.1.12) blocked. ṅīp ṅit → 6.4.134 al-lopa
 # + śacutva → बहुराज्ञी. $$upaDAlopI excludes बहुयज्वन् (6.4.137 blocks al-lopa).
 - sutra: अन उपधालोपिनोऽन्यतरस्याम्
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.28
   optional: true
   overrides: [4.1.5, 4.1.12]
