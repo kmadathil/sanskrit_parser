@@ -90,6 +90,13 @@ vidyA = Pratipadika("vidyA", "strI")
 # with wac (टच्, the available ṭ-it samāsānta affix); strictly कुरुचर is चरेष्टः (3.2.16) ट.
 kuru = Pratipadika("kuru", "pum")
 car  = Pratipadika("car",  "pum")
+# suparRA: SK470 ḍha (ḍhak) test base — सुपर्णा + ढक् → (7.1.2 ḍh→eya) सुपर्णेय → सुपर्णेयी.
+# PARTIAL: ādivṛddhi सु→सौ pending (needs 7.2.118 किति च), so not yet साौपर्णेयी.
+suparRA = Pratipadika("suparRA", "strI")
+# SK470 ṭhak/ṭhañ test bases: akṣa+ṭhak → akṣika → akṣikī (PARTIAL, vṛddhi pending →
+# ākṣikī); lavaṇa+ṭhañ → lāvaṇika → लावणिकी (complete, vṛddhi via 7.2.117 ñit).
+akza   = Pratipadika("akza",   "pum")
+lavaRa = Pratipadika("lavaRa", "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

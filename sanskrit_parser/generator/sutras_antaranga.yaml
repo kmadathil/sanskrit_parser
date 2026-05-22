@@ -4892,6 +4892,21 @@
   xform:
      lc: adivriddhi(lc)
 
+# 1076: किति च (7-2-118) — extends 7.2.117 ādivṛddhi to k-it (किति) taddhita affixes.
+# Completes SK470's ṭhak (अक्ष+ठक् → आक्षिक → आक्षिकी) and ḍha (सुपर्ण+ढक् → साौपर्ण+एय →
+# साौपर्णेयी), which are k-it and so not covered by 7.2.117 (ñit/ṇit).
+- sutra: किति च
+  id: 7.2.118
+  overrides: [7.2.115, 7.2.116]
+  condition:
+     lp: ?aNga
+     rp:
+       - and
+       - ?tadDita
+       - +k
+  xform:
+     lc: adivriddhi(lc)
+
 # SK1170 (7.3.50 ठस्येकः) — the ठ (ṭh) of a taddhita affix → इक.
 # Pulled in out-of-SK-order: prerequisite for SK470's ṭhak/ṭhañ arm (आक्षिकी, लावणिकी).
 # At the (aṅga | Wak/WaY) window r='W' (ठ); replace with "ik" so r+rc = "ik"+"a" = "ika".
@@ -4903,6 +4918,22 @@
      rp: ?tadDita
   xform:
      r: str("ik")
+
+# SK475 (7.1.2 आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्) — PARTIAL: only the ढ→एय् arm.
+# The affix-initial ढ (Qhak content "Q") → एय: सुपर्णा+ढक् → सुपर्णेय → सुपर्णेयी.
+# At the (aṅga | Qhak) window r='Q'; replace with "eya" so r+rc = "eya".
+# PENDING (so the form is सुपर्णेयी, not the full साौपर्णेयी):
+#   - ādivṛddhi सु→सौ needs 7.2.118 किति च (ḍhak is k-it, so 7.2.117 ñṇit does not fire).
+# DEFERRED (other arms of SK475): फ→आयन्/ख→ईन्/छ→ईय्/घ→इय् and the ष्फ→आयन् chain
+# (SK473-475 गार्ग्यायणी).
+- sutra: आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्
+  id: 7.1.2
+  condition:
+     lp: ?aNga
+     r: Q
+     rp: ?tadDita
+  xform:
+     r: str("eya")
 
 
 # End taddhita aDikAra
@@ -5905,7 +5936,7 @@
 # 231: यचि भम् (1-4-18)
 - sutra: यचि भम्
   domain: saMjYA
-  bahiranga: 0 
+  bahiranga: 0
   id: 1.4.18
   overrides: 1.4.17
   condition:
@@ -5917,7 +5948,8 @@
   update:
      olp:
        - +Ba
-       - pada
+       - -pada   # bha and pada are mutually exclusive; यचि भम् removes a stale pada-saṁjñā
+                 # set by 1.4.17 before the affix became vowel-initial (e.g. ṭhak: ठ→इक via 7.3.50)
 
 # 199: यस्मात्प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम् (1-4-13)
 - sutra: यस्मात् प्रत्ययविधिस्तदादि प्रत्ययेऽङ्गम्

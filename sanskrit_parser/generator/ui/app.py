@@ -75,7 +75,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     parivrAjaka, pari, vrAja,
     # SK470/471 taddhita-ṅīp test bases
     indra, utsa, paYca, garga,
-    vidyA, kuru, car,
+    vidyA, kuru, car, suparRA, akza, lavaRa,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -94,7 +94,7 @@ from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     # taddhita from prātipadika
     yat_t, zyaY_t, yaY_t, aR_t,
     # SK470 taddhita ṅīp-triggering affixes
-    aY_t, dvayasac, tayap, kvarap,
+    aY_t, dvayasac, tayap, kvarap, Qhak, Wak, WaY,
     # ka-pratyaya taddhita (SK463/464)
     kan,
     # van-class kṛt
@@ -234,6 +234,9 @@ _gArgI_cpd       = [garga, yaY_t, strI_abs]           # SK471+SK472 yañ → ग
 _kurucarI_cpd    = [as_purva_pada(kuru), luk_sup, in_compound(car), wac, strI_abs]  # SK470 ṭiṭ → कुरुचरी
 _naSvarI_cpd     = [naS, kvarap, strI_abs]            # SK470 kvarap → नश्वरी
 _vEdyI_cpd       = [vidyA, aR_t, strI_abs]            # SK472 negative: base-ya → वैद्यी
+_suparReyI_cpd   = [suparRA, Qhak, strI_abs]          # SK470 ḍha (PARTIAL): SK475 ḍh→eya → सुपर्णेयी
+_lAvaRikI_cpd    = [lavaRa, WaY, strI_abs]            # SK470 ṭhañ → लावणिकी (complete)
+_akzikI_cpd      = [akza, Wak, strI_abs]              # SK470 ṭhak (PARTIAL): अक्षिकी (vṛddhi pending)
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
@@ -307,6 +310,9 @@ _STEMS_RAW = [
     ("kurucarI",    _kurucarI_cpd,    "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "kurucarī  (SK470 ṭiṭ, +w via wac)"),
     ("naSvarI",     _naSvarI_cpd,     "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "naśvarī  (SK470 kvarap)"),
     ("vEdyI",       _vEdyI_cpd,       "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "vaidyī  (SK472 negative: base-ya not elided)"),
+    ("suparReyI",   _suparReyI_cpd,   "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "sauparṇeyī  (SK470 ḍha; 7.1.2 ḍh→eya + 7.2.118 vṛddhi)"),
+    ("lAvaRikI",    _lAvaRikI_cpd,    "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "lāvaṇikī  (SK470 ṭhañ; 7.3.50 ṭha→ika)"),
+    ("akzikI",      _akzikI_cpd,      "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "ākṣikī  (SK470 ṭhak; 7.3.50 + 7.2.118 vṛddhi)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),
