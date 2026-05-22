@@ -213,23 +213,6 @@ The "Forms affected" column uses the convention:
 | 306 | 4.1.5 | ऋन्नेभ्यो ङीप् | ṛn/n-final pum stems → ṅīp suffix for feminine (rājñī etc.) |
 | 307 | 8.4.12 | एकाजुत्तरपदे णः | ṇatva in ekāc samāsa compounds: n→ṇ in suffixes when pūrva-pada contains r/ṛ/ṣ and uttara-pada is monosyllabic; ekāc tracked via ?ekac tag (survives guṇa/vṛddhi); samasta_Ratva_pada feeds 8.4.1/8.4.2 arm B |
 | 308 | 4.1.10 | न षट्स्वस्रादिभ्यः | Exception to 4.1.5: ṣaṭ-group and svasṛ etc. don't take ṅīp |
-| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); all 34 gaṇa members in pratipadika.py; tests: rAma_A, aja_A, kokila_A, SUdra_A, kruYc_A, uzRih_A. Also covers tyadAdi/kim feminine via SK441/SK440 commentary ("त्यदाद्यत्वं टाप्"): 7.2.102/103/109 extended to fire before ?strI_abs (in addition to ?viBakti), exposing a short-a stem to SK454; SK454 sets +TAp_added on olp so 7.2.102/103 don't re-fire post-TAp (et+Am after 6.1.107). Tests: tad_strI, etad_strI, yad_strI, kim_strI (sā/tā/etā/yā/kā paradigms) |
-| 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
-| 456 | 4.1.7 | वनो र च | van-final stems (vanip/kvanip/Dvanip) + strI_abs → NIp and final n→r; e.g. Sf+vanip → Sarvan → SarvarI (vārttikas "vano na haśaḥ" and "bahuvrīhau vā" deferred) |
-| 457 | 4.1.8 | पादोऽन्यतरस्याम् | pAd-final compound stem + strI_abs → optional NIp; e.g. dvi+pAd → dvipadī (NIp+SK414) ~ dvipāt (no-NIp) |
-| 459 | 4.1.11 | मनः | man-final stems → ṅīp blocked (apavāda to 4.1.5); सीमन्+strI_abs → halanta n-stem feminine सीमा |
-| 460 | 4.1.12 | अनो बहुव्रीहेः | an-final bahuvrīhi (?bahuvrIhi tag) → ṅīp blocked (apavāda to 4.1.5/4.1.7); बहुयज्वन्→बहुयज्वा |
-| 461 | 4.1.13 | डाबुभाभ्यामन्यतरस्याम् | optional DAp after man-final / an-bahuvrīhi; DAp q-it → ṭi-lopa (6.4.143) → ramā-type ā-stem (सीमे, बहुयज्वे) |
-| 462 | 4.1.28 | अन उपधालोपिनोऽन्यतरस्याम् | optional ṅīp for an-final upadhālopin bahuvrīhi (re-permits ṅīp SK460 blocked); ṅīp ṅit → 6.4.134 al-lopa + śacutva → बहुराज्ञी; $$upaDAlopI excludes बहुयज्वन् |
-| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | idādeśa: 'a' before 'k' of a pratyaya (?ka_pratyaya stems via kap/kan) → 'i' when Ap follows. sarva+kan+strI_abs → sarvaka+Ap → सर्विका; parivrAjaka→परिव्राजिका. bahiranga:1 (beats 6.1.101 savarṇa-dīrgha). $$aka_anta + xform lc[:-2]+"ik". asuwapaH (असुपः) implemented via ?!bahuvrIhi guard: बहुपरिव्राजका takes no idādeśa |
-| 464 | 7.3.45 | न यासयोः | blocks 7.3.44 for yad-/tad-derived ka-stems (yad→ya, tad→ta via 7.2.102, +kan → yaka/taka). $$yas_ka_anta (yaka/taka/saka). yakā, takā (nom sg sakā via 7.2.106; tyadAdi propagated through kan) |
-| 469 | 4.1.14 | अनुपसर्जनात् | adhikāra only (no YAML rule). Establishes तदन्तविधि for the strī affixes (lets SK470 read "stem ending in" the affixes) and the anupasarjana scope (naturally honoured — strī affixes attach to the head stem) |
-| 470 | 4.1.15 | टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः | ṅīp for a-final taddhita stems (apavāda to 4.1.4 ṭāp). Named affixes via ?NIp_taddhita; ṭiṭ via the +w it-marker (propagated through the krt/tadDita setIt loop). Working — **all 12 affixes**: ṭiṭ (कुरुचरी via wac), ḍha (सौपर्णेयी), aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री), tayap (पञ्चतयी), ṭhak (आक्षिकी), ṭhañ (लावणिकी), kañ (यादृशी, reuses kaY), kvarap (नश्वरी). Supporting rules: 7.3.50 (ṭha→ika), 7.1.2 ḍh→eya arm, 7.2.118 (k-it ādivṛddhi), and the 1.4.18 -pada fix |
-| 471 | 4.1.16 | यञश्च | ṅīp after yañ-final (?yaY), apavāda to 4.1.4. gārgya → +ṅīp → SK472 → गार्गी |
-| 472 | 6.4.150 | हलस्तद्धितस्य | taddhita ya-kāra after hal elided before ṅīp ī. General over taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a base-internal 'y' is not elided (विद्या+अण्→वैद्य → वैद्यी, not वैदी — SC Vasu). No bahiranga: 6.4.148 drops 'a' (gārgya→gārgy), then 6.4.150 deletes 'y' → गार्गी (nadī-type). cond ll:_hal, l:y |
-| 1170 | 7.3.50 | ठस्येकः | (out-of-SK-order) ठ of a taddhita affix → इक. Drives SK470's ṭhak/ṭhañ arm (आक्षिकी/लावणिकी). |
-| — | 7.2.118 | किति च | (out-of-SK-order) extends 7.2.117 ādivṛddhi to k-it taddhita affixes (`rp: [and, ?tadDita, +k]` → adivriddhi(lc)). Completes ṭhak (अक्ष→आक्ष) and ḍha (सुपर्ण→साौपर्ण) — both k-it, uncovered by 7.2.117 (ñṇit) |
-| — | 1.4.18 | यचि भम् | (fix) update changed `pada`→`-pada`: यचि भम् now removes the stale pada-saṁjñā (set by 1.4.17 before a 7.3.50 ठ→इक turned the affix vowel-initial). Fixes the 8.2.29 misfire on ṭhak and the asmad/yuṣmad abl-pl dīrgha error |
 | 309 | 7.1.24 | अतोऽम् | a-stem + am (acc sg): no change — rāmam |
 | 310 | 7.1.19 | नपुंसकाच्च | Neuter + au: am substitute (jñānam nom/acc du) |
 | 311 | 6.4.148 | यस्येति च | Stem-final i/a deleted before ī (e.g. in taddhita/kṛt formations) |
@@ -342,6 +325,20 @@ The "Forms affected" column uses the convention:
 | 446 | 7.1.81 | शप्श्यनोर्नित्यम् | Mandatory nUM for class 1 śap (?Sap) and class 4 śyan (?Syan) śatṛ stems before SI/nadī; overrides SK445; class 6 (?Sa) remains optional via SK445 |
 | 447 | 1.1.37 | स्वरादिनिपातमव्ययम् | svarAdi gaṇa and nipAta words get avyaya saṁjñā; enables SK452 sup-deletion |
 | 452 | 2.4.82 | अव्ययादाप्सुपः | sup suffixes deleted after avyaya; all vibhakti forms identical to stem |
+| 454 | 4.1.4 | अजाद्यतष्टाप् | a-final (l:at) OR ?ajAdi + strI_abs → Ap (TAp); all 34 gaṇa members in pratipadika.py; tests: rAma_A, aja_A, kokila_A, SUdra_A, kruYc_A, uzRih_A. Also covers tyadAdi/kim feminine via SK441/SK440 commentary ("त्यदाद्यत्वं टाप्"): 7.2.102/103/109 extended to fire before ?strI_abs (in addition to ?viBakti), exposing a short-a stem to SK454; SK454 sets +TAp_added on olp so 7.2.102/103 don't re-fire post-TAp (et+Am after 6.1.107). Tests: tad_strI, etad_strI, yad_strI, kim_strI (sā/tā/etā/yā/kā paradigms) |
+| 455 | 4.1.6 | उगितश्च | uk-it (u/ū/ṛ/ṝ/ḷ) + strI_abs → NIp; tests: pacat_NI (f-it, nUM → pacantī), Bavat_uNI (u-it, no nUM → BavatI) |
+| 456 | 4.1.7 | वनो र च | van-final stems (vanip/kvanip/Dvanip) + strI_abs → NIp and final n→r; e.g. Sf+vanip → Sarvan → SarvarI (vārttikas "vano na haśaḥ" and "bahuvrīhau vā" deferred) |
+| 457 | 4.1.8 | पादोऽन्यतरस्याम् | pAd-final compound stem + strI_abs → optional NIp; e.g. dvi+pAd → dvipadī (NIp+SK414) ~ dvipāt (no-NIp) |
+| 459 | 4.1.11 | मनः | man-final stems → ṅīp blocked (apavāda to 4.1.5); सीमन्+strI_abs → halanta n-stem feminine सीमा |
+| 460 | 4.1.12 | अनो बहुव्रीहेः | an-final bahuvrīhi (?bahuvrIhi tag) → ṅīp blocked (apavāda to 4.1.5/4.1.7); बहुयज्वन्→बहुयज्वा |
+| 461 | 4.1.13 | डाबुभाभ्यामन्यतरस्याम् | optional DAp after man-final / an-bahuvrīhi; DAp q-it → ṭi-lopa (6.4.143) → ramā-type ā-stem (सीमे, बहुयज्वे) |
+| 462 | 4.1.28 | अन उपधालोपिनोऽन्यतरस्याम् | optional ṅīp for an-final upadhālopin bahuvrīhi (re-permits ṅīp SK460 blocked); ṅīp ṅit → 6.4.134 al-lopa + śacutva → बहुराज्ञी; $$upaDAlopI excludes बहुयज्वन् |
+| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | idādeśa: 'a' before 'k' of a pratyaya (?ka_pratyaya stems via kap/kan) → 'i' when Ap follows. sarva+kan+strI_abs → sarvaka+Ap → सर्विका; parivrAjaka→परिव्राजिका. bahiranga:1 (beats 6.1.101 savarṇa-dīrgha). $$aka_anta + xform lc[:-2]+"ik". asuwapaH (असुपः) implemented via ?!bahuvrIhi guard: बहुपरिव्राजका takes no idādeśa |
+| 464 | 7.3.45 | न यासयोः | blocks 7.3.44 for yad-/tad-derived ka-stems (yad→ya, tad→ta via 7.2.102, +kan → yaka/taka). $$yas_ka_anta (yaka/taka/saka). yakā, takā (nom sg sakā via 7.2.106; tyadAdi propagated through kan) |
+| 469 | 4.1.14 | अनुपसर्जनात् | adhikāra only (no YAML rule). Establishes तदन्तविधि for the strī affixes (lets SK470 read "stem ending in" the affixes) and the anupasarjana scope (naturally honoured — strī affixes attach to the head stem) |
+| 470 | 4.1.15 | टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः | ṅīp for a-final taddhita stems (apavāda to 4.1.4 ṭāp). Named affixes via ?NIp_taddhita; ṭiṭ via the +w it-marker (propagated through the krt/tadDita setIt loop). Working — **all 12 affixes**: ṭiṭ (कुरुचरी via wac), ḍha (सौपर्णेयी), aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री), tayap (पञ्चतयी), ṭhak (आक्षिकी), ṭhañ (लावणिकी), kañ (यादृशी, reuses kaY), kvarap (नश्वरी). Supporting rules: 7.3.50 (ṭha→ika), 7.1.2 ḍh→eya arm, 7.2.118 (k-it ādivṛddhi), and the 1.4.18 -pada fix |
+| 471 | 4.1.16 | यञश्च | ṅīp after yañ-final (?yaY), apavāda to 4.1.4. gārgya → +ṅīp → SK472 → गार्गी |
+| 472 | 6.4.150 | हलस्तद्धितस्य | taddhita ya-kāra after hal elided before ṅīp ī. General over taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a base-internal 'y' is not elided (विद्या+अण्→वैद्य → वैद्यी, not वैदी — SC Vasu). No bahiranga: 6.4.148 drops 'a' (gārgya→gārgy), then 6.4.150 deletes 'y' → गार्गी (nadī-type). cond ll:_hal, l:y |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied: tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
@@ -350,6 +347,8 @@ The "Forms affected" column uses the convention:
 | 656 | 1.2.48 | गोस्त्रियोरुपसर्जनस्य | go/strī in compound: hrasva |
 | 847 | 6.4.146 | ओर्गुणः | o → guṇa (e) in anga before certain suffixes (apavāda) |
 | 1075 | 7.2.117 | तद्धितेष्वचामादेः | before taddhita suffix beginning with ac: vṛddhi of first vowel of anga |
+| 1076 | 7.2.118 | किति च | (out-of-SK-order) extends 7.2.117 ādivṛddhi to k-it taddhita affixes (`rp: [and, ?tadDita, +k]` → adivriddhi(lc)). Completes ṭhak (अक्ष→आक्ष) and ḍha (सुपर्ण→साौपर्ण) — both k-it, uncovered by 7.2.117 (ñṇit) |
+| 1170 | 7.3.50 | ठस्येकः | (out-of-SK-order) ठ of a taddhita affix → इक. Drives SK470's ṭhak/ṭhañ arm (आक्षिकी/लावणिकी). |
 | 2168 | 7.3.84 | सार्वधातुकार्धधातुकयोः | anga before sārvadhatuka/ārdhadhatuka: guṇa of final vowel (core verb guṇa rule) |
 | 2189 | 7.3.86 | पुगन्तलघूपधस्य च | puganta or laghu-upadha anga before sārvadh/ārdh: guṇa of upadhā |
 | 2217 | 1.1.5 | क्ङिति च | kit/ṅit suffix: no guṇa/vṛddhi substitution (blocks SK2168, SK254 etc.) |
@@ -373,21 +372,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
-| 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
-| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | Partial — vārttikas pending (asuwapaH now implemented) | idādeśa implemented (sarvika, parivrAjaka). asuwapaH (no idādeśa when the aka-stem ends a bahuvrīhi, e.g. बहुपरिव्राजका नगरी) now handled via ?!bahuvrIhi guard — tested (bahuparivrAjaka_strI). Deferred: vārttikas (māmaka/naraka, dākṣiṇātya/ihatya) not handled |
-| 465 | 7.3.46 | उदीचामातः स्थाने यकपूर्वायाः | For later — northern-grammarian variant | Optional id for the shortened-ā (केऽणः 7.4.13) when preceded by yak/ka (āryikā, caṭakikā). Needs the केऽणः ka-hrasva chain + preceding-yak detection; same ka-affix infra as SK463 plus extra context |
-| 466 | 7.3.47 | भस्त्रैषाजाज्ञाद्वास्वा नञ्पूर्वाणामपि | For later — northern-grammarian variant | Optional id for the listed stems (bhastrā, eṣā, ajā, jñā, dvā, svā) and their nañ-compounds; lexically-restricted, needs the same shortened-ā chain |
-| 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
-| 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
-| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | Partial — only the ढ→एय् arm | Implemented ढ→एय (सुपर्णेय); deferred: फ→आयन्/ख→ईन्/छ→ईय्/घ→इय् arms + the ष्फ→आयन् chain (SK473-475 गार्ग्यायणी) |
-| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | For later — ṣpha cluster | optional ष्फ taddhita after yañ; head of the गार्ग्यायणी chain |
-| 474 | 1.3.6 | षः प्रत्ययस्य | For later — ṣpha cluster | ṣ-it saṁjñā for ष्फ; supports SK473 |
-| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | For later — ṣpha cluster (ḍh→eya arm also needed by SK470 ḍha) | फ→आयन् etc.; ष्फ→आयन् gives गार्ग्यायणी. The ढ→एय् arm is the SK470 ḍha prerequisite |
-| 458 | 4.1.9 | टाबृचि | For later — requires ṛk-meter semantic context (ऋचि वाच्यायाम्) | TAp after pād-final feminine in the sense of an ṛk verse (द्विपदा ऋक्); engine has no semantic tracking, would emit a spurious द्विपदा for dvipAd_strI |
-| 456 | 4.1.7 | वनो र च | Partial — vārttikas pending | "vano na haśaḥ" (no NIp/n→r when van follows a haś-pratyāhāra consonant in the underlying dhātu, e.g. sahayudhvan f. = sahayudhvā) and "bahuvrīhau vā" (optional NIp in bahuvrīhi, e.g. bahudhīvarī ~ bahudhīvā via ḍāp) — deferred; require dhātu-history tracking and a bahuvrīhi tag respectively |
-| 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
-| 210 | 8.3.55 | अपदान्तस्य मूर्धन्यः | Natural — adhikāra comment only; no rule block in YAML | Retroflexion adhikāra header; actual ṇatva logic handled by SK235 (8.4.1) and SK212 (8.3.59) |
-| 426 | 6.1.5 | उभे अभ्यस्तम् | Natural + manual tagging; dvitva engine not yet implemented | abhyasta saṁjñā for all forms resulting from reduplication (dadat, bibhrat, etc.); jakshi-class manually tagged via SK428 |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |
@@ -397,9 +381,13 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 81 | 6.1.98 | अव्यक्तानुकरणस्यात इतौ | Skipping for now | Sound-imitation words |
 | 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |
 | 126 | 8.3.25 | मो राजि समः क्वौ | For later | kvip formations |
+| 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
+| 145 | 6.1.72 | संहितायाम् | Natural — saṃhitā adhikāra implicit in engine | FIXME comment in YAML; engine always operates in saṃhitā context for sandhi; no explicit rule block needed |
 | 156 | 8.3.42 | तिरसोऽन्यतरस्याम् | Partial — non-gati tiras context (tiraḥ kṛtvā) not distinguishable with current tagging | tiras as non-gati adverb: no ṣatva (should stay tiraḥ) |
 | 160 | 8.3.46 | अतः कृकमिकंसकुम्भपात्रकुशाकर्णीष्वनव्ययस्य | Partial — kāra and kāma are fixed-form pratipadika placeholders; kṛ/kam dhātu-derived kṛdanta forms (karaṇa, karman, kṛtya, kāmana, kāmya, …) not yet auto-tagged satva_kfkamkaMsAdi | all kṛt-derivative forms of √kṛ/√kam as uttarapada |
-| 144 | 8.3.48 | कस्कादिषु च | For later | kaska-group ṣatva in compounds; structurally different from ru-sandhi cluster |
+| 172 | 8.2.69 | रोऽसुपि | Partial — vārttikās not implemented | ahorUpam/ahorAtriH/ahorathantaram: the ru→o transformation IS wanted for these three specific words despite SK172 blocking it in general (vā rūpārttikam). Optional-r before pati-group (aharādInAM patyAdiSu vA rephaH) also deferred |
+| 176 | 6.1.132 | एतत्तदोः सुलोपोऽकोरनञ्समासे हलि | Partial — nañsamāsa exception not implemented (akoH now handled) | anañsamAse: no H-deletion for nañ-compound forms like a-saH (requires compound-type condition not yet in DSL). akoH is handled by the rule's exact lc=sa/=eza match — ka-affix stems (saka/eṣaka) keep su-r; validated by manual_list.py SK176 akoḥ tests |
+| 210 | 8.3.55 | अपदान्तस्य मूर्धन्यः | Natural — adhikāra comment only; no rule block in YAML | Retroflexion adhikāra header; actual ṇatva logic handled by SK235 (8.4.1) and SK212 (8.3.59) |
 | 258 | 1.1.23 | बहुगणवतुडति सङ्ख्या | For later | saṃkhyā definition |
 | 292 | 1.1.28 | विभाषा दिक्समासे बहुव्रीहौ | For later | dik-compounds |
 | 321 | 7.1.74 | तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य | For later | Gālava's option for neuter |
@@ -411,8 +399,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 374 | 3.1.93 | कृदतिङ् | Natural | kṛt saṃjñā definition; falls out of generator framework |
 | 375 | 6.1.67 | वेरपृक्तस्य | Natural | kvin v-lopa inherent in pratipadika pre-formation (suffix already absent) |
 | 383 | 7.2.91 | मपर्यन्तस्य | Natural | adhikāra scope indicator ("up to m"); scope encoded directly in SK384's xform (lc replaced = yuzm+a portion); no YAML rule needed |
-| 172 | 8.2.69 | रोऽसुपि | Partial — vārttikās not implemented | ahorUpam/ahorAtriH/ahorathantaram: the ru→o transformation IS wanted for these three specific words despite SK172 blocking it in general (vā rūpārttikam). Optional-r before pati-group (aharādInAM patyAdiSu vA rephaH) also deferred |
-| 176 | 6.1.132 | एतत्तदोः सुलोपोऽकोरनञ्समासे हलि | Partial — nañsamāsa exception not implemented (akoH now handled) | anañsamAse: no H-deletion for nañ-compound forms like a-saH (requires compound-type condition not yet in DSL). akoH is handled by the rule's exact lc=sa/=eza match — ka-affix stems (saka/eṣaka) keep su-r; validated by manual_list.py SK176 akoḥ tests |
 | 401 | 8.1.16 | पदस्य | Natural | adhikāra — pada-context (preceding pada) constraint; implied once SK401/402 formally implemented; optional SK404–407 currently fire on any preceding pada |
 | 402 | 8.1.17 | पदात् | Natural | adhikāra — same as SK401; preceding-pada constraint deferred |
 | 403 | 8.1.18 | अनुदात्तं सर्वमपादादौ | For later — accent | unaccented rule; accent not modelled in generator |
@@ -423,12 +409,24 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 412 | 8.1.72 | आमन्त्रितं पूर्वमविद्यमानवत् | For later — accent | vocative accent; accent not modelled |
 | 413 | 8.1.73 | नामन्त्रिते समानाधिकरणे सामान्यवचनम् | For later | vocative co-referential number; not needed for basic paradigm |
 | 424 | 6.4.30 | नाञ्चेः पूजायाम् | For later — exception | blocks n-lopa (SK415/6.4.24) for añcatir in honorific/pūjā context; no test coverage yet |
+| 426 | 6.1.5 | उभे अभ्यस्तम् | Natural + manual tagging; dvitva engine not yet implemented | abhyasta saṁjñā for all forms resulting from reduplication (dadat, bibhrat, etc.); jakshi-class manually tagged via SK428 |
 | 429 | 3.2.60 | त्यदादिषु दृशोऽनालोचने कञ्च | Natural — kañ/kvin falls out of existing infrastructure | kaY pratyaya implemented; SK430 (6.3.91) is the active sutra for tādṛk/tādṛśa forms |
 | 432 | 3.2.58 | स्पृशोऽनुदके क्विन् | For later — kṛt framework pending | kvin after √spṛś in compounds (ghṛtaspṛk etc.); tested via compound pratipadika with existing kvin machinery |
 | 448 | 1.1.38 | तद्धितश्चाऽसर्वविभक्तिः | For later — taddhita engine pending | avyaya saṁjñā for taddhita-ending words that lack full vibhakti paradigms (tasil and similar) |
 | 449 | 1.1.39 | कृन्मेजन्तः | For later — kṛt engine pending | avyaya saṁjñā for kṛt suffixes ending in m or ec (smāram smāram, jīvase, pibadhai) |
 | 450 | 1.1.40 | क्त्वातोसुन्कसुनः | For later — kṛdanta forms not yet generated | avyaya saṁjñā for gerunds/absolutives: ktvā (kṛtvā), tosun (udetoḥ), kasun (visṛpaḥ) |
 | 451 | 1.1.41 | अव्ययीभावश्च | For later — avyayībhāva samāsa not yet implemented | avyaya saṁjñā for avyayībhāva compounds (adhihari, upakṛṣṇam etc.) |
+| 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
+| 456 | 4.1.7 | वनो र च | Partial — vārttikas pending | "vano na haśaḥ" (no NIp/n→r when van follows a haś-pratyāhāra consonant in the underlying dhātu, e.g. sahayudhvan f. = sahayudhvā) and "bahuvrīhau vā" (optional NIp in bahuvrīhi, e.g. bahudhīvarī ~ bahudhīvā via ḍāp) — deferred; require dhātu-history tracking and a bahuvrīhi tag respectively |
+| 458 | 4.1.9 | टाबृचि | For later — requires ṛk-meter semantic context (ऋचि वाच्यायाम्) | TAp after pād-final feminine in the sense of an ṛk verse (द्विपदा ऋक्); engine has no semantic tracking, would emit a spurious द्विपदा for dvipAd_strI |
+| 463 | 7.3.44 | प्रत्ययस्थात्कात्पूर्वस्यात इदाप्यसुपः | Partial — vārttikas pending (asuwapaH now implemented) | idādeśa implemented (sarvika, parivrAjaka). asuwapaH (no idādeśa when the aka-stem ends a bahuvrīhi, e.g. बहुपरिव्राजका नगरी) now handled via ?!bahuvrIhi guard — tested (bahuparivrAjaka_strI). Deferred: vārttikas (māmaka/naraka, dākṣiṇātya/ihatya) not handled |
+| 465 | 7.3.46 | उदीचामातः स्थाने यकपूर्वायाः | For later — northern-grammarian variant | Optional id for the shortened-ā (केऽणः 7.4.13) when preceded by yak/ka (āryikā, caṭakikā). Needs the केऽणः ka-hrasva chain + preceding-yak detection; same ka-affix infra as SK463 plus extra context |
+| 466 | 7.3.47 | भस्त्रैषाजाज्ञाद्वास्वा नञ्पूर्वाणामपि | For later — northern-grammarian variant | Optional id for the listed stems (bhastrā, eṣā, ajā, jñā, dvā, svā) and their nañ-compounds; lexically-restricted, needs the same shortened-ā chain |
+| 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
+| 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
+| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | For later — ṣpha cluster | optional ष्फ taddhita after yañ; head of the गार्ग्यायणी chain |
+| 474 | 1.3.6 | षः प्रत्ययस्य | For later — ṣpha cluster | ṣ-it saṁjñā for ष्फ; supports SK473 |
+| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | Partial — only the ढ→एय् arm | Implemented ढ→एय (सुपर्णेय); deferred: फ→आयन्/ख→ईन्/छ→ईय्/घ→इय् arms + the ष्फ→आयन् chain (SK473-475 गार्ग्यायणी) |
 
 ---
 
