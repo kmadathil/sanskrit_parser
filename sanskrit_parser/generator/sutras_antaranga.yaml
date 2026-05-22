@@ -2917,22 +2917,21 @@
   xform:
      l: null
 
-# 472: हलस्तद्धितस्य (6-4-150) — the taddhita ya-kāra (yañ), upadhā and preceded by
-# hal, is elided before ṅīp ī. bahiranga:1 so it fires before 6.4.148 at the shared
-# (gArgya|ī) window: 6.4.150 drops the upadhā 'y' → gArga|ī, then 6.4.148 drops the
-# 'a' → gArg|ī → गार्गी. (Default priority lets 6.4.148 win the window otherwise.)
+# 472: हलस्तद्धितस्य (6-4-150) — the taddhita ya-kāra (yañ), after hal, is elided
+# before ṅīp ī. No bahiranga needed: 6.4.148 (यस्येति च) fires first on gArgya|ī
+# dropping the 'a' → gArgy|ī; then 6.4.150 fires on gArgy|ī (l='y' now) and deletes
+# the 'y' → gArg|ī → गार्गी.
 - sutra: हलस्तद्धितस्य
   id: 6.4.150
-  bahiranga: 1
   condition:
      lp:
        - and
        - ?aNga
        - ?yaY
-       - $$hal_taddhita_ya
+       - $$hal_taddhita_ya   # lp ends hal + 'y' (the 'a' already gone via 6.4.148)
      rp: ?NI
   xform:
-     lc: lc[:-1]   # drop the upadhā 'y' (lc ends "…Cy" → "…C"); final 'a' stays for 6.4.148
+     l: null   # delete the now-final taddhita 'y'
 
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
@@ -5419,7 +5418,7 @@
 # Examples: ऐन्द्री (aṇ), औत्सी (añ), ऊरुद्वयसी, पञ्चतयी, आक्षिकी (ṭhak), यादृशी (kañ).
 - sutra: टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.15
   overrides: 4.1.4
   condition:
@@ -5437,7 +5436,7 @@
 # is then elided by SK472 (6.4.150) before ī → गार्गी.
 - sutra: यञश्च
   domain: prakfti
-  bahiranga: 1
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.16
   overrides: 4.1.4
   condition:
