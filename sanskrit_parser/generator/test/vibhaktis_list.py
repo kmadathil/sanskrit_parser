@@ -1757,6 +1757,22 @@ viBakti["kurucarI"] = [
     ["कुरुचरि", "कुरुचर्यौ", "कुरुचर्यः"],
 ]
 
+# SK470 kvarap (क्वरप्) arm: नश् + क्वरप् → नश्वर + ṅīp → नश्वरी. naś ends in a consonant
+# so no tuk augment is needed (cf. इत्वर from इ, which would need 6.1.71). kvarap is
+# kṛt (NOT svAdi — a svAdi tag would wrongly trigger 1.4.17 pada-saṁjñā → jaśtva
+# naś→naj). Declines nadī-type.
+prAtipadika["naSvarI"] = [naS, kvarap, strI_abs]   # noqa: F405
+viBakti["naSvarI"] = [
+    ["नश्वरी", "नश्वर्यौ", "नश्वर्यः"],
+    ["नश्वरीम्", "नश्वर्यौ", "नश्वरीः"],
+    ["नश्वर्या", "नश्वरीभ्याम्", "नश्वरीभिः"],
+    ["नश्वर्यै", "नश्वरीभ्याम्", "नश्वरीभ्यः"],
+    ["नश्वर्याः", "नश्वरीभ्याम्", "नश्वरीभ्यः"],
+    ["नश्वर्याः", "नश्वर्योः", "नश्वरीणाम्"],
+    ["नश्वर्याम्", "नश्वर्योः", "नश्वरीषु"],
+    ["नश्वरि", "नश्वर्यौ", "नश्वर्यः"],
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

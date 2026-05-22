@@ -84,7 +84,7 @@ mAtrac   = Pratyaya("mAtra",   its=["c"],     other_tags=["svAdi", "tadDita", "N
 tayap    = Pratyaya("taya",    its=["p"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # तयप्
 Wak      = Pratyaya("Wa",      its=["k"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ठक् → इक (SK1170)
 WaY      = Pratyaya("Wa",      its=["Y"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ठञ् → इक + ādivṛddhi
-kvarap   = Pratyaya("vara",    its=["k", "p"], other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # क्वरप् (kit → no guṇa)
+kvarap   = Pratyaya("vara",    its=["k", "p"], other_tags=["krt", "NIp_taddhita"])  # क्वरप् (3.2.163 kṛt, kit → no guṇa). NOT svAdi: a svAdi tag would wrongly trigger 1.4.17 pada-saṁjñā on the dhātu → spurious jaśtva (naś→naj).
 Qhak     = Pratyaya("Q",       its=["k"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ढक्: ढ → एय् (SK475 partial)
 
 # sup

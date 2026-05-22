@@ -25,6 +25,7 @@ class Dhatu(PaninianObject):
 
 
 iR = Dhatu("i", its=["R"], other_tags=["eti"])
+naS = Dhatu("naS")   # √naś "to perish"; SK470 kvarap test: naś+kvarap → नश्वर → नश्वरी
 eDa = Dhatu("eD", other_tags=["eDati"], its=["a"])
 lUY = Dhatu("lU", its=["Y"])
 kzI = Dhatu("kzI")
