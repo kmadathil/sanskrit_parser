@@ -12,8 +12,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 325 |
-| Sutras skipped / deferred | 50 |
+| Sutras implemented | 328 |
+| Sutras skipped / deferred | 48 |
 | Sutras uncatalogued / not yet planned | ~67 |
 | **Total sutras accounted for** | **~431** |
 | Stems with full vibhakti test tables | 196 |
@@ -339,6 +339,9 @@ The "Forms affected" column uses the convention:
 | 470 | 4.1.15 | टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः | ṅīp for a-final taddhita stems (apavāda to 4.1.4 ṭāp). Named affixes via ?NIp_taddhita; ṭiṭ via the +w it-marker (propagated through the krt/tadDita setIt loop). Working — **all 12 affixes**: ṭiṭ (कुरुचरी via wac), ḍha (सौपर्णेयी), aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री), tayap (पञ्चतयी), ṭhak (आक्षिकी), ṭhañ (लावणिकी), kañ (यादृशी, reuses kaY), kvarap (नश्वरी). Supporting rules: 7.3.50 (ṭha→ika), 7.1.2 ḍh→eya arm, 7.2.118 (k-it ādivṛddhi), and the 1.4.18 -pada fix |
 | 471 | 4.1.16 | यञश्च | ṅīp after yañ-final (?yaY), apavāda to 4.1.4. gārgya → +ṅīp → SK472 → गार्गी |
 | 472 | 6.4.150 | हलस्तद्धितस्य | taddhita ya-kāra after hal elided before ṅīp ī. General over taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a base-internal 'y' is not elided (विद्या+अण्→वैद्य → वैद्यी, not वैदी — SC Vasu). No bahiranga: 6.4.148 drops 'a' (gārgya→gārgy), then 6.4.150 deletes 'y' → गार्गी (nadī-type). cond ll:_hal, l:y |
+| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | (no YAML rule) — optional ष्फ taddhita after yañ. The affix `sPa` is defined in pratyaya.py (its=["z"]); tests compose [..., yaY_t, sPa, strI_abs] explicitly. The **गार्ग्यायणी derivation test is deferred** pending **6.4.22 असिद्धवदत्राभात्** — without asiddhavat, 6.4.148's a-drop on गार्ग्यायन lets 6.4.134 अल्लोपोऽनः misfire and the result becomes गार्ग्याय्णी instead of गार्ग्यायणी |
+| 474 | 1.3.6 | षः प्रत्ययस्य | (saṁjñā only, no YAML rule) — affix-initial ष is an it. Encoded directly in each pratyaya's `its` list (e.g. `sPa = Pratyaya("Pa", its=["z"], ...)`) |
+| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | All 5 arms implemented via `phaDhakhachagha_adesha`: फ→आयन्, ढ→एय्, ख→ईन्, छ→ईय्, घ→इय्. Tested: ḍh-arm (सुपर्णा+ढक् → सौपर्णेयी). The फ→आयन् arm fires correctly but the full गार्ग्यायणी derivation is deferred pending 6.4.22 (see SK473) |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied: tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
@@ -424,9 +427,7 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 466 | 7.3.47 | भस्त्रैषाजाज्ञाद्वास्वा नञ्पूर्वाणामपि | For later — northern-grammarian variant | Optional id for the listed stems (bhastrā, eṣā, ajā, jñā, dvā, svā) and their nañ-compounds; lexically-restricted, needs the same shortened-ā chain |
 | 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
 | 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
-| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | For later — ṣpha cluster | optional ष्फ taddhita after yañ; head of the गार्ग्यायणी chain |
-| 474 | 1.3.6 | षः प्रत्ययस्य | For later — ṣpha cluster | ṣ-it saṁjñā for ष्फ; supports SK473 |
-| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | Partial — only the ढ→एय् arm | Implemented ढ→एय (सुपर्णेय); deferred: फ→आयन्/ख→ईन्/छ→ईय्/घ→इय् arms + the ष्फ→आयन् chain (SK473-475 गार्ग्यायणी) |
+| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | Partial — गार्ग्यायणी test deferred pending 6.4.22 असिद्धवदत्राभात् | sPa affix defined and SK475 (7.1.2) फ→आयन् fires correctly; without asiddhavat, 6.4.148 a-drop on गार्ग्यायन lets 6.4.134 अल्लोपोऽनः misfire (gives गार्ग्याय्णी, not गार्ग्यायणी). Move to fully implemented once 6.4.22 is in place |
 
 ---
 

@@ -4919,21 +4919,17 @@
   xform:
      r: str("ik")
 
-# SK475 (7.1.2 आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्) — PARTIAL: only the ढ→एय् arm.
-# The affix-initial ढ (Qhak content "Q") → एय: सुपर्णा+ढक् → सुपर्णेय → सुपर्णेयी.
-# At the (aṅga | Qhak) window r='Q'; replace with "eya" so r+rc = "eya".
-# PENDING (so the form is सुपर्णेयी, not the full साौपर्णेयी):
-#   - ādivṛddhi सु→सौ needs 7.2.118 किति च (ḍhak is k-it, so 7.2.117 ñṇit does not fire).
-# DEFERRED (other arms of SK475): फ→आयन्/ख→ईन्/छ→ईय्/घ→इय् and the ष्फ→आयन् chain
-# (SK473-475 गार्ग्यायणी).
+# SK475 (7.1.2 आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्) — COMPLETE for all 5 arms.
+# Affix-initial फ/ढ/ख/छ/घ → आयन्/एय्/ईन्/ईय्/इय् via $$phaDhakhachagha_adesha.
+# Drives ḍha (सुपर्णा+ढक् → सौपर्णेयी) and ṣpha (गार्ग्य+ष्फ → गार्ग्यायणी, with SK473/SK474).
 - sutra: आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्
   id: 7.1.2
   condition:
      lp: ?aNga
-     r: Q
+     r: [P, Q, K, C, G]
      rp: ?tadDita
   xform:
-     r: str("eya")
+     r: phaDhakhachagha_adesha(r)
 
 
 # End taddhita aDikAra
@@ -5317,6 +5313,17 @@
 # in* the affixes named by SK470 (4.1.15) — which is what lets aindra/gārgya etc.
 # take ṅīp. The anupasarjana restriction is naturally honoured: strī affixes
 # attach to the head stem, not to a compound-internal upasarjana member.
+
+# 473: प्राचां ष्फ तद्धितः (4-1-17) — no YAML rule needed.
+# Per the Eastern Grammarians, ष्फ (sPa) optionally attaches after a yañ-final
+# stem. Modelled directly: tests compose [..., yaY_t, sPa, strI_abs] when the
+# ष्फ form is wanted; without sPa the bare गार्गी form derives. The optionality
+# is the test's choice. sPa is defined in pratyaya.py; its ष is the it (SK474),
+# its फ → आयन् (SK475 / 7.1.2).
+
+# 474: षः प्रत्ययस्य (1-3-6) — saṁjñā only; no YAML rule needed.
+# Affix-initial ष is an it. Encoded directly in each pratyaya's `its` list
+# (e.g. sPa = Pratyaya("Pa", its=["z"], ...)). No separate engine rule.
 
 # 454: अजाद्यतष्टाप् (4-1-4)
 # olp: +TAp_added marks the stem so 7.2.102/103 can avoid re-firing on the post-TAp

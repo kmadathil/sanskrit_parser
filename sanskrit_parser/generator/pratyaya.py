@@ -86,6 +86,11 @@ Wak      = Pratyaya("Wa",      its=["k"],     other_tags=["svAdi", "tadDita", "N
 WaY      = Pratyaya("Wa",      its=["Y"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ठञ् → इक + ādivṛddhi
 kvarap   = Pratyaya("vara",    its=["k", "p"], other_tags=["krt", "NIp_taddhita"])  # क्वरप् (3.2.163 kṛt, kit → no guṇa). NOT svAdi: a svAdi tag would wrongly trigger 1.4.17 pada-saṁjñā on the dhātu → spurious jaśtva (naś→naj).
 Qhak     = Pratyaya("Q",       its=["k"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ढक्: ढ → एय् (SK475 partial)
+# ṣpha (ष्फ): SK473 (4.1.17 प्राचां ष्फ तद्धितः) — optional taddhita after yañ. The ष is
+# it by SK474 (1.3.6 षः प्रत्ययस्य) — declared via its=["z"]. The फ → आयन् by SK475
+# (7.1.2). garga+yañ+ṣpha+strI → गार्ग्यायणी (the ष-it would strictly select ṅīṣ via
+# 4.1.41/SK498; tagged NIp_taddhita so SK470's ṅīp gives the same surface form).
+sPa      = Pratyaya("Pa",      its=["z"],     other_tags=["svAdi", "tadDita", "NIp_taddhita"])  # ष्फ
 
 # sup
 # स्वौजसमौट्छष्टाभ्याम्भिस्ङेभ्याम्भ्यस्ङसिभ्याम्भ्यस्ङसोसाम्ङ्योस्सुप्

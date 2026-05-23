@@ -115,6 +115,14 @@ def vargatritiya(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
 
 
+def phaDhakhachagha_adesha(r: str):
+    """SK475 (7.1.2 आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्): map affix-initial
+    फ/ढ/ख/छ/घ → आयन्/एय्/ईन्/ईय्/इय्. ḍh's "eya" carries its own 'a' (Qhak content
+    is just "Q"); the other substitutes are consonant-final and the affix's
+    inherent 'a' is supplied from rc (e.g. sPa = "Pa")."""
+    return {"P": "Ayan", "Q": "eya", "K": "In", "C": "Iy", "G": "iy"}.get(r, r)
+
+
 def adivriddhi(s: str):
     r = ""
     av = False
