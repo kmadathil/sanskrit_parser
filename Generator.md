@@ -435,7 +435,62 @@ This is implemented by walking up the tree and skipping nodes whose sutra `_aps_
 | n-lopa 8.2.7, 7.4.33 | 7.4.25 | n-lopa siddha for inter-pada and rājīyati/rājāyate forms |
 | saṃyogānta-lopa 8.2.23 | maGavan upadhā-dīrgha 6.4.8.1 | final cluster lopa must be visible for upadhā-dīrgha to fire correctly for maGavan before sarvanamasthāna |
 
-**Not yet implemented:** *asiddhavat* (8.2.1 — SPSA sutras after 8.2.1 treat each other as asiddha within SPSA) and *ṣṭutokora-siddhaḥ* (a further sub-boundary within tripāḍī). These are noted as FIXMEs in the code.
+**Partially implemented:** *ābhīya asiddhavat* (6.4.22 असिद्धवदत्राभात्) — see the next subsection. **Not yet implemented:** *ṣṭutokora-siddhaḥ* (a further sub-boundary within tripāḍī). This and the broader scope of 6.4.22 are noted as FIXMEs in the code.
+
+### Ābhīya asiddhavat (6.4.22, partial)
+
+Pāṇini 6.4.22 declares that outputs of rules within the *ābhīya* section (6.4.x for x > 22, up to the end of pāda 6.4) are **asiddha (invisible) to each other** when they are *samanāśraya* (apply to the same locus). Two specific shapes drive the implementation:
+
+1. **One rule's output must not trigger another rule.** E.g. गार्ग्यायणी: 6.4.148 (यस्येति च) drops the final 'a' of *gārgyāyana* → *gārgyāyan*; 6.4.134 (अल्लोपोऽनः) must **not** then misfire on the artificial 'an' tail (giving गार्ग्याय्णी). Per 6.4.22, 6.4.134 should never see 148's output.
+2. **Both rules' edits must compose into the final output.** E.g. गार्गी: 6.4.148 drops the final 'a' of *gārgya*; 6.4.150 (हलस्तद्धितस्य) drops the upadhā 'य'. Both are asiddha to each other for condition-checking, but the merged stem must show **both** edits → *gārg* → गार्गी.
+
+Naive view-walking (just hiding peer outputs from `view()`) deadlocks: if the xform also reads the view, each rule operates on the pre-section snapshot and overwrites its peer's edit, oscillating forever. The lesson — **condition-view and xform-input must diverge** — drives the design below.
+
+#### Mechanism (snapshot + diff composition)
+
+In `antaranga_prakriya.py`:
+
+- **Predicate** `_in_abhiya(aps_num)` — `64022 < aps_num < 64176`. Drop-in for the ābhīya scope.
+- **Static peer table** `_ASIDDHA_PEERS: dict[str, frozenset[str]]` — symmetric adjacency: `rule_aps → set of peers it does NOT see`. Currently:
+  - `6.4.148 ↔ {6.4.150, 6.4.134}`
+  - `6.4.134 ↔ {6.4.148}`
+  - `6.4.150 ↔ {6.4.148}`
+
+  Static rather than dynamic-via-window because the rule set is small and we want auditable, peer-specific scope. Add a pair when you find/design a new samanāśraya interaction; do **not** blanket-enable section-wide (some same-section pairs are intentionally not samanāśraya and over-firing breaks them — e.g. 6.4.128 optional + 6.4.133 samprasāraṇa).
+- **Per-window snapshot.** `view()` for an ābhīya rule walks the PrakriyaTree up past any parent node whose sutra is an `_is_asiddha_peer` of the current rule, and returns that ancestor's outputs as the snapshot. The snapshot is **what the rule's condition sees** *and* **what its `operate()` receives** — so the rule's own xform produces a snapshot-relative result (`target`).
+- **Diff composition.** `_compose_abhiya(snapshot_str, current_str, target_str)`:
+  - Uses `difflib.SequenceMatcher` to derive per-snapshot-position edit dicts for *prior peer edits* (snapshot → current) and *this rule's edits* (snapshot → target).
+  - Merges the two edit dicts position-by-position. Same-position conflicts raise `AssertionError` — surface them rather than silently picking, since our peer table is supposed to guarantee non-overlapping edits.
+  - Replays the merged edits over the snapshot to produce the new current state.
+- The composed string overwrites `lc + l` (or `rc + r`) on the current output objects, so subsequent rules (ābhīya or not) see the cumulative state.
+
+Walk of गार्गी (window `gārgya | ī`, snapshot `gārgya`):
+
+| step | what evaluates against | what fires | current after |
+|------|------------------------|------------|----------------|
+| 1 | 6.4.148, 6.4.150 both trigger on snapshot | 6.4.148 wins (lower aps_num) | `gārgy` |
+| 2 | 6.4.150 condition checked against snapshot (148 hidden); still matches (`l='a', ll='y'`, hal upadhā) | 6.4.150; diff vs snapshot = "drop upadhā य"; compose with prior diff ("drop final a") → `gārg` | `gārg` |
+| 3 | no further ābhīya triggers | — | merge with ī → गार्गी |
+
+Walk of गार्ग्यायणी (window `gārgyāyana | ī`, snapshot `gārgyāyana`):
+
+| step | what evaluates against | what fires |
+|------|------------------------|------------|
+| 1 | 6.4.148 triggers (snapshot l='a'); 6.4.134 does NOT trigger (snapshot l='a', not 'n') | 6.4.148 → current = `gārgyāyan` |
+| 2 | 6.4.134 re-checked against snapshot (148 hidden) — snapshot l still 'a' → no match | — |
+| 3 | no more ābhīya triggers, merge with ī, ṇatva via 8.4.x | → गार्ग्यायणी ✓ |
+
+#### How to add an ābhīya rule
+
+1. Write the rule's condition against the **original (pre-section) state**, not against the post-148 (or post-other-peer) state. E.g. SK472's 6.4.150 detects `lp ends in hal+y+a` via helper `hal_taddhita_ya_upaDa` in `paribhasha.py` — it does *not* assume the final 'a' has been dropped.
+2. The xform should produce a clean snapshot-relative edit (a single delete / replace / insert, ideally one character). `_compose_abhiya` handles position remapping when peers have already edited.
+3. **If your new rule needs to be invisible to (or invisible from) an existing peer**, add the pair to `_ASIDDHA_PEERS` symmetrically: `A → {B}` *and* `B → {A}`. Asymmetric entries are accepted but rarely correct.
+4. Run the targeted test for your rule and the **full regression** — over-broad peer entries silently regress unrelated paths (we caught this with `maGavan` and `BAt_strI` during development). If a same-position conflict surfaces in `_compose_abhiya`, treat it as a real samanāśraya violation: re-check whether the two rules genuinely apply to the same locus.
+
+#### Limits of the current implementation
+
+- **No vārttika carve-outs.** Pāṇini's *वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ* declares vuk-augment, yuṭ-augment, *uvaṅ*, and *yaṇ* as siddha within the ābhīya section. Our peer table doesn't currently include them, so the carve-out is unneeded; when extending into rules that use these, add explicit `_special_siddha` entries (existing mechanism in `view()`) instead of relying on the predicate alone.
+- **No tag-level diff composition.** `_compose_abhiya` operates on the canonical string only. If two ābhīya peers need to make non-overlapping *tag* edits (set/clear), extend the diff representation or move that semantics to `update:`.
 
 ---
 

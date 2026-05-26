@@ -20,6 +20,8 @@ Implement sutra `$ARGUMENTS` in the Sanskrit parser generator.
 | `sanskrit_parser/generator/antaranga_prakriya.py` | Prakriya engine — see how `overrides` is enforced (~line 180) |
 | `Generator.md` | Developer guide: module structure, core objects, engine loop, YAML DSL, rule priority |
 
+> **If the sutra you're implementing is in the ābhīya section** (Ashtadhyayi id `6.4.x` with `x > 22`, i.e. `_aps_num ∈ (64022, 64176)`): read `Generator.md` → *Ābhīya asiddhavat (6.4.22, partial)* **before writing the rule**. The condition must target the pre-section snapshot (not a peer's output), and you may need to add a symmetric entry to `_ASIDDHA_PEERS` in `antaranga_prakriya.py` so the new rule and an existing peer are mutually invisible.
+
 ---
 
 ## Step 1 — Understand the Sutra
