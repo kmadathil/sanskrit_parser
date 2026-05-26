@@ -1870,6 +1870,77 @@ viBakti["akzikI"] = [
     ["आक्षिकि", "आक्षिक्यौ", "आक्षिक्यः"],
 ]
 
+# ── SK478 (4.1.20 वयसि प्रथमे): ṅīp after a-final "early-age" stem ───────────────
+# kumAra carries ?vayasi_prathama → SK478 selects ṅīp (apavāda to 4.1.4 ṭāp) →
+# कुमारी, declines nadī-type. Gen pl कुमारीणाम् has 8.4.1 ṇatva (r…n→ṇ).
+prAtipadika["kumArI"] = [kumAra, strI_abs]   # noqa: F405
+viBakti["kumArI"] = [
+    ["कुमारी", "कुमार्यौ", "कुमार्यः"],
+    ["कुमारीम्", "कुमार्यौ", "कुमारीः"],
+    ["कुमार्या", "कुमारीभ्याम्", "कुमारीभिः"],
+    ["कुमार्यै", "कुमारीभ्याम्", "कुमारीभ्यः"],
+    ["कुमार्याः", "कुमारीभ्याम्", "कुमारीभ्यः"],
+    ["कुमार्याः", "कुमार्योः", "कुमारीणाम्"],
+    ["कुमार्याम्", "कुमार्योः", "कुमारीषु"],
+    ["कुमारि", "कुमार्यौ", "कुमार्यः"],
+]
+
+# ── SK479 (4.1.21 द्विगोः): ṅīp after a-final Dvigu samāsa ──────────────────────
+# Composer tags the uttara-pada with ?dvigu via in_context(in_compound(loka),
+# "dvigu"); the tag rides through join_objects() (paninian_object.py allowlist,
+# alongside ?bahuvrIhi) and reaches the merged compound stem (tri+loka → triloka).
+# SK479 reads ?dvigu and selects ṅīp (apavāda to 4.1.4) → त्रिलोकी, nadī-type.
+# Gen pl त्रिलोकीनाम् has no ṇatva — the 'l' between r and n blocks 8.4.1.
+prAtipadika["trilokI"] = [as_purva_pada(tri), luk_sup,
+                          in_context(in_compound(loka), "dvigu"),
+                          strI_abs]   # noqa: F405
+viBakti["trilokI"] = [
+    ["त्रिलोकी", "त्रिलोक्यौ", "त्रिलोक्यः"],
+    ["त्रिलोकीम्", "त्रिलोक्यौ", "त्रिलोकीः"],
+    ["त्रिलोक्या", "त्रिलोकीभ्याम्", "त्रिलोकीभिः"],
+    ["त्रिलोक्यै", "त्रिलोकीभ्याम्", "त्रिलोकीभ्यः"],
+    ["त्रिलोक्याः", "त्रिलोकीभ्याम्", "त्रिलोकीभ्यः"],
+    ["त्रिलोक्याः", "त्रिलोक्योः", "त्रिलोकीनाम्"],
+    ["त्रिलोक्याम्", "त्रिलोक्योः", "त्रिलोकीषु"],
+    ["त्रिलोकि", "त्रिलोक्यौ", "त्रिलोक्यः"],
+]
+
+# ── SK479 negative test: ?ajAdi overrides ?dvigu → ṭāp (4.1.4.1 prabalatva) ─────
+# Dvigu compound tri+anIka. anIka carries ?ajAdi and is wrapped in_compound,
+# so ajAdi propagates via the samāsa-gated _propagate(last, ["ajAdi"]) in
+# join_objects. SK479 (?dvigu → ṅīp) is overridden by 4.1.4.1 (?ajAdi → ṭāp).
+# Result: त्र्यनीका (Vasu's example त्र्यनीका सेना), ramā-type ā-stem.
+# Gen pl त्र्यनीकानाम् — 'y' between 'r' and 'n' blocks 8.4.1 ṇatva.
+prAtipadika["tryanIkA"] = [as_purva_pada(tri), luk_sup,
+                           in_context(in_compound(anIka), "dvigu"),
+                           strI_abs]   # noqa: F405
+viBakti["tryanIkA"] = [
+    ["त्र्यनीका",     "त्र्यनीके",         "त्र्यनीकाः"],
+    ["त्र्यनीकाम्",   "त्र्यनीके",         "त्र्यनीकाः"],
+    ["त्र्यनीकया",    "त्र्यनीकाभ्याम्",   "त्र्यनीकाभिः"],
+    ["त्र्यनीकायै",   "त्र्यनीकाभ्याम्",   "त्र्यनीकाभ्यः"],
+    ["त्र्यनीकायाः",  "त्र्यनीकाभ्याम्",   "त्र्यनीकाभ्यः"],
+    ["त्र्यनीकायाः",  "त्र्यनीकयोः",       "त्र्यनीकानाम्"],
+    ["त्र्यनीकायाम्", "त्र्यनीकयोः",       "त्र्यनीकासु"],
+    ["त्र्यनीके",     "त्र्यनीके",         "त्र्यनीकाः"],
+]
+
+# Vasu's exact example त्रिफला from SK479: ajādi Pala in a Dvigu compound.
+# Same pattern as tryanIkA. Gen pl त्रिफलानाम् — 'l' blocks 8.4.1 ṇatva.
+prAtipadika["triPalA"] = [as_purva_pada(tri), luk_sup,
+                          in_context(in_compound(Pala), "dvigu"),
+                          strI_abs]   # noqa: F405
+viBakti["triPalA"] = [
+    ["त्रिफला",     "त्रिफले",         "त्रिफलाः"],
+    ["त्रिफलाम्",   "त्रिफले",         "त्रिफलाः"],
+    ["त्रिफलया",    "त्रिफलाभ्याम्",   "त्रिफलाभिः"],
+    ["त्रिफलायै",   "त्रिफलाभ्याम्",   "त्रिफलाभ्यः"],
+    ["त्रिफलायाः",  "त्रिफलाभ्याम्",   "त्रिफलाभ्यः"],
+    ["त्रिफलायाः",  "त्रिफलयोः",       "त्रिफलानाम्"],
+    ["त्रिफलायाम्", "त्रिफलयोः",       "त्रिफलासु"],
+    ["त्रिफले",     "त्रिफले",         "त्रिफलाः"],
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

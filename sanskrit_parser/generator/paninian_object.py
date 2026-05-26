@@ -174,12 +174,23 @@ class PaninianObject(SanskritObject):
         # ── Phase 3: Compound lifecycle ───────────────────────────────────────────
 
         # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
-        # bahuvrIhi rides along like samAsa so it survives intermediate merges
-        # (e.g. vrAja+kap → vrājaka) and reaches the completed compound stem,
-        # letting SK463 (7.3.44) asuwapaH ?!bahuvrIhi guard fire on a derived
-        # bahuvrīhi (बहुपरिव्राजका, not बहुपरिव्राजिका).
+        # bahuvrIhi and dvigu ride along like samAsa so they survive intermediate
+        # merges (e.g. vrAja+kap → vrājaka, or tri+loka → triloka) and reach the
+        # completed compound stem. This lets SK463 (7.3.44) asuwapaH ?!bahuvrIhi
+        # guard fire on a derived bahuvrīhi (बहुपरिव्राजका, not बहुपरिव्राजिका),
+        # and lets SK479 (4.1.21) ?dvigu read on the merged Dvigu stem (त्रिलोकी).
         _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas",
-                           "bahuvrIhi"])
+                           "bahuvrIhi", "dvigu"])
+
+        # --- samāsa-only: ajAdi rides from the uttara-pada (last) to the compound ---
+        # A samāsa ending in an ajādi-gaṇa word inherits ?ajAdi so SK454 (4.1.4) and
+        # its prabalatva apavāda (4.1.4.1) can fire on the compound stem (overriding
+        # SK479 ?dvigu, SK470 ?NIp_taddhita, etc.). Examples:
+        # tri+anIka → tryanIka (?ajAdi) → त्र्यनीका; tri+Pala → triPala → त्रिफला.
+        # Gated on last.hasTag("samAsa") so non-compound merges (anga+sup, taddhita
+        # derivations, etc.) don't accidentally inherit ajādi.
+        if last.hasTag("samAsa"):
+            _propagate(last, ["ajAdi"])
 
         # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
         # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya

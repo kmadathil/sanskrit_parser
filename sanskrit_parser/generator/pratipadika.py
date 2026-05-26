@@ -101,6 +101,24 @@ lavaRa = Pratipadika("lavaRa", "pum")
 # SK477 (4.1.19) reuses kuru (above) for कौरव्यायणी.
 lohita = Pratipadika("lohita", "pum")
 
+# SK478 (4.1.20 वयसि प्रथमे) test bases: a-final stems denoting "early age"
+# (prathama vayas) → ङीप् (apavāda to 4.1.4 ṭāp). The ?vayasi_prathama tag
+# carries the semantic selection. कुमारी / किशोरी / बर्करी.
+kumAra  = Pratipadika("kumAra",  "pum", other_tags=["vayasi_prathama"])
+kiSora  = Pratipadika("kiSora",  "pum", other_tags=["vayasi_prathama"])
+barkara = Pratipadika("barkara", "pum", other_tags=["vayasi_prathama"])
+
+# SK479 (4.1.21 द्विगोः) Dvigu uttara-pada test stems. The ?dvigu tag is set
+# by the test composer via in_context(in_compound(loka), "dvigu") and rides
+# through join_objects() (paninian_object.py allowlist) to reach the merged
+# stem. त्रिलोकी positive (loka), त्र्यनीका negative (anIka — ?ajAdi so SK454
+# ṭāp wins over SK479 ṅīp).
+loka  = Pratipadika("loka",  "pum")
+anIka = Pratipadika("anIka", "napum", other_tags=["ajAdi"])
+# Pala (फल): napum ajādi stem. Drives त्रिफला (Vasu's exact example on SK479)
+# via the ajādi-prabalatva apavāda 4.1.4.1.
+Pala  = Pratipadika("Pala",  "napum", other_tags=["ajAdi"])
+
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
 hastin = Pratipadika("hastin", "pum")

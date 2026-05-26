@@ -5349,19 +5349,77 @@
 # Test: [kuru, yaY_t, sPa, strI_abs] → कौरव्यायणी (the र of kuru triggers
 # ṇatva on the आयन् न).
 
+# 478: वयसि प्रथमे (4-1-20)
+# ṅīp after an a-final pratipadika denoting "early age" (prathama vayas).
+# Apavāda to 4.1.4 (ṭāp). Stems carry ?vayasi_prathama (kumAra, kiSora,
+# barkara → कुमारी, किशोरी, बर्करी). The vārttika "vayasy acarama"
+# (वधूटी, चिरण्टी — second-stage-of-life words) is deferred; it would need
+# a separate ?vayas_acarama tag and is a vārttika, not the sūtra proper.
+- sutra: वयसि प्रथमे
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.20
+  overrides: 4.1.4
+  condition:
+     lp: ?vayasi_prathama
+     l: a
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
+# 479: द्विगोः (4-1-21)
+# ṅīp after an a-final Dvigu (numeral-led tatpuruṣa) samāsa. Apavāda to 4.1.4.
+# The test composer tags the uttara-pada via in_context(in_compound(loka),
+# "dvigu"); the ?dvigu tag propagates through join_objects() (paninian_object.py
+# allowlist, alongside ?bahuvrIhi) and reaches the merged compound stem
+# (tri+loka → triloka), where SK479 reads ?dvigu and selects ṅīp → त्रिलोकी.
+# Negative example त्र्यनीका (tri+anIka): anIka carries ?ajAdi so SK454's
+# second arm (?ajAdi → ṭāp) wins, keeping the ajādi exception natural.
+- sutra: द्विगोः
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.21
+  overrides: 4.1.4
+  condition:
+     lp: ?dvigu
+     l: a
+     rp: ?strI_abs
+  update:
+     orp: =NIp
+
 # 454: अजाद्यतष्टाप् (4-1-4)
 # olp: +TAp_added marks the stem so 7.2.102/103 can avoid re-firing on the post-TAp
 # stem (etA/imā/kā etc.). This is distinct from a pre-baked ?Ap tag on stems like
 # dvi_s, where 7.2.102 must still fire (dvi → dva).
+# The ?ajAdi arm formerly here has moved to 4.1.4.1 (prabalatva apavāda below)
+# which additionally overrides every ṅīp sutra in the 4.1.5–4.1.21 cluster.
 - sutra:  अजाद्यतष्टाप्
   domain: prakfti
   bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.4
   condition:
-    - l: at         # short-a-final only (sutra uses 'at' = one mātrā; ā-final excluded per Vasu)
-      rp: ?strI_abs
-    - lp: ?ajAdi    # ajādi gaṇa consonant-final members (kruñc, uṣṇih, devaviz etc.)
-      rp: ?strI_abs
+    l: at         # short-a-final only (sutra uses 'at' = one mātrā; ā-final excluded per Vasu)
+    rp: ?strI_abs
+  update:
+     olp: +TAp_added
+     orp: =Ap
+
+# 454+: अजाद्यतष्टाप् (4-1-4) — ajādi-prabalatva apavāda (vārttika-style id).
+# When the stem (or compound) carries ?ajAdi, ṭāp wins over every ṅīp sutra in
+# the 4.1.5–4.1.21 cluster. Implements Vasu on SK479: "त्रिफला, because this is
+# one of the words spoken of as 'अज &c'." Variant id 4.1.4.1 (aps_num 41004.1),
+# the "Subsutra/Vartikam" pattern parsed by sutra.py.
+# ?ajAdi reaches a compound stem via the samāsa-gated propagation in
+# paninian_object.join_objects (last → result). Examples it now produces:
+# त्र्यनीका (tri+anIka, ?dvigu ?ajAdi: SK479 overridden), त्रिफला (tri+Pala).
+- sutra: अजाद्यतष्टाप्
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.4.1
+  overrides: [4.1.6, 4.1.15, 4.1.16, 4.1.20, 4.1.21]
+  condition:
+     lp: ?ajAdi
+     rp: ?strI_abs
   update:
      olp: +TAp_added
      orp: =Ap

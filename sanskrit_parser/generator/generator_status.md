@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 477 — 4.1.19 कौरव्यमाण्डूकाभ्यां च. The ṣpha-stem surface forms गार्ग्यायणी / लौहित्यायनी / कौरव्यायणी now derive (completes SK473/476/477 testing), powered by an engine-level partial 6.4.22 असिद्धवदत्राभात्.
-**Next to be implemented:** SK 478 (4.1.20 वयसि प्रथमे); deferred: SK 465-468 (7.3.46-49, northern variants); the vārttika **वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ** (carves vuk-augment, yuṭ-augment, uvaṅ, yaṇ out of 6.4.22 — they remain siddha to other ābhīya rules; not yet implemented).
+**Last implemented:** SK 479 — 4.1.21 द्विगोः, plus structural apavāda 4.1.4.1 (अजाद्यतष्टाप् prabalatva): ?ajAdi now propagates from the uttara-pada through samāsa merges and overrides the entire 4.1.5–4.1.21 ṅīp cluster — giving त्र्यनीका (tri+anIka) and त्रिफला (Vasu's exact example on SK479). SK478 (वयसि प्रथमे) gives कुमारी via `?vayasi_prathama`.
+**Next to be implemented:** SK 483 (5.4.131 ऊधसोऽनङ्); deferred: SK 480-482 (4.1.22/23/24 — need tadDita_luk modeling + semantic-class tags parimANa/bistAdi/kzetre/puruza/pramANe); SK 465-468 (7.3.46-49, northern variants); the vārttika **वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ** (carves vuk-augment, yuṭ-augment, uvaṅ, yaṇ out of 6.4.22 — they remain siddha to other ābhīya rules; not yet implemented).
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 331 |
-| Sutras skipped / deferred | 49 |
+| Sutras implemented | 334 |
+| Sutras skipped / deferred | 52 |
 | Sutras uncatalogued / not yet planned | ~67 |
-| **Total sutras accounted for** | **~435** |
-| Stems with full vibhakti test tables | 199 |
+| **Total sutras accounted for** | **~441** |
+| Stems with full vibhakti test tables | 203 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -344,6 +344,9 @@ The "Forms affected" column uses the convention:
 | 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | All 5 arms implemented via `phaDhakhachagha_adesha`: फ→आयन्, ढ→एय्, ख→ईन्, छ→ईय्, घ→इय्. **Now fully tested**: ḍh-arm (सुपर्णा+ढक् → सौपर्णेयी); फ-arm (गार्ग्यायणी / लौहित्यायनी / कौरव्यायणी) via SK473/476/477 |
 | 476 | 4.1.18 | सर्वत्र लोहितादिकतन्तेभ्यः | (no YAML rule) — adhikāra-style. In all schools (sarvatra, not only Eastern Grammarians), ष्फ obligatorily attaches after stems of the lohitādi gaṇa and after stems formed by the kaN affix. Modelled like SK473: the test composer includes `sPa` for such bases. Surface test: लौहित्यायनी = [lohita, yaY_t, sPa, strI_abs] |
 | 477 | 4.1.19 | कौरव्यमाण्डूकाभ्यां च | (no YAML rule) — adhikāra-style. ष्फ obligatorily attaches after कौरव्य (kuru+yaY) and माण्डूक. Surface test: कौरव्यायणी = [kuru, yaY_t, sPa, strI_abs] (ṇatva via the r of kuru) |
+| 478 | 4.1.20 | वयसि प्रथमे | ṅīp after an a-final stem denoting "early age" (prathama vayas); apavāda to 4.1.4 ṭāp. Stems carry ?vayasi_prathama (kumAra, kiSora, barkara) → कुमारी / किशोरी / बर्करी. Surface test: कुमारी = [kumAra, strI_abs] |
+| 479 | 4.1.21 | द्विगोः | ṅīp after an a-final Dvigu samāsa; apavāda to 4.1.4. New ?dvigu tag (analogous to ?bahuvrIhi) set by the test composer via `in_context(in_compound(loka), "dvigu")` and propagated through `join_objects()` (paninian_object.py allowlist). Surface test: त्रिलोकी = [as_purva_pada(tri), luk_sup, in_context(in_compound(loka), "dvigu"), strI_abs] |
+| – | 4.1.4.1 | अजाद्यतष्टाप् (ajādi-prabalatva) | Vārttika-style apavāda: a ?ajAdi stem always takes ṭāp, overriding the entire 4.1.5–4.1.21 ṅīp cluster (`overrides: [4.1.6, 4.1.15, 4.1.16, 4.1.20, 4.1.21]`). Paired with samāsa-gated `_propagate(last, ["ajAdi"])` in `join_objects()` so the tag rides from the uttara-pada to a compound. Drives त्र्यनीका (tri+anIka) and त्रिफला (tri+Pala — Vasu's exact example on SK479). The ?ajAdi arm formerly in 4.1.4 was removed; 4.1.4 now keeps only its general `l: at` arm |
 | 6.4.22 | 6.4.22 | असिद्धवदत्राभात् | (out-of-SK-order, engine-level) ābhīya asiddhavat — partial. Static-samanāśraya peers {6.4.148, 6.4.150, 6.4.134} are pair-wise asiddha to each other. `view()` walks past peer ancestors at the same window (returns the pre-section snapshot for condition AND xform input); `_compose_abhiya` derives a per-snapshot-position diff of `operate(snapshot)` vs `snapshot` and composes it with prior peer diffs into the current state — so both peers' edits land in the merged output. Unlocks the ṣpha cluster (गार्गी uses 148+150 composition; गार्ग्यायणी/लौहित्यायनी/कौरव्यायणी block 134 from seeing 148's output). The वुग्युट… vārttika and broader scope are deferred — see Skipped table |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied: tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
@@ -431,6 +434,9 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
 | 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
 | 473 | 4.1.17 | प्राचां ष्फ तद्धितः | DONE — moved to Implemented | गार्ग्यायणी etc. now derive via partial 6.4.22 ābhīya asiddhavat |
+| 480 | 4.1.22 | अपरिमाणबिस्ताचितकम्बल्येभ्यो न तद्धितलुकि | For later — needs tadDita_luk modeling + semantic-class tags (parimANa/bistAdi) | Blocks SK479 ṅīp for a Dvigu when (a) it does NOT end in a parimāṇa-denoting word OR (b) ends in बिस्त/आचित/कम्बल्य, AND a taddhita affix has undergone luk. Affects पञ्चाश्वा, द्विबिस्ता, द्व्याचिता, द्विकम्बल्या; preserves द्व्याढकी and समाहार-Dvigu पञ्चाश्वी |
+| 481 | 4.1.23 | काण्डान्तात्क्षेत्रे | For later — needs the SK480 tadDita_luk infrastructure + a ?kzetre semantic tag | Blocks ṅīp for काण्ड-final Dvigu meaning 'field' (द्विकाण्डा क्षेत्रभक्तिः); the non-field sense keeps ṅīp (द्विकाण्डी रज्जुः) |
+| 482 | 4.1.24 | पुरुषात्प्रमाणेऽन्यतरस्याम् | For later — needs the SK480 tadDita_luk infrastructure + ?puruza + ?pramANe semantic tag | Optionally re-enables ṅīp for पुरुष-final Dvigu denoting measure (द्विपुरुषी ~ द्विपुरुषा परिखा) |
 | — | (vārttika) | वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ | Deferred — exception to 6.4.22 | The four operations vuk-augment, yuṭ-augment, uvaṅ, yaṇ are siddha (not asiddha) within the ābhīya section. Not yet implemented because the current static-samanāśraya list only enables asiddhavat for {6.4.148, 6.4.150, 6.4.134} and these don't interact with vuk/yuṭ/uvaṅ/yaṇ. Add a sidhya carve-out (or analogous `_special_siddha` entry) when extending the asiddhavat scope |
 | — | 6.4.22 | असिद्धवदत्राभात् (broader) | Partial — only static-samanāśraya pairs | Current scope is limited to three rule pairs (148–150, 148–134). The full Pāṇinian principle covers the entire ābhīya section (6.4.22…end of 6.4) with dynamic samanāśraya. Broader rollout deferred — needs case-by-case verification because some same-window ābhīya pairs (e.g. 6.4.128 optional + 6.4.133 samprasāraṇa) are NOT samanāśraya and over-firing them produces conflicts |
 
@@ -610,6 +616,10 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | gArgyAyaRI | f | ṣpha (SK473) — needs 6.4.22 | [garga, yaY_t, sPa, strI_abs]; गार्ग्यायणी. Drives 6.4.22 (148+150 compose) + 6.4.134 block on आयन् output |
 | lOhityAyanI | f | ṣpha obligatory via SK476 (4.1.18) | [lohita, yaY_t, sPa, strI_abs]; लौहित्यायनी (no ṇatva trigger, so plain न) |
 | kOravyAyaRI | f | ṣpha obligatory via SK477 (4.1.19) | [kuru, yaY_t, sPa, strI_abs]; कौरव्यायणी (ṇatva from r of kuru) |
+| kumArI | f | vayasi prathame (SK478) | [kumAra, strI_abs]; kumAra carries ?vayasi_prathama → SK478 ṅīp (apavāda to 4.1.4) → कुमारी; gen pl कुमारीणाम् (8.4.1 ṇatva: r…n→ṇ) |
+| trilokI | f | Dvigu samāsa (SK479) — exercises new ?dvigu tag | [as_purva_pada(tri), luk_sup, in_context(in_compound(loka), "dvigu"), strI_abs]; ?dvigu propagates through join_objects() (paninian_object.py allowlist, analogous to ?bahuvrIhi) → SK479 ṅīp → त्रिलोकी; gen pl त्रिलोकीनाम् (l blocks 8.4.1 ṇatva) |
+| tryanIkA | f | Dvigu samāsa, ?ajAdi uttara-pada → ?dvigu **overridden** (4.1.4.1) | [as_purva_pada(tri), luk_sup, in_context(in_compound(anIka), "dvigu"), strI_abs]; ?ajAdi propagates from anIka via samāsa-gated `_propagate(last, ["ajAdi"])`; 4.1.4.1 overrides SK479 → ṭāp → त्र्यनीका (ramā-type). Gen pl त्र्यनीकानाम् — y blocks ṇatva |
+| triPalA | f | Dvigu samāsa with ?ajAdi (Vasu's exact example) | [as_purva_pada(tri), luk_sup, in_context(in_compound(Pala), "dvigu"), strI_abs]; same mechanism as tryanIkA → त्रिफला. Gen pl त्रिफलानाम् — l blocks ṇatva |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |
