@@ -1742,6 +1742,59 @@ viBakti["vEdyI"] = [
     ["वैद्यि", "वैद्य्यौ", "वैद्य्यः"],
 ]
 
+# SK473 / SK476 / SK477 (ṣpha-stem) strī paradigms — enabled by the 6.4.22
+# ābhīya asiddhavat in antaranga_prakriya.py (static samanāśraya peers
+# {6.4.148, 6.4.150, 6.4.134}). Without asiddhavat, 6.4.148 drops the final 'a'
+# of gārgyāyana → gārgyāyan, and 6.4.134 mis-fires on the 'an' of the आयन्
+# substitute (gives गार्ग्याय्णी). With asiddhavat both 6.4.148 and 6.4.150 see
+# the same gārgya/gārgyāyana snapshot independently, and their diffs compose.
+
+# SK473 (4.1.17 प्राचां ष्फ तद्धितः) + SK475 (7.1.2 फ→आयन्):
+# garga + yaY → gārgya (ādivṛddhi); + sPa → fired by 7.1.2 to आयन् →
+# gārgyāyana stem; + strī_abs → ṅīp → gārgyāyaṇī (ṇatva via 8.4.x).
+prAtipadika["gArgyAyaRI"] = [garga, yaY_t, sPa, strI_abs]   # noqa: F405
+viBakti["gArgyAyaRI"] = [
+    ['गार्ग्यायणी', 'गार्ग्यायण्यौ', 'गार्ग्यायण्यः'],
+    ['गार्ग्यायणीम्', 'गार्ग्यायण्यौ', 'गार्ग्यायणीः'],
+    ['गार्ग्यायण्या', 'गार्ग्यायणीभ्याम्', 'गार्ग्यायणीभिः'],
+    ['गार्ग्यायण्यै', 'गार्ग्यायणीभ्याम्', 'गार्ग्यायणीभ्यः'],
+    ['गार्ग्यायण्याः', 'गार्ग्यायणीभ्याम्', 'गार्ग्यायणीभ्यः'],
+    ['गार्ग्यायण्याः', 'गार्ग्यायण्योः', 'गार्ग्यायणीनाम्'],
+    ['गार्ग्यायण्याम्', 'गार्ग्यायण्योः', 'गार्ग्यायणीषु'],
+    ['गार्ग्यायणि', 'गार्ग्यायण्यौ', 'गार्ग्यायण्यः'],
+]
+
+# SK476 (4.1.18 सर्वत्र लोहितादिकतन्तेभ्यः): lohita is in the lohitādi gaṇa,
+# so the optional ष्फ of SK473 is obligatory. lohita + yaY → lOhitya; + sPa →
+# 7.1.2 substitute fires; + strī_abs → ṅīp → lauhityāyanī. No ṇatva trigger
+# (no r/ṛ/ṣ between vowels and the आयन् न) → plain न retained.
+prAtipadika["lOhityAyanI"] = [lohita, yaY_t, sPa, strI_abs]   # noqa: F405
+viBakti["lOhityAyanI"] = [
+    ['लौहित्यायनी', 'लौहित्यायन्यौ', 'लौहित्यायन्यः'],
+    ['लौहित्यायनीम्', 'लौहित्यायन्यौ', 'लौहित्यायनीः'],
+    ['लौहित्यायन्या', 'लौहित्यायनीभ्याम्', 'लौहित्यायनीभिः'],
+    ['लौहित्यायन्यै', 'लौहित्यायनीभ्याम्', 'लौहित्यायनीभ्यः'],
+    ['लौहित्यायन्याः', 'लौहित्यायनीभ्याम्', 'लौहित्यायनीभ्यः'],
+    ['लौहित्यायन्याः', 'लौहित्यायन्योः', 'लौहित्यायनीनाम्'],
+    ['लौहित्यायन्याम्', 'लौहित्यायन्योः', 'लौहित्यायनीषु'],
+    ['लौहित्यायनि', 'लौहित्यायन्यौ', 'लौहित्यायन्यः'],
+]
+
+# SK477 (4.1.19 कौरव्यमाण्डूकाभ्यां च): kuru is one of the named bases (the
+# yaY-derived stem is कौरव्य). + sPa → 7.1.2 fires; + strī_abs → ṅīp →
+# कौरव्यायणी (ṇatva from r of kuru affecting the आयन् न).
+prAtipadika["kOravyAyaRI"] = [kuru, yaY_t, sPa, strI_abs]   # noqa: F405
+viBakti["kOravyAyaRI"] = [
+    ['कौरव्यायणी', 'कौरव्यायण्यौ', 'कौरव्यायण्यः'],
+    ['कौरव्यायणीम्', 'कौरव्यायण्यौ', 'कौरव्यायणीः'],
+    ['कौरव्यायण्या', 'कौरव्यायणीभ्याम्', 'कौरव्यायणीभिः'],
+    ['कौरव्यायण्यै', 'कौरव्यायणीभ्याम्', 'कौरव्यायणीभ्यः'],
+    ['कौरव्यायण्याः', 'कौरव्यायणीभ्याम्', 'कौरव्यायणीभ्यः'],
+    ['कौरव्यायण्याः', 'कौरव्यायण्योः', 'कौरव्यायणीनाम्'],
+    ['कौरव्यायण्याम्', 'कौरव्यायण्योः', 'कौरव्यायणीषु'],
+    ['कौरव्यायणि', 'कौरव्यायण्यौ', 'कौरव्यायण्यः'],
+]
+
 # SK470 ṭiṭ (टित्) arm: कुरुचर + ṅīp → कुरुचरी. The ṭ-it of the affix propagates to the
 # merged stem (via the krt/tadDita setIt loop) so the SK470 +w block fires. The affix
 # is modelled with wac (टच्); strictly कुरुचर is चरेष्टः (3.2.16) ट. Declines nadī-type.

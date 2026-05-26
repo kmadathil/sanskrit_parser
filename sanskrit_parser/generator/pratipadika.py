@@ -97,6 +97,9 @@ suparRA = Pratipadika("suparRA", "strI")
 # ākṣikī); lavaṇa+ṭhañ → lāvaṇika → लावणिकी (complete, vṛddhi via 7.2.117 ñit).
 akza   = Pratipadika("akza",   "pum")
 lavaRa = Pratipadika("lavaRa", "pum")
+# SK476 (4.1.18) test base: lohita+yaY+sPa → लौहित्यायन → लौहित्यायनी (no ṇatva).
+# SK477 (4.1.19) reuses kuru (above) for कौरव्यायणी.
+lohita = Pratipadika("lohita", "pum")
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

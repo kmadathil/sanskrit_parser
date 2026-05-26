@@ -76,6 +76,8 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     # SK470/471 taddhita-ṅīp test bases
     indra, utsa, paYca, garga,
     vidyA, kuru, car, suparRA, akza, lavaRa,
+    # SK476 (lohitādi) ṣpha test base
+    lohita,
 )
 from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     avasAna, sups, su, kvin, kvip, kaY, vatup, NIp, NIz, Ap, luk_sup, Adya,
@@ -95,6 +97,8 @@ from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     yat_t, zyaY_t, yaY_t, aR_t,
     # SK470 taddhita ṅīp-triggering affixes
     aY_t, dvayasac, tayap, kvarap, Qhak, Wak, WaY,
+    # SK473 ṣpha taddhita (with फ → आयन् via 7.1.2)
+    sPa,
     # ka-pratyaya taddhita (SK463/464)
     kan,
     # van-class kṛt
@@ -237,6 +241,12 @@ _vEdyI_cpd       = [vidyA, aR_t, strI_abs]            # SK472 negative: base-ya 
 _suparReyI_cpd   = [suparRA, Qhak, strI_abs]          # SK470 ḍha (PARTIAL): SK475 ḍh→eya → सुपर्णेयी
 _lAvaRikI_cpd    = [lavaRa, WaY, strI_abs]            # SK470 ṭhañ → लावणिकी (complete)
 _akzikI_cpd      = [akza, Wak, strI_abs]              # SK470 ṭhak (PARTIAL): अक्षिकी (vṛddhi pending)
+# SK473/476/477 ṣpha-stem strī forms — driven by 6.4.22 ābhīya asiddhavat
+# (148+150 compose for gārgī; 134 blocked from 148's output for the
+# -āyana stems' acc/ins/etc. surfaces).
+_gArgyAyaRI_cpd  = [garga, yaY_t, sPa, strI_abs]      # SK473 + SK475 → गार्ग्यायणी
+_lOhityAyanI_cpd = [lohita, yaY_t, sPa, strI_abs]     # SK476 → लौहित्यायनी
+_kOravyAyaRI_cpd = [kuru, yaY_t, sPa, strI_abs]       # SK477 → कौरव्यायणी
 
 _STEMS_RAW = [
     # ── a / ā stems ───────────────────────────────────────────────────────
@@ -313,6 +323,9 @@ _STEMS_RAW = [
     ("suparReyI",   _suparReyI_cpd,   "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "sauparṇeyī  (SK470 ḍha; 7.1.2 ḍh→eya + 7.2.118 vṛddhi)"),
     ("lAvaRikI",    _lAvaRikI_cpd,    "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "lāvaṇikī  (SK470 ṭhañ; 7.3.50 ṭha→ika)"),
     ("akzikI",      _akzikI_cpd,      "Strī-pratyaya (SK469-472 taddhita-ṅīp)", "ākṣikī  (SK470 ṭhak; 7.3.50 + 7.2.118 vṛddhi)"),
+    ("gArgyAyaRI",  _gArgyAyaRI_cpd,  "Strī-pratyaya (SK473-477 ṣpha)",          "gārgyāyaṇī  (SK473 ṣpha + SK475 फ→आयन्; 6.4.22 asiddhavat composes 148+150)"),
+    ("lOhityAyanI", _lOhityAyanI_cpd, "Strī-pratyaya (SK473-477 ṣpha)",          "lauhityāyanī  (SK476 lohitādi: ṣpha obligatory)"),
+    ("kOravyAyaRI", _kOravyAyaRI_cpd, "Strī-pratyaya (SK473-477 ṣpha)",          "kauravyāyaṇī  (SK477 kuru/maṇḍūka: ṣpha obligatory)"),
 
     # ── i stems ───────────────────────────────────────────────────────────
     ("kavi",     kavi,        "i-stems (pum)",    "kavi  (kavi-)"),

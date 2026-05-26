@@ -356,15 +356,22 @@
 # 194: अमिपूर्वः (6-1-107) 
 -   sutra:  अमिपूर्वः
     id: 6.1.107
+    # Previously: xform: l: null, r: l — redistributed lp's final ak-vowel into
+    # rp's first position. Final merged form identical, but the intermediate
+    # state had lp ending in whatever consonant preceded the moved vowel — and
+    # 6.4.8 (सर्वनामस्थाने चासम्बुद्धौ) would misread that as an अन्-class stem
+    # and (mis)apply upadhā-dīrgha, e.g. गार्ग्यायनी|अम् → गार्ग्यायन्|ईम् →
+    # गार्ग्यायान्|ईम् (wrong) → गार्ग्यायाणीम्. By dropping only rp's 'a' and
+    # keeping lp intact, lp's last char remains a vowel so 6.4.8's `l: n`
+    # cannot match on the post-amipūrvaḥ intermediate.
     # FIXME: This prevents 7.3.102 supi ca from triggering, but we need a proper
-    # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack 
+    # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack
     overrides: [6.1.101,  6.1.102, 7.3.102]
     condition:
        l: _ak
        rp: ?am
     xform:
-       l: null
-       r: l
+       r: null
     update:
        olp:
          - -Ba
@@ -2920,20 +2927,25 @@
 # 472: हलस्तद्धितस्य (6-4-150) — a taddhita ya-kāra after hal is elided before ṅīp ī.
 # General over the taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a
 # base-internal 'y' is NOT elided (विद्या+अण् → वैद्य → वैद्यी, not वैदी — SC Vasu).
-# No bahiranga needed: 6.4.148 (यस्येति च) fires first on gArgya|ī dropping the 'a'
-# → gArgy|ī; then 6.4.150 fires on gArgy|ī (ll=hal 'g', l='y') deleting 'y' → गार्गी.
+# Self-sufficient condition: detect 'y' at upadhā position (lp ends hal+y+a)
+# directly on the snapshot (e.g. gārgya). 6.4.150 does NOT wait for 6.4.148 to
+# drop the final 'a' — under the 6.4.22 ābhīya asiddhavat (view + diff
+# composition in antaranga_prakriya.py), both rules fire against the same
+# gārgya snapshot: 6.4.148 drops the final 'a' (l→null) and 6.4.150 drops the
+# upadhā 'y' (lc:lc[:-1]); their snapshot-relative diffs compose into 'gArg',
+# then merge with ī → गार्गी.
 - sutra: हलस्तद्धितस्य
   id: 6.4.150
   condition:
      lp:
        - and
        - ?aNga
-       - ?tadDita_ya   # the final ya must be a taddhita ya-affix, not a base 'y'
-     ll: _hal          # ya preceded by a consonant (हलः)
-     l: y              # the taddhita ya, now final after 6.4.148 dropped its 'a'
+       - ?tadDita_ya              # the 'y' must be a taddhita ya-affix, not a base 'y'
+       - $$hal_taddhita_ya_upaDa  # lp ends in (hal + 'y' + 'a') — y in upadhā after hal
+     l: a
      rp: ?NI
   xform:
-     l: null   # delete the now-final taddhita 'y'
+     lc: lc[:-1]   # drop the upadhā 'y' (the last char of lc); 'a' (=l) stays for 6.4.148
 
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
@@ -3550,7 +3562,7 @@
 - sutra: ङेप्रथमयोरम्
   id: 7.1.28
   bahiranga: 2
-  overrides: 7.1.17
+  overrides: [7.1.17, 7.1.14]
   condition:
     lp:
       - ?yuzmad
@@ -5324,6 +5336,18 @@
 # 474: षः प्रत्ययस्य (1-3-6) — saṁjñā only; no YAML rule needed.
 # Affix-initial ष is an it. Encoded directly in each pratyaya's `its` list
 # (e.g. sPa = Pratyaya("Pa", its=["z"], ...)). No separate engine rule.
+
+# 476: सर्वत्र लोहितादिकतन्तेभ्यः (4-1-18) — no YAML rule needed.
+# In all schools (sarvatra) — not just per the Eastern Grammarians — ष्फ
+# obligatorily attaches after stems of the lohitādi gaṇa and after stems
+# ending in 'kan' (the kaN affix). Like SK473, modelled by the test composer
+# including sPa explicitly: [lohita, yaY_t, sPa, strI_abs] → लौहित्यायनी
+# (parallel to गार्ग्यायणी; no ṇatva-trigger so the न stays न).
+
+# 477: कौरव्यमाण्डूकाभ्यां च (4-1-19) — no YAML rule needed.
+# ष्फ obligatorily attaches after कौरव्य (kuru+yaY) and माण्डूक.
+# Test: [kuru, yaY_t, sPa, strI_abs] → कौरव्यायणी (the र of kuru triggers
+# ṇatva on the आयन् न).
 
 # 454: अजाद्यतष्टाप् (4-1-4)
 # olp: +TAp_added marks the stem so 7.2.102/103 can avoid re-firing on the post-TAp

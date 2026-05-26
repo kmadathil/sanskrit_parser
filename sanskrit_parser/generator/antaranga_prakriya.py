@@ -25,6 +25,129 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _in_abhiya(aps_num):
+    """6.4.22 असिद्धवदत्राभात् — outputs of rules in the ābhīya section
+    (Pāṇini 6.4.22 .. end of 6.4) are asiddha (invisible) to each other.
+    Our scope: aps_num in (64022, 64176). Specific carve-outs (e.g. the
+    वुग्युटावुवङ्यणोः vārttika) are deferred."""
+    try:
+        return 64022 < float(aps_num) < 64176
+    except (TypeError, ValueError):
+        return False
+
+
+# Static samanāśraya pairs for 6.4.22 ābhīya asiddhavat.
+# Each entry: rule_aps -> set of peer rule_aps that this rule does NOT see.
+# (Equivalent: an edge between two rules iff each is asiddha to the other.)
+# Kept narrow on purpose: we only enable asiddhavat for pairs we've
+# explicitly designed around, since broad-scope walking can over-fire
+# in derivations like maGavan (optional vs samprasāraṇa) or BAt_strI
+# (inner hier-prakriya branching). Add new pairs as the ābhīya cluster
+# is extended.
+_ASIDDHA_PEERS = {
+    # 6.4.148 (यस्येति च) drops the final 'a' of gārgya before ī.
+    # 6.4.150 (हलस्तद्धितस्य) drops the taddhita 'य' in upadhā after hal.
+    # Both fire on gārgya|ī simultaneously and must compose:
+    # 148 deletes the 'a', 150 deletes the 'y' → gArg → गार्गी.
+    "6.4.148": frozenset({"6.4.150", "6.4.134"}),
+    # 6.4.134 (अल्लोपोऽनः) must NOT see 6.4.148's output — otherwise
+    # गार्ग्यायन (post-148) leaks an spurious 'an'-class trigger that
+    # mis-fires on the आयन्-substitute (gives गार्ग्याय्णी instead of
+    # गार्ग्यायणी).
+    "6.4.134": frozenset({"6.4.148"}),
+    "6.4.150": frozenset({"6.4.148"}),
+}
+
+
+def _is_asiddha_peer(self_aps, peer_aps):
+    return peer_aps in _ASIDDHA_PEERS.get(self_aps, frozenset())
+
+
+def _compose_abhiya(snapshot_str, current_str, target_str):
+    """Compose two ābhīya rule edits against a shared snapshot.
+
+    current_str = snapshot_str - prior peer edits.
+    target_str  = snapshot_str - this rule's edits (operate on snapshot).
+    Returns snapshot_str - (prior ∪ this) edits, position-merged.
+
+    Uses difflib's SequenceMatcher to derive a per-snapshot-position edit
+    dictionary for each diff, then merges. Same-position incompatible
+    edits raise AssertionError (Pāṇinian samanāśraya pairs in our YAML
+    don't overlap on character positions; if a real conflict surfaces,
+    surface it rather than silently picking)."""
+    if current_str == snapshot_str and target_str == snapshot_str:
+        return snapshot_str
+    if current_str == snapshot_str:
+        return target_str
+    if target_str == snapshot_str:
+        return current_str
+
+    from difflib import SequenceMatcher
+
+    def _edit_dict(src, dst):
+        ed = {}
+        sm = SequenceMatcher(a=src, b=dst, autojunk=False)
+        for tag, i1, i2, j1, j2 in sm.get_opcodes():
+            if tag == 'equal':
+                for d in range(i2 - i1):
+                    ed[i1 + d] = ('keep',)
+            elif tag == 'delete':
+                for d in range(i2 - i1):
+                    ed[i1 + d] = ('delete',)
+            elif tag == 'replace':
+                # Attribute the new content to the first src position;
+                # other src positions in this block are deletions.
+                ed[i1] = ('replace', dst[j1:j2])
+                for d in range(1, i2 - i1):
+                    ed[i1 + d] = ('delete',)
+            elif tag == 'insert':
+                ed[('before', i1)] = ('insert', dst[j1:j2])
+        return ed
+
+    e_curr = _edit_dict(snapshot_str, current_str)
+    e_new  = _edit_dict(snapshot_str, target_str)
+    keys = set(e_curr.keys()) | set(e_new.keys())
+    combined = {}
+    for k in keys:
+        ec = e_curr.get(k)
+        en = e_new.get(k)
+        if ec is None:
+            combined[k] = en
+        elif en is None:
+            combined[k] = ec
+        elif ec == en:
+            combined[k] = ec
+        elif ec[0] == 'keep':
+            combined[k] = en
+        elif en[0] == 'keep':
+            combined[k] = ec
+        else:
+            raise AssertionError(
+                f"Ābhīya composition conflict at position {k}: "
+                f"current={ec!r} vs new={en!r} "
+                f"(snapshot={snapshot_str!r}, current={current_str!r}, target={target_str!r})"
+            )
+
+    out = []
+    for i, c in enumerate(snapshot_str):
+        # 'before' insert first
+        ins_key = ('before', i)
+        if ins_key in combined:
+            out.append(combined[ins_key][1])
+        e = combined.get(i, ('keep',))
+        if e[0] == 'keep':
+            out.append(c)
+        elif e[0] == 'delete':
+            pass
+        elif e[0] == 'replace':
+            out.append(e[1])
+    # Trailing insert (after last char)
+    end_key = ('before', len(snapshot_str))
+    if end_key in combined:
+        out.append(combined[end_key][1])
+    return ''.join(out)
+
+
 def _deduplicate_hier_outputs(outputs):
     """If all PrakriyaVakya outputs produce the same canonical string,
     return a single-element list. Otherwise return the original list."""
@@ -335,10 +458,39 @@ class AntarangaPrakriya(PrakriyaBase):
         if node is None:
             # logger.debug(f"View {l} {node}")
             return _l
-            
-        if aps_num < 82000:
-            # FIXME: Only Sapadasaptapadi implemented.
-            # Need to implement asiddhavat, zutvatokorasiddhaH
+
+        
+        #FIXME Need to implement zutvatokorasiddhaH
+        #FIXME Implement vukyuw... vArttikam on asidDavadatrABAt       
+        if _in_abhiya(aps_num) and s is not None and getattr(s, 'aps', None) in _ASIDDHA_PEERS:
+            # 6.4.22 ābhīya asiddhavat — static-samanāśraya pairs only.
+            # Walk past parent firings of explicit asiddha-peer rules at
+            # the same window AND tripādī parents (8.2+), to match the
+            # default sapādasaptādhyāyī skip below (aps_num < 82000 path).
+            # The engine composes the diff (snapshot → operate(snapshot))
+            # with the current state's accumulated peer diffs before
+            # writing the new node, so both peer effects and this rule's
+            # effect end up in the composed output. Only the rule-pairs
+            # in _ASIDDHA_PEERS get this treatment; everything else uses
+            # the normal view.
+            self_aps = s.aps
+            _n = node
+            while self.tree.parent[_n] is not None and not isinstance(_n.sutra, str):
+                parent_aps_num = getattr(_n.sutra, '_aps_num', None)
+                parent_aps     = getattr(_n.sutra, 'aps',      None)
+                # Skip tripādī parents (matches default <82000 view).
+                if (parent_aps_num is not None and parent_aps_num > 82000
+                        and not _special_siddha(parent_aps_num, aps_num)):
+                    _n = self.tree.parent[_n]
+                    continue
+                # Skip ābhīya-peer parents at the same window.
+                if (_n.index == ix
+                        and _is_asiddha_peer(self_aps, parent_aps)):
+                    _n = self.tree.parent[_n]
+                    continue
+                break
+            _l = _n.outputs
+        elif aps_num < 82000:
             # Can see the entire sapadasaptapadi
             _n = node
             while (self.tree.parent[_n] is not None) and \
@@ -488,8 +640,59 @@ class AntarangaPrakriya(PrakriyaBase):
                         logger.debug(f"Restored ru {r[i]} {r[i].tags}")
 
             logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
-            
-            
+
+            # 6.4.22 ābhīya asiddhavat composition.
+            # If v (the view used by operate) is a snapshot of a *prior*
+            # ābhīya state (i.e. peers have already fired and the current
+            # node.outputs differs from v at this window), compose this
+            # rule's snapshot-relative diff with the prior peer edits
+            # so both effects survive in the new node. For the very
+            # first ābhīya fire at a window, v IS the current state and
+            # no composition is needed — the standard path applies.
+            if (_in_abhiya(getattr(s, '_aps_num', None))
+                    and getattr(s, 'aps', None) in _ASIDDHA_PEERS
+                    and (v[0] is not node.outputs[ix]
+                         or v[1] is not node.outputs[ix+1])):
+                snap_lp = v[0].canonical()
+                snap_rp = v[1].canonical()
+                curr_lp = node.outputs[ix].canonical()
+                curr_rp = node.outputs[ix+1].canonical()
+                tgt_lp  = r[0].canonical()
+                tgt_rp  = r[1].canonical()
+                composed_lp = _compose_abhiya(snap_lp, curr_lp, tgt_lp)
+                composed_rp = _compose_abhiya(snap_rp, curr_rp, tgt_rp)
+                if composed_lp != tgt_lp:
+                    r[0].update(composed_lp, sanscript.SLP1)
+                if composed_rp != tgt_rp:
+                    r[1].update(composed_rp, sanscript.SLP1)
+                # Compose tags/its/disabled_sutras: keep current's, add this
+                # rule's contributions (delta vs snapshot).
+                for side, v_obj, c_obj in ((0, v[0], node.outputs[ix]),
+                                           (1, v[1], node.outputs[ix+1])):
+                    snap_tags = set(v_obj.tags); snap_its = set(v_obj.its)
+                    snap_dis  = set(v_obj.disabled_sutras)
+                    tgt_tags  = set(r[side].tags); tgt_its = set(r[side].its)
+                    tgt_dis   = set(r[side].disabled_sutras)
+                    merged_tags = set(c_obj.tags) | (tgt_tags - snap_tags)
+                    merged_its  = set(c_obj.its)  | (tgt_its  - snap_its)
+                    merged_dis  = set(c_obj.disabled_sutras) | (tgt_dis - snap_dis)
+                    # Removed-by-target tags get cleared too (rare; e.g.
+                    # a rule that drops a tag from snapshot).
+                    merged_tags -= (snap_tags - tgt_tags)
+                    merged_its  -= (snap_its  - tgt_its)
+                    r[side].tags = list(merged_tags)
+                    r[side].its  = list(merged_its)
+                    r[side].disabled_sutras = list(merged_dis)
+                    # Preserve disabled_by from current
+                    for aps, by in c_obj.disabled_by.items():
+                        if aps not in r[side].disabled_by:
+                            r[side].disabled_by[aps] = by
+                logger.debug(f"Ābhīya composed [{s.aps}]: "
+                             f"snap={snap_lp}|{snap_rp} curr={curr_lp}|{curr_rp} "
+                             f"tgt={tgt_lp}|{tgt_rp} -> {r[0].canonical()}|{r[1].canonical()}")
+                # r0 still references the (mutated) post-operate object;
+                # downstream disabled_sutras append uses r0, which is r[0].
+
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
             # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam
 

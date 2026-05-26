@@ -115,6 +115,20 @@ def vargatritiya(s: str):
     return adesha(s, "kKgGcCjJwWqQtTdDpPbB", "GGGGJJJJQQQQDDDDBBBB")
 
 
+def hal_taddhita_ya_upaDa(lp):
+    """True if lp ends in (hal + 'y' + 'a') — the taddhita 'y' sits in upadhā
+    position preceded by a consonant. Used by SK472 (6.4.150 हलस्तद्धितस्य) to
+    detect the elision context directly on the original stem (e.g. गार्ग्य), so
+    6.4.150 does NOT depend on 6.4.148 having already dropped the final 'a'.
+    Combined with the engine's 6.4.22 ābhīya asiddhavat, this lets 6.4.148 and
+    6.4.150 both fire on the same gārgya snapshot and compose: 148 drops the
+    final 'a', 150 drops the upadhā 'y' → gārg, then merge with ī → गार्गी."""
+    if len(lp) < 3:
+        return False
+    return (lp[-1] == 'a' and lp[-2] == 'y' and
+            lp[-3] not in 'aAiIuUfFxXeEoO')
+
+
 def phaDhakhachagha_adesha(r: str):
     """SK475 (7.1.2 आयनेयीनीयियः फढखछघां प्रत्ययादीनाम्): map affix-initial
     फ/ढ/ख/छ/घ → आयन्/एय्/ईन्/ईय्/इय्. ḍh's "eya" carries its own 'a' (Qhak content

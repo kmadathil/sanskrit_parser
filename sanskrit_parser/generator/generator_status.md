@@ -3,8 +3,8 @@
 Sutras are implemented following the Siddhantakaumudi (SK) order from
 https://drdhaval2785.github.io/siddhantakaumudi/
 
-**Last implemented:** SK 472 — 6.4.150 हलस्तद्धितस्य (taddhita-ya elided before ṅīp ī → गार्गी)
-**Next to be implemented:** SK 473 (4.1.17 — प्राचां ष्फ तद्धितः, ṣpha cluster SK473-475 → गार्ग्यायणी); SK 465-468 (7.3.46-49, northern variants) still deferred
+**Last implemented:** SK 477 — 4.1.19 कौरव्यमाण्डूकाभ्यां च. The ṣpha-stem surface forms गार्ग्यायणी / लौहित्यायनी / कौरव्यायणी now derive (completes SK473/476/477 testing), powered by an engine-level partial 6.4.22 असिद्धवदत्राभात्.
+**Next to be implemented:** SK 478 (4.1.20 वयसि प्रथमे); deferred: SK 465-468 (7.3.46-49, northern variants); the vārttika **वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ** (carves vuk-augment, yuṭ-augment, uvaṅ, yaṇ out of 6.4.22 — they remain siddha to other ābhīya rules; not yet implemented).
 
 ---
 
@@ -12,11 +12,11 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 328 |
-| Sutras skipped / deferred | 48 |
+| Sutras implemented | 331 |
+| Sutras skipped / deferred | 49 |
 | Sutras uncatalogued / not yet planned | ~67 |
-| **Total sutras accounted for** | **~431** |
-| Stems with full vibhakti test tables | 196 |
+| **Total sutras accounted for** | **~435** |
+| Stems with full vibhakti test tables | 199 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -338,10 +338,13 @@ The "Forms affected" column uses the convention:
 | 469 | 4.1.14 | अनुपसर्जनात् | adhikāra only (no YAML rule). Establishes तदन्तविधि for the strī affixes (lets SK470 read "stem ending in" the affixes) and the anupasarjana scope (naturally honoured — strī affixes attach to the head stem) |
 | 470 | 4.1.15 | टिड्ढाणञ्द्वयसज्दघ्नञ्मात्रच्तयप्ठक्ठञ्कञ्क्वरपः | ṅīp for a-final taddhita stems (apavāda to 4.1.4 ṭāp). Named affixes via ?NIp_taddhita; ṭiṭ via the +w it-marker (propagated through the krt/tadDita setIt loop). Working — **all 12 affixes**: ṭiṭ (कुरुचरी via wac), ḍha (सौपर्णेयी), aṇ (ऐन्द्री), añ (औत्सी), dvayasac/daghnac/mātrac (ऊरुद्वयसी/ऊरुदघ्नी/ऊरुमात्री), tayap (पञ्चतयी), ṭhak (आक्षिकी), ṭhañ (लावणिकी), kañ (यादृशी, reuses kaY), kvarap (नश्वरी). Supporting rules: 7.3.50 (ṭha→ika), 7.1.2 ḍh→eya arm, 7.2.118 (k-it ādivṛddhi), and the 1.4.18 -pada fix |
 | 471 | 4.1.16 | यञश्च | ṅīp after yañ-final (?yaY), apavāda to 4.1.4. gārgya → +ṅīp → SK472 → गार्गी |
-| 472 | 6.4.150 | हलस्तद्धितस्य | taddhita ya-kāra after hal elided before ṅīp ī. General over taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a base-internal 'y' is not elided (विद्या+अण्→वैद्य → वैद्यी, not वैदी — SC Vasu). No bahiranga: 6.4.148 drops 'a' (gārgya→gārgy), then 6.4.150 deletes 'y' → गार्गी (nadī-type). cond ll:_hal, l:y |
-| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | (no YAML rule) — optional ष्फ taddhita after yañ. The affix `sPa` is defined in pratyaya.py (its=["z"]); tests compose [..., yaY_t, sPa, strI_abs] explicitly. The **गार्ग्यायणी derivation test is deferred** pending **6.4.22 असिद्धवदत्राभात्** — without asiddhavat, 6.4.148's a-drop on गार्ग्यायन lets 6.4.134 अल्लोपोऽनः misfire and the result becomes गार्ग्याय्णी instead of गार्ग्यायणी |
+| 472 | 6.4.150 | हलस्तद्धितस्य | taddhita ya-kāra after hal elided before ṅīp ī. General over taddhita ya-affixes (yat/ṣyañ/yañ), guarded by ?tadDita_ya so a base-internal 'y' is not elided (विद्या+अण्→वैद्य → वैद्यी, not वैदी — SC Vasu). **Self-sufficient condition (lp ends hal+y+a, l='a'): the rule detects the upadhā 'y' directly on the snapshot, not via 6.4.148's output**. xform `lc: lc[:-1]` drops the 'y'. With 6.4.22 asiddhavat (see below), 6.4.148 and 6.4.150 fire against the same gārgya snapshot; their diffs compose: 148 drops 'a', 150 drops 'y' → गार्ग, merge with ī → गार्गी. helper `hal_taddhita_ya_upaDa(lp)` |
+| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | (no YAML rule) — optional ष्फ taddhita after yañ. The affix `sPa` is defined in pratyaya.py (its=["z"]); tests compose [..., yaY_t, sPa, strI_abs] explicitly. Surface test गार्ग्यायणी now works via the 6.4.22 ābhīya asiddhavat |
 | 474 | 1.3.6 | षः प्रत्ययस्य | (saṁjñā only, no YAML rule) — affix-initial ष is an it. Encoded directly in each pratyaya's `its` list (e.g. `sPa = Pratyaya("Pa", its=["z"], ...)`) |
-| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | All 5 arms implemented via `phaDhakhachagha_adesha`: फ→आयन्, ढ→एय्, ख→ईन्, छ→ईय्, घ→इय्. Tested: ḍh-arm (सुपर्णा+ढक् → सौपर्णेयी). The फ→आयन् arm fires correctly but the full गार्ग्यायणी derivation is deferred pending 6.4.22 (see SK473) |
+| 475 | 7.1.2 | आयनेयीनीयियः फढखछघां प्रत्ययादीनाम् | All 5 arms implemented via `phaDhakhachagha_adesha`: फ→आयन्, ढ→एय्, ख→ईन्, छ→ईय्, घ→इय्. **Now fully tested**: ḍh-arm (सुपर्णा+ढक् → सौपर्णेयी); फ-arm (गार्ग्यायणी / लौहित्यायनी / कौरव्यायणी) via SK473/476/477 |
+| 476 | 4.1.18 | सर्वत्र लोहितादिकतन्तेभ्यः | (no YAML rule) — adhikāra-style. In all schools (sarvatra, not only Eastern Grammarians), ष्फ obligatorily attaches after stems of the lohitādi gaṇa and after stems formed by the kaN affix. Modelled like SK473: the test composer includes `sPa` for such bases. Surface test: लौहित्यायनी = [lohita, yaY_t, sPa, strI_abs] |
+| 477 | 4.1.19 | कौरव्यमाण्डूकाभ्यां च | (no YAML rule) — adhikāra-style. ष्फ obligatorily attaches after कौरव्य (kuru+yaY) and माण्डूक. Surface test: कौरव्यायणी = [kuru, yaY_t, sPa, strI_abs] (ṇatva via the r of kuru) |
+| 6.4.22 | 6.4.22 | असिद्धवदत्राभात् | (out-of-SK-order, engine-level) ābhīya asiddhavat — partial. Static-samanāśraya peers {6.4.148, 6.4.150, 6.4.134} are pair-wise asiddha to each other. `view()` walks past peer ancestors at the same window (returns the pre-section snapshot for condition AND xform input); `_compose_abhiya` derives a per-snapshot-position diff of `operate(snapshot)` vs `snapshot` and composes it with prior peer diffs into the current state — so both peers' edits land in the merged output. Unlocks the ṣpha cluster (गार्गी uses 148+150 composition; गार्ग्यायणी/लौहित्यायनी/कौरव्यायणी block 134 from seeing 148's output). The वुग्युट… vārttika and broader scope are deferred — see Skipped table |
 | 423 | 6.3.94 | तिरसस्तिर्यलोपे | Natural — pre-applied: tiras- → tiry- before añcatir with a-lopa; tiryac stored as weak form; tests pass |
 | 437 | 7.2.107 | अदस औ सुलोपश्च | Out-of-SK-order, added with SK381: adas nom sg — final a→au (O), su deleted; asa+su→asau=असौ |
 | 419 | 8.2.80 | अदसोऽसेर्दादु दो मः | adas sg/du/pl (excl. inst sg, nom/acc du handled by 6.1.102): fires on ?pada ?adas — amu sg (acc amum, dat/abl/gen/loc sg via ṣatva), amU du (nom/acc amū), amī pl (nom/acc/voc via SK438); _special_siddha(82080,14007) and (82080,73120) for 1.4.7+7.3.120 |
@@ -427,7 +430,9 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 466 | 7.3.47 | भस्त्रैषाजाज्ञाद्वास्वा नञ्पूर्वाणामपि | For later — northern-grammarian variant | Optional id for the listed stems (bhastrā, eṣā, ajā, jñā, dvā, svā) and their nañ-compounds; lexically-restricted, needs the same shortened-ā chain |
 | 467 | 7.3.48 | अभाषितपुंस्काच्च | For later — northern-grammarian variant | Optional id for abhāṣita-puṃska stems (gaṅgā→gaṅgikā); needs abhāṣita-puṃska semantic tagging |
 | 468 | 7.3.49 | आदाचार्याणाम् | For later — northern-grammarian variant (Ācārya alternative) | ā-substitute alternative in the SK467 domain (gaṅgākā ~ gaṅgikā); builds on SK467 |
-| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | Partial — गार्ग्यायणी test deferred pending 6.4.22 असिद्धवदत्राभात् | sPa affix defined and SK475 (7.1.2) फ→आयन् fires correctly; without asiddhavat, 6.4.148 a-drop on गार्ग्यायन lets 6.4.134 अल्लोपोऽनः misfire (gives गार्ग्याय्णी, not गार्ग्यायणी). Move to fully implemented once 6.4.22 is in place |
+| 473 | 4.1.17 | प्राचां ष्फ तद्धितः | DONE — moved to Implemented | गार्ग्यायणी etc. now derive via partial 6.4.22 ābhīya asiddhavat |
+| — | (vārttika) | वुग्युटावुवङ्यणोः सिद्धौ वक्तव्यौ | Deferred — exception to 6.4.22 | The four operations vuk-augment, yuṭ-augment, uvaṅ, yaṇ are siddha (not asiddha) within the ābhīya section. Not yet implemented because the current static-samanāśraya list only enables asiddhavat for {6.4.148, 6.4.150, 6.4.134} and these don't interact with vuk/yuṭ/uvaṅ/yaṇ. Add a sidhya carve-out (or analogous `_special_siddha` entry) when extending the asiddhavat scope |
+| — | 6.4.22 | असिद्धवदत्राभात् (broader) | Partial — only static-samanāśraya pairs | Current scope is limited to three rule pairs (148–150, 148–134). The full Pāṇinian principle covers the entire ābhīya section (6.4.22…end of 6.4) with dynamic samanāśraya. Broader rollout deferred — needs case-by-case verification because some same-window ābhīya pairs (e.g. 6.4.128 optional + 6.4.133 samprasāraṇa) are NOT samanāśraya and over-firing them produces conflicts |
 
 ---
 
@@ -602,6 +607,9 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | suparReyI | f | ḍha (SK470) | [suparRA, Qhak, strI_abs]; SK475 (7.1.2) ḍh→eya + 7.2.118 ādivṛddhi सु→सौ → सौपर्णेयी (complete) |
 | lAvaRikI | f | ṭhañ (SK470) | [lavaRa, WaY, strI_abs]; 7.3.50 ṭha→ika + 7.2.117 ñit vṛddhi → लावणिकी (complete; the 1.4.18 -pada fix removed the earlier doubled-ṇ) |
 | akzikI | f | ṭhak (SK470) | [akza, Wak, strI_abs]; 7.3.50 ṭha→ika + 7.2.118 ādivṛddhi अ→आ → आक्षिकी (complete; 1.4.18 -pada fix removed the earlier 8.2.29 misfire अडिक) |
+| gArgyAyaRI | f | ṣpha (SK473) — needs 6.4.22 | [garga, yaY_t, sPa, strI_abs]; गार्ग्यायणी. Drives 6.4.22 (148+150 compose) + 6.4.134 block on आयन् output |
+| lOhityAyanI | f | ṣpha obligatory via SK476 (4.1.18) | [lohita, yaY_t, sPa, strI_abs]; लौहित्यायनी (no ṇatva trigger, so plain न) |
+| kOravyAyaRI | f | ṣpha obligatory via SK477 (4.1.19) | [kuru, yaY_t, sPa, strI_abs]; कौरव्यायणी (ṇatva from r of kuru) |
 | dhImat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → dhīmān nom sg; SK361 nUM for sarvānāmasthāna → dhīmant strong forms; dhīmat weak forms |
 | gomat | m | -at stem (matup u-it, SK425) | SK425 (6.4.14): upadhā dīrgha before su → gomān nom sg; same pattern as dhīmat |
 | jakzat | m | -at stem (śatṛ f-it, abhyasta, SK427+SK428) | SK427 blocks nUM → all forms use plain jakzat- base; nom sg जक्षत्/जक्षद् (not *जक्षन्); SLP1 z=ṣ |
