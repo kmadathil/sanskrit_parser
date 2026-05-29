@@ -2654,7 +2654,7 @@ viBakti["vasu"] = [
 # NOTE: requires SK379 implementation + ?vasu/?samAsa tag propagation in join_objects.
 # All forms carry viśvā- prefix (dīrgha on viśva throughout compound — vasu is always
 # vasu regardless of sup, so SK294 never applies here; SK379 fires unconditionally).
-prAtipadika["viSvAvasu"] = [viSva, in_compound(vasu_pum)]   # noqa: F405
+prAtipadika["viSvAvasu"] = [viSva, luk_sup, in_compound(vasu_pum)]   # noqa: F405
 viBakti["viSvAvasu"] = [
     ['विश्वावसुः', 'विश्वावसू', 'विश्वावसवः'],               # 1 Nom  * viśvā- + u-stem
     ['विश्वावसुम्', 'विश्वावसू', 'विश्वावसून्'],              # 2 Acc

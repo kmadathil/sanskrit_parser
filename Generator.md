@@ -89,6 +89,20 @@ Key methods: `hasTag()`, `setTag()`, `deleteTag()`, `isPada()`, `join_objects()`
 
 `join_objects()` assembles a list of component objects into a single `PaninianObject`, propagating tags according to Paninian rules (e.g., 1.4.14 *suptiṇantaṃ padam*, 1.4.13 *yasmāt pratyayavidhis tad ādi pratyaye'ṅgam*).
 
+#### Tag propagation in `join_objects` (compound lifecycle)
+
+Tags ride from the constituent elements (`first` = parts[0], `last` = parts[-1]) onto the merged result `so` through several gated `_propagate` calls. The interesting propagations are organised as follows:
+
+| Direction | Gate | Tags | Why |
+|-----------|------|------|-----|
+| `first → so` | **unconditional** | `samAsa`, `samAsaPurva`, `adas`, `vasupada` | Samāsa-lifecycle markers needed by the compound-completion logic. `adas`/`vasupada` strictly belong in the aṅga-gated tier but are propagated unconditionally as a workaround for 6.1.87 (*AdguRaH*) and 6.1.88, and cleaned up on `pada+pada` merge. |
+| `first → so` | `first.hasTag("aNga")` | `udanc`, `viSva` | Stem-identity tags that only matter when first acts as an aṅga. |
+| `first → so` | `last.hasTag("tadDita")` | `bahuvrIhi`, `dvigu`, `parimARa`, `bistAdi`, `kARqa`, `puruza`, `kzetre`, `pramARe` | Compound-type and SK480/481/482 semantic-class tags ride forward **only** through a tadDita-affix merge. For direct strī-suffix merges (e.g. `loka | strI_abs` → त्रिलोकी) the strī-block already copies all of `first.tags` onto `so`, so no separate riding is needed. The narrow gate prevents stale compound-type tags from leaking into ordinary pada formation. |
+| `last → so` | `first.hasTag("aNga")` | `trc`, `trn`, `kaY`, `suc`, `van`, `ka_pratyaya`, `NIp_taddhita`, `yaY`, `tadDita_ya`, `luk_tadDita` | Kṛt/taddhita classifier tags ride from the suffix onto the merged stem so downstream rules can identify the affix class on a derived prātipadika. |
+| `last → so` | `last.hasTag("samAsa")` | `ajAdi` | SK454 / 4.1.4.1 (ajādi-prabalatva) — the ajādi flag rides from the uttara-pada onto the compound stem. The SK480/481/482 semantic tags do *not* need an entry here; they reach the right window via the tadDita-gated first-propagation above. |
+
+`join_objects` also runs an iterative settling pass at each window: the engine may call it more than once on the same `(first, last)` pair, and a tag set by one pass (e.g. `?aNga` via 1.4.13) becomes the gate for another tag in the next pass (e.g. `?luk_tadDita` riding from `last` under the aṅga gate). This convergence is essential for chains like *(compound-stem | luk_tadDita)*, where the compound stem doesn't carry `?aNga` until the second pass and `?luk_tadDita` therefore propagates only on the third.
+
 ### `Dhatu` — `dhatu.py`
 
 Represents a verb root. Carries:
@@ -525,6 +539,34 @@ For each vibhakti/vacana, the engine runs:
 The main helper is `generate_vibhakti(pratipadika, prakriya, sutra_list)`, which generates all 8×3 vibhakti forms. The entry point is registered as `sanskrit_generator`.
 
 `run_pp(inputs, prakriya, sutra_list)` runs a single prakriya on an arbitrary input list, useful for testing individual derivations.
+
+Input-construction flags (each takes one or more globally-defined object names from `pratyaya.py` / `pratipadika.py` / `dhatu.py` / `avyaya.py`):
+
+| Flag | Action | Equivalent in code |
+|------|--------|---------------------|
+| `-p`, `--pratyaya` | Add a pratyaya as-is | `pratyaya` |
+| `-d`, `--dhatu` | Add a dhātu as-is | `dhatu` |
+| `-t`, `--pratipadika` | Add a prātipadika as-is | `pratipadika` |
+| `-m`, `--samasta-pratipadika` | Wrap uttara-pada(s) with `?samAsa` | `in_compound(p)` |
+| `-u`, `--purva-pada` | Wrap pūrva-pada(s) with `?samAsaPurva` | `as_purva_pada(p)` |
+| `-D`, `--dvigu` | Wrap uttara-pada(s) with `?samAsa + ?dvigu` | `in_context(in_compound(p), "dvigu")` |
+| `-B`, `--bahuvrihi` | Wrap uttara-pada(s) with `?samAsa + ?bahuvrIhi` | `in_context(in_compound(p), "bahuvrIhi")` |
+| `-s`, `--string` | Raw SLP1 string; trailing `*` → aṅga, `_` → pada | `PaninianObject(...)` |
+| `-o`, `-c` | Open / close bracket (hierarchical input) | nested list |
+| `-a` | Avasāna marker (ends the input chain) | `avasAna` |
+
+Examples (manual testing of compound rules):
+
+```bash
+# SK479 ṅīp on Dvigu: tri+loka → त्रिलोकी
+sanskrit_generator -u tri -p luk_sup -D loka -p strI_abs --vibhakti
+
+# SK480 ṭāp on Dvigu+tadDita-luk: dvi+bista → द्विबिस्ता
+sanskrit_generator -u dvi -p luk_sup -D bista -p luk_tadDita -p strI_abs --vibhakti
+
+# parimāṇa counter to SK480: dvi+AQaka → द्व्याढकी (ṅīp survives)
+sanskrit_generator -u dvi -p luk_sup -D AQaka -p luk_tadDita -p strI_abs --vibhakti
+```
 
 ### Tests (`generator/test/`)
 

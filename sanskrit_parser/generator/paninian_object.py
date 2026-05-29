@@ -177,21 +177,39 @@ class PaninianObject(SanskritObject):
 
         # ── Phase 3: Compound lifecycle ───────────────────────────────────────────
 
-        # --- Compound-context tags (first → result), needed for SK379 pūrva-pada ---
-        # bahuvrIhi and dvigu ride along like samAsa so they survive intermediate
-        # merges (e.g. vrAja+kap → vrājaka, or tri+loka → triloka) and reach the
-        # completed compound stem. This lets SK463 (7.3.44) asuwapaH ?!bahuvrIhi
-        # guard fire on a derived bahuvrīhi (बहुपरिव्राजका, not बहुपरिव्राजिका),
-        # and lets SK479 (4.1.21) ?dvigu read on the merged Dvigu stem (त्रिलोकी).
-        # SK480/481/482 semantic tags also ride from first through subsequent
-        # merges (e.g., compound-stem + luk_tadDita, where last has no ?samAsa
-        # so the samāsa-gated last-propagation below cannot fire). Without this
-        # the tags would be lost between the (pūrva, uttara) merge and the
-        # (compound, luk_tadDita) merge.
-        _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas",
-                           "bahuvrIhi", "dvigu",
-                           "parimARa", "bistAdi", "kARqa", "puruza",
-                           "kzetre", "pramARe"])
+        # --- Compound-context tags (first → result) — three-tier propagation ---
+        #
+        # Tier 1 (unconditional): the in-progress samāsa-lifecycle markers ride
+        # forward through every merge so the compound completion logic (lines
+        # 241+) can detect samasta_pada. adas/vasupada strictly belong in the
+        # aṅga-gated tier but are propagated unconditionally as a workaround
+        # for 6.1.87 (AdguRaH) and 6.1.88 which delete ?aNga (though they shouldn't);
+        # the leak is cleaned up  by the _delete_if_present(["adas","vasupada"])
+        # on pada+pada merge below.
+        _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada"])
+
+        # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
+        # pada-pada boundaries
+        if first.hasTag("aNga"):
+            _propagate(first, ["udanc", "viSva"])
+
+        # Tier 3 (tadDita-gated): compound-type tags and SK480/481/482 semantic
+        # class tags ride forward only when the next element is a tadDita affix
+        # (incl. luk_tadDita). Rationale: these tags need to survive a tadDita
+        # interposed between the compound stem and the strī suffix — see
+        # त्रिलोकी (no tadDita: SK479 fires directly at the (loka | strI_abs)
+        # window where loka still has ?dvigu, no riding needed; the strī-block
+        # at line 257 copies all of first.tags forward anyway) vs.
+        # दव्याढकी / दविबिस्ता / दविकाण्डा / दविपुरुषी (a luk_tadDita sits
+        # between the compound stem and strI_abs — these tags must ride through
+        # that merge so SK479/480/481/482 can read them on the lp of the
+        # (compound_stem+luk_tadDita | strI_abs) window). Gating on
+        # ?tadDita keeps the channel narrow: pratyaya-only merges (e.g.
+        # anga+sup) don't carry stale compound-type tags into a pada.
+        if last.hasTag("tadDita"):
+            _propagate(first, ["bahuvrIhi", "dvigu",
+                               "parimARa", "bistAdi", "kARqa", "puruza",
+                               "kzetre", "pramARe"])
 
         # --- samāsa-only: ajAdi rides from the uttara-pada (last) to the compound ---
         # A samāsa ending in an ajādi-gaṇa word inherits ?ajAdi so SK454 (4.1.4) and
@@ -201,15 +219,8 @@ class PaninianObject(SanskritObject):
         # Gated on last.hasTag("samAsa") so non-compound merges (anga+sup, taddhita
         # derivations, etc.) don't accidentally inherit ajādi.
         if last.hasTag("samAsa"):
-            # ajAdi (existing): SK454/4.1.4.1 prabalatva → ṭāp.
-            # SK480/481/482 (4.1.22/23/24) semantic class tags ride from the
-            # uttara-pada into the compound stem the same way:
-            #   parimARa            — ādhaka-class (measure) words; counter to SK480
-            #   bistAdi             — बिस्त/आचित/कम्बल्य trigger SK480's affirmative arm
-            #   kARqa, puruza       — stem-class tags carried into the Dvigu compound
-            #   kzetre, pramARe     — semantic context tags (set via in_context())
-            _propagate(last, ["ajAdi", "parimARa", "bistAdi",
-                              "kARqa", "puruza", "kzetre", "pramARe"])
+            # ajAdi: SK454/4.1.4.1 prabalatva → ṭāp on the compound stem.
+            _propagate(last, ["ajAdi"])
 
         # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
         # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya
@@ -222,8 +233,12 @@ class PaninianObject(SanskritObject):
 
         # --- pada+pada merge → merged_pada ---
         # Blocks arm-A ṇatva rules (8.4.1/8.4.2/8.4.22) which require ?!merged_pada.
+        # Also cleans up the adas/vasupada workaround leak from tier 1 above:
+        # they were propagated unconditionally so 6.1.87/6.1.88 could see them,
+        # but must not survive past pada+pada boundaries.
         if first.hasTag("pada") and last.hasTag("pada"):
             so.setTag("merged_pada")
+            _delete_if_present(["adas", "vasupada"])
 
         # --- samasta_pada: compound complete ---
         # L has samAsaPurva+pada and R has samAsa+pada → compound is done:
