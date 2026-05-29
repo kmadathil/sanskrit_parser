@@ -89,20 +89,6 @@ Key methods: `hasTag()`, `setTag()`, `deleteTag()`, `isPada()`, `join_objects()`
 
 `join_objects()` assembles a list of component objects into a single `PaninianObject`, propagating tags according to Paninian rules (e.g., 1.4.14 *suptiṇantaṃ padam*, 1.4.13 *yasmāt pratyayavidhis tad ādi pratyaye'ṅgam*).
 
-#### Tag propagation in `join_objects` (compound lifecycle)
-
-Tags ride from the constituent elements (`first` = parts[0], `last` = parts[-1]) onto the merged result `so` through several gated `_propagate` calls. The interesting propagations are organised as follows:
-
-| Direction | Gate | Tags | Why |
-|-----------|------|------|-----|
-| `first → so` | **unconditional** | `samAsa`, `samAsaPurva`, `adas`, `vasupada` | Samāsa-lifecycle markers needed by the compound-completion logic. `adas`/`vasupada` strictly belong in the aṅga-gated tier but are propagated unconditionally as a workaround for 6.1.87 (*AdguRaH*) and 6.1.88, and cleaned up on `pada+pada` merge. |
-| `first → so` | `first.hasTag("aNga")` | `udanc`, `viSva` | Stem-identity tags that only matter when first acts as an aṅga. |
-| `first → so` | `last.hasTag("tadDita")` | `bahuvrIhi`, `dvigu`, `parimARa`, `bistAdi`, `kARqa`, `puruza`, `kzetre`, `pramARe` | Compound-type and SK480/481/482 semantic-class tags ride forward **only** through a tadDita-affix merge. For direct strī-suffix merges (e.g. `loka | strI_abs` → त्रिलोकी) the strī-block already copies all of `first.tags` onto `so`, so no separate riding is needed. The narrow gate prevents stale compound-type tags from leaking into ordinary pada formation. |
-| `last → so` | `first.hasTag("aNga")` | `trc`, `trn`, `kaY`, `suc`, `van`, `ka_pratyaya`, `NIp_taddhita`, `yaY`, `tadDita_ya`, `luk_tadDita` | Kṛt/taddhita classifier tags ride from the suffix onto the merged stem so downstream rules can identify the affix class on a derived prātipadika. |
-| `last → so` | `last.hasTag("samAsa")` | `ajAdi` | SK454 / 4.1.4.1 (ajādi-prabalatva) — the ajādi flag rides from the uttara-pada onto the compound stem. The SK480/481/482 semantic tags do *not* need an entry here; they reach the right window via the tadDita-gated first-propagation above. |
-
-`join_objects` also runs an iterative settling pass at each window: the engine may call it more than once on the same `(first, last)` pair, and a tag set by one pass (e.g. `?aNga` via 1.4.13) becomes the gate for another tag in the next pass (e.g. `?luk_tadDita` riding from `last` under the aṅga gate). This convergence is essential for chains like *(compound-stem | luk_tadDita)*, where the compound stem doesn't carry `?aNga` until the second pass and `?luk_tadDita` therefore propagates only on the third.
-
 ### `Dhatu` — `dhatu.py`
 
 Represents a verb root. Carries:
