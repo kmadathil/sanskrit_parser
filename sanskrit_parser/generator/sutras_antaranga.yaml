@@ -5424,6 +5424,95 @@
      olp: +TAp_added
      orp: =Ap
 
+# 480: अपरिमाणबिस्ताचितकम्बल्येभ्यो न तद्धितलुकि (4-1-22)
+# Niṣedha to SK479 (4.1.21 द्विगोः): for an a-final Dvigu compound whose final
+# taddhita has undergone luk (?luk_tadDita), ṅīp does NOT apply when the
+# uttara-pada is NOT a parimāṇa word (?!parimARa), OR is one of बिस्त/आचित/
+# कम्बल्य (?bistAdi). Selects ṭāp instead.
+# ?!kARqa excludes kāṇḍa-final stems — SK481 (niyama) restricts the prohibition
+# to the kṣetra sense for kāṇḍa, otherwise SK479 ṅīp wins (द्विकाण्डी रज्जुः).
+# puruṣa-final stems are NOT excluded here: SK482 (vibhāṣā) optionally overrides
+# this rule to re-enable ṅīp in the pramāṇa sense (द्विपुरुषी ~ द्विपुरुषा).
+# Examples: पञ्चाश्वा, द्विबिस्ता, द्व्याचिता, द्विकम्बल्या; counters preserved:
+# द्व्याढकी (?parimARa keeps SK479 ṅīp) and पञ्चाश्वी (samāhāra-Dvigu, no luk).
+- sutra: अपरिमाणबिस्ताचितकम्बल्येभ्यो न तद्धितलुकि
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.22
+  overrides: 4.1.21
+  condition:
+    - lp:
+        - and
+        - ?dvigu
+        - ?luk_tadDita
+        - ?!parimARa
+        - ?!kARqa
+      l: a
+      rp: ?strI_abs
+    - lp:
+        - and
+        - ?dvigu
+        - ?luk_tadDita
+        - ?bistAdi
+      l: a
+      rp: ?strI_abs
+  update:
+    olp: +TAp_added
+    orp: =Ap
+
+# 481: काण्डान्तात्क्षेत्रे (4-1-23)
+# Niyama on SK480 for kāṇḍa-final Dvigus: select ṭāp (block ṅīp) only when the
+# compound denotes a kṣetra (field). The non-kṣetra sense falls through to
+# SK479 → ṅīp (द्विकाण्डी रज्जुः). The semantic ?kzetre tag is attached by the
+# test composer via in_context(..., "kzetre") and rides through samāsa
+# propagation to the compound stem. Vasu's example: द्विकाण्डा क्षेत्रभक्तिः.
+- sutra: काण्डान्तात्क्षेत्रे
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.23
+  overrides: 4.1.21
+  condition:
+    lp:
+      - and
+      - ?dvigu
+      - ?kARqa
+      - ?kzetre
+      - ?luk_tadDita
+    l: a
+    rp: ?strI_abs
+  update:
+    olp: +TAp_added
+    orp: =Ap
+
+# 482: पुरुषात्प्रमाणेऽन्यतरस्याम् (4-1-24)
+# Vibhāṣā: for puruṣa-final Dvigu in the pramāṇa sense, ṅīp is optionally
+# re-enabled. Listed as `overrides: 4.1.21` (NOT 4.1.22): if SK482 overrode
+# 4.1.22, the optional-fired branch would also disable SK480 on v0 (engine's
+# optional-overrides disabling, antaranga_prakriya.py:712-715), so the
+# "SK482-skips" branch would have no rule to fall back on. By overriding 4.1.21
+# instead, the skip branch leaves SK480 (4.1.22) free to fire → ṭāp →
+# द्विपुरुषा; the fire branch wins over SK480 via higher _aps_num (para
+# kāryam) → ṅīp → द्विपुरुषी. Both Vasu alternants produced.
+# Non-pramāṇa puruṣa-Dvigu never satisfies ?pramARe, so SK482 cannot fire —
+# SK480 alone applies → only द्विपुरुषा (Vasu: "No option is allowed here").
+- sutra: पुरुषात्प्रमाणेऽन्यतरस्याम्
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.24
+  overrides: 4.1.21
+  optional: true
+  condition:
+    lp:
+      - and
+      - ?dvigu
+      - ?puruza
+      - ?pramARe
+      - ?luk_tadDita
+    l: a
+    rp: ?strI_abs
+  update:
+    orp: =NIp
+
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च
   domain: prakfti

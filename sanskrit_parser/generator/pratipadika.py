@@ -119,6 +119,23 @@ anIka = Pratipadika("anIka", "napum", other_tags=["ajAdi"])
 # via the ajādi-prabalatva apavāda 4.1.4.1.
 Pala  = Pratipadika("Pala",  "napum", other_tags=["ajAdi"])
 
+# SK480/481/482 (4.1.22/23/24) tadDita-luk Dvigu test bases.
+# Semantic class tags ride from uttara-pada to the compound stem via the
+# samāsa-gated propagation in paninian_object.join_objects (alongside ?ajAdi);
+# the ?luk_tadDita tag is added on the anga+luk_tadDita merge under the aṅga guard.
+#   aSva    — pañca+aśva: aśva ≠ parimāṇa  → SK480 ṭāp → पञ्चाश्वा
+#   bista, Acita, kambalya — bistāḍi gaṇa → SK480 ṭāp → द्विबिस्ता, द्व्याचिता, द्विकम्बल्या
+#   AQaka  — parimāṇa counter → SK480 blocked → SK479 ṅīp → द्व्याढकी
+#   kARqa   — SK481 ṭāp in kzetre sense; SK479 ṅīp otherwise
+#   puruza  — SK482 vibhāṣā: ṅīp re-enabled optionally in pramāṇa sense
+aSva     = Pratipadika("aSva",     "pum")
+bista    = Pratipadika("bista",    "pum",   other_tags=["bistAdi"])
+Acita    = Pratipadika("Acita",    "napum", other_tags=["bistAdi"])
+kambalya = Pratipadika("kambalya", "pum",   other_tags=["bistAdi"])
+AQaka   = Pratipadika("AQaka",   "pum",   other_tags=["parimARa"])
+kARqa    = Pratipadika("kARqa",    "pum",   other_tags=["kARqa"])
+puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
+
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
 hastin = Pratipadika("hastin", "pum")

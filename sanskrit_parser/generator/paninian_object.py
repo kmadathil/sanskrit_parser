@@ -164,8 +164,12 @@ class PaninianObject(SanskritObject):
             # ṅīp-triggering affix class reaches the merged stem (aindra, gārgya …).
             # The ṭiṭ-class needs no entry — the ṭ-it survives via the taddhita setIt
             # loop (line ~128), so SK470's +w condition matches the merged stem.
+            # luk_tadDita: when an aṅga (compound stem) merges with the empty
+            # taddhita-luk pratyaya, the resulting prātipadika carries ?luk_tadDita.
+            # SK480/481/482 read this on the lp side to apply niṣedha/niyama/vibhāṣā
+            # on the strīpratyaya selection (ṭāp vs. ṅīp) for a Dvigu compound.
             _propagate(last, ["trc", "trn", "kaY", "suc", "van", "ka_pratyaya",
-                              "NIp_taddhita", "yaY", "tadDita_ya"])
+                              "NIp_taddhita", "yaY", "tadDita_ya", "luk_tadDita"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
         if last.hasTag("samasta_Ratva"):
@@ -179,8 +183,15 @@ class PaninianObject(SanskritObject):
         # completed compound stem. This lets SK463 (7.3.44) asuwapaH ?!bahuvrIhi
         # guard fire on a derived bahuvrīhi (बहुपरिव्राजका, not बहुपरिव्राजिका),
         # and lets SK479 (4.1.21) ?dvigu read on the merged Dvigu stem (त्रिलोकी).
+        # SK480/481/482 semantic tags also ride from first through subsequent
+        # merges (e.g., compound-stem + luk_tadDita, where last has no ?samAsa
+        # so the samāsa-gated last-propagation below cannot fire). Without this
+        # the tags would be lost between the (pūrva, uttara) merge and the
+        # (compound, luk_tadDita) merge.
         _propagate(first, ["samAsa", "samAsaPurva", "vasupada", "udanc", "adas",
-                           "bahuvrIhi", "dvigu"])
+                           "bahuvrIhi", "dvigu",
+                           "parimARa", "bistAdi", "kARqa", "puruza",
+                           "kzetre", "pramARe"])
 
         # --- samāsa-only: ajAdi rides from the uttara-pada (last) to the compound ---
         # A samāsa ending in an ajādi-gaṇa word inherits ?ajAdi so SK454 (4.1.4) and
@@ -190,7 +201,15 @@ class PaninianObject(SanskritObject):
         # Gated on last.hasTag("samAsa") so non-compound merges (anga+sup, taddhita
         # derivations, etc.) don't accidentally inherit ajādi.
         if last.hasTag("samAsa"):
-            _propagate(last, ["ajAdi"])
+            # ajAdi (existing): SK454/4.1.4.1 prabalatva → ṭāp.
+            # SK480/481/482 (4.1.22/23/24) semantic class tags ride from the
+            # uttara-pada into the compound stem the same way:
+            #   parimARa            — ādhaka-class (measure) words; counter to SK480
+            #   bistAdi             — बिस्त/आचित/कम्बल्य trigger SK480's affirmative arm
+            #   kARqa, puruza       — stem-class tags carried into the Dvigu compound
+            #   kzetre, pramARe     — semantic context tags (set via in_context())
+            _propagate(last, ["ajAdi", "parimARa", "bistAdi",
+                              "kARqa", "puruza", "kzetre", "pramARe"])
 
         # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
         # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya

@@ -161,6 +161,50 @@ class CustomActionSamasa(Action):
             getattr(namespace, "pointer")[-1].append(in_compound(globals()[v]))  # noqa: F405
 
 
+class CustomActionSamasaTagged(Action):
+    """Like CustomActionSamasa but additionally sets one extra tag (e.g. ?dvigu,
+    ?bahuvrIhi) on each pratipadika.
+
+    Equivalent to in_context(in_compound(x), <tag>) — used by the --dvigu and
+    --bahuvrihi options so the user can mark a compound's uttara-pada with the
+    relevant compound-type saṁjñā for testing SK479/480/481/482 etc. from the CLI.
+    The ?samAsa tag is added automatically (via in_compound).
+    """
+    # extra_tag is set per-option via partial / subclass below.
+    extra_tag = None
+
+    def __init__(self, option_strings, dest, nargs=None, **kwargs):
+        super(CustomActionSamasaTagged, self).__init__(option_strings, dest, nargs, **kwargs)
+        logger.debug(f"Initializing CustomActionSamasaTagged ({self.extra_tag}) "
+                     f"{option_strings}, {dest}")
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        logger.debug('%r %r %r' % (namespace, values, option_string))
+        global last_option
+        assert not last_option, f"Option {option_string} added after avasana"
+        assert self.extra_tag is not None, "extra_tag must be set on subclass"
+        if getattr(namespace, self.dest) is None:
+            _n = []
+            setattr(namespace, self.dest, _n)
+            setattr(namespace, "pointer", [_n])
+        if isinstance(values, str):
+            values = [values]
+        for v in values:
+            assert v in globals(), f"{v} is not defined!"
+            wrapped = in_context(in_compound(globals()[v]), self.extra_tag)  # noqa: F405
+            getattr(namespace, "pointer")[-1].append(wrapped)
+
+
+class CustomActionDvigu(CustomActionSamasaTagged):
+    """--dvigu / -D: wrap each pratipadika with ?samAsa + ?dvigu."""
+    extra_tag = "dvigu"
+
+
+class CustomActionBahuvrihi(CustomActionSamasaTagged):
+    """--bahuvrihi / -B: wrap each pratipadika with ?samAsa + ?bahuvrIhi."""
+    extra_tag = "bahuvrIhi"
+
+
 class CustomActionPurvaPada(Action):
     """Like CustomAction but wraps each looked-up pratipadika with as_purva_pada().
 
@@ -244,6 +288,10 @@ def get_args(argv=None):
     parser.add_argument('-t', '--pratipadika', dest="inputs", action=CustomAction)
     parser.add_argument('-m', '--samasta-pratipadika', nargs="+", dest="inputs", action=CustomActionSamasa)
     parser.add_argument('-u', '--purva-pada', nargs="+", dest="inputs", action=CustomActionPurvaPada)
+    parser.add_argument('-D', '--dvigu', nargs="+", dest="inputs", action=CustomActionDvigu,
+                        help="Mark uttara-pada(s) as in_compound(...) + ?dvigu (samāsa added automatically)")
+    parser.add_argument('-B', '--bahuvrihi', nargs="+", dest="inputs", action=CustomActionBahuvrihi,
+                        help="Mark uttara-pada(s) as in_compound(...) + ?bahuvrIhi (samāsa added automatically)")
     parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=sanscript.SLP1, action=CustomActionString)
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")

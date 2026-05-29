@@ -168,6 +168,14 @@ strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
 luk_sup = Pratyaya("", its=[], other_tags=["sup"])
 luk = Pratyaya("", its=[], other_tags=[""])
 
+# Taddhita Luk — empty pratyaya standing in for an elided taddhita affix.
+# Mirrors luk_sup; carries ?tadDita so join_objects sets ?prAtipadika on the
+# anga+luk_tadDita merge (1.2.46 kṛttaddhitasamāsāśca), and ?luk_tadDita so
+# SK480/481/482 can detect that a taddhita has undergone luk on a Dvigu compound.
+# The ?luk_tadDita tag is propagated to the merged stem under the aṅga guard
+# in paninian_object.join_objects (alongside NIp_taddhita / yaY / tadDita_ya).
+luk_tadDita = Pratyaya("", its=[], other_tags=["tadDita", "luk_tadDita"])
+
 # Sambuddhi
 sambudDi = PaninianObject("")
 sambudDi.setTag("sambudDi")
