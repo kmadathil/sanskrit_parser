@@ -1941,6 +1941,28 @@ viBakti["triPalA"] = [
     ["त्रिफले",     "त्रिफले",         "त्रिफलाः"],
 ]
 
+# ── SK479 ṅīp on samāhāra-Dvigu of aśva (no tadDita-luk) ───────────────────
+# Vasu on SK480: "Why do we say 'when a Taddhita affix is elided'? In Samāhāra
+# Dvigu compounds, the affix nip will apply. Thus पञ्चाश्वी." Although aśva
+# is ajādi-gaṇa item #5, the prabalatva over 4.1.21 is restricted to the
+# phala/puṣpa compound-class subgroup (?ajAdi_in_Dvigu) per Vasu's N.B. on
+# items 19–20. aśva has only ?ajAdi (no ?ajAdi_in_Dvigu), so 4.1.4.2 does
+# NOT fire and SK479 ṅīp wins → पञ्चाश्वी (nadī-type). No ṇatva in gen pl
+# पञ्चाश्वीनाम् — no r/ṛ/ṣ in the stem to trigger 8.4.1.
+prAtipadika["paYcASvI"] = [as_purva_pada(paYca), luk_sup,
+                           in_context(in_compound(aSva), "dvigu"),
+                           strI_abs]   # noqa: F405
+viBakti["paYcASvI"] = [
+    ["पञ्चाश्वी",     "पञ्चाश्व्यौ",      "पञ्चाश्व्यः"],
+    ["पञ्चाश्वीम्",   "पञ्चाश्व्यौ",      "पञ्चाश्वीः"],
+    ["पञ्चाश्व्या",   "पञ्चाश्वीभ्याम्",  "पञ्चाश्वीभिः"],
+    ["पञ्चाश्व्यै",   "पञ्चाश्वीभ्याम्",  "पञ्चाश्वीभ्यः"],
+    ["पञ्चाश्व्याः",  "पञ्चाश्वीभ्याम्",  "पञ्चाश्वीभ्यः"],
+    ["पञ्चाश्व्याः",  "पञ्चाश्व्योः",     "पञ्चाश्वीनाम्"],
+    ["पञ्चाश्व्याम्", "पञ्चाश्व्योः",     "पञ्चाश्वीषु"],
+    ["पञ्चाश्वि",     "पञ्चाश्व्यौ",      "पञ्चाश्व्यः"],
+]
+
 # ── SK480 (4.1.22 अपरिमाणबिस्ताचितकम्बल्येभ्यो न तद्धितलुकि) ──────────────────
 # Dvigu + tadDita-luk + (non-parimāṇa OR bistāḍi) → ṅīp blocked → ṭāp (ramā-type).
 # luk_tadDita is the empty taddhita-luk pratyaya; ?luk_tadDita rides through

@@ -5412,21 +5412,46 @@
      olp: +TAp_added
      orp: =Ap
 
-# 454+: अजाद्यतष्टाप् (4-1-4) — ajādi-prabalatva apavāda (vārttika-style id).
-# When the stem (or compound) carries ?ajAdi, ṭāp wins over every ṅīp sutra in
-# the 4.1.5–4.1.21 cluster. Implements Vasu on SK479: "त्रिफला, because this is
-# one of the words spoken of as 'अज &c'." Variant id 4.1.4.1 (aps_num 41004.1),
-# the "Subsutra/Vartikam" pattern parsed by sutra.py.
-# ?ajAdi reaches a compound stem via the samāsa-gated propagation in
-# paninian_object.join_objects (last → result). Examples it now produces:
-# त्र्यनीका (tri+anIka, ?dvigu ?ajAdi: SK479 overridden), त्रिफला (tri+Pala).
+# 454+: अजाद्यतष्टाप् (4-1-4) — ajādi-prabalatva apavāda, non-Dvigu cluster.
+# When the stem (or compound) carries ?ajAdi, ṭāp wins over the ṅīp rules
+# 4.1.6/4.1.15/4.1.16/4.1.20. The Dvigu (4.1.21) override has been split into
+# 4.1.4.2 below — gated on the narrower ?ajAdi_in_Dvigu tag — to honour Vasu's
+# distinction between the phala-class subgroup of the gaṇa (Dvigu→ṭāp) and the
+# rest (Dvigu→ṅīp, e.g. पञ्चाश्वी for the samāhāra-Dvigu of aśva).
+# Variant id 4.1.4.1 (aps_num 41004.1), the "Subsutra/Vartikam" pattern parsed
+# by sutra.py. ?ajAdi reaches a compound stem via the samāsa-gated
+# propagation in paninian_object.join_objects (last → result).
 - sutra: अजाद्यतष्टाप्
   domain: prakfti
   bahiranga: 2   # strīpratyaya selection = pratyaya substitution
   id: 4.1.4.1
-  overrides: [4.1.6, 4.1.15, 4.1.16, 4.1.20, 4.1.21]
+  overrides: [4.1.6, 4.1.15, 4.1.16, 4.1.20]
   condition:
      lp: ?ajAdi
+     rp: ?strI_abs
+  update:
+     olp: +TAp_added
+     orp: =Ap
+
+# 454++: अजाद्यतष्टाप् (4-1-4) — ajādi-prabalatva over 4.1.21 (Dvigu) only.
+# Vasu on 4.1.4 (item 19–20 N.B.): "त्रिफला when a Dvigu Compound forms its
+# feminine as त्रिफला; when a Bahuvrīhi Compound, its feminine is त्रिफली".
+# Per the gaṇa structure (each item's N.B. names the specific ṅīp rule it
+# overrides), the Dvigu override is explicitly licensed only for the phala
+# subgroup (items 15–20), extended here to the puṣpa subgroup (21–26) by
+# analogy. Other ajādi members (e.g. aśva, item 5) override 4.2.63 nish —
+# which doesn't apply in Dvigu — so in Dvigu SK479 ṅīp wins for them
+# (पञ्चाश्वी, per Vasu/SK on SK480 "समाहारे पञ्चाश्वी").
+# Examples produced via ?ajAdi_in_Dvigu: त्रिफला (tri+Pala), त्र्यनीका
+# (tri+anIka — anīka treated as phala-class by analogy though not strictly in
+# the 34-item gaṇa).
+- sutra: अजाद्यतष्टाप्
+  domain: prakfti
+  bahiranga: 2   # strīpratyaya selection = pratyaya substitution
+  id: 4.1.4.2
+  overrides: [4.1.21]
+  condition:
+     lp: ?ajAdi_in_Dvigu
      rp: ?strI_abs
   update:
      olp: +TAp_added

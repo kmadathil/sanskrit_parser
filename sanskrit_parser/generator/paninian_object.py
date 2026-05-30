@@ -219,8 +219,15 @@ class PaninianObject(SanskritObject):
         # Gated on last.hasTag("samAsa") so non-compound merges (anga+sup, taddhita
         # derivations, etc.) don't accidentally inherit ajādi.
         if last.hasTag("samAsa"):
-            # ajAdi: SK454/4.1.4.1 prabalatva → ṭāp on the compound stem.
-            _propagate(last, ["ajAdi"])
+            # ajAdi: 4.1.4.1 prabalatva → ṭāp on the compound stem, against the
+            # non-Dvigu ṅīp rules (4.1.6/4.1.15/4.1.16/4.1.20).
+            # ajAdi_in_Dvigu: 4.1.4.2 specifically overrides 4.1.21 (SK479
+            # Dvigu→ṅīp); carried only by the phala/puṣpa compound-class
+            # subgroup of the ajādi-gaṇa (items 15–26 + Pala/anIka) per Vasu's
+            # N.B. on items 19–20. Items 1–14, 27–34 (e.g. aśva) lack this
+            # narrower tag, so SK479 wins for them in Dvigu — पञ्चाश्वी for
+            # samāhāra-Dvigu of aśva, per Vasu and SK on SK480.
+            _propagate(last, ["ajAdi", "ajAdi_in_Dvigu"])
 
         # tyadAdi survives ONLY a ka-pratyaya derivation (tad+kan → taka), so
         # 7.2.106 (तदोः सः) still gives nom sg takā → sakā. Gated on ka_pratyaya
