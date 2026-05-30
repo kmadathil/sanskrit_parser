@@ -2096,6 +2096,190 @@ viBakti["dvipuruzA"] = [
     ["द्विपुरुषे",     "द्विपुरुषे",         "द्विपुरुषाः"],
 ]
 
+# ── SK483/484 (5.4.131 ऊधसोऽनङ् + 4.1.25 बहुव्रीहेरूधसो ङीष्) ───────────────
+# kuRqa + UDas bahuvrīhi: at the (UDas | strI_abs) window, UDas carries
+# ?bahuvrIhi + ?uDanta (latter on the stem itself). SK483 fires first
+# (bahiranga 1): s → n, giving UDan. SK484 then adds NIz, and 6.4.134
+# (अल्लोपोऽनः, SK234) drops the upadhā 'a' of -an before ī → kuRqoDn+ī.
+# kuRqa + uDas vowel sandhi: a + ū → o (guṇa, 6.1.87).
+prAtipadika["kuRqoDnI"] = [as_purva_pada(kuRqa), luk_sup,
+                           in_context(in_compound(UDas), "bahuvrIhi"),
+                           strI_abs]   # noqa: F405
+viBakti["kuRqoDnI"] = [
+    ["कुण्डोध्नी",     "कुण्डोध्न्यौ",     "कुण्डोध्न्यः"],
+    ["कुण्डोध्नीम्",   "कुण्डोध्न्यौ",     "कुण्डोध्नीः"],
+    ["कुण्डोध्न्या",   "कुण्डोध्नीभ्याम्", "कुण्डोध्नीभिः"],
+    ["कुण्डोध्न्यै",   "कुण्डोध्नीभ्याम्", "कुण्डोध्नीभ्यः"],
+    ["कुण्डोध्न्याः",  "कुण्डोध्नीभ्याम्", "कुण्डोध्नीभ्यः"],
+    ["कुण्डोध्न्याः",  "कुण्डोध्न्योः",    "कुण्डोध्नीनाम्"],
+    ["कुण्डोध्न्याम्", "कुण्डोध्न्योः",    "कुण्डोध्नीषु"],
+    ["कुण्डोध्नि",     "कुण्डोध्न्यौ",     "कुण्डोध्न्यः"],
+]
+
+# Second SK484 example: GaTa + UDas → ghaṭa+ūdhas → ghaṭoḍhnī.
+prAtipadika["GawoDnI"] = [as_purva_pada(Gawa), luk_sup,
+                          in_context(in_compound(UDas), "bahuvrIhi"),
+                          strI_abs]   # noqa: F405
+viBakti["GawoDnI"] = [
+    ["घटोध्नी",     "घटोध्न्यौ",     "घटोध्न्यः"],
+    ["घटोध्नीम्",   "घटोध्न्यौ",     "घटोध्नीः"],
+    ["घटोध्न्या",   "घटोध्नीभ्याम्", "घटोध्नीभिः"],
+    ["घटोध्न्यै",   "घटोध्नीभ्याम्", "घटोध्नीभ्यः"],
+    ["घटोध्न्याः",  "घटोध्नीभ्याम्", "घटोध्नीभ्यः"],
+    ["घटोध्न्याः",  "घटोध्न्योः",    "घटोध्नीनाम्"],
+    ["घटोध्न्याम्", "घटोध्न्योः",    "घटोध्नीषु"],
+    ["घटोध्नि",     "घटोध्न्यौ",     "घटोध्न्यः"],
+]
+
+# ── SK485 (4.1.26 संख्याऽव्ययादेर्ङीप्) ────────────────────────────────────────
+# dvi + UDas bahuvrīhi with ?saMKyAdi → SK485 overrides SK484: NIp not NIz.
+# Surface is identical to NIz (both ī). dvi + UDas: i + ū → yū (6.1.77 yaṇ
+# sandhi). SK483 then s→n → dvyUDan; SK485 picks NIp; SK234 a-lopa → dvyUDn+ī.
+prAtipadika["dvyUDnI"] = [as_purva_pada(dvi), luk_sup,
+                          in_context(in_context(in_compound(UDas), "bahuvrIhi"),
+                                     "saMKyAdi"),
+                          strI_abs]   # noqa: F405
+viBakti["dvyUDnI"] = [
+    ["द्व्यूध्नी",     "द्व्यूध्न्यौ",     "द्व्यूध्न्यः"],
+    ["द्व्यूध्नीम्",   "द्व्यूध्न्यौ",     "द्व्यूध्नीः"],
+    ["द्व्यूध्न्या",   "द्व्यूध्नीभ्याम्", "द्व्यूध्नीभिः"],
+    ["द्व्यूध्न्यै",   "द्व्यूध्नीभ्याम्", "द्व्यूध्नीभ्यः"],
+    ["द्व्यूध्न्याः",  "द्व्यूध्नीभ्याम्", "द्व्यूध्नीभ्यः"],
+    ["द्व्यूध्न्याः",  "द्व्यूध्न्योः",    "द्व्यूध्नीनाम्"],
+    ["द्व्यूध्न्याम्", "द्व्यूध्न्योः",    "द्व्यूध्नीषु"],
+    ["द्व्यूध्नि",     "द्व्यूध्न्यौ",     "द्व्यूध्न्यः"],
+]
+
+# avyayādi arm: ati + UDas → atyUDas (i+ū → yū). ?avyayAdi attached on UDas.
+prAtipadika["atyUDnI"] = [as_purva_pada(ati), luk_sup,
+                          in_context(in_context(in_compound(UDas), "bahuvrIhi"),
+                                     "avyayAdi"),
+                          strI_abs]   # noqa: F405
+viBakti["atyUDnI"] = [
+    ["अत्यूध्नी",     "अत्यूध्न्यौ",     "अत्यूध्न्यः"],
+    ["अत्यूध्नीम्",   "अत्यूध्न्यौ",     "अत्यूध्नीः"],
+    ["अत्यूध्न्या",   "अत्यूध्नीभ्याम्", "अत्यूध्नीभिः"],
+    ["अत्यूध्न्यै",   "अत्यूध्नीभ्याम्", "अत्यूध्नीभ्यः"],
+    ["अत्यूध्न्याः",  "अत्यूध्नीभ्याम्", "अत्यूध्नीभ्यः"],
+    ["अत्यूध्न्याः",  "अत्यूध्न्योः",    "अत्यूध्नीनाम्"],
+    ["अत्यूध्न्याम्", "अत्यूध्न्योः",    "अत्यूध्नीषु"],
+    ["अत्यूध्नि",     "अत्यूध्न्यौ",     "अत्यूध्न्यः"],
+]
+
+# ── SK486 (4.1.27 दामहायनान्ताच्च) ────────────────────────────────────────────
+# dāman arm: dvi + dāman bahuvrīhi → NIp (SK486 arm 1). SK234 (6.4.134) then
+# drops upadhā 'a' of -an before ī → dvidāmn+ī.
+prAtipadika["dvidAmnI"] = [as_purva_pada(dvi), luk_sup,
+                           in_context(in_context(in_compound(dAman), "bahuvrIhi"),
+                                      "saMKyAdi"),
+                           strI_abs]   # noqa: F405
+viBakti["dvidAmnI"] = [
+    ["द्विदाम्नी",     "द्विदाम्न्यौ",     "द्विदाम्न्यः"],
+    ["द्विदाम्नीम्",   "द्विदाम्न्यौ",     "द्विदाम्नीः"],
+    ["द्विदाम्न्या",   "द्विदाम्नीभ्याम्", "द्विदाम्नीभिः"],
+    ["द्विदाम्न्यै",   "द्विदाम्नीभ्याम्", "द्विदाम्नीभ्यः"],
+    ["द्विदाम्न्याः",  "द्विदाम्नीभ्याम्", "द्विदाम्नीभ्यः"],
+    ["द्विदाम्न्याः",  "द्विदाम्न्योः",    "द्विदाम्नीनाम्"],
+    ["द्विदाम्न्याम्", "द्विदाम्न्योः",    "द्विदाम्नीषु"],
+    ["द्विदाम्नि",     "द्विदाम्न्यौ",     "द्विदाम्न्यः"],
+]
+
+# hāyana arm: dvi + hāyana bahuvrīhi in age (?vayasi) sense → SK486 arm 2 → NIp.
+# 6.4.148 (yasyeti ca, SK311) drops final 'a' of -a stem before ī → dvihāyan+ī.
+prAtipadika["dvihAyanI"] = [as_purva_pada(dvi), luk_sup,
+                            in_context(in_context(in_context(in_compound(hAyana),
+                                                             "bahuvrIhi"),
+                                                  "saMKyAdi"), "vayasi"),
+                            strI_abs]   # noqa: F405
+viBakti["dvihAyanI"] = [
+    ["द्विहायनी",     "द्विहायन्यौ",     "द्विहायन्यः"],
+    ["द्विहायनीम्",   "द्विहायन्यौ",     "द्विहायनीः"],
+    ["द्विहायन्या",   "द्विहायनीभ्याम्", "द्विहायनीभिः"],
+    ["द्विहायन्यै",   "द्विहायनीभ्याम्", "द्विहायनीभ्यः"],
+    ["द्विहायन्याः",  "द्विहायनीभ्याम्", "द्विहायनीभ्यः"],
+    ["द्विहायन्याः",  "द्विहायन्योः",    "द्विहायनीनाम्"],
+    ["द्विहायन्याम्", "द्विहायन्योः",    "द्विहायनीषु"],
+    ["द्विहायनि",     "द्विहायन्यौ",     "द्विहायन्यः"],
+]
+
+# SK486 negative: non-age dvi + hāyana → SK486 hāyana arm needs ?vayasi which
+# is absent; no rule selects NIp → default 4.1.4 ṭāp → द्विहायना (ramā-type).
+# Vasu: द्विहायना शाला 'a hall of two years existence'.
+prAtipadika["dvihAyanA"] = [as_purva_pada(dvi), luk_sup,
+                            in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
+                                       "saMKyAdi"),
+                            strI_abs]   # noqa: F405
+viBakti["dvihAyanA"] = [
+    ["द्विहायना",     "द्विहायने",         "द्विहायनाः"],
+    ["द्विहायनाम्",   "द्विहायने",         "द्विहायनाः"],
+    ["द्विहायनया",    "द्विहायनाभ्याम्",   "द्विहायनाभिः"],
+    ["द्विहायनायै",   "द्विहायनाभ्याम्",   "द्विहायनाभ्यः"],
+    ["द्विहायनायाः",  "द्विहायनाभ्याम्",   "द्विहायनाभ्यः"],
+    ["द्विहायनायाः",  "द्विहायनयोः",       "द्विहायनानाम्"],
+    ["द्विहायनायाम्", "द्विहायनयोः",       "द्विहायनासु"],
+    ["द्विहायने",     "द्विहायने",         "द्विहायनाः"],
+]
+
+# ── SK486 vārttika (4.1.27.1) — त्रिचतुर्भ्यां हायनस्य णत्वम् ─────────────────
+# tri + hāyana (age sense): vārttika fires (bahiranga 1) substituting upadhā
+# 'n' of hāyana → 'R' (ṇ), giving hāyaṇa. SK486 then adds NIp; 6.4.148 drops
+# final 'a' of -a stem → trihāyaṇ+ī = त्रिहायणी. ?triCatur added via in_context.
+# Gen pl: 'h' (not in at-kupvāṅ-num) intervenes between 'r' of tri and the
+# suffix 'n' of -nām → 8.4.1 ṇatva blocked → त्रिहायणीनाम् (no further ṇ).
+prAtipadika["trihAyaRI"] = [as_purva_pada(tri), luk_sup,
+                            in_context(in_context(in_context(in_context(
+                                in_compound(hAyana), "bahuvrIhi"),
+                                "saMKyAdi"), "vayasi"), "triCatur"),
+                            strI_abs]   # noqa: F405
+viBakti["trihAyaRI"] = [
+    ["त्रिहायणी",     "त्रिहायण्यौ",     "त्रिहायण्यः"],
+    ["त्रिहायणीम्",   "त्रिहायण्यौ",     "त्रिहायणीः"],
+    ["त्रिहायण्या",   "त्रिहायणीभ्याम्", "त्रिहायणीभिः"],
+    ["त्रिहायण्यै",   "त्रिहायणीभ्याम्", "त्रिहायणीभ्यः"],
+    ["त्रिहायण्याः",  "त्रिहायणीभ्याम्", "त्रिहायणीभ्यः"],
+    ["त्रिहायण्याः",  "त्रिहायण्योः",    "त्रिहायणीनाम्"],
+    ["त्रिहायण्याम्", "त्रिहायण्योः",    "त्रिहायणीषु"],
+    ["त्रिहायणि",     "त्रिहायण्यौ",     "त्रिहायण्यः"],
+]
+
+# catur + hāyana (age sense): same vārttika + SK486 → caturhāyaṇī. catur ends
+# in 'r' (no sandhi at r+h) → caturhāyana. Vārttika n→ṇ → caturhāyaṇa →
+# caturhāyaṇī = चतुर्हायणी.
+prAtipadika["caturhAyaRI"] = [as_purva_pada(catur), luk_sup,
+                              in_context(in_context(in_context(in_context(
+                                  in_compound(hAyana), "bahuvrIhi"),
+                                  "saMKyAdi"), "vayasi"), "triCatur"),
+                              strI_abs]   # noqa: F405
+viBakti["caturhAyaRI"] = [
+    ["चतुर्हायणी",     "चतुर्हायण्यौ",     "चतुर्हायण्यः"],
+    ["चतुर्हायणीम्",   "चतुर्हायण्यौ",     "चतुर्हायणीः"],
+    ["चतुर्हायण्या",   "चतुर्हायणीभ्याम्", "चतुर्हायणीभिः"],
+    ["चतुर्हायण्यै",   "चतुर्हायणीभ्याम्", "चतुर्हायणीभ्यः"],
+    ["चतुर्हायण्याः",  "चतुर्हायणीभ्याम्", "चतुर्हायणीभ्यः"],
+    ["चतुर्हायण्याः",  "चतुर्हायण्योः",    "चतुर्हायणीनाम्"],
+    ["चतुर्हायण्याम्", "चतुर्हायण्योः",    "चतुर्हायणीषु"],
+    ["चतुर्हायणि",     "चतुर्हायण्यौ",     "चतुर्हायण्यः"],
+]
+
+# Vārttika negative: tri + hāyana non-age → no vārttika (needs ?vayasi), no
+# SK486 (same gate) → default 4.1.4 ṭāp → ramā-type त्रिहायना. Vasu's exact
+# example: त्रिहायना शाला 'a hall of three years' standing'. 8.4.1 ṇatva also
+# blocked by intervening 'h' on the stem and suffix 'n'.
+prAtipadika["trihAyanA"] = [as_purva_pada(tri), luk_sup,
+                            in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
+                                       "saMKyAdi"),
+                            strI_abs]   # noqa: F405
+viBakti["trihAyanA"] = [
+    ["त्रिहायना",     "त्रिहायने",         "त्रिहायनाः"],
+    ["त्रिहायनाम्",   "त्रिहायने",         "त्रिहायनाः"],
+    ["त्रिहायनया",    "त्रिहायनाभ्याम्",   "त्रिहायनाभिः"],
+    ["त्रिहायनायै",   "त्रिहायनाभ्याम्",   "त्रिहायनाभ्यः"],
+    ["त्रिहायनायाः",  "त्रिहायनाभ्याम्",   "त्रिहायनाभ्यः"],
+    ["त्रिहायनायाः",  "त्रिहायनयोः",       "त्रिहायनानाम्"],
+    ["त्रिहायनायाम्", "त्रिहायनयोः",       "त्रिहायनासु"],
+    ["त्रिहायने",     "त्रिहायने",         "त्रिहायनाः"],
+]
+
 # in-stem (SK356/SK357): 6.4.12 blocks 6.4.8 before du/pl; 6.4.13 re-enables for sg
 prAtipadika["hastin"] = hastin  # noqa: F405
 viBakti["hastin"] = [

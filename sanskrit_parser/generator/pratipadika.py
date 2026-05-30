@@ -136,6 +136,23 @@ AQaka   = Pratipadika("AQaka",   "pum",   other_tags=["parimARa"])
 kARqa    = Pratipadika("kARqa",    "pum",   other_tags=["kARqa"])
 puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
 
+# SK483-485 (5.4.131 / 4.1.25 / 4.1.26): ūdhas-bahuvrīhi feminine cluster.
+# UDas (long ū) tagged ?uDanta so SK483/484 can fire only on this stem. The
+# bahuvrīhi / saMKyAdi / avyayAdi properties are attached by the test composer
+# via in_context (matching the trilokI / dvipuruzI pattern) and seen directly
+# on UDas at the (UDas | strI_abs) window — no propagation needed.
+UDas    = Pratipadika("UDas",    "napum", other_tags=["uDanta"])
+kuRqa   = Pratipadika("kuRqa",   "napum")
+Gawa    = Pratipadika("Gawa",    "pum")
+# ati: avyaya pūrva-pada for atyUDnI (SK485 avyayādi arm)
+ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
+
+# SK486 (4.1.27) test bases. ?dAman / ?hAyana let the rule target these stems;
+# the test composer also adds ?saMKyAdi and (for hāyana) ?vayasi + ?triCatur
+# for the vārttika (n→ṇ for tri/catur+hāyana in age sense).
+dAman   = Pratipadika("dAman",   "napum", other_tags=["dAman"])
+hAyana  = Pratipadika("hAyana",  "pum",   other_tags=["hAyana"])
+
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
 hastin = Pratipadika("hastin", "pum")

@@ -153,6 +153,14 @@
        - -pada # for pUrvaparayoH
        - -aNga
        - -Ba
+      orp:
+       - -sarvanAmasTAna  # pūrvāparayoh: the surviving guṇa-merged suffix is no
+                          # longer the bare sarvānāmasthāna sup — aṅga rules keyed
+                          # on ?sarvanAmasTAna (e.g. 6.4.8) must not re-fire on the
+                          # merged residue. Cf. hāyanā + au → 7.1.18 → hāyanā|ī →
+                          # this rule → hāyan|e, where 6.4.8 would otherwise see
+                          # an n-final aṅga + sarvānāmasthāna and over-lengthen
+                          # (full pūrvāparayoḥ refactor pending).
 # 72: वृद्धिरेचि (6-1-88)
 -   sutra: वृद्धिरेचि
     id: 6.1.88
@@ -5512,6 +5520,124 @@
     rp: ?strI_abs
   update:
     orp: =NIp
+
+# 483: ऊधसोऽनङ् (5.4.131)
+# In a bahuvrīhi compound ending in ūdhas, anaṅ substitute in feminine.
+# Surface: replace final 's' of UDas with 'n' (UDas → UDan). The pre-substitute
+# 'a' stays, so SK234 (6.4.134 अल्लोपोऽनः) drops it before the ī of NIp/NIz
+# at the next stage, giving the surface kuRqoDnI / dvyUDnI / etc.
+# bahiranga: 1 (left prātipadika substitution) fires before SK484/485
+# pratyaya selection (bahiranga: 2).
+- sutra: ऊधसोऽनङ्
+  domain: prakfti
+  bahiranga: 1
+  id: 5.4.131
+  condition:
+    lp:
+      - and
+      - ?bahuvrIhi
+      - ?uDanta
+    l: s
+    rp: ?strI_abs
+  xform:
+    l: str("n")
+
+# 484: बहुव्रीहेरूधसो ङीष् (4.1.25)
+# After a bahuvrīhi ending in ūdhas (now ūdhan post-SK483), NIz in feminine.
+# Overrides 4.1.4 (ṭāp) and 4.1.13 (ḍāp) — Vasu names these as the otherwise-
+# applicable rules. The condition uses ?uDanta on lp; the tag still rides on
+# UDas → UDan since SK483 only modifies the final char, not the tag set.
+- sutra: बहुव्रीहेरूधसो ङीष्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.25
+  overrides: [4.1.4, 4.1.13]
+  condition:
+    lp:
+      - and
+      - ?bahuvrIhi
+      - ?uDanta
+    rp: ?strI_abs
+  update:
+    orp: =NIz
+
+# 485: संख्याऽव्ययादेर्ङीप् (4.1.26)
+# Apavāda to SK484 (ngīṣopavāda): NIp instead of NIz when the bahuvrīhi
+# begins with a saṃkhyā or an avyaya. ?saMKyAdi / ?avyayAdi are attached to
+# UDas by the test composer via in_context (matching the SK480-482 semantic-
+# tag pattern). Two condition arms (OR at rule level) — one per option.
+- sutra: संख्याऽव्ययादेर्ङीप्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.26
+  overrides: 4.1.25
+  condition:
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - ?uDanta
+        - ?saMKyAdi
+      rp: ?strI_abs
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - ?uDanta
+        - ?avyayAdi
+      rp: ?strI_abs
+  update:
+    orp: =NIp
+
+# 486: दामहायनान्ताच्च (4.1.27)
+# Bahuvrīhi beginning with saṃkhyā and ending in दामन्/हायन: NIp in feminine.
+# Two arms:
+#   (a) dāman — no semantic restriction (द्विदाम्नी).
+#   (b) hāyana — only the age sense (?vayasi) per Vasu's vārttika restriction;
+#       non-age hāyana falls through to 4.1.4 ṭāp → द्विहायना शाला.
+# Overrides 4.1.4 (ṭāp).
+- sutra: दामहायनान्ताच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.27
+  overrides: [4.1.4]
+  condition:
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - ?saMKyAdi
+        - ?dAman
+      rp: ?strI_abs
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - ?saMKyAdi
+        - ?hAyana
+        - ?vayasi
+      rp: ?strI_abs
+  update:
+    orp: =NIp
+
+# 486+: (vārttika) त्रिचतुर्भ्यां हायनस्य णत्वं वयोवाचकस्यैव
+# n → ṇ in hāyana when pūrva-pada is tri or catur AND the age (?vayasi) sense.
+# Surface: lc of hAyana is "hAyan"; substitute lc[-1] 'n' → 'R' (ṇ), giving
+# "hAyaR". After SK486 adds NIp and 6.4.148 drops the final 'a' →
+# trihāyaṇī, caturhāyaṇī. ?triCatur is attached to hāyana by the test
+# composer via in_context (no Paninian propagation of saṃkhyā-purva in this
+# batch). bahiranga: 1 ensures n→ṇ runs before SK486 (NIp selection at 2).
+- sutra: त्रिचतुर्भ्यां हायनस्य णत्वं वयोवाचकस्यैव
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.27.1
+  condition:
+    lp:
+      - and
+      - ?bahuvrIhi
+      - ?saMKyAdi
+      - ?triCatur
+      - ?hAyana
+      - ?vayasi
+    rp: ?strI_abs
+  xform:
+    lc: lc[:-1]+str("R")
 
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च
