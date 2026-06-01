@@ -5664,6 +5664,161 @@
   xform:
     lc: lc[:-1]+str("R")
 
+# 487: नित्यं संज्ञाछन्दसोः (4.1.29) — mandatory ṅīp on upadhā-lopin an-bahuvrīhi
+# when used as a saṃjñā (name) or in chandas. Apavāda to SK462 (4.1.28), which
+# made the same selection optional. ?saMjYA / ?Candas attached via test composer
+# in_context. Reuses $$upaDAlopI from SK462. Overrides also 4.1.12 (niṣedha)
+# and 4.1.13 (DAp) so only the ṅīp arm survives in saṃjñā/chandas → surAjJI,
+# atirAjJI.
+- sutra: नित्यं संज्ञाछन्दसोः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.29
+  overrides: [4.1.4, 4.1.12, 4.1.13, 4.1.28]
+  condition:
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - $$upaDAlopI
+        - ?saMjYA
+      ll: a
+      l: n
+      rp: ?strI_abs
+    - lp:
+        - and
+        - ?bahuvrIhi
+        - $$upaDAlopI
+        - ?Candas
+      ll: a
+      l: n
+      rp: ?strI_abs
+  update:
+    orp: =NIp
+
+# 488: केवलमामकभागधेयपापापरसमानार्यकृतसुमङ्गलभेषजाच्च (4.1.30) — mandatory NIp
+# for the nine listed stems (?keval_Adi class tag) in saṃjñā or chandas.
+# Apavāda to 4.1.4 (ṭāp). Vasu: केवली, मामकी, भागधेयी, पापी, अपरी, समानी,
+# आर्यकृती, सुमङ्गली, भेषजी. Outside saṃjñā/chandas, default 4.1.4 ṭāp →
+# केवला etc. (mAmaka takes SK463 7.3.44 idādeśa via ?ka_pratyaya → मामिका).
+- sutra: केवलमामकभागधेयपापापरसमानार्यकृतसुमङ्गलभेषजाच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.30
+  overrides: 4.1.4
+  condition:
+    - lp:
+        - and
+        - ?keval_Adi
+        - ?saMjYA
+      l: a
+      rp: ?strI_abs
+    - lp:
+        - and
+        - ?keval_Adi
+        - ?Candas
+      l: a
+      rp: ?strI_abs
+  update:
+    orp: =NIp
+
+# 488 niyama-blocker (vārttika मामकग्रहणं नियमार्थम्): outside saṃjñā/chandas,
+# block SK470 (4.1.15) for mAmaka so the laukika ṭāp + SK463 idādeśa path runs
+# → मामिका (not मामकी). Currently inert: mAmaka stem does not carry
+# ?NIp_taddhita so SK470 is not a live competitor. Kept for forward
+# compatibility when mAmaka is built live as mama + aN.
+- sutra: मामकग्रहणं नियमार्थम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.30.1
+  overrides: 4.1.15
+  condition:
+    lp:
+      - and
+      - ?mAmaka
+      - ?!saMjYA
+      - ?!Candas
+    l: a
+    rp: ?strI_abs
+  xform: null
+
+# 490: पत्युर्नो यज्ञसंयोगे (4.1.33) — final 'i' of pati → 'n' before NIp when
+# meaning yajña-saṃyoga (wife as sacrificial partner). Per Q2 deferral, the
+# semantic restriction (?yajYasaMyoga) is not encoded — the rule fires
+# unconditionally on plain pati. ?!samAsa restricts to non-compound contexts so
+# SK491 (vibhāṣā for compounds) is not pre-empted. bahiranga: 1 → fires before
+# SK453 (4.1.5) at bahiranga 2, which then adds NIp on the now n-final stem → पत्नी.
+- sutra: पत्युर्नो यज्ञसंयोगे
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.33
+  condition:
+    lp:
+      - and
+      - ?pati
+      - ?!samAsa
+    l: i
+    rp: ?strI_abs
+  xform:
+    l: str("n")
+
+# 491: विभाषा सपूर्वस्य (4.1.34) — i→n on pati when preceded by a pūrva-pada
+# (pati as uttara-pada of a compound). Detection: in_compound(pati) pre-attaches
+# ?samAsa at test-composer time (engine-limitation deferral note in plan — full
+# pūrva-pada introspection awaits engine support). Implemented as mandatory in
+# this batch (Vasu's vibhāṣā with the non-substituted गृहपतिः fork deferred):
+# the non-substituted arm would yield a masc-style i-stem decl in feminine slot
+# which the current engine generates as gRhapatiH etc., over-generating; we
+# defer that variation rather than encode both forks in every cell.
+- sutra: विभाषा सपूर्वस्य
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.34
+  condition:
+    lp:
+      - and
+      - ?pati
+      - ?samAsa
+    l: i
+    rp: ?strI_abs
+  xform:
+    l: str("n")
+
+# 492: नित्यं सपत्न्यादिषु (4.1.35) — mandatory i→n for sapatnyAdi gaṇa
+# (sapati, ekapati, vīrapati, …). Apavāda to SK491's vibhāṣā. Implemented via
+# pre-substituted ?sapatnyAdi stems (Q3 deferral: the niyama समानस्य सभावोऽपि
+# 'samāna → sa' is realised by registering 'sapati' directly rather than a
+# paired left-substitution rule). overrides: 4.1.34 is documentary —
+# sapatnyAdi stems lack ?pati/?samAsa so SK491 does not match anyway.
+- sutra: नित्यं सपत्न्यादिषु
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.35
+  overrides: [4.1.33, 4.1.34]
+  condition:
+    lp: ?sapatnyAdi
+    l: i
+    rp: ?strI_abs
+  xform:
+    l: str("n")
+
+# 489: अन्तर्वत्पतिवतोर्नुक् (4.1.32) — नुक् augment (single 'n') appended to
+# antarvat / pativat before the feminine NIp. Engine-limitation deferral note
+# in plan: stems are treated as single irregular pratipadikas tagged
+# ?antarvat_pativat (not live antar+matup / pati+matup compounds). bahiranga: 1
+# left-substitution appends 'n' at end (lc: lc+l+str("n"), l: null), so the
+# resulting n-final stem reaches SK453 (4.1.5) at bahiranga: 2 → NIp → अन्तर्वत्नी,
+# पतिवत्नी. Semantic restriction (?garBiNi / ?jIvadBartfka) not encoded.
+- sutra: अन्तर्वत्पतिवतोर्नुक्
+  domain: prakfti
+  bahiranga: 1
+  id: 4.1.32
+  condition:
+    lp: ?antarvat_pativat
+    rp: ?strI_abs
+  xform:
+    lc: lc+l+str("n")
+    l: null
+
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च
   domain: prakfti
@@ -6200,7 +6355,7 @@
 #  c) stri & it & ut & Niti and the not nadI arm.
 - sutra: शेषो घ्यसखि
   domain: saMjYA
-  bahiranga: 0 
+  bahiranga: 0
   id: 1.4.7
   condition:
    -  l: [it, ut]
@@ -6223,9 +6378,9 @@
 
 # FIXME - remember to test this when samAsa is implemented
 # 257: पतिः समास एव (1-4-8)
-- sutra: पतिः समास एव 
+- sutra: पतिः समास एव
   domain: saMjYA
-  bahiranga: 0 
+  bahiranga: 0
   id: 1.4.8
   condition:
      lp:

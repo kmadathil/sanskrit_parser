@@ -156,6 +156,50 @@ ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
 dAman   = Pratipadika("dAman",   "napum", other_tags=["dAman"])
 hAyana  = Pratipadika("hAyana",  "pum",   other_tags=["hAyana"])
 
+# SK488 (4.1.30) केवलमामक…भेषजाच्च — nine a-final stems that take mandatory
+# NIp in saṃjñā or chandas (?saMjYA / ?Candas attached via test composer). The
+# class tag ?keval_Adi gates SK488. ?mAmaka separately gates the niyama-blocker
+# (4.1.30.1) which suppresses SK470 (4.1.15) NIp on mAmaka outside saMjñā/chandas.
+# ?ka_pratyaya on mAmaka allows the laukika ṭāp path to flow through SK463
+# (7.3.44 idādeśa) giving मामिका, matching Vasu's लोकेऽसंज्ञायां मामिका.
+kevala    = Pratipadika("kevala",    "pum",   other_tags=["keval_Adi"])
+mAmaka    = Pratipadika("mAmaka",    "pum",   other_tags=["keval_Adi", "mAmaka",
+                                                          "ka_pratyaya"])
+BAgaDeya  = Pratipadika("BAgaDeya",  "pum",   other_tags=["keval_Adi"])
+pApa      = Pratipadika("pApa",      "pum",   other_tags=["keval_Adi"])
+apara_488 = Pratipadika("apara",     "pum",   other_tags=["keval_Adi"])
+samAna    = Pratipadika("samAna",    "pum",   other_tags=["keval_Adi"])
+AryakRta  = Pratipadika("AryakRta",  "pum",   other_tags=["keval_Adi"])
+sumaNgala = Pratipadika("sumaNgala", "pum",   other_tags=["keval_Adi"])
+Bezaja    = Pratipadika("Bezaja",    "napum", other_tags=["keval_Adi"])
+
+# SK491 (4.1.34 विभाषा सपूर्वस्य) test base: gṛha + pati compound. pati already
+# tagged ?pati (line 62); in_compound(pati) adds ?samAsa, gating SK491. Python
+# var named gRha for readability; SLP1 content is "gfha" (f = ṛ) = गृह.
+gRha = Pratipadika("gfha", "napum")
+
+# SK492 (4.1.35 नित्यं सपत्न्यादिषु) pre-substituted sapatnyAdi stems. Following
+# the Q3 deferral, sa+pati (with समान→स niyama) is registered directly as sapati
+# rather than running a paired left-substitution rule. Tagged ?sapatnyAdi (the
+# SK492 class tag) AND ?pati — the latter is required so 1.4.8.1 fires to block
+# Ghi-saṃjña, which in turn lets 1.4.3 nadī-saṃjña apply correctly for the dat/
+# abl/gen/loc-sg cells (without ?pati, sapatnī gets सपत्नये in dat sg instead of
+# सपत्न्यै). SK490 (?pati + ?!samAsa, same i→n xform) would also match; SK492
+# names overrides: 4.1.33 to formalise the apavāda.
+sapati    = Pratipadika("sapati",    "pum", other_tags=["sapatnyAdi", "pati"])
+ekapati   = Pratipadika("ekapati",   "pum", other_tags=["sapatnyAdi", "pati"])
+vIrapati  = Pratipadika("vIrapati",  "pum", other_tags=["sapatnyAdi", "pati"])
+
+# SK489 (4.1.32 अन्तर्वत्पतिवतोर्नुक्) — irregular feminine stems. Treated as
+# single pratipadikas (not live antar+matup / pati+matup compounds) per plan's
+# Q2/engine-limitation deferral: the engine cannot peek into a samāsa's left
+# context from a pratyaya-window rule. The ?antarvat_pativat class tag gates
+# SK489 (adds nuk = 'n' at end of stem at bahiranga 1); SK453 (4.1.5) at
+# bahiranga 2 then sees the n-final stem and supplies NIp → अन्तर्वत्नी,
+# पतिवत्नी.
+antarvat = Pratipadika("antarvat", "pum", other_tags=["antarvat_pativat"])
+pativat  = Pratipadika("pativat",  "pum", other_tags=["antarvat_pativat"])
+
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
 hastin = Pratipadika("hastin", "pum")
