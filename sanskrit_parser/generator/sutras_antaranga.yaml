@@ -6353,6 +6353,12 @@
 #  a) not strI
 #  b) stri & it & ut but not Niti
 #  c) stri & it & ut & Niti and the not nadI arm.
+# rp: ?!strI guards the feminine-pratyaya path: at the (lp | strI_abs/NIp/NIz)
+# window, lp's ?strI tag isn't set yet (it lands on (patn|NIp) join), but the
+# rp's ?strI marks an upcoming feminine derivation. Without this, 1.4.7 arm 1
+# fires on a bare i-stem like pati and Ghi-saṃjña survives to the vibhakti
+# window where 7.3.111 (घेर्ङिति) mis-substitutes the nadī ī → e. (Pair with
+# the same guard on 1.4.8 for the compound pati case — SK491 गृहपत्नी.)
 - sutra: शेषो घ्यसखि
   domain: saMjYA
   bahiranga: 0
@@ -6363,21 +6369,33 @@
         - "and"
         - ?!strI
         - ?!saKi
+      rp: ?!strI
    -  l: [it, ut]
       lp:
         - "and"
         - ?!saKi
         - -N
+      rp: ?!strI
    -  l: [it, ut]
       lp:
         - "and"
         - ?!saKi
         - ?Niti_hrasva_seza
+      rp: ?!strI
   update:
      olp: +Gi
 
 # FIXME - remember to test this when samAsa is implemented
 # 257: पतिः समास एव (1-4-8)
+# Two guards block Ghi-saṃjña on the feminine path of compound pati:
+#   lp: ?!strI — blocks at the vibhakti window after (patn|NIp) merge has
+#                tagged the merged stem as ?strI (gRhapatnī | Ne).
+#   rp: ?!strI — blocks at the pratyaya window (pati | strI_abs/NIp/NIz),
+#                where lp is bare pati (no ?strI yet) but the rp pratyaya
+#                carries ?strI signalling a feminine derivation.
+# Without these, ?Gi rides through (patn|NIp) and the gRha+patnI samāsa merge,
+# then 7.3.111 (घेर्ङिति) fires on ?Gi+?Ni at the vibhakti window substituting
+# the nadī ī → e and mis-routing the oblique-sg cells (cat/paY/zaz/sap-ek).
 - sutra: पतिः समास एव
   domain: saMjYA
   bahiranga: 0
@@ -6387,6 +6405,8 @@
        - "and"
        - ?pati
        - ?samAsa
+       - ?!strI
+     rp: ?!strI
   update:
      olp: +Gi
      

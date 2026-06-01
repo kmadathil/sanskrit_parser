@@ -2411,27 +2411,26 @@ viBakti["patnI"] = [
 
 # ── SK491 (4.1.34 विभाषा सपूर्वस्य) ──────────────────────────────────────────
 # gRha + pati: in_compound(pati) attaches ?samAsa → SK491 fires on ?pati +
-# ?samAsa → i→n → SK453 NIp → गृहपत्नी. Implemented as mandatory in this batch
-# (Vasu's vibhāṣā non-substituted गृहपतिः fork deferred — see plan).
+# ?samAsa → i→n → SK453 NIp → गृहपत्नी. Declines like nadī.
 #
-# ENGINE LIMITATION on the 4 oblique-singular cells (dat/abl/gen/loc-sg): a
-# saṃjñā-level rule sets a tag on the in-compound pati that rides through
-# (patn|NIp) join and the gRha+patnI samāsa merge, triggering the wrong dat/abl/
-# gen/loc-sg paths instead of the textbook nadī decl. Guarding 1.4.7/1.4.8
-# with rp:?!strI did not fix it — the leaky saṃjñā chain is longer than
-# expected. Cells encode the engine's actual outputs (गृहपत्नयै, गृहपत्नेः,
-# गृहपत्नौम्) — tracked in generator_status.md's Skipped/Deferred table.
+# A subtle ?Gi-leak from 1.4.7/1.4.8 used to mis-route the 4 oblique-sg cells
+# (dat/abl/gen/loc-sg) via 7.3.111 (घेर्ङिति) → ī→e: at the (pati|strI_abs)
+# window 1.4.7 fired (lp had no ?strI yet) and ?Gi rode through (patn|NIp) and
+# the samāsa merge; at the (gRhapatnI|Ne) window 1.4.8 re-fired (lp ?pati +
+# ?samAsa). Both rules now carry rp: ?!strI (blocks the pre-feminine window),
+# and 1.4.8 additionally carries lp: ?!strI (blocks the post-feminine window).
+# The trace then matches the textbook nadī decl.
 prAtipadika["gRhapatnI"] = [as_purva_pada(gRha), luk_sup,
                             in_compound(pati), strI_abs]   # noqa: F405
 viBakti["gRhapatnI"] = [
-    ["गृहपत्नी",       "गृहपत्न्यौ",     "गृहपत्न्यः"],
-    ["गृहपत्नीम्",     "गृहपत्न्यौ",     "गृहपत्नीः"],
-    ["गृहपत्न्या",     "गृहपत्नीभ्याम्", "गृहपत्नीभिः"],
-    ["गृहपत्नयै",      "गृहपत्नीभ्याम्", "गृहपत्नीभ्यः"],   # ENGINE: ayE not nyE (textbook: गृहपत्न्यै)
-    ["गृहपत्नेः",      "गृहपत्नीभ्याम्", "गृहपत्नीभ्यः"],   # ENGINE: eH not yAH (textbook: गृहपत्न्याः)
-    ["गृहपत्नेः",      "गृहपत्न्योः",    "गृहपत्नीनाम्"],   # ENGINE: eH not yAH (textbook: गृहपत्न्याः)
-    ["गृहपत्नौम्",     "गृहपत्न्योः",    "गृहपत्नीषु"],     # ENGINE: Om not yAm (textbook: गृहपत्न्याम्)
-    ["गृहपत्नि",       "गृहपत्न्यौ",     "गृहपत्न्यः"],
+    ["गृहपत्नी",     "गृहपत्न्यौ",     "गृहपत्न्यः"],
+    ["गृहपत्नीम्",   "गृहपत्न्यौ",     "गृहपत्नीः"],
+    ["गृहपत्न्या",   "गृहपत्नीभ्याम्", "गृहपत्नीभिः"],
+    ["गृहपत्न्यै",   "गृहपत्नीभ्याम्", "गृहपत्नीभ्यः"],
+    ["गृहपत्न्याः",  "गृहपत्नीभ्याम्", "गृहपत्नीभ्यः"],
+    ["गृहपत्न्याः",  "गृहपत्न्योः",    "गृहपत्नीनाम्"],
+    ["गृहपत्न्याम्", "गृहपत्न्योः",    "गृहपत्नीषु"],
+    ["गृहपत्नि",     "गृहपत्न्यौ",     "गृहपत्न्यः"],
 ]
 
 # ── SK492 (4.1.35 नित्यं सपत्न्यादिषु) ───────────────────────────────────────
