@@ -322,12 +322,17 @@ kukkuwa   = Pratipadika("kukkuwa",  "pum", other_tags=["jAti_ayopaDa"])   # kukk
 sUkara    = Pratipadika("sUkara",   "pum", other_tags=["jAti_ayopaDa"])   # sūkara (pig)
 
 # SK519 (4.1.64 पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च): jāti compounds ending in
-# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ even if stree-only. Pre-registered
-# as composite prātipadikas tagged ?pAkAdi_uttara.
-odanapAka  = Pratipadika("odanapAka",  "pum", other_tags=["pAkAdi_uttara"])   # ओदनपाकी
-SaNkukarRa = Pratipadika("SaNkukarRa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्कुकर्णी
-SAlaparRa  = Pratipadika("SAlaparRa",  "pum", other_tags=["pAkAdi_uttara"])   # शालपर्णी
-SaNKapuzpa = Pratipadika("SaNKapuzpa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्खपुष्पी
+# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ even if stree-only. CLOSED list of
+# 7 uttarapada types; one representative compound per type is registered, tagged
+# ?pAkAdi_uttara. Vasu's seven examples: ओदनपाकी, शङ्कुकर्णी, शालपर्णी, शङ्खपुष्पी,
+# दासीफली, दर्भमूली, गोवाली.
+odanapAka  = Pratipadika("odanapAka",  "pum", other_tags=["pAkAdi_uttara"])   # ओदनपाकी  (pāka)
+SaNkukarRa = Pratipadika("SaNkukarRa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्कुकर्णी (karṇa)
+SAlaparRa  = Pratipadika("SAlaparRa",  "pum", other_tags=["pAkAdi_uttara"])   # शालपर्णी  (parṇa)
+SaNKapuzpa = Pratipadika("SaNKapuzpa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्खपुष्पी (puṣpa)
+dAsIPala   = Pratipadika("dAsIPala",   "pum", other_tags=["pAkAdi_uttara"])   # दासीफली  (phala)
+darBamUla  = Pratipadika("darBamUla",  "pum", other_tags=["pAkAdi_uttara"])   # दर्भमूली  (mūla)
+govAla     = Pratipadika("govAla",     "pum", other_tags=["pAkAdi_uttara"])   # गोवाली   (vāla)
 
 # SK520 (4.1.65 इतो मनुष्यजातेः): i-final manuṣya-jāti (racial/regional words for
 # human groups) → ṅīṣ. Vasu examples: avantī (women of Avanti), kuntī, plākṣī.
@@ -374,10 +379,20 @@ vAmoru     = Pratipadika("vAmoru",     "pum", other_tags=["saMhitAdi_Uru"])  # �
 kadrU     = Pratipadika("kadrU",     "strI", other_tags=["kadrU_saMjYA"])
 kamaRqalU = Pratipadika("kamaRqalU", "strI", other_tags=["kadrU_saMjYA"])  # R=ṇ, q=ḍ
 
-# SK527 (4.1.73 शार्ङ्गरवाद्यञो ङीन्): śāṅgaravādi + añ-derived stems → ṅīn (NIn).
-# The ?zANgaravAdi tag goes on the añ-derived (aY_t) prātipadikas. Representative:
-SArNgarava = Pratipadika("SArNgarava", "pum", other_tags=["zANgaravAdi"])  # → śāṅgaravī
-bEda       = Pratipadika("bEda",       "pum", other_tags=["zANgaravAdi"])  # → baidī (SLP1 E=ai)
+# SK527 (4.1.73 शार्ङ्गरवाद्यञो ङीन्): śārṅgaravādi gaṇa + añ-derived stems → ṅīn
+# (NIn). Full named gaṇa registered with ?zANgaravAdi (the post-aṇ/añ forms; the
+# taddhita derivation itself is pre-applied). Per Vasu the 6 members are:
+# 1 śārṅgarava, 2 kāpaṭava, 3 gauggulava, 4 brāhmaṇa, 5 baida, 6 gautama
+# (+ the gaṇasūtra नृनरयोर्वृद्धिश्च for nṛ/nara → nārī, modelled separately below).
+# brāhmaṇa is already registered above (line ~263) tagged ?jAti_ayopaDa for SK518;
+# it surfaces as ब्राह्मणी either way (ṅīṣ vs ṅīn differ only in accent), so it is
+# not re-tagged here. The 2nd arm of 4.1.73 (any añ-ending jāti word → ṅīn) is
+# covered for these tagged stems but not as a general structural rule.
+SArNgarava = Pratipadika("SArNgarava", "pum", other_tags=["zANgaravAdi"])  # → śārṅgaravī
+kApawava   = Pratipadika("kApawava",   "pum", other_tags=["zANgaravAdi"])  # → kāpaṭavī
+gOggulava  = Pratipadika("gOggulava",  "pum", other_tags=["zANgaravAdi"])  # → gauggulavī
+bEda       = Pratipadika("bEda",       "pum", other_tags=["zANgaravAdi"])  # → baidī (añ-derived; SLP1 E=ai)
+gOtama     = Pratipadika("gOtama",     "pum", other_tags=["zANgaravAdi"])  # → gautamī (4.1.114 aṇ)
 # nārī (gaṇasūtra नृनरयोर्वृद्धिश्च: nṛ/nara, a śārṅgaravādi member, gets vṛddhi +
 # ṅīn). Modelled accurately as the live derivation [nara, aR_t, strI_abs]: aṇ
 # supplies the ādivṛddhi (7.2.117: nara → nāra) that the gaṇasūtra calls for, and
@@ -757,12 +772,15 @@ pa = Pratipadika("pa", "napum", other_tags=["samAsa"])  # monosyllabic uttara-pa
 # Items 1–27, 31–34 end in short 'a' → TAp via l:at (ajAdi tag redundant but correct).
 # Items 28–30 end in consonants → TAp via ?ajAdi condition specifically.
 # Source: Vasu commentary on 4.1.4.
-aja           = Pratipadika("aja",           "pum", other_tags=["ajAdi"])  #  1 अज   (he-goat)
-eqaka         = Pratipadika("eqaka",         "pum", other_tags=["ajAdi"])  #  2 एडक  (sheep)
-kokila        = Pratipadika("kokila",        "pum", other_tags=["ajAdi"])  #  3 कोकिल (cuckoo)
-cawaka        = Pratipadika("cawaka",        "pum", other_tags=["ajAdi"])  #  4 चटक  (sparrow)
-aSva          = Pratipadika("aSva",          "pum", other_tags=["ajAdi"])  #  5 अश्व  (horse)
-mUzika        = Pratipadika("mUzika",        "pum", other_tags=["ajAdi"])  #  6 मूषिक (mouse)
+# Items 1–6 are jāti (kind/species) words, non-y-upadhā → they would take ṅīṣ by
+# 4.1.63 (SK518) but for ajādi. Tagged ?jAti_ayopaDa (faithful), so 4.1.4.1's
+# prabalatva (which now overrides 4.1.63) gives ṭāp — कोकिला, not कोकिली.
+aja           = Pratipadika("aja",           "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  1 अज   (he-goat)
+eqaka         = Pratipadika("eqaka",         "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  2 एडक  (sheep)
+kokila        = Pratipadika("kokila",        "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  3 कोकिल (cuckoo)
+cawaka        = Pratipadika("cawaka",        "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  4 चटक  (sparrow)
+aSva          = Pratipadika("aSva",          "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  5 अश्व  (horse)
+mUzika        = Pratipadika("mUzika",        "pum", other_tags=["ajAdi", "jAti_ayopaDa"])  #  6 मूषिक (mouse)
 bAla          = Pratipadika("bAla",          "pum", other_tags=["ajAdi"])  #  7 बाल  (young/child)
 hoqa          = Pratipadika("hoqa",          "pum", other_tags=["ajAdi"])  #  8 होड  (young)
 pAka          = Pratipadika("pAka",          "pum", other_tags=["ajAdi"])  #  9 पाक  (young)
@@ -774,21 +792,24 @@ aparApaharaRa = Pratipadika("aparApaharaRa","pum", other_tags=["ajAdi"])  # 14 �
 # Items 15–26 (phala- and puṣpa-ending compounds) get ?ajAdi_in_Dvigu in addition
 # to ?ajAdi: per Vasu's N.B. on items 19–20 ("त्रिफला when a Dvigu Compound forms its
 # feminine as त्रिफला"), the prabalatva over 4.1.21 (SK479 Dvigu→ṅīp) applies to this
-# compound-class subgroup. Items 1–14, 27–34 keep ?ajAdi only — they override
-# different ṅīp rules (4.2.63 nish, 4.1.20 vayasi, etc.) that don't conflict with
-# SK479, so Dvigu wins there (e.g. पञ्चाश्वी for samāhāra-Dvigu of aśva).
-saMPala       = Pratipadika("saMPala",       "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 15 संफल
-BastraPala    = Pratipadika("BastraPala",    "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 16 भस्त्रफल
-ajinaPala     = Pratipadika("ajinaPala",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 17 अजिनफल
-SaRaPala      = Pratipadika("SaRaPala",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 18 शणफल
-piRqaPala     = Pratipadika("piRqaPala",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 19 पिण्डफल
-triPala       = Pratipadika("triPala",       "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 20 त्रिफल
-satpuzpa      = Pratipadika("satpuzpa",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 21 सत्पुष्प
-prAkpuzpa     = Pratipadika("prAkpuzpa",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 22 प्राक्पुष्प
-kARqapuzpa    = Pratipadika("kARqapuzpa",    "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 23 काण्डपुष्प
-prAntapuzpa   = Pratipadika("prAntapuzpa",   "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 24 प्रान्तपुष्प
-Satapuzpa     = Pratipadika("Satapuzpa",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 25 शतपुष्प
-ekapuzpa      = Pratipadika("ekapuzpa",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu"])  # 26 एकपुष्प
+# compound-class subgroup. They are also genuinely phala/puṣpa-uttarapada words →
+# would take ṅīṣ by 4.1.64 (SK519) but for ajādi, so they carry ?pAkAdi_uttara too;
+# 4.1.4.1's prabalatva (which now overrides 4.1.64) makes ṭāp win → संफला, not संफली.
+# Items 1–14, 27–34 keep ?ajAdi only — items 1–6 add ?jAti_ayopaDa (above), the
+# rest override 4.1.20 vayasi etc.; in Dvigu, ṅīp wins for non-?ajAdi_in_Dvigu
+# members (e.g. पञ्चाश्वी for samāhāra-Dvigu of aśva).
+saMPala       = Pratipadika("saMPala",       "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 15 संफल
+BastraPala    = Pratipadika("BastraPala",    "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 16 भस्त्रफल
+ajinaPala     = Pratipadika("ajinaPala",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 17 अजिनफल
+SaRaPala      = Pratipadika("SaRaPala",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 18 शणफल
+piRqaPala     = Pratipadika("piRqaPala",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 19 पिण्डफल
+triPala       = Pratipadika("triPala",       "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 20 त्रिफल
+satpuzpa      = Pratipadika("satpuzpa",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 21 सत्पुष्प
+prAkpuzpa     = Pratipadika("prAkpuzpa",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 22 प्राक्पुष्प
+kARqapuzpa    = Pratipadika("kARqapuzpa",    "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 23 काण्डपुष्प
+prAntapuzpa   = Pratipadika("prAntapuzpa",   "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 24 प्रान्तपुष्प
+Satapuzpa     = Pratipadika("Satapuzpa",     "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 25 शतपुष्प
+ekapuzpa      = Pratipadika("ekapuzpa",      "pum", other_tags=["ajAdi", "ajAdi_in_Dvigu", "pAkAdi_uttara"])  # 26 एकपुष्प
 SUdra         = Pratipadika("SUdra",        "pum", other_tags=["ajAdi"])  # 27 शूद्र
 kruYc         = Pratipadika("kruYc",        "pum", other_tags=["ajAdi"])  # 28 क्रुञ्च् (consonant-final)
 uzRih         = Pratipadika("uzRih",        "pum", other_tags=["ajAdi"])  # 29 उष्णिह् (consonant-final)
