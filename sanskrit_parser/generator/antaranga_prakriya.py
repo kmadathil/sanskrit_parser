@@ -49,13 +49,17 @@ _ASIDDHA_PEERS = {
     # 6.4.150 (हलस्तद्धितस्य) drops the taddhita 'य' in upadhā after hal.
     # Both fire on gārgya|ī simultaneously and must compose:
     # 148 deletes the 'a', 150 deletes the 'y' → gArg → गार्गी.
-    "6.4.148": frozenset({"6.4.150", "6.4.134"}),
+    # 6.4.149 (सूर्य…य उपधायाः) drops the upadhā 'य' of matsya/sūrya etc.;
+    # like 6.4.150 it must fire on the pre-yasyeti snapshot (matsya, not matsy)
+    # so the two compose into mats → मत्सी.
+    "6.4.148": frozenset({"6.4.150", "6.4.149", "6.4.134"}),
     # 6.4.134 (अल्लोपोऽनः) must NOT see 6.4.148's output — otherwise
     # गार्ग्यायन (post-148) leaks an spurious 'an'-class trigger that
     # mis-fires on the आयन्-substitute (gives गार्ग्याय्णी instead of
     # गार्ग्यायणी).
     "6.4.134": frozenset({"6.4.148"}),
     "6.4.150": frozenset({"6.4.148"}),
+    "6.4.149": frozenset({"6.4.148"}),
 }
 
 

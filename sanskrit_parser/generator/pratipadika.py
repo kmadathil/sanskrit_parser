@@ -200,6 +200,48 @@ vIrapati  = Pratipadika("vIrapati",  "pum", other_tags=["sapatnyAdi", "pati"])
 antarvat = Pratipadika("antarvat", "pum", other_tags=["antarvat_pativat"])
 pativat  = Pratipadika("pativat",  "pum", other_tags=["antarvat_pativat"])
 
+# ── SK493–499: feminine-affix substitution cluster (4.1.36–41 + 6.4.149) ──────
+# SK493 (4.1.36 पूतक्रतोरै च): final u → ai (= SLP1 'E', udātta) + NIp. The
+# puṃyoga ('wife of') semantic restriction (vārttika) is not modelled — the rule
+# fires unconditionally on pUtakratu → पूतक्रतायी (E+ī → āy+ī via 6.1.78).
+pUtakratu = Pratipadika("pUtakratu", "pum", other_tags=["pUtakratu"])
+
+# SK494 (4.1.37 वृषाकप्यग्निकुसितकुसिदानामुदात्तः): same ai-substitute + NIp for
+# these four. Per SK (कुसिदशब्दो ह्रस्वमध्यः), kusita/kusida have a SHORT middle i
+# (not Vasu's कुसीद). → वृषाकपायी, अग्नायी, कुसितायी, कुसिदायी.
+vfzAkapi = Pratipadika("vfzAkapi", "pum", other_tags=["vfzAkapyAdi"])
+agni     = Pratipadika("agni",     "pum", other_tags=["vfzAkapyAdi"])
+kusita   = Pratipadika("kusita",   "pum", other_tags=["vfzAkapyAdi"])
+kusida   = Pratipadika("kusida",   "pum", other_tags=["vfzAkapyAdi"])
+
+# SK495 (4.1.38 मनोरौ वा): final u → au (= SLP1 'O', udātta) optionally + NIp →
+# मनावी (O+ī → āv+ī). The ai-variant (मनायी) and the no-substitute manuḥ branch
+# are deferred.
+manu = Pratipadika("manu", "pum", other_tags=["manu"])
+
+# SK496 (4.1.39 वर्णादनुदात्तात्तोपधात्तो नः): colour words with t-upadhā →
+# optional NIp + t→n. → एनी/एता, रोहिणी/रोहिता (ṇatva from r). Accent is not
+# modelled; the ?varNa_topaDa tag marks the t-upadhā colour class.
+eta    = Pratipadika("eta",    "pum", other_tags=["varNa_topaDa"])
+rohita = Pratipadika("rohita", "pum", other_tags=["varNa_topaDa"])
+Syeta  = Pratipadika("Syeta",  "pum", other_tags=["varNa_topaDa"])
+harita = Pratipadika("harita", "pum", other_tags=["varNa_topaDa"])
+
+# SK497 (4.1.40 अन्यतो ङीष्): other colour words (non-t-upadhā) → NIz (surface ī,
+# same shape as NIp — accent only). → सारङ्गी, कल्माषी, शबली.
+kalmAza = Pratipadika("kalmAza", "pum", other_tags=["varNa_anyatas"])
+sAraNga = Pratipadika("sAraNga", "pum", other_tags=["varNa_anyatas"])
+Sabala  = Pratipadika("Sabala",  "pum", other_tags=["varNa_anyatas"])
+
+# SK498 (4.1.41 षिद्गौरादिभ्यश्च): ṣit-affixed stems and gaurādi-gaṇa stems → NIz.
+# nartaka (ṣvun = ṣit affix) is registered directly with ?zit (no live affix
+# derivation). gaura (SLP1 gOra) and matsya are gaurādi. → नर्तकी, गौरी, मत्सी.
+nartaka = Pratipadika("nartaka", "pum",   other_tags=["zit"])
+gaura   = Pratipadika("gOra",    "pum",   other_tags=["gaurAdi"])
+# SK499 (6.4.149): matsya additionally carries ?sUryAdi so its upadhā 'y' is
+# elided before the feminine ī (ābhīya, asiddha to 6.4.148) → मत्सी.
+matsya  = Pratipadika("matsya",  "pum",   other_tags=["gaurAdi", "sUryAdi"])
+
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
 hastin = Pratipadika("hastin", "pum")

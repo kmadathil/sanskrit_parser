@@ -2955,6 +2955,28 @@
   xform:
      lc: lc[:-1]   # drop the upadhā 'y' (the last char of lc); 'a' (=l) stays for 6.4.148
 
+# 499: सूर्यतिष्यागस्त्यमत्स्यानां य उपधायाः (6.4.149) — for the bha-aṅgas sūrya/
+# tiṣya/agastya/matsya (tagged ?sUryAdi), the upadhā 'y' is elided before a
+# taddhita (and, per the vārttika मत्स्यस्य ङ्याम्, before ṅī). matsya + ṅīṣ:
+# 6.4.149 drops the upadhā 'y' (matsya → matsa) while 6.4.148 drops the final
+# 'a'; both fire on the same pre-yasyeti matsya snapshot under 6.4.22 ābhīya
+# asiddhavat (the 6.4.148↔6.4.149 pair in _ASIDDHA_PEERS) and compose → मत्सी.
+# The sūrya/tiṣya/agastya taddhita derivatives (सौरी/तैषी/आगस्ती) are deferred
+# (they need the 4.3.x taddhita machinery).
+- sutra: सूर्यतिष्यागस्त्यमत्स्यानां य उपधायाः
+  id: 6.4.149
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - ?sUryAdi
+     ll: y          # the upadhā char is 'y'
+     l: a
+     rp: ?NI
+  xform:
+     lc: lc[:-1]    # drop the upadhā 'y'; 'a' (=l) stays for 6.4.148
+
 # 203: अतो भिस ऐस् (7-1-9)
 - sutra: अतो भिस ऐस् 
   id: 7.1.9
@@ -5818,6 +5840,111 @@
   xform:
     lc: lc+l+str("n")
     l: null
+
+# ── SK493–498: feminine-affix substitution cluster (4.1.36–41) ──────────────
+# All select a strī affix at the (stem | strI_abs) window (bahiranga: 2). The
+# ai/au substitutes (str("E")/str("O")) feed the existing 6.1.78 एचोऽयवायावः
+# sandhi (E+ī→āyī, O+ī→āvī); 6.4.148 यस्येति च drops the final 'a' automatically.
+# ṅīp vs ṅīṣ differ only by accent (not modelled) — both surface as ī.
+
+# 493: पूतक्रतोरै च (4.1.36) — pUtakratu final u → ai (udātta) + NIp.
+# Pattern mirrors 4.1.7 (वनो र च): substitute final char (xform) + select NIp
+# (update) in one rule. puṃyoga ('wife of') restriction deferred (fires always).
+- sutra: पूतक्रतोरै च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.36
+  overrides: 4.1.4
+  condition:
+     lp: ?pUtakratu
+     rp: ?strI_abs
+  xform:
+     l: str("E")
+  update:
+     orp: =NIp
+
+# 494: वृषाकप्यग्निकुसितकुसिदानामुदात्तः (4.1.37) — vṛṣākapi/agni/kusita/kusida
+# final → ai (udātta) + NIp. → वृषाकपायी, अग्नायी, कुसितायी, कुसिदायी.
+- sutra: वृषाकप्यग्निकुसितकुसिदानामुदात्तः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.37
+  overrides: 4.1.4
+  condition:
+     lp: ?vfzAkapyAdi
+     rp: ?strI_abs
+  xform:
+     l: str("E")
+  update:
+     orp: =NIp
+
+# 495: मनोरौ वा (4.1.38) — manu final u → au (udātta) optionally + NIp → मनावी.
+# Optional (वा): the non-fire branch leaves manu as a plain u-stem feminine
+# (मनुः). No `overrides: 4.1.4` — 4.1.4 (ṭāp) cannot apply to the u-final manu
+# anyway, and omitting it keeps the optional skip-branch clean (see SK496/SK482).
+# The ai-variant (मनायी) is deferred.
+- sutra: मनोरौ वा
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.38
+  optional: true
+  condition:
+     lp: ?manu
+     rp: ?strI_abs
+  xform:
+     l: str("O")
+  update:
+     orp: =NIp
+
+# 496: वर्णादनुदात्तात्तोपधात्तो नः (4.1.39) — colour word with त् as upadhā →
+# optionally NIp, and त् → न्. The 'a'-final stem's upadhā 't' (lc[-1]) becomes
+# 'n'; 6.4.148 then drops the final 'a' before ī → एनी; ṇatva (8.4.1) gives
+# रोहिणी. Optional (वा): non-fire branch → 4.1.4 ṭāp → एता. NO `overrides: 4.1.4`
+# — the engine disables an overridden rule in BOTH forks of an optional, so an
+# override would strand the skip-branch with no affix (एतः). Instead SK496 wins
+# the fire-branch by para-kāryam (higher _aps_num 41039 > 4.1.4's 41004), while
+# the skip-branch lets 4.1.4 ṭāp fire → एता. (Same design as SK482.)
+- sutra: वर्णादनुदात्तात्तोपधात्तो नः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.39
+  optional: true
+  condition:
+     lp: ?varNa_topaDa
+     l: a
+     rp: ?strI_abs
+  xform:
+     lc: lc[:-1]+str("n")
+  update:
+     orp: =NIp
+
+# 497: अन्यतो ङीष् (4.1.40) — every OTHER colour word (non-t-upadhā) → ṅīṣ.
+# → सारङ्गी, कल्माषी, शबली (surface ī, same as NIp — accent only).
+- sutra: अन्यतो ङीष्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.40
+  overrides: 4.1.4
+  condition:
+     lp: ?varNa_anyatas
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 498: षिद्गौरादिभ्यश्च (4.1.41) — ṣit-affixed stems (?zit) and gaurādi-gaṇa
+# stems (?gaurAdi) → ṅīṣ. → नर्तकी, गौरी, मत्सी (matsī completed by SK499).
+- sutra: षिद्गौरादिभ्यश्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.41
+  overrides: 4.1.4
+  condition:
+     - lp: ?zit
+       rp: ?strI_abs
+     - lp: ?gaurAdi
+       rp: ?strI_abs
+  update:
+     orp: =NIz
 
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च
