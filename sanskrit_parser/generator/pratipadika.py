@@ -61,7 +61,7 @@ hari = Pratipadika("hari", "pum")
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
-yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
+yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi", "gaurAdi"])  # gaurādi #44 (SK498); also 6.1.63 pādādi (yūṣan alt) → यूषी / यूष्णी
 sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
 krozwu = Pratipadika("krozwu", "pum")
 SamBu = Pratipadika("SamBu", "pum")
@@ -234,9 +234,12 @@ sAraNga = Pratipadika("sAraNga", "pum", other_tags=["varNa_anyatas"])
 Sabala  = Pratipadika("Sabala",  "pum", other_tags=["varNa_anyatas"])
 
 # SK498 (4.1.41 षिद्गौरादिभ्यश्च): ṣit-affixed stems and gaurādi-gaṇa stems → NIz.
-# nartaka (ṣvun = ṣit affix) is registered directly with ?zit (no live affix
-# derivation). gaura (SLP1 gOra) and matsya are gaurādi. → नर्तकी, गौरी, मत्सी.
-nartaka = Pratipadika("nartaka", "pum",   other_tags=["zit"])
+# nartaka (√nṛt + ṣvun, 3.1.145) is ṣit by virtue of the ṣvun affix's ṣ it-marker.
+# Rather than an ad-hoc ?zit tag, the stem carries the actual ṣ it (its=["z"]) —
+# faithful, and forward-compatible: any properly ṣvun/ṣit-derived stem propagates
+# its ṣ it through join_objects (1.2.46) and is picked up by SK498's `lp: +z` arm.
+# gaura (SLP1 gOra) and matsya are gaurādi. → नर्तकी, गौरी, मत्सी.
+nartaka = Pratipadika("nartaka", "pum", its=["z"])
 gaura   = Pratipadika("gOra",    "pum",   other_tags=["gaurAdi"])
 # SK499 (6.4.149): matsya additionally carries ?sUryAdi so its upadhā 'y' is
 # elided before the feminine ī (ābhīya, asiddha to 6.4.148) → मत्सी.
@@ -249,6 +252,42 @@ matsya  = Pratipadika("matsya",  "pum",   other_tags=["gaurAdi", "sUryAdi"])
 # āgastī (agastya + 4.1.114 taddhita) is deferred — it uses a different affix.
 sUrya = Pratipadika("sUrya", "pum", other_tags=["sUryAdi"])
 tizya = Pratipadika("tizya", "pum", other_tags=["sUryAdi"])
+
+# gaurādi gaṇa (SK498 / 4.1.41) — the named simple members from SC Vasu's list,
+# registered so the gaṇa is (largely) complete rather than representative-only.
+# Excluded: the samasta/derivation-special items — matsya (above, +sūryAdi),
+# gaura (above), sūrya (above, taddhita path), śvan/takṣan (n-stems registered
+# elsewhere), anaḍuhī/anaḍvāhī (special feminines), āḍhaka (registered for Dvigu).
+# Members already defined above in other gaṇas get ?gaurAdi added in place (śūrpa,
+# yūṣa ?pādādi → शूर्पी, यूषी/यूष्णी) rather than re-registered here, to avoid
+# clobbering. Each simple member → NIz → ी (nadī). Bound to module globals.
+_gaurAdi_members = [
+    "manuzya", "SfNga", "piNgala", "haya", "gavaya", "mukaya", "fzya", "puwa",
+    "tURa", "druRa", "droRa", "hariRa", "kokaRa", "pawara", "ukaRa", "Amalaka",
+    "kuvala", "bimba", "badara", "Parkaraka", "tarkAra", "SarkAra", "puzkara",
+    "SiKaRqa", "salada", "SazkaRqa", "sananda", "suzama", "suzava", "alinda",
+    "gaquja", "pARqaSa", "Ananda", "ASvatTa", "sfpAwa", "AKaka", "Sazkula",
+    "sUca", "yUTa", "sUpa", "meTa", "vallaka", "GAtaka",
+    "sallaka", "mAlaka", "mAlata", "sAlvaka", "vetasa", "vfkza", "atasa",
+    "BfNga", "maha", "maWa", "Ceda", "peSa", "meda",
+]
+for _m in _gaurAdi_members:
+    globals()[_m] = Pratipadika(_m, "pum", other_tags=["gaurAdi"])
+
+# bahvādi gaṇa (SK503 / 4.1.45) — named simple members from SC Vasu's list,
+# optional NIz (both forks). Excluded: the gaṇasūtra entries (इतः प्राप्यंगात्,
+# कृदिकारादक्तिनः, सर्वतोऽक्तिन्नर्थात्), candrabhāgā (river-name, special), and the
+# members that overlap ajādi / svāṅga gaṇas with different treatment (bāla, ahan,
+# kroḍa, nakha, khura, śikhā, śapha, guda). bahu and vāri (?napum 'water') are
+# registered above — vāri gets ?bahvAdi added in place → वारिः/वारी.
+_bahvAdi_members = [
+    "padDati", "aYcati", "aNkati", "aMhati", "Sakawi", "Sakti", "SAri",
+    "rAti", "rADi", "SADi", "ahi", "kapi", "yazwi", "muni", "caRqa", "arAla",
+    "kfpaRa", "kamala", "vikawa", "viSAla", "viSaNkawa", "Baruja", "Dvaja",
+    "kalyARa", "udAra", "purARa",
+]
+for _m in _bahvAdi_members:
+    globals()[_m] = Pratipadika(_m, "pum", other_tags=["bahvAdi"])
 
 # ── SK500–505: ṅīṣ-selection continuation (4.1.42–45, 48, 49) ────────────────
 # All select NIz (ṅīṣ — surface ī, accent not modelled) via lexical tags.
@@ -573,7 +612,7 @@ anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"]
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
-vAri = Pratipadika("vAri", "napum")
+vAri = Pratipadika("vAri", "napum", other_tags=["bahvAdi"])  # bahvādi #9 (SK503) → वारिः / वारी
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
@@ -761,7 +800,7 @@ pAd_ut      = Pratipadika("pAd", "pum")                                         
 
 # Component pratipadikas for dynamic compound test: Sūrpa (m.) + naKī (f.)
 # The compound SūrpanaKī should NOT get Ratva because it is a samasta (compound).
-SUrpa = Pratipadika("SUrpa", "pum")   # śūrpa (winnowing basket), m. a-stem
+SUrpa = Pratipadika("SUrpa", "pum", other_tags=["gaurAdi"])   # śūrpa (winnowing basket), m. a-stem; gaurādi #42 (SK498) → शूर्पी
 naKI  = Pratipadika("naKI",  "strI", other_tags=["NI"])  # naḳī (basket-maker's wife), f. ī-stem
 
 # Positive test: kṣīra (milk) + monosyllabic uttara-pada with n → ṇatva via SK307

@@ -5952,15 +5952,16 @@
   update:
      orp: =NIz
 
-# 498: षिद्गौरादिभ्यश्च (4.1.41) — ṣit-affixed stems (?zit) and gaurādi-gaṇa
-# stems (?gaurAdi) → ṅīṣ. → नर्तकी, गौरी, मत्सी (matsī completed by SK499).
+# 498: षिद्गौरादिभ्यश्च (4.1.41) — ṣit-affixed stems (those carrying the ṣ it-marker,
+# `lp: +z`) and gaurādi-gaṇa stems (?gaurAdi) → ṅīṣ. The ṣ it propagates from a
+# ṣvun/ṣit affix to the merged stem via join_objects (1.2.46). → नर्तकी, गौरी, मत्सी.
 - sutra: षिद्गौरादिभ्यश्च
   domain: prakfti
   bahiranga: 2
   id: 4.1.41
   overrides: 4.1.4
   condition:
-     - lp: ?zit
+     - lp: +z
        rp: ?strI_abs
      - lp: ?gaurAdi
        rp: ?strI_abs

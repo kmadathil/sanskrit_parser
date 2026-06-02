@@ -22,7 +22,7 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 | Sutras skipped / deferred | 77 |
 | Sutras uncatalogued / not yet planned | ~65 |
 | **Total sutras accounted for** | **~516** |
-| Stems with full vibhakti test tables | 296 |
+| Stems with full vibhakti test tables | 303 |
 | Stems with partial vibhakti test tables | 3 |
 
 ---
@@ -373,12 +373,12 @@ The "Forms affected" column uses the convention:
 | 495 | 4.1.38 | मनोरौ वा | manu final u → au (`str("O")`) optionally + NIp → मनावी; skip-fork = plain u-stem मनुः. No `overrides` (ṭāp can't reach a u-stem). ai-variant मनायी deferred |
 | 496 | 4.1.39 | वर्णादनुदात्तात्तोपधात्तो नः | ?varNa_topaDa colour stems: optional NIp + त्→न् (`lc: lc[:-1]+str("n")`) → एनी/रोहिणी (ṇatva); skip-fork → 4.1.4 ṭāp → एता. No `overrides: 4.1.4` (vibhāṣā two-fork design, cf. SK482); fire-fork wins by para-kāryam |
 | 497 | 4.1.40 | अन्यतो ङीष् | ?varNa_anyatas colour stems (non-t-upadhā) → NIz; `overrides: 4.1.4` → सारङ्गी, कल्माषी, शबली (surface ī; accent not modelled) |
-| 498 | 4.1.41 | षिद्गौरादिभ्यश्च | ?zit (nartaka) and ?gaurAdi (gaura/matsya) stems → NIz; `overrides: 4.1.4` → नर्तकी, गौरी, मत्सी |
+| 498 | 4.1.41 | षिद्गौरादिभ्यश्च | ṣit stems (`lp: +z` — the actual ṣ it-marker, which propagates from a ṣvun/ṣit affix via join_objects 1.2.46; nartaka given `its=["z"]`) and ?gaurAdi gaṇa stems → NIz; `overrides: 4.1.4` → नर्तकी, गौरी, मत्सी, हयी, शर्करी. gaurādi expanded to ~57 named simple members from Vasu's list |
 | 499 | 6.4.149 | सूर्यतिष्यागस्त्यमत्स्यानां य उपधायाः | ābhīya upadhā y-lopa for ?sUryAdi (matsya) before the feminine ī (`lc: lc[:-1]`, condition `ll: y, rp: ?NI`); asiddha peer of 6.4.148 (`_ASIDDHA_PEERS`) so it composes with yasyeti's a-lopa → मत्सी. sūrya/tiṣya/agastya taddhita derivatives deferred |
 | 500 | 4.1.42 | जानपदकुण्ड…कबरात् | 11 `?jAnapadAdi` stems → NIz (overrides 4.1.4) → जानपदी, कुण्डी, गोणी. The 11 distinct senses not modelled (fires unconditionally) |
 | 501 | 4.1.43 | शोणात्प्राचाम् | śoṇa (`?SoRa`) → **optional** NIz (no overrides) → शोणी / शोणा (ṭāp skip-fork) |
 | 502 | 4.1.44 | वोतो गुणवचनात् | u-final `?guRavacana` → optional NIz → मृद्वी / मृदुः (u-stem skip-fork). kharu/saṃyoga-upadhā exception deferred |
-| 503 | 4.1.45 | बह्वादिभ्यश्च | `?bahvAdi` → optional NIz → बह्वी / बहुः. gaṇasūtras (रात्रि/शकटि/पद्धति) deferred |
+| 503 | 4.1.45 | बह्वादिभ्यश्च | `?bahvAdi` → optional NIz → बह्वी / बहुः, चण्डा/चण्डी, कपिः/कपी. bahvādi expanded to ~27 named simple members from Vasu's list. gaṇasūtras (रात्रि/शकटि/पद्धति) deferred |
 | 504 | 4.1.48 | पुंयोगादाख्यायाम् | `?puMyoga` male-designation → NIz (overrides 4.1.4) → गोपी. puṃyoga semantics + vārttikas (गोपालिका, सूर्या) deferred |
 | 505 | 4.1.49 | इन्द्रवरुण…आनुक् | `?indrAnuk` (12 stems): **ānuk augment** आन् (`lc: lc+dirgha(l)+str("n"), l: null`) + NIz (overrides 4.1.4/4.1.5) → इन्द्राणी/रुद्राणी (ṇatva), वरुणानी/हिमानी/अरण्यानी/मातुलानी (n stays). Required the 6.4.134 `ll: at` fix (pratyāhāra, short-अ only). Senses + मातुली optional-ānuk vārttika deferred |
 | 6.4.134 | 6.4.134 | अल्लोपोऽनः (refinement) | `ll: a`→`ll: at` (pratyāhāra, the Pāṇinian term): अल् names only the short अ; a savarṇa match wrongly deleted the long आ of SK505's ānuk augment (इन्द्रान्→इन्द्र्णी). All real an-stems (rājan/takṣan/ahan) have short-a penult → unaffected. Additionally, `?sUryAdi` added to tier-3 taddhita propagation in `join_objects` → enables SK499 taddhita forms सौरी/तैषी |
@@ -495,11 +495,11 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 495 | 4.1.38 | मनोरौ वा | Partial — ai-variant deferred | The ai-substitute form मनायी (from वा + anuvṛtti of 4.1.37's ai) is not generated; only the au-form मनावी and the no-substitute u-stem मनुः are produced |
 | 496 | 4.1.39 | वर्णादनुदात्तात्तोपधात्तो नः | Partial — vārttikas + accent deferred | Accent (anudātta-ending) not modelled. The vārttikas पिशङ्गादुपसङ्ख्यानम् (पिशङ्गी), असितपलितयोर्न (no ṅīp → असिता/पलिता), and छन्दसि क्नमेके (असिक्नी/पलिक्नी) are not implemented. अवदात excluded (it is a viśuddha-, not varṇa-, word) — handled naturally by simply not tagging it |
 | 497 | 4.1.40 | अन्यतो ङीष् | Partial — accent not modelled | ṅīṣ vs ṅīp differ only in accent, which the engine does not track; surface ī is identical. Colour-word scope encoded via the ?varNa_anyatas lexical tag |
-| 498 | 4.1.41 | षिद्गौरादिभ्यश्च | Partial — anaḍuhī vārttika + ākṛtigaṇa | The vārttika आमनडुहः स्त्रियां वा (अनडुही ~ अनड्वाही) is deferred. gaurādi is an ākṛtigaṇa (open list); only the representative members gaura/matsya are registered |
+| 498 | 4.1.41 | षिद्गौरादिभ्यश्च | Partial — anaḍuhī vārttika + ākṛtigaṇa tail | The vārttika आमनडुहः स्त्रियां वा (अनडुही ~ अनड्वाही) is deferred. gaurādi is an ākṛtigaṇa; the ~57 **named** simple members from Vasu's list are now registered (?gaurAdi), but the open-ended ākṛti tail and the samasta/special items (śvan/takṣan n-stems, anaḍuhī/anaḍvāhī) are not |
 | 499 | 6.4.149 | सूर्यतिष्यागस्त्यमत्स्यानां य उपधायाः | Partial — āgastī deferred | The main taddhita path is now implemented: `?sUryAdi` propagates from sūrya/tiṣya through the aṇ-taddhita merge (tier-3 in `join_objects`) → SK499 fires on saurya/taiṣya bha-aṅga → सौरी/तैषी. The matsya direct ṅīṣ path (vārttika मत्स्यस्य ङ्याम् → मत्सी) was already working. Remaining deferred: āgastī (agastya via 4.1.114, a different taddhita affix not yet in the generator) and the tiṣya nakṣatra-sense vārttika |
 | 500 | 4.1.42 | जानपदकुण्ड…कबरात् | Partial — 11 senses not modelled | Each of the 11 stems takes ṅīṣ only in a specific sense (जानपदी=vṛtti, कुण्डी=amatra, …); the engine doesn't model these, so the rule over-generates ṅīṣ in the other sense. कुण्ड's separate jāti-ṅīṣ reading also out of scope |
 | 502 | 4.1.44 | वोतो गुणवचनात् | Partial — kharu/saṃyoga-upadhā exception | The vārttika खरुसंयोगोपधान्न (no ṅīṣ for kharu or a saṃyoga-upadhā u-stem like पाण्डु) is deferred — those stems are simply not tagged ?guRavacana. guṇavacana is an open class; representative members only |
-| 503 | 4.1.45 | बह्वादिभ्यश्च | Partial — ākṛtigaṇa + gaṇasūtras | bahvādi is an **ākṛtigaṇa** (आकृतिगणोऽयम्, 40+ open-ended members: bahu/paddhati/añcati/śakaṭi/śakti/śāri/vāri/ahi/kapi/yaṣṭi/muni/caṇḍa/…); only bahu is registered as the representative head. The gaṇasūtra alternants (कृदिकारादक्तिनः रात्रि/रात्री; शकटि/शकटी; पद्धति/पद्धती) are also deferred |
+| 503 | 4.1.45 | बह्वादिभ्यश्च | Partial — ākṛtigaṇa tail + gaṇasūtras | bahvādi is an **ākṛtigaṇa** (आकृतिगणोऽयम्). The ~27 named simple members from Vasu's list are now registered (?bahvAdi); excluded are the 3 gaṇasūtra entries (इतः प्राप्यंगात्, कृदिकारादक्तिनः, सर्वतोऽक्तिन्नर्थात्), candrabhāgā (special), the ajādi/svāṅga-overlapping members (bāla/ahan/kroḍa/nakha/khura/śikhā/śapha/guda), and the open ākṛti tail (bhaga/gala/rāga…). The gaṇasūtra alternants (रात्रि/रात्री; शकटि/शकटी; पद्धति/पद्धती) remain deferred |
 | 504 | 4.1.48 | पुंयोगादाख्यायाम् | Partial — puṃyoga semantics + vārttikas | The 'wife-of' (puṃyoga) restriction is not modelled (fires unconditionally on ?puMyoga). Vārttikas पालकान्तान्न (गोपालिका) and सूर्याद्देवतायां चाप् (सूर्या) deferred |
 | 505 | 4.1.49 | इन्द्रवरुण…आनुक् | Partial — senses + mātulī vārttika | The puṃyoga restriction (6 proper nouns) and the special senses (हिमानी=mahad-hima, यवानी=duṣṭa-yava, यवनानी=lipi) are not modelled. The optional-ānuk vārttika मातुलोपाध्याययोरानुग्वा (मातुली beside मातुलानी) is deferred — mātula takes mandatory ānuk here |
 | 506 | 4.1.50 | क्रीतात्करणपूर्वात् | Deferred — compound introspection | karaṇa-pūrva krīta-final compound → ṅīṣ (वस्त्रक्रीती). Needs the engine to read a pūrva-pada's role (karaṇa) and the krīta-final from inside a pratyaya-window rule — the SK491 limitation. Deferred with SK507–510 |
@@ -739,8 +739,15 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | rohiNI | f | SK496 (4.1.39) | rohita (?varNa_topaDa): त्→न् + NIp + ṇatva (8.4.1) → रोहिणी; skip-fork = ṭāp रोहिता (both forks) |
 | sAraNgI | f | SK497 (4.1.40 अन्यतो ङीष्) | sAraNga (?varNa_anyatas): NIz → सारङ्गी |
 | kalmAzI | f | SK497 (4.1.40) | kalmAza (?varNa_anyatas): NIz → कल्माषी |
-| nartakI | f | SK498 (4.1.41 षिद्गौरादिभ्यश्च) | nartaka (?zit, ṣvun-derived): NIz → नर्तकी |
+| nartakI | f | SK498 (4.1.41 षिद्गौरादिभ्यश्च) | nartaka (ṣ it-marker `its=["z"]`, ṣvun-derived; SK498 `lp: +z`): NIz → नर्तकी |
 | gOrI | f | SK498 (4.1.41) | gaura (?gaurAdi): NIz → गौरी |
+| hayI | f | SK498 (4.1.41) | haya (?gaurAdi, expanded gaṇa): NIz → हयी |
+| SarkArI | f | SK498 (4.1.41) | śarkāra (?gaurAdi): NIz → शर्करी (ṇatva in शर्करीणाम्) |
+| caRqI | f | SK503 (4.1.45) | caṇḍa (?bahvAdi, expanded gaṇa): optional NIz → चण्डा/चण्डी (both forks) |
+| kapI | f | SK503 (4.1.45) | kapi (?bahvAdi, i-final): optional NIz → कपिः/कपी (both forks) |
+| SUrpI | f | SK498 (4.1.41) | śūrpa (gaurādi #42; ?gaurAdi added in place to existing def): NIz → शूर्पी |
+| vArI | f | SK503 (4.1.45) | vāri (bahvādi #9; ?bahvAdi added to the ?napum 'water' def): optional NIz → वारिः/वारी |
+| yUzI | f | SK498 (4.1.41) + 6.1.63 | yūṣa (gaurādi #44 + pādādi): NIz gives यूषी; the optional 6.1.63 yūṣan alternant also yields यूष्णी (rājan→rājñī parallel) — both forks |
 | matsI | f | SK498+SK499 (4.1.41 + 6.4.149) | matsya (?gaurAdi+?sUryAdi): NIz, then 6.4.149 upadhā y-lopa composing with 6.4.148 a-lopa (asiddha peers) → मत्सी |
 | sOrI | f | SK499 (6.4.149) taddhita path | sUrya (?sUryAdi) + aR_t: ?sUryAdi propagates through taddhita merge → SK499 y-lopa on saurya-bha → सौर् + SK470 NIp_taddhita ī → सौरी (ṇatva in gen pl सौरीणाम्) |
 | tEzI | f | SK499 (6.4.149) taddhita path | tizya (?sUryAdi) + aR_t: vṛddhi → taiṣya, then SK499 y-lopa + NIp_taddhita ī → तैषी (ṇatva in तैषीणाम्) |
