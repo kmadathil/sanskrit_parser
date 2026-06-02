@@ -2667,6 +2667,35 @@ viBakti["matsI"] = [
     ["मत्सि", "मत्स्यौ", "मत्स्यः"],
 ]
 
+# SK499 (6.4.149) taddhita path: sūrya/tiṣya + aṇ → saurya/taiṣya; then 6.4.149
+# elides the upadhā 'y' (bha position); 6.4.148 elides final 'a'; SK470 (4.1.15
+# NIp_taddhita) selects NIp → सौरी / तैषी. ?sUryAdi propagates from the base
+# through the taddhita merge (tier-3 propagation in paninian_object.join_objects).
+# gen pl ṇatva visible: सौरीणाम्, तैषीणाम् (r-chain via sūr-).
+prAtipadika["sOrI"] = [sUrya, aR_t, strI_abs]   # noqa: F405
+viBakti["sOrI"] = [
+    ["सौरी", "सौर्यौ", "सौर्यः"],
+    ["सौरीम्", "सौर्यौ", "सौरीः"],
+    ["सौर्या", "सौरीभ्याम्", "सौरीभिः"],
+    ["सौर्यै", "सौरीभ्याम्", "सौरीभ्यः"],
+    ["सौर्याः", "सौरीभ्याम्", "सौरीभ्यः"],
+    ["सौर्याः", "सौर्योः", "सौरीणाम्"],
+    ["सौर्याम्", "सौर्योः", "सौरीषु"],
+    ["सौरि", "सौर्यौ", "सौर्यः"],
+]
+
+prAtipadika["tEzI"] = [tizya, aR_t, strI_abs]   # noqa: F405
+viBakti["tEzI"] = [
+    ["तैषी", "तैष्यौ", "तैष्यः"],
+    ["तैषीम्", "तैष्यौ", "तैषीः"],
+    ["तैष्या", "तैषीभ्याम्", "तैषीभिः"],
+    ["तैष्यै", "तैषीभ्याम्", "तैषीभ्यः"],
+    ["तैष्याः", "तैषीभ्याम्", "तैषीभ्यः"],
+    ["तैष्याः", "तैष्योः", "तैषीणाम्"],
+    ["तैष्याम्", "तैष्योः", "तैषीषु"],
+    ["तैषि", "तैष्यौ", "तैष्यः"],
+]
+
 # ── SK500–505: ṅīṣ-selection continuation (4.1.42–45, 48, 49) ─────────────────
 # All ī-final nadī declension. SK501/502/503 are optional (वा) → both forks
 # present. SK505 = ānuk augment + ṅīṣ → इन्द्राणी (ṇatva) vs वरुणानी/हिमानी/

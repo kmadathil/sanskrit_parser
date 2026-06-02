@@ -209,7 +209,8 @@ class PaninianObject(SanskritObject):
         if last.hasTag("tadDita"):
             _propagate(first, ["bahuvrIhi", "dvigu",
                                "parimARa", "bistAdi", "kARqa", "puruza",
-                               "kzetre", "pramARe"])
+                               "kzetre", "pramARe",
+                               "sUryAdi"])  # SK499 (6.4.149): y-lopa for sūrya/tiṣya-derived bha-aṅgas
 
         # --- samāsa-only: ajAdi rides from the uttara-pada (last) to the compound ---
         # A samāsa ending in an ajādi-gaṇa word inherits ?ajAdi so SK454 (4.1.4) and

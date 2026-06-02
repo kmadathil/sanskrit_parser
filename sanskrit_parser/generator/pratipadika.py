@@ -241,6 +241,14 @@ gaura   = Pratipadika("gOra",    "pum",   other_tags=["gaurAdi"])
 # SK499 (6.4.149): matsya additionally carries ?sUryAdi so its upadhā 'y' is
 # elided before the feminine ī (ābhīya, asiddha to 6.4.148) → मत्सी.
 matsya  = Pratipadika("matsya",  "pum",   other_tags=["gaurAdi", "sUryAdi"])
+# sUrya and tizya: bha-aṅgas named in SK499 (6.4.149). Their upadhā 'y' is also
+# elided before a taddhita affix when ?sUryAdi propagates through the taddhita
+# merge (tier-3 propagation in paninian_object.join_objects). The aṇ-derivation
+# (7.2.115 ādivṛddhi + affix) gives saurya/taiṣya, then 6.4.149 y-lopa gives
+# saur/taiṣ, then 6.4.148 a-lopa + ī → सौरी / तैषी.
+# āgastī (agastya + 4.1.114 taddhita) is deferred — it uses a different affix.
+sUrya = Pratipadika("sUrya", "pum", other_tags=["sUryAdi"])
+tizya = Pratipadika("tizya", "pum", other_tags=["sUryAdi"])
 
 # ── SK500–505: ṅīṣ-selection continuation (4.1.42–45, 48, 49) ────────────────
 # All select NIz (ṅīṣ — surface ī, accent not modelled) via lexical tags.

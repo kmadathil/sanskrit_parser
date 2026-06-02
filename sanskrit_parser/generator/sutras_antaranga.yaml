@@ -2806,10 +2806,10 @@
 
 # 234 : अल्लोपोऽनः (6-4-134)
 # 234: अल्लोपोऽनः (6-4-134)
-# `ll: =a` (raw equality) restricts the al-lopa to the SHORT अ that अल् names —
-# a savarṇa `ll: a` would also match a long आ (e.g. the आनुक् augment of SK505,
-# इन्द्रान्), wrongly deleting it → इन्द्र्णी instead of इन्द्राणी. All genuine
-# an-stems (rājan, takṣan, ahan, …) have a short-a penult, so `=a` is faithful.
+# `ll: at` (pratyāhāra) restricts the al-lopa to the SHORT अ that अल् names.
+# isSavarna('at', 'a')=True, isSavarna('at', 'A')=False — so the long आ of the
+# आनुक् augment (SK505, इन्द्रान्) is not affected. All genuine an-stems
+# (rājan, takṣan, ahan, …) have a short-a penult → correctly matched.
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   overrides: 8.4.46
@@ -2818,7 +2818,7 @@
        - and
        - ?aNga
        - ?Ba
-     ll: "=a"
+     ll: at
      l: n
   xform:
      lc: lc[:-1]
