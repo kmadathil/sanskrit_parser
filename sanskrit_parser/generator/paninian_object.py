@@ -265,9 +265,11 @@ class PaninianObject(SanskritObject):
             if first.hasTag("UW"):
                 so.setTag("UW")
 
-        # --- strī forms (NI/Ap/strI_abs on last) ---
+        # --- strī forms (NI/Ap/UN/strI_abs on last) ---
         # Set strI, copy all tags from first, drop pum/napum.
-        for t in ["NI", "Ap", "strI_abs"]:
+        # "UN" (ūṅ suffix, SK521–526): produces ū-final feminine (kurūḥ etc.);
+        # added alongside NI/Ap so that the merge (kuru | UN) sets strI correctly.
+        for t in ["NI", "Ap", "UN", "strI_abs"]:
             if last.hasTag(t):
                 so.setTag("strI")
                 so.setTag(t)

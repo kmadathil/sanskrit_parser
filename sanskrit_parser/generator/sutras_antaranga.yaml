@@ -3314,7 +3314,11 @@
   update:
      orp: ++R
 
-# 253: सख्युरसंबुद्धौ (7-1-92) 
+# 253: सख्युरसंबुद्धौ (7-1-92)
+# ?!strI guard: saKi's tag propagates to the merged feminine stem (sakhī); without
+# this guard, SK253 would fire on sakhī at the vibhakti window, substituting its
+# nom sg with the masculine sakhā form. This mirrors the ?!strI guard used in
+# SK490/491 for pati.
 - sutra:  सख्युरसंबुद्धौ
   id: 7.1.92
   condition:
@@ -3322,6 +3326,7 @@
       - and
       - ?aNga
       - ?saKi
+      - ?!strI
      rp:
       - and
       - ?sarvanAmasTAna
@@ -5307,12 +5312,16 @@
      l: str("an") # Nicca
 
 # saKi
-# 248: अनङ् सौ (7-1-93) 
+# 248: अनङ् सौ (7-1-93)
+# ?!strI guard: ?saKi propagates to the merged feminine sakhī; without this guard,
+# the masculine nom-sg substitution (i→an) would fire on the feminine stem too.
 - sutra:  अनङ् सौ
   id: 7.1.93
   condition:
      lp:
+      - and
       - ?saKi
+      - ?!strI
      rp:
       - and
       - ?su
@@ -6045,6 +6054,192 @@
      l: null
   update:
      orp: =NIz
+
+# ── SK517–531: remainder of 4.1.x strī-pratyaya chapter ─────────────────────
+
+# 517: सख्यशिश्वीति भाषायाम् (4.1.62) — sakhi (+ aśiśvī) → ṅīṣ in bhāṣā.
+# ?sakhyAdi tag on saKi (line ~61) and aziSvI. Semantic bhāṣā restriction deferred.
+- sutra: सख्यशिश्वीति भाषायाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.62
+  overrides: 4.1.4
+  condition:
+     lp: ?sakhyAdi
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 518: जातेरस्त्रीविषयादयोपधात् (4.1.63) — jāti (species/genus) word, not stree-only,
+# not y-upadhā → ṅīṣ. `?jAti_ayopaDa` tag encodes eligibility (encoding both the
+# jāti membership and the non-y-upadhā restriction lexically). → ब्राह्मणी, कुक्कुटी, सूकरी.
+# The "not stree-only" semantic restriction is deferred.
+- sutra: जातेरस्त्रीविषयादयोपधात्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.63
+  overrides: 4.1.4
+  condition:
+     lp: ?jAti_ayopaDa
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 519: पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च (4.1.64) — jāti compounds ending in
+# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ (even if stree-viṣaya). Pre-registered
+# compound prātipadikas tagged ?pAkAdi_uttara. → ओदनपाकी, शङ्कुकर्णी, शालपर्णी etc.
+- sutra: पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.64
+  overrides: 4.1.4
+  condition:
+     lp: ?pAkAdi_uttara
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 520: इतो मनुष्यजातेः (4.1.65) — i-final manuṣya-jāti stem → ṅīṣ. ?mAnuzya_jAti_i
+# tag on representative stems (avanti, kunti, plākṣa). → अवन्ती, कुन्ती, प्लाक्षी.
+- sutra: इतो मनुष्यजातेः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.65
+  overrides: 4.1.4
+  condition:
+     lp: ?mAnuzya_jAti_i
+     l: i
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 521: ऊङुतः (4.1.66) — u-final (short ut), non-y-upadhā, manuṣya-jāti → ūṅ (UN).
+# `l: ut` (pratyāhāra, short u only — isSavarna('ut','U')=False). → कुरूः, ब्रह्मबन्धूः.
+- sutra: ऊङुतः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.66
+  overrides: 4.1.4
+  condition:
+     lp: ?manuzya_jAti_u
+     l: ut
+     rp: ?strI_abs
+  update:
+     orp: =UN
+
+# 522: बाह्वन्तात्संज्ञायाम् (4.1.67) — bāhu-final prātipadika in saṃjñā → ūṅ.
+# ?bAhvanta_saMjYA tag. saṃjñā restriction deferred. → भद्रबाहूः.
+- sutra: बाह्वन्तात्संज्ञायाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.67
+  overrides: 4.1.4
+  condition:
+     lp: ?bAhvanta_saMjYA
+     rp: ?strI_abs
+  update:
+     orp: =UN
+
+# 523: पङ्गोश्च (4.1.68) — paṅgu → ūṅ (also śvaśrūḥ via vārttika, pre-registered).
+# ?paNgu_class tag. śvaśrū derivation deferred.
+- sutra: पङ्गोश्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.68
+  overrides: 4.1.4
+  condition:
+     lp: ?paNgu_class
+     l: ut
+     rp: ?strI_abs
+  update:
+     orp: =UN
+
+# 524: ऊरूत्तरपदादौपम्ये (4.1.69) — upamāna-first compound ending in ūru → ūṅ.
+# ?Uru_upamAna tag. → करभोरूः.
+- sutra: ऊरूत्तरपदादौपम्ये
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.69
+  overrides: 4.1.4
+  condition:
+     lp: ?Uru_upamAna
+     rp: ?strI_abs
+  update:
+     orp: =UN
+
+# 525: संहितशफलक्षणवामादेश्च (4.1.70) — saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ.
+# ?saMhitAdi_Uru tag. → संहितोरूः, शफोरूः, लक्षणोरूः, वामोरूः.
+- sutra: संहितशफलक्षणवामादेश्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.70
+  overrides: 4.1.4
+  condition:
+     lp: ?saMhitAdi_Uru
+     rp: ?strI_abs
+  update:
+     orp: =UN
+
+# 526: संज्ञायाम् (4.1.72) — kadrū/kamaṇḍalu in saṃjñā → ūṅ. Pre-registered as
+# strI prātipadikas (kadrU/kamaNqalU). The rule is documented here; since these
+# are pre-registered ū-final feminines, no YAML action is needed for vibhakti
+# generation. Marking as domain: prakfti / Natural for the strI_abs → UN selection.
+# (kadrU/kamaNqalU are strI prātipadikas that already end in U; strI_abs just passes
+# through without selecting a new suffix.)
+# Note: deliberately no YAML rule here — the stems are pre-registered ū-feminines.
+
+# 527: शार्ङ्गरवाद्यञो ङीन् (4.1.73) — śāṅgaravādi + añ-derived stems → ṅīn (NIn).
+# NIn has "NI" tag → join_objects NI-fork handles the merge → nadī ī-feminine.
+# ?zANgaravAdi tag. nārī (gaṇasūtra) pre-registered directly. → शार्ङ्गरवी, बैदी.
+- sutra: शार्ङ्गरवाद्यञो ङीन्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.73
+  overrides: 4.1.4
+  condition:
+     lp: ?zANgaravAdi
+     rp: ?strI_abs
+  update:
+     orp: =NIn
+
+# 528: यङश्चाप् (4.1.74) — yañ/ṣyañ-derived a-final stems → cāp (cAp). The sutra
+# "yaṅaś" covers ñyaṅ and ṣyañ collectively. cAp has "Ap" tag → join_objects Ap-fork
+# → ramā-type ā-feminine. Surface = ā-final (same as ṭāp for now). ?yaNzdavya tag.
+# → आम्बष्ठ्या, कारीषगन्ध्या. Vārttika षाद्यञश्चाप् (पौतिमाष्या) deferred.
+- sutra: यङश्चाप्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.74
+  overrides: 4.1.4
+  condition:
+     lp: ?yaNzdavya
+     rp: ?strI_abs
+  update:
+     orp: =cAp
+
+# 529: आवट्याच्च (4.1.75) — āvaṭya (from avata, gargādi; ñyaṅ-derived) → cāp.
+# Per Vasu this is the apavāda to SK471 (यञश्च — ṅīṣ via the yañ/ñyaṅ context);
+# since āvaṭya is pre-registered as a plain stem (not a live ñyaṅ derivation),
+# only 4.1.4 ṭāp is a live competitor, so overrides: 4.1.4 suffices. ?AvawI tag.
+- sutra: आवट्याच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.75
+  overrides: 4.1.4
+  condition:
+     lp: ?AvawI
+     rp: ?strI_abs
+  update:
+     orp: =cAp
+
+# 530: तद्धिताः (4.1.76) — adhikāra: "the following are taddhita." No YAML rule.
+# The section from SK531 onward (4.1.77+) constitutes taddhita sūtras.
+
+# 531: यूनस्तिः (4.1.77) — from yuvan, the taddhita affix ti comes → yuvatī.
+# The ti affix (ti_t) joins yuvan: 6.4.134 (al-lopa) drops the 'a' of yuvan in
+# bha position → yuvn + ti = yuvnti? Verify at implementation; may need to pre-
+# register yuvati directly. The feminine suffix NIp fires on the i-final yuvati
+# via SK517 (4.1.5) or SK478 (4.1.20 vayasi prathame if tagged). See test table.
 
 # 455: उगितश्च (4-1-6)
 - sutra:  उगितश्च

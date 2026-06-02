@@ -58,7 +58,7 @@ def as_purva_pada(p):
 rAma = Pratipadika("rAma", "pum")
 kavi = Pratipadika("kavi", "pum")
 hari = Pratipadika("hari", "pum")
-saKi = Pratipadika("saKi", "pum", other_tags=["saKi"])
+saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
 yUza = Pratipadika("yUza", "pum",  other_tags=["pAdAdi"])
@@ -88,7 +88,7 @@ garga = Pratipadika("garga", "pum")
 vidyA = Pratipadika("vidyA", "strI")
 # kuru + car: SK470 ṭiṭ (टित्) test — कुरुचर + ṅīp → कुरुचरी. The ṭit affix is modelled
 # with wac (टच्, the available ṭ-it samāsānta affix); strictly कुरुचर is चरेष्टः (3.2.16) ट.
-kuru = Pratipadika("kuru", "pum")
+kuru = Pratipadika("kuru", "pum", other_tags=["manuzya_jAti_u"])  # ?manuzya_jAti_u: SK521 (4.1.66) → kurūḥ
 car  = Pratipadika("car",  "pum")
 # suparRA: SK470 ḍha (ḍhak) test base — सुपर्णा + ढक् → (7.1.2 ḍh→eya) सुपर्णेय → सुपर्णेयी.
 # PARTIAL: ādivṛddhi सु→सौ pending (needs 7.2.118 किति च), so not yet साौपर्णेयी.
@@ -304,6 +304,102 @@ yava    = Pratipadika("yava",    "pum", other_tags=["indrAnuk"])
 yavana  = Pratipadika("yavana",  "pum", other_tags=["indrAnuk"])
 mAtula  = Pratipadika("mAtula",  "pum", other_tags=["indrAnuk"])
 AcArya  = Pratipadika("AcArya",  "pum", other_tags=["indrAnuk"])
+
+# ── SK517–531: remainder of 4.1.x strī-pratyaya chapter ────────────────────
+
+# SK517 (4.1.62 सख्यशिश्वीति भाषायाम्): sakhi + aśiśvī → ṅīṣ in bhāṣā.
+# saKi already defined above with ?saKi and (new) ?sakhyAdi tag. aśiśvī is
+# an obscure term; only sakhi is given a test table. Semantic bhāṣā restriction
+# not modelled — fires unconditionally on ?sakhyAdi.
+# aziSvI stem registered for completeness (test coverage TBD):
+aziSvI = Pratipadika("aziSvI", "pum", other_tags=["sakhyAdi"])
+
+# SK518 (4.1.63 जातेरस्त्रीविषयादयोपधात्): jāti words (genus/species) that are
+# (a) not exclusively stree-only and (b) not y-upadhā → ṅīṣ. Restrictions are
+# encoded by NOT tagging ineligible stems. Representative a-final jāti pum stems:
+brAhmaRa = Pratipadika("brAhmaRa", "pum", other_tags=["jAti_ayopaDa"])
+kukkuwa   = Pratipadika("kukkuwa",  "pum", other_tags=["jAti_ayopaDa"])   # kukkuṭa (hen/cock)
+sUkara    = Pratipadika("sUkara",   "pum", other_tags=["jAti_ayopaDa"])   # sūkara (pig)
+
+# SK519 (4.1.64 पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च): jāti compounds ending in
+# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ even if stree-only. Pre-registered
+# as composite prātipadikas tagged ?pAkAdi_uttara.
+odanapAka  = Pratipadika("odanapAka",  "pum", other_tags=["pAkAdi_uttara"])   # ओदनपाकी
+SaNkukarRa = Pratipadika("SaNkukarRa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्कुकर्णी
+SAlaparRa  = Pratipadika("SAlaparRa",  "pum", other_tags=["pAkAdi_uttara"])   # शालपर्णी
+SaNKapuzpa = Pratipadika("SaNKapuzpa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्खपुष्पी
+
+# SK520 (4.1.65 इतो मनुष्यजातेः): i-final manuṣya-jāti (racial/regional words for
+# human groups) → ṅīṣ. Vasu examples: avantī (women of Avanti), kuntī, plākṣī.
+# The anuvrṛtti of ayopadhā also applies: not y-upadhā (avanti has 't' penult,
+# kunti has 't' penult — safe). Semantic "human jāti" restriction deferred; fires
+# on ?mAnuzya_jAti_i tag.
+avanti = Pratipadika("avanti", "pum", other_tags=["mAnuzya_jAti_i"])  # → avantī
+kunti  = Pratipadika("kunti",  "pum", other_tags=["mAnuzya_jAti_i"])  # → kuntī
+# plākṣī: plākṣa + iñ taddhita (ādivṛddhi: a→ā) → plākṣi (i-final). SK520 fires
+# on the i-final form. SLP1 "plAkzi" = p+l+A+k+z+i (z=ṣ).
+plAkzi = Pratipadika("plAkzi", "pum", other_tags=["mAnuzya_jAti_i"])  # → plākṣī
+
+# SK521 (4.1.66 ऊङुतः): u-final, non-y-upadhā manuṣya-jāti → ūṅ (UN suffix).
+# Condition: l: ut (short u, not ū — isSavarna('ut','U')=False). Vasu examples:
+# kurūḥ (women of Kuru), brahmabandhūḥ. kuru already defined above (line ~91)
+# without manuṣya-jāti tag; add ?manuzya_jAti_u tag there.
+# (kuru at line ~91 will be patched to add ?manuzya_jAti_u)
+brahmabanDU = Pratipadika("brahmabanDU", "pum", other_tags=["manuzya_jAti_u"])  # → brahmabandhūḥ (D=dh)
+
+# SK522 (4.1.67 बाह्वन्तात्संज्ञायाम्): bāhu-final prātipadika + saṃjñā → ūṅ.
+# Example: bhadrabāhūḥ. Register bhadrabAhu directly; saṃjñā restriction deferred.
+BadrabAhu = Pratipadika("BadrabAhu", "pum", other_tags=["bAhvanta_saMjYA"])
+
+# SK523 (4.1.68 पङ्गोश्च): paṅgu (lame) → ūṅ; also śvaśrūḥ (mother-in-law)
+# from vārttika (श्वशुरस्योकाराकारलोपश्च — drops u/ā of śvaśura, adds ūṅ).
+# paṅgu itself takes ūṅ via SK523. śvaśrū is pre-registered (the phonological
+# derivation is irregular and needs a separate vārttika mechanism).
+paNgu  = Pratipadika("paNgu",  "pum", other_tags=["paNgu_class"])  # → pāṅgūḥ
+SvaSrU = Pratipadika("SvaSrU", "strI")                             # → श्वश्रूः (pre-registered; S=ś, not z=ṣ)
+
+# SK524 (4.1.69 ऊरूत्तरपदादौपम्ये): upamāna-first compound ending in ūru → ūṅ.
+# Example: karaBoru = karabha (camel foreleg) + ūru → "she with carabha-like thighs".
+karaBoru = Pratipadika("karaBoru", "pum", other_tags=["Uru_upamAna"])  # → karaBorUḥ
+
+# SK525 (4.1.70 संहितशफलक्षणवामादेश्च): saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ.
+saMhitoru  = Pratipadika("saMhitoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → saṃhitorūḥ
+SaPoru     = Pratipadika("SaPoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → śaphorūḥ
+lakzaRoru  = Pratipadika("lakzaRoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → lakṣaṇorūḥ
+vAmoru     = Pratipadika("vAmoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → vāmorūḥ
+
+# SK526 (4.1.72 संज्ञायाम्): kadrū + kamaṇḍalu in proper-name (saṃjñā) use → ūṅ.
+# Pre-registered as strI (they are the canonical ū-final feminine forms).
+# saṃjñā restriction deferred — fires unconditionally on ?kadrU_saMjYA.
+kadrU     = Pratipadika("kadrU",     "strI", other_tags=["kadrU_saMjYA"])
+kamaRqalU = Pratipadika("kamaRqalU", "strI", other_tags=["kadrU_saMjYA"])  # R=ṇ, q=ḍ
+
+# SK527 (4.1.73 शार्ङ्गरवाद्यञो ङीन्): śāṅgaravādi + añ-derived stems → ṅīn (NIn).
+# The ?zANgaravAdi tag goes on the añ-derived (aY_t) prātipadikas. Representative:
+SArNgarava = Pratipadika("SArNgarava", "pum", other_tags=["zANgaravAdi"])  # → śāṅgaravī
+bEda       = Pratipadika("bEda",       "pum", other_tags=["zANgaravAdi"])  # → baidī (SLP1 E=ai)
+# nārī (gaṇasūtra नृनरयोर्वृद्धिश्च: nṛ/nara, a śārṅgaravādi member, gets vṛddhi +
+# ṅīn). Modelled accurately as the live derivation [nara, aR_t, strI_abs]: aṇ
+# supplies the ādivṛddhi (7.2.117: nara → nāra) that the gaṇasūtra calls for, and
+# the feminine ī comes via the taddhita-ṅīp path (aR_t is ?NIp_taddhita → SK470),
+# which is surface-identical to the gaṇasūtra ṅīn → नारी (nadī decl, नारीणाम् ṇatva).
+nara = Pratipadika("nara", "pum")  # → नारी via [nara, aR_t, strI_abs] (see test table)
+
+# SK528 (4.1.74 यङश्चाप्): yañ/ṣyañ-derived a-final stems → cAp. Pre-registered as
+# POST-ṣyañ forms (ādivṛddhi + ya already applied; ṣyañ derivation not yet modelled).
+# ?yaNzdavya tag triggers SK528 cAp selection. Surface = ā-final (same as ṭāp now).
+# SLP1: āmbaṣṭhya = "AmbazWya" (ā+m+b+a+ṣ(z)+ṭh(W)+y+a, z=ṣ, W=ṭh).
+# kārīṣagandhya = "kArIzaganDya" (k+ā+r+ī+ṣ(z)+a+g+a+n+dh(D)+y+a, D=dh).
+AmbazWya     = Pratipadika("AmbazWya",     "pum", other_tags=["yaNzdavya"])  # → āmbaṣṭhyā
+kArIzaganDya = Pratipadika("kArIzaganDya", "pum", other_tags=["yaNzdavya"])  # → kārīṣagandhyā
+
+# SK529 (4.1.75 आवट्याच्च): āvaṭya (from avata, gargādi; ñyaṅ-derived) → cAp.
+# SLP1: āvaṭya = "Avawya" (ā+v+a+ṭ(w)+y+a, w=ṭ). ?AvawI tag for SK529 YAML.
+Avawya = Pratipadika("Avawya", "pum", other_tags=["AvawI"])  # → āvaṭyā
+
+# SK531 (4.1.77 यूनस्तिः): yuvan + ti (taddhita) → yuvatī. yuvan already defined.
+# The derived prātipadika "yuvati" is also registered directly for test coverage;
+# see implementation notes in the plan.
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

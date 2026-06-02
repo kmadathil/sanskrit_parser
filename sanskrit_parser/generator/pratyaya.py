@@ -158,11 +158,32 @@ adaq = Pratyaya("ad", its=["q"], other_tags=["svAdi", "sup", "adaq"])
 # StrI
 NIp = Pratyaya("I", its=["N", "p"], other_tags=["svAdi", "NI", "strI"])
 NIz = Pratyaya("I", its=["N", "z"], other_tags=["svAdi", "NI", "strI"])
+# NIn — ङीन् (4.1.73 शार्ङ्गरवाद्यञो ङीन्): N(ṅ-it) + I(ī-content) + n(n-it).
+# Surface identical to NIp/NIz (ī-final nadī-type); differs only in accent (not yet
+# modelled). The "NI" tag makes join_objects NI-fork handle the merge identically.
+NIn = Pratyaya("I", its=["N", "n"], other_tags=["svAdi", "NI", "strI"])
 Ap = Pratyaya("A", its=["p"], other_tags=["svAdi", "Ap", "strI"])
 # DAp — डाप् (4.1.13): optional feminine affix after man-final / an-bahuvrīhi stems.
 # q-it (ḍit) triggers ṭi-lopa via 6.4.143 टेः; "Ap" tag → ramā-type ā-stem declension.
 DAp = Pratyaya("A", its=["q", "p"], other_tags=["svAdi", "Ap", "DAp", "strI"])
+# cAp — चाप् (4.1.74 यङश्चाप्, 4.1.75 आवट्याच्च): c(c-it) + A(ā-content) + p(p-it).
+# Surface = ā-final Ap-type declension (same as ṭāp for now). "Ap" tag makes
+# join_objects Ap-fork handle the merge identically; "cAp" tag distinguishes it for
+# future accent modelling (cāp is ādyudātta, distinct from ṭāp).
+cAp = Pratyaya("A", its=["c", "p"], other_tags=["svAdi", "Ap", "cAp", "strI"])
+# UN — ऊङ् (4.1.66–72): U(ū-content) + N(ṅ-it). u-final manuṣya-jāti and
+# specified proper/compound stems take ūṅ for the feminine → ū-final stem that
+# declines as the vadhū/bhrū type. The "UN" tag triggers the join_objects UN-fork
+# (patched in paninian_object.py) which copies all first.tags to the merged stem.
+UN = Pratyaya("U", its=["N"], other_tags=["svAdi", "UN", "strI"])
 strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
+
+# ti_t — तिः (4.1.77 यूनस्तिः): taddhita affix added to yuvan → yuvatī (young woman).
+# The sutra is in the taddhita adhikāra (SK530/4.1.76). No it-marker beyond the
+# conventional t-it implied by the anubandha. Feminine follows from the ti-derived
+# i-final prātipadika taking NIp via 4.1.5 (ṛn/n-final) OR the vayasi-prathama
+# path SK478 (4.1.20). Verify at implementation time.
+ti_t = Pratyaya("ti", other_tags=["svAdi", "tadDita"])
 
 # Sup Luk
 luk_sup = Pratyaya("", its=[], other_tags=["sup"])
