@@ -66,9 +66,9 @@ sarva = Pratipadika("sarva", "pum", other_tags=["sarvAdi"])
 krozwu = Pratipadika("krozwu", "pum")
 SamBu = Pratipadika("SamBu", "pum")
 go = Pratipadika("go", "pum")
-indra = Pratipadika("indra", "pum", other_tags=["indra"])
+indra = Pratipadika("indra", "pum", other_tags=["indra", "indrAnuk"])  # indrAnuk: SK505 (4.1.49)
 rE = Pratipadika("rE", "pum")
-bahu = Pratipadika("bahu", "pum")  # SK462: pūrva-pada of बहुराजन् bahuvrīhi
+bahu = Pratipadika("bahu", "pum", other_tags=["bahvAdi"])  # SK462 pūrva-pada of बहुराजन्; ?bahvAdi: SK503 (4.1.45)
 # parivrAjaka: ṇvul-derivative (pari+√vraj+ṇvul), an 'aka'-final ka-pratyaya stem.
 # SK463 (7.3.44) idādeśa fires standalone (परिव्राजिका) but is blocked by ?!bahuvrIhi
 # when it ends a bahuvrīhi (बहुपरिव्राजका — asuwapaH exception).
@@ -145,7 +145,7 @@ puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
 # via in_context (matching the trilokI / dvipuruzI pattern) and seen directly
 # on UDas at the (UDas | strI_abs) window — no propagation needed.
 UDas    = Pratipadika("UDas",    "napum", other_tags=["uDanta"])
-kuRqa   = Pratipadika("kuRqa",   "napum")
+kuRqa   = Pratipadika("kuRqa",   "napum", other_tags=["jAnapadAdi"])  # ?jAnapadAdi: SK500 (4.1.42)
 Gawa    = Pratipadika("Gawa",    "pum")
 # ati: avyaya pūrva-pada for atyUDnI (SK485 avyayādi arm)
 ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
@@ -241,6 +241,61 @@ gaura   = Pratipadika("gOra",    "pum",   other_tags=["gaurAdi"])
 # SK499 (6.4.149): matsya additionally carries ?sUryAdi so its upadhā 'y' is
 # elided before the feminine ī (ābhīya, asiddha to 6.4.148) → मत्सी.
 matsya  = Pratipadika("matsya",  "pum",   other_tags=["gaurAdi", "sUryAdi"])
+
+# ── SK500–505: ṅīṣ-selection continuation (4.1.42–45, 48, 49) ────────────────
+# All select NIz (ṅīṣ — surface ī, accent not modelled) via lexical tags.
+
+# SK500 (4.1.42 जानपदकुण्ड…कबरात्): 11 sense-restricted stems → ṅīṣ. The 11
+# distinct senses (vṛtti/amatra/…) are NOT modelled — the rule fires on the tag.
+# Full list registered; representative members get test tables.
+jAnapada = Pratipadika("jAnapada", "pum", other_tags=["jAnapadAdi"])
+# kuRqa already defined above (napum) — ?jAnapadAdi added there to avoid a
+# shadowing redefinition that would break kuRqoDnI (kuṇḍodhan bahuvrīhi).
+goRa     = Pratipadika("goRa",     "pum", other_tags=["jAnapadAdi"])
+sTala    = Pratipadika("sTala",    "pum", other_tags=["jAnapadAdi"])
+BAja     = Pratipadika("BAja",     "pum", other_tags=["jAnapadAdi"])
+nAga     = Pratipadika("nAga",     "pum", other_tags=["jAnapadAdi"])
+kAla     = Pratipadika("kAla",     "pum", other_tags=["jAnapadAdi"])
+nIla     = Pratipadika("nIla",     "pum", other_tags=["jAnapadAdi"])
+kuSa     = Pratipadika("kuSa",     "pum", other_tags=["jAnapadAdi"])
+kAmuka   = Pratipadika("kAmuka",   "pum", other_tags=["jAnapadAdi"])
+kabara   = Pratipadika("kabara",   "pum", other_tags=["jAnapadAdi"])
+
+# SK501 (4.1.43 शोणात्प्राचाम्): śoṇa → optional ṅīṣ (Eastern grammarians).
+SoRa = Pratipadika("SoRa", "pum", other_tags=["SoRa"])
+
+# SK502 (4.1.44 वोतो गुणवचनात्): u-final quality word → optional ṅīṣ. skip-fork =
+# plain u-stem (मृदुः). The kharu/saṃyoga-upadhā exception (पाण्डु) is deferred —
+# simply not tagged. guṇavacana is an open class; representative members below.
+mfdu  = Pratipadika("mfdu",  "pum", other_tags=["guRavacana"])
+laGu  = Pratipadika("laGu",  "pum", other_tags=["guRavacana"])
+svAdu = Pratipadika("svAdu", "pum", other_tags=["guRavacana"])
+
+# SK503 (4.1.45 बह्वादिभ्यश्च): bahvādi gaṇa → optional ṅīṣ. skip-fork = u-stem
+# (बहुः). bahu already defined above (SK462 pūrva-pada); ?bahvAdi added there.
+
+# SK504 (4.1.48 पुंयोगादाख्यायाम्): a male-designation used of his wife → ṅīṣ.
+# The puṃyoga ('wife-of') semantics are not modelled — fires on the tag.
+# Vārttikas (pālakānta गोपालिका; सूर्या devatā-cāp) deferred.
+gopa = Pratipadika("gopa", "pum", other_tags=["puMyoga"])
+
+# SK505 (4.1.49 इन्द्रवरुण…आनुक्): ānuk augment (आन्) + ṅīṣ. The six proper nouns
+# indra/varuṇa/bhava/śarva/rudra/mṛḍa take it in puṃyoga; hima/araṇya/yava/yavana/
+# mātula/ācārya in given senses (senses deferred — fires on the tag). ṇatva then
+# gives इन्द्राणी/रुद्राणी (r-stems) vs वरुणानी/हिमानी/अरण्यानी (n stays — no r/ṣ,
+# or ṇ/y blocks 8.4.2). मातुल/उपाध्याय optional ānuk vārttika → मातुली deferred.
+# indra already defined above (?indra for 6.1.124) — ?indrAnuk added there.
+varuRa  = Pratipadika("varuRa",  "pum", other_tags=["indrAnuk"])
+Bava    = Pratipadika("Bava",    "pum", other_tags=["indrAnuk"])
+Sarva   = Pratipadika("Sarva",   "pum", other_tags=["indrAnuk"])
+rudra   = Pratipadika("rudra",   "pum", other_tags=["indrAnuk"])
+mfqa    = Pratipadika("mfqa",    "pum", other_tags=["indrAnuk"])
+hima    = Pratipadika("hima",    "pum", other_tags=["indrAnuk"])
+araRya  = Pratipadika("araRya",  "pum", other_tags=["indrAnuk"])
+yava    = Pratipadika("yava",    "pum", other_tags=["indrAnuk"])
+yavana  = Pratipadika("yavana",  "pum", other_tags=["indrAnuk"])
+mAtula  = Pratipadika("mAtula",  "pum", other_tags=["indrAnuk"])
+AcArya  = Pratipadika("AcArya",  "pum", other_tags=["indrAnuk"])
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)

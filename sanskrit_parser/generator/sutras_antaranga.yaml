@@ -2806,6 +2806,10 @@
 
 # 234 : अल्लोपोऽनः (6-4-134)
 # 234: अल्लोपोऽनः (6-4-134)
+# `ll: =a` (raw equality) restricts the al-lopa to the SHORT अ that अल् names —
+# a savarṇa `ll: a` would also match a long आ (e.g. the आनुक् augment of SK505,
+# इन्द्रान्), wrongly deleting it → इन्द्र्णी instead of इन्द्राणी. All genuine
+# an-stems (rājan, takṣan, ahan, …) have a short-a penult, so `=a` is faithful.
 - sutra: अल्लोपोऽनः
   id: 6.4.134
   overrides: 8.4.46
@@ -2814,7 +2818,7 @@
        - and
        - ?aNga
        - ?Ba
-     ll: a
+     ll: "=a"
      l: n
   xform:
      lc: lc[:-1]
@@ -5943,6 +5947,102 @@
        rp: ?strI_abs
      - lp: ?gaurAdi
        rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# ── SK500–505: ṅīṣ-selection continuation (4.1.42–45, 48, 49) ───────────────
+# Tag-gated NIz selection (apavāda to 4.1.4 ṭāp), bahiranga 2. Optional rules
+# (SK501/502/503) carry NO `overrides: 4.1.4` so the skip-fork falls through to
+# ṭāp / u-stem (the SK495/496 two-fork design). Senses & vārttikas deferred.
+
+# 500: जानपदकुण्डगोणस्थलभाजनागकालनीलकुशकामुककबरात् (4.1.42) — 11 listed stems →
+# NIz in the listed senses. Senses not modelled; fires on ?jAnapadAdi → जानपदी,
+# कुण्डी, गोणी (6.4.148 drops final 'a' before ī).
+- sutra: जानपदकुण्डगोणस्थलभाजनागकालनीलकुशकामुककबरात्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.42
+  overrides: 4.1.4
+  condition:
+     lp: ?jAnapadAdi
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 501: शोणात्प्राचाम् (4.1.43) — śoṇa → optional NIz (Eastern grammarians).
+# शोणी (fire) / शोणा (skip → 4.1.4 ṭāp).
+- sutra: शोणात्प्राचाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.43
+  optional: true
+  condition:
+     lp: ?SoRa
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 502: वोतो गुणवचनात् (4.1.44) — u-final quality word → optional NIz.
+# मृद्वी (fire; u→v before ī by 6.1.77) / मृदुः (skip → plain u-stem).
+- sutra: वोतो गुणवचनात्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.44
+  optional: true
+  condition:
+     lp: ?guRavacana
+     l: u
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 503: बह्वादिभ्यश्च (4.1.45) — bahvādi gaṇa → optional NIz.
+# बह्वी (fire) / बहुः (skip → plain u-stem).
+- sutra: बह्वादिभ्यश्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.45
+  optional: true
+  condition:
+     lp: ?bahvAdi
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 504: पुंयोगादाख्यायाम् (4.1.48) — a male designation used of his wife → NIz.
+# puṃyoga semantics not modelled; fires on ?puMyoga → गोपी. The vārttikas
+# (पालकान्त गोपालिका; सूर्या devatā-cāp) are deferred.
+- sutra: पुंयोगादाख्यायाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.48
+  overrides: 4.1.4
+  condition:
+     lp: ?puMyoga
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 505: इन्द्रवरुणभवशर्वरुद्रमृडहिमारण्ययवयवनमातुलाचार्याणामानुक् (4.1.49) — ānuk
+# augment (आन्) at the end of the aṅga + NIz. आन् is a kit augment (added at end,
+# 1.1.46); its ā coalesces with the stem-final 'a' by savarṇa-dīrgha → the net
+# effect on the stem string is: final 'a' → 'ā', then append 'n'. Implemented as
+# `lc: lc+dirgha(l)+str("n"), l: null`. ṇatva (8.4.1/8.4.2) then gives इन्द्राणी,
+# रुद्राणी (r-stems) but leaves वरुणानी, हिमानी, अरण्यानी (no r/ṣ, or ṇ/y blocks
+# the aṭ-vyavāya). overrides 4.1.4 (ṭāp) and 4.1.5 (which would add NIp to the
+# now n-final stem). Senses & the मातुली optional-ānuk vārttika deferred.
+- sutra: इन्द्रवरुणभवशर्वरुद्रमृडहिमारण्ययवयवनमातुलाचार्याणामानुक्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.49
+  overrides: [4.1.4, 4.1.5]
+  condition:
+     lp: ?indrAnuk
+     l: a
+     rp: ?strI_abs
+  xform:
+     lc: lc+dirgha(l)+str("n")
+     l: null
   update:
      orp: =NIz
 
