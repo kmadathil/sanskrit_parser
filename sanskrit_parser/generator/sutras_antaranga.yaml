@@ -6065,6 +6065,28 @@
   update:
      orp: =NIz
 
+# 511: नासिकोदरौष्ठजङ्घादन्तकर्णशृङ्गाच्च (4.1.55) — a compound ending in one of the
+# 7 svāṅga words (nāsikā/udara/oṣṭha/jaṅghā/danta/karṇa/śṛṅga) → optional ṅīṣ.
+# Demonstrates neighbour-pada peeking: llp: ?samAsaPurva checks that the
+# left-neighbour pada is a compound pūrva-pada (set by as_purva_pada), i.e. the
+# svāṅga word is the uttara-pada of a SAMĀSA — not merely some preceding word in
+# a vākya. The bare word (no samāsa pūrva-pada) takes ṭāp, no ṅīṣ.
+# At the strī window lp = the svāṅga uttara-pada and llp = the pūrva-pada.
+# तुङ्गकर्णी (fire → ṅīṣ) / तुङ्गकर्णा (skip → ṭāp). Two-fork like 4.1.44/45 (no
+# overrides; fire-fork wins by para-kāryam). The saha/nañ/vidyamāna-pūrva
+# prohibition (4.1.57) and the kroḍādi/bahvac block (4.1.56) are deferred.
+- sutra: नासिकोदरौष्ठजङ्घादन्तकर्णशृङ्गाच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.55
+  optional: true
+  condition:
+     llp: ?samAsaPurva       # left-neighbour is a compound pūrva-pada (samāsa, not any vākya pada)
+     lp: [=nAsikA, =udara, =ozWa, =jaNGA, =danta, =karRa, =SfNga]
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
 # ── SK517–531: remainder of 4.1.x strī-pratyaya chapter ─────────────────────
 
 # 517: सख्यशिश्वीति भाषायाम् (4.1.62) — sakhi (+ aśiśvī) → ṅīṣ in bhāṣā.

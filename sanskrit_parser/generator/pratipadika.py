@@ -593,6 +593,8 @@ tftIya  = Pratipadika("tftIya",  "pum", other_tags=["dvitIyAdi"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
+tuNga = Pratipadika("tuNga", "pum")   # adj. "prominent/high"; pūrva-pada for SK511 tuNgakarRA
+karRa = Pratipadika("karRa", "napum")  # "ear" (svāṅga a-stem); SK511 uttara-pada
 mati = Pratipadika("mati", "strI")
 lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
