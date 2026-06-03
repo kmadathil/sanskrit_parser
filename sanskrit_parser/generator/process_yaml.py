@@ -44,6 +44,10 @@ def process_yaml(y):
         sopt = False
         if "optional" in s:
             sopt = s["optional"]
+        # 6.1.85 antādivat: single-substitute (ekādeśa) rules of the 6.1.84
+        # adhikāra are flagged so the engine can mark the antādivat boundary
+        # (substitute is "like the final of pūrva and the initial of para").
+        spurvapara = bool(s.get("purvapara", False))
         if "overrides" in s:
             if isinstance(s["overrides"], str):
                 soverrides = [s["overrides"]]
@@ -262,7 +266,8 @@ def process_yaml(y):
                                       update=supdate,
                                       optional=sopt,
                                       bahiranga=s["bahiranga"],
-                                      overrides=soverrides)
+                                      overrides=soverrides,
+                                      purvapara=spurvapara)
         sutra_dict[s["id"]]._cond_dict     = s["condition"]  # raw YAML for per-subcondition detail
         sutra_dict[s["id"]]._cond_globals   = globals()       # eval namespace (includes all imports)
 

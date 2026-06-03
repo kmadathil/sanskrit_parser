@@ -15,7 +15,7 @@ produce a vakya.
 from abc import abstractmethod
 from decimal import Decimal
 from indic_transliteration import sanscript
-from sanskrit_parser.generator.paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject, _SLP1_VOWELS
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
 from sanskrit_parser.generator.pratyaya import Pratyaya
 from sanskrit_parser.generator.sutra import Sutra
@@ -179,6 +179,17 @@ class AntarangaPrakriya(PrakriyaBase):
         # Set to True to capture per-step evaluation data (opt-in; slower)
         # Must be set before the inner prakriya loop so inner prakriyas inherit it.
         self._capture_eval = capture_eval
+        # 6.1.85 antādivat: aps ids of every ekādeśa (pūrvaparayoḥ) rule. When
+        # one fires, this whole set PLUS the saṁhitā ac-sandhi junction rules
+        # 6.1.77 (iko yaṇaci) and 6.1.78 (eco'yavāyāvaḥ) is disabled at that
+        # boundary — the two vowels have coalesced into one phoneme, so no
+        # further ac-sandhi applies at the resolved junction (see _exec).
+        self._purvapara_aps = [s.aps for s in sutra_list
+                               if getattr(s, "purvapara", False)]
+        self._ekadesha_block_aps = list(self._purvapara_aps)
+        for _j in ("6.1.77", "6.1.78"):
+            if _j not in self._ekadesha_block_aps:
+                self._ekadesha_block_aps.append(_j)
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update
@@ -696,6 +707,65 @@ class AntarangaPrakriya(PrakriyaBase):
                              f"tgt={tgt_lp}|{tgt_rp} -> {r[0].canonical()}|{r[1].canonical()}")
                 # r0 still references the (mutated) post-operate object;
                 # downstream disabled_sutras append uses r0, which is r[0].
+
+            # 6.1.85 antādivat boundary.
+            # An ekādeśa (pūrvaparayoḥ) rule has replaced (pūrva-final vowel +
+            # para-initial vowel) with a single substitute, written onto the
+            # right object's first position (rp[0]). Mark the truncated left
+            # object with ?antAdivat so _env exposes that shared phoneme as the
+            # left's final (antavat) — letting aṅga/bha/pada rules see the
+            # boundary correctly without stripping the pūrva's saṁjñās. Then
+            # disable the entire ekādeśa set at this junction: the two vowels
+            # are now one phoneme, so no further single-substitution applies
+            # (prevents 6.1.97/6.1.101 etc. re-firing on the synthesised
+            # l == r == substitute view). antAdivat is dropped when the two
+            # objects later coalesce (join_objects).
+            if getattr(s, "purvapara", False):
+                # The antādivat mechanism is needed only when the substitute was
+                # lumped on the RIGHT, truncating the left to a consonant. When
+                # it stays on the left (left still ends in a vowel — e.g. 6.1.101
+                # dīrgha, 6.1.102 pūrva-savarṇa, 6.1.107 pūrvarūpa) antavat is
+                # automatic and the natural representation already works; no
+                # marker and no disable are applied (else we would wrongly block
+                # a genuinely-fresh junction — e.g. amipūrvaḥ drops the ṅeryaḥ
+                # 'y' on तुभ्य|यम्, revealing अ+अ that 6.1.97 must still resolve).
+                lcanon = r[0].canonical()
+                if (r[1].canonical() != "" and lcanon != ""
+                        and lcanon[-1] not in _SLP1_VOWELS):
+                    r[0].setTag("antAdivat")
+                    # Disable the ekādeśa set + the 6.1.77/6.1.78 junction rules
+                    # here: the synthesised antavat 'l' would otherwise let them
+                    # re-fire on this resolved junction (the two vowels are now
+                    # one phoneme). Prevents 6.1.97/6.1.101/6.1.78 mis-firing.
+                    for paps in self._ekadesha_block_aps:
+                        if paps not in r[0].disabled_sutras:
+                            r[0].disabled_sutras.append(paps)
+                            r[0].disabled_by[paps] = s.aps
+                    # antādivat tag-side: the truncated residue's anta has
+                    # migrated into the shared substitute, so the residue is no
+                    # longer an independent aṅga/Ba/pada at this junction — its
+                    # saṁjñās are suspended. The synthesised 'l' only fixes
+                    # phoneme-keyed rules (6.4.8 l:n); tag-keyed bha/aṅga rules
+                    # (e.g. 6.4.130 lp:?Ba + endsWith_pAd) must also be blocked,
+                    # since by antādivat the aṅga now ends in the substitute, not
+                    # in pād. This is the single, central form of the old per-rule
+                    # `-aNga/-Ba/-pada` strips that were scattered across the
+                    # ekādeśa rules; the synthesised view (not stripping) handles
+                    # the sarvanāmasthāna case that 6.1.87 used to strip on orp.
+                    for _t in ("aNga", "Ba", "pada"):
+                        if r[0].hasTag(_t):
+                            r[0].deleteTag(_t)
+            elif r[0].hasTag("antAdivat") and s.xform is not None:
+                # A non-ekādeśa *phonological* rule has operated on the antādivat
+                # boundary, consuming it: its xform rebuilds the left as lc+l with
+                # the synthesised antavat 'l', so the substitute is now concretely
+                # part of the left object. Reset the marker so it does not leak to
+                # later rules (e.g. 8.2.7 nalopaḥ) that would mis-read 'l'.
+                # Tag-only/saṁjñā rules (xform is None, e.g. 1.4.3 yū stryākhyau
+                # nadī) must NOT clear it — they don't touch the boundary, and the
+                # antavat view must survive for the following phonological rule
+                # (e.g. 6.4.8 must keep seeing l=substitute, not the real n).
+                r[0].deleteTag("antAdivat")
 
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
             # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam

@@ -18,8 +18,8 @@ https://drdhaval2785.github.io/siddhantakaumudi/
 
 | Category | Count |
 |---|---|
-| Sutras implemented | 375 |
-| Sutras skipped / deferred | 77 |
+| Sutras implemented | 376 |
+| Sutras skipped / deferred | 76 |
 | Sutras uncatalogued / not yet planned | ~65 |
 | **Total sutras accounted for** | **~516** |
 | Stems with full vibhakti test tables | 303 |
@@ -53,6 +53,7 @@ The "Forms affected" column uses the convention:
 | 72 | 6.1.88 | वृद्धिरेचि | a/ā + e/o/ai/au → vṛddhi (rāma + eva → rāmaiva) |
 | 73 | 6.1.89 | एत्येधत्यूठ्सु | iyaṅ/uvaṅ not applied before eṭ (iR, eDa dhātu) |
 | 74 | 6.1.91 | उपसर्गादृति धातौ | ṛ-initial dhātu after upasarga: guṇa applies |
+| 75 | 6.1.85 | अन्तादिवच्च | pariBAzA for the 6.1.84 ekaḥ pūrvaparayoḥ adhikāra. The single ekādeśa substitute behaves as the final (anta) of pūrva and the initial (ādi) of para. Engine mechanism (`purvapara: true` flag on the ekādeśa rules + `?antAdivat` saṁjñā): when the substitute is lumped on the right object, the truncated left's view synthesises l = substitute (sutra.py `_env`) so antavat-dependent rules (6.4.8 etc.) see the boundary correctly **without** stripping the pūrva's aṅga/Ba/pada saṁjñās; the ekādeśa set + 6.1.77/6.1.78 are disabled at that resolved junction. Replaces the old scattered `-aNga/-Ba/-pada/-sarvanAmasTAna` tag-stripping hacks on 6.1.87/88/89/91/93/94/95/97. Simultaneity caveat (antādivat suspended when one phoneme would serve both roles) kept via 6.1.107's 7.3.102 override |
 | 76 | 8.3.15 | खरवसानयोर्विसर्जनीयः | ru/r before khar or at avasāna → visarjanīya (ḥ) |
 | 78 | 6.1.94 | एङि पररूपम् | Upasarga ending in e/o before a-initial dhātu: pararūpa (e.g. upa + eti → upeti) |
 | 80 | 6.1.95 | ओमाङोश्च | om + māṅ: pararūpa |
@@ -435,7 +436,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |
 | 58 | 8.4.52 | दीर्घादाचार्याणाम् | Skipping for now | Āchārya option |
-| 75 | 6.1.85 | अन्तादिवच्च | Skipping for now | Sandhi edge case |
 | 77 | 6.1.92 | वासुप्यापिशलेः | Skipping for now | Āpiśali dialect |
 | 81 | 6.1.98 | अव्यक्तानुकरणस्यात इतौ | Skipping for now | Sound-imitation words |
 | 82 | 6.1.99 | नाम्रेडितस्यान्त्यस्य तु वा | Skipping for now | Āmreḍita (reduplicated) words |

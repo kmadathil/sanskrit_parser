@@ -326,4 +326,11 @@ class PaninianObject(SanskritObject):
         if first.hasTag("AdeSa_s") and not first.hasTag("viBakti_pada"):
             so.setTag("AdeSa_s")
 
+        # 6.1.85 antādivat is a boundary-local saṁjñā: once the two objects
+        # coalesce into one, the shared phoneme is an ordinary final and the
+        # marker must not survive. (join builds a fresh `so`, so this is
+        # defensive against any future tag propagation.)
+        if so.hasTag("antAdivat"):
+            so.deleteTag("antAdivat")
+
         return so

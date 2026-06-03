@@ -79,7 +79,8 @@ class Sutra(object):
 
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
-                 update=None, optional=False, bahiranga=99, overrides=None):
+                 update=None, optional=False, bahiranga=99, overrides=None,
+                 purvapara=False):
         '''
         Sutra Class that expects a left and right input
         '''
@@ -90,6 +91,9 @@ class LRSutra(Sutra):
         self.update_f = update
         self.insertx = insert
         self.bahiranga = bahiranga  # Bahiranga score. Smaller wins
+        # 6.1.85 antādivat: True for the single-substitute (ekādeśa) rules of
+        # the 6.1.84 (ekaḥ pūrvaparayoḥ) adhikāra. See AntarangaPrakriya._exec.
+        self.purvapara = purvapara
 
     def inAdhikara(self, context):
         return self.adhikara(context)
@@ -241,4 +245,23 @@ def _env(s1, s2):
     else:
         env["rr"] = SanskritImmutableString("", sanscript.SLP1)
         env["rc"] = SanskritImmutableString("", sanscript.SLP1)
+    # 6.1.85 antādivat: when an ekādeśa rule lumps the single substitute on the
+    # RIGHT object (rp[0]), the left (pūrva) is truncated to a consonant even
+    # though, by antādivat, its real final is now that substitute. The
+    # ?antAdivat saṁjñā (set by the engine only in that case) makes the antavat
+    # view explicit: 'l' = the substitute (rp[0]), 'lc' = the truncated stem,
+    # 'll' = its real last char. This blocks consonant-keyed aṅga rules
+    # (e.g. 6.4.8 l:n) on the truncated stem WITHOUT stripping its aṅga/Ba/pada
+    # saṁjñās. 'r'/'rr'/'rc' are left natural: rp[0] IS the substitute, so the
+    # ādivat reading (suffix-initial = substitute) is already correct, and
+    # rule conditions on the suffix shape (e.g. 7.2.86 r:_hal) see the true
+    # initial. Fresh vowel-sandhi at this resolved junction (6.1.77/6.1.78 and
+    # the ekādeśa rules themselves) is instead suppressed via disabled_sutras.
+    if getattr(s1, "hasTag", None) and s1.hasTag("antAdivat") \
+            and s2.canonical() != "":
+        rpc = s2.canonical()
+        lpc = s1.canonical()
+        env["l"] = SanskritImmutableString(rpc[0], sanscript.SLP1)
+        env["lc"] = SanskritImmutableString(lpc, sanscript.SLP1)
+        env["ll"] = SanskritImmutableString(lpc[-1] if lpc != "" else "", sanscript.SLP1)
     return env

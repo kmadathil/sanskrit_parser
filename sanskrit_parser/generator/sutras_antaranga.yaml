@@ -132,54 +132,48 @@
        l: ayavayav(l)
 
 
-# FIXME PurvaparayoH needs a bit more thought
-# How do we make both pUrva and para "look" the same?
-# If we lump it on pUrva, we trigger wrong para sutras
-# We use two hacks -
-#     - Remove pada tag on left after lumping PurvaparayoH on rp
-#     - Where possible, make l=r=hrasva and let savarna dIrgha work (technically wrong prakriya which gives the right result)
-#     - Specifically override sutras
+# पूर्वपरयोः (6.1.84 ekaḥ pūrvaparayoḥ) ekādeśa section, governed by the
+# pariBAzA 6.1.85 अन्तादिवच्च (antādivat): the single substitute behaves as the
+# final (anta) of pūrva AND the initial (ādi) of para. Implemented as an engine
+# mechanism (see antaranga_prakriya.py `_exec` and sutra.py `_env`), driven by
+# `purvapara: true` on the ekādeśa rules below:
+#   - When the substitute is lumped on the RIGHT (xform l: null), truncating the
+#     left to a consonant, the engine sets ?antAdivat on the residue. _env then
+#     synthesises l = the substitute (rp[0]) so phoneme-keyed rules (6.4.8 l:n)
+#     see the antavat boundary; the residue's aṅga/Ba/pada saṁjñās are suspended
+#     centrally (the old scattered `-aNga/-Ba/-pada` strips); and the ekādeśa set
+#     + 6.1.77/6.1.78 junction rules are disabled at the resolved junction.
+#   - When the substitute stays on the LEFT (6.1.101/102/107: left ends in the
+#     substitute vowel), antavat is automatic — no marker, no strip, natural view.
+#   - antādivat is suspended for simultaneous operations (one phoneme cannot serve
+#     both roles at once): preserved via the surviving `overrides:` (e.g. 6.1.107
+#     overrides 7.3.102 supi ca).
 # 69: आद् गुणः (6-1-87)
 -   sutra: आद्गुणः
     id: 6.1.87
+    purvapara: true   # 6.1.85 antādivat: guṇa-substitute is anta of pūrva + ādi of para
     condition:
        l: a
        r: _ik
     xform:
        l: null
        r: guna(r)
-    update:
-      olp:
-       - -pada # for pUrvaparayoH
-       - -aNga
-       - -Ba
-      orp:
-       - -sarvanAmasTAna  # pūrvāparayoh: the surviving guṇa-merged suffix is no
-                          # longer the bare sarvānāmasthāna sup — aṅga rules keyed
-                          # on ?sarvanAmasTAna (e.g. 6.4.8) must not re-fire on the
-                          # merged residue. Cf. hāyanā + au → 7.1.18 → hāyanā|ī →
-                          # this rule → hāyan|e, where 6.4.8 would otherwise see
-                          # an n-final aṅga + sarvānāmasthāna and over-lengthen
-                          # (full pūrvāparayoḥ refactor pending).
 # 72: वृद्धिरेचि (6-1-88)
 -   sutra: वृद्धिरेचि
     id: 6.1.88
+    purvapara: true   # 6.1.85 antādivat
     condition:
        l: a
        r: _ec
     xform:
        r: vriddhi(r)
        l: null
-    update:
-      olp:
-       - -pada # for pUrvaparayoH
-       - -aNga
-       - -Ba
 
 # 73: एत्येधत्यूठ्सु (6-1-89) 
 -   sutra: एत्येधत्यूठ्सु
     id: 6.1.89
     overrides: 6.1.94
+    purvapara: true   # 6.1.85 antādivat
     condition:
      - l: a
        rp:
@@ -189,11 +183,6 @@
     xform:
        l: null
        r: vriddhi(r)
-    update:
-       olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
 
 # 269: आटश्च (6-1-90) 
 -   sutra: आटश्च
@@ -212,6 +201,7 @@
 # 74: उपसर्गादृति धातौ (6-1-91)
 -   sutra: उपसर्गादृति धातौ 
     id: 6.1.91
+    purvapara: true   # 6.1.85 antādivat
     condition:
      - l: a
        lp: ?upasarga
@@ -220,17 +210,13 @@
     xform:
        l: null
        r: vriddhi(r)
-    update:
-      olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
-        
+
 # 285: औतोऽम्शसोः (6-1-93) 
 -   sutra:   औतोऽम्शसोः
     id: 6.1.93
-    # apavada of 7.2.115 + 7.1.90 गोतो णित् by सूत्रनिर्माणसामर्थ्यात् 
+    # apavada of 7.2.115 + 7.1.90 गोतो णित् by सूत्रनिर्माणसामर्थ्यात्
     overrides: 7.2.115
+    purvapara: true   # 6.1.85 antādivat
     condition:
        l: o
        lp: ?aNga
@@ -240,11 +226,11 @@
     xform:
        l: null
        r: str('A')
-    # for pUrvaparayoH
-    
+
 # 78: एङि पररूपम् (6-1-94)
 -   sutra:  एङि पररूपम् 
     id: 6.1.94
+    purvapara: true   # 6.1.85 antādivat
     condition:
        l: a
        lp: ?upasarga
@@ -252,48 +238,39 @@
        # rp: ?DAtu
     xform:
        l: null
-    update:
-      olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
-        
+
 # 80: ओमाङोश्च (6-1-95) 
 -   sutra:  ओमाङोश्च 
     id: 6.1.95
+    purvapara: true   # 6.1.85 antādivat
     condition:
-       l: a    
+       l: a
        rp:
         - =om
         - ?AN
     xform:
        l: null
-    update:
-      olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
-        
+
 # 191: अतो गुणे (6-1-97)
 -   sutra:  अतो गुणे
     id: 6.1.97
     overrides: 6.1.101
+    purvapara: true   # 6.1.85 antādivat
     condition:
        l: at
        lp: ?!pada
        r: [at, _eN]
     xform:
        l: null
-    update:
-      olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
         
 # 164: प्रथमयोः पूर्वसवर्णः (6-1-102)
 -   sutra:  प्रथमयोः पूर्वसवर्णः 
     id: 6.1.102
     overrides: [6.1.97, 6.1.77, 6.1.101]
+    # 6.1.85 antādivat: pūrva-savarṇa dīrgha stays on the LEFT (antavat automatic);
+    # 6.1.103 (तस्माच्छसो नः) then operates on the surviving para-rest 's'.
+    # purvapara flag only enrols it in the ekādeśa disable-set.
+    purvapara: true
     condition:
        l: _ak
        r: _ac
@@ -302,7 +279,7 @@
          - ?dvitIyA
          - ?samboDana
     xform:
-       l: dirgha(l)  # pUrvaparayoH
+       l: dirgha(l)
        r: null
     update:
        orp: +psavarRa
@@ -361,20 +338,19 @@
     xform:
        r: null
        
-# 194: अमिपूर्वः (6-1-107) 
+# 194: अमिपूर्वः (6-1-107)
 -   sutra:  अमिपूर्वः
     id: 6.1.107
-    # Previously: xform: l: null, r: l — redistributed lp's final ak-vowel into
-    # rp's first position. Final merged form identical, but the intermediate
-    # state had lp ending in whatever consonant preceded the moved vowel — and
-    # 6.4.8 (सर्वनामस्थाने चासम्बुद्धौ) would misread that as an अन्-class stem
-    # and (mis)apply upadhā-dīrgha, e.g. गार्ग्यायनी|अम् → गार्ग्यायन्|ईम् →
-    # गार्ग्यायान्|ईम् (wrong) → गार्ग्यायाणीम्. By dropping only rp's 'a' and
-    # keeping lp intact, lp's last char remains a vowel so 6.4.8's `l: n`
-    # cannot match on the post-amipūrvaḥ intermediate.
-    # FIXME: This prevents 7.3.102 supi ca from triggering, but we need a proper
-    # fix for pUrvaparayOH. Currently pUrvaparayOH is implemented by a hack
-    overrides: [6.1.101,  6.1.102, 7.3.102]
+    # pūrvarūpa ekādeśa: ak + am → the pūrva vowel. The substitute stays on the
+    # LEFT (xform r: null drops only am's 'a'), so lp's last char remains the
+    # substitute vowel — antavat is automatic and 6.4.8 (l: n) cannot match on
+    # e.g. गार्ग्यायन|अम् (lp ends in the vowel, not न्). purvapara enrols it in
+    # the ekādeśa disable-set; overrides 6.1.101/6.1.102 for same-window
+    # selection (amipūrvaḥ is the apavāda). 7.3.102 (supi ca) is overridden by
+    # the antādivat simultaneity caveat: the pūrvarūpa 'a' may not be both the
+    # aṅga-final and a yañ-suffix initial at once (else अद|अम् → अदा → अमूम्).
+    overrides: [6.1.101, 6.1.102, 7.3.102]
+    purvapara: true   # 6.1.85 antādivat (disable-set membership)
     condition:
        l: _ak
        rp: ?am
@@ -384,7 +360,7 @@
        olp:
          - -Ba
          - -pada
-    
+
 # 330: संप्रसारणाच्च (6-1-108)
 -   sutra:  संप्रसारणाच्च
     id: 6.1.108
@@ -473,6 +449,11 @@
 # 85: अकः सवर्णे दीर्घः (6-1-101)
 -   sutra: अकः सवर्णे दीर्घः
     id: 6.1.101
+    # 6.1.85 antādivat: substitute (dīrgha) stays on the LEFT — the left then
+    # genuinely ends in it, so antavat is automatic (no ?antAdivat marker). The
+    # purvapara flag only enrols it in the ekādeśa disable-set so it cannot
+    # re-fire on another ekādeśa's resolved junction.
+    purvapara: true
     condition:
       l: _ak
       r: $l
