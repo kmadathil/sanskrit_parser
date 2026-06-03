@@ -706,9 +706,9 @@ tiryac_kvin = Pratipadika("tiryac", "pum", other_tags=["aYc", "kvin"])
 # tiryac = tiras+ac; SK423 (tiry ādeśa when SK416 hasn't run) deferred.
 # Bha form tiryacā is correct (SK416/417 don't apply).
 
-udac_kvin   = Pratipadika("udac",   "pum", other_tags=["aYc", "kvin", "udanc"])
-# ?udanc → SK420 (6.4.139) fires in bha context (apavāda of SK416).
-# SK416 blocked: no ?DAtu and ?udanc guard. SK420 fires → udīcā.
+# udañc (m.) is derived as a compound [ud, su, aYc_u, kvin] — see test/vibhaktis_list.py
+# and ui/app.py (_udac_cpd). SK420 (6.4.139) reads the ud prefix via the llp neighbour,
+# so no monolithic udac_kvin pratipadika / udanc tag is needed.
 
 takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])          # √takṣ+kvip; nom sg taṭ/taḍ via 8.2.29 k-deletion
 naS_kvip     = Pratipadika("naS",     "pum",  other_tags=["DAtu", "kvip", "naS"])   # √naś+kvip; optional kutva 8.2.63

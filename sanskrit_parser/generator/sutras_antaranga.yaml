@@ -4240,7 +4240,8 @@
 # The 'a' of ac (añcatir after SK415 drops ñ) is elided in bha-anga context.
 # ll: a (short) narrows to post-SK415 forms (pratyac) — excludes prAc (ll='A' long).
 # ?DAtu: fires only on dynamically-derived ac (inner prakriya result); excludes pre-formed tiryac.
-# SK420 (ud ī) is the apavāda for ud-prefix compounds (?!udanc guard).
+# SK420 (ud ī) is the apavāda for ud-prefix compounds — guarded here by llp: =!ud
+# (the left-neighbour pada is not the prefix ud), so no udanc tag is needed.
 # Note: 1.4.18 sets ?Ba on the LEFT (aNga), so condition uses lp: ?Ba, not rp: ?Ba.
 - sutra: अचः
   id: 6.4.138
@@ -4250,7 +4251,7 @@
       - ?aYc
       - ?Ba            # 1.4.18 sets ?Ba on the LEFT element (aNga before bha suffix)
       - ?DAtu          # only dynamically-derived ac from inner prakriya; excludes pre-formed tiryac
-      - ?!udanc        # SK420 (6.4.139) is apavāda for ud+añc compounds
+    llp: =!ud          # not after the prefix ud — that is SK420's (6.4.139) apavāda
     l: c
     ll: a             # short 'a' upadhā: fires on pratyac, not prAc (long A)
   xform:
@@ -4271,16 +4272,16 @@
 
 # 420: उद ईत् (6-4-139)
 # Apavāda of SK416: for ud+añc in bha context, substitute ī for the 'a' of ac (not mere deletion).
-# SK416 is blocked by ?!udanc condition; SK420 fires instead, directly giving udīc.
+# The sūtra names the word "ud": the condition reads the left-neighbour pada via
+# llp: =ud (no udanc tag). At this window lp is the ac-element and ud sits at ix-1
+# (e.g. window (ac | A) with ud as llp → ud+Ic+A → udīcā).
 # Note: 1.4.18 sets ?Ba on the LEFT (aNga), so condition uses lp: ?Ba, not rp: ?Ba.
 - sutra: उद ईत्
   id: 6.4.139
   overrides: 6.4.138
   condition:
-    lp:
-      - and
-      - ?udanc        # ud+añc compound (tagged on udac_kvin in pratipadika.py)
-      - ?Ba            # 1.4.18 sets ?Ba on LEFT element (aNga before bha suffix)
+    lp: ?Ba            # 1.4.18 sets ?Ba on LEFT element (aNga before bha suffix)
+    llp: =ud           # left-neighbour pada is the prefix ud (उद ईत्)
     l: c
     ll: a
   xform:

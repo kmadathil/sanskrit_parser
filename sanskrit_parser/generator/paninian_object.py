@@ -191,7 +191,7 @@ class PaninianObject(SanskritObject):
         # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
         # pada-pada boundaries
         if first.hasTag("aNga"):
-            _propagate(first, ["udanc", "viSva"])
+            _propagate(first, ["viSva"])
 
         # Tier 3 (tadDita-gated): compound-type tags and SK480/481/482 semantic
         # class tags ride forward only when the next element is a tadDita affix

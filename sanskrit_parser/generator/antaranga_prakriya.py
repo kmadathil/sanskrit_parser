@@ -420,8 +420,28 @@ class AntarangaPrakriya(PrakriyaBase):
         return w, trace
 
     def view(self, s, node, ix=0):
+        """Operand pair (lp, rp) = the 2-object window seen by sutra s."""
+        if node is None:
+            return self.inputs
+        _l, ix = self._visible_list(s, node, ix)
+        return _l[ix:ix+2]
+
+    def view_context(self, s, node, ix=0):
+        """Neighbour padas (llp, rrp) around the window, read from the same
+        visible list view() uses — so they respect s's asiddha/ābhīya snapshot.
+        llp = pada before lp (ix-1); rrp = pada after rp (ix+2); None if absent.
         """
-        Current view as seen by sutra s
+        if node is None:
+            return (None, None)
+        _l, ix = self._visible_list(s, node, ix)
+        llp = _l[ix-1] if ix > 0 else None
+        rrp = _l[ix+2] if ix + 2 < len(_l) else None
+        return (llp, rrp)
+
+    def _visible_list(self, s, node, ix=0):
+        """Snapshot-correct visible output list (and clamped ix) for sutra s at
+        window ix. Both view() and view_context() read from this so they agree
+        on the asiddha/ābhīya snapshot. Assumes node is not None.
 
         """
         # Wrapper for special "siddha" situations
@@ -459,11 +479,8 @@ class AntarangaPrakriya(PrakriyaBase):
             aps_num = 0
         # Default view
         _l = self.inputs
-        if node is None:
-            # logger.debug(f"View {l} {node}")
-            return _l
 
-        
+
         #FIXME Need to implement zutvatokorasiddhaH
         #FIXME Implement vukyuw... vArttikam on asidDavadatrABAt       
         if _in_abhiya(aps_num) and s is not None and getattr(s, 'aps', None) in _ASIDDHA_PEERS:
@@ -515,7 +532,7 @@ class AntarangaPrakriya(PrakriyaBase):
             # Someone has inserted something this sutra can't see
             logger.debug(f"Unseen insertion? {s} {_l} {ix}")
             ix = len(_l) - 2
-        return _l[ix:ix+2]
+        return _l, ix
 
     def _eval_sutras_at_window(self, node, ix):
         """Non-mutating evaluation pass. Returns {"sutras": [...], "priority_trace": [...]}."""
@@ -526,7 +543,7 @@ class AntarangaPrakriya(PrakriyaBase):
             disabled_by = node.outputs[ix].disabled_by.get(s.aps) if disabled else None
             domain_pass = None  # AntarangaPrakriya does not use domain filtering
             if not disabled:
-                cond_pass, cond_detail = s.evalConditionDetail(*self.view(s, node, ix))
+                cond_pass, cond_detail = s.evalConditionDetail(*self.view(s, node, ix), context=self.view_context(s, node, ix))
             else:
                 cond_pass, cond_detail = None, []
             dev = s.name.devanagari() if not isinstance(s.name, str) else s.name
@@ -553,7 +570,7 @@ class AntarangaPrakriya(PrakriyaBase):
                 logger.debug(f"Found pratyaya at {ix+1} {node.outputs[ix+1]}")
                 logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
                 triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
-                                          and s.isTriggered(*self.view(s, node, ix)))]
+                                          and s.isTriggered(*self.view(s, node, ix), context=self.view_context(s, node, ix)))]
                 # Break at first index from left where trigger occurs
                 _ix = ix
                 break
@@ -564,7 +581,7 @@ class AntarangaPrakriya(PrakriyaBase):
                     logger.debug(f"Found samAsa at {ix} {node.outputs[ix+1]}")
                     logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
                     triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
-                                          and s.isTriggered(*self.view(s, node, ix)))]
+                                          and s.isTriggered(*self.view(s, node, ix), context=self.view_context(s, node, ix)))]
                     # Break at first index from left where trigger occurs
                     _ix = ix
                     break
@@ -573,7 +590,7 @@ class AntarangaPrakriya(PrakriyaBase):
             ix = _ix
             logger.debug(f"No pratyaya or samAsa. Checking for rule triggers at window 0")
             if len(node.outputs) != 1:
-                triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)  and s.isTriggered(*self.view(s, node, ix)))]
+                triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)  and s.isTriggered(*self.view(s, node, ix), context=self.view_context(s, node, ix)))]
 
                 #    assert node.outputs[0].hasTag("pada"), f"Expected pada at {0} got {node.outputs[0]}"
                 #    assert node.outputs[0].hasTag("pada") or node.outputs[0].hasTag("avasAna"), f"Expected pada at {1} got {node.outputs[0]}"
@@ -586,15 +603,16 @@ class AntarangaPrakriya(PrakriyaBase):
             logger.debug(f"Triggered at window {ix}: {[str(t) for t in triggered]}")
             s = self.sutra_priority(triggered, node.outputs[ix:ix+2])
             v = self.view(s, node, ix)
+            ctx = self.view_context(s, node, ix)
             logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
             assert s.aps not in v[0].disabled_sutras
             # Transformation
-            r = s.operate(*v)
+            r = s.operate(*v, context=ctx)
             r0 = r[0]
             v0 = v[0]
             # State update
-            r = s.update(*v, *r)
-            r = s.insert(*v, *r)
+            r = s.update(*v, *r, context=ctx)
+            r = s.insert(*v, *r, context=ctx)
             # Insertion - hierarchical prakriya
             for i in [0, 1]:
                 if not _isScalar(r[i]):

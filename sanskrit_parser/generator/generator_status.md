@@ -307,10 +307,10 @@ The "Forms affected" column uses the convention:
 | 407 | 8.1.23 | त्वामौ द्वितीयायाः | yuzmad/asmad sg acc → tvā/mā (optional) before pada |
 | 414 | 6.4.130 | पादः पत् | pAda → pad (shorten ā→a) when anga is bha; applies to compound pAd-final stems (supAd etc.); inst/dat/abl/gen/loc sg + acc/gen pl all show pad- base |
 | 415 | 6.4.24 | अनिदितां हल उपधायाः क्ङिति | anidita hal-stem: drop nasal upadhā (Y=ñ or n) before kit/Ṅit krit suffix; fires at (aYc_u\|kvin) window; aYc → ac; enables dynamic añcatir derivation |
-| 416 | 6.4.138 | अचः | delete 'a' of añc (post-SK415 form 'ac') in bha-anga context; ll:'a' condition excludes prAc (long A); ?!udanc excludes ud-prefix (SK420 apavāda); pratyac/tiryac bha forms use pratīc/tiryc base |
+| 416 | 6.4.138 | अचः | delete 'a' of añc (post-SK415 form 'ac') in bha-anga context; ll:'a' condition excludes prAc (long A); llp:=!ud excludes ud-prefix (SK420 apavāda, reads left-neighbour pada); pratyac/tiryac bha forms use pratīc/tiryc base |
 | 417 | 6.3.138 | चौ | lengthen final vowel of preceding member before añc reduced to 'c'; fires at (prefix\|c_result) after SK416; prati→pratI, pra→prA; yaṇ (6.1.77) blocked by akṛtavyūhā paribhāṣā |
 | 418 | 6.3.92 | विष्वग्देवयोश्च टेरद्र्यञ्चतावप्रत्यये | ṭi→adri before añcatir (viṣvag/deva/tad/yad/kim/etad/idam/adas/sarva); ticAdesha_adri helper; luk_sup propagates sarvanAma→sarvanAma_pada; bahiranga:1 fires before SK417 |
-| 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; ?udanc tag (via in_udanc helper) identifies ud compounds; fixes udac bha forms |
+| 420 | 6.4.139 | उद ईत् | apavāda of SK416: ud+añc in bha → substitute ī for 'a' of ac (udac→udIc); overrides: 6.4.138; llp:=ud reads the ud prefix as the left-neighbour pada (no udanc tag); fixes udac bha forms |
 | 421 | 6.3.93 | समः समि | sam- → sami- before añcatir; bahiranga:1 fires before SK417; samyañc paradigm: samīcā bha via SK417 i→ī |
 | 422 | 6.3.95 | सहस्य सध्रिः | saha- → sadhrī- before añcatir; bahiranga:1; sadhryañc paradigm; SK417 dirgha(ī)=ī no-op → sadhrīcā bha |
 | 425 | 6.4.14 | अत्वसन्तस्य चाऽधातोः | upadhā dīrgha for u-it pum anga ending in -at (matup/ktavatu) or -as (Iyasun) before su (nom sg), not sambuddhi; bahiranga:3 fires before nUM; dhīmān, gomān |
@@ -662,7 +662,7 @@ All tests run from the `generator` branch: `cd sanskrit_parser/generator/test &&
 | viSvArAj | m | j-stem (kvip rāj, compound, SK379) | SK379 (6.3.128): viśva final a→ā before ?rAj in compound; nom sg viśvārāṭ via SK294 (j→ṣ→ḍ→ṭ chain) |
 | pratyac | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [prati, aYc_u, kvin]; SK415 aYc→ac, 6.1.77 prati+ac→pratyac; SK361 nUM strong; SK416+417 bha: pratīcā (not pratyacā — 6.1.77 blocked by akṛtavyūhā) |
 | prAc | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [pra, aYc_u, kvin]; SK415 aYc→ac, 6.1.101 pra+ac→prAc; SK361 nUM; SK416+417 bha: prācā (dirgha('a')=A) |
-| udac | m | añcatir kvin (SK420, dynamic) | Dynamic: in_udanc([ud, aYc_u, kvin]); SK415 aYc→ac; SK420 apavāda of SK416: udac bha→udīcā; fixes previously wrong bha forms |
+| udac | m | añcatir kvin (SK420, dynamic) | Dynamic: [ud, su, aYc_u, kvin]; SK415 aYc→ac; SK420 (llp:=ud reads ud prefix) apavāda of SK416: udac bha→udīcā |
 | tiryac | m | añcatir kvin (SK415–417, dynamic) | Dynamic: [tiry, aYc_u, kvin]; SK415 aYc→ac; tiry ends in 'y' → dirgha no-op → bha tiryacā unchanged |
 | supAd | m | d-stem (pāda compound, SK414) | SK414 (6.4.130): pAd→pad (ā→a) in bha context; inst/dat/abl/gen/loc sg + acc/gen pl use pad- base; nom/voc/acc sg+du+pl use supAd- base |
 | Sf_vanip_strI | f | van-stem (SK456, dynamic) | Dynamic: [Sf, vanip, strI_abs]; SK2168 guṇa Sf→Sar; SK456 (4.1.7) NIp + n→r → SarvarI; each cell also accepts geminated SK 8.4.46 variant (Sarv-/Sarvv-) |

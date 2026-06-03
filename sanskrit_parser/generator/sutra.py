@@ -101,8 +101,9 @@ class LRSutra(Sutra):
             t = domains.isdomain("standard")
         return t
 
-    def isTriggered(self, s1, s2, nitya_check=False):
-        env = _env(s1, s2)
+    def isTriggered(self, s1, s2, nitya_check=False, context=None):
+        llp, rrp = context if context is not None else (None, None)
+        env = _env(s1, s2, llp, rrp)
         if self.cond is not None:
             c = self.cond(env)
         else:
@@ -111,17 +112,18 @@ class LRSutra(Sutra):
         logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
         return c
 
-    def evalConditionDetail(self, s1, s2):
+    def evalConditionDetail(self, s1, s2, context=None):
         """Re-evaluates condition with per-subcondition detail. Short-circuit preserved.
         Returns (passed: bool, detail: list[dict])
         where detail entries are {"var": str, "check": str, "result": bool}.
         """
+        llp, rrp = context if context is not None else (None, None)
         _cond_dict    = getattr(self, '_cond_dict',    None)
         _cond_globals = getattr(self, '_cond_globals', {})
         if _cond_dict is None:
-            result = self.cond(_env(s1, s2)) if self.cond else True
+            result = self.cond(_env(s1, s2, llp, rrp)) if self.cond else True
             return result, []
-        env = _env(s1, s2)
+        env = _env(s1, s2, llp, rrp)
         detail = []
         _isInPratyahara = _cond_globals.get('isInPratyahara')
         _isSavarna      = _cond_globals.get('isSavarna')
@@ -168,28 +170,31 @@ class LRSutra(Sutra):
             passed = _eval_one(_cd)
         return passed, detail
 
-    def update(self, s1, s2, o1, o2):
-        env = _env(s1, s2)
+    def update(self, s1, s2, o1, o2, context=None):
+        llp, rrp = context if context is not None else (None, None)
+        env = _env(s1, s2, llp, rrp)
         env["olp"] = o1
         env["orp"] = o2
         if self.update_f is not None:
             self.update_f(env)
         return env["olp"], env["orp"]
 
-    def operate(self, s1, s2):
+    def operate(self, s1, s2, context=None):
         # We take the string tuple returned, and update s1, s2
+        llp, rrp = context if context is not None else (None, None)
         rs1 = deepcopy(s1)
         rs2 = deepcopy(s2)
         if self.xform is not None:
-            env = _env(s1, s2)
+            env = _env(s1, s2, llp, rrp)
             ret = self.xform(env)
             rs1.update(ret[0], sanscript.SLP1)
             rs2.update(ret[1], sanscript.SLP1)
         return rs1, rs2
 
-    def insert(self, s1, s2, o1, o2):
+    def insert(self, s1, s2, o1, o2, context=None):
         if self.insertx is not None:
-            env = _env(s1, s2)
+            llp, rrp = context if context is not None else (None, None)
+            env = _env(s1, s2, llp, rrp)
             itx = self.insertx(env)
             r = [o1, o2]
             for i in itx:
@@ -216,11 +221,17 @@ class LRSutra(Sutra):
             return(o1, o2)
 
 
-def _env(s1, s2):
+def _env(s1, s2, llp=None, rrp=None):
     # Helper function to define execution environment
     env = {}
     env["lp"] = s1
     env["rp"] = s2
+    # Neighbour padas (read-only context): the pada before lp (ix-1) and after
+    # rp (ix+2), when the engine supplies them. An empty PaninianObject sentinel
+    # is used when a neighbour is absent so condition operators stay safe
+    # (=x -> False, =!x -> True, ?tag -> False, ?!tag -> True).
+    env["llp"] = llp if llp is not None else PaninianObject("")
+    env["rrp"] = rrp if rrp is not None else PaninianObject("")
     if s1.canonical() == "":
         env["l"] = SanskritImmutableString("")
     else:

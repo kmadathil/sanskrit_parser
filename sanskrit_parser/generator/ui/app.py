@@ -42,7 +42,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     nAsikA, niSA,
     pAda, yUza,
     ftvij_kvin, sraj_kvin, yuj_kvin, yuj_kvin_samAsa, diS_kvin,
-    daDfc_kvin, udac_kvin, tiryac_kvin,
+    daDfc_kvin, tiryac_kvin,
     takz_kvip, vAh_kvip, praSAm_kvip,
     gaRa, aSva, viSva, rAj_kvip,
     in_compound,
@@ -164,7 +164,7 @@ _etAvAn_cpd    = [etad, in_context(vatup, "pum")]
 # añcatir compounds (prefix + aYc + kvin); upasargas take su (deleted by SK452)
 _pratyac_cpd   = [prati, su, aYc_u, kvin]
 _prAc_cpd      = [pra,   su, aYc_u, kvin]
-_udac_cpd      = [ud,    su, in_context(aYc_u, "udanc"), kvin]
+_udac_cpd      = [ud,    su, aYc_u, kvin]
 _tiryac_cpd    = [tiras, su, aYc_u, kvin]
 _samyac_cpd    = [sam,   su, aYc_u, kvin]
 _saDryac_cpd   = [saha,  su, aYc_u, kvin]
@@ -457,7 +457,6 @@ _STEMS_RAW = [
     ("yuj",      yuj_kvin,    "kvin-stems",       "yuj  (yuj-)  [SK375]"),
     ("diS",      diS_kvin,    "kvin-stems",       "diś  (diś-)  [SK377]"),
     ("daDfc",    daDfc_kvin,  "kvin-stems",       "dadhṛc  (dadhṛc-)  [c-final]"),
-    ("udac",     udac_kvin,   "kvin-stems",       "udañc  (udac-)  [SK361 aYc]"),
     ("tiryac",   tiryac_kvin, "kvin-stems",       "tiryañc  (tiryac-)  [SK361 aYc]"),
     ("yuj_samAsa", [yuj_kvin_samAsa], "kvin-stems", "yuj-in-cpd  [samāsa no nUM]"),
     # añcatir compounds (dynamic derivation via aYc_u)

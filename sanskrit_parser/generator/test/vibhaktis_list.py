@@ -1106,7 +1106,7 @@ viBakti["prAc"] = [
 ]
 
 # udañc (m.) — añc-type: weak stem udac, strong udañc.
-prAtipadika["udac"] = [ud, su, in_context(aYc_u,"udanc"), kvin]  
+prAtipadika["udac"] = [ud, su, aYc_u, kvin]   # udañc: SK420 (6.4.139) reads ud via llp; no udanc tag
 viBakti["udac"] = [
     ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],           # 1 Nom  — strong (SK361)
     ['उदञ्चम्', 'उदञ्चौ', 'उदीचः'],           # 2 Acc  — sg/du strong; pl (Sas) bha → udīcaḥ (SK420)
