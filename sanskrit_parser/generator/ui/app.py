@@ -96,11 +96,13 @@ from sanskrit_parser.generator.pratyaya import (  # noqa: E402
     # taddhita from prātipadika
     yat_t, zyaY_t, yaY_t, aR_t,
     # SK470 taddhita ṅīp-triggering affixes
-    aY_t, dvayasac, tayap, kvarap, Qhak, Wak, WaY,
+    aY_t, dvayasac, daGnac, mAtrac, tayap, kvarap, Qhak, Wak, WaY,
     # SK473 ṣpha taddhita (with फ → आयन् via 7.1.2)
     sPa,
     # ka-pratyaya taddhita (SK463/464)
     kan,
+    # ti taddhita (SK531 yuvan → yuvati) + taddhita-luk (SK480 dvigu)
+    ti_t, luk_tadDita,
     # van-class kṛt
     vanip,
     # luk / UW
@@ -525,6 +527,73 @@ for key, obj, group, label in _STEMS_RAW:
     STEM_GROUPS[group].append({"key": key, "label": label})
 
 # ---------------------------------------------------------------------------
+# Auto-register the remaining strī-pratyaya stems from the test data
+# ---------------------------------------------------------------------------
+# The test suite's vibhaktis_list.py maintains `prAtipadika[key] = composition`
+# for every tested stem, built from the same generator objects this UI imports.
+# The hand-curated _STEMS_RAW above only demos SK454-477; here we pull in every
+# *other* feminine composition (those ending in the strI_abs marker) so the whole
+# 4.1.x strī chapter (through SK531) is browsable without duplicating the
+# compositions. This stays in sync with the test suite automatically.
+try:
+    from sanskrit_parser.generator.test.vibhaktis_list import (  # noqa: E402
+        prAtipadika as _TEST_STEMS,
+    )
+except Exception as _exc:  # noqa: BLE001
+    logging.getLogger(__name__).warning(
+        "Could not import test stem catalogue (strī auto-registration skipped): %s", _exc)
+    _TEST_STEMS = {}
+
+def _deva(slp1):
+    return sanscript.transliterate(slp1, sanscript.SLP1, sanscript.DEVANAGARI)
+
+
+# Reverse map: canonical base name → the clean module-level Pratipadika global.
+# Used to expose the *base* stems of strī compositions in the builder so the
+# "+ strī" toggle has something to attach to (Pratyaya is a disjoint class, so
+# bases are exactly the Pratipadika-but-not-Pratyaya elements).
+from sanskrit_parser.generator.pratipadika import Pratipadika as _Pratipadika  # noqa: E402
+from sanskrit_parser.generator.pratyaya import Pratyaya as _Pratyaya          # noqa: E402
+import sanskrit_parser.generator.pratipadika as _pp_module                    # noqa: E402
+
+_PP_BY_NAME = {}
+for _n, _o in vars(_pp_module).items():
+    if isinstance(_o, _Pratipadika) and not isinstance(_o, _Pratyaya):
+        _PP_BY_NAME.setdefault(_o.canonical(), _o)
+
+_STRI_GROUP = "Strī-pratyaya (SK478–531, test suite)"
+_STRI_BASE_GROUP = "Strī bases (test suite)"
+_stri_extra = []
+_stri_base_names = set()
+for _key, _comp in _TEST_STEMS.items():
+    # Feminine compositions are lists ending in the strI_abs marker singleton.
+    if not (isinstance(_comp, list) and _comp and _comp[-1] is strI_abs):
+        continue
+    # Collect the base stems referenced (clean globals, by canonical name).
+    for _el in _comp:
+        if isinstance(_el, _Pratipadika) and not isinstance(_el, _Pratyaya):
+            _cn = _el.canonical()
+            if _cn in _PP_BY_NAME:
+                _stri_base_names.add(_cn)
+    if _key in STEM_MAP:
+        continue  # already curated (e.g. the SK454-477 keys) — don't duplicate
+    _stri_extra.append((_key, _comp, f"{_deva(_key.split('_')[0])}  ({_key})"))
+
+# Register the full feminine forms (catalogue dropdown).
+for _key, _comp, _label in sorted(_stri_extra, key=lambda t: t[0]):
+    STEM_MAP[_key] = _comp
+    STEM_GROUPS.setdefault(_STRI_GROUP, []).append({"key": _key, "label": _label})
+
+# Register the base stems (single-object → also selectable in the builder picker,
+# where they pair with the "+ strī" toggle to derive the feminine).
+for _cn in sorted(_stri_base_names):
+    if _cn in STEM_MAP:
+        continue
+    STEM_MAP[_cn] = _PP_BY_NAME[_cn]
+    STEM_GROUPS.setdefault(_STRI_BASE_GROUP, []).append(
+        {"key": _cn, "label": f"{_deva(_cn)}  ({_cn})"})
+
+# ---------------------------------------------------------------------------
 # Vibhakti / vacana metadata
 # ---------------------------------------------------------------------------
 
@@ -599,6 +668,21 @@ _PRATYAYA_CATALOG.update({
     "kap":    (kap,    "kap — taddhita (-ka, similarity)"),
     "kAmyac": (kAmyac, "kāmyac — taddhita (-kāmya, desiderative)"),
     "suc":    (suc,    "suc — taddhita (-s)"),
+    # strī-triggering taddhita (combine with strī_abs → ṅīp/ṣpha feminines, SK470-531)
+    "aY_t":      (aY_t,      "aÑ — taddhita (-a, SK470 → औत्सी)"),
+    "kan":       (kan,       "kan — ka-pratyaya (-ka, SK463 idādeśa)"),
+    "dvayasac":  (dvayasac,  "dvayasac — measure taddhita (-dvayasa)"),
+    "daGnac":    (daGnac,    "daghnac — measure taddhita (-daghna)"),
+    "mAtrac":    (mAtrac,    "mātrac — measure taddhita (-mātra)"),
+    "tayap":     (tayap,     "tayap — collective taddhita (-taya, SK470 → पञ्चतयी)"),
+    "kvarap":    (kvarap,    "kvarap — kṛt (-vara, SK470 → नश्वरी)"),
+    "Qhak":      (Qhak,      "ḍhak — taddhita (ḍha→eya, SK470/475 → सौपर्णेयी)"),
+    "Wak":       (Wak,       "ṭhak — taddhita (ṭha→ika + vṛddhi, SK470 → आक्षिकी)"),
+    "WaY":       (WaY,       "ṭhañ — taddhita (ṭha→ika + ñit vṛddhi, SK470 → लावणिकी)"),
+    "sPa":       (sPa,       "ṣpha — taddhita (फ→आयन्, SK473-477 → गार्ग्यायणी)"),
+    "ti_t":      (ti_t,      "ti — taddhita (SK531 yuvan → युवति)"),
+    "vanip":     (vanip,     "vanip — van-kṛt (-van, SK456 → शर्वरी)"),
+    "luk_tadDita": (luk_tadDita, "luk-taddhita — elided taddhita (SK480 dvigu)"),
     # special sup
     "Si":     (Si,     "Śi — jasaḥ Śī replacement (neuter pl)"),
     "OS":     (OS,     "OS — sup (alt O)"),
@@ -931,8 +1015,11 @@ def api_objects():
         {"group": "kṛt — Verbal derivatives",          "items": _py_items([
             "tfc", "GaY", "kta", "ktvA", "yat", "Ryat", "anIya",
             "kvin", "kvip", "kaY", "wac", "kanin", "vatup"])},
-        {"group": "Strī — Feminine suffixes",          "items": _py_items(["NIp", "NIz", "Ap", "strI_abs"])},
+        {"group": "Strī — Feminine suffixes",          "items": _py_items(["strI_abs", "NIp", "NIz", "Ap"])},
         {"group": "Taddhita — from prātipadika",       "items": _py_items(["yat_t", "zyaY_t", "yaY_t", "aR_t"])},
+        {"group": "Taddhita — strī-triggering (combine with strī)", "items": _py_items([
+            "aY_t", "kan", "dvayasac", "daGnac", "mAtrac", "tayap", "kvarap",
+            "Qhak", "Wak", "WaY", "sPa", "ti_t", "vanip", "luk_tadDita"])},
         {"group": "Taddhita — similarity",             "items": _py_items(["pASap", "kalpap", "kap", "kAmyac", "suc"])},
         {"group": "tiN — Verbal endings",              "items": _py_items(["tip", "sip"])},
         {"group": "Vikaraṇa — Stem-forming",           "items": _py_items(["Sap", "yak", "Ric"])},
