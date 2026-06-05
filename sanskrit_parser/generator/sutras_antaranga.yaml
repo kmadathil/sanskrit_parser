@@ -6065,27 +6065,143 @@
   update:
      orp: =NIz
 
+# 506: क्रीतात्करणपूर्वात् (4.1.50) — a-final compound ending in krīta (√krī+kta)
+# whose pūrva-pada names the means (?karaNa) → ṅīṣ. llp peeks the karaNa pūrva.
+# → वस्त्रक्रीती. (धनक्रीता "kvacin na" deferred: dhana not tagged ?karaNa.)
+- sutra: क्रीतात्करणपूर्वात्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.50
+  overrides: 4.1.4
+  condition:
+     llp: ?karaNa
+     lp: =krIta
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 507: क्तादल्पाख्यायाम् (4.1.51) — karaNa-pūrva + kta-final (?ktAnta) compound in
+# the alpa (small-quantity) sense → ṅīṣ. alpa sense deferred (fires on the tag);
+# counter चन्दनलिप्ता: chandana not tagged ?karaNa. → अभ्रलिप्ती.
+- sutra: क्तादल्पाख्यायाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.51
+  overrides: 4.1.4
+  condition:
+     llp: ?karaNa
+     lp: ?ktAnta
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
+# 510: स्वाङ्गाच्चोपसर्जनादसंयोगोपधात् (4.1.54) — a svANga (body-part) word that is
+# an upasarjana (compound member, ?samAsa), a-final, with a non-conjunct upadhA
+# ($$asaMyogopaDa) → optional ṅīṣ. → अतिकेशी/अतिकेशा, चन्द्रमुखी/चन्द्रमुखा.
+# (सुगुल्फा: gulpha's upadhA 'ph' is preceded by 'l' → conjunct → $$asaMyogopaDa
+# False → ṭāp. bare शिखा: no ?samAsa on lp → ṭāp.) Two-fork, no overrides.
+- sutra: स्वाङ्गाच्चोपसर्जनादसंयोगोपधात्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.54
+  optional: true
+  condition:
+     lp: [and, "?svAnga", "?samAsa", $$asaMyogopaDa]
+     l: a
+     rp: ?strI_abs
+  update:
+     orp: =NIz
+
 # 511: नासिकोदरौष्ठजङ्घादन्तकर्णशृङ्गाच्च (4.1.55) — a compound ending in one of the
-# 7 svāṅga words (nāsikā/udara/oṣṭha/jaṅghā/danta/karṇa/śṛṅga) → optional ṅīṣ.
-# Demonstrates neighbour-pada peeking: llp: ?samAsaPurva checks that the
-# left-neighbour pada is a compound pūrva-pada (set by as_purva_pada), i.e. the
-# svāṅga word is the uttara-pada of a SAMĀSA — not merely some preceding word in
-# a vākya. The bare word (no samāsa pūrva-pada) takes ṭāp, no ṅīṣ.
-# At the strī window lp = the svāṅga uttara-pada and llp = the pūrva-pada.
-# तुङ्गकर्णी (fire → ṅīṣ) / तुङ्गकर्णा (skip → ṭāp). Two-fork like 4.1.44/45 (no
-# overrides; fire-fork wins by para-kāryam). The saha/nañ/vidyamāna-pūrva
-# prohibition (4.1.57) and the kroḍādi/bahvac block (4.1.56) are deferred.
+# 7 named svANga words → optional ṅīṣ. `lp: ?samAsa` (intrinsic, via in_compound)
+# confirms the svANga is a compound uttara-pada (not a bare word / unrelated vAkya
+# pada); the bare word takes only ṭāp. 7 OR-arms (one per word — [and, ?samAsa,
+# =word] cannot nest an OR-list). तुङ्गकर्णी / तुङ्गकर्णा.
 - sutra: नासिकोदरौष्ठजङ्घादन्तकर्णशृङ्गाच्च
   domain: prakfti
   bahiranga: 2
   id: 4.1.55
   optional: true
   condition:
-     llp: ?samAsaPurva       # left-neighbour is a compound pūrva-pada (samāsa, not any vākya pada)
-     lp: [=nAsikA, =udara, =ozWa, =jaNGA, =danta, =karRa, =SfNga]
-     rp: ?strI_abs
+     - lp: [and, "?samAsa", =nAsikA]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =udara]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =ozWa]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =jaNGA]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =danta]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =karRa]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", =SfNga]
+       rp: ?strI_abs
   update:
      orp: =NIz
+
+# 512: न क्रोडादिबह्वचः (4.1.56) — niṣedha: a kroḍādi svANga (?kroqAdi) or a bahvac
+# (3+ vowel, $$bahvac) svANga compound does NOT take ṅīṣ. Overrides 4.1.54 only
+# (the 7 named in 4.1.55 stay exempt — e.g. bahvac nAsikA/udara keep their ṅīṣ).
+# → कल्याणक्रोडा (kroḍa kroḍādi), सुजघना (jaghana bahvac). update: null → 4.1.4 ṭāp.
+- sutra: न क्रोडादिबह्वचः
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.56
+  overrides: 4.1.54
+  condition:
+     - lp: [and, "?samAsa", "?kroqAdi"]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", "?svAnga", $$bahvac]
+       rp: ?strI_abs
+  update: null
+
+# 513: सहनञ्विद्यमानपूर्वाच्च (4.1.57) — niṣedha: a svANga compound whose pūrva-pada
+# is saha (→ sa), nañ (→ a), or vidyamAna does NOT take ṅīṣ. llp peeks the pūrva.
+# Overrides 4.1.54 AND 4.1.55 (Vasu's विद्यमाननासिका blocks even a named-7 word).
+# → सकेशा, विद्यमाननासिका. update: null → ṭāp.
+- sutra: सहनञ्विद्यमानपूर्वाच्च
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.57
+  overrides: [4.1.54, 4.1.55]
+  condition:
+     llp: [=sa, =a, =vidyamAna]
+     lp: ?svAnga
+     rp: ?strI_abs
+  update: null
+
+# 514: नखमुखात्संज्ञायाम् (4.1.58) — niṣedha: a compound ending in nakha or mukha,
+# in a saṃjñā (proper-name) sense, does NOT take ṅīṣ. Overrides 4.1.54. Two arms.
+# → शूर्पणखा, गौरमुखा. (counter ताम्रमुखी: no ?saMjYA → 4.1.54 ṅīṣ fires.)
+- sutra: नखमुखात्संज्ञायाम्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.58
+  overrides: 4.1.54
+  condition:
+     - lp: [and, "?samAsa", "?saMjYA", =naKa]
+       rp: ?strI_abs
+     - lp: [and, "?samAsa", "?saMjYA", =muKa]
+       rp: ?strI_abs
+  update: null
+
+# 515: दिक्पूर्वपदान्ङीप् (4.1.60) — a svANga compound whose pūrva-pada is a dik
+# (direction) word takes ṅīP (not ṅīṣ) — surface ī, accent differs. llp peeks the
+# dik pūrva. Overrides 4.1.4 (ṭāp) and 4.1.54 → only the ṅīp form. → प्राङ्मुखी /
+# प्राग्मुखी (the dik pūrva प्राच् is derived live as pra+añc+kvin tagged ?dik;
+# the prāñc pada-junction before m optionally takes anunāsika by 8.4.45).
+- sutra: दिक्पूर्वपदान्ङीप्
+  domain: prakfti
+  bahiranga: 2
+  id: 4.1.60
+  overrides: [4.1.4, 4.1.54]
+  condition:
+     llp: ?dik
+     lp: ?svAnga
+     rp: ?strI_abs
+  update:
+     orp: =NIp
 
 # ── SK517–531: remainder of 4.1.x strī-pratyaya chapter ─────────────────────
 

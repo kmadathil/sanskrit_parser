@@ -186,7 +186,10 @@ class PaninianObject(SanskritObject):
         # for 6.1.87 (AdguRaH) and 6.1.88 which delete ?aNga (though they shouldn't);
         # the leak is cleaned up  by the _delete_if_present(["adas","vasupada"])
         # on pada+pada merge below.
-        _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada"])
+        # karaNa/dik: pūrva-pada role tags read by SK506/507 (?karaNa) and SK515
+        # (?dik) at the strī window's llp — must survive the pūrva-pada+luk_sup
+        # merge so the (uttara | strI_abs) window's left-neighbour still carries them.
+        _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik"])
 
         # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
         # pada-pada boundaries

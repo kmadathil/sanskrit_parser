@@ -595,6 +595,31 @@ niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
 tuNga = Pratipadika("tuNga", "pum")   # adj. "prominent/high"; pūrva-pada for SK511 tuNgakarRA
 karRa = Pratipadika("karRa", "napum")  # "ear" (svāṅga a-stem); SK511 uttara-pada
+
+# ── SK506–515: svāṅga / compound strī cluster (4.1.50–60), via llp/lp peeking ──
+# svāṅga (body-part) uttara-padas — ?svAnga tags the 4-part-definition members.
+# Used as in_compound(...) uttara-padas (carry ?samAsa at the strī window).
+keSa  = Pratipadika("keSa",  "napum", other_tags=["svAnga"])   # hair (SK510 अतिकेशी; SK513 सकेशा)
+muKa  = Pratipadika("muKa",  "napum", other_tags=["svAnga"])   # face (SK510 चन्द्रमुखी; SK514 गौरमुखा; SK515 प्राङ्मुखी)
+jaGana = Pratipadika("jaGana", "napum", other_tags=["svAnga"])  # hip (SK512 सुजघना — bahvac svāṅga)
+kroqa = Pratipadika("kroqa", "pum",   other_tags=["svAnga", "kroqAdi"])  # chest (SK512 कल्याणक्रोडा — kroḍādi)
+gulPa = Pratipadika("gulPa", "pum",   other_tags=["svAnga"])   # ankle (SK510 counter सुगुल्फा — saṃyoga-upadhā)
+naKa  = Pratipadika("naKa",  "pum")   # nail (SK514 शूर्पणखा — saṃjñā niṣedha; not ?svAnga-needed)
+# kta-final (niṣṭhā) uttara-padas (SK506/507):
+krIta = Pratipadika("krIta", "pum", other_tags=["ktAnta"])     # bought (SK506 वस्त्रक्रीती)
+lipta = Pratipadika("lipta", "pum", other_tags=["ktAnta"])     # smeared (SK507 अभ्रलिप्ती)
+# karaṇa pūrva-padas (name the means) (SK506/507):
+vastra = Pratipadika("vastra", "napum", other_tags=["karaNa"])  # cloth
+aBra   = Pratipadika("aBra",   "napum", other_tags=["karaNa"])  # cloud
+# misc pūrva-padas: candra (SK510), su/saha (SK512/513), ati (exists), Sūrpa (exists),
+# gOra (exists), tAmra (SK514 counter), vidyamAna (SK513). The SK515 dik pūrva-pada
+# प्राच् is NOT pre-formed — derived live in the test as
+# [pra, luk_sup, in_context(aYc_u,"dik"), kvin, luk_sup] (the prAc añc-paradigm).
+candra = Pratipadika("candra", "pum")    # moon (SK510 चन्द्रमुखी pūrva)
+sa_pUrva = Pratipadika("sa", "pum")      # saha→sa (SK513 सकेशा pūrva)
+su_pUrva = Pratipadika("su", "pum")      # su- (SK510 ctr सुगुल्फा; SK512 सुजघना)
+tAmra  = Pratipadika("tAmra", "pum")     # copper (SK514 counter ताम्रमुखी — non-saṃjñā)
+vidyamAna = Pratipadika("vidyamAna", "pum")  # existing (SK513 विद्यमाननासिका pūrva)
 mati = Pratipadika("mati", "strI")
 lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
