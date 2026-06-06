@@ -25,6 +25,20 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _cond_has_both_l_and_r(cond):
+    """True if any single condition block references both `l` and `r` keys.
+    Such rules are saṁhitā vowel-junction rules (6.1.78 eco'yavāyāvaḥ etc.) and
+    must be suppressed at a resolved ekādeśa junction (6.1.85 antādivat), where
+    `l` and `r` are the same single substitute phoneme."""
+    if cond is None:
+        return False
+    blocks = cond if isinstance(cond, list) else [cond]
+    for b in blocks:
+        if isinstance(b, dict) and ("l" in b) and ("r" in b):
+            return True
+    return False
+
+
 def _in_abhiya(aps_num):
     """6.4.22 असिद्धवदत्राभात् — outputs of rules in the ābhīya section
     (Pāṇini 6.4.22 .. end of 6.4) are asiddha (invisible) to each other.
@@ -186,10 +200,19 @@ class AntarangaPrakriya(PrakriyaBase):
         # further ac-sandhi applies at the resolved junction (see _exec).
         self._purvapara_aps = [s.aps for s in sutra_list
                                if getattr(s, "purvapara", False)]
+        # The set disabled at an antādivat boundary = the ekādeśa rules
+        # themselves PLUS every rule whose condition references both `l` and `r`
+        # in one block (the saṁhitā vowel-junction rules — 6.1.77/78 and the
+        # tripādī sandhi mass). At a resolved ekādeśa junction l == r == the
+        # single substitute, so such a rule would mis-fire (the antādivat
+        # simultaneity caveat: one phoneme cannot fill both slots). This is
+        # pre-merge-scoped (join_objects resets disabled_sutras) and safe for the
+        # consonant-`r` members, which cannot match the vowel substitute anyway.
         self._ekadesha_block_aps = list(self._purvapara_aps)
-        for _j in ("6.1.77", "6.1.78"):
-            if _j not in self._ekadesha_block_aps:
-                self._ekadesha_block_aps.append(_j)
+        for s in sutra_list:
+            if (s.aps not in self._ekadesha_block_aps
+                    and _cond_has_both_l_and_r(getattr(s, "_cond_dict", None))):
+                self._ekadesha_block_aps.append(s.aps)
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update
@@ -247,6 +270,34 @@ class AntarangaPrakriya(PrakriyaBase):
         # Sliding window counter
         self.windowIdx = 0
 
+    def _apply_antadivat(self, s, r):
+        """6.1.85 antādivat boundary marking. Called from _exec AND from the
+        _nitya priority simulation, so that the hypothetical output a nitya
+        check inspects carries the same ?antAdivat view as a real firing (the
+        engine's _exec block runs after operate/update/insert, which the nitya
+        simulation otherwise would not see — leaving l mis-read as the physical
+        residue consonant and flipping the sutra-priority winner).
+
+        Every ekādeśa (purvapara) rule lumps the substitute on the RIGHT (rp[0]),
+        truncating the left to a consonant; this guard (left ends in a non-vowel,
+        right non-empty) detects that. Sets ?antAdivat, disables the ekādeśa +
+        both-l-and-r set, and suspends ?Ba (see _exec comments and
+        _cond_has_both_l_and_r). The vowel-ending guard is defensive — if a rule
+        ever left the substitute on a vowel-final left, antavat would already be
+        automatic and no marker is needed."""
+        if not getattr(s, "purvapara", False):
+            return
+        lcanon = r[0].canonical()
+        if (r[1].canonical() != "" and lcanon != ""
+                and lcanon[-1] not in _SLP1_VOWELS):
+            r[0].setTag("antAdivat")
+            for paps in self._ekadesha_block_aps:
+                if paps not in r[0].disabled_sutras:
+                    r[0].disabled_sutras.append(paps)
+                    r[0].disabled_by[paps] = s.aps
+            if r[0].hasTag("Ba"):
+                r[0].deleteTag("Ba")
+
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list, v):
         def _nitya(s1, s):     # S1 is still triggered after S applied
@@ -282,13 +333,23 @@ class AntarangaPrakriya(PrakriyaBase):
                         r[i] = r[i][i]  # Appropriate sub-object for insertion
                         r[i].update("".join([o.canonical() for o in hpo[0]]))
                         logger.debug(f"Nitya Check: Hypothetical  Result {r}")
+                # Replay the 6.1.85 antādivat tagging the real _exec applies, so
+                # the nitya test below sees the antavat l (not the physical
+                # residue consonant) — otherwise the priority winner flips.
+                self._apply_antadivat(s, r)
                 _o[s] = r    # Cache output
             # We have the output of s in cache _o[s]
-            # Check if s1 is still triggered
-            nit = (s1.aps not in v[0].disabled_sutras) and \
+            # Check if s1 is still triggered AFTER s applied. Consult the
+            # *hypothetical output's* disabled_sutras (_o[s][0]), not the pre-s
+            # state v[0]: if s disabled s1 (e.g. an ekādeśa's antādivat block
+            # disables the both-l-and-r set), then s1 is not nitya wrt s. Reading
+            # v[0] missed this, letting a both-l-r rule look "still triggered" via
+            # the synthesised l==r==substitute phantom junction (e.g. 6.1.77 vs
+            # 6.1.101 at sakhi|ṅi, which flipped औत् 7.3.118 out of the fold).
+            nit = (s1.aps not in _o[s][0].disabled_sutras) and \
                 s1.isTriggered(*_o[s])
             logger.debug(f"Nitya check {s1} against {s}: {nit}")
-            return nit 
+            return nit
         def _winner(s1, s2):
             logger.debug(f"{s1} bahiranga {s1.bahiranga} overrides {s1.overrides}")
             logger.debug(f"{s2} bahiranga {s2.bahiranga} overrides {s2.overrides}")
@@ -379,8 +440,9 @@ class AntarangaPrakriya(PrakriyaBase):
                         hpo = _deduplicate_hier_outputs(hp.output())
                         r[i] = r[i][i]
                         r[i].update("".join([o.canonical() for o in hpo[0]]))
+                self._apply_antadivat(s, r)
                 _o[s] = r
-            return (s1.aps not in v[0].disabled_sutras) and s1.isTriggered(*_o[s])
+            return (s1.aps not in _o[s][0].disabled_sutras) and s1.isTriggered(*_o[s])
 
         def _winner_reason(s1, s2):
             if (s2.overrides is not None) and (s1.aps in s2.overrides):
@@ -708,64 +770,16 @@ class AntarangaPrakriya(PrakriyaBase):
                 # r0 still references the (mutated) post-operate object;
                 # downstream disabled_sutras append uses r0, which is r[0].
 
-            # 6.1.85 antādivat boundary.
-            # An ekādeśa (pūrvaparayoḥ) rule has replaced (pūrva-final vowel +
-            # para-initial vowel) with a single substitute, written onto the
-            # right object's first position (rp[0]). Mark the truncated left
-            # object with ?antAdivat so _env exposes that shared phoneme as the
-            # left's final (antavat) — letting aṅga/bha/pada rules see the
-            # boundary correctly without stripping the pūrva's saṁjñās. Then
-            # disable the entire ekādeśa set at this junction: the two vowels
-            # are now one phoneme, so no further single-substitution applies
-            # (prevents 6.1.97/6.1.101 etc. re-firing on the synthesised
-            # l == r == substitute view). antAdivat is dropped when the two
-            # objects later coalesce (join_objects).
-            if getattr(s, "purvapara", False):
-                # The antādivat mechanism is needed only when the substitute was
-                # lumped on the RIGHT, truncating the left to a consonant. When
-                # it stays on the left (left still ends in a vowel — e.g. 6.1.101
-                # dīrgha, 6.1.102 pūrva-savarṇa, 6.1.107 pūrvarūpa) antavat is
-                # automatic and the natural representation already works; no
-                # marker and no disable are applied (else we would wrongly block
-                # a genuinely-fresh junction — e.g. amipūrvaḥ drops the ṅeryaḥ
-                # 'y' on तुभ्य|यम्, revealing अ+अ that 6.1.97 must still resolve).
-                lcanon = r[0].canonical()
-                if (r[1].canonical() != "" and lcanon != ""
-                        and lcanon[-1] not in _SLP1_VOWELS):
-                    r[0].setTag("antAdivat")
-                    # Disable the ekādeśa set + the 6.1.77/6.1.78 junction rules
-                    # here: the synthesised antavat 'l' would otherwise let them
-                    # re-fire on this resolved junction (the two vowels are now
-                    # one phoneme). Prevents 6.1.97/6.1.101/6.1.78 mis-firing.
-                    for paps in self._ekadesha_block_aps:
-                        if paps not in r[0].disabled_sutras:
-                            r[0].disabled_sutras.append(paps)
-                            r[0].disabled_by[paps] = s.aps
-                    # antādivat tag-side: the truncated residue's anta has
-                    # migrated into the shared substitute, so the residue is no
-                    # longer an independent aṅga/Ba/pada at this junction — its
-                    # saṁjñās are suspended. The synthesised 'l' only fixes
-                    # phoneme-keyed rules (6.4.8 l:n); tag-keyed bha/aṅga rules
-                    # (e.g. 6.4.130 lp:?Ba + endsWith_pAd) must also be blocked,
-                    # since by antādivat the aṅga now ends in the substitute, not
-                    # in pād. This is the single, central form of the old per-rule
-                    # `-aNga/-Ba/-pada` strips that were scattered across the
-                    # ekādeśa rules; the synthesised view (not stripping) handles
-                    # the sarvanāmasthāna case that 6.1.87 used to strip on orp.
-                    for _t in ("aNga", "Ba", "pada"):
-                        if r[0].hasTag(_t):
-                            r[0].deleteTag(_t)
-            elif r[0].hasTag("antAdivat") and s.xform is not None:
-                # A non-ekādeśa *phonological* rule has operated on the antādivat
-                # boundary, consuming it: its xform rebuilds the left as lc+l with
-                # the synthesised antavat 'l', so the substitute is now concretely
-                # part of the left object. Reset the marker so it does not leak to
-                # later rules (e.g. 8.2.7 nalopaḥ) that would mis-read 'l'.
-                # Tag-only/saṁjñā rules (xform is None, e.g. 1.4.3 yū stryākhyau
-                # nadī) must NOT clear it — they don't touch the boundary, and the
-                # antavat view must survive for the following phonological rule
-                # (e.g. 6.4.8 must keep seeing l=substitute, not the real n).
-                r[0].deleteTag("antAdivat")
+            # 6.1.85 antādivat boundary marking (see _apply_antadivat): an
+            # ekādeśa rule has written the single substitute onto rp[0], leaving a
+            # consonant-final residue. The marker drives the condition-scoped
+            # antavat synthesis in sutra._env and the at-junction disable. It is
+            # dropped when the two objects later coalesce (join_objects).
+            self._apply_antadivat(s, r)
+            # No clear-on-consume: with condition-scoped synthesis (sutra._env
+            # for_xform=True) a later rule's xform uses the physical strings, so
+            # the substitute is never re-appended onto the left and the marker
+            # can persist harmlessly until the merge clears it (join_objects).
 
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
             # pariBAzA "lakzye lakzaRaM sakfdeva pravartate" read with the traditional concept of ekavAkyatvam

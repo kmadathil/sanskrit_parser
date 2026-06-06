@@ -185,7 +185,7 @@ class LRSutra(Sutra):
         rs1 = deepcopy(s1)
         rs2 = deepcopy(s2)
         if self.xform is not None:
-            env = _env(s1, s2)
+            env = _env(s1, s2, for_xform=True)
             ret = self.xform(env)
             rs1.update(ret[0], sanscript.SLP1)
             rs2.update(ret[1], sanscript.SLP1)
@@ -220,8 +220,12 @@ class LRSutra(Sutra):
             return(o1, o2)
 
 
-def _env(s1, s2):
-    # Helper function to define execution environment
+def _env(s1, s2, for_xform=False):
+    # Helper function to define execution environment.
+    # for_xform=True (called from operate) skips the antādivat l/lc/ll synthesis
+    # so xform reconstruction (ret = _lc+_l | _r+_rc) uses the PHYSICAL strings —
+    # the synth is scoped to condition evaluation only, which avoids re-appending
+    # the substitute onto the left on every firing (see the 6.1.85 block below).
     env = {}
     env["lp"] = s1
     env["rp"] = s2
@@ -257,7 +261,8 @@ def _env(s1, s2):
     # rule conditions on the suffix shape (e.g. 7.2.86 r:_hal) see the true
     # initial. Fresh vowel-sandhi at this resolved junction (6.1.77/6.1.78 and
     # the ekādeśa rules themselves) is instead suppressed via disabled_sutras.
-    if getattr(s1, "hasTag", None) and s1.hasTag("antAdivat") \
+    # Condition-scoped: skipped for xform so reconstruction uses physical strings.
+    if (not for_xform) and getattr(s1, "hasTag", None) and s1.hasTag("antAdivat") \
             and s2.canonical() != "":
         rpc = s2.canonical()
         lpc = s1.canonical()
