@@ -41,7 +41,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     viSvapA, hAhA,
     nAsikA, niSA,
     pAda, yUza,
-    ftvij_kvin, sraj_kvin, yuj_kvin, yuj_kvin_samAsa, diS_kvin,
+    ftvij_kvin, sraj_kvin, yuj_kvin, diS_kvin,
     daDfc_kvin, tiryac_kvin,
     takz_kvip, vAh_kvip, praSAm_kvip,
     gaRa, aSva, viSva, rAj_kvip,
@@ -70,7 +70,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     aDas, Siras, pada,
     # SK454-462 strī-pratyaya stems
     aja, kokila, SUdra, kruYc, uzRih,
-    sIman, bahuyajvan, bahu, pAd_ut,
+    sIman, bahu, pAd_ut,
     # SK463 ka-pratyaya stem (asuwapaH demo) + raw pieces (bahuvrIhi propagation)
     parivrAjaka, pari, vrAja,
     # SK470/471 taddhita-ṅīp test bases
@@ -214,7 +214,8 @@ _adas_strI_cpd = [adas, strI_abs]
 _Bavat_uNI_cpd = [Bavat_u, strI_abs]        # SK455 u-it → NIp → bhavatī
 _Sf_vanip_strI_cpd = [Sf, vanip, strI_abs]  # SK456 (4.1.7 vano ra ca): van → NIp + n→r
 _sIman_strI_cpd      = [sIman,      strI_abs]  # SK459 (4.1.11 manaH): man-final, ṅīp blocked
-_bahuyajvan_strI_cpd = [bahuyajvan, strI_abs]  # SK460/461 an-bahuvrīhi
+_bahuyajvan_strI_cpd = [as_purva_pada(bahu), luk_sup,
+                        in_context(in_compound(yajvan), "bahuvrIhi"), strI_abs]  # SK460/461 an-bahuvrīhi (live)
 # SK457 — dvipād (dvi + pād) feminine compound
 _dvipAd_strI_cpd = [as_purva_pada(dvi), luk_sup, in_compound(pAd_ut), strI_abs]
 # SK462 — bahurājan (bahu + rājan) an-final upadhālopin bahuvrīhi feminine
@@ -460,7 +461,7 @@ _STEMS_RAW = [
     ("diS",      diS_kvin,    "kvin-stems",       "diś  (diś-)  [SK377]"),
     ("daDfc",    daDfc_kvin,  "kvin-stems",       "dadhṛc  (dadhṛc-)  [c-final]"),
     ("tiryac",   tiryac_kvin, "kvin-stems",       "tiryañc  (tiryac-)  [SK361 aYc]"),
-    ("yuj_samAsa", [yuj_kvin_samAsa], "kvin-stems", "yuj-in-cpd  [samāsa no nUM]"),
+    # (yuj-in-compound demo lives under the samāsa group as "aSvayuj")
     # añcatir compounds (dynamic derivation via aYc_u)
     ("pratyac_cpd",  _pratyac_cpd,  "kvin-stems",  "pratyañc  [prati+añc+kvin]"),
     ("prAc_cpd",     _prAc_cpd,     "kvin-stems",  "prāñc  [pra+añc+kvin]"),

@@ -5069,7 +5069,7 @@
 # 376: युजेरसमासे (7-1-71) — nasal (ñ) augment for non-compound yuj before sarvanamasthāna.
 # Inserts palatal nasal Y (ñ=ञ) after stem vowel: yuj → yuñj in strong forms.
 # Restriction (asaṃyoge): compound yuj (e.g. aśvayuk type) has no nUM — excluded by ?!samAsa.
-# yuj_kvin (?yuj, no ?samAsa) → fires; yuj_kvin_samAsa (?yuj, ?samAsa) → blocked.
+# yuj_kvin (?yuj, no ?samAsa) → fires; aSvayuj (?yuj + ?samAsa via in_compound) → blocked.
 # Follows SK257 (1.4.8/1.4.8.1) pattern for pati compound vs non-compound.
 # After num: yuñj+su → 8.2.23 deletes j (cluster Yj at pada-end) → yuY → 8.2.62 (Y→N) → yuṅ.
 # Nom/acc du/pl: yuñj+O/jas → yuñjau, yuñjaḥ (no pada-end, no 8.2.23/8.2.62).
@@ -5632,9 +5632,12 @@
 
 # 485: संख्याऽव्ययादेर्ङीप् (4.1.26)
 # Apavāda to SK484 (ngīṣopavāda): NIp instead of NIz when the bahuvrīhi
-# begins with a saṃkhyā or an avyaya. ?saMKyAdi / ?avyayAdi are attached to
-# UDas by the test composer via in_context (matching the SK480-482 semantic-
-# tag pattern). Two condition arms (OR at rule level) — one per option.
+# begins with a saṃkhyā or an avyaya. The pūrva-pada class is read by peeking the
+# left-neighbour pada. NOTE: a neighbour *tag* peek (llp: ?saMKyA) is not reliably
+# visible across the engine's multi-path exploration for these bahiranga-2 strī
+# rules — the canonical *identity* peek is robust (as the 4.1.27.1 vārttika shows),
+# so the saṃkhyā arm enumerates [=dvi, =tri, =catur]; avyaya uses llp: ?avyaya (ati).
+# Replaces the old fake ?saMKyAdi/?avyayAdi tags on the uttara-pada. Two arms (OR).
 - sutra: संख्याऽव्ययादेर्ङीप्
   domain: prakfti
   bahiranga: 2
@@ -5645,13 +5648,13 @@
         - and
         - ?bahuvrIhi
         - ?uDanta
-        - ?saMKyAdi
+      llp: [=dvi, =tri, =catur]
       rp: ?strI_abs
     - lp:
         - and
         - ?bahuvrIhi
         - ?uDanta
-        - ?avyayAdi
+      llp: ?avyaya
       rp: ?strI_abs
   update:
     orp: =NIp
@@ -5672,15 +5675,15 @@
     - lp:
         - and
         - ?bahuvrIhi
-        - ?saMKyAdi
         - ?dAman
+      llp: [=dvi, =tri, =catur]
       rp: ?strI_abs
     - lp:
         - and
         - ?bahuvrIhi
-        - ?saMKyAdi
         - ?hAyana
         - ?vayasi
+      llp: [=dvi, =tri, =catur]
       rp: ?strI_abs
   update:
     orp: =NIp
@@ -5689,9 +5692,10 @@
 # n → ṇ in hāyana when pūrva-pada is tri or catur AND the age (?vayasi) sense.
 # Surface: lc of hAyana is "hAyan"; substitute lc[-1] 'n' → 'R' (ṇ), giving
 # "hAyaR". After SK486 adds NIp and 6.4.148 drops the final 'a' →
-# trihāyaṇī, caturhāyaṇī. ?triCatur is attached to hāyana by the test
-# composer via in_context (no Paninian propagation of saṃkhyā-purva in this
-# batch). bahiranga: 1 ensures n→ṇ runs before SK486 (NIp selection at 2).
+# trihāyaṇī, caturhāyaṇī. The tri/catur pūrva-pada is read by peeking the left
+# neighbour (llp: [=tri, =catur]) — a robust identity peek (a neighbour *tag*
+# peek like ?saMKyA is not reliably visible at this bahiranga-2 window).
+# bahiranga: 1 ensures n→ṇ runs before SK486 (NIp selection at 2).
 - sutra: त्रिचतुर्भ्यां हायनस्य णत्वं वयोवाचकस्यैव
   domain: prakfti
   bahiranga: 1
@@ -5700,10 +5704,9 @@
     lp:
       - and
       - ?bahuvrIhi
-      - ?saMKyAdi
-      - ?triCatur
       - ?hAyana
       - ?vayasi
+    llp: [=tri, =catur]
     rp: ?strI_abs
   xform:
     lc: lc[:-1]+str("R")
@@ -5827,19 +5830,20 @@
   xform:
     l: str("n")
 
-# 492: नित्यं सपत्न्यादिषु (4.1.35) — mandatory i→n for sapatnyAdi gaṇa
-# (sapati, ekapati, vīrapati, …). Apavāda to SK491's vibhāṣā. Implemented via
-# pre-substituted ?sapatnyAdi stems (Q3 deferral: the niyama समानस्य सभावोऽपि
-# 'samāna → sa' is realised by registering 'sapati' directly rather than a
-# paired left-substitution rule). overrides: 4.1.34 is documentary —
-# sapatnyAdi stems lack ?pati/?samAsa so SK491 does not match anyway.
+# 492: नित्यं सपत्न्यादिषु (4.1.35) — mandatory (nitya) i→n for the sapatnyAdi gaṇa
+# (sa/eka/vīra + pati). Detects the gaṇa by peeking the pūrva-pada identity
+# (llp: [=sa, =eka, =vIra]) on a live compound, instead of a pre-substituted
+# ?sapatnyAdi stem; the समान→स niyama is the reduced pūrva-pada `sa` (sa_pUrva).
+# Mirrors the 4.1.57 llp-peek precedent. Apavāda to SK491's vibhāṣā (4.1.34,
+# compound pati): overrides 4.1.33/4.1.34 so the nitya substitution always wins.
 - sutra: नित्यं सपत्न्यादिषु
   domain: prakfti
   bahiranga: 1
   id: 4.1.35
   overrides: [4.1.33, 4.1.34]
   condition:
-    lp: ?sapatnyAdi
+    lp: ?pati
+    llp: [=sa, =eka, =vIra]
     l: i
     rp: ?strI_abs
   xform:
