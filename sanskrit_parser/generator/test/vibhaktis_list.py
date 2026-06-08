@@ -2155,7 +2155,7 @@ viBakti["GawoDnI"] = [
 ]
 
 # ── SK485 (4.1.26 संख्याऽव्ययादेर्ङीप्) ────────────────────────────────────────
-# dvi + UDas bahuvrīhi; SK485 peeks the saṃkhyā pūrva-pada (llp:=dvi) → overrides
+# dvi + UDas bahuvrīhi; SK485 peeks the saṃkhyā pūrva-pada (llp: ?saMKyA) → overrides
 # SK484: NIp not NIz.
 # Surface is identical to NIz (both ī). dvi + UDas: i + ū → yū (6.1.77 yaṇ
 # sandhi). SK483 then s→n → dvyUDan; SK485 picks NIp; SK234 a-lopa → dvyUDn+ī.

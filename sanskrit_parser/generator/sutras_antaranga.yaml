@@ -5633,11 +5633,11 @@
 # 485: संख्याऽव्ययादेर्ङीप् (4.1.26)
 # Apavāda to SK484 (ngīṣopavāda): NIp instead of NIz when the bahuvrīhi
 # begins with a saṃkhyā or an avyaya. The pūrva-pada class is read by peeking the
-# left-neighbour pada. NOTE: a neighbour *tag* peek (llp: ?saMKyA) is not reliably
-# visible across the engine's multi-path exploration for these bahiranga-2 strī
-# rules — the canonical *identity* peek is robust (as the 4.1.27.1 vārttika shows),
-# so the saṃkhyā arm enumerates [=dvi, =tri, =catur]; avyaya uses llp: ?avyaya (ati).
-# Replaces the old fake ?saMKyAdi/?avyayAdi tags on the uttara-pada. Two arms (OR).
+# left-neighbour pada: llp: ?saMKyA / llp: ?avyaya. These class tags are propagated
+# from the pūrva-pada through its luk_sup merge (paninian_object.join_objects, gated
+# on ?samAsaPurva, consumed at the samasta_pada merge) so the (uttara | strI_abs)
+# window's llp carries them. Replaces the old fake ?saMKyAdi/?avyayAdi on the
+# uttara-pada. Two arms (OR) — one per option.
 - sutra: संख्याऽव्ययादेर्ङीप्
   domain: prakfti
   bahiranga: 2
@@ -5648,7 +5648,7 @@
         - and
         - ?bahuvrIhi
         - ?uDanta
-      llp: [=dvi, =tri, =catur]
+      llp: ?saMKyA
       rp: ?strI_abs
     - lp:
         - and
@@ -5676,14 +5676,14 @@
         - and
         - ?bahuvrIhi
         - ?dAman
-      llp: [=dvi, =tri, =catur]
+      llp: ?saMKyA
       rp: ?strI_abs
     - lp:
         - and
         - ?bahuvrIhi
         - ?hAyana
         - ?vayasi
-      llp: [=dvi, =tri, =catur]
+      llp: ?saMKyA
       rp: ?strI_abs
   update:
     orp: =NIp
@@ -5692,9 +5692,9 @@
 # n → ṇ in hāyana when pūrva-pada is tri or catur AND the age (?vayasi) sense.
 # Surface: lc of hAyana is "hAyan"; substitute lc[-1] 'n' → 'R' (ṇ), giving
 # "hAyaR". After SK486 adds NIp and 6.4.148 drops the final 'a' →
-# trihāyaṇī, caturhāyaṇī. The tri/catur pūrva-pada is read by peeking the left
-# neighbour (llp: [=tri, =catur]) — a robust identity peek (a neighbour *tag*
-# peek like ?saMKyA is not reliably visible at this bahiranga-2 window).
+# trihāyaṇī, caturhāyaṇī. The vārttika names tri/catur specifically, so it peeks
+# the pūrva-pada identity (llp: [=tri, =catur]); SK486 itself uses the broader
+# llp: ?saMKyA (the ?saMKyA tag is propagated to the neighbour in join_objects).
 # bahiranga: 1 ensures n→ṇ runs before SK486 (NIp selection at 2).
 - sutra: त्रिचतुर्भ्यां हायनस्य णत्वं वयोवाचकस्यैव
   domain: prakfti

@@ -143,7 +143,8 @@ puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
 # UDas (long ū) tagged ?uDanta so SK483/484 can fire only on this stem. ?bahuvrIhi
 # is attached to the uttara-pada (UDas) by the test composer via in_context; the
 # saṃkhyā/avyaya nature of the *pūrva-pada* is read by SK485 peeking the left
-# neighbour (llp: [=dvi, =tri, =catur] / llp: ?avyaya) — no fake ?saMKyAdi/?avyayAdi.
+# neighbour (llp: ?saMKyA / llp: ?avyaya — propagated to the neighbour in
+# join_objects when ?samAsaPurva is set) — no fake ?saMKyAdi/?avyayAdi.
 UDas    = Pratipadika("UDas",    "napum", other_tags=["uDanta"])
 kuRqa   = Pratipadika("kuRqa",   "napum", other_tags=["jAnapadAdi"])  # ?jAnapadAdi: SK500 (4.1.42)
 Gawa    = Pratipadika("Gawa",    "pum")
@@ -151,9 +152,9 @@ Gawa    = Pratipadika("Gawa",    "pum")
 ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
 
 # SK486 (4.1.27) test bases. ?dAman / ?hAyana let the rule target these stems;
-# the saṃkhyā pūrva-pada is read via llp: [=dvi, =tri, =catur] (and the 4.1.27.1
-# vārttika n→ṇ via llp: [=tri, =catur]). The composer still adds ?vayasi for the
-# hāyana age-sense restriction.
+# the saṃkhyā pūrva-pada is read via llp: ?saMKyA (and the 4.1.27.1 vārttika n→ṇ
+# via llp: [=tri, =catur]). The composer still adds ?vayasi for the hāyana
+# age-sense restriction.
 dAman   = Pratipadika("dAman",   "napum", other_tags=["dAman"])
 hAyana  = Pratipadika("hAyana",  "pum",   other_tags=["hAyana"])
 

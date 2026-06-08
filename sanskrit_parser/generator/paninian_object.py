@@ -190,6 +190,13 @@ class PaninianObject(SanskritObject):
         # (?dik) at the strī window's llp — must survive the pūrva-pada+luk_sup
         # merge so the (uttara | strI_abs) window's left-neighbour still carries them.
         _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik"])
+        # saMKyA/avyaya: pūrva-pada CLASS tags read by SK485/486 (4.1.26/4.1.27) at the
+        # strī window's llp. Unlike the role tags above these are general stem properties
+        # (a bare saṃkhyā/avyaya in a vākya must NOT leak them), so they ride forward only
+        # when first is a compound pūrva-pada (?samAsaPurva). Consumed (deleted) at the
+        # samasta_pada merge below so they never outlive the compound.
+        if first.hasTag("samAsaPurva"):
+            _propagate(first, ["saMKyA", "avyaya"])
 
         # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
         # pada-pada boundaries
@@ -257,7 +264,7 @@ class PaninianObject(SanskritObject):
         if (first.hasTag("samAsaPurva") and first.hasTag("pada")
                 and last.hasTag("samAsa") and last.hasTag("pada")):
             so.setTag("samasta_pada")
-            _delete_if_present(["samAsa", "samAsaPurva"])
+            _delete_if_present(["samAsa", "samAsaPurva", "saMKyA", "avyaya"])
 
         # ── Phase 4: Gender-morphology transformations ────────────────────────────
 
