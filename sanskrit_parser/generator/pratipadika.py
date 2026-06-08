@@ -80,7 +80,7 @@ vrAja = Pratipadika("vrAja", "pum")
 # SK470/471 (4.1.15/16) taddhita-ṅīp test bases: aindra (indra+aṇ), autsa (utsa+añ),
 # ūru+dvayasac/daghnac/mātrac, pañca+tayap, gārga (garga+yañ). indra/yad/dfS exist.
 utsa  = Pratipadika("utsa",  "pum")
-Uru   = Pratipadika("Uru",   "pum")
+Uru   = Pratipadika("Uru",   "pum", other_tags=["Uru_uttara"])  # SK525 ūru uttara-pada (read in-window by 4.1.70)
 paYca = Pratipadika("paYca", "pum")
 garga = Pratipadika("garga", "pum")
 # vidyA: SK472 negative test base — विद्या + अण् → वैद्य (the 'ya' is base-internal,
@@ -404,11 +404,14 @@ SvaSrU = Pratipadika("SvaSrU", "strI")                             # → श्�
 # Example: karaBoru = karabha (camel foreleg) + ūru → "she with carabha-like thighs".
 karaBoru = Pratipadika("karaBoru", "pum", other_tags=["Uru_upamAna"])  # → karaBorUḥ
 
-# SK525 (4.1.70 संहितशफलक्षणवामादेश्च): saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ.
-saMhitoru  = Pratipadika("saMhitoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → saṃhitorūḥ
-SaPoru     = Pratipadika("SaPoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → śaphorūḥ
-lakzaRoru  = Pratipadika("lakzaRoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → lakṣaṇorūḥ
-vAmoru     = Pratipadika("vAmoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → vāmorūḥ
+# SK525 (4.1.70 संहितशफलक्षणवामादेश्च): saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ. Built
+# live as [as_purva_pada(<pūrva>), luk_sup, in_compound(Uru), strI_abs]; 4.1.70 peeks
+# the pūrva-pada identity (llp: [=saMhita, =SaPa, =lakzaRa, =vAma]) and reads the ūru
+# uttara-pada in-window (lp: ?Uru_uttara). a+ū → o at the junction (6.1.87 AdguṇaH).
+saMhita = Pratipadika("saMhita", "pum")   # SK525 pūrva-pada (saṃhitorū)
+SaPa    = Pratipadika("SaPa",    "pum")   # SK525 pūrva-pada (śaphorū)
+lakzaRa = Pratipadika("lakzaRa", "pum")   # SK525 pūrva-pada (lakṣaṇorū)
+vAma    = Pratipadika("vAma",    "pum")   # SK525 pūrva-pada (vāmorū)
 
 # SK526 (4.1.72 संज्ञायाम्): kadrū + kamaṇḍalu in proper-name (saṃjñā) use → ūṅ.
 # Pre-registered as strI (they are the canonical ū-final feminine forms).

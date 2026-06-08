@@ -3336,7 +3336,7 @@ viBakti["karaBorU"] = [
     ["करभोरु", "करभोर्वौ", "करभोर्वः"],
 ]
 
-prAtipadika["saMhitorU"] = [saMhitoru, strI_abs]   # noqa: F405
+prAtipadika["saMhitorU"] = [as_purva_pada(saMhita), luk_sup, in_compound(Uru), strI_abs]   # noqa: F405
 viBakti["saMhitorU"] = [
     ["संहितोरूः", "संहितोर्वौ", "संहितोर्वः"],
     ["संहितोरूम्", "संहितोर्वौ", "संहितोरूः"],

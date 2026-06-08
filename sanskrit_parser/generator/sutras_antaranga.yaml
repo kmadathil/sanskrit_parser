@@ -6319,15 +6319,17 @@
   update:
      orp: =UN
 
-# 525: संहितशफलक्षणवामादेश्च (4.1.70) — saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ.
-# ?saMhitAdi_Uru tag. → संहितोरूः, शफोरूः, लक्षणोरूः, वामोरूः.
+# 525: संहितशफलक्षणवामादेश्च (4.1.70) — saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ. Live
+# compound: lp: ?Uru_uttara (the ūru uttara-pada, in-window) + llp peeks the pūrva-pada
+# identity [=saMhita, =SaPa, =lakzaRa, =vAma]. → संहितोरूः, शफोरूः, लक्षणोरूः, वामोरूः.
 - sutra: संहितशफलक्षणवामादेश्च
   domain: prakfti
   bahiranga: 2
   id: 4.1.70
   overrides: 4.1.4
   condition:
-     lp: ?saMhitAdi_Uru
+     lp: ?Uru_uttara
+     llp: [=saMhita, =SaPa, =lakzaRa, =vAma]
      rp: ?strI_abs
   update:
      orp: =UN
