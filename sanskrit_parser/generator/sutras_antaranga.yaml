@@ -193,17 +193,13 @@
 # 269: आटश्च (6-1-90) 
 -   sutra: आटश्च
     id: 6.1.90
+    purvapara: true   # 6.1.85 antādivat: uniform substitute-on-right (vṛddhi on rp[0])
     condition:
      - lp: ?Aw
        r: _ac
     xform:
-       l: vriddhi(r)
-       r: null
-    update:
-       olp:
-        - -pada # for pUrvaparayoH
-        - -aNga
-        - -Ba
+       l: null
+       r: vriddhi(r)
 # 74: उपसर्गादृति धातौ (6-1-91)
 -   sutra: उपसर्गादृति धातौ 
     id: 6.1.91

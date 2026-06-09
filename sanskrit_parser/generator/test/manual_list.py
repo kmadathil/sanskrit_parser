@@ -43,6 +43,7 @@ test_list_slp1 = [
     (BU, Sap, tip, "Bavati"),
     (ava_upasarga, (AN_upasarga, "ihi"), "avehi"), # 6.1.95
     ("SivAya", "om", "SivAyom"), # 6.1.95
+    (Aw, "icCat", "EcCat"), # 6.1.90 āṭaśca: āṭ-augment + icchat → aicchat (vṛddhi ekādeśa)
     (kavi, O, "kavI"),
     (catur, Am, avasAna, ['caturRAm .', 'caturRnAm .']), #8.4.1
     ("BavAn", "liKati", "BavAl~liKati"), #8.4.60 .1
