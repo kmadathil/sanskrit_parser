@@ -143,9 +143,11 @@
 #     substitute (rp[0]) FOR CONDITION CHECKS ONLY (xform uses the physical
 #     strings, so the substitute is never re-appended onto the left) — so
 #     phoneme-keyed rules (6.4.8 l:n) see the antavat boundary correctly.
-#   - The residue's ?Ba is suspended centrally (a tag-keyed bha-rule like 6.4.130
-#     endsWith_pAd would otherwise mis-read the migrated anta); ?aNga/?pada are
-#     qualifiers that survive (e.g. 6.1.103 reads ?aNga).
+#   - The engine does NO tag stripping. A tag-keyed bha-rule that would mis-read
+#     the migrated anta states its own phoneme requirement and the synth blocks
+#     it (e.g. 6.4.130 pādaḥ pat carries `l: d`, which fails on a guṇa residue
+#     since the synth l = the substitute vowel). All saṁjñās (?aNga/?Ba/?pada)
+#     survive (e.g. 6.1.103 reads ?aNga, 6.4.130 reads ?Ba).
 #   - The ekādeśa set + every both-l-and-r (vowel-junction) rule is disabled at
 #     the resolved junction (the antādivat simultaneity caveat — one phoneme
 #     cannot fill both `l` and `r` slots). This subsumes the old 6.1.107→7.3.102
@@ -4195,6 +4197,10 @@
 - sutra: पादः पत्
   id: 6.4.130
   condition:
+    l: d                  # the aṅga must genuinely end in 'd' (pād). 6.1.85
+                          # antādivat: on a guṇa residue (e.g. pāda+ṭā → pAd|ena)
+                          # the synth l = the substitute vowel, so this fails and
+                          # pādaḥ pat does not mis-fire (→ pādena, not padena).
     lp:
       - and
       - ?Ba

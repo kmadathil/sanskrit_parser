@@ -280,11 +280,13 @@ class AntarangaPrakriya(PrakriyaBase):
 
         Every ekādeśa (purvapara) rule lumps the substitute on the RIGHT (rp[0]),
         truncating the left to a consonant; this guard (left ends in a non-vowel,
-        right non-empty) detects that. Sets ?antAdivat, disables the ekādeśa +
-        both-l-and-r set, and suspends ?Ba (see _exec comments and
-        _cond_has_both_l_and_r). The vowel-ending guard is defensive — if a rule
-        ever left the substitute on a vowel-final left, antavat would already be
-        automatic and no marker is needed."""
+        right non-empty) detects that. Sets ?antAdivat and disables the ekādeśa +
+        both-l-and-r set (see _cond_has_both_l_and_r). Tag-keyed bha/aṅga rules
+        that read the migrated anta are blocked rule-locally instead (e.g. 6.4.130
+        carries `l: d`, so the antavat synth l = the substitute vowel fails it on
+        a guṇa residue). The vowel-ending guard is defensive — if a rule ever left
+        the substitute on a vowel-final left, antavat would already be automatic
+        and no marker is needed."""
         if not getattr(s, "purvapara", False):
             return
         lcanon = r[0].canonical()
@@ -295,8 +297,6 @@ class AntarangaPrakriya(PrakriyaBase):
                 if paps not in r[0].disabled_sutras:
                     r[0].disabled_sutras.append(paps)
                     r[0].disabled_by[paps] = s.aps
-            if r[0].hasTag("Ba"):
-                r[0].deleteTag("Ba")
 
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list, v):
