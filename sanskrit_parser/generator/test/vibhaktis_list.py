@@ -353,18 +353,21 @@ viBakti["aja_A"] = [
     ["अजे",     "अजे",     "अजाः"],
 ]
 
-# saṃphalā (ajādi item 15): genuinely phala-ending (?pAkAdi_uttara) AND ?ajAdi.
-# Exercises the 4.1.4.1 prabalatva overriding 4.1.64 (SK519) → ṭāp संफला, not ṅīṣ संफली.
-prAtipadika["saMPalA"] = [saMPala, strI_abs]   # noqa: F405
-viBakti["saMPalA"] = [
-    ["संफला", "संफले", "संफलाः"],
-    ["संफलाम्", "संफले", "संफलाः"],
-    ["संफलया", "संफलाभ्याम्", "संफलाभिः"],
-    ["संफलायै", "संफलाभ्याम्", "संफलाभ्यः"],
-    ["संफलायाः", "संफलाभ्याम्", "संफलाभ्यः"],
-    ["संफलायाः", "संफलयोः", "संफलानाम्"],
-    ["संफलायाम्", "संफलयोः", "संफलासु"],
-    ["संफले", "संफले", "संफलाः"],
+# bhastraphalā (ajādi item 16): a non-dvigu phala-ending samāsa-ajādi. Exercises the
+# 4.1.4.1 prabalatva (via $$ajAdi_samasta on the (Bastra,Pala) pair) overriding 4.1.64
+# (SK519) → ṭāp भस्त्रफला, not ṅīṣ भस्त्रफली. (saṃphalā avoided here: the pūrva-pada's
+# pada-final म्→अनुस्वार is *optional* by 8.4.59 वा पदान्तस्य, so the live form yields
+# both संफला and सम्फला — which a single expected table cannot represent.)
+prAtipadika["BastraPalA"] = [as_purva_pada(Bastra), luk_sup, in_compound(Pala), strI_abs]   # noqa: F405
+viBakti["BastraPalA"] = [
+    ["भस्त्रफला", "भस्त्रफले", "भस्त्रफलाः"],
+    ["भस्त्रफलाम्", "भस्त्रफले", "भस्त्रफलाः"],
+    ["भस्त्रफलया", "भस्त्रफलाभ्याम्", "भस्त्रफलाभिः"],
+    ["भस्त्रफलायै", "भस्त्रफलाभ्याम्", "भस्त्रफलाभ्यः"],
+    ["भस्त्रफलायाः", "भस्त्रफलाभ्याम्", "भस्त्रफलाभ्यः"],
+    ["भस्त्रफलायाः", "भस्त्रफलयोः", "भस्त्रफलानाम्"],
+    ["भस्त्रफलायाम्", "भस्त्रफलयोः", "भस्त्रफलासु"],
+    ["भस्त्रफले", "भस्त्रफले", "भस्त्रफलाः"],
 ]
 
 # kokila (item 3) + strI_abs → kokilA. 'l' before 'n' in gen pl — l is a ṇatva blocker
@@ -3156,7 +3159,7 @@ viBakti["kukkuwI"] = [
     ["कुक्कुटि", "कुक्कुट्यौ", "कुक्कुट्यः"],
 ]
 
-prAtipadika["odanapAkI"] = [odanapAka, strI_abs]   # noqa: F405
+prAtipadika["odanapAkI"] = [as_purva_pada(odana), luk_sup, in_compound(pAka), strI_abs]   # noqa: F405
 viBakti["odanapAkI"] = [
     ["ओदनपाकी", "ओदनपाक्यौ", "ओदनपाक्यः"],
     ["ओदनपाकीम्", "ओदनपाक्यौ", "ओदनपाकीः"],
@@ -3168,7 +3171,7 @@ viBakti["odanapAkI"] = [
     ["ओदनपाकि", "ओदनपाक्यौ", "ओदनपाक्यः"],
 ]
 
-prAtipadika["SaNkukarRI"] = [SaNkukarRa, strI_abs]   # noqa: F405
+prAtipadika["SaNkukarRI"] = [as_purva_pada(SaNku), luk_sup, in_context(in_compound(karRa), "pAkAdi"), strI_abs]   # noqa: F405
 viBakti["SaNkukarRI"] = [
     ["शङ्कुकर्णी", "शङ्कुकर्ण्यौ", "शङ्कुकर्ण्यः"],
     ["शङ्कुकर्णीम्", "शङ्कुकर्ण्यौ", "शङ्कुकर्णीः"],
@@ -3180,7 +3183,7 @@ viBakti["SaNkukarRI"] = [
     ["शङ्कुकर्णि", "शङ्कुकर्ण्यौ", "शङ्कुकर्ण्यः"],
 ]
 
-prAtipadika["SAlaparRI"] = [SAla, in_context(in_compound(parRa), "pAkAdi_uttara"), strI_abs]   # noqa: F405
+prAtipadika["SAlaparRI"] = [as_purva_pada(SAla), luk_sup, in_compound(parRa), strI_abs]   # noqa: F405
 viBakti["SAlaparRI"] = [
     ["शालपर्णी", "शालपर्ण्यौ", "शालपर्ण्यः"],
     ["शालपर्णीम्", "शालपर्ण्यौ", "शालपर्णीः"],
@@ -3192,7 +3195,7 @@ viBakti["SAlaparRI"] = [
     ["शालपर्णि", "शालपर्ण्यौ", "शालपर्ण्यः"],
 ]
 
-prAtipadika["SaNKapuzpI"] = [SaNKa, in_context(in_compound(puzpa), "pAkAdi_uttara"), strI_abs]   # noqa: F405
+prAtipadika["SaNKapuzpI"] = [as_purva_pada(SaNKa), luk_sup, in_compound(puzpa), strI_abs]   # noqa: F405
 viBakti["SaNKapuzpI"] = [
     ["शङ्खपुष्पी", "शङ्खपुष्प्यौ", "शङ्खपुष्प्यः"],
     ["शङ्खपुष्पीम्", "शङ्खपुष्प्यौ", "शङ्खपुष्पीः"],
@@ -3204,7 +3207,7 @@ viBakti["SaNKapuzpI"] = [
     ["शङ्खपुष्पि", "शङ्खपुष्प्यौ", "शङ्खपुष्प्यः"],
 ]
 
-prAtipadika["dAsIPalI"] = [dAsIPala, strI_abs]   # noqa: F405
+prAtipadika["dAsIPalI"] = [as_purva_pada(dAsI), luk_sup, in_compound(Pala), strI_abs]   # noqa: F405
 viBakti["dAsIPalI"] = [
     ["दासीफली", "दासीफल्यौ", "दासीफल्यः"],
     ["दासीफलीम्", "दासीफल्यौ", "दासीफलीः"],
@@ -3216,7 +3219,7 @@ viBakti["dAsIPalI"] = [
     ["दासीफलि", "दासीफल्यौ", "दासीफल्यः"],
 ]
 
-prAtipadika["darBamUlI"] = [darBa, in_context(in_compound(mUla), "pAkAdi_uttara"), strI_abs]   # noqa: F405
+prAtipadika["darBamUlI"] = [as_purva_pada(darBa), luk_sup, in_compound(mUla), strI_abs]   # noqa: F405
 viBakti["darBamUlI"] = [
     ["दर्भमूली", "दर्भमूल्यौ", "दर्भमूल्यः"],
     ["दर्भमूलीम्", "दर्भमूल्यौ", "दर्भमूलीः"],
@@ -3228,7 +3231,7 @@ viBakti["darBamUlI"] = [
     ["दर्भमूलि", "दर्भमूल्यौ", "दर्भमूल्यः"],
 ]
 
-prAtipadika["govAlI"] = [go, in_context(in_compound(vAla), "pAkAdi_uttara"), strI_abs]   # noqa: F405
+prAtipadika["govAlI"] = [as_purva_pada(go), luk_sup, in_compound(vAla), strI_abs]   # noqa: F405
 viBakti["govAlI"] = [
     ["गोवाली", "गोवाल्यौ", "गोवाल्यः"],
     ["गोवालीम्", "गोवाल्यौ", "गोवालीः"],

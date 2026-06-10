@@ -11,6 +11,7 @@ from sanskrit_parser.generator.pratyaya import *  # noqa: F403
 from sanskrit_parser.generator.pratipadika import *  # noqa: F403
 
 import logging
+import inspect
 logger = logging.getLogger(__name__)
 
 
@@ -73,8 +74,15 @@ def process_yaml(y):
                                     # Pratyahara
                                     _x = isInPratyahara(sk[1:], k)  # noqa: F405
                                 elif (sk[0:2] == "$$"):
-                                    # function call
-                                    _x = eval(f"{sk[2:]}(k)")
+                                    # function call. A helper that declares a 2nd parameter
+                                    # is env-aware: it receives (k, env) so it can read
+                                    # neighbour padas (env["llp"]/env["rrp"]) etc.; 1-arg
+                                    # helpers are called as before.
+                                    _fn = eval(sk[2:])
+                                    if len(inspect.signature(_fn).parameters) >= 2:
+                                        _x = _fn(k, env)
+                                    else:
+                                        _x = _fn(k)
                                 elif (sk[0] == "$"):
                                     # Variable
                                     _x = isSavarna(env[sk[1:]], k)  # noqa: F405

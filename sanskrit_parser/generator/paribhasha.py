@@ -720,3 +720,40 @@ def is_vriddhi(s: str):
 # daSca d check
 def idam_d_p(s):
     return ("d" in s)
+
+
+# ── samāsa-ajādi detection (env-aware: read the pūrva-pada at env["llp"]) ──────
+# The ajādi gaṇa's *compound* members are detected structurally by the (pūrva,
+# uttara) canonical pair, rather than baking ?ajAdi onto the uttara word (which
+# would wrongly make every phala/puṣpa compound ajādi — e.g. the jāti dāsīphalī).
+# Plain canonical strings, not objects.
+_AJADI_SAMASTA = {
+    # phala-ending (gaṇa items 15–20)
+    ("sam", "Pala"), ("Bastra", "Pala"), ("ajina", "Pala"),
+    ("SaRa", "Pala"), ("piRqa", "Pala"), ("tri", "Pala"),
+    # puṣpa-ending (gaṇa items 21–26)
+    ("sat", "puzpa"), ("prAk", "puzpa"), ("kARqa", "puzpa"),
+    ("prAnta", "puzpa"), ("Sata", "puzpa"), ("eka", "puzpa"),
+    # lyuṬ (items 13–14) — no derivation needed, just the pair
+    ("pUrva", "apaharaRa"), ("apara", "apaharaRa"),
+    # nañ (item 34) and deva-viś (item 30)
+    ("a", "mUla"), ("deva", "viS"),
+}
+
+
+def ajAdi_samasta(lp, env):
+    """True if the compound (pūrva = env['llp'], uttara = lp) is a samāsa-ajādi.
+
+    Env-aware helper: process_yaml passes (lp, env) to 2-arg `$$` helpers. With
+    luk_sup between the padas, the pūrva-pada is visible as-is at env['llp'].
+    """
+    return (env["llp"].canonical(), lp.canonical()) in _AJADI_SAMASTA
+
+
+def ajAdi_in_Dvigu(lp, env):
+    """True for a Dvigu compound whose (pūrva, uttara) is a phala/puṣpa samāsa-ajādi.
+
+    Vasu restricts the Dvigu-prabalatva (4.1.4.2 over 4.1.21) to the phala/puṣpa
+    subgroup, so reuse `ajAdi_samasta` and additionally require the ?dvigu tag.
+    """
+    return lp.hasTag("dvigu") and ajAdi_samasta(lp, env)

@@ -5458,8 +5458,13 @@
   id: 4.1.4.1
   overrides: [4.1.6, 4.1.15, 4.1.16, 4.1.20, 4.1.63, 4.1.64]
   condition:
-     lp: ?ajAdi
-     rp: ?strI_abs
+     - lp: ?ajAdi              # simple ajādi word (also its dvigu via ?ajAdi propagation)
+       rp: ?strI_abs
+     - lp:                     # samāsa-ajādi: detected by (pūrva@llp, uttara@lp) pair
+         - and
+         - ?samAsa
+         - $$ajAdi_samasta
+       rp: ?strI_abs
   update:
      olp: +TAp_added
      orp: =Ap
@@ -5482,8 +5487,13 @@
   id: 4.1.4.2
   overrides: [4.1.21]
   condition:
-     lp: ?ajAdi_in_Dvigu
-     rp: ?strI_abs
+     - lp: ?ajAdi_in_Dvigu     # simple ajādi word in Dvigu (anīka → tryanīkā)
+       rp: ?strI_abs
+     - lp:                     # phala/puṣpa samāsa-ajādi in Dvigu (tri+Pala → triphalā)
+         - and
+         - ?samAsa
+         - $$ajAdi_in_Dvigu
+       rp: ?strI_abs
   update:
      olp: +TAp_added
      orp: =Ap
@@ -6227,16 +6237,21 @@
   update:
      orp: =NIz
 
-# 519: पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च (4.1.64) — jāti compounds ending in
-# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ (even if stree-viṣaya). Pre-registered
-# compound prātipadikas tagged ?pAkAdi_uttara. → ओदनपाकी, शङ्कुकर्णी, शालपर्णी etc.
+# 519: पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च (4.1.64) — a samāsa whose uttara is one of the
+# seven pākādi words (pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla, all tagged ?pAkAdi) → ṅīṣ
+# even if stree-viṣaya. Built live (lp: [and, ?samAsa, ?pAkAdi]) → ओदनपाकी, शङ्कुकर्णी,
+# शालपर्णी … The ajādi/dvigu phala/puṣpa compounds (भस्त्रफला/त्रिफला) are detected by
+# $$ajAdi_samasta and take ṭāp instead (4.1.4.1/4.1.4.2 override 4.1.64).
 - sutra: पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च
   domain: prakfti
   bahiranga: 2
   id: 4.1.64
-  overrides: 4.1.4
+  overrides: [4.1.4, 4.1.55]   # 4.1.55: a jāti karṇa compound (śaṅkukarṇī) beats the SK511 svāṅga =karRa arm
   condition:
-     lp: ?pAkAdi_uttara
+     lp:
+       - and
+       - ?samAsa
+       - ?pAkAdi
      rp: ?strI_abs
   update:
      orp: =NIz
