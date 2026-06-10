@@ -149,7 +149,9 @@ Priority is managed at two distinct levels:
 
 Execution loop:
 1. Start with the initial `PrakriyaVakya`.
-2. Slide a **window of 2 adjacent objects** across the sequence.
+2. Slide a **window of 2 adjacent objects** across the sequence. (A rule operates only
+   on these two, but its condition may also *read* the immediate neighbours `llp`/`rrp` —
+   see the LRSutra `env` table under *Sutras (Rules)* below.)
 3. **Select the highest-priority window** by scanning left to right in this order:
    - **Pratyaya-adjacent** pairs (anga + pratyaya): highest priority; if multiple, leftmost wins
    - **Samāsa-adjacent** pairs: next; if multiple, leftmost wins
@@ -220,14 +222,48 @@ The execution environment `env` exposes:
 
 | Key | Meaning |
 |---|---|
-| `lp` | left `PaninianObject` |
-| `rp` | right `PaninianObject` |
+| `lp` | left `PaninianObject` (the window's left operand) |
+| `rp` | right `PaninianObject` (the window's right operand) |
 | `l` | last varna of `lp` |
 | `r` | first varna of `rp` |
 | `ll` | second-last varna of `lp` |
 | `rr` | second varna of `rp` |
 | `lc` | `lp` minus last varna |
 | `rc` | `rp` minus first varna |
+| `llp` | **left-neighbour** `PaninianObject` — the pada at `ix-1`, immediately before `lp` (read-only context) |
+| `rrp` | **right-neighbour** `PaninianObject` — the pada at `ix+2`, immediately after `rp` (read-only context) |
+
+#### Neighbour-pada context (`llp` / `rrp`)
+
+The sliding window is 2 objects wide (`lp`, `rp`), but a rule's condition can also
+*peek* at the two padas flanking the window without operating on them: `llp` is the
+pada one slot to the **left** of `lp`, and `rrp` is the pada one slot to the **right**
+of `rp`. They are **read-only** — `xform`/`update`/`insert` only ever transform `lp`/`rp`
+(and their `olp`/`orp` outputs); neighbours cannot be mutated.
+
+- **Absent neighbour → empty sentinel.** When there is no pada at `ix-1` (resp. `ix+2`),
+  `llp` (resp. `rrp`) is an empty `PaninianObject` whose `canonical()` is `""`. So
+  `?tag` → False, `?!tag` → True, `=x` → False, `=!x` → True, `$$fname` → the helper
+  receives the empty object. A rule that requires a neighbour therefore just tests a
+  positive condition on it (e.g. `llp: ?samAsaPurva`), which fails cleanly when absent.
+- **Same snapshot as the window.** Neighbours are read from the *same* asiddha/ābhīya
+  snapshot `view()` produces for the firing rule (via `view_context()`), so they respect
+  siddha/asiddha visibility exactly like `lp`/`rp`.
+- **Any condition operator applies.** Because the evaluator dispatches on `env[<field>]`,
+  every operator works on a neighbour: `llp: ?samAsaPurva` (tag), `llp: =ud` / `llp: =!ud`
+  (raw equality / inequality), `llp: $$fname` (helper on the neighbour object), etc.
+
+This is how a rule reads the **pūrva-pada** of a compound or a fixed preceding word that
+the sūtra names. Examples in `sutras_antaranga.yaml`:
+
+| Sutra | Neighbour condition | Purpose |
+|-------|---------------------|---------|
+| उद ईत् (6.4.139) | `llp: =ud` | añc-stem → ī only after the prefix **ud** (udac → udīc); 6.4.138 uses `llp: =!ud` for the complementary case |
+| नासिकोदर… (4.1.55) | `llp: ?samAsaPurva` | optional ṅīṣ only when the svāṅga word is a **compound uttara-pada** (its pūrva-pada carries `samAsaPurva`), not a bare word or an unrelated preceding vākya pada |
+
+> **Tip.** To require "left-neighbour is a compound member," test `llp: ?samAsaPurva`
+> (set by `as_purva_pada` in `pratipadika.py`) — **not** `llp: $$notnull`, which would also
+> match an unrelated preceding pada in a vākya.
 
 ### `GlobalDomains`
 

@@ -467,6 +467,27 @@ def saMyogapUrvaVamanta(lp):
             lp[-3] in ['v', 'm'] and isInPratyahara('hal', lp[-4]))
 
 
+def asaMyogopaDa(s):
+    """SK510 (4.1.54 असंयोगोपधात्): True iff the upadhā (the consonant before the
+    final vowel) is NOT itself preceded by another consonant — i.e. the upadhā is a
+    single consonant, not a saṃyoga (conjunct). केश (...ś+a) → True; गुल्फ (...l+ph+a,
+    a conjunct lph before 'a') → False; चन्द्रमुख (...kh+a) → True."""
+    if len(s) < 2:
+        return False
+    if not isInPratyahara('hal', s[-2]):   # upadhā must be a consonant
+        return False
+    if len(s) < 3:
+        return True                        # single consonant + final vowel
+    return not isInPratyahara('hal', s[-3])  # conjunct (hal before the upadhā) → saṃyoga
+
+
+def bahvac(s):
+    """SK512 (4.1.56 बह्वचः): True iff the word has THREE or more vowels (बहु-अच्).
+    जघन (j-a-gh-a-n-a, 3 vowels) → True; केश (k-e-ś-a, 2 vowels = dvyac) → False —
+    so SK512 blocks जघन but not केश (which keeps its SK510 ṅīṣ → अतिकेशी)."""
+    return sum(1 for ch in s if isInPratyahara('ac', ch)) >= 3
+
+
 def ticAdesha_adri(s):
     """SK418: replace ṭi (final portion from last vowel onwards) of s with 'adri'."""
     for i in range(len(s)-1, -1, -1):

@@ -80,7 +80,7 @@ vrAja = Pratipadika("vrAja", "pum")
 # SK470/471 (4.1.15/16) taddhita-ṅīp test bases: aindra (indra+aṇ), autsa (utsa+añ),
 # ūru+dvayasac/daghnac/mātrac, pañca+tayap, gārga (garga+yañ). indra/yad/dfS exist.
 utsa  = Pratipadika("utsa",  "pum")
-Uru   = Pratipadika("Uru",   "pum")
+Uru   = Pratipadika("Uru",   "pum", other_tags=["Uru_uttara"])  # SK525 ūru uttara-pada (read in-window by 4.1.70)
 paYca = Pratipadika("paYca", "pum")
 garga = Pratipadika("garga", "pum")
 # vidyA: SK472 negative test base — विद्या + अण् → वैद्य (the 'ya' is base-internal,
@@ -140,10 +140,11 @@ kARqa    = Pratipadika("kARqa",    "pum",   other_tags=["kARqa"])
 puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
 
 # SK483-485 (5.4.131 / 4.1.25 / 4.1.26): ūdhas-bahuvrīhi feminine cluster.
-# UDas (long ū) tagged ?uDanta so SK483/484 can fire only on this stem. The
-# bahuvrīhi / saMKyAdi / avyayAdi properties are attached by the test composer
-# via in_context (matching the trilokI / dvipuruzI pattern) and seen directly
-# on UDas at the (UDas | strI_abs) window — no propagation needed.
+# UDas (long ū) tagged ?uDanta so SK483/484 can fire only on this stem. ?bahuvrIhi
+# is attached to the uttara-pada (UDas) by the test composer via in_context; the
+# saṃkhyā/avyaya nature of the *pūrva-pada* is read by SK485 peeking the left
+# neighbour (llp: ?saMKyA / llp: ?avyaya — propagated to the neighbour in
+# join_objects when ?samAsaPurva is set) — no fake ?saMKyAdi/?avyayAdi.
 UDas    = Pratipadika("UDas",    "napum", other_tags=["uDanta"])
 kuRqa   = Pratipadika("kuRqa",   "napum", other_tags=["jAnapadAdi"])  # ?jAnapadAdi: SK500 (4.1.42)
 Gawa    = Pratipadika("Gawa",    "pum")
@@ -151,8 +152,9 @@ Gawa    = Pratipadika("Gawa",    "pum")
 ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
 
 # SK486 (4.1.27) test bases. ?dAman / ?hAyana let the rule target these stems;
-# the test composer also adds ?saMKyAdi and (for hāyana) ?vayasi + ?triCatur
-# for the vārttika (n→ṇ for tri/catur+hāyana in age sense).
+# the saṃkhyā pūrva-pada is read via llp: ?saMKyA (and the 4.1.27.1 vārttika n→ṇ
+# via llp: [=tri, =catur]). The composer still adds ?vayasi for the hāyana
+# age-sense restriction.
 dAman   = Pratipadika("dAman",   "napum", other_tags=["dAman"])
 hAyana  = Pratipadika("hAyana",  "pum",   other_tags=["hAyana"])
 
@@ -178,17 +180,13 @@ Bezaja    = Pratipadika("Bezaja",    "napum", other_tags=["keval_Adi"])
 # var named gRha for readability; SLP1 content is "gfha" (f = ṛ) = गृह.
 gRha = Pratipadika("gfha", "napum")
 
-# SK492 (4.1.35 नित्यं सपत्न्यादिषु) pre-substituted sapatnyAdi stems. Following
-# the Q3 deferral, sa+pati (with समान→स niyama) is registered directly as sapati
-# rather than running a paired left-substitution rule. Tagged ?sapatnyAdi (the
-# SK492 class tag) AND ?pati — the latter is required so 1.4.8.1 fires to block
-# Ghi-saṃjña, which in turn lets 1.4.3 nadī-saṃjña apply correctly for the dat/
-# abl/gen/loc-sg cells (without ?pati, sapatnī gets सपत्नये in dat sg instead of
-# सपत्न्यै). SK490 (?pati + ?!samAsa, same i→n xform) would also match; SK492
-# names overrides: 4.1.33 to formalise the apavāda.
-sapati    = Pratipadika("sapati",    "pum", other_tags=["sapatnyAdi", "pati"])
-ekapati   = Pratipadika("ekapati",   "pum", other_tags=["sapatnyAdi", "pati"])
-vIrapati  = Pratipadika("vIrapati",  "pum", other_tags=["sapatnyAdi", "pati"])
+# SK492 (4.1.35 नित्यं सपत्न्यादिषु) sapatnyAdi gaṇa (sapati/ekapati/vīrapati) is now
+# built live as pūrva + pati compounds in the test (vibhaktis_list sapatnI/ekapatnI/
+# vIrapatnI); SK492 peeks the pūrva-pada identity (llp: [=sa, =eka, =vIra]) instead of
+# pre-substituted ?sapatnyAdi stems. The समान→स niyama is realised by registering the
+# reduced pūrva-pada `sa` (sa_pUrva, defined below). The uttara-pada `pati` supplies
+# ?pati in-window so 1.4.8.1 blocks Ghi-saṃjña and 1.4.3 nadī-saṃjña applies (सपत्न्यै,
+# exactly like gṛhapatnī, the compound-pati 4.1.34 case).
 
 # SK489 (4.1.32 अन्तर्वत्पतिवतोर्नुक्) — irregular feminine stems. Treated as
 # single pratipadikas (not live antar+matup / pati+matup compounds) per plan's
@@ -406,11 +404,14 @@ SvaSrU = Pratipadika("SvaSrU", "strI")                             # → श्�
 # Example: karaBoru = karabha (camel foreleg) + ūru → "she with carabha-like thighs".
 karaBoru = Pratipadika("karaBoru", "pum", other_tags=["Uru_upamAna"])  # → karaBorUḥ
 
-# SK525 (4.1.70 संहितशफलक्षणवामादेश्च): saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ.
-saMhitoru  = Pratipadika("saMhitoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → saṃhitorūḥ
-SaPoru     = Pratipadika("SaPoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → śaphorūḥ
-lakzaRoru  = Pratipadika("lakzaRoru",  "pum", other_tags=["saMhitAdi_Uru"])  # → lakṣaṇorūḥ
-vAmoru     = Pratipadika("vAmoru",     "pum", other_tags=["saMhitAdi_Uru"])  # → vāmorūḥ
+# SK525 (4.1.70 संहितशफलक्षणवामादेश्च): saṃhita/śapha/lakṣaṇa/vāma + ūru → ūṅ. Built
+# live as [as_purva_pada(<pūrva>), luk_sup, in_compound(Uru), strI_abs]; 4.1.70 peeks
+# the pūrva-pada identity (llp: [=saMhita, =SaPa, =lakzaRa, =vAma]) and reads the ūru
+# uttara-pada in-window (lp: ?Uru_uttara). a+ū → o at the junction (6.1.87 AdguṇaH).
+saMhita = Pratipadika("saMhita", "pum")   # SK525 pūrva-pada (saṃhitorū)
+SaPa    = Pratipadika("SaPa",    "pum")   # SK525 pūrva-pada (śaphorū)
+lakzaRa = Pratipadika("lakzaRa", "pum")   # SK525 pūrva-pada (lakṣaṇorū)
+vAma    = Pratipadika("vAma",    "pum")   # SK525 pūrva-pada (vāmorū)
 
 # SK526 (4.1.72 संज्ञायाम्): kadrū + kamaṇḍalu in proper-name (saṃjñā) use → ūṅ.
 # Pre-registered as strI (they are the canonical ū-final feminine forms).
@@ -593,6 +594,35 @@ tftIya  = Pratipadika("tftIya",  "pum", other_tags=["dvitIyAdi"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
+tuNga = Pratipadika("tuNga", "pum")   # adj. "prominent/high"; pūrva-pada for SK511 tuNgakarRA
+karRa = Pratipadika("karRa", "napum")  # "ear" (svāṅga a-stem); SK511 uttara-pada
+
+# ── SK506–515: svāṅga / compound strī cluster (4.1.50–60), via llp/lp peeking ──
+# svāṅga (body-part) uttara-padas — ?svAnga tags the 4-part-definition members.
+# Used as in_compound(...) uttara-padas (carry ?samAsa at the strī window).
+keSa  = Pratipadika("keSa",  "napum", other_tags=["svAnga"])   # hair (SK510 अतिकेशी; SK513 सकेशा)
+muKa  = Pratipadika("muKa",  "napum", other_tags=["svAnga"])   # face (SK510 चन्द्रमुखी; SK514 गौरमुखा; SK515 प्राङ्मुखी)
+jaGana = Pratipadika("jaGana", "napum", other_tags=["svAnga"])  # hip (SK512 सुजघना — bahvac svāṅga)
+kroqa = Pratipadika("kroqa", "pum",   other_tags=["svAnga", "kroqAdi"])  # chest (SK512 कल्याणक्रोडा — kroḍādi)
+gulPa = Pratipadika("gulPa", "pum",   other_tags=["svAnga"])   # ankle (SK510 counter सुगुल्फा — saṃyoga-upadhā)
+naKa  = Pratipadika("naKa",  "pum")   # nail (SK514 शूर्पणखा — saṃjñā niṣedha; not ?svAnga-needed)
+# kta-final (niṣṭhā) uttara-padas (SK506/507):
+krIta = Pratipadika("krIta", "pum", other_tags=["ktAnta"])     # bought (SK506 वस्त्रक्रीती)
+lipta = Pratipadika("lipta", "pum", other_tags=["ktAnta"])     # smeared (SK507 अभ्रलिप्ती)
+# karaṇa pūrva-padas (name the means) (SK506/507):
+vastra = Pratipadika("vastra", "napum", other_tags=["karaNa"])  # cloth
+aBra   = Pratipadika("aBra",   "napum", other_tags=["karaNa"])  # cloud
+# misc pūrva-padas: candra (SK510), su/saha (SK512/513), ati (exists), Sūrpa (exists),
+# gOra (exists), tAmra (SK514 counter), vidyamAna (SK513). The SK515 dik pūrva-pada
+# प्राच् is NOT pre-formed — derived live in the test as
+# [pra, luk_sup, in_context(aYc_u,"dik"), kvin, luk_sup] (the prAc añc-paradigm).
+candra = Pratipadika("candra", "pum")    # moon (SK510 चन्द्रमुखी pūrva)
+sa_pUrva = Pratipadika("sa", "pum")      # saha→sa (SK513 सकेशा pūrva; SK492 सपत्नी pūrva)
+eka_pUrva = Pratipadika("eka", "pum")    # SK492 एकपत्नी pūrva (eka+pati)
+vIra_pUrva = Pratipadika("vIra", "pum")  # SK492 वीरपत्नी pūrva (vīra+pati)
+su_pUrva = Pratipadika("su", "pum")      # su- (SK510 ctr सुगुल्फा; SK512 सुजघना)
+tAmra  = Pratipadika("tAmra", "pum")     # copper (SK514 counter ताम्रमुखी — non-saṃjñā)
+vidyamAna = Pratipadika("vidyamAna", "pum")  # existing (SK513 विद्यमाननासिका pūrva)
 mati = Pratipadika("mati", "strI")
 lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
@@ -654,7 +684,8 @@ turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"
 ftvij_kvin  = Pratipadika("ftvij",   "pum",  other_tags=["DAtu", "kvin"])          # ṛtvij m. (the priest)
 sraj_kvin   = Pratipadika("sraj",   "strI", other_tags=["DAtu", "kvin"])          # sraj f. (garland)
 yuj_kvin    = Pratipadika("yuj",    "pum",  other_tags=["DAtu", "kvin", "yuj"])        # yuj m. non-compound; ?yuj → SK376 num
-yuj_kvin_samAsa = Pratipadika("yuj", "pum",  other_tags=["DAtu", "kvin", "yuj", "samAsa"])  # aśvayuk type: ?samAsa blocks SK376 nUM augment
+# yuj_kvin_samAsa (preformed compound-yuj) retired: the proper-samāsa aSvayuj
+# [aSva, in_compound(yuj_kvin)] covers SK376's ?samAsa nUM-block path live.
 diS_kvin    = Pratipadika("diS",    "strI", other_tags=["DAtu", "kvin"])          # diś f. (direction)
 daDfc_kvin   = Pratipadika("daDfc",   "pum",  other_tags=["DAtu", "kvin"])           # dadhṛc m. (bold one); c→j(8.2.39)→g(8.2.62)→k(8.4.56)
 
@@ -706,9 +737,9 @@ tiryac_kvin = Pratipadika("tiryac", "pum", other_tags=["aYc", "kvin"])
 # tiryac = tiras+ac; SK423 (tiry ādeśa when SK416 hasn't run) deferred.
 # Bha form tiryacā is correct (SK416/417 don't apply).
 
-udac_kvin   = Pratipadika("udac",   "pum", other_tags=["aYc", "kvin", "udanc"])
-# ?udanc → SK420 (6.4.139) fires in bha context (apavāda of SK416).
-# SK416 blocked: no ?DAtu and ?udanc guard. SK420 fires → udīcā.
+# udañc (m.) is derived as a compound [ud, su, aYc_u, kvin] — see test/vibhaktis_list.py
+# and ui/app.py (_udac_cpd). SK420 (6.4.139) reads the ud prefix via the llp neighbour,
+# so no monolithic udac_kvin pratipadika / udanc tag is needed.
 
 takz_kvip    = Pratipadika("takz",    "pum",  other_tags=["DAtu", "kvip"])          # √takṣ+kvip; nom sg taṭ/taḍ via 8.2.29 k-deletion
 naS_kvip     = Pratipadika("naS",     "pum",  other_tags=["DAtu", "kvip", "naS"])   # √naś+kvip; optional kutva 8.2.63
@@ -737,17 +768,16 @@ parvan_napum = Pratipadika("parvan", "napum")
 
 # SK459 (4.1.11 मनः): man-final stem; ṅīp blocked → halanta feminine सीमा.
 sIman = Pratipadika("sIman", "strI")
-# SK460/SK461: prebuilt an-final bahuvrīhi. ?van so SK456 (4.1.7) is a live competitor
-# that SK460/SK461 must override; ?samasta_pada marks the completed compound.
-bahuyajvan = Pratipadika("bahuyajvan", "pum",
-                         other_tags=["bahuvrIhi", "samasta_pada", "van"])
+# SK460/SK461 an-final bahuvrīhi: built live as a compound (bahu + yajvan) in the test
+# (vibhaktis_list bahuyajvan_strI). The preformed bahuyajvan stem is retired; yajvan
+# carries ?van so SK456 (4.1.7) competes and SK460 overrides it.
 
 # SK443 (8.2.68 ahan n→ru at pada-end): apavāda of 8.2.7 (n-lopa).
 # Nom/acc/voc sg: ahan → n→r (ru) → visarga → ahaḥ.
 # Bha forms (vowel-initial non-sarvānāmasthāna): existing 6.4.134 a-lopa → ahn-.
 # Consonant-initial (bhyAm etc.): ru+voiced → 6.1.114 r-drops, u inserted → aho-.
 ahan = Pratipadika("ahan", "napum", other_tags=["ahan"])
-yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan"])
+yajvan = Pratipadika("yajvan", "pum", other_tags=["yajvan", "van"])  # ?van → SK456 (4.1.7) competitor in bahuyajvan, overridden by SK460
 
 # SvanType: Svan, yuvan, maGavan — -an stems with samprasāraṇa in bha position (SK362 / 6.4.133)
 # NOTE: SvanType does NOT propagate through taddhita derivation (paninian_object.py join_objects
@@ -805,7 +835,7 @@ naKI  = Pratipadika("naKI",  "strI", other_tags=["NI"])  # naḳī (basket-maker
 
 # Positive test: kṣīra (milk) + monosyllabic uttara-pada with n → ṇatva via SK307
 kzIra = Pratipadika("kzIra", "napum")  # kṣīra (milk), neuter a-stem
-pa = Pratipadika("pa", "napum", other_tags=["samAsa"])  # monosyllabic uttara-pada (pā = hand)
+pa = Pratipadika("pa", "napum")  # monosyllabic uttara-pada (pā = hand); ?samAsa comes via in_compound
 
 # ── ajādi gaṇa (SK454 / 4.1.4) — all 34 members ──────────────────────────────────────
 # Items 1–27, 31–34 end in short 'a' → TAp via l:at (ajAdi tag redundant but correct).

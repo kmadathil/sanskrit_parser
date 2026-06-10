@@ -1106,7 +1106,7 @@ viBakti["prAc"] = [
 ]
 
 # udañc (m.) — añc-type: weak stem udac, strong udañc.
-prAtipadika["udac"] = [ud, su, in_context(aYc_u,"udanc"), kvin]  
+prAtipadika["udac"] = [ud, su, aYc_u, kvin]   # udañc: SK420 (6.4.139) reads ud via llp; no udanc tag
 viBakti["udac"] = [
     ['उदङ्', 'उदञ्चौ', 'उदञ्चः'],           # 1 Nom  — strong (SK361)
     ['उदञ्चम्', 'उदञ्चौ', 'उदीचः'],           # 2 Acc  — sg/du strong; pl (Sas) bha → udīcaḥ (SK420)
@@ -1223,21 +1223,6 @@ viBakti["sarvadryac"] = [
     ['सर्वद्रीचः', 'सर्वद्रीचोः', 'सर्वद्रीचाम्'],               # 6 Gen  — all bha
     ['सर्वद्रीचि', 'सर्वद्रीचोः', 'सर्वद्र्यक्षु'],               # 7 Loc  — sg/du bha; pl NOT bha
     ['सर्वद्र्यङ्', 'सर्वद्र्यञ्चौ', 'सर्वद्र्यञ्चः'],       # 8 Voc  = Nom
-]
-
-# yuj (m.) compound type — aśvayuk type (SK376 compound restriction).
-# ?samAsa tag blocks SK376 (7.1.71) nUM augment → no yuñj strong form.
-# Same phonology as ṛtvij: 8.2.62 j→g at pada-end; 8.4.56 opt g→k.
-prAtipadika["yuj_samAsa"] = [yuj_kvin_samAsa]   # noqa: F405
-viBakti["yuj_samAsa"] = [
-    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 1 Nom  * no nUM; 8.2.62 j→g, 8.4.56 opt g→k
-    ['युजम्', 'युजौ', 'युजः'],             # 2 Acc  * no nUM (all forms: weak)
-    ['युजा', 'युग्भ्याम्', 'युग्भिः'],      # 3 Inst * 8.2.62 j→g before Bh
-    ['युजे', 'युग्भ्याम्', 'युग्भ्यः'],      # 4 Dat
-    ['युजः', 'युग्भ्याम्', 'युग्भ्यः'],      # 5 Abl
-    ['युजः', 'युजोः', 'युजाम्'],            # 6 Gen
-    ['युजि', 'युजोः', 'युक्षु'],            # 7 Loc  * pl: 8.2.62 j→g→k + 8.3.57 s→ṣ
-    [['युग्', 'युक्'], 'युजौ', 'युजः'],   # 8 Voc  = Nom
 ]
 
 # √takṣ + kvip (m.) — k-deletion via SK380 (8.2.29) at pada-end.
@@ -1524,11 +1509,13 @@ viBakti["sIman"] = [
 ]
 
 # SK460 (4.1.12 अनो बहुव्रीहेः) — an-final bahuvrīhi; ṅīp blocked (apavāda to 4.1.5/4.1.7).
-# SK461 — optional DAp. bahuyajvan prebuilt with ?bahuvrIhi/?samasta_pada/?van so that
-# SK456 (4.1.7 वनो र च) is a live competitor that SK460/SK461 must override.
-# Two paradigms: halanta (बहुयज्वा, बहुयज्वानौ — 6.4.137 blocks al-lopa, weak stem यज्वन्)
-# ~ DAp ā-stem (बहुयज्वा, बहुयज्वे).
-prAtipadika["bahuyajvan_strI"] = [bahuyajvan, strI_abs]   # noqa: F405
+# SK461 — optional DAp. Built live as bahu + yajvan (mirrors bahurAjan_strI below);
+# yajvan carries ?van so SK456 (4.1.7 वनो र च) is a live competitor that SK460/SK461
+# must override. Two paradigms: halanta (बहुयज्वा, बहुयज्वानौ — 6.4.137 blocks al-lopa,
+# saMyoga+v+anta stem यज्वन्) ~ DAp ā-stem (बहुयज्वा, बहुयज्वे).
+prAtipadika["bahuyajvan_strI"] = [as_purva_pada(bahu), luk_sup,
+                                  in_context(in_compound(yajvan), "bahuvrIhi"),
+                                  strI_abs]   # noqa: F405
 viBakti["bahuyajvan_strI"] = [
     ['बहुयज्वा',                      ['बहुयज्वानौ', 'बहुयज्वे'],      ['बहुयज्वाः', 'बहुयज्वानः']], # 1 Nom
     [['बहुयज्वाम्', 'बहुयज्वानम्'],     ['बहुयज्वानौ', 'बहुयज्वे'],      ['बहुयज्वाः', 'बहुयज्वनः']],  # 2 Acc
@@ -2168,12 +2155,12 @@ viBakti["GawoDnI"] = [
 ]
 
 # ── SK485 (4.1.26 संख्याऽव्ययादेर्ङीप्) ────────────────────────────────────────
-# dvi + UDas bahuvrīhi with ?saMKyAdi → SK485 overrides SK484: NIp not NIz.
+# dvi + UDas bahuvrīhi; SK485 peeks the saṃkhyā pūrva-pada (llp: ?saMKyA) → overrides
+# SK484: NIp not NIz.
 # Surface is identical to NIz (both ī). dvi + UDas: i + ū → yū (6.1.77 yaṇ
 # sandhi). SK483 then s→n → dvyUDan; SK485 picks NIp; SK234 a-lopa → dvyUDn+ī.
 prAtipadika["dvyUDnI"] = [as_purva_pada(dvi), luk_sup,
-                          in_context(in_context(in_compound(UDas), "bahuvrIhi"),
-                                     "saMKyAdi"),
+                          in_context(in_compound(UDas), "bahuvrIhi"),
                           strI_abs]   # noqa: F405
 viBakti["dvyUDnI"] = [
     ["द्व्यूध्नी",     "द्व्यूध्न्यौ",     "द्व्यूध्न्यः"],
@@ -2186,10 +2173,9 @@ viBakti["dvyUDnI"] = [
     ["द्व्यूध्नि",     "द्व्यूध्न्यौ",     "द्व्यूध्न्यः"],
 ]
 
-# avyayādi arm: ati + UDas → atyUDas (i+ū → yū). ?avyayAdi attached on UDas.
+# avyayādi arm: ati + UDas → atyUDas (i+ū → yū). SK485 peeks llp: ?avyaya (ati).
 prAtipadika["atyUDnI"] = [as_purva_pada(ati), luk_sup,
-                          in_context(in_context(in_compound(UDas), "bahuvrIhi"),
-                                     "avyayAdi"),
+                          in_context(in_compound(UDas), "bahuvrIhi"),
                           strI_abs]   # noqa: F405
 viBakti["atyUDnI"] = [
     ["अत्यूध्नी",     "अत्यूध्न्यौ",     "अत्यूध्न्यः"],
@@ -2206,8 +2192,7 @@ viBakti["atyUDnI"] = [
 # dāman arm: dvi + dāman bahuvrīhi → NIp (SK486 arm 1). SK234 (6.4.134) then
 # drops upadhā 'a' of -an before ī → dvidāmn+ī.
 prAtipadika["dvidAmnI"] = [as_purva_pada(dvi), luk_sup,
-                           in_context(in_context(in_compound(dAman), "bahuvrIhi"),
-                                      "saMKyAdi"),
+                           in_context(in_compound(dAman), "bahuvrIhi"),
                            strI_abs]   # noqa: F405
 viBakti["dvidAmnI"] = [
     ["द्विदाम्नी",     "द्विदाम्न्यौ",     "द्विदाम्न्यः"],
@@ -2223,9 +2208,8 @@ viBakti["dvidAmnI"] = [
 # hāyana arm: dvi + hāyana bahuvrīhi in age (?vayasi) sense → SK486 arm 2 → NIp.
 # 6.4.148 (yasyeti ca, SK311) drops final 'a' of -a stem before ī → dvihāyan+ī.
 prAtipadika["dvihAyanI"] = [as_purva_pada(dvi), luk_sup,
-                            in_context(in_context(in_context(in_compound(hAyana),
-                                                             "bahuvrIhi"),
-                                                  "saMKyAdi"), "vayasi"),
+                            in_context(in_context(in_compound(hAyana),
+                                                  "bahuvrIhi"), "vayasi"),
                             strI_abs]   # noqa: F405
 viBakti["dvihAyanI"] = [
     ["द्विहायनी",     "द्विहायन्यौ",     "द्विहायन्यः"],
@@ -2242,8 +2226,7 @@ viBakti["dvihAyanI"] = [
 # is absent; no rule selects NIp → default 4.1.4 ṭāp → द्विहायना (ramā-type).
 # Vasu: द्विहायना शाला 'a hall of two years existence'.
 prAtipadika["dvihAyanA"] = [as_purva_pada(dvi), luk_sup,
-                            in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
-                                       "saMKyAdi"),
+                            in_context(in_compound(hAyana), "bahuvrIhi"),
                             strI_abs]   # noqa: F405
 viBakti["dvihAyanA"] = [
     ["द्विहायना",     "द्विहायने",         "द्विहायनाः"],
@@ -2259,13 +2242,12 @@ viBakti["dvihAyanA"] = [
 # ── SK486 vārttika (4.1.27.1) — त्रिचतुर्भ्यां हायनस्य णत्वम् ─────────────────
 # tri + hāyana (age sense): vārttika fires (bahiranga 1) substituting upadhā
 # 'n' of hāyana → 'R' (ṇ), giving hāyaṇa. SK486 then adds NIp; 6.4.148 drops
-# final 'a' of -a stem → trihāyaṇ+ī = त्रिहायणी. ?triCatur added via in_context.
+# final 'a' of -a stem → trihāyaṇ+ī = त्रिहायणी. The vārttika peeks llp:[=tri,=catur].
 # Gen pl: 'h' (not in at-kupvāṅ-num) intervenes between 'r' of tri and the
 # suffix 'n' of -nām → 8.4.1 ṇatva blocked → त्रिहायणीनाम् (no further ṇ).
 prAtipadika["trihAyaRI"] = [as_purva_pada(tri), luk_sup,
-                            in_context(in_context(in_context(in_context(
-                                in_compound(hAyana), "bahuvrIhi"),
-                                "saMKyAdi"), "vayasi"), "triCatur"),
+                            in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
+                                       "vayasi"),
                             strI_abs]   # noqa: F405
 viBakti["trihAyaRI"] = [
     ["त्रिहायणी",     "त्रिहायण्यौ",     "त्रिहायण्यः"],
@@ -2282,9 +2264,8 @@ viBakti["trihAyaRI"] = [
 # in 'r' (no sandhi at r+h) → caturhāyana. Vārttika n→ṇ → caturhāyaṇa →
 # caturhāyaṇī = चतुर्हायणी.
 prAtipadika["caturhAyaRI"] = [as_purva_pada(catur), luk_sup,
-                              in_context(in_context(in_context(in_context(
-                                  in_compound(hAyana), "bahuvrIhi"),
-                                  "saMKyAdi"), "vayasi"), "triCatur"),
+                              in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
+                                         "vayasi"),
                               strI_abs]   # noqa: F405
 viBakti["caturhAyaRI"] = [
     ["चतुर्हायणी",     "चतुर्हायण्यौ",     "चतुर्हायण्यः"],
@@ -2302,8 +2283,7 @@ viBakti["caturhAyaRI"] = [
 # example: त्रिहायना शाला 'a hall of three years' standing'. 8.4.1 ṇatva also
 # blocked by intervening 'h' on the stem and suffix 'n'.
 prAtipadika["trihAyanA"] = [as_purva_pada(tri), luk_sup,
-                            in_context(in_context(in_compound(hAyana), "bahuvrIhi"),
-                                       "saMKyAdi"),
+                            in_context(in_compound(hAyana), "bahuvrIhi"),
                             strI_abs]   # noqa: F405
 viBakti["trihAyanA"] = [
     ["त्रिहायना",     "त्रिहायने",         "त्रिहायनाः"],
@@ -2448,10 +2428,12 @@ viBakti["gRhapatnI"] = [
 ]
 
 # ── SK492 (4.1.35 नित्यं सपत्न्यादिषु) ───────────────────────────────────────
-# Pre-substituted ?sapatnyAdi stems (Q3 deferral): sapati (Vasu's सभावोऽपि
-# niyama on समान), ekapati, vIrapati. SK492 substitutes i→n; SK453 NIp → सपत्नी
-# etc. Declines like nadī.
-prAtipadika["sapatnI"] = [sapati, strI_abs]   # noqa: F405
+# Built live as pūrva + pati compounds (sa/eka/vīra + pati); SK492 peeks the
+# pūrva-pada identity (llp: [=sa, =eka, =vIra]) to force the nitya i→n, then
+# SK453 NIp → सपत्नी etc. The समान→स niyama uses the reduced pūrva-pada sa_pUrva.
+# Declines like nadī (gṛhapatnī pattern: ?pati from the uttara-pada → 1.4.8.1
+# blocks Ghi, 1.4.3 nadī applies).
+prAtipadika["sapatnI"] = [as_purva_pada(sa_pUrva), luk_sup, in_compound(pati), strI_abs]   # noqa: F405
 viBakti["sapatnI"] = [
     ["सपत्नी",     "सपत्न्यौ",     "सपत्न्यः"],
     ["सपत्नीम्",   "सपत्न्यौ",     "सपत्नीः"],
@@ -2463,7 +2445,7 @@ viBakti["sapatnI"] = [
     ["सपत्नि",     "सपत्न्यौ",     "सपत्न्यः"],
 ]
 
-prAtipadika["ekapatnI"] = [ekapati, strI_abs]   # noqa: F405
+prAtipadika["ekapatnI"] = [as_purva_pada(eka_pUrva), luk_sup, in_compound(pati), strI_abs]   # noqa: F405
 viBakti["ekapatnI"] = [
     ["एकपत्नी",     "एकपत्न्यौ",     "एकपत्न्यः"],
     ["एकपत्नीम्",   "एकपत्न्यौ",     "एकपत्नीः"],
@@ -2475,7 +2457,7 @@ viBakti["ekapatnI"] = [
     ["एकपत्नि",     "एकपत्न्यौ",     "एकपत्न्यः"],
 ]
 
-prAtipadika["vIrapatnI"] = [vIrapati, strI_abs]   # noqa: F405
+prAtipadika["vIrapatnI"] = [as_purva_pada(vIra_pUrva), luk_sup, in_compound(pati), strI_abs]   # noqa: F405
 viBakti["vIrapatnI"] = [
     ["वीरपत्नी",     "वीरपत्न्यौ",     "वीरपत्न्यः"],
     ["वीरपत्नीम्",   "वीरपत्न्यौ",     "वीरपत्नीः"],
@@ -2889,6 +2871,163 @@ viBakti["bahvI"] = [
     [["बहो", "बह्वि"], ["बहू", "बह्व्यौ"], ["बहवः", "बह्व्यः"]],
 ]
 
+# तुङ्गकर्णी / तुङ्गकर्णा (f.) — SK511 (4.1.55 नासिकोदर…कर्णशृङ्गाच्च): a compound
+# ending in the svāṅga word karṇa → optional ṅīṣ. Demonstrates llp neighbour-peeking:
+# 4.1.55 fires only because the pūrva-pada tuṅga is present at the strī window (llp).
+# Two forks per cell: ṭāp (तुङ्गकर्णा-) and ṅīṣ/nadī (तुङ्गकर्णी-).
+prAtipadika["tuNgakarRA"] = [as_purva_pada(tuNga), luk_sup, in_compound(karRa), strI_abs]   # noqa: F405
+viBakti["tuNgakarRA"] = [
+    [["तुङ्गकर्णा", "तुङ्गकर्णी"], ["तुङ्गकर्णे", "तुङ्गकर्ण्यौ"], ["तुङ्गकर्णाः", "तुङ्गकर्ण्यः"]],
+    [["तुङ्गकर्णाम्", "तुङ्गकर्णीम्"], ["तुङ्गकर्णे", "तुङ्गकर्ण्यौ"], ["तुङ्गकर्णाः", "तुङ्गकर्णीः"]],
+    [["तुङ्गकर्णया", "तुङ्गकर्ण्या"], ["तुङ्गकर्णाभ्याम्", "तुङ्गकर्णीभ्याम्"], ["तुङ्गकर्णाभिः", "तुङ्गकर्णीभिः"]],
+    [["तुङ्गकर्णायै", "तुङ्गकर्ण्यै"], ["तुङ्गकर्णाभ्याम्", "तुङ्गकर्णीभ्याम्"], ["तुङ्गकर्णाभ्यः", "तुङ्गकर्णीभ्यः"]],
+    [["तुङ्गकर्णायाः", "तुङ्गकर्ण्याः"], ["तुङ्गकर्णाभ्याम्", "तुङ्गकर्णीभ्याम्"], ["तुङ्गकर्णाभ्यः", "तुङ्गकर्णीभ्यः"]],
+    [["तुङ्गकर्णायाः", "तुङ्गकर्ण्याः"], ["तुङ्गकर्णयोः", "तुङ्गकर्ण्योः"], ["तुङ्गकर्णानाम्", "तुङ्गकर्णीनाम्"]],
+    [["तुङ्गकर्णायाम्", "तुङ्गकर्ण्याम्"], ["तुङ्गकर्णयोः", "तुङ्गकर्ण्योः"], ["तुङ्गकर्णासु", "तुङ्गकर्णीषु"]],
+    [["तुङ्गकर्णे", "तुङ्गकर्णि"], ["तुङ्गकर्णे", "तुङ्गकर्ण्यौ"], ["तुङ्गकर्णाः", "तुङ्गकर्ण्यः"]],
+]
+
+# ── SK506–515: svāṅga / compound strī cluster (4.1.50–60), llp/lp peeking ──
+# All composed live as [as_purva_pada(PŪRVA), luk_sup, in_compound(UTTARA), strI_abs]
+# so lp(=uttara) carries ?samAsa and llp(=pūrva) is peekable. SK506/507 mandatory
+# ṅīṣ; SK510 optional (both forks); SK512/513/514 niṣedha → ṭāp only; SK515 ṅīp only.
+# Counters: sugulPA (conjunct upadhā→ṭāp), tAmramuKI (no saṃjñā→ṅīṣ).
+prAtipadika["vastrakrItI"] = [as_purva_pada(vastra), luk_sup, in_compound(krIta), strI_abs]   # noqa: F405
+viBakti["vastrakrItI"] = [
+    ["वस्त्रक्रीती", "वस्त्रक्रीत्यौ", "वस्त्रक्रीत्यः"],
+    ["वस्त्रक्रीतीम्", "वस्त्रक्रीत्यौ", "वस्त्रक्रीतीः"],
+    ["वस्त्रक्रीत्या", "वस्त्रक्रीतीभ्याम्", "वस्त्रक्रीतीभिः"],
+    ["वस्त्रक्रीत्यै", "वस्त्रक्रीतीभ्याम्", "वस्त्रक्रीतीभ्यः"],
+    ["वस्त्रक्रीत्याः", "वस्त्रक्रीतीभ्याम्", "वस्त्रक्रीतीभ्यः"],
+    ["वस्त्रक्रीत्याः", "वस्त्रक्रीत्योः", "वस्त्रक्रीतीनाम्"],
+    ["वस्त्रक्रीत्याम्", "वस्त्रक्रीत्योः", "वस्त्रक्रीतीषु"],
+    ["वस्त्रक्रीति", "वस्त्रक्रीत्यौ", "वस्त्रक्रीत्यः"],
+]
+
+prAtipadika["aBraliptI"] = [as_purva_pada(aBra), luk_sup, in_compound(lipta), strI_abs]   # noqa: F405
+viBakti["aBraliptI"] = [
+    ["अभ्रलिप्ती", "अभ्रलिप्त्यौ", "अभ्रलिप्त्यः"],
+    ["अभ्रलिप्तीम्", "अभ्रलिप्त्यौ", "अभ्रलिप्तीः"],
+    ["अभ्रलिप्त्या", "अभ्रलिप्तीभ्याम्", "अभ्रलिप्तीभिः"],
+    ["अभ्रलिप्त्यै", "अभ्रलिप्तीभ्याम्", "अभ्रलिप्तीभ्यः"],
+    ["अभ्रलिप्त्याः", "अभ्रलिप्तीभ्याम्", "अभ्रलिप्तीभ्यः"],
+    ["अभ्रलिप्त्याः", "अभ्रलिप्त्योः", "अभ्रलिप्तीनाम्"],
+    ["अभ्रलिप्त्याम्", "अभ्रलिप्त्योः", "अभ्रलिप्तीषु"],
+    ["अभ्रलिप्ति", "अभ्रलिप्त्यौ", "अभ्रलिप्त्यः"],
+]
+
+prAtipadika["atikeSI"] = [as_purva_pada(ati), luk_sup, in_compound(keSa), strI_abs]   # noqa: F405
+viBakti["atikeSI"] = [
+    [["अतिकेशा", "अतिकेशी"], ["अतिकेशे", "अतिकेश्यौ"], ["अतिकेशाः", "अतिकेश्यः"]],
+    [["अतिकेशाम्", "अतिकेशीम्"], ["अतिकेशे", "अतिकेश्यौ"], ["अतिकेशाः", "अतिकेशीः"]],
+    [["अतिकेशया", "अतिकेश्या"], ["अतिकेशाभ्याम्", "अतिकेशीभ्याम्"], ["अतिकेशाभिः", "अतिकेशीभिः"]],
+    [["अतिकेशायै", "अतिकेश्यै"], ["अतिकेशाभ्याम्", "अतिकेशीभ्याम्"], ["अतिकेशाभ्यः", "अतिकेशीभ्यः"]],
+    [["अतिकेशायाः", "अतिकेश्याः"], ["अतिकेशाभ्याम्", "अतिकेशीभ्याम्"], ["अतिकेशाभ्यः", "अतिकेशीभ्यः"]],
+    [["अतिकेशायाः", "अतिकेश्याः"], ["अतिकेशयोः", "अतिकेश्योः"], ["अतिकेशानाम्", "अतिकेशीनाम्"]],
+    [["अतिकेशायाम्", "अतिकेश्याम्"], ["अतिकेशयोः", "अतिकेश्योः"], ["अतिकेशासु", "अतिकेशीषु"]],
+    [["अतिकेशि", "अतिकेशे"], ["अतिकेशे", "अतिकेश्यौ"], ["अतिकेशाः", "अतिकेश्यः"]],
+]
+
+prAtipadika["candramuKI"] = [as_purva_pada(candra), luk_sup, in_compound(muKa), strI_abs]   # noqa: F405
+viBakti["candramuKI"] = [
+    [["चन्द्रमुखा", "चन्द्रमुखी"], ["चन्द्रमुखे", "चन्द्रमुख्यौ"], ["चन्द्रमुखाः", "चन्द्रमुख्यः"]],
+    [["चन्द्रमुखाम्", "चन्द्रमुखीम्"], ["चन्द्रमुखे", "चन्द्रमुख्यौ"], ["चन्द्रमुखाः", "चन्द्रमुखीः"]],
+    [["चन्द्रमुखया", "चन्द्रमुख्या"], ["चन्द्रमुखाभ्याम्", "चन्द्रमुखीभ्याम्"], ["चन्द्रमुखाभिः", "चन्द्रमुखीभिः"]],
+    [["चन्द्रमुखायै", "चन्द्रमुख्यै"], ["चन्द्रमुखाभ्याम्", "चन्द्रमुखीभ्याम्"], ["चन्द्रमुखाभ्यः", "चन्द्रमुखीभ्यः"]],
+    [["चन्द्रमुखायाः", "चन्द्रमुख्याः"], ["चन्द्रमुखाभ्याम्", "चन्द्रमुखीभ्याम्"], ["चन्द्रमुखाभ्यः", "चन्द्रमुखीभ्यः"]],
+    [["चन्द्रमुखायाः", "चन्द्रमुख्याः"], ["चन्द्रमुखयोः", "चन्द्रमुख्योः"], ["चन्द्रमुखानाम्", "चन्द्रमुखीनाम्"]],
+    [["चन्द्रमुखायाम्", "चन्द्रमुख्याम्"], ["चन्द्रमुखयोः", "चन्द्रमुख्योः"], ["चन्द्रमुखासु", "चन्द्रमुखीषु"]],
+    [["चन्द्रमुखि", "चन्द्रमुखे"], ["चन्द्रमुखे", "चन्द्रमुख्यौ"], ["चन्द्रमुखाः", "चन्द्रमुख्यः"]],
+]
+
+prAtipadika["sugulPA"] = [as_purva_pada(su_pUrva), luk_sup, in_compound(gulPa), strI_abs]   # noqa: F405
+viBakti["sugulPA"] = [
+    ["सुगुल्फा", "सुगुल्फे", "सुगुल्फाः"],
+    ["सुगुल्फाम्", "सुगुल्फे", "सुगुल्फाः"],
+    ["सुगुल्फया", "सुगुल्फाभ्याम्", "सुगुल्फाभिः"],
+    ["सुगुल्फायै", "सुगुल्फाभ्याम्", "सुगुल्फाभ्यः"],
+    ["सुगुल्फायाः", "सुगुल्फाभ्याम्", "सुगुल्फाभ्यः"],
+    ["सुगुल्फायाः", "सुगुल्फयोः", "सुगुल्फानाम्"],
+    ["सुगुल्फायाम्", "सुगुल्फयोः", "सुगुल्फासु"],
+    ["सुगुल्फे", "सुगुल्फे", "सुगुल्फाः"],
+]
+
+prAtipadika["kalyARakroqA"] = [as_purva_pada(kalyARa), luk_sup, in_compound(kroqa), strI_abs]   # noqa: F405
+viBakti["kalyARakroqA"] = [
+    ["कल्याणक्रोडा", "कल्याणक्रोडे", "कल्याणक्रोडाः"],
+    ["कल्याणक्रोडाम्", "कल्याणक्रोडे", "कल्याणक्रोडाः"],
+    ["कल्याणक्रोडया", "कल्याणक्रोडाभ्याम्", "कल्याणक्रोडाभिः"],
+    ["कल्याणक्रोडायै", "कल्याणक्रोडाभ्याम्", "कल्याणक्रोडाभ्यः"],
+    ["कल्याणक्रोडायाः", "कल्याणक्रोडाभ्याम्", "कल्याणक्रोडाभ्यः"],
+    ["कल्याणक्रोडायाः", "कल्याणक्रोडयोः", "कल्याणक्रोडानाम्"],
+    ["कल्याणक्रोडायाम्", "कल्याणक्रोडयोः", "कल्याणक्रोडासु"],
+    ["कल्याणक्रोडे", "कल्याणक्रोडे", "कल्याणक्रोडाः"],
+]
+
+prAtipadika["sujaGanA"] = [as_purva_pada(su_pUrva), luk_sup, in_compound(jaGana), strI_abs]   # noqa: F405
+viBakti["sujaGanA"] = [
+    ["सुजघना", "सुजघने", "सुजघनाः"],
+    ["सुजघनाम्", "सुजघने", "सुजघनाः"],
+    ["सुजघनया", "सुजघनाभ्याम्", "सुजघनाभिः"],
+    ["सुजघनायै", "सुजघनाभ्याम्", "सुजघनाभ्यः"],
+    ["सुजघनायाः", "सुजघनाभ्याम्", "सुजघनाभ्यः"],
+    ["सुजघनायाः", "सुजघनयोः", "सुजघनानाम्"],
+    ["सुजघनायाम्", "सुजघनयोः", "सुजघनासु"],
+    ["सुजघने", "सुजघने", "सुजघनाः"],
+]
+
+prAtipadika["sakeSA"] = [as_purva_pada(sa_pUrva), luk_sup, in_compound(keSa), strI_abs]   # noqa: F405
+viBakti["sakeSA"] = [
+    ["सकेशा", "सकेशे", "सकेशाः"],
+    ["सकेशाम्", "सकेशे", "सकेशाः"],
+    ["सकेशया", "सकेशाभ्याम्", "सकेशाभिः"],
+    ["सकेशायै", "सकेशाभ्याम्", "सकेशाभ्यः"],
+    ["सकेशायाः", "सकेशाभ्याम्", "सकेशाभ्यः"],
+    ["सकेशायाः", "सकेशयोः", "सकेशानाम्"],
+    ["सकेशायाम्", "सकेशयोः", "सकेशासु"],
+    ["सकेशे", "सकेशे", "सकेशाः"],
+]
+
+prAtipadika["SUrpaRaKA"] = [as_purva_pada(SUrpa), luk_sup, in_context(in_compound(naKa),'saMjYA'), strI_abs]   # noqa: F405
+viBakti["SUrpaRaKA"] = [
+    ["शूर्पनखा", "शूर्पनखे", "शूर्पनखाः"],
+    ["शूर्पनखाम्", "शूर्पनखे", "शूर्पनखाः"],
+    ["शूर्पनखया", "शूर्पनखाभ्याम्", "शूर्पनखाभिः"],
+    ["शूर्पनखायै", "शूर्पनखाभ्याम्", "शूर्पनखाभ्यः"],
+    ["शूर्पनखायाः", "शूर्पनखाभ्याम्", "शूर्पनखाभ्यः"],
+    ["शूर्पनखायाः", "शूर्पनखयोः", "शूर्पनखानाम्"],
+    ["शूर्पनखायाम्", "शूर्पनखयोः", "शूर्पनखासु"],
+    ["शूर्पनखे", "शूर्पनखे", "शूर्पनखाः"],
+]
+
+prAtipadika["tAmramuKI"] = [as_purva_pada(tAmra), luk_sup, in_compound(muKa), strI_abs]   # noqa: F405
+viBakti["tAmramuKI"] = [
+    [["ताम्रमुखा", "ताम्रमुखी"], ["ताम्रमुखे", "ताम्रमुख्यौ"], ["ताम्रमुखाः", "ताम्रमुख्यः"]],
+    [["ताम्रमुखाम्", "ताम्रमुखीम्"], ["ताम्रमुखे", "ताम्रमुख्यौ"], ["ताम्रमुखाः", "ताम्रमुखीः"]],
+    [["ताम्रमुखया", "ताम्रमुख्या"], ["ताम्रमुखाभ्याम्", "ताम्रमुखीभ्याम्"], ["ताम्रमुखाभिः", "ताम्रमुखीभिः"]],
+    [["ताम्रमुखायै", "ताम्रमुख्यै"], ["ताम्रमुखाभ्याम्", "ताम्रमुखीभ्याम्"], ["ताम्रमुखाभ्यः", "ताम्रमुखीभ्यः"]],
+    [["ताम्रमुखायाः", "ताम्रमुख्याः"], ["ताम्रमुखाभ्याम्", "ताम्रमुखीभ्याम्"], ["ताम्रमुखाभ्यः", "ताम्रमुखीभ्यः"]],
+    [["ताम्रमुखायाः", "ताम्रमुख्याः"], ["ताम्रमुखयोः", "ताम्रमुख्योः"], ["ताम्रमुखानाम्", "ताम्रमुखीनाम्"]],
+    [["ताम्रमुखायाम्", "ताम्रमुख्याम्"], ["ताम्रमुखयोः", "ताम्रमुख्योः"], ["ताम्रमुखासु", "ताम्रमुखीषु"]],
+    [["ताम्रमुखि", "ताम्रमुखे"], ["ताम्रमुखे", "ताम्रमुख्यौ"], ["ताम्रमुखाः", "ताम्रमुख्यः"]],
+]
+
+# प्राङ्मुखी (SK515): dik pūrva-pada प्राच् derived live as pra+luk_sup+añc+kvin
+# (the existing prAc paradigm), tagged ?dik via in_context. The ?dik propagates
+# (tier-1) to the prāc-pada at the strī window's llp → SK515 ṅīp. The prāñc→prāṅ
+# pada-junction before m optionally takes anunāsika (8.4.45) → both प्राग्/प्राङ् forms.
+prAtipadika["prANmuKI"] = [pra, luk_sup, in_context(aYc_u, "dik"), kvin, luk_sup, in_compound(muKa), strI_abs]   # noqa: F405
+viBakti["prANmuKI"] = [
+    [["प्राग्मुखी", "प्राङ्मुखी"], ["प्राग्मुख्यौ", "प्राङ्मुख्यौ"], ["प्राग्मुख्यः", "प्राङ्मुख्यः"]],
+    [["प्राग्मुखीम्", "प्राङ्मुखीम्"], ["प्राग्मुख्यौ", "प्राङ्मुख्यौ"], ["प्राग्मुखीः", "प्राङ्मुखीः"]],
+    [["प्राग्मुख्या", "प्राङ्मुख्या"], ["प्राग्मुखीभ्याम्", "प्राङ्मुखीभ्याम्"], ["प्राग्मुखीभिः", "प्राङ्मुखीभिः"]],
+    [["प्राग्मुख्यै", "प्राङ्मुख्यै"], ["प्राग्मुखीभ्याम्", "प्राङ्मुखीभ्याम्"], ["प्राग्मुखीभ्यः", "प्राङ्मुखीभ्यः"]],
+    [["प्राग्मुख्याः", "प्राङ्मुख्याः"], ["प्राग्मुखीभ्याम्", "प्राङ्मुखीभ्याम्"], ["प्राग्मुखीभ्यः", "प्राङ्मुखीभ्यः"]],
+    [["प्राग्मुख्याः", "प्राङ्मुख्याः"], ["प्राग्मुख्योः", "प्राङ्मुख्योः"], ["प्राग्मुखीनाम्", "प्राङ्मुखीनाम्"]],
+    [["प्राग्मुख्याम्", "प्राङ्मुख्याम्"], ["प्राग्मुख्योः", "प्राङ्मुख्योः"], ["प्राग्मुखीषु", "प्राङ्मुखीषु"]],
+    [["प्राग्मुखि", "प्राङ्मुखि"], ["प्राग्मुख्यौ", "प्राङ्मुख्यौ"], ["प्राग्मुख्यः", "प्राङ्मुख्यः"]],
+]
+
 prAtipadika["gopI"] = [gopa, strI_abs]   # noqa: F405
 viBakti["gopI"] = [
     ["गोपी", "गोप्यौ", "गोप्यः"],
@@ -3197,7 +3336,7 @@ viBakti["karaBorU"] = [
     ["करभोरु", "करभोर्वौ", "करभोर्वः"],
 ]
 
-prAtipadika["saMhitorU"] = [saMhitoru, strI_abs]   # noqa: F405
+prAtipadika["saMhitorU"] = [as_purva_pada(saMhita), luk_sup, in_compound(Uru), strI_abs]   # noqa: F405
 viBakti["saMhitorU"] = [
     ["संहितोरूः", "संहितोर्वौ", "संहितोर्वः"],
     ["संहितोरूम्", "संहितोर्वौ", "संहितोरूः"],

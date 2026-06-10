@@ -710,6 +710,11 @@
       <h2>Input tokens</h2>
       <div class="token-list" id="token-list"></div>
       <button class="btn-add-token" onclick="addToken()">+ Add token</button>
+      <label class="option" style="margin-top:8px; display:block"
+             title="Appends the abstract feminine marker (strI_abs) after the tokens above. The grammar then picks the actual affix (Āp / ṄĪp / ṄĪṣ / ūṅ / cāp / ti) per SK454+.">
+        <input type="checkbox" id="custom-stri">
+        Feminine (append strī)
+      </label>
     </div>
 
     <div>
@@ -1697,6 +1702,17 @@
         }
         tokens.push(tok);
       }
+    }
+    // "Feminine (+ strī)" toggle — insert the abstract feminine marker so the
+    // grammar selects the right strī-pratyaya (Āp/ṄĪp/ṄĪṣ/ūṅ/cāp/ti) itself.
+    // The strī-pratyaya derives the feminine *stem*, so it must come BEFORE the
+    // case ending: insert it ahead of the first sup token (else append).
+    if (tokens.length && document.getElementById('custom-stri')?.checked) {
+      const stri = { type: 'pratyaya', name: 'strI_abs' };
+      const supIdx = tokens.findIndex(
+        t => t.type === 'pratyaya' && typeof t.name === 'string' && t.name.startsWith('sup.'));
+      if (supIdx >= 0) tokens.splice(supIdx, 0, stri);
+      else tokens.push(stri);
     }
     return tokens;
   }
