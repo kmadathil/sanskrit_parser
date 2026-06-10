@@ -5860,16 +5860,18 @@
 # sandhi (E+ī→āyī, O+ī→āvī); 6.4.148 यस्येति च drops the final 'a' automatically.
 # ṅīp vs ṅīṣ differ only by accent (not modelled) — both surface as ī.
 
-# 493: पूतक्रतोरै च (4.1.36) — pUtakratu final u → ai (udātta) + NIp.
-# Pattern mirrors 4.1.7 (वनो र च): substitute final char (xform) + select NIp
-# (update) in one rule. puṃyoga ('wife of') restriction deferred (fires always).
+# 493: पूतक्रतोरै च (4.1.36) — pūtakratu (live compound pūta + kratu) final u → ai
+# (udātta) + NIp. Peeks the pūrva-pada (llp: =pUta) and reads the kratu uttara
+# in-window (lp: =kratu); substitute final char (l→E) + select NIp in one rule
+# (mirrors 4.1.7). puṃyoga ('wife of') restriction deferred (fires always).
 - sutra: पूतक्रतोरै च
   domain: prakfti
   bahiranga: 2
   id: 4.1.36
   overrides: 4.1.4
   condition:
-     lp: ?pUtakratu
+     llp: =pUta
+     lp: =kratu
      rp: ?strI_abs
   xform:
      l: str("E")
@@ -5877,7 +5879,8 @@
      orp: =NIp
 
 # 494: वृषाकप्यग्निकुसितकुसिदानामुदात्तः (4.1.37) — vṛṣākapi/agni/kusita/kusida
-# final → ai (udātta) + NIp. → वृषाकपायी, अग्नायी, कुसितायी, कुसिदायी.
+# final → ai (udātta) + NIp. → वृषाकपायी, अग्नायी, कुसितायी, कुसिदायी. (वृषाकपि kept as a
+# single irregular ?vfzAkapyAdi stem — see pratipadika.py note.)
 - sutra: वृषाकप्यग्निकुसितकुसिदानामुदात्तः
   domain: prakfti
   bahiranga: 2

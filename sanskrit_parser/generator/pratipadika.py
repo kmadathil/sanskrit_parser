@@ -199,14 +199,17 @@ antarvat = Pratipadika("antarvat", "pum", other_tags=["antarvat_pativat"])
 pativat  = Pratipadika("pativat",  "pum", other_tags=["antarvat_pativat"])
 
 # ── SK493–499: feminine-affix substitution cluster (4.1.36–41 + 6.4.149) ──────
-# SK493 (4.1.36 पूतक्रतोरै च): final u → ai (= SLP1 'E', udātta) + NIp. The
-# puṃyoga ('wife of') semantic restriction (vārttika) is not modelled — the rule
-# fires unconditionally on pUtakratu → पूतक्रतायी (E+ī → āy+ī via 6.1.78).
-pUtakratu = Pratipadika("pUtakratu", "pum", other_tags=["pUtakratu"])
+# SK493 (4.1.36 पूतक्रतोरै च): final u → ai (= SLP1 'E', udātta) + NIp. Built live
+# as the compound pūta + kratu; 4.1.36 peeks the pūrva-pada (llp: =pUta) + reads the
+# kratu uttara in-window (lp: =kratu). → पूतक्रतायी (E+ī → āy+ī via 6.1.78).
+pUta  = Pratipadika("pUta",  "pum")   # SK493 pūrva-pada (pūtakratu)
+kratu = Pratipadika("kratu", "pum")   # SK493 uttara-pada (kratu)
 
-# SK494 (4.1.37 वृषाकप्यग्निकुसितकुसिदानामुदात्तः): same ai-substitute + NIp for
-# these four. Per SK (कुसिदशब्दो ह्रस्वमध्यः), kusita/kusida have a SHORT middle i
-# (not Vasu's कुसीद). → वृषाकपायी, अग्नायी, कुसितायी, कुसिदायी.
+# SK494 (4.1.37 वृषाकप्यग्निकुसितकुसिदानामुदात्तः): same ai-substitute + NIp for these
+# four. वृषाकपि is kept as a single irregular pratipadika (NOT a live compound): a live
+# vṛṣā+kapi exposes (a) the ?bahvAdi optional ṅīṣ on kapi and (b) gen-pl ṇatva across the
+# compound boundary (वृषाकपायीणाम्) which the single-pada stem handles for free.
+# Per SK (कुसिदशब्दो ह्रस्वमध्यः), kusita/kusida have a SHORT middle i (not Vasu's कुसीद).
 vfzAkapi = Pratipadika("vfzAkapi", "pum", other_tags=["vfzAkapyAdi"])
 agni     = Pratipadika("agni",     "pum", other_tags=["vfzAkapyAdi"])
 kusita   = Pratipadika("kusita",   "pum", other_tags=["vfzAkapyAdi"])
@@ -359,17 +362,24 @@ kukkuwa   = Pratipadika("kukkuwa",  "pum", other_tags=["jAti_ayopaDa"])   # kukk
 sUkara    = Pratipadika("sUkara",   "pum", other_tags=["jAti_ayopaDa"])   # sūkara (pig)
 
 # SK519 (4.1.64 पाककर्णपर्णपुष्पफलमूलवालोत्तरपदाच्च): jāti compounds ending in
-# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ even if stree-only. CLOSED list of
-# 7 uttarapada types; one representative compound per type is registered, tagged
-# ?pAkAdi_uttara. Vasu's seven examples: ओदनपाकी, शङ्कुकर्णी, शालपर्णी, शङ्खपुष्पी,
-# दासीफली, दर्भमूली, गोवाली.
-odanapAka  = Pratipadika("odanapAka",  "pum", other_tags=["pAkAdi_uttara"])   # ओदनपाकी  (pāka)
-SaNkukarRa = Pratipadika("SaNkukarRa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्कुकर्णी (karṇa)
-SAlaparRa  = Pratipadika("SAlaparRa",  "pum", other_tags=["pAkAdi_uttara"])   # शालपर्णी  (parṇa)
-SaNKapuzpa = Pratipadika("SaNKapuzpa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्खपुष्पी (puṣpa)
-dAsIPala   = Pratipadika("dAsIPala",   "pum", other_tags=["pAkAdi_uttara"])   # दासीफली  (phala)
-darBamUla  = Pratipadika("darBamUla",  "pum", other_tags=["pAkAdi_uttara"])   # दर्भमूली  (mūla)
-govAla     = Pratipadika("govAla",     "pum", other_tags=["pAkAdi_uttara"])   # गोवाली   (vāla)
+# pāka/karṇa/parṇa/puṣpa/phala/mūla/vāla → ṅīṣ even if stree-only. The rule reads the
+# uttara-pada in-window (lp: ?pAkAdi_uttara) — no llp peeking. parṇa/mūla/vāla are built
+# live (clean); the uttara carries ?pAkAdi_uttara per-instance via in_context (see
+# vibhaktis_list). puṣpa is live too: its gen-pl ṇatva (शङ्खपुष्पीणाम्) is *within* the
+# uttara-pada (ṣ in puṣpa), not across the boundary, so it works (unlike vṛṣākapi whose
+# ṣ sits in the pūrva). The other 3 stay preformed: pāka (↔ ajādi "young"), phala
+# (↔ dvigu-ajādi), karṇa (↔ SK511 svāṅga =karRa arm).
+odanapAka  = Pratipadika("odanapAka",  "pum", other_tags=["pAkAdi_uttara"])   # ओदनपाकी  (pāka, preformed)
+SaNkukarRa = Pratipadika("SaNkukarRa", "pum", other_tags=["pAkAdi_uttara"])   # शङ्कुकर्णी (karṇa, preformed)
+dAsIPala   = Pratipadika("dAsIPala",   "pum", other_tags=["pAkAdi_uttara"])   # दासीफली  (phala, preformed)
+# parṇa/puṣpa/mūla/vāla live-compound pieces (go pūrva already defined above):
+SAla  = Pratipadika("SAla",  "pum")    # śāla- pūrva (śālaparṇī)
+SaNKa = Pratipadika("SaNKa", "pum")    # śaṅkha- pūrva (śaṅkhapuṣpī)
+darBa = Pratipadika("darBa", "pum")    # darbha- pūrva (darbhamūlī)
+parRa = Pratipadika("parRa", "napum")  # parṇa uttara-pada
+puzpa = Pratipadika("puzpa", "napum")  # puṣpa uttara-pada
+mUla  = Pratipadika("mUla",  "napum")  # mūla uttara-pada
+vAla  = Pratipadika("vAla",  "napum")  # vāla uttara-pada
 
 # SK520 (4.1.65 इतो मनुष्यजातेः): i-final manuṣya-jāti (racial/regional words for
 # human groups) → ṅīṣ. Vasu examples: avantī (women of Avanti), kuntī, plākṣī.

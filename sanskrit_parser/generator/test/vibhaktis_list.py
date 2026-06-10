@@ -2507,7 +2507,7 @@ viBakti["pativatnI"] = [
 #   SK497 (4.1.40): other colour words → NIz             → सारङ्गी, कल्माषी
 #   SK498 (4.1.41): ṣit (nartaka) + gaurādi (gaura/matsya) → NIz → नर्तकी, गौरी, मत्सी
 #   SK499 (6.4.149): matsya upadhā y-lopa (ābhīya, asiddha to 6.4.148) completes मत्सी
-prAtipadika["pUtakratAyI"] = [pUtakratu, strI_abs]   # noqa: F405
+prAtipadika["pUtakratAyI"] = [as_purva_pada(pUta), luk_sup, in_compound(kratu), strI_abs]   # noqa: F405
 viBakti["pUtakratAyI"] = [
     ["पूतक्रतायी", "पूतक्रताय्यौ", "पूतक्रताय्यः"],
     ["पूतक्रतायीम्", "पूतक्रताय्यौ", "पूतक्रतायीः"],
@@ -3180,7 +3180,7 @@ viBakti["SaNkukarRI"] = [
     ["शङ्कुकर्णि", "शङ्कुकर्ण्यौ", "शङ्कुकर्ण्यः"],
 ]
 
-prAtipadika["SAlaparRI"] = [SAlaparRa, strI_abs]   # noqa: F405
+prAtipadika["SAlaparRI"] = [SAla, in_context(in_compound(parRa), "pAkAdi_uttara"), strI_abs]   # noqa: F405
 viBakti["SAlaparRI"] = [
     ["शालपर्णी", "शालपर्ण्यौ", "शालपर्ण्यः"],
     ["शालपर्णीम्", "शालपर्ण्यौ", "शालपर्णीः"],
@@ -3192,7 +3192,7 @@ viBakti["SAlaparRI"] = [
     ["शालपर्णि", "शालपर्ण्यौ", "शालपर्ण्यः"],
 ]
 
-prAtipadika["SaNKapuzpI"] = [SaNKapuzpa, strI_abs]   # noqa: F405
+prAtipadika["SaNKapuzpI"] = [SaNKa, in_context(in_compound(puzpa), "pAkAdi_uttara"), strI_abs]   # noqa: F405
 viBakti["SaNKapuzpI"] = [
     ["शङ्खपुष्पी", "शङ्खपुष्प्यौ", "शङ्खपुष्प्यः"],
     ["शङ्खपुष्पीम्", "शङ्खपुष्प्यौ", "शङ्खपुष्पीः"],
@@ -3216,7 +3216,7 @@ viBakti["dAsIPalI"] = [
     ["दासीफलि", "दासीफल्यौ", "दासीफल्यः"],
 ]
 
-prAtipadika["darBamUlI"] = [darBamUla, strI_abs]   # noqa: F405
+prAtipadika["darBamUlI"] = [darBa, in_context(in_compound(mUla), "pAkAdi_uttara"), strI_abs]   # noqa: F405
 viBakti["darBamUlI"] = [
     ["दर्भमूली", "दर्भमूल्यौ", "दर्भमूल्यः"],
     ["दर्भमूलीम्", "दर्भमूल्यौ", "दर्भमूलीः"],
@@ -3228,7 +3228,7 @@ viBakti["darBamUlI"] = [
     ["दर्भमूलि", "दर्भमूल्यौ", "दर्भमूल्यः"],
 ]
 
-prAtipadika["govAlI"] = [govAla, strI_abs]   # noqa: F405
+prAtipadika["govAlI"] = [go, in_context(in_compound(vAla), "pAkAdi_uttara"), strI_abs]   # noqa: F405
 viBakti["govAlI"] = [
     ["गोवाली", "गोवाल्यौ", "गोवाल्यः"],
     ["गोवालीम्", "गोवाल्यौ", "गोवालीः"],
