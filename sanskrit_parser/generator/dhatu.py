@@ -54,3 +54,25 @@ Sf = Dhatu("Sf", its=[])   # √śṛ "to break/destroy"; ig-anta — SK2168 gu�
 veY_smp = Dhatu("u", its=["Y"])
 
 aYc_u = Dhatu("aYc", its=['u'])     # √añc with u-it; anidita → SK415 applies; ?aYc → SK361 nUM
+
+
+# ── Kāraka layer (karaka_plan.md §2/§6) ──────────────────────────────────────
+# Verb meaning-class tags (gatyarTa, rucyarTa, SabdakarmA, akarmaka, …) ride on
+# Dhatu(..., other_tags=[...]) as the kāraka phases K1/K4 introduce them; the
+# kāraka pre-pass reads them from the sentence dhātu via rp.
+
+def tinanta_pada(form, prayoga, meaning_tags=()):
+    """Pre-formed tiṅanta pada (karaka_plan.md §6): surface form + prayoga
+    (kartari/karmaRi/BAve) + dhātu meaning-class tags. Until tiṅanta
+    derivation exists, the verb enters a sentence as this finished pada; the
+    kāraka pre-pass reads only its tags (?tiNanta also stubs the sup-insertion
+    tiṅ branch), so real tiṅanta derivation can replace it later without
+    touching the rule set."""
+    p = PaninianObject(form, encoding=sanscript.SLP1)
+    for t in ("pada", "tiNanta", prayoga, *meaning_tags):
+        p.setTag(t)
+    return p
+
+
+Bajati  = tinanta_pada("Bajati",  "kartari")   # भजति "worships"
+sevyate = tinanta_pada("sevyate", "karmaRi")   # सेव्यते "is served"

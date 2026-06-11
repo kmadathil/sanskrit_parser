@@ -190,6 +190,18 @@ class PaninianObject(SanskritObject):
         # (?dik) at the strī window's llp — must survive the pūrva-pada+luk_sup
         # merge so the (uttara | strI_abs) window's left-neighbour still carries them.
         _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik"])
+        # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
+        # through every merge so kṛt/taddhita/strī-derived nouns keep their
+        # semantic/kāraka/vibhakti view. The guard tags are kAraka and
+        # has_viBakti — the latter named to avoid the bare "viBakti" tag the
+        # sup pratyayas carry. viBakti_N/vacana_M are digit-suffixed only, so
+        # the pre-existing viBakti_pada marker keeps its merge behaviour.
+        for t in first.tags:
+            if (t.startswith(("semantic_", "kAraka_"))
+                    or (t.startswith("viBakti_") and t[8:].isdigit())
+                    or (t.startswith("vacana_") and t[7:].isdigit())
+                    or t in ("kAraka", "has_viBakti")):
+                so.setTag(t)
         # saMKyA/avyaya: pūrva-pada CLASS tags read by SK485/486 (4.1.26/4.1.27) at the
         # strī window's llp. Unlike the role tags above these are general stem properties
         # (a bare saṃkhyā/avyaya in a vākya must NOT leak them), so they ride forward only

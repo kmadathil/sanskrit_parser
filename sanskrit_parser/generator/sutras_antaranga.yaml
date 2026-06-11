@@ -7170,4 +7170,152 @@
 
 # 321: तृतीयादिषु भाषितपुंस्कं पुंवद्गालवस्य (7-1-74)
 
+# ════════════════════════════════════════════════════════════════════════════
+# कारकप्रकरणम् (SK 532–646) — karaka_plan.md §2 conventions
+#
+# bahiranga: -1 is RESERVED for kāraka pre-pass rules (sentence-level tagging;
+# AntarangaPrakriya._karaka_prepass runs exactly this class on the synthetic
+# window lp = the noun, rp = the sentence's dhātu — NOT the physical
+# neighbour; llp/rrp are the physical neighbour words). Never assign -1
+# merely as a priority boost.
+#
+# Tag conventions:
+#   - semantic_* : input primitives in the sutra wording (never kāraka names)
+#   - kartari/karmaRi/BAve : prayoga tags on the pre-formed verb pada (SK536
+#     anabhihite = reading these via rp); SK534 kArake = the pre-pass scope —
+#     both adhikāras are engine semantics, no YAML entries.
+#   - every kāraka-saṁjñā rule sets [+kAraka_x, +kAraka], guards "?!kAraka"
+#     (1.4.1 ekā saṁjñā); conflicts resolve by 1.4.2 vipratiṣedhe param
+#     (engine carve-out: both in 1.4.23–1.4.98 → higher aps wins).
+#   - every vibhakti rule sets [+viBakti_N, +has_viBakti], guards
+#     "?!has_viBakti". The guard is has_viBakti, NOT viBakti — the sup
+#     pratyayas already carry a bare ?viBakti tag.
+#   - ?tag inside [and, …] flow lists must be quoted.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 535: कर्तुरीप्सिततमं कर्म (1.4.49) — what the agent most desires to reach → karma
+- sutra: कर्तुरीप्सिततमं कर्म
+  id: 1.4.49
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_Ipsitatama"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_karma, +kAraka]
+
+# 559: स्वतन्त्रः कर्ता (1.4.54) — the independent participant → kartṛ
+- sutra: स्वतन्त्रः कर्ता
+  id: 1.4.54
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_svatantra"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_kartA, +kAraka]
+
+# 560: साधकतमं करणम् (1.4.42) — the most effective means → karaṇa
+- sutra: साधकतमं करणम्
+  id: 1.4.42
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_sADakatama"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_karaRa, +kAraka]
+
+# 537: कर्मणि द्वितीया (2.3.2) — anabhihite (SK536) via the verb's prayoga tag:
+# in karmaṇi prayoga the karma is abhihita (expressed by the tiṅ) and falls
+# through to 2.3.46 prathamā instead.
+- sutra: कर्मणि द्वितीया
+  id: 2.3.2
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?kAraka_karma"
+      - "?!has_viBakti"
+    rp: "?!karmaRi"
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+
+# 561: कर्तृकरणयोस्तृतीया (2.3.18) — anabhihita kartṛ, and karaṇa (never
+# abhihita by tiṅ in our scope) → tṛtīyā. रामेण (सेव्यते), बाणेन.
+- sutra: कर्तृकरणयोस्तृतीया
+  id: 2.3.18
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?kAraka_kartA"
+        - "?!has_viBakti"
+      rp: "?!kartari"
+    - lp:
+        - and
+        - "?kAraka_karaRa"
+        - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 533: संबोधने च (2.3.47) — sambodhana → row 8 of the sup table (sambuddhi).
+# हे राम. Para (23047 > 23046) beats 2.3.46; the ?!semantic_samboDana guard
+# there keeps the competition out of the nitya simulation entirely.
+- sutra: संबोधने च
+  id: 2.3.47
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_samboDana"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_8, +has_viBakti]
+
+# 606: षष्ठी शेषे (2.3.50) — non-kāraka relation (sva-svāmi-bhāva etc.) →
+# ṣaṣṭhī. रामस्य पुत्रः. Pulled forward from K6 as the śeṣa fallback.
+- sutra: षष्ठी शेषे
+  id: 2.3.50
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_Seza"
+      - "?!has_viBakti"
+      - "?!kAraka"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 532: प्रातिपदिकार्थलिङ्गपरिमाणवचनमात्रे प्रथमा (2.3.46) — prathamā for mere
+# stem-meaning (arm 1) and for an abhihita kāraka (arms 2–3: the prayoga tag
+# on the verb already expresses it — SK536's flip side). कृष्णः, हरिः सेव्यते,
+# रामो (हरिं भजति).
+- sutra: प्रातिपदिकार्थलिङ्गपरिमाणवचनमात्रे प्रथमा
+  id: 2.3.46
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!kAraka"
+        - "?!has_viBakti"
+        - "?!semantic_Seza"
+        - "?!semantic_samboDana"
+    - lp:
+        - and
+        - "?kAraka_karma"
+        - "?!has_viBakti"
+      rp: "?karmaRi"
+    - lp:
+        - and
+        - "?kAraka_kartA"
+        - "?!has_viBakti"
+      rp: "?kartari"
+  update:
+    olp: [+viBakti_1, +has_viBakti]
+
 
