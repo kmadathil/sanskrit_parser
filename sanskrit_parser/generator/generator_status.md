@@ -578,6 +578,27 @@ kāraka-free, the 1.4.49-beats-1.4.42 param carve-out, the skip-guard no-op, two
 karma nouns, sambodhana inside a verb sentence. Three assertion levels per case
 (kAraka_* tag, viBakti_N tag set, surface forms) + fired-trace checks.
 
+### Kāraka sentences from the CLI (`scripts/sanskrit_generator`)
+
+`cmd_line.py` gains `-k`/`--karaka <stem> [vacana] [sem…]` (a participant noun:
+deep-copies the predefined pratipadika by its SLP1 name, sets `vacana_<N>` and each
+`semantic_<prim>` tag) and `-w`/`--word <name>` (a verb pada / particle, e.g.
+`Bajati`, `sevyate`, `he`); both share one dest so word order is preserved. The
+engine's pre-pass then assigns the kāraka/vibhakti tags and inserts sups. Default
+output is avasāna-separated per-word forms; `--sandhi` runs the words together for
+the connected sentence. Examples:
+
+```
+scripts/sanskrit_generator -k hari 1 Ipsitatama -w Bajati            # हरिम् । भजति
+scripts/sanskrit_generator -k hari 1 Ipsitatama -w Bajati --sandhi   # हरिं भजति
+scripts/sanskrit_generator -k hari 1 Ipsitatama -k rAma 1 svatantra -w sevyate  # हरिः । रामेण । सेव्यते
+scripts/sanskrit_generator -w he -k rAma 1 samboDana                 # हे राम
+scripts/sanskrit_generator -k rAma 1 Seza -k putra 1                 # रामस्य । पुत्रः
+```
+
+It prints the per-word kāraka summary (kAraka_*/viBakti_N + fired sutras); `-a`
+(the existing trailing-avasāna option on the `-p/-d/-t/-s` path) is untouched.
+
 ### Stems with full 8×3 vibhakti tables (`vibhaktis_list.py`)
 
 | Stem | Linga | Class | Notes |

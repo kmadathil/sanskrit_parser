@@ -15,6 +15,7 @@ rootlogger.addHandler(logging.NullHandler())
 
 import sys
 import codecs
+from copy import deepcopy
 
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject
@@ -47,6 +48,46 @@ def run_pp(s, prakriya, sutra_list, verbose=False, tag_display=False):
     if verbose:
         p.describe(tag_display=tag_display)
     o = p.output()
+    return o
+
+
+# Kāraka sentence: assemble tagged participant nouns + verb/particle padas
+# (built by the -k/-w options) into one input list and run the engine. The
+# AntarangaPrakriya pre-pass assigns kāraka/vibhakti tags and inserts sups.
+def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_display=False):
+    # A single Adya marks sentence start (added once). By default each word is
+    # followed by its own avasAna (isolated per-word forms, no inter-word
+    # sandhi); with sandhi=True only a trailing avasAna is added so adjacent
+    # words sandhi together.
+    pl = [Adya]  # noqa: F405
+    for w in words:
+        pl.append(w)
+        if not sandhi:
+            pl.append(avasAna)  # noqa: F405
+    if sandhi:
+        pl.append(avasAna)  # noqa: F405
+    for w in words:
+        logger.info(f"{w} {w.tags}")
+    p = PrakriyaFactory(prakriya, sutra_list, PrakriyaVakya(pl))
+    p.execute()
+    if verbose:
+        p.describe(tag_display=tag_display)
+    o = p.output()
+    outs = [''.join([str(x) for x in y]) for y in o]
+    out_devs = [sanscript.transliterate(s, sanscript.SLP1, sanscript.DEVANAGARI) for s in outs]
+    print("Output:")
+    for s, d in zip(outs, out_devs):
+        print(f"  {d}  ({s})")
+    # Per-word kāraka summary from the pre-pass log.
+    klog = getattr(p, "karaka_log", [])
+    if klog:
+        print("Kāraka pre-pass:")
+        for e in klog:
+            kv = [t for t in e["tags"]
+                  if t.startswith("kAraka_")
+                  or (t.startswith("viBakti_") and t[8:].isdigit())]
+            fired = ", ".join(e["fired"]) if e["fired"] else "—"
+            print(f"  @{e['index']}: {', '.join(kv) or 'no tags'}  (fired: {fired})")
     return o
 
 
@@ -230,6 +271,61 @@ class CustomActionPurvaPada(Action):
             getattr(namespace, "pointer")[-1].append(as_purva_pada(globals()[v]))  # noqa: F405
 
 
+class CustomActionKaraka(Action):
+    """-k / --karaka <stem> [vacana] [sem ...]: a kāraka participant noun.
+
+    Builds a deep copy of the predefined pratipadika <stem>, sets vacana_<N>
+    (a digit token; default vacana_1) and each semantic primitive as a
+    semantic_<prim> tag (used as-is if it already starts with "semantic_").
+    Appends to dest="karaka_words" — shared with --word so the sentence word
+    order is preserved across the two options. Does NOT touch last_option/pointer.
+    """
+    def __init__(self, option_strings, dest, nargs=None, **kwargs):
+        super(CustomActionKaraka, self).__init__(option_strings, dest, nargs, **kwargs)
+        logger.debug(f"Initializing CustomActionKaraka {option_strings}, {dest}")
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        logger.debug('%r %r %r' % (namespace, values, option_string))
+        if getattr(namespace, self.dest) is None:
+            setattr(namespace, self.dest, [])
+        stem = values[0]
+        assert stem in globals(), f"{stem} is not defined!"
+        obj = deepcopy(globals()[stem])
+        vacana = 1
+        sems = []
+        for tok in values[1:]:
+            if tok.isdigit():
+                vacana = int(tok)
+            elif tok.startswith("semantic_"):
+                sems.append(tok)
+            else:
+                sems.append("semantic_" + tok)
+        obj.setTag(f"vacana_{vacana}")
+        for s in sems:
+            obj.setTag(s)
+        getattr(namespace, self.dest).append(obj)
+
+
+class CustomActionWord(Action):
+    """-w / --word <name> ...: any predefined object by name (verb pada like
+    Bajati/sevyate, or a particle like he), appended as a deep copy with no
+    added tags. Shares dest="karaka_words" with --karaka to preserve order.
+    """
+    def __init__(self, option_strings, dest, nargs=None, **kwargs):
+        super(CustomActionWord, self).__init__(option_strings, dest, nargs, **kwargs)
+        logger.debug(f"Initializing CustomActionWord {option_strings}, {dest}")
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        logger.debug('%r %r %r' % (namespace, values, option_string))
+        if getattr(namespace, self.dest) is None:
+            setattr(namespace, self.dest, [])
+        if isinstance(values, str):
+            values = [values]
+        for v in values:
+            assert v in globals(), f"{v} is not defined!"
+            getattr(namespace, self.dest).append(deepcopy(globals()[v]))
+
+
 class CustomActionString(Action):
     def __init__(self, option_strings, dest, nargs=None, encoding=sanscript.SLP1, **kwargs):
         # if nargs is not None:
@@ -293,6 +389,15 @@ def get_args(argv=None):
     parser.add_argument('-B', '--bahuvrihi', nargs="+", dest="inputs", action=CustomActionBahuvrihi,
                         help="Mark uttara-pada(s) as in_compound(...) + ?bahuvrIhi (samāsa added automatically)")
     parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=sanscript.SLP1, action=CustomActionString)
+    parser.add_argument('-k', '--karaka', nargs="+", dest="karaka_words", action=CustomActionKaraka,
+                        help="Kāraka participant noun: <stem> [vacana] [semantic_primitive ...] "
+                             "(e.g. -k hari 1 Ipsitatama)")
+    parser.add_argument('-w', '--word', nargs="+", dest="karaka_words", action=CustomActionWord,
+                        help="Predefined object (verb pada, particle) by name for a kāraka sentence "
+                             "(e.g. -w Bajati)")
+    parser.add_argument("--sandhi", action="store_true",
+                        help="Kāraka sentence: apply inter-word sandhi (connected sentence) "
+                             "instead of the default avasāna-separated per-word forms")
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -315,6 +420,13 @@ def cmd_line():
     sutra_list = SutraFactory(args.sutra_file)
     if args.debug:
         enable_file_logger(level=logging.DEBUG)
+    # Kāraka sentence path (-k / -w): assemble a tagged sentence and run it
+    # through the engine, which does the kāraka pre-pass + sup insertion.
+    if getattr(args, "karaka_words", None):
+        run_karaka(args.karaka_words, args.prakriya, sutra_list,
+                   sandhi=args.sandhi, verbose=args.verbose,
+                   tag_display=args.tag_display)
+        return
     logger.info(f"Inputs {args.inputs}")
     for i in args.inputs:
         def _i(x):
