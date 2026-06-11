@@ -14,7 +14,7 @@ from itertools import product
 import pytest
 from indic_transliteration import sanscript
 
-from sanskrit_parser.generator.paninian_object import PaninianObject
+from sanskrit_parser.generator.paninian_object import PaninianObject, _is_karaka_tag
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna
@@ -95,3 +95,14 @@ def test_karaka(case):
     if got != expected_sentences:
         print(f"Got {got} expected {expected_sentences}")
     assert got == expected_sentences
+
+    # Issue-2 guard: kāraka-section tags are pre-pass scaffolding and must not
+    # leak onto a realized pada / merged sentence. Every output pada must be
+    # free of them. (A bare stem that never took a sup — e.g. the skip-guard
+    # case — is not a pada and legitimately keeps its input vacana_N tag.)
+    for branch in p.output():
+        for obj in branch:
+            if obj.hasTag("pada"):
+                leaked = [t for t in obj.tags if _is_karaka_tag(t)]
+                assert not leaked, \
+                    f"{case['label']}: kāraka tags leaked onto pada {obj}: {leaked}"

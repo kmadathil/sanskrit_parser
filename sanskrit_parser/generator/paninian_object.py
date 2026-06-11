@@ -14,6 +14,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _is_karaka_tag(t):
+    """True for the kāraka-section tag families (karaka_plan.md §2): the
+    semantic_*/kAraka_*/viBakti_N/vacana_M tags and the kAraka/has_viBakti
+    guards. The digit suffix checks exclude the pre-existing viBakti_pada
+    sup-merge marker (and any future *_pada variant) from this set."""
+    return (t.startswith(("semantic_", "kAraka_"))
+            or (t.startswith("viBakti_") and t[8:].isdigit())
+            or (t.startswith("vacana_") and t[7:].isdigit())
+            or t in ("kAraka", "has_viBakti"))
+
+
 class PaninianObject(SanskritObject):
     """ Paninian Object Class: Derived From SanskritObject
 
@@ -191,16 +202,13 @@ class PaninianObject(SanskritObject):
         # merge so the (uttara | strI_abs) window's left-neighbour still carries them.
         _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik"])
         # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
-        # through every merge so kṛt/taddhita/strī-derived nouns keep their
-        # semantic/kāraka/vibhakti view. The guard tags are kAraka and
-        # has_viBakti — the latter named to avoid the bare "viBakti" tag the
-        # sup pratyayas carry. viBakti_N/vacana_M are digit-suffixed only, so
-        # the pre-existing viBakti_pada marker keeps its merge behaviour.
+        # through every merge so a kṛt/taddhita/strī-derived noun keeps its
+        # semantic/kāraka/vibhakti view until its sup attaches. The guard tags
+        # are kAraka and has_viBakti — the latter named to avoid the bare
+        # "viBakti" tag the sup pratyayas carry. These are stripped again once
+        # the result is a pada (see the pada-strip at the end of join_objects).
         for t in first.tags:
-            if (t.startswith(("semantic_", "kAraka_"))
-                    or (t.startswith("viBakti_") and t[8:].isdigit())
-                    or (t.startswith("vacana_") and t[7:].isdigit())
-                    or t in ("kAraka", "has_viBakti")):
+            if _is_karaka_tag(t):
                 so.setTag(t)
         # saMKyA/avyaya: pūrva-pada CLASS tags read by SK485/486 (4.1.26/4.1.27) at the
         # strī window's llp. Unlike the role tags above these are general stem properties
@@ -354,5 +362,16 @@ class PaninianObject(SanskritObject):
         # defensive against any future tag propagation.)
         if so.hasTag("antAdivat"):
             so.deleteTag("antAdivat")
+
+        # Kāraka-section tags are pre-pass scaffolding (karaka_plan.md §2): once
+        # the noun becomes a complete pada (its sup has attached), the vibhakti
+        # is realized, so strip these so they don't leak onto the pada or the
+        # merged sentence. A noun still mid-derivation (kṛdanta → prātipadika,
+        # not yet a pada) keeps them via the propagation above until its sup
+        # attaches.
+        if so.hasTag("pada"):
+            for t in list(so.tags):
+                if _is_karaka_tag(t):
+                    so.deleteTag(t)
 
         return so

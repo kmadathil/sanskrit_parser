@@ -404,8 +404,13 @@ class AntarangaPrakriya(PrakriyaBase):
             jx = ix + 1
             while jx < len(self.inputs):
                 nxt = self.inputs[jx]
-                if _isScalar(nxt) and (nxt.hasTag("krt") or nxt.hasTag("tadDita")
-                                       or nxt.hasTag("strI")):
+                # Only scroll past a kṛt/taddhita/strī *pratyaya* of the same
+                # word — never a following pratipadika that merely carries a
+                # strī (or other) tag, e.g. a feminine stem ramA, which is the
+                # next word and must get its own sup at its own position.
+                if (_isScalar(nxt) and nxt.hasTag("pratyaya")
+                        and (nxt.hasTag("krt") or nxt.hasTag("tadDita")
+                             or nxt.hasTag("strI"))):
                     jx += 1
                 else:
                     break

@@ -378,6 +378,24 @@ karaka_tests = [
         ],
     },
     {
+        # Feminine second noun: the sup-insertion scan must place rAma's su at
+        # rAma's own position and NOT scroll past the next word ramA just
+        # because ramA carries the strī tag (it is a pratipadika, not a
+        # pratyaya). Regression for the strī-stem sup-placement bug.
+        "label": "SK537-rama-ramaa-karma-feminine",
+        "sutras": ["1.4.54", "2.3.46", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "ramA", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["रामः"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["रमाम्"]},
+            {"forms": ["भजति"]},
+        ],
+    },
+    {
         # Sambodhana + kartari verb: the vocative is not a kāraka; the verb
         # sentence still derives around it.
         "label": "SK533-he-rama-harim-bhajati",
