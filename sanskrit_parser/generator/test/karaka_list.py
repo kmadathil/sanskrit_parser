@@ -649,4 +649,221 @@ karaka_tests = [
              "not_fired": ["2.3.4"], "forms": ["कृष्णः"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K2 — karmapravacanīya + dvitīyā (SK546–558; karaka_plan.md §K2).
+    # The particle is an avyaya carrying its per-usage sense tag; Pass A assigns
+    # karmapravacanIya + a governance-direction tag (kp_pUrva = governs the noun
+    # to its left; kp_para = to its right); 2.3.8 reads it via rrp/llp. Particles
+    # take their own su → 2.4.82 luk → bare avyaya form.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK547 (1.4.84) + SK548 (2.3.8): anu lakṣaṇa, noun precedes ───────────
+    {
+        # जपमनु प्रावर्षत् (reduced: जपम् अनु) — "rained along the japa".
+        "label": "SK548-japam-anu",
+        "sutras": ["1.4.84", "2.3.8"],
+        "sentence": [
+            {"stem": "japa", "vacana": 1, "sem": []},
+            {"word": "anu_kp", "sem": ["semantic_lakzaRa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.46"], "forms": ["जपम्"]},
+            {"forms": ["अनु"]},
+        ],
+    },
+    # ── SK549 (1.4.85): anu tṛtīyārtha ("along with") ───────────────────────
+    {
+        # नदीमन्ववसिता सेना (reduced: नदीम् अनु).
+        "label": "SK549-nadim-anu",
+        "sutras": ["1.4.85", "2.3.8"],
+        "sentence": [
+            {"stem": "nadI", "vacana": 1, "sem": []},
+            {"word": "anu_kp", "sem": ["semantic_tftIyArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["नदीम्"]},
+            {"forms": ["अनु"]},
+        ],
+    },
+    # ── SK550 (1.4.86): anu hīna, noun FOLLOWS (llp peek) ───────────────────
+    {
+        # अनु हरिं सुराः (reduced: अनु हरिम्) — "the suras are inferior to Hari".
+        "label": "SK550-anu-harim",
+        "sutras": ["1.4.86", "2.3.8"],
+        "sentence": [
+            {"word": "anu_kp", "sem": ["semantic_hIna"]},
+            {"stem": "hari", "vacana": 1, "sem": []},
+        ],
+        "expect": [
+            {"forms": ["अनु"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.46"], "forms": ["हरिम्"]},
+        ],
+    },
+    # ── SK551 (1.4.87): upa hīna, noun follows ──────────────────────────────
+    {
+        # हीने उप हरिं सुराः (reduced: उप हरिम्).
+        "label": "SK551-upa-harim",
+        "sutras": ["1.4.87", "2.3.8"],
+        "sentence": [
+            {"word": "upa_kp", "sem": ["semantic_hIna"]},
+            {"stem": "hari", "vacana": 1, "sem": []},
+        ],
+        "expect": [
+            {"forms": ["उप"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["हरिम्"]},
+        ],
+    },
+    # ── SK552 (1.4.90): prati lakṣaṇa / itthaṁbhūta, noun precedes ───────────
+    {
+        # वृक्षं प्रति विद्योतते विद्युत् (reduced: वृक्षं प्रति).
+        "label": "SK552-vrksam-prati",
+        "sutras": ["1.4.90", "2.3.8"],
+        "sentence": [
+            {"stem": "vfkza", "vacana": 1, "sem": []},
+            {"word": "prati_kp", "sem": ["semantic_lakzaRa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["वृक्षम्"]},
+            {"forms": ["प्रति"]},
+        ],
+    },
+    {
+        # भक्तो विष्णुं प्रति (reduced: विष्णुं प्रति) — itthaṁbhūta-ākhyāna.
+        "label": "SK552-visnum-prati-itthambhuta",
+        "sutras": ["1.4.90", "2.3.8"],
+        "sentence": [
+            {"stem": "vizRu", "vacana": 1, "sem": []},
+            {"word": "prati_kp", "sem": ["semantic_itTamBUta"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["विष्णुम्"]},
+            {"forms": ["प्रति"]},
+        ],
+    },
+    # ── SK553 (1.4.91): abhi lakṣaṇādi (not bhāga), noun precedes ────────────
+    {
+        # हरिमभि वर्तते (reduced: हरिम् अभि).
+        "label": "SK553-harim-abhi",
+        "sutras": ["1.4.91", "2.3.8"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": []},
+            {"word": "aBi_kp", "sem": ["semantic_lakzaRa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["हरिम्"]},
+            {"forms": ["अभि"]},
+        ],
+    },
+    # ── SK556 (1.4.95): ati atikramaṇa, noun follows ────────────────────────
+    {
+        # अति देवान् कृष्णः — "Kṛṣṇa surpasses the gods". devān → dvitīyā (llp ati);
+        # kṛṣṇa (not adjacent to ati) → prathamā.
+        "label": "SK556-ati-devan-krsnah",
+        "sutras": ["1.4.95", "2.3.8", "2.3.46"],
+        "sentence": [
+            {"word": "ati_kp", "sem": ["semantic_atikramaRa"]},
+            {"stem": "deva", "vacana": 3, "sem": []},
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अति"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["देवान्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.8"], "forms": ["कृष्णः"]},
+        ],
+    },
+    # ── Direction disambiguation: particle between two nouns ─────────────────
+    {
+        # कृष्णम् अनु रामः — anu in lakṣaṇa (kp_pUrva) governs the PRECEDING noun
+        # (kṛṣṇa → dvitīyā); rāma follows anu, so 2.3.8 (kp_para arm) does not fire
+        # on it → prathamā. Confirms only the intended noun is tagged.
+        "label": "SK548-krsnam-anu-ramah-direction",
+        "sutras": ["1.4.84", "2.3.8", "2.3.46"],
+        "sentence": [
+            {"stem": "kfzRa", "vacana": 1, "sem": []},
+            {"word": "anu_kp", "sem": ["semantic_lakzaRa"]},
+            {"stem": "rAma", "vacana": 1, "sem": []},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["कृष्णम्"]},
+            {"forms": ["अनु"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.8"], "forms": ["रामः"]},
+        ],
+    },
+    # ── SK555 (1.4.94): su pūjā — saṁjñā only, no dvitīyā ────────────────────
+    {
+        # सुसिक्तम् — su (pūjā) is karmapravacanīya but governs no noun (prefixed to
+        # a participle). Lone particle: fired-trace asserts the saṁjñā; su → सु.
+        "label": "SK555-su-pujayam",
+        "sutras": ["1.4.94"],
+        "sentence": [
+            {"word": "su_kp", "sem": ["semantic_pUjA"]},
+        ],
+        "expect": [
+            {"forms": ["सु"]},
+        ],
+    },
+    # ── SK557 (1.4.96): api sambhāvanā — saṁjñā only; sarpis ṣaṣṭhī, no dvitīyā ─
+    {
+        # सर्पिषोऽपि (reduced, avasāna-separated: सर्पिषः अपि) — api is
+        # karmapravacanīya (no direction tag), so 2.3.8 does NOT fire; sarpis is
+        # ṣaṣṭhī (modelled via śeṣa 2.3.50). द्वितीया तु नेह प्रवर्तते.
+        "label": "SK557-sarpisah-api",
+        "sutras": ["1.4.96", "2.3.50"],
+        "sentence": [
+            {"stem": "sarpis", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"word": "api_kp", "sem": ["semantic_saMBAvanA"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.8"], "forms": ["सर्पिषः"]},
+            {"forms": ["अपि"]},
+        ],
+    },
+    # ── SK558 (2.3.5): kāla/adhvan atyanta-saṁyoga → dvitīyā ─────────────────
+    {
+        # मासं कल्याणी — "beautiful for a month".
+        "label": "SK558-masam-kalyani",
+        "sutras": ["2.3.5", "2.3.46"],
+        "sentence": [
+            {"stem": "mAsa", "vacana": 1,
+             "sem": ["semantic_kAlADvan", "semantic_atyantasaMyoga"]},
+            {"stem": "kalyARI", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["मासम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["कल्याणी"]},
+        ],
+    },
+    {
+        # क्रोशं गिरिः — "the hill is a krośa (away/long)".
+        "label": "SK558-krosam-girih",
+        "sutras": ["2.3.5", "2.3.46"],
+        "sentence": [
+            {"stem": "kroSa", "vacana": 1,
+             "sem": ["semantic_kAlADvan", "semantic_atyantasaMyoga"]},
+            {"stem": "giri", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["क्रोशम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["गिरिः"]},
+        ],
+    },
+    {
+        # अत्यन्तसंयोगे किम् — मासस्य द्विरधीते: not continuous → ṣaṣṭhī, not dvitīyā.
+        "label": "SK558-negative-masasya",
+        "sutras": ["2.3.50"],
+        "sentence": [
+            {"stem": "mAsa", "vacana": 1,
+             "sem": ["semantic_kAlADvan", "semantic_Seza"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.5"], "forms": ["मासस्य"]},
+        ],
+    },
 ]

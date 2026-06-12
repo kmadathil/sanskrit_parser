@@ -345,10 +345,10 @@ class AntarangaPrakriya(PrakriyaBase):
                 break
             return (llp, rrp)
 
-        for ix, elem in list(_scalars()):
-            if not (elem.hasTag("prAtipadika")
-                    and any(t.startswith("vacana_") for t in elem.tags)):
-                continue
+        def _run_fixpoint(ix):
+            # Run the bahiranga == -1 rules on element ix (window = elem | dhātu)
+            # to fixpoint, mirroring _exec's disabled_sutras bookkeeping, and log.
+            elem = self.inputs[ix]
             fired = []
             while True:
                 ctx = _neighbours(ix)
@@ -377,6 +377,27 @@ class AntarangaPrakriya(PrakriyaBase):
                 elem = self.inputs[ix]
             self.karaka_log.append({"index": ix, "fired": fired,
                                     "tags": sorted(elem.tags)})
+
+        def _is_avyaya_particle(o):
+            # A karmapravacanīya particle: an avyaya word (nipAta/svarAdi) carrying
+            # a per-usage semantic sense tag (e.g. semantic_lakzaRa on anu).
+            return (o.hasTag("prAtipadika")
+                    and (o.hasTag("nipAta") or o.hasTag("svarAdi"))
+                    and _is_semantic(o))
+
+        # Pass A (karaka_plan.md §K2): particle saṁjñā. The karmapravacanīya
+        # saṁjñā (1.4.84–96) must attach to the particle BEFORE the governed noun
+        # is processed, so 2.3.8 can read it via llp/rrp regardless of word order.
+        for ix, elem in list(_scalars()):
+            if _is_avyaya_particle(elem):
+                _run_fixpoint(ix)
+        # Pass B: noun kāraka/vibhakti — the kāraka participants (?prAtipadika with
+        # a vacana_), excluding the avyaya particles handled in Pass A.
+        for ix, elem in list(_scalars()):
+            if (elem.hasTag("prAtipadika")
+                    and any(t.startswith("vacana_") for t in elem.tags)
+                    and not (elem.hasTag("nipAta") or elem.hasTag("svarAdi"))):
+                _run_fixpoint(ix)
         self._insert_sups()
 
     def _insert_sups(self):
@@ -397,10 +418,19 @@ class AntarangaPrakriya(PrakriyaBase):
                         if t.startswith("viBakti_") and t[8:].isdigit()), None)
             vac = next((t for t in o.tags
                         if t.startswith("vacana_") and t[7:].isdigit()), None)
-            if vib is None or vac is None:
+            if vib is None:
                 continue
             n = int(vib[8:])
-            m = int(vac[7:])
+            if vac is not None:
+                m = int(vac[7:])
+            elif o.hasTag("nipAta") or o.hasTag("svarAdi"):
+                # An avyaya is avibhaktika: it still takes a sup (eka-vacana su),
+                # which 2.4.82 (avyayādāpsupaḥ) luks later in the main scan. So a
+                # karmapravacanīya particle that took viBakti_1 (2.3.46) gets su →
+                # luk → the bare avyaya surface, faithfully (karaka_plan.md §K2).
+                m = 1
+            else:
+                continue
             jx = ix + 1
             while jx < len(self.inputs):
                 nxt = self.inputs[jx]

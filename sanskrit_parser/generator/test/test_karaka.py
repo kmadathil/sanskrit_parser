@@ -36,7 +36,13 @@ def _build_word(spec):
     if "verb" in spec:
         return deepcopy(getattr(_dhatu, spec["verb"]))
     if "word" in spec:
-        return deepcopy(getattr(_avyaya, spec["word"]))
+        # Particles (avyaya). A karmapravacanīya particle carries its per-usage
+        # sense tag at input (e.g. semantic_lakzaRa on anu); plain particles
+        # (he, antarA) carry none and pass through bare.
+        p = deepcopy(getattr(_avyaya, spec["word"]))
+        for t in spec.get("sem", []):
+            p.setTag(t)
+        return p
     raise ValueError(f"Unknown word spec {spec}")
 
 

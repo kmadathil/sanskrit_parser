@@ -85,7 +85,8 @@ def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_dis
         for e in klog:
             kv = [t for t in e["tags"]
                   if t.startswith("kAraka_")
-                  or (t.startswith("viBakti_") and t[8:].isdigit())]
+                  or (t.startswith("viBakti_") and t[8:].isdigit())
+                  or t in ("karmapravacanIya", "kp_pUrva", "kp_para")]
             fired = ", ".join(e["fired"]) if e["fired"] else "—"
             print(f"  @{e['index']}: {', '.join(kv) or 'no tags'}  (fired: {fired})")
     return o
@@ -307,9 +308,15 @@ class CustomActionKaraka(Action):
 
 
 class CustomActionWord(Action):
-    """-w / --word <name> ...: any predefined object by name (verb pada like
-    Bajati/sevyate, or a particle like he), appended as a deep copy with no
-    added tags. Shares dest="karaka_words" with --karaka to preserve order.
+    """-w / --word <name> [sem ...]: a predefined object by name (verb pada like
+    Bajati/sevyate, a plain particle like he, or a karmapravacanīya particle like
+    anu_kp), appended as a deep copy. Positional like -k (minus vacana): the
+    first token is the object; every following token is a semantic sense tag set
+    on it (bare → semantic_<tok>, or used as-is if already semantic_-prefixed) —
+    this is how a karmapravacanīya particle carries its per-usage sense, e.g.
+    `-w anu_kp lakzaRa` (anu in the lakṣaṇa sense → karmapravacanīya). For several
+    words give -w repeatedly (`-w he -w antarA`). Shares dest="karaka_words" with
+    --karaka to preserve sentence order.
     """
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         super(CustomActionWord, self).__init__(option_strings, dest, nargs, **kwargs)
@@ -321,9 +328,13 @@ class CustomActionWord(Action):
             setattr(namespace, self.dest, [])
         if isinstance(values, str):
             values = [values]
-        for v in values:
-            assert v in globals(), f"{v} is not defined!"
-            getattr(namespace, self.dest).append(deepcopy(globals()[v]))
+        name = values[0]
+        assert name in globals(), f"{name} is not defined!"
+        obj = deepcopy(globals()[name])
+        for tok in values[1:]:
+            tag = tok if tok.startswith("semantic_") else "semantic_" + tok
+            obj.setTag(tag)
+        getattr(namespace, self.dest).append(obj)
 
 
 class CustomActionString(Action):
@@ -393,8 +404,9 @@ def get_args(argv=None):
                         help="Kāraka participant noun: <stem> [vacana] [semantic_primitive ...] "
                              "(e.g. -k hari 1 Ipsitatama)")
     parser.add_argument('-w', '--word', nargs="+", dest="karaka_words", action=CustomActionWord,
-                        help="Predefined object (verb pada, particle) by name for a kāraka sentence "
-                             "(e.g. -w Bajati)")
+                        help="Predefined object (verb pada, particle) by name for a kāraka sentence, "
+                             "with optional semantic sense tags for a karmapravacanīya particle "
+                             "(e.g. -w Bajati ; -w anu_kp lakzaRa)")
     parser.add_argument("--sandhi", action="store_true",
                         help="Kāraka sentence: apply inter-word sandhi (connected sentence) "
                              "instead of the default avasāna-separated per-word forms")

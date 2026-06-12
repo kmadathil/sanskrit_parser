@@ -159,6 +159,21 @@ ekapade   = Pratipadika("ekapade",   "pum", other_tags=["nipAta"])   # एकप
 yut       = Pratipadika("yut",       "pum", other_tags=["nipAta"])   # युत्
 Atas      = Pratipadika("Atas",      "pum", other_tags=["nipAta"])   # आतस् → आतः
 
+# ── Kāraka Phase K2: karmapravacanīya particle words (karaka_plan.md §K2) ─────
+# Standalone avyaya words (passthrough like he/antarA): nipāta → SK447 avyaya →
+# 2.4.82 sup-luk. They carry their per-usage sense tag at input (semantic_lakzaRa
+# etc.); the pre-pass Pass A then assigns karmapravacanIya. Distinct from the
+# nipāta upasarga Pratyaya objects below (upa_upasarga/ati_upasarga).
+anu_kp   = Pratipadika("anu",   "pum", other_tags=["nipAta"])   # अनु (1.4.84/85/86, 1.4.90)
+upa_kp   = Pratipadika("upa",   "pum", other_tags=["nipAta"])   # उप (1.4.87)
+prati_kp = Pratipadika("prati", "pum", other_tags=["nipAta"])   # प्रति (1.4.90)
+pari_kp  = Pratipadika("pari",  "pum", other_tags=["nipAta"])   # परि (1.4.90)
+aBi_kp   = Pratipadika("aBi",   "pum", other_tags=["nipAta"])   # अभि (1.4.91)
+aDi_kp   = Pratipadika("aDi",   "pum", other_tags=["nipAta"])   # अधि (1.4.93, deferred)
+su_kp    = Pratipadika("su",    "pum", other_tags=["nipAta"])   # सु (1.4.94)
+ati_kp   = Pratipadika("ati",   "pum", other_tags=["nipAta"])   # अति (1.4.95)
+api_kp   = Pratipadika("api",   "pum", other_tags=["nipAta"])   # अपि (1.4.96)
+
 # ── nipāta upasargas ──────────────────────────────────────────────────────────
 AN_upasarga  = Pratyaya("A",   its=["N"], other_tags=["nipAta", "upasarga", "pada"])
 mAN_upasarga = Pratyaya("mA",  its=["N"], other_tags=["nipAta", "upasarga", "pada", "svarAdi"])

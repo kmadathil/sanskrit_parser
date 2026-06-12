@@ -7495,4 +7495,189 @@
   update:
     olp: [+viBakti_2, +has_viBakti]
 
+# ════════════════════════════════════════════════════════════════════════════
+# Phase K2 — karmapravacanīya + dvitīyā (SK 546–558; karaka_plan.md §K2)
+#
+# Pre-pass Pass A (antaranga_prakriya.py) runs these saṁjñā rules on the avyaya
+# *particle* element (?nipAta + a semantic_* sense tag) BEFORE the noun pass, so
+# 2.3.8 can read the particle's karmapravacanIya via llp/rrp. Each saṁjñā rule
+# matches the particle by literal (=anu …) + its sense primitive, guards
+# "?!karmapravacanIya" (ekā-saṁjñā), and writes +karmapravacanIya plus a
+# governance-direction tag: +kp_pUrva (governs the noun to its LEFT — japam anu)
+# or +kp_para (governs the noun to its RIGHT — anu harim). 2.3.8 is then
+# direction-keyed. The particle still takes its own su via 2.3.46 (avyaya →
+# 2.4.82 luk in the main scan), so no guard is added there.
+#
+# Sense long-tail deferred (Skipped, generator_status.md): bhāga/vīpsā (1.4.90),
+# vīpsā (1.4.91), padArTa/anvavasarga/garhA/samuccaya (1.4.96), and anu's
+# re-inclusion in 1.4.90 (its lakṣaṇa/tṛtīyārtha/hīna senses are 1.4.84/85/86;
+# 1.4.90 here covers prati/pari, sidestepping the 1.4.84-vs-1.4.90 overlap).
+# SK554 (1.4.93 adhi/pari anarthaka) deferred — needs the gati-saṁjñā/nighāta layer.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 547: अनुर्लक्षणे (1.4.84) — anu in the lakṣaṇa (mark) sense → karmapravacanīya;
+# the lakṣaṇa-noun precedes (kp_pUrva). जपमनु प्रावर्षत्.
+- sutra: अनुर्लक्षणे
+  id: 1.4.84
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anu"
+      - "?semantic_lakzaRa"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_pUrva]
+
+# 549: तृतीयार्थे (1.4.85) — anu in the tṛtīyā ("along with") sense → kp; noun
+# precedes. नदीमन्ववसिता सेना.
+- sutra: तृतीयार्थे
+  id: 1.4.85
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anu"
+      - "?semantic_tftIyArTa"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_pUrva]
+
+# 550: हीने (1.4.86) — anu in the hīna ("inferior to") sense → kp; the noun
+# FOLLOWS (kp_para). अनु हरिं सुराः.
+- sutra: हीने
+  id: 1.4.86
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anu"
+      - "?semantic_hIna"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_para]
+
+# 551: उपोऽधिके च (1.4.87) — upa in hīna (here) and adhika → kp; noun follows.
+# हीने उप हरिं सुराः. (The adhika sense → saptamī, 2.3.9 / K7 — deferred.)
+- sutra: उपोऽधिके च
+  id: 1.4.87
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=upa"
+      - "?semantic_hIna"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_para]
+
+# 552: लक्षणेत्थंभूताख्यानभागवीप्सासु प्रतिपर्यनवः (1.4.90) — prati/pari (here; anu's
+# senses are 1.4.84–86) in lakṣaṇa/itthaṁbhūta → kp; noun precedes (kp_pUrva).
+# वृक्षं प्रति विद्योतते, भक्तो विष्णुं प्रति. (bhāga/vīpsā senses deferred.)
+- sutra: लक्षणेत्थंभूताख्यानभागवीप्सासु प्रतिपर्यनवः
+  id: 1.4.90
+  bahiranga: -1
+  condition:
+    - lp: [and, "=prati", "?semantic_lakzaRa", "?!karmapravacanIya"]
+    - lp: [and, "=prati", "?semantic_itTamBUta", "?!karmapravacanIya"]
+    - lp: [and, "=pari", "?semantic_lakzaRa", "?!karmapravacanIya"]
+    - lp: [and, "=pari", "?semantic_itTamBUta", "?!karmapravacanIya"]
+  update:
+    olp: [+karmapravacanIya, +kp_pUrva]
+
+# 553: अभिरभागे (1.4.91) — abhi, except in the bhāga sense, in lakṣaṇādi → kp;
+# noun precedes. हरिमभि वर्तते, भक्तो हरिमभि. (vīpsā देवं देवमभि deferred.)
+- sutra: अभिरभागे
+  id: 1.4.91
+  bahiranga: -1
+  condition:
+    - lp: [and, "=aBi", "?semantic_lakzaRa", "?!karmapravacanIya"]
+    - lp: [and, "=aBi", "?semantic_itTamBUta", "?!karmapravacanIya"]
+  update:
+    olp: [+karmapravacanIya, +kp_pUrva]
+
+# 555: सुः पूजायाम् (1.4.94) — su in the pūjā sense → kp (saṁjñā only; su prefixes
+# a participle, no governed noun → no dvitīyā). सुसिक्तम् (anupasargatvāt na ṣatva).
+- sutra: सुः पूजायाम्
+  id: 1.4.94
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=su"
+      - "?semantic_pUjA"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya]
+
+# 556: अतिरतिक्रमणे च (1.4.95) — ati in atikramaṇa (and pūjā) → kp; noun follows.
+# अति देवान् कृष्णः.
+- sutra: अतिरतिक्रमणे च
+  id: 1.4.95
+  bahiranga: -1
+  condition:
+    - lp: [and, "=ati", "?semantic_atikramaRa", "?!karmapravacanIya"]
+    - lp: [and, "=ati", "?semantic_pUjA", "?!karmapravacanIya"]
+  update:
+    olp: [+karmapravacanIya, +kp_para]
+
+# 557: अपिः पदार्थसंभावनान्ववसर्गगर्हासमुच्चयेषु (1.4.96) — api in sambhāvanā etc. →
+# kp (saṁjñā only; द्वितीया तु नेह प्रवर्तते — no dvitīyā). अपि स्तुयाद्विष्णुम्.
+# (padArTa/anvavasarga/garhA/samuccaya senses deferred.)
+- sutra: अपिः पदार्थसंभावनान्ववसर्गगर्हासमुच्चयेषु
+  id: 1.4.96
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=api"
+      - "?semantic_saMBAvanA"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya]
+
+# 548: कर्मप्रवचनीययुक्ते द्वितीया (2.3.8) — a noun governed by a karmapravacanīya
+# → dvitīyā. Direction-keyed: arm A = the particle is the noun's rrp and governs
+# leftward (kp_pUrva); arm B = the particle is the noun's llp and governs
+# rightward (kp_para). जपमनु, अनु हरिम्. Apavāda to 2.3.46.
+- sutra: कर्मप्रवचनीययुक्ते द्वितीया
+  id: 2.3.8
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_pUrva"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_para"
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+
+# 558: कालाध्वनोरत्यन्तसंयोगे (2.3.5) — kāla/adhvan in continuous extent (atyanta-
+# saṁyoga) → dvitīyā. मासं कल्याणी, क्रोशं गिरिः. Apavāda to 2.3.46; ṣaṣṭhī (2.3.50)
+# applies when the saṁyoga is not continuous (मासस्य द्विरधीते).
+- sutra: कालाध्वनोरत्यन्तसंयोगे
+  id: 2.3.5
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_kAlADvan"
+      - "?semantic_atyantasaMyoga"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+
 

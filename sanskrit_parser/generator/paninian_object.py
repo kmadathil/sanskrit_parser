@@ -17,12 +17,15 @@ logger = logging.getLogger(__name__)
 def _is_karaka_tag(t):
     """True for the kāraka-section tag families (karaka_plan.md §2): the
     semantic_*/kAraka_*/viBakti_N/vacana_M tags and the kAraka/has_viBakti
-    guards. The digit suffix checks exclude the pre-existing viBakti_pada
-    sup-merge marker (and any future *_pada variant) from this set."""
+    guards, plus the karmapravacanīya scaffolding (karmapravacanIya + the
+    kp_pUrva/kp_para governance-direction tags, karaka_plan.md §K2). The digit
+    suffix checks exclude the pre-existing viBakti_pada sup-merge marker (and any
+    future *_pada variant) from this set."""
     return (t.startswith(("semantic_", "kAraka_"))
             or (t.startswith("viBakti_") and t[8:].isdigit())
             or (t.startswith("vacana_") and t[7:].isdigit())
-            or t in ("kAraka", "has_viBakti"))
+            or t in ("kAraka", "has_viBakti",
+                     "karmapravacanIya", "kp_pUrva", "kp_para"))
 
 
 class PaninianObject(SanskritObject):
