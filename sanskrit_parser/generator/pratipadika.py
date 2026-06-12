@@ -63,6 +63,17 @@ putra = Pratipadika("putra", "pum")   # पुत्र — रामस्य �
 mAza = Pratipadika("mAza", "pum")     # माष — माषेष्वश्वं बध्नाति counterexample (SK535)
 bARa = Pratipadika("bARa", "pum")     # बाण — बाणेन (SK561 karaṇa)
 kfzRa = Pratipadika("kfzRa", "pum")   # कृष्ण — कृष्णः (SK532 prathamā)
+# Kāraka Phase K1 sentence stems (test/karaka_list.py; a-/i-stems reuse the
+# rAma/hari paradigms).
+mAsa = Pratipadika("mAsa", "pum")     # मास — मासमास्ते (SK539 akarmaka vārttika)
+svarga = Pratipadika("svarga", "pum")  # स्वर्ग — शत्रूनगमयत्स्वर्गम् (SK540)
+veda = Pratipadika("veda", "pum")     # वेद — वेदमध्यापयद्विधिम् (SK540 buddhi)
+viDi = Pratipadika("viDi", "pum")     # विधि — the prayojya kartṛ→karma (SK540)
+vEkuRWa = Pratipadika("vEkuRWa", "pum")  # वैकुण्ठ — अध्यास्ते/उपवसति वैकुण्ठम् (SK542/544)
+sanmArga = Pratipadika("sanmArga", "pum")  # सन्मार्ग — अभिनिविशते सन्मार्गम् (SK543)
+Bftya = Pratipadika("Bftya", "pum")   # भृत्य — कारयति भृत्यम् (SK541)
+kawa = Pratipadika("kawa", "pum")     # कट — कारयति भृत्यं कटम् (SK541)
+devadatta = Pratipadika("devadatta", "pum")  # देवदत्त — पाचयति देवदत्तेन (SK540 negative)
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
@@ -651,6 +662,7 @@ suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 # Napum
 
 jYAna = Pratipadika("jYAna", "napum")
+tfRa = Pratipadika("tfRa", "napum")   # तृण — तृणं स्पृशति (SK538 anīpsita-karma)
 anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
 anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])

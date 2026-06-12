@@ -413,4 +413,240 @@ karaka_tests = [
             {"forms": ["भजति"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K1 — karma extensions (SK538–545; karaka_plan.md §5). Examples from
+    # references/siddhantakaumudi.html anchors SK538–545; participle/multi-clause
+    # originals reduced to single finite verbs (multi-clause deferred, §6).
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK538 (1.4.50): anīpsita-but-connected → karma → dvitīyā ─────────────
+    {
+        # ग्रामं गच्छन् तृणं स्पृशति — the grass, though not desired, is karma.
+        "label": "SK538-trnam-sprsati",
+        "sutras": ["1.4.50", "2.3.2"],
+        "sentence": [
+            {"stem": "tfRa", "vacana": 1, "sem": ["semantic_anIpsita"]},
+            {"verb": "spfSati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["तृणम्"]},
+            {"forms": ["स्पृशति"]},
+        ],
+    },
+
+    # ── SK539 (1.4.51): akathita karma in dvikarmaka, + akarmaka vārttika ────
+    {
+        # गां दोग्धि पयः — the cow (else apādāna) is akathita karma; payas is the
+        # primary (īpsitatama) karma. Both → dvitīyā.
+        "label": "SK539-gam-dogdhi-payah",
+        "sutras": ["1.4.51", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "go", "vacana": 1, "sem": ["semantic_akaTita"]},
+            {"stem": "payas", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "dogDi"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["गाम्"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["पयः"]},
+            {"forms": ["दोग्धि"]},
+        ],
+    },
+    {
+        # मासमास्ते — vārttika: deśa/kāla/bhāva/adhvan with an akarmaka verb → karma.
+        "label": "SK539-masam-aste",
+        "sutras": ["1.4.51", "2.3.2"],
+        "sentence": [
+            {"stem": "mAsa", "vacana": 1, "sem": ["semantic_deSakAlAdhvan"]},
+            {"verb": "Aste"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["मासम्"]},
+            {"forms": ["आस्ते"]},
+        ],
+    },
+    {
+        # Negative: akathita noun with a NON-dvikarmaka verb (भजति) — 1.4.51 must
+        # not fire; the cow defaults to prathamā.
+        "label": "SK539-negative-not-dvikarmaka",
+        "sutras": ["2.3.46"],
+        "sentence": [
+            {"stem": "go", "vacana": 1, "sem": ["semantic_akaTita"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["1.4.51"], "forms": ["गौः"]},
+            {"forms": ["भजति"]},
+        ],
+    },
+
+    # ── SK540 (1.4.52): ṇyanta kartṛ → karma (gati/buddhi classes) ───────────
+    {
+        # कृष्णं स्वर्गम् अगमयत् — the prayojya kartṛ (Kṛṣṇa, made to go) → karma by
+        # 1.4.52 (overrides 1.4.54); svarga is the gati-goal karma by 1.4.49.
+        "label": "SK540-krsnam-svargam-agamayat",
+        "sutras": ["1.4.52", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "svarga", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "agamayat"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.54"], "forms": ["कृष्णम्"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["स्वर्गम्"]},
+            # imperfect at avasāna: 8.2.39 voices the final t → द्, 8.4.56
+            # optionally devoices it back → both अगमयत् / अगमयद्.
+            {"forms": ["अगमयत्", "अगमयद्"]},
+        ],
+    },
+    {
+        # वेदम् अध्यापयद् विधिम् — buddhi (study=cognition) class: vidhi (made to
+        # study) → karma; veda the primary karma.
+        "label": "SK540-vedam-adhyapayad-vidhim",
+        "sutras": ["1.4.52", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "viDi", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "veda", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "aDyApayat"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.54"], "forms": ["विधिम्"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["वेदम्"]},
+            {"forms": ["अध्यापयत्", "अध्यापयद्"]},
+        ],
+    },
+    {
+        # गत्यादि-किम्: पाचयति देवदत्तः — ṇyanta but pac is NOT a gati-class verb, so
+        # 1.4.52 does not fire; Devadatta stays kartṛ, abhihita → prathamā.
+        "label": "SK540-negative-gatyadi-kim",
+        "sutras": ["1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "devadatta", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "pAcayati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"],
+             "not_fired": ["1.4.52"], "forms": ["देवदत्तः"]},
+            {"forms": ["पाचयति"]},
+        ],
+    },
+
+    # ── SK541 (1.4.53): hṛ/kṛ ṇyanta kartṛ → karma (karma-only; t-branch K3) ──
+    {
+        # कारयति भृत्यं कटम् — the servant (made to make) → karma by 1.4.53; kaṭa
+        # the primary karma. (The anyatarasyām tṛtīyā भृत्येन branch is deferred.)
+        "label": "SK541-karayati-bhrtyam-katam",
+        "sutras": ["1.4.53", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "Bftya", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "kawa", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "kArayati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.54"], "forms": ["भृत्यम्"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["कटम्"]},
+            {"forms": ["कारयति"]},
+        ],
+    },
+
+    # ── SK542 (1.4.46): ādhāra of adhi-śī/sthā/ās → karma ────────────────────
+    {
+        # अध्यास्ते वैकुण्ठं हरिः — the locus Vaikuṇṭha → karma; Hari the (abhihita,
+        # kartari) kartṛ → prathamā.
+        "label": "SK542-adhyaste-vaikuntham-harih",
+        "sutras": ["1.4.46", "2.3.2", "1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "vEkuRWa", "vacana": 1, "sem": ["semantic_aDikaraRa"]},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "aDyAste"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["वैकुण्ठम्"]},
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["हरिः"]},
+            {"forms": ["अध्यास्ते"]},
+        ],
+    },
+
+    # ── SK543 (1.4.47): ādhāra of abhi-ni-viś → karma ───────────────────────
+    {
+        # अभिनिविशते सन्मार्गम् — the locus (the good path) → karma → dvitīyā.
+        "label": "SK543-abhinivisate-sanmargam",
+        "sutras": ["1.4.47", "2.3.2"],
+        "sentence": [
+            {"stem": "sanmArga", "vacana": 1, "sem": ["semantic_aDikaraRa"]},
+            {"verb": "aBiniviSate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["सन्मार्गम्"]},
+            {"forms": ["अभिनिविशते"]},
+        ],
+    },
+
+    # ── SK544 (1.4.48): ādhāra of upa/anu/adhi/āṅ-vas → karma ────────────────
+    {
+        # उपवसति वैकुण्ठं हरिः — the locus Vaikuṇṭha → karma; Hari the kartṛ.
+        "label": "SK544-upavasati-vaikuntham-harih",
+        "sutras": ["1.4.48", "2.3.2", "1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "vEkuRWa", "vacana": 1, "sem": ["semantic_aDikaraRa"]},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "upavasati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["वैकुण्ठम्"]},
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["हरिः"]},
+            {"forms": ["उपवसति"]},
+        ],
+    },
+
+    # ── SK545 (2.3.4): antarā/antareṇa-yukte dvitīyā ────────────────────────
+    {
+        # अन्तरेण हरिम् — the noun governed by antareṇa → dvitīyā (no kāraka).
+        "label": "SK545-antarena-harim",
+        "sutras": ["2.3.4"],
+        "sentence": [
+            {"word": "antareRa"},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अन्तरेण"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.46"], "forms": ["हरिम्"]},
+        ],
+    },
+    {
+        # अन्तरा कृष्णम् — likewise with antarā.
+        "label": "SK545-antara-krsnam",
+        "sutras": ["2.3.4"],
+        "sentence": [
+            {"word": "antarA"},
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अन्तरा"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.46"], "forms": ["कृष्णम्"]},
+        ],
+    },
+    {
+        # Adjacency: antareṇa governs only the adjacent hari (→ dvitīyā); the
+        # non-adjacent kṛṣṇa must NOT get 2.3.4 — it defaults to prathamā.
+        "label": "SK545-adjacency-harim-krsnah",
+        "sutras": ["2.3.4", "2.3.46"],
+        "sentence": [
+            {"word": "antareRa"},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अन्तरेण"]},
+            {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["हरिम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.4"], "forms": ["कृष्णः"]},
+        ],
+    },
 ]

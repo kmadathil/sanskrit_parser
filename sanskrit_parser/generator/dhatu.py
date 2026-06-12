@@ -76,3 +76,42 @@ def tinanta_pada(form, prayoga, meaning_tags=()):
 
 Bajati  = tinanta_pada("Bajati",  "kartari")   # भजति "worships"
 sevyate = tinanta_pada("sevyate", "karmaRi")   # सेव्यते "is served"
+
+
+# ── Kāraka Phase K1 (karaka_plan.md §5): verb meaning-class membership ────────
+# The kāraka pre-pass reads these as rp tags off the sentence dhātu.
+#
+#  - meaning-classes for 1.4.52 (gati/buddhi/pratyavasāna/śabdakarma/akarmaka):
+#       gatyarTa, budDyarTa, pratyavasAnArTa, SabdakarmA, akarmaka
+#  - Ryanta            : the verb is a causative (ṇic-anta) — gate for 1.4.52/53
+#  - hfkf              : √hṛ / √kṛ (1.4.53 optional kartṛ→karma)
+#  - dvikarmaka        : duhādi-12 + nī-ādi-4 (1.4.51 akathita-karma); the gaṇa
+#                        membership is the SK539 kārikā
+#                          दुह्याच्पच्दण्ड्रुधिप्रच्छिचिब्रूशासुजिमथ्मुषाम् ।
+#                          कर्मयुक् स्यादकथितं तथा स्यान्नीहृकृष्वहाम् ॥
+#  - aDiSIN/aBiniviS/upAdivas : the upasarga-bound loci-as-karma verbs of
+#                        1.4.46 (adhi-śī/sthā/ās), 1.4.47 (abhi-ni-viś),
+#                        1.4.48 (upa/anu/adhi/āṅ-vas)
+
+# duhādi-12 (1.4.51): √duh, yāc, pac, daṇḍ, rudh, prach, ci, brū, śās, ji,
+# math, muṣ; nī-ādi-4: √nī, hṛ, kṛṣ, vah. These take two karmans; in our scope
+# verbs enter as pre-formed padas, so the list is documentation + the gaṇa-head
+# Dhatu entries that already exist are tagged dvikarmaka.
+DVIKARMAKA_DHATUS = ("duh", "yAc", "pac", "daRq", "ruD", "praC", "ci", "brU",
+                     "SAs", "ji", "maT", "muz",       # duhādi-12
+                     "nI", "hf", "kfz", "vah")        # nī-ādi-4
+for _d in (duh, vah):                                  # the heads present here
+    _d.setTag("dvikarmaka")
+
+# Pre-formed tiṅanta padas for the K1 test sentences (tiṅanta derivation TODO,
+# §6). meaning_tags ride on the pada and are read via rp by the pre-pass.
+spfSati     = tinanta_pada("spfSati",     "kartari")                              # स्पृशति "touches" — 1.4.50 anīpsita
+dogDi       = tinanta_pada("dogDi",       "kartari", ["dvikarmaka"])             # दोग्धि "milks" — 1.4.51 (duhādi)
+Aste        = tinanta_pada("Aste",        "kartari", ["akarmaka"])              # आस्ते "stays/sits" — 1.4.51 vārttika
+agamayat    = tinanta_pada("agamayat",    "kartari", ["Ryanta", "gatyarTa"])    # अगमयत् "made go" — 1.4.52 gati
+aDyApayat   = tinanta_pada("aDyApayat",   "kartari", ["Ryanta", "budDyarTa"])   # अध्यापयत् "made study" — 1.4.52 buddhi
+kArayati    = tinanta_pada("kArayati",    "kartari", ["Ryanta", "hfkf"])        # कारयति "causes to make" — 1.4.53
+aDyAste     = tinanta_pada("aDyAste",     "kartari", ["aDiSIN"])                # अध्यास्ते "occupies" — 1.4.46
+aBiniviSate = tinanta_pada("aBiniviSate", "kartari", ["aBiniviS"])             # अभिनिविशते "settles on" — 1.4.47
+upavasati   = tinanta_pada("upavasati",   "kartari", ["upAdivas"])             # उपवसति "dwells in" — 1.4.48
+pAcayati    = tinanta_pada("pAcayati",    "kartari", ["Ryanta"])               # पाचयति "causes to cook" — 1.4.52 गत्यादि-किम् negative (ṇyanta but not a gati-class verb)
