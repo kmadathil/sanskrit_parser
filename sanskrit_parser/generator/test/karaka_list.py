@@ -1062,4 +1062,203 @@ karaka_tests = [
             {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["कुलम्"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K4 — sampradāna + caturthī (SK569–585; karaka_plan.md §K4). The
+    # sampradāna saṁjñā cluster (1.4.32–41) + 2.3.13 caturthī; the param pair
+    # 1.4.38 > 1.4.37 (upasṛṣṭa krudh → karma); 2.3.16 namaḥ-yoga; and three
+    # vibhāṣā rules (1.4.44, 2.3.17, 2.3.12) that fork the pre-pass (words carry
+    # the SET of tags/forms across branches). Examples from
+    # references/siddhantakaumudi.html anchors SK569–585.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK571 (1.4.33) + SK570 (2.3.13): rucyartha prīyamāṇa → caturthī ───────
+    {
+        # हरये रोचते भक्तिः — the pleased one (hari) → sampradāna → caturthī (हरये);
+        # the pleasing thing (bhakti) is the kartṛ → prathamā (भक्तिः).
+        "label": "SK571-harye-rocate-bhaktih",
+        "sutras": ["1.4.33", "2.3.13", "1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prIyamARa"]},
+            {"stem": "Bakti", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "rocate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_sampradAna", "vibhakti": ["viBakti_4"], "forms": ["हरये"]},
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["भक्तिः"]},
+            {"forms": ["रोचते"]},
+        ],
+    },
+
+    # ── SK573 (1.4.35): dhāreḥ uttamarṇa → caturthī (+ śata karma) ────────────
+    {
+        # देवदत्ताय शतं धारयति — the creditor Devadatta → sampradāna → caturthī
+        # (देवदत्ताय); the debt śata = karma → dvitīyā (शतम्).
+        "label": "SK573-devadattaya-satam-dharayati",
+        "sutras": ["1.4.35", "2.3.13", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "devadatta", "vacana": 1, "sem": ["semantic_uttamarRa"]},
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "DArayati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_sampradAna", "vibhakti": ["viBakti_4"], "forms": ["देवदत्ताय"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["शतम्"]},
+            {"forms": ["धारयति"]},
+        ],
+    },
+
+    # ── SK575 (1.4.37): krudh target → sampradāna → caturthī ──────────────────
+    {
+        # हरये क्रुध्यति — the one angered-at (hari) → sampradāna → caturthī (हरये).
+        "label": "SK575-harye-krudhyati",
+        "sutras": ["1.4.37", "2.3.13"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_kopyamAna"]},
+            {"verb": "kruDyati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_sampradAna", "vibhakti": ["viBakti_4"],
+             "not_fired": ["1.4.38"], "forms": ["हरये"]},
+            {"forms": ["क्रुध्यति"]},
+        ],
+    },
+    # ── SK576 (1.4.38): upasṛṣṭa krudh target → KARMA (param 1.4.38 > 1.4.37) ──
+    {
+        # अभिक्रुध्यति हरिम् — with the upasṛṣṭa verb abhi-krudh the target → karma
+        # → dvitīyā (हरिम्). 1.4.38 beats 1.4.37 by the param carve-out; 1.4.37
+        # must not fire. Direct counter to SK575-harye-krudhyati.
+        "label": "SK576-abhikrudhyati-harim-param",
+        "sutras": ["1.4.38", "2.3.2"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_kopyamAna"]},
+            {"verb": "aBikruDyati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.37", "2.3.13"], "forms": ["हरिम्"]},
+            {"forms": ["अभिक्रुध्यति"]},
+        ],
+    },
+
+    # ── SK569 (1.4.32): general sampradāna (karmaṇā yam abhipraiti) ───────────
+    {
+        # विप्राय गां ददाति — the recipient vipra → sampradāna → caturthī (विप्राय);
+        # the gift go = karma → dvitīyā (गाम्).
+        "label": "SK569-vipraya-gam-dadati",
+        "sutras": ["1.4.32", "2.3.13", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "vipra", "vacana": 1, "sem": ["semantic_aBipreta"]},
+            {"stem": "go", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "dadAti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_sampradAna", "vibhakti": ["viBakti_4"], "forms": ["विप्राय"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["गाम्"]},
+            {"forms": ["ददाति"]},
+        ],
+    },
+
+    # ── SK583 (2.3.16): namaḥ-yoga → caturthī ────────────────────────────────
+    {
+        # नमो देवेभ्यः — deva governed by namaḥ → caturthī (देवेभ्यः); namas the
+        # neuter noun takes its own prathamā नमः. (avasāna-separated, so नमः.)
+        "label": "SK583-namo-devebhyah",
+        "sutras": ["2.3.16", "2.3.46"],
+        "sentence": [
+            {"stem": "namas", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "deva", "vacana": 3, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["नमः"]},
+            {"karaka": None, "vibhakti": ["viBakti_4"],
+             "not_fired": ["2.3.46"], "forms": ["देवेभ्यः"]},
+        ],
+    },
+
+    # ── SK585 (2.3.12): gatyartha karma → vibhāṣā dvitīyā / caturthī ──────────
+    {
+        # ग्रामं ग्रामाय वा गच्छति — the goal grāma is karma (1.4.49) and optionally
+        # dvitīyā (ग्रामम्, via 2.3.2) or caturthī (ग्रामाय, via 2.3.12). Fork.
+        "label": "SK585-gramam-gramaya-gacchati",
+        "sutras": ["1.4.49", "2.3.12", "2.3.2"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "gacCati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma",
+             "vibhakti": ["viBakti_2", "viBakti_4"], "forms": ["ग्रामम्", "ग्रामाय"]},
+            {"forms": ["गच्छति"]},
+        ],
+    },
+    {
+        # गत्यर्थ किम्: a non-gatyartha verb (भजति) — 2.3.12 must not fire; the
+        # karma is plain dvitīyā (ग्रामम्) only, no caturthī alternative.
+        "label": "SK585-negative-not-gatyartha",
+        "sutras": ["1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.12"], "forms": ["ग्रामम्"]},
+            {"forms": ["भजति"]},
+        ],
+    },
+
+    # ── SK580 (1.4.44): parikrayaṇa → vibhāṣā sampradāna / karaṇa ─────────────
+    {
+        # शताय शतेन वा परिक्रीणीते — the wage śata is optionally sampradāna (शताय,
+        # 1.4.44 → 2.3.13) or karaṇa (शतेन, 1.4.42 → 2.3.18). Fork; the noun also
+        # carries semantic_sADakatama for the skip branch.
+        "label": "SK580-sataya-satena-parikrinite",
+        "sutras": ["1.4.44", "2.3.13", "1.4.42", "2.3.18"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1,
+             "sem": ["semantic_parikrIta", "semantic_sADakatama"]},
+            {"verb": "parikrIRIte"},
+        ],
+        "expect": [
+            {"karaka": ["kAraka_sampradAna", "kAraka_karaRa"],
+             "vibhakti": ["viBakti_4", "viBakti_3"], "forms": ["शताय", "शतेन"]},
+            {"forms": ["परिक्रीणीते"]},
+        ],
+    },
+
+    # ── SK584 (2.3.17): manya-karma anādara → vibhāṣā caturthī ───────────────
+    {
+        # तृणं तृणाय वा मन्यते — the manya-karman tṛṇa, in disrespect (anādara), is
+        # optionally dvitīyā (तृणम्, 2.3.2) or caturthī (तृणाय, 2.3.17). Fork.
+        "label": "SK584-trnam-trnaya-manyate",
+        "sutras": ["1.4.49", "2.3.17", "2.3.2"],
+        "sentence": [
+            {"stem": "tfRa", "vacana": 1,
+             "sem": ["semantic_Ipsitatama", "semantic_anAdara"]},
+            {"verb": "manyate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma",
+             "vibhakti": ["viBakti_2", "viBakti_4"], "forms": ["तृणम्", "तृणाय"]},
+            {"forms": ["मन्यते"]},
+        ],
+    },
+
+    # ── Negative: rucyartha/krudh saṁjñā off for a plain transitive verb ──────
+    {
+        # हरिं भजति — bhajati is neither rucyartha nor krudh-class; 1.4.33/1.4.37/
+        # 2.3.13 must not fire. hari = īpsitatama karma → dvitīyā (हरिम्).
+        "label": "SK571-negative-not-rucyartha-krudh",
+        "sutras": ["1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.33", "1.4.37", "2.3.13"], "forms": ["हरिम्"]},
+            {"forms": ["भजति"]},
+        ],
+    },
 ]

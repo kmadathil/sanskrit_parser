@@ -123,3 +123,34 @@ pAcayati    = tinanta_pada("pAcayati",    "kartari", ["Ryanta"])               #
 #              संज्ञोऽन्यतरस्यां कर्मणि: its karma is optionally tṛtīyā else dvitīyā.
 dIvyati   = tinanta_pada("dIvyati",   "kartari", ["div"])       # दीव्यति "gambles" — 1.4.43 (vibhāṣā)
 saMjAnIte = tinanta_pada("saMjAnIte", "kartari", ["saMjYAna"])  # संजानीते "agrees with" — 2.3.22 (vibhāṣā)
+
+# ── Kāraka Phase K4 (karaka_plan.md §K4): sampradāna + caturthī verb tags ─────
+# Meaning-class tags read via rp by the sampradāna saṁjñā rules 1.4.33–41/1.4.44:
+#  - rucyarTa    : ruc-class "please" (rocate)                  — 1.4.33
+#  - slAGAdi     : ślāgh/hnu/sthā/śap "inform by …"             — 1.4.34
+#  - DAri        : ṇyanta dhṛ "owe" (dhārayati)                 — 1.4.35
+#  - spfha       : spṛh "desire" (spṛhayati)                    — 1.4.36
+#  - kruDdruh    : krudh/druh "be angry at"                     — 1.4.37 (target → sampradāna)
+#  - upasfzwa    : the verb bears an upasarga (abhi-krudh …); with kruDdruh,
+#                  the target → karma by 1.4.38 (param beats 1.4.37). Explicit
+#                  input tag (verbs are pre-formed padas, §6); real upasarga
+#                  scanning is a post-tiṅanta TODO.
+#  - rADIkz      : rādh/īkṣ "deliberate/consider for"           — 1.4.39
+#  - pratiANSru  : prati/āṅ + śru "promise"                     — 1.4.40
+#  - anupratigF  : anu/prati + gṝ "respond/applaud"             — 1.4.41
+#  - parikrayaRa : pari-krī "hire" (parikrīṇīte)                — 1.4.44 (vibhāṣā)
+#  - manyarTa    : man "consider" (manyate)                     — 2.3.17 (vibhāṣā)
+#  - gatyarTa    : motion verbs (gacchati); reused from K1      — 2.3.12 (vibhāṣā)
+dadAti       = tinanta_pada("dadAti",       "kartari")                          # ददाति "gives" — 1.4.32 general sampradāna
+rocate       = tinanta_pada("rocate",       "kartari", ["rucyarTa"])            # रोचते "pleases" — 1.4.33
+slAGate      = tinanta_pada("slAGate",      "kartari", ["slAGAdi"])             # श्लाघते "praises (to inform)" — 1.4.34
+DArayati     = tinanta_pada("DArayati",     "kartari", ["DAri"])                # धारयति "owes" — 1.4.35
+spfhayati    = tinanta_pada("spfhayati",    "kartari", ["spfha"])               # स्पृहयति "desires" — 1.4.36
+kruDyati     = tinanta_pada("kruDyati",     "kartari", ["kruDdruh"])            # क्रुध्यति "is angry at" — 1.4.37
+aBikruDyati  = tinanta_pada("aBikruDyati",  "kartari", ["kruDdruh", "upasfzwa"])  # अभिक्रुध्यति "is angry at" (upasṛṣṭa) — 1.4.38 (param)
+rADyati      = tinanta_pada("rADyati",      "kartari", ["rADIkz"])              # राध्यति "deliberates for" — 1.4.39
+pratiSfRoti  = tinanta_pada("pratiSfRoti",  "kartari", ["pratiANSru"])          # प्रतिशृणोति "promises" — 1.4.40
+anugfRAti    = tinanta_pada("anugfRAti",    "kartari", ["anupratigF"])          # अनुगृणाति "responds to" — 1.4.41
+parikrIRIte  = tinanta_pada("parikrIRIte",  "kartari", ["parikrayaRa"])         # परिक्रीणीते "hires" — 1.4.44 (vibhāṣā)
+manyate      = tinanta_pada("manyate",      "kartari", ["manyarTa"])            # मन्यते "considers" — 2.3.17 (vibhāṣā)
+gacCati      = tinanta_pada("gacCati",      "kartari", ["gatyarTa"])            # गच्छति "goes to" — 2.3.12 (vibhāṣā)

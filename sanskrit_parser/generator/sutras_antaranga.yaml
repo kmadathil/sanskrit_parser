@@ -7813,4 +7813,271 @@
   update:
     olp: [+viBakti_3, +has_viBakti]
 
+# ════════════════════════════════════════════════════════════════════════════
+# Phase K4 — sampradāna + caturthī (SK 569–585; karaka_plan.md §K4)
+#
+# Sampradāna saṁjñā cluster (1.4.32–41, 1.4.44) writes kAraka_sampradAna; the
+# verb-conditioned members read the sentence dhātu via rp (rucyarTa, DAri,
+# kruDdruh …). 2.3.13 maps sampradAna → caturthī. The param carve-out
+# (14023≤aps<14099 → higher wins) makes 1.4.38 (upasṛṣṭa krudh/druh → karma)
+# beat 1.4.37 (krudh/druh target → sampradāna) on the same noun — no override
+# needed; ekā-saṁjñā (?!kAraka) then keeps 1.4.37 off. Three vibhāṣā rules
+# (1.4.44, 2.3.17, 2.3.12) ride the K3 pre-pass optional-fork: apply-branch vs
+# fall-through-to-general-rule, each a separate output sentence.
+#
+# Deferred (generator_status.md Skipped): SK581 (2.3.14 kriyārthopapada) and
+# SK582 (2.3.15 tumarthāc ca) — both need the tum-artha kṛt "sthānin" which has
+# no kṛt-derivation support yet (karaka_plan.md §6).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 569: कर्मणा यमभिप्रैति स संप्रदानम् (1.4.32) — the one the agent aims at by means
+# of the karma (the gift) → sampradāna. General definition. विप्राय गां ददाति.
+- sutra: कर्मणा यमभिप्रैति स संप्रदानम्
+  id: 1.4.32
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_aBipreta"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 571: रुच्यर्थानां प्रीयमाणः (1.4.33) — for ruc-class verbs (rocate "pleases") the
+# one pleased → sampradāna. हरये रोचते भक्तिः (the bhakti is the kartṛ → prathamā).
+- sutra: रुच्यर्थानां प्रीयमाणः
+  id: 1.4.33
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_prIyamARa"
+      - "?!kAraka"
+    rp: "?rucyarTa"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 572: श्लाघह्नुङ्स्थाशपां ज्ञीप्स्यमानः (1.4.34) — for ślāgh/hnu/sthā/śap the one whom
+# the agent wishes to inform (jñīpsyamāna) → sampradāna. विप्राय श्लाघते.
+- sutra: श्लाघह्नुङ्स्थाशपां ज्ञीप्स्यमानः
+  id: 1.4.34
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_jYIpsyamAna"
+      - "?!kAraka"
+    rp: "?slAGAdi"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 573: धारेरुत्तमर्णः (1.4.35) — for dhṛ (ṇyanta dhārayati "owe") the creditor
+# (uttamarṇa) → sampradāna. देवदत्ताय शतं धारयति (śata the debt = karma).
+- sutra: धारेरुत्तमर्णः
+  id: 1.4.35
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_uttamarRa"
+      - "?!kAraka"
+    rp: "?DAri"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 574: स्पृहेरीप्सितः (1.4.36) — for spṛh (spṛhayati "desire") the desired thing
+# (īpsita) → sampradāna. पुष्पेभ्यः स्पृहयति.
+- sutra: स्पृहेरीप्सितः
+  id: 1.4.36
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_Ipsita_spfha"
+      - "?!kAraka"
+    rp: "?spfha"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 575: क्रुधद्रुहेर्ष्यासूयार्थानां यं प्रति कोपः (1.4.37) — for krudh/druh/īrṣyā/asūyā
+# verbs the one against whom anger is felt (kopya) → sampradāna. हरये क्रुध्यति.
+# Two arms (the two verb-class tags). Beaten by 1.4.38 when the verb is upasṛṣṭa.
+- sutra: क्रुधद्रुहेर्ष्यासूयार्थानां यं प्रति कोपः
+  id: 1.4.37
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?semantic_kopyamAna"
+        - "?!kAraka"
+      rp: "?kruDdruh"
+    - lp:
+        - and
+        - "?semantic_kopyamAna"
+        - "?!kAraka"
+      rp: "?IrzyAsUya"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 576: क्रुधद्रुहोरुपसृष्टयोः कर्म (1.4.38) — when krudh/druh are UPASṚṢṬA (bear an
+# upasarga, e.g. abhi-krudh) the kopya target → KARMA, not sampradāna:
+# अभिक्रुध्यति हरिम्. Apavāda to 1.4.37 by the kāraka-adhikāra param carve-out
+# (14038 > 14037 → higher wins); ?!kAraka then keeps 1.4.37 off. (īrṣyā/asūyā
+# are excluded here — they never take an upasarga in this sense.)
+- sutra: क्रुधद्रुहोरुपसृष्टयोः कर्म
+  id: 1.4.38
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_kopyamAna"
+      - "?!kAraka"
+    rp:
+      - and
+      - "?kruDdruh"
+      - "?upasfzwa"
+  update:
+    olp: [+kAraka_karma, +kAraka]
+
+# 577: राधीक्ष्योर्यस्य विप्रश्नः (1.4.39) — for rādh/īkṣ the one about whom one
+# inquires (vipraśna) → sampradāna. कृष्णाय राध्यति.
+- sutra: राधीक्ष्योर्यस्य विप्रश्नः
+  id: 1.4.39
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_viprazwavya"
+      - "?!kAraka"
+    rp: "?rADIkz"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 578: प्रत्याङ्भ्यां श्रुवः पूर्वस्य कर्ता (1.4.40) — for śru with prati/āṅ (pratiśṛṇoti
+# "promises") the agent of the prior action (the promisee) → sampradāna.
+# देवदत्ताय प्रतिशृणोति.
+- sutra: प्रत्याङ्भ्यां श्रुवः पूर्वस्य कर्ता
+  id: 1.4.40
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_pratiSrotf"
+      - "?!kAraka"
+    rp: "?pratiANSru"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 579: अनुप्रतिगृणश्च (1.4.41) — for gṝ with anu/prati (anugṛṇāti "responds/applauds")
+# the prior agent → sampradāna. होत्रेऽनुगृणाति.
+- sutra: अनुप्रतिगृणश्च
+  id: 1.4.41
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_pratiSrotf"
+      - "?!kAraka"
+    rp: "?anupratigF"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 580: परिक्रयणे संप्रदानमन्यतरस्याम् (1.4.44) — in hiring (parikrayaṇa, parikrīṇīte)
+# the price/wage is OPTIONALLY sampradāna (else karaṇa via 1.4.42): शताय/शतेन
+# परिक्रीतः. Vibhāṣā → pre-pass fork: apply → kAraka_sampradAna (→ 2.3.13 शताय);
+# skip → 1.4.42 kAraka_karaRa (→ 2.3.18 शतेन; the noun also carries
+# semantic_sADakatama). Beats 1.4.42 by param (14044 > 14042) when it fires.
+- sutra: परिक्रयणे संप्रदानमन्यतरस्याम्
+  id: 1.4.44
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?semantic_parikrIta"
+      - "?!kAraka"
+    rp: "?parikrayaRa"
+  update:
+    olp: [+kAraka_sampradAna, +kAraka]
+
+# 570: चतुर्थी संप्रदाने (2.3.13) — sampradāna → caturthī. हरये, देवदत्ताय, विप्राय.
+# No override: a sampradāna noun has ?kAraka, so 2.3.46 arm-1 (?!kAraka) never
+# fires on it; this is the nitya vibhakti for the saṁjñā.
+- sutra: चतुर्थी संप्रदाने
+  id: 2.3.13
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?kAraka_sampradAna"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_4, +has_viBakti]
+
+# 583: नमःस्वस्तिस्वाहास्वधालंवषड्योगाच्च (2.3.16) — a noun connected with namaḥ/
+# svasti/svāhā/svadhā/alam/vaṣaṭ → caturthī. नमो देवेभ्यः. The yoga-word sits
+# adjacent to the governed noun (llp or rrp peek), as in 2.3.4 antarā. (namas is
+# the neuter noun नमस् → its own prathamā नमः; the cluster word itself is read by
+# literal.) Apavāda to 2.3.46.
+- sutra: नमःस्वस्तिस्वाहास्वधालंवषड्योगाच्च
+  id: 2.3.16
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp: [=namas, =svasti, =svAhA, =svaDA, =alam, =vazaw]
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp: [=namas, =svasti, =svAhA, =svaDA, =alam, =vazaw]
+  update:
+    olp: [+viBakti_4, +has_viBakti]
+
+# 584: मन्यकर्मण्यनादरे विभाषाऽप्राणिषु (2.3.17) — with man (manyate "consider") the
+# karma, in disrespect (anādara) and non-living, is OPTIONALLY caturthī:
+# न त्वा तृणं / तृणाय मन्ये. Vibhāṣā → fork: apply → viBakti_4 (तृणाय); skip →
+# 2.3.2 dvitīyā (तृणम्). The noun is already kAraka_karma (1.4.49). Beats 2.3.2
+# by para when it fires.
+- sutra: मन्यकर्मण्यनादरे विभाषाऽप्राणिषु
+  id: 2.3.17
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?kAraka_karma"
+      - "?semantic_anAdara"
+      - "?!has_viBakti"
+    rp: "?manyarTa"
+  update:
+    olp: [+viBakti_4, +has_viBakti]
+
+# 585: गत्यर्थकर्मणि द्वितीयाचतुर्थ्यौ चेष्टायामनध्वनि (2.3.12) — for gatyartha verbs the
+# karma (goal of motion) is OPTIONALLY dvitīyā OR caturthī: ग्रामं/ग्रामाय गच्छति.
+# Vibhāṣā → fork: apply → viBakti_4 (ग्रामाय); skip → 2.3.2 dvitīyā (ग्रामम्). The
+# goal is already kAraka_karma (1.4.49). Beats 2.3.2 by para when it fires.
+# (ceṣṭāyām anadhvani: bodily motion, goal not a road — modelled by the gatyarTa
+# verb tag; adhvan goals are out of scope. ?!Ryanta excludes the ṇyanta causative
+# गमि — its goal स्वर्गम् in शत्रून् स्वर्गम् अगमयत् [SK540, 1.4.52] is plain dvitīyā,
+# not the simple-gati dvitīyā/caturthī option.)
+- sutra: गत्यर्थकर्मणि द्वितीयाचतुर्थ्यौ चेष्टायामनध्वनि
+  id: 2.3.12
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?kAraka_karma"
+      - "?!has_viBakti"
+    rp:
+      - and
+      - "?gatyarTa"
+      - "?!Ryanta"
+  update:
+    olp: [+viBakti_4, +has_viBakti]
+
 

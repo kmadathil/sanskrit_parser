@@ -82,6 +82,9 @@ giri = Pratipadika("giri", "pum")     # गिरि — क्रोशं ग�
 # Kāraka Phase K3 sentence stems (tṛtīyā cluster; SK562–568).
 tApasa = Pratipadika("tApasa", "pum")   # तापस — जटाभिस्तापसः (SK566 itthambhūta-lakṣaṇa)
 kARa   = Pratipadika("kARa",   "pum")   # काण — अक्ष्णा काणः (SK565 aṅga-vikāra; the one-eyed one)
+# Kāraka Phase K4 sentence stems (sampradāna + caturthī; SK569–585).
+grAma = Pratipadika("grAma", "pum")   # ग्राम — ग्रामं/ग्रामाय गच्छति (SK585 2.3.12 vibhāṣā)
+vipra = Pratipadika("vipra", "pum")   # विप्र — विप्राय गां ददाति (SK569 1.4.32 general sampradāna)
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
@@ -659,6 +662,7 @@ su_pUrva = Pratipadika("su", "pum")      # su- (SK510 ctr सुगुल्फ�
 tAmra  = Pratipadika("tAmra", "pum")     # copper (SK514 counter ताम्रमुखी — non-saṃjñā)
 vidyamAna = Pratipadika("vidyamAna", "pum")  # existing (SK513 विद्यमाननासिका pūrva)
 mati = Pratipadika("mati", "strI")
+Bakti = Pratipadika("Bakti", "strI")   # भक्ति f. (short-i, like mati) — हरये रोचते भक्तिः (SK571; bhakti = kartṛ → prathamā भक्तिः)
 lakzmI = Pratipadika("lakzmI", "strI")  # No NI
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
@@ -675,6 +679,12 @@ jYAna = Pratipadika("jYAna", "napum")
 tfRa = Pratipadika("tfRa", "napum")   # तृण — तृणं स्पृशति (SK538 anīpsita-karma)
 Dana = Pratipadika("Dana", "napum")   # धन — धनेन कुलम् (SK568 hetu; धनेन तृतीया)
 kula = Pratipadika("kula", "napum")   # कुल — धनेन कुलम् (SK568; कुलम् prathamā)
+Sata = Pratipadika("Sata", "napum")   # शत — देवदत्ताय शतं धारयति (SK573; शतम् the debt = karma)
+# नमस् n. — नमो देवेभ्यः (SK583 2.3.16). Modelled as the neuter s-stem noun (its
+# true category) so it surfaces नमः via normal nom-sg s-stem declension; 2.3.16
+# reads it as the yoga-word by the literal =namas. (Not an avyaya: the bare
+# avyaya would surface नमस् with no visarga.)
+namas = Pratipadika("namas", "napum")
 anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
 anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
