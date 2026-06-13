@@ -866,4 +866,200 @@ karaka_tests = [
              "not_fired": ["2.3.5"], "forms": ["मासस्य"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K3 — tṛtīyā cluster (SK562–568; karaka_plan.md §K3). Two vibhāṣā
+    # rules (1.4.43, 2.3.22) fork the pre-pass; their words carry the SET of
+    # tags/forms seen across branches, and p.output() yields both sentences.
+    # Examples from references/siddhantakaumudi.html anchors SK562–568.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK562 (1.4.43): दिवः कर्म च — vibhāṣā karma/karaṇa for √div's instrument ─
+    {
+        # अक्षैरक्षान्वा दीव्यति — the dice are optionally karma (द्वितीया अक्षान्,
+        # via 1.4.43→2.3.2) or karaṇa (तृतीया अक्षैः, via 1.4.42→2.3.18).
+        "label": "SK562-aksair-aksan-divyati",
+        "sutras": ["1.4.43", "1.4.42", "2.3.2", "2.3.18"],
+        "sentence": [
+            {"stem": "akza", "vacana": 3, "sem": ["semantic_sADakatama"]},
+            {"verb": "dIvyati"},
+        ],
+        "expect": [
+            {"karaka": ["kAraka_karma", "kAraka_karaRa"],
+             "vibhakti": ["viBakti_2", "viBakti_3"], "forms": ["अक्षान्", "अक्षैः"]},
+            {"forms": ["दीव्यति"]},
+        ],
+    },
+
+    # ── SK563 (2.3.6): अपवर्गे तृतीया — kāla/adhvan + completion → tṛtīyā ────────
+    {
+        # क्रोशेन (अनुवाकोऽधीतः) — studied [over the course of] a krośa, with
+        # completion (apavarga) → tṛtīyā; beats 2.3.5 dvitīyā by para.
+        "label": "SK563-krosena-apavarga",
+        "sutras": ["2.3.6"],
+        "sentence": [
+            {"stem": "kroSa", "vacana": 1,
+             "sem": ["semantic_kAlADvan", "semantic_atyantasaMyoga",
+                     "semantic_apavarga"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.5"], "forms": ["क्रोशेन"]},
+        ],
+    },
+    {
+        # अपवर्गे किम् — मासमधीतो नायातः: no completion → 2.3.5 dvitīyā, not 2.3.6.
+        "label": "SK563-negative-no-apavarga",
+        "sutras": ["2.3.5"],
+        "sentence": [
+            {"stem": "kroSa", "vacana": 1,
+             "sem": ["semantic_kAlADvan", "semantic_atyantasaMyoga"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.6"], "forms": ["क्रोशम्"]},
+        ],
+    },
+
+    # ── SK564 (2.3.19): सहयुक्तेऽप्रधाने — saha-yoga subordinate → tṛtīyā ────────
+    {
+        # पुत्रेण सह (आगतः पिता) — the son (subordinate) → tṛtīyā; saha is putra's
+        # rrp. The principal pitṛ defaults to prathamā (पिता).
+        "label": "SK564-putrena-saha-pita",
+        "sutras": ["2.3.19", "2.3.46"],
+        "sentence": [
+            {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
+            {"word": "saha"},
+            {"stem": "pitf", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.46"], "forms": ["पुत्रेण"]},
+            {"forms": ["सह"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["पिता"]},
+        ],
+    },
+    {
+        # सह पुत्रेण — saha as the noun's llp (saha-first order); same tṛtīyā.
+        "label": "SK564-saha-putrena-llp",
+        "sutras": ["2.3.19"],
+        "sentence": [
+            {"word": "saha"},
+            {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
+        ],
+        "expect": [
+            {"forms": ["सह"]},
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.46"], "forms": ["पुत्रेण"]},
+        ],
+    },
+    {
+        # साकम् variant — एवं साकंसार्धंसमंयोगेऽपि (SK564 commentary).
+        "label": "SK564-putrena-sakam",
+        "sutras": ["2.3.19"],
+        "sentence": [
+            {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
+            {"word": "sAkam"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"], "forms": ["पुत्रेण"]},
+            {"forms": ["साकम्"]},
+        ],
+    },
+
+    # ── SK565 (2.3.20): येनाङ्गविकारः — limb of deformity → tṛtīyā ──────────────
+    {
+        # अक्ष्णा काणः — one-eyed by [reason of] the eye; akṣi → tṛtīyā (अक्ष्णा),
+        # kāṇa the qualified one → prathamā (काणः).
+        "label": "SK565-aksna-kanah",
+        "sutras": ["2.3.20", "2.3.46"],
+        "sentence": [
+            {"stem": "akzi", "vacana": 1, "sem": ["semantic_aNgavikAra"]},
+            {"stem": "kARa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.46"], "forms": ["अक्ष्णा"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["काणः"]},
+        ],
+    },
+    {
+        # अङ्गविकारः किम् — अक्षि काणमस्य: the eye itself, no aṅga-vikāra → prathamā.
+        "label": "SK565-negative-no-angavikara",
+        "sutras": ["2.3.46"],
+        "sentence": [
+            {"stem": "akzi", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.20"], "forms": ["अक्षि"]},
+        ],
+    },
+
+    # ── SK566 (2.3.21): इत्थंभूतलक्षणे — mark of a state → tṛtīyā ───────────────
+    {
+        # जटाभिस्तापसः — an ascetic [recognized] by his matted hair; jaṭā (inst.
+        # pl. जटाभिः) → tṛtīyā, tāpasa → prathamā (तापसः).
+        "label": "SK566-jatabhis-tapasah",
+        "sutras": ["2.3.21", "2.3.46"],
+        "sentence": [
+            {"stem": "jawA", "vacana": 3, "sem": ["semantic_itTamBUtalakzaRa"]},
+            {"stem": "tApasa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.46"], "forms": ["जटाभिः"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["तापसः"]},
+        ],
+    },
+
+    # ── SK567 (2.3.22): संज्ञोऽन्यतरस्यां कर्मणि — vibhāṣā tṛtīyā for sam-jñā karma ─
+    {
+        # पित्रा पितरं वा संजानीते — the karma of saṁjānīte is optionally tṛtīyā
+        # (पित्रा, via 2.3.22) or dvitīyā (पितरम्, fall-through to 2.3.2). The noun
+        # is kAraka_karma (1.4.49) in both branches.
+        "label": "SK567-pitra-pitaram-samjanite",
+        "sutras": ["1.4.49", "2.3.22", "2.3.2"],
+        "sentence": [
+            {"stem": "pitf", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "saMjAnIte"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma",
+             "vibhakti": ["viBakti_2", "viBakti_3"], "forms": ["पितरम्", "पित्रा"]},
+            {"forms": ["संजानीते"]},
+        ],
+    },
+    {
+        # Negative: a non-saṁjñā verb (भजति) — 2.3.22 must not fire; the karma is
+        # plain dvitīyā (हरिम्) by 2.3.2 with no तृतीया alternative.
+        "label": "SK567-negative-not-samjna",
+        "sutras": ["1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.22"], "forms": ["हरिम्"]},
+            {"forms": ["भजति"]},
+        ],
+    },
+
+    # ── SK568 (2.3.23): हेतौ — cause → tṛtīyā ──────────────────────────────────
+    {
+        # धनेन कुलम् — a family [is esteemed] by reason of wealth; dhana (hetu) →
+        # tṛtīyā (धनेन), kula → prathamā (कुलम्).
+        "label": "SK568-dhanena-kulam",
+        "sutras": ["2.3.23", "2.3.46"],
+        "sentence": [
+            {"stem": "Dana", "vacana": 1, "sem": ["semantic_hetu"]},
+            {"stem": "kula", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.46"], "forms": ["धनेन"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["कुलम्"]},
+        ],
+    },
 ]

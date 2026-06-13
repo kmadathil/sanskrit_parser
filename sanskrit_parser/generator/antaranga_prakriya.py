@@ -239,49 +239,63 @@ class AntarangaPrakriya(PrakriyaBase):
             self._karaka_prepass()
         self.hier_prakriyas = []
         self.need_hier = False
-        # List of alternatives
-        # Used only in hierarchy is needed
-        self.hier_inputs = [self.inputs]
-        # Assmeble hierarchical prakriya outputs into a single list
-        self.hier_outputs = [[] for x in self.inputs]
-        # Scan inputs for hierarchical prakriya needs
-        for ix in range(len(self.inputs)):
-            if self.inputs.need_hierarchy_at(ix):
-                self.need_hier = True
-                # hierarchy needed here
-                hp = AntarangaPrakriya(sutra_list,
-                                       PrakriyaVakya(self.inputs[ix]),
-                                       capture_eval=self._capture_eval,
-                                       karaka=False)
-                self.hier_prakriyas.append(hp)
-                # This will execute hierarchically as needed
-                hp.execute()
-                hpo = _deduplicate_hier_outputs(hp.output())
-                self.hier_outputs[ix] = hpo  # accumulate hierarchical outputs
+        # Kāraka pre-pass branches (karaka_plan.md §2 point 3): a vibhāṣā
+        # (optional) kāraka rule forks the pre-pass into alternative sentences
+        # (e.g. 2.3.22 saṁjño'nyatarasyāṁ → tṛtīyā else 2.3.2 dvitīyā). Each
+        # branch becomes its own root below, so each derives independently and
+        # output() returns one sentence per branch. Single-branch (the common
+        # case, all of K0–K2) is unchanged.
+        branches = getattr(self, "_karaka_branches", None) or [self.inputs]
+        # Each branch is independently scanned for hierarchical (compound)
+        # explosion, then contributes one or more tree roots.
+        root_inputs = []
+        for binputs in branches:
+            branch_hier_inputs = [binputs]
+            branch_hier_outputs = [[] for _ in binputs]
+            branch_need_hier = False
+            # Scan inputs for hierarchical prakriya needs
+            for ix in range(len(binputs)):
+                if binputs.need_hierarchy_at(ix):
+                    branch_need_hier = True
+                    self.need_hier = True
+                    # hierarchy needed here
+                    hp = AntarangaPrakriya(sutra_list,
+                                           PrakriyaVakya(binputs[ix]),
+                                           capture_eval=self._capture_eval,
+                                           karaka=False)
+                    self.hier_prakriyas.append(hp)
+                    # This will execute hierarchically as needed
+                    hp.execute()
+                    hpo = _deduplicate_hier_outputs(hp.output())
+                    branch_hier_outputs[ix] = hpo  # accumulate hierarchical outputs
+            if branch_need_hier:
+                for ix, ol in enumerate(branch_hier_outputs):
+                    if ol != []:  # Hierarchy exists here
+                        tmpl = []
+                        # For each alternate output
+                        for o in ol:
+                            hobj = PaninianObject.join_objects([o])
+                            # Assemble exploded list with each input
+                            # replaced by multiple alternates at this
+                            # index
+                            for i in branch_hier_inputs:
+                                tmpl.append(i.copy_replace_at(ix, hobj))
+                        # Replace input list with exploded list
+                        # Explosion at position ix is now dealt with
+                        branch_hier_inputs = tmpl
+                        logger.debug(f"Hier inputs after expl {ix}: {branch_hier_inputs}")
+            root_inputs.extend(branch_hier_inputs)
+        # List of alternatives (kept for describe()/logging compatibility)
+        self.hier_inputs = root_inputs
+        logger.debug(f"Hier inputs after full expl: {self.hier_inputs}")
         if self.need_hier:
-            for ix, ol in enumerate(self.hier_outputs):
-                if ol != []:  # Hierarchy exists here
-                    tmpl = []
-                    # For each alternate output
-                    for o in ol:
-                        hobj = PaninianObject.join_objects([o])
-                        # Assemble exploded list with each input
-                        # replaced by multiple alternates at this
-                        # index
-                        for i in self.hier_inputs:
-                            tmpl.append(i.copy_replace_at(ix, hobj))
-                    # Replace input list with exploded list
-                    # Explosion at position ix is now dealt with
-                    self.hier_inputs = tmpl
-                    logger.debug(f"Hier inputs after expl {ix}: {self.hier_inputs}")
-            logger.debug(f"Hier inputs after full expl: {self.hier_inputs}")
-            # At the end of the loop above self.hier_inputs has been fully exploded
-            for i in self.hier_inputs:
+            for i in root_inputs:
                 _n = PrakriyaNode(i, i, "Prakriya Hierarchical Start")
                 self.tree.add_node(_n, root=True)
         else:
-            _n = PrakriyaNode(self.inputs, self.inputs, "Prakriya Start")
-            self.tree.add_node(_n, root=True)
+            for i in root_inputs:
+                _n = PrakriyaNode(i, i, "Prakriya Start")
+                self.tree.add_node(_n, root=True)
 
         self.outputs = []
         self.disabled_sutras = []
@@ -304,9 +318,9 @@ class AntarangaPrakriya(PrakriyaBase):
         prakriyas never pay for it. SK534 (kārake) = this pass's scope;
         SK536 (anabhihite) = the rp prayoga gate the 2.3.x rules read.
         """
-        def _scalars():
-            for ix in range(len(self.inputs)):
-                o = self.inputs[ix]
+        def _scalars(inputs):
+            for ix in range(len(inputs)):
+                o = inputs[ix]
                 if _isScalar(o):
                     yield ix, o
 
@@ -315,68 +329,87 @@ class AntarangaPrakriya(PrakriyaBase):
                        for t in o.tags)
 
         # Skip-guard: zero impact on prakriyas without kāraka-layer inputs.
-        if not any(_is_semantic(o) for _, o in _scalars()):
+        if not any(_is_semantic(o) for _, o in _scalars(self.inputs)):
+            self._karaka_branches = [self.inputs]
             return
-        # Sentence dhātu = first element with a prayoga tag (the pre-formed
-        # tiṅanta pada); empty sentinel if none (śeṣa-only sentences).
-        dhatu = None
-        for _, o in _scalars():
-            if any(o.hasTag(t) for t in self._PRAYOGA_TAGS):
-                dhatu = o
-                break
-        if dhatu is None:
-            dhatu = PaninianObject("")
 
-        def _neighbours(ix):
+        def _dhatu_of(inputs):
+            # Sentence dhātu = first element with a prayoga tag (the pre-formed
+            # tiṅanta pada); empty sentinel if none (śeṣa-only sentences).
+            for _, o in _scalars(inputs):
+                if any(o.hasTag(t) for t in self._PRAYOGA_TAGS):
+                    return o
+            return PaninianObject("")
+
+        def _neighbours(inputs, ix):
             # Physical neighbour words for llp/rrp (particle-yoga rules),
             # skipping the Adya/avasAna separator elements.
             llp = rrp = None
             for j in range(ix - 1, -1, -1):
-                o = self.inputs[j]
+                o = inputs[j]
                 if _isScalar(o) and (o.hasTag("Adya") or o.hasTag("avasAna")):
                     continue
                 llp = o if _isScalar(o) else o[0]
                 break
-            for j in range(ix + 1, len(self.inputs)):
-                o = self.inputs[j]
+            for j in range(ix + 1, len(inputs)):
+                o = inputs[j]
                 if _isScalar(o) and (o.hasTag("Adya") or o.hasTag("avasAna")):
                     continue
                 rrp = o if _isScalar(o) else o[0]
                 break
             return (llp, rrp)
 
-        def _run_fixpoint(ix):
+        def _apply(inputs, ix, s, fired):
+            # Apply rule s to element ix of inputs in place, mirroring _exec's
+            # disabled_sutras bookkeeping. Returns the new element object.
+            elem = inputs[ix]
+            dhatu = _dhatu_of(inputs)
+            r = s.operate(elem, dhatu)
+            r = s.update(elem, dhatu, *r)
+            r0 = r[0]
+            r0.disabled_sutras.append(s.aps)
+            r0.disabled_by[s.aps] = s.aps
+            if s.overrides is not None:
+                for so_aps in s.overrides:
+                    r0.disabled_sutras.append(so_aps)
+                    r0.disabled_by[so_aps] = s.aps
+            fired.append(s.aps)
+            logger.debug(f"Kāraka pre-pass [{s.aps}] @{ix}: {r0} tags {sorted(r0.tags)}")
+            inputs.replace_at(ix, r0)
+            return inputs[ix]
+
+        def _run_fixpoint(inputs, ix, fired_prefix=None):
             # Run the bahiranga == -1 rules on element ix (window = elem | dhātu)
-            # to fixpoint, mirroring _exec's disabled_sutras bookkeeping, and log.
-            elem = self.inputs[ix]
-            fired = []
+            # to fixpoint, mirroring _exec's bookkeeping. A vibhāṣā (optional)
+            # winner FORKS: one branch (a deep clone with the rule disabled on the
+            # element) re-runs the fixpoint — falling through to the general rule
+            # (e.g. 2.3.22 not applied → 2.3.2 dvitīyā) — while this branch applies
+            # the rule. Returns a list of (inputs, log_entry); the common
+            # non-optional path returns exactly one.
+            fired = list(fired_prefix or [])
+            forked = []
+            dhatu = _dhatu_of(inputs)
+            elem = inputs[ix]
             while True:
-                ctx = _neighbours(ix)
+                ctx = _neighbours(inputs, ix)
                 triggered = [s for s in self._karaka_sutras
                              if (s.aps not in elem.disabled_sutras)
                              and s.isTriggered(elem, dhatu, context=ctx)]
                 if not triggered:
                     break
                 s = self.sutra_priority(triggered, [elem, dhatu])
-                # Vibhāṣā (optional) kāraka rules need pre-pass branch forking,
-                # deferred until phase K3 introduces the first one.
-                assert not s.optional, \
-                    f"optional kāraka rule {s.aps} not yet supported in pre-pass"
-                r = s.operate(elem, dhatu)
-                r = s.update(elem, dhatu, *r)
-                r0 = r[0]
-                r0.disabled_sutras.append(s.aps)
-                r0.disabled_by[s.aps] = s.aps
-                if s.overrides is not None:
-                    for so_aps in s.overrides:
-                        r0.disabled_sutras.append(so_aps)
-                        r0.disabled_by[so_aps] = s.aps
-                fired.append(s.aps)
-                logger.debug(f"Kāraka pre-pass [{s.aps}] @{ix}: {r0} tags {sorted(r0.tags)}")
-                self.inputs.replace_at(ix, r0)
-                elem = self.inputs[ix]
-            self.karaka_log.append({"index": ix, "fired": fired,
-                                    "tags": sorted(elem.tags)})
+                if s.optional:
+                    # Vibhāṣā fork: the not-applied branch is a clone with s
+                    # disabled, run to its own fixpoint (and possibly forking
+                    # again). This branch falls through and applies s below.
+                    skip_inputs = PrakriyaVakya(inputs.v)
+                    se = skip_inputs[ix]
+                    se.disabled_sutras.append(s.aps)
+                    se.disabled_by[s.aps] = s.aps
+                    forked.extend(_run_fixpoint(skip_inputs, ix, fired))
+                elem = _apply(inputs, ix, s, fired)
+            log_entry = {"index": ix, "fired": fired, "tags": sorted(elem.tags)}
+            return [(inputs, log_entry)] + forked
 
         def _is_avyaya_particle(o):
             # A karmapravacanīya particle: an avyaya word (nipAta/svarAdi) carrying
@@ -385,30 +418,47 @@ class AntarangaPrakriya(PrakriyaBase):
                     and (o.hasTag("nipAta") or o.hasTag("svarAdi"))
                     and _is_semantic(o))
 
-        # Pass A (karaka_plan.md §K2): particle saṁjñā. The karmapravacanīya
-        # saṁjñā (1.4.84–96) must attach to the particle BEFORE the governed noun
-        # is processed, so 2.3.8 can read it via llp/rrp regardless of word order.
-        for ix, elem in list(_scalars()):
-            if _is_avyaya_particle(elem):
-                _run_fixpoint(ix)
-        # Pass B: noun kāraka/vibhakti — the kāraka participants (?prAtipadika with
-        # a vacana_), excluding the avyaya particles handled in Pass A.
-        for ix, elem in list(_scalars()):
-            if (elem.hasTag("prAtipadika")
-                    and any(t.startswith("vacana_") for t in elem.tags)
-                    and not (elem.hasTag("nipAta") or elem.hasTag("svarAdi"))):
-                _run_fixpoint(ix)
-        self._insert_sups()
+        def _is_noun(o):
+            return (o.hasTag("prAtipadika")
+                    and any(t.startswith("vacana_") for t in o.tags)
+                    and not (o.hasTag("nipAta") or o.hasTag("svarAdi")))
 
-    def _insert_sups(self):
+        # Processing order (stable across branches — the partition keys
+        # ?prAtipadika/vacana_/nipAta are never written by kāraka rules, and the
+        # fixpoint replaces in place without changing indices until sup
+        # insertion). Pass A (karaka_plan.md §K2): particle karmapravacanīya
+        # saṁjñā FIRST, so 2.3.8 can read it via llp/rrp regardless of word
+        # order. Pass B: noun kāraka/vibhakti.
+        passA = [ix for ix, o in _scalars(self.inputs) if _is_avyaya_particle(o)]
+        passB = [ix for ix, o in _scalars(self.inputs) if _is_noun(o)]
+        # Branch states carried across elements; a vibhāṣā rule multiplies them.
+        branch_states = [self.inputs]
+        branch_logs = [[]]
+        for ix in passA + passB:
+            new_states, new_logs = [], []
+            for st, lg in zip(branch_states, branch_logs):
+                for rst, rlog in _run_fixpoint(st, ix):
+                    new_states.append(rst)
+                    new_logs.append(lg + [rlog])
+            branch_states, branch_logs = new_states, new_logs
+        for st in branch_states:
+            self._insert_sups(st)
+        for lg in branch_logs:
+            self.karaka_log.extend(lg)
+        self._karaka_branches = branch_states
+
+    def _insert_sups(self, inputs):
         """Insert sup pratyayas after elements tagged viBakti_N + vacana_M
         (karaka_plan.md §2 step 1), scrolling right past kṛt/taddhita/strī
         pratyaya elements of the same word. Idempotent: skips when a sup is
         already in place. The tiṅ branch is stubbed until tiṅanta derivation
-        exists — pre-formed verb padas (?tiNanta) are left untouched."""
+        exists — pre-formed verb padas (?tiNanta) are left untouched.
+
+        Operates on the given branch's `inputs` (a vibhāṣā kāraka rule may have
+        forked the pre-pass into several alternative sentences)."""
         insertions = []
-        for ix in range(len(self.inputs)):
-            o = self.inputs[ix]
+        for ix in range(len(inputs)):
+            o = inputs[ix]
             if not _isScalar(o):
                 continue
             if o.hasTag("tiNanta"):
@@ -432,11 +482,11 @@ class AntarangaPrakriya(PrakriyaBase):
             else:
                 continue
             jx = ix + 1
-            while jx < len(self.inputs):
-                nxt = self.inputs[jx]
+            while jx < len(inputs):
+                nxt = inputs[jx]
                 # Only scroll past a kṛt/taddhita/strī *pratyaya* of the same
                 # word — never a following pratipadika that merely carries a
-                # strī (or other) tag, e.g. a feminine stem ramA, which is the
+                # strI (or other) tag, e.g. a feminine stem ramA, which is the
                 # next word and must get its own sup at its own position.
                 if (_isScalar(nxt) and nxt.hasTag("pratyaya")
                         and (nxt.hasTag("krt") or nxt.hasTag("tadDita")
@@ -444,14 +494,14 @@ class AntarangaPrakriya(PrakriyaBase):
                     jx += 1
                 else:
                     break
-            if (jx < len(self.inputs) and _isScalar(self.inputs[jx])
-                    and self.inputs[jx].hasTag("sup")):
+            if (jx < len(inputs) and _isScalar(inputs[jx])
+                    and inputs[jx].hasTag("sup")):
                 continue  # sup already present (re-entry safety)
             logger.debug(f"Sup insertion: {o} {vib}/{vac} -> sups[{n-1}][{m-1}] at {jx}")
             insertions.append((jx, sups[n-1][m-1]))
         # Apply right-to-left so collected indices stay valid.
         for jx, supobj in reversed(insertions):
-            self.inputs.insert_at(jx, supobj)
+            inputs.insert_at(jx, supobj)
 
     def _apply_antadivat(self, s, r):
         """6.1.85 antādivat boundary marking. Called from _exec AND from the

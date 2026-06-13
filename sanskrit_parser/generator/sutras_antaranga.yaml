@@ -7680,4 +7680,137 @@
   update:
     olp: [+viBakti_2, +has_viBakti]
 
+# ════════════════════════════════════════════════════════════════════════════
+# Phase K3 — tṛtīyā cluster (SK 562–568; karaka_plan.md §K3)
+#
+# Two vibhāṣā rules (1.4.43 div, 2.3.22 saṁjñā) exercise the pre-pass
+# optional-fork mechanism (antaranga_prakriya.py _run_fixpoint): the optional
+# winner forks the sentence — one branch applies it, one falls through to the
+# general rule — and each fork derives as a separate output (the tests assert
+# both branches). The fixed tṛtīyā rules (2.3.6/19/20/21/23) are apavādas to
+# the 2.3.46 prathamā default; 2.3.6 additionally beats 2.3.5 dvitīyā by para.
+# Saha-yoga (2.3.19) peeks the adjacent saha-family particle via llp/rrp, like
+# 2.3.4 antarā (the particle sits next to the noun it governs).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 562: दिवः कर्म च (1.4.43) — for √div (dīvyati, gamble/play) the sādhakatama
+# (its instrument, the dice) is OPTIONALLY karma (and, by च, otherwise karaṇa via
+# 1.4.42): अक्षैरक्षान्वा दीव्यति. Vibhāṣā → pre-pass fork: apply → kAraka_karma
+# (→ 2.3.2 अक्षान्); skip → 1.4.42 kAraka_karaRa (→ 2.3.18 अक्षैः). Beats 1.4.42
+# by the kāraka-adhikāra param carve-out (14043 > 14042) when it does fire.
+- sutra: दिवः कर्म च
+  id: 1.4.43
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?semantic_sADakatama"
+      - "?!kAraka"
+    rp: "?div"
+  update:
+    olp: [+kAraka_karma, +kAraka]
+
+# 563: अपवर्गे तृतीया (2.3.6) — kāla/adhvan in atyanta-saṁyoga, WHEN the action
+# reaches completion (apavarga = phala-prāpti), → tṛtīyā: अह्ना क्रोशेन वाऽनुवाकोऽधीतः.
+# Beats 2.3.5 dvitīyā by para (23006 > 23005); apavarge kim → मासमधीतो नायातः
+# (no completion → 2.3.5 dvitīyā). Apavāda to 2.3.46.
+- sutra: अपवर्गे तृतीया
+  id: 2.3.6
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_kAlADvan"
+      - "?semantic_atyantasaMyoga"
+      - "?semantic_apavarga"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 564: सहयुक्तेऽप्रधाने (2.3.19) — with a saha-sense particle (saha/sākam/sārdham/
+# samam), the subordinate (apradhāna) participant → tṛtīyā: पुत्रेण सहागतः पिता.
+# Particle sits adjacent to the governed noun (llp or rrp peek). Apavāda to 2.3.46.
+- sutra: सहयुक्तेऽप्रधाने
+  id: 2.3.19
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?semantic_apraDAna"
+        - "?!has_viBakti"
+      llp: [=saha, =sAkam, =sArDam, =samam]
+    - lp:
+        - and
+        - "?semantic_apraDAna"
+        - "?!has_viBakti"
+      rrp: [=saha, =sAkam, =sArDam, =samam]
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 565: येनाङ्गविकारः (2.3.20) — the limb by whose deformity the possessor's
+# deformity is marked → tṛtīyā: अक्ष्णा काणः. aṅgavikāraḥ kim → अक्षि काणमस्य
+# (the eye itself, no aṅga-vikāra → not tṛtīyā). Apavāda to 2.3.46.
+- sutra: येनाङ्गविकारः
+  id: 2.3.20
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_aNgavikAra"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 566: इत्थंभूतलक्षणे (2.3.21) — the mark by which someone in a certain state is
+# recognized → tṛtīyā: जटाभिस्तापसः ("an ascetic [known] by his matted hair").
+# Apavāda to 2.3.46. (semantic_itTamBUtalakzaRa is distinct from the K2
+# karmapravacanīya semantic_itTamBUta sense.)
+- sutra: इत्थंभूतलक्षणे
+  id: 2.3.21
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_itTamBUtalakzaRa"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 567: संज्ञोऽन्यतरस्यां कर्मणि (2.3.22) — the karma of sam-pūrva √jñā (saṁjānīte,
+# "recognizes/agrees with") is OPTIONALLY tṛtīyā: पित्रा पितरं वा संजानीते. Vibhāṣā
+# → pre-pass fork: apply → viBakti_3 (पित्रा); skip → 2.3.2 dvitīyā (पितरम्). The
+# noun is already kAraka_karma (1.4.49); beats 2.3.2 by para when it fires.
+- sutra: संज्ञोऽन्यतरस्यां कर्मणि
+  id: 2.3.22
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?kAraka_karma"
+      - "?!has_viBakti"
+    rp: "?saMjYAna"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 568: हेतौ (2.3.23) — the cause (hetu, distinct from karaṇa: not tied to a
+# vyāpāra) → tṛtīyā: धनेन कुलम् ("a family [is esteemed] by reason of wealth"),
+# पुण्येन दृष्टो हरिः. Apavāda to 2.3.46.
+- sutra: हेतौ
+  id: 2.3.23
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_hetu"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
 

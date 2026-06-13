@@ -1,4 +1,9 @@
 from sanskrit_parser.generator.pratipadika import Pratipadika
+# saha is already defined in pratipadika.py (nipāta, tagged "saha" for the
+# sadhryac sadhri-ādeśa). Re-export the SAME object here — defining a fresh
+# svarādi `saha` would shadow it under `from avyaya import *` (vibhaktis_list)
+# and break the saDryac compound. Used as the 2.3.19 saha-yoga particle.
+from sanskrit_parser.generator.pratipadika import saha  # noqa: F401
 from sanskrit_parser.generator.pratyaya import Pratyaya
 
 # ── Section 1: svarādi gaṇa (1.1.37 / SK447) ─────────────────────────────────
@@ -77,8 +82,9 @@ pravAhukam = Pratipadika("pravAhukam", "pum", other_tags=["svarAdi"])  # प्�
 pravAhikA  = Pratipadika("pravAhikA",  "pum", other_tags=["svarAdi"])  # प्रवाहिका "at the same time"
 Aryahalam  = Pratipadika("Aryahalam",  "pum", other_tags=["svarAdi"])  # आर्यहलम् "violently"
 aBIkzRam   = Pratipadika("aBIkzRam",  "pum", other_tags=["svarAdi"])  # अभीक्ष्णम् "repeatedly"
-sAkam     = Pratipadika("sAkam",     "pum", other_tags=["svarAdi"])  # साकम् "together"
-sArDam    = Pratipadika("sArDam",    "pum", other_tags=["svarAdi"])  # सार्धम् "together with"
+sAkam     = Pratipadika("sAkam",     "pum", other_tags=["svarAdi"])  # साकम् "together" (2.3.19 saha-yoga)
+sArDam    = Pratipadika("sArDam",    "pum", other_tags=["svarAdi"])  # सार्धम् "together with" (2.3.19)
+samam     = Pratipadika("samam",     "pum", other_tags=["svarAdi"])  # समम् "together with" (2.3.19; saha re-exported above)
 hiruk     = Pratipadika("hiruk",     "pum", other_tags=["svarAdi"])  # हिरुक् "without"
 Dik       = Pratipadika("Dik",       "pum", other_tags=["svarAdi"])  # धिक् "fie!"
 aTa       = Pratipadika("aTa",       "pum", other_tags=["svarAdi"])  # अथ "thus/now"

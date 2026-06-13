@@ -115,3 +115,11 @@ aDyAste     = tinanta_pada("aDyAste",     "kartari", ["aDiSIN"])                
 aBiniviSate = tinanta_pada("aBiniviSate", "kartari", ["aBiniviS"])             # अभिनिविशते "settles on" — 1.4.47
 upavasati   = tinanta_pada("upavasati",   "kartari", ["upAdivas"])             # उपवसति "dwells in" — 1.4.48
 pAcayati    = tinanta_pada("pAcayati",    "kartari", ["Ryanta"])               # पाचयति "causes to cook" — 1.4.52 गत्यादि-किम् negative (ṇyanta but not a gati-class verb)
+
+# ── Kāraka Phase K3 (karaka_plan.md §K3): tṛtīyā-cluster verb tags ───────────
+#  - div     : √div (दिवु क्रीडाविजिगीषा…, "play/gamble") — 1.4.43 दिवः कर्म च:
+#              its sādhakatama (the dice) is optionally karma else karaṇa.
+#  - saMjYAna : sam-pūrva √jñā (saṁjānīte, "recognizes/agrees with") — 2.3.22
+#              संज्ञोऽन्यतरस्यां कर्मणि: its karma is optionally tṛtīyā else dvitīyā.
+dIvyati   = tinanta_pada("dIvyati",   "kartari", ["div"])       # दीव्यति "gambles" — 1.4.43 (vibhāṣā)
+saMjAnIte = tinanta_pada("saMjAnIte", "kartari", ["saMjYAna"])  # संजानीते "agrees with" — 2.3.22 (vibhāṣā)

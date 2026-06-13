@@ -79,6 +79,9 @@ japa = Pratipadika("japa", "pum")     # जप — जपमनु प्रा�
 vfkza = Pratipadika("vfkza", "pum")   # वृक्ष — वृक्षं प्रति (SK552)
 kroSa = Pratipadika("kroSa", "pum")   # क्रोश — क्रोशं गिरिः (SK558)
 giri = Pratipadika("giri", "pum")     # गिरि — क्रोशं गिरिः (i-stem like hari) (SK558)
+# Kāraka Phase K3 sentence stems (tṛtīyā cluster; SK562–568).
+tApasa = Pratipadika("tApasa", "pum")   # तापस — जटाभिस्तापसः (SK566 itthambhūta-lakṣaṇa)
+kARa   = Pratipadika("kARa",   "pum")   # काण — अक्ष्णा काणः (SK565 aṅga-vikāra; the one-eyed one)
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
@@ -617,6 +620,7 @@ yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
 
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
+jawA = Pratipadika("jawA", "strI", other_tags=["Ap"])   # जटा — जटाभिस्तापसः (SK566; inst. pl. जटाभिः)
 # SK293 (7.3.115): dvitīyā and tṛtīyā optionally get syāw (like sarvanāma āp) before ṅ-marked suffixes.
 # Used as [dvitIya, Ap] / [tftIya, Ap] in test fixtures (same pattern as [sarva, Ap] for sarva_A).
 dvitIya = Pratipadika("dvitIya", "pum", other_tags=["dvitIyAdi"])
@@ -669,6 +673,8 @@ suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
 
 jYAna = Pratipadika("jYAna", "napum")
 tfRa = Pratipadika("tfRa", "napum")   # तृण — तृणं स्पृशति (SK538 anīpsita-karma)
+Dana = Pratipadika("Dana", "napum")   # धन — धनेन कुलम् (SK568 hetu; धनेन तृतीया)
+kula = Pratipadika("kula", "napum")   # कुल — धनेन कुलम् (SK568; कुलम् prathamā)
 anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
 anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])

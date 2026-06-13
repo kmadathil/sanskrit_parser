@@ -58,21 +58,33 @@ def test_karaka(case):
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
     p.execute()
 
-    log_by_ix = {e["index"]: e for e in p.karaka_log}
-    fired_all = [aps for e in p.karaka_log for aps in e["fired"]]
+    # A vibhāṣā (optional) kāraka rule forks the pre-pass into alternative
+    # sentences, so karaka_log holds one entry per (index, branch). Aggregate
+    # by index — the union of tags/fired across branches — so saṁjñā/vibhakti
+    # expectations can be the SET seen across branches (e.g. 2.3.22 पित्रा /
+    # पितरम् → {viBakti_3, viBakti_2}). Single-branch cases (K0–K2) aggregate
+    # to a single entry, unchanged.
+    agg = {}
+    for e in p.karaka_log:
+        a = agg.setdefault(e["index"], {"tags": set(), "fired": set()})
+        a["tags"].update(e["tags"])
+        a["fired"].update(e["fired"])
+    fired_all = {aps for a in agg.values() for aps in a["fired"]}
 
     # Fired-sutra trace
     for aps in case["sutras"]:
         assert aps in fired_all, \
-            f"{case['label']}: {aps} missing from fired trace {fired_all}"
+            f"{case['label']}: {aps} missing from fired trace {sorted(fired_all)}"
 
     # Levels 1–2 per word, plus per-word negative trace
     for spec, exp, ix in zip(case["sentence"], case["expect"], word_ix):
-        entry = log_by_ix.get(ix)
-        tags = set(entry["tags"]) if entry else set()
+        entry = agg.get(ix)
+        tags = entry["tags"] if entry else set()
+        fired = entry["fired"] if entry else set()
         if "karaka" in exp:
             karakas = {t for t in tags if t.startswith("kAraka_")}
-            expected = set() if exp["karaka"] is None else {exp["karaka"]}
+            k = exp["karaka"]
+            expected = set() if k is None else ({k} if isinstance(k, str) else set(k))
             assert karakas == expected, \
                 f"{case['label']} word {spec}: kāraka {karakas} != {expected}"
         if "vibhakti" in exp:
@@ -81,8 +93,8 @@ def test_karaka(case):
             assert vibhaktis == set(exp["vibhakti"]), \
                 f"{case['label']} word {spec}: vibhakti {vibhaktis} != {exp['vibhakti']}"
         for aps in exp.get("not_fired", []):
-            assert entry is None or aps not in entry["fired"], \
-                f"{case['label']} word {spec}: {aps} must not fire (fired {entry['fired']})"
+            assert aps not in fired, \
+                f"{case['label']} word {spec}: {aps} must not fire (fired {sorted(fired)})"
 
     # Level 3: surface — joined sentence set vs cross-product of word forms
     sep = avasAna.canonical()
