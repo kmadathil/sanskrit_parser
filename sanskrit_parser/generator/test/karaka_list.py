@@ -1261,4 +1261,398 @@ karaka_tests = [
             {"forms": ["भजति"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K5 — apādāna + pañcamī (SK586–605; karaka_plan.md §K5). The apādāna
+    # saṁjñā cluster (1.4.24–31) + 2.3.28 pañcamī; the karmapravacanīya
+    # apa/āṅ/pari/prati (1.4.88/89/92 → 2.3.10/11); akartari ṛṇe (2.3.24); the
+    # yoga-word peeks (2.3.29 anya/ārāt/itara/ṛte/dik); and the vibhāṣā forks —
+    # two two-way (2.3.25 guṇa-hetu, 2.3.33 stoka-karaṇa) and two THREE-way
+    # (2.3.32 pṛthak/vinā/nānā, 2.3.35 dūra/antika). pañcamī a-stems take both
+    # pausa variants (त्/द्) at avasāna. Examples from
+    # references/siddhantakaumudi.html anchors SK586–605.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK586 (1.4.24) + SK587 (2.3.28): general dhruva-apāya → pañcamī ───────
+    {
+        # ग्रामादायाति — the fixed point (grāma) of separation → apādāna →
+        # pañcamī (ग्रामात्/ग्रामाद्). General definition, no verb gate.
+        "label": "SK586-gramad-ayati",
+        "sutras": ["1.4.24", "2.3.28"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_DruvApAya"]},
+            {"verb": "Ayati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["ग्रामात्", "ग्रामाद्"]},
+            {"forms": ["आयति"]},
+        ],
+    },
+
+    # ── SK588 (1.4.25): bhī/trā bhaya-hetu → apādāna ──────────────────────────
+    {
+        # चोराद्बिभेति — the cause of fear (cora) → apādāna → pañcamī (चोराद्/चोरात्).
+        "label": "SK588-corad-bibheti",
+        "sutras": ["1.4.25", "2.3.28"],
+        "sentence": [
+            {"stem": "cora", "vacana": 1, "sem": ["semantic_Bayahetu"]},
+            {"verb": "biBeti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["चोराद्", "चोरात्"]},
+            {"forms": ["बिभेति"]},
+        ],
+    },
+
+    # ── SK589 (1.4.26): parā-ji asoḍha → apādāna (+ negative) ─────────────────
+    {
+        # अध्ययनात्पराजयते — the unbearable thing (adhyayana) → apādāna → pañcamī
+        # (अध्ययनात्/अध्ययनाद्). glāyati-artha "gives up studying".
+        "label": "SK589-adhyayanat-parajayate",
+        "sutras": ["1.4.26", "2.3.28"],
+        "sentence": [
+            {"stem": "aDyayana", "vacana": 1, "sem": ["semantic_asoQa"]},
+            {"verb": "parAjayate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["अध्ययनात्", "अध्ययनाद्"]},
+            {"forms": ["पराजयते"]},
+        ],
+    },
+    {
+        # सोढः किम् — शत्रून्पराजयते (abhibhava "defeats"): the enemies are soḍha,
+        # so 1.4.26 must not fire; śatru = īpsitatama karma → dvitīyā (शत्रून्).
+        "label": "SK589-negative-sodha-karma",
+        "sutras": ["1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "Satru", "vacana": 3, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "parAjayate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.26", "2.3.28"], "forms": ["शत्रून्"]},
+            {"forms": ["पराजयते"]},
+        ],
+    },
+
+    # ── SK590 (1.4.27): vāraṇa īpsita → apādāna (+ go karma) ──────────────────
+    {
+        # यवेभ्यो गां वारयति — the desired thing warded off (yava, pl) → apādāna →
+        # pañcamī (यवेभ्यः); the protected go = karma → dvitīyā (गाम्).
+        "label": "SK590-yavebhyo-gam-varayati",
+        "sutras": ["1.4.27", "2.3.28", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "yava", "vacana": 3, "sem": ["semantic_Ipsita_vAraRa"]},
+            {"stem": "go", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "vArayati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["यवेभ्यः"]},
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"], "forms": ["गाम्"]},
+            {"forms": ["वारयति"]},
+        ],
+    },
+
+    # ── SK591 (1.4.28): antardhi → apādāna ────────────────────────────────────
+    {
+        # मातुर्निलीयते कृष्णः — the one hidden-from (mātṛ) → apādāna → pañcamī
+        # (मातुः); Kṛṣṇa the kartṛ → prathamā (कृष्णः).
+        "label": "SK591-matur-niliyate-krsnah",
+        "sutras": ["1.4.28", "2.3.28", "1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "mAtf", "vacana": 1, "sem": ["semantic_antardhi"]},
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "nilIyate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["मातुः"]},
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["कृष्णः"]},
+            {"forms": ["निलीयते"]},
+        ],
+    },
+
+    # ── SK592 (1.4.29): ākhyātṛ upayoga → apādāna ─────────────────────────────
+    {
+        # उपाध्यायादधीते — the teacher (upādhyāya), in regulated learning → apādāna
+        # → pañcamī (उपाध्यायाद्/उपाध्यायात्).
+        "label": "SK592-upadhyayad-adhite",
+        "sutras": ["1.4.29", "2.3.28"],
+        "sentence": [
+            {"stem": "upADyAya", "vacana": 1, "sem": ["semantic_AKyAtf"]},
+            {"verb": "aDIte"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["उपाध्यायाद्", "उपाध्यायात्"]},
+            {"forms": ["अधीते"]},
+        ],
+    },
+
+    # ── SK593 (1.4.30): jani-prakṛti → apādāna ────────────────────────────────
+    {
+        # ग्रामात्प्रजायते — the source (grāma) of what is born (prakṛti of the
+        # √jan agent) → apādāna → pañcamī (ग्रामात्/ग्रामाद्). (a-stem stand-in for
+        # the SK's an-stem ब्रह्मणः.)
+        "label": "SK593-gramat-prajayate",
+        "sutras": ["1.4.30", "2.3.28"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_janiprakfti"]},
+            {"verb": "prajAyate"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["ग्रामात्", "ग्रामाद्"]},
+            {"forms": ["प्रजायते"]},
+        ],
+    },
+
+    # ── SK594 (1.4.31): bhuvaḥ prabhava → apādāna ─────────────────────────────
+    {
+        # हिमवतो गङ्गा प्रभवति — the place of origin (himavat) of the √bhū agent →
+        # apādāna → pañcamī (हिमवतः); Gaṅgā the kartṛ → prathamā (गङ्गा).
+        "label": "SK594-himavato-ganga-prabhavati",
+        "sutras": ["1.4.31", "2.3.28", "1.4.54", "2.3.46"],
+        "sentence": [
+            {"stem": "himavat", "vacana": 1, "sem": ["semantic_praBava"]},
+            {"stem": "gaNgA", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"verb": "praBavati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_apAdAna", "vibhakti": ["viBakti_5"],
+             "forms": ["हिमवतः"]},
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_1"], "forms": ["गङ्गा"]},
+            {"forms": ["प्रभवति"]},
+        ],
+    },
+
+    # ── SK595 (2.3.29): anya/ārāt/itara/ṛte/dik-yoga → pañcamī ────────────────
+    {
+        # अन्यो रामात् — rāma in yoga with anya → pañcamī (रामात्/रामाद्); anya itself
+        # is its own prathamā (अन्यत्/अन्यद्, neuter sarvanāma). anya is rāma's llp.
+        "label": "SK595-anyo-ramat",
+        "sutras": ["2.3.29", "2.3.46"],
+        "sentence": [
+            {"stem": "anya", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["अन्यत्", "अन्यद्"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["रामात्", "रामाद्"]},
+        ],
+    },
+
+    # ── SK596 (1.4.88) + SK598 (2.3.10): apa/pari varjana kp → pañcamī ────────
+    {
+        # अप हरेः (संसारः) — apa (varjana sense) is karmapravacanīya governing the
+        # following hari → pañcamī (हरेः). apa is hari's llp.
+        "label": "SK598-apa-hareh",
+        "sutras": ["1.4.88", "2.3.10"],
+        "sentence": [
+            {"word": "apa_kp", "sem": ["semantic_varjana"]},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अप"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["हरेः"]},
+        ],
+    },
+    {
+        # परि हरेः (संसारः) — pari in varjana → kp; same pañcamī (हरेः).
+        "label": "SK598-pari-hareh",
+        "sutras": ["1.4.88", "2.3.10"],
+        "sentence": [
+            {"word": "pari_kp", "sem": ["semantic_varjana"]},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["परि"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"], "forms": ["हरेः"]},
+        ],
+    },
+
+    # ── SK597 (1.4.89) + SK598 (2.3.10): āṅ maryādā kp → pañcamī ──────────────
+    {
+        # आ मुक्तेः (संसारः) — āṅ (maryādā "up to") is kp governing the following
+        # noun → pañcamī. Modelled with hari (आ हरेः) → हरेः; āṅ surfaces आ.
+        "label": "SK597-a-hareh-maryada",
+        "sutras": ["1.4.89", "2.3.10"],
+        "sentence": [
+            {"word": "AN_kp", "sem": ["semantic_maryAdA"]},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["आ"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"], "forms": ["हरेः"]},
+        ],
+    },
+
+    # ── SK599 (1.4.92) + SK600 (2.3.11): prati pratinidhi/pratidāna kp → pañcamī ─
+    {
+        # कृष्णात्प्रति (प्रद्युम्नः) — prati (pratinidhi "in place of") is kp governing
+        # the PRECEDING noun (kṛṣṇa) → pañcamī. Modelled with hari (हरेः प्रति);
+        # prati is hari's rrp. Distinct direction from 2.3.10 apa/āṅ/pari.
+        "label": "SK600-hareh-prati-pratinidhi",
+        "sutras": ["1.4.92", "2.3.11"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"word": "prati_kp", "sem": ["semantic_pratiniDi"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46", "2.3.10"], "forms": ["हरेः"]},
+            {"forms": ["प्रति"]},
+        ],
+    },
+    {
+        # शताद्प्रति (तिलेभ्यः प्रतियच्छति माषान्) — pratidāna "in exchange for" sense;
+        # śata governed by prati → pañcamī (शताद्/शतात्).
+        "label": "SK600-satat-prati-pratidana",
+        "sutras": ["1.4.92", "2.3.11"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_pratidAna"]},
+            {"word": "prati_kp", "sem": ["semantic_pratidAna"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5"], "forms": ["शताद्", "शतात्"]},
+            {"forms": ["प्रति"]},
+        ],
+    },
+
+    # ── SK601 (2.3.24): akartari ṛṇe → pañcamī (+ negative) ───────────────────
+    {
+        # शताद्बद्धः — the debt (śata, a non-agent cause) → pañcamī (शताद्/शतात्).
+        # akartari: the debt is not the karaṇa/kartṛ of binding.
+        "label": "SK601-satad-baddhah-rna",
+        "sutras": ["2.3.24"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_fRa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["शताद्", "शतात्"]},
+        ],
+    },
+    {
+        # अकर्तरि किम् — शतेन बन्धितः: the debt AS the karaṇa (agent of binding) →
+        # tṛtīyā (शतेन), not pañcamī; 2.3.24 must not fire. The śata is sādhakatama
+        # → 1.4.42 karaṇa → 2.3.18.
+        "label": "SK601-negative-kartari-karana",
+        "sutras": ["1.4.42", "2.3.18"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_sADakatama"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karaRa", "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.24"], "forms": ["शतेन"]},
+        ],
+    },
+
+    # ── SK602 (2.3.25): vibhāṣā guṇe astriyām → pañcamī / tṛtīyā ──────────────
+    {
+        # जाड्याज्जाड्येन वा (बद्धः) — the non-feminine guṇa-hetu jāḍya is optionally
+        # pañcamī (जाड्यात्/जाड्याद्, via 2.3.25) or tṛtīyā (जाड्येन, fall-through to
+        # 2.3.23 hetu). Fork. The noun carries semantic_hetu for the skip branch.
+        "label": "SK602-jadyaj-jadyena-guna",
+        "sutras": ["2.3.25", "2.3.23"],
+        "sentence": [
+            {"stem": "jAqya", "vacana": 1,
+             "sem": ["semantic_guRahetu", "semantic_hetu"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5", "viBakti_3"],
+             "forms": ["जाड्यात्", "जाड्याद्", "जाड्येन"]},
+        ],
+    },
+
+    # ── SK604 (2.3.33): karaṇe stoka/alpa/… adravya → pañcamī / tṛtīyā ────────
+    {
+        # स्तोकेन स्तोकाद्वा (मुक्तः) — stoka as adravya karaṇa is optionally pañcamī
+        # (स्तोकात्/स्तोकाद्, via 2.3.33) or tṛtīyā (स्तोकेन, fall-through to 1.4.42
+        # karaṇa → 2.3.18). Fork. The noun carries semantic_sADakatama for the
+        # skip branch.
+        "label": "SK604-stokad-stokena-karana",
+        "sutras": ["2.3.33", "1.4.42", "2.3.18"],
+        "sentence": [
+            {"stem": "stoka", "vacana": 1,
+             "sem": ["semantic_stokAdi", "semantic_sADakatama"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karaRa",
+             "vibhakti": ["viBakti_5", "viBakti_3"],
+             "forms": ["स्तोकात्", "स्तोकाद्", "स्तोकेन"]},
+        ],
+    },
+
+    # ── SK603 (2.3.32): pṛthak/vinā/nānā → THREE-way tṛtīyā/pañcamī/dvitīyā ───
+    {
+        # पृथग् रामेण रामात् रामं वा — with pṛthak the noun is tṛtīyā (रामेण, 2.3.32.2),
+        # pañcamī (रामात्/रामाद्, 2.3.32.1), OR dvitīyā (रामम्, 2.3.32). Three-arm
+        # fork. pṛthak is rāma's llp.
+        "label": "SK603-prthag-ramena-ramat-ramam",
+        "sutras": ["2.3.32.2", "2.3.32.1", "2.3.32"],
+        "sentence": [
+            {"word": "pfTak"},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["पृथक्"]},
+            {"karaka": None,
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
+             "not_fired": ["2.3.46"],
+             "forms": ["रामेण", "रामात्", "रामाद्", "रामम्"]},
+        ],
+    },
+    {
+        # विना रामेण रामात् रामं वा — same three-way fork with vinā.
+        "label": "SK603-vina-ramena-ramat-ramam",
+        "sutras": ["2.3.32.2", "2.3.32.1", "2.3.32"],
+        "sentence": [
+            {"word": "vinA"},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["विना"]},
+            {"karaka": None,
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
+             "forms": ["रामेण", "रामात्", "रामाद्", "रामम्"]},
+        ],
+    },
+
+    # ── SK605 (2.3.35): dūra/antika → THREE-way dvitīyā/pañcamī/tṛtīyā ────────
+    {
+        # ग्रामस्य दूरं दूरात् दूरेण वा — dūra (a-stem napuṃsaka, declines itself) is
+        # dvitīyā (दूरम्, 2.3.35.2), pañcamī (दूरात्/दूराद्, 2.3.35.1), OR tṛtīyā
+        # (दूरेण, 2.3.35). Three-arm fork.
+        "label": "SK605-duram-durat-durena",
+        "sutras": ["2.3.35.2", "2.3.35.1", "2.3.35"],
+        "sentence": [
+            {"stem": "dUra", "vacana": 1, "sem": ["semantic_dUrAntika"]},
+        ],
+        "expect": [
+            {"karaka": None,
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
+             "not_fired": ["2.3.46"],
+             "forms": ["दूरम्", "दूरात्", "दूराद्", "दूरेण"]},
+        ],
+    },
+    {
+        # अन्तिकम् अन्तिकात् अन्तिकेन वा — same three-way fork with antika.
+        "label": "SK605-antikam-antikat-antikena",
+        "sutras": ["2.3.35.2", "2.3.35.1", "2.3.35"],
+        "sentence": [
+            {"stem": "antika", "vacana": 1, "sem": ["semantic_dUrAntika"]},
+        ],
+        "expect": [
+            {"karaka": None,
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
+             "forms": ["अन्तिकम्", "अन्तिकात्", "अन्तिकाद्", "अन्तिकेन"]},
+        ],
+    },
 ]

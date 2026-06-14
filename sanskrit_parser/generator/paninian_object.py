@@ -18,14 +18,17 @@ def _is_karaka_tag(t):
     """True for the kāraka-section tag families (karaka_plan.md §2): the
     semantic_*/kAraka_*/viBakti_N/vacana_M tags and the kAraka/has_viBakti
     guards, plus the karmapravacanīya scaffolding (karmapravacanIya + the
-    kp_pUrva/kp_para governance-direction tags, karaka_plan.md §K2). The digit
-    suffix checks exclude the pre-existing viBakti_pada sup-merge marker (and any
-    future *_pada variant) from this set."""
+    kp_pUrva/kp_para governance-direction tags, karaka_plan.md §K2; plus the K5
+    pañcamī-kp direction tags kp_pancami_pUrva/kp_pancami_para for 2.3.10/2.3.11,
+    kept distinct from the dvitīyā kp_pUrva/kp_para so they never trigger 2.3.8).
+    The digit suffix checks exclude the pre-existing viBakti_pada sup-merge marker
+    (and any future *_pada variant) from this set."""
     return (t.startswith(("semantic_", "kAraka_"))
             or (t.startswith("viBakti_") and t[8:].isdigit())
             or (t.startswith("vacana_") and t[7:].isdigit())
             or t in ("kAraka", "has_viBakti",
-                     "karmapravacanIya", "kp_pUrva", "kp_para"))
+                     "karmapravacanIya", "kp_pUrva", "kp_para",
+                     "kp_pancami_pUrva", "kp_pancami_para"))
 
 
 class PaninianObject(SanskritObject):

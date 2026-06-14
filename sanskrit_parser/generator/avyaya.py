@@ -175,6 +175,8 @@ upa_kp   = Pratipadika("upa",   "pum", other_tags=["nipAta"])   # उप (1.4.87
 prati_kp = Pratipadika("prati", "pum", other_tags=["nipAta"])   # प्रति (1.4.90)
 pari_kp  = Pratipadika("pari",  "pum", other_tags=["nipAta"])   # परि (1.4.90)
 aBi_kp   = Pratipadika("aBi",   "pum", other_tags=["nipAta"])   # अभि (1.4.91)
+apa_kp   = Pratipadika("apa",   "pum", other_tags=["nipAta"])   # अप (1.4.88 varjana)
+AN_kp    = Pratipadika("A",     "pum", other_tags=["nipAta"])   # आङ् (1.4.89 maryādā; surfaces आ)
 aDi_kp   = Pratipadika("aDi",   "pum", other_tags=["nipAta"])   # अधि (1.4.93, deferred)
 su_kp    = Pratipadika("su",    "pum", other_tags=["nipAta"])   # सु (1.4.94)
 ati_kp   = Pratipadika("ati",   "pum", other_tags=["nipAta"])   # अति (1.4.95)
