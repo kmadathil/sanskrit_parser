@@ -85,6 +85,10 @@ kARa   = Pratipadika("kARa",   "pum")   # काण — अक्ष्णा �
 # Kāraka Phase K4 sentence stems (sampradāna + caturthī; SK569–585).
 grAma = Pratipadika("grAma", "pum")   # ग्राम — ग्रामं/ग्रामाय गच्छति (SK585 2.3.12 vibhāṣā)
 vipra = Pratipadika("vipra", "pum")   # विप्र — विप्राय गां ददाति (SK569 1.4.32 general sampradāna)
+# Kāraka Phase K5 sentence stems (apādāna + pañcamī; SK586–605).
+cora    = Pratipadika("cora",    "pum")   # चोर — चोराद्बिभेति (SK588 1.4.25 bhaya-hetu → apādāna)
+upADyAya = Pratipadika("upADyAya", "pum")  # उपाध्याय — उपाध्यायादधीते (SK592 1.4.29 ākhyātṛ)
+Satru   = Pratipadika("Satru",   "pum")   # शत्रु — शत्रून्पराजयते (SK589 negative: defeats → karma)
 saKi = Pratipadika("saKi", "pum", other_tags=["saKi", "sakhyAdi"])  # ?sakhyAdi: SK517 (4.1.62)
 pati = Pratipadika("pati", "pum", other_tags=["pati"])
 pAda = Pratipadika("pAda", "pum",  other_tags=["pAdAdi"])
@@ -552,6 +556,7 @@ mahat = Pratipadika("mahat", "pum", its=['u'])
 # SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
+himavat = Pratipadika("himavat", "pum", its=['u'])  # himavat (hima + matup): pañcamī sg हिमवतः — हिमवतो गङ्गा प्रभवति (SK594 1.4.31)
 
 # SK427+SK428: śatṛ (ṛ-it = f-it) stems.
 # śatṛ suffix is ṛ-it → its=["f"]; SK361 (7.1.70) +f block fires → nUM in sarvanamasthana.
@@ -624,6 +629,7 @@ yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
 jawA = Pratipadika("jawA", "strI", other_tags=["Ap"])   # जटा — जटाभिस्तापसः (SK566; inst. pl. जटाभिः)
+gaNgA = Pratipadika("gaNgA", "strI", other_tags=["Ap"])   # गङ्गा — हिमवतो गङ्गा प्रभवति (SK594 1.4.31; प्रथमा गङ्गा)
 # SK293 (7.3.115): dvitīyā and tṛtīyā optionally get syāw (like sarvanāma āp) before ṅ-marked suffixes.
 # Used as [dvitIya, Ap] / [tftIya, Ap] in test fixtures (same pattern as [sarva, Ap] for sarva_A).
 dvitIya = Pratipadika("dvitIya", "pum", other_tags=["dvitIyAdi"])
@@ -680,6 +686,12 @@ tfRa = Pratipadika("tfRa", "napum")   # तृण — तृणं स्पृ�
 Dana = Pratipadika("Dana", "napum")   # धन — धनेन कुलम् (SK568 hetu; धनेन तृतीया)
 kula = Pratipadika("kula", "napum")   # कुल — धनेन कुलम् (SK568; कुलम् prathamā)
 Sata = Pratipadika("Sata", "napum")   # शत — देवदत्ताय शतं धारयति (SK573; शतम् the debt = karma)
+# Kāraka Phase K5 napuṃsaka a-stems (apādāna + pañcamī; SK586–605).
+aDyayana = Pratipadika("aDyayana", "napum")  # अध्ययन — अध्ययनात्पराजयते (SK589 1.4.26 asoḍha → apādāna)
+jAqya    = Pratipadika("jAqya",    "napum")  # जाड्य — जाड्याज्जाड्येन वा (SK602 2.3.25 guṇa-hetu vibhāṣā)
+stoka    = Pratipadika("stoka",    "napum")  # स्तोक — स्तोकात्/स्तोकेन मुक्तः (SK604 2.3.33 karaṇa vibhāṣā)
+dUra     = Pratipadika("dUra",     "napum")  # दूर — दूरं दूरात् दूरेण वा (SK605 2.3.35 three-way fork)
+antika   = Pratipadika("antika",   "napum")  # अन्तिक — अन्तिकम् अन्तिकात् अन्तिकेन वा (SK605)
 # नमस् n. — नमो देवेभ्यः (SK583 2.3.16). Modelled as the neuter s-stem noun (its
 # true category) so it surfaces नमः via normal nom-sg s-stem declension; 2.3.16
 # reads it as the yoga-word by the literal =namas. (Not an avyaya: the bare

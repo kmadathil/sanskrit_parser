@@ -8080,4 +8080,421 @@
   update:
     olp: [+viBakti_4, +has_viBakti]
 
+# ════════════════════════════════════════════════════════════════════════════
+# Phase K5 — apādāna + pañcamī (SK 586–605; karaka_plan.md §K5)
+#
+# Apādāna saṁjñā cluster (1.4.24–31) writes kAraka_apAdAna; the verb-conditioned
+# members read the sentence dhātu via rp (BItrA, parAji, vAraRArTa, antarDi,
+# upayoga, jani, praBava). 2.3.28 maps apAdAna → pañcamī (viBakti_5). Reuses the
+# K2 karmapravacanīya particle machinery (apa/āṅ/pari/prati kp → 2.3.10/2.3.11
+# pañcamī) and the K3/K4 pre-pass optional-fork for the vibhāṣā rules.
+#
+# Three 2.3.x cluster rules read an adjacent yoga-word via llp/rrp (saha-yoga
+# style): 2.3.29 (anya/ārāt/itara/ṛte/dik), 2.3.32 (pṛthak/vinā/nānā).
+#
+# Two THREE-WAY vibhāṣā rules (2.3.32 pṛthak/vinā/nānā → tṛtīyā/pañcamī/dvitīyā;
+# 2.3.35 dūra/antika → dvitīyā/pañcamī/tṛtīyā) are modelled as three rules with
+# distinct sub-sutra aps ordered HIGH→LOW: the two optional arms (highest aps)
+# win first and fork, the non-optional arm (lowest aps) is the final fall-through
+# — yielding exactly three branches via the ?!has_viBakti guard.
+#
+# Deferred (generator_status.md Skipped): the SK587 जुगुप्साविरामप्रमादार्थानाम् and
+# SK594 ल्यब्लोपे … vārttikas (verb long-tail); the SK595 ñc-uttarapada / āc /
+# āhi-yukta yoga-words and the SK602 yoga-vibhāga अगुणे/स्त्रियाम् branch.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 586: ध्रुवमपायेऽपादानम् (1.4.24) — in separation (apāya = vibhāga) the fixed
+# point (dhruva, the avadhi) → apādāna. General definition, no verb gate.
+# ग्रामादायाति ("comes from the village"). kārakam kim → वृक्षस्य पर्णं पतति.
+- sutra: ध्रुवमपायेऽपादानम्
+  id: 1.4.24
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_DruvApAya"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 588: भीत्रार्थानां भयहेतुः (1.4.25) — for bhī/trā verbs the cause of fear
+# (bhaya-hetu) → apādāna. चोराद्बिभेति ("fears the thief"). bhaya-hetuḥ kim →
+# अरण्ये बिभेति (the forest, mere locus → not apādāna). (SK उses चोराद्.)
+- sutra: भीत्रार्थानां भयहेतुः
+  id: 1.4.25
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_Bayahetu"
+      - "?!kAraka"
+    rp: "?BItrA"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 589: पराजेरसोढः (1.4.26) — for parā-ji (parājayate, "fails/is overcome") the
+# unbearable thing (asoḍha) → apādāna. अध्ययनात्पराजयते ("gives up studying").
+# soḍhaḥ kim → शत्रून्पराजयते ("defeats the enemies", abhibhava → plain karma).
+- sutra: पराजेरसोढः
+  id: 1.4.26
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_asoQa"
+      - "?!kAraka"
+    rp: "?parAji"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 590: वारणार्थानामीप्सितः (1.4.27) — for vāraṇa ("warding off") verbs the desired
+# thing being protected (īpsita) → apādāna. यवेभ्यो गां वारयति ("keeps the cow
+# from the barley"). īpsitaḥ kim → यवेभ्यो गां वारयति क्षेत्रे (the field, locus).
+- sutra: वारणार्थानामीप्सितः
+  id: 1.4.27
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_Ipsita_vAraRa"
+      - "?!kAraka"
+    rp: "?vAraRArTa"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 591: अन्तर्धौ येनादर्शनमिच्छति (1.4.28) — in concealment (antardhi), the one from
+# whom the agent wishes to be unseen → apādāna. मातुर्निलीयते कृष्णः ("Kṛṣṇa
+# hides from his mother"). antardhau kim → चौरान्न दिदृक्षते (no concealment).
+- sutra: अन्तर्धौ येनादर्शनमिच्छति
+  id: 1.4.28
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_antardhi"
+      - "?!kAraka"
+    rp: "?antarDi"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 592: आख्यातोपयोगे (1.4.29) — in regulated learning (upayoga), the teacher
+# (ākhyātṛ) → apādāna. उपाध्यायादधीते ("studies from the teacher"). upayoge kim →
+# (टस्य गाथां शृणोति — casual hearing, no upayoga).
+- sutra: आख्यातोपयोगे
+  id: 1.4.29
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_AKyAtf"
+      - "?!kAraka"
+    rp: "?upayoga"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 593: जनिकर्तुः प्रकृतिः (1.4.30) — the source (prakṛti) of what is being born
+# (the agent of √jan) → apādāna. ब्रह्मणः प्रजाः प्रजायन्ते ("creatures are born
+# from Brahmā").
+- sutra: जनिकर्तुः प्रकृतिः
+  id: 1.4.30
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_janiprakfti"
+      - "?!kAraka"
+    rp: "?jani"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 594: भुवः प्रभवः (1.4.31) — the place of first appearance (prabhava) of the
+# agent of √bhū → apādāna. हिमवतो गङ्गा प्रभवति ("the Ganga rises from Himavat").
+- sutra: भुवः प्रभवः
+  id: 1.4.31
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_praBava"
+      - "?!kAraka"
+    rp: "?praBava"
+  update:
+    olp: [+kAraka_apAdAna, +kAraka]
+
+# 587: अपादाने पञ्चमी (2.3.28) — apādāna → pañcamī. ग्रामादायाति, चोराद्बिभेति,
+# उपाध्यायादधीते. No override: an apādāna noun has ?kAraka, so 2.3.46 arm-1 never
+# fires on it; this is the nitya vibhakti for the saṁjñā.
+- sutra: अपादाने पञ्चमी
+  id: 2.3.28
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?kAraka_apAdAna"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 595: अन्यारादितरर्तेदिक्शब्दाञ्चूत्तरपदाजाहियुक्ते (2.3.29) — a noun in yoga with
+# anya/ārāt/itara/ṛte/a dik-word → pañcamī. अन्यो रामात्, आराद्वनात्, ऋते कृष्णात्,
+# पूर्वो ग्रामात्. The yoga-word sits adjacent to the governed noun (llp or rrp
+# peek), as in 2.3.16. (ñc-uttarapada/āc/āhi-yukta yoga-words deferred.) Apavāda
+# to 2.3.46.
+- sutra: अन्यारादितरर्तेदिक्शब्दाञ्चूत्तरपदाजाहियुक्ते
+  id: 2.3.29
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp: [=anya, =ArAt, =itara, =fte, =pUrva]
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp: [=anya, =ArAt, =itara, =fte, =pUrva]
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 596: अपपरी वर्जने (1.4.88) — apa and pari in the varjana (exclusion) sense →
+# karmapravacanīya; the excluded noun FOLLOWS. अप हरेः, परि हरेः संसारः. Uses the
+# dedicated pañcamī-kp direction tag kp_pancami_para (not the dvitīyā kp_para)
+# so 2.3.8 never fires on these — only 2.3.10 (pañcamī).
+- sutra: अपपरी वर्जने
+  id: 1.4.88
+  bahiranga: -1
+  condition:
+    - lp: [and, "=apa", "?semantic_varjana", "?!karmapravacanIya"]
+    - lp: [and, "=pari", "?semantic_varjana", "?!karmapravacanIya"]
+  update:
+    olp: [+karmapravacanIya, +kp_pancami_para]
+
+# 597: आङ् मर्यादावचने (1.4.89) — āṅ in the maryādā ("up to") sense → kp; the
+# limit-noun FOLLOWS (kp_pancami_para). आमुक्तेः संसारः ("saṁsāra lasts up to
+# mukti"). āṅ surfaces आ (the it-marker ṅ is not in the string).
+- sutra: आङ् मर्यादावचने
+  id: 1.4.89
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=A"
+      - "?semantic_maryAdA"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_pancami_para]
+
+# 599: प्रतिः प्रतिनिधिप्रतिदानयोः (1.4.92) — prati in the pratinidhi (substitute)
+# and pratidāna (in-exchange) senses → kp; the source-noun PRECEDES (kp_pUrva,
+# prati sits to its right). प्रद्युम्नः कृष्णात्प्रति, तिलेभ्यः प्रतियच्छति माषान्.
+- sutra: प्रतिः प्रतिनिधिप्रतिदानयोः
+  id: 1.4.92
+  bahiranga: -1
+  condition:
+    - lp: [and, "=prati", "?semantic_pratiniDi", "?!karmapravacanIya"]
+    - lp: [and, "=prati", "?semantic_pratidAna", "?!karmapravacanIya"]
+  update:
+    olp: [+karmapravacanIya, +kp_pancami_pUrva]
+
+# 598: पञ्चम्यपाङ्परिभिः (2.3.10) — a noun governed by the karmapravacanīya
+# apa/āṅ/pari → pañcamī. अप हरेः, आमुक्तेः, परि हरेः. Direction-keyed like 2.3.8
+# (here all three govern rightward → the particle is the noun's llp + kp_para).
+# Apavāda to 2.3.46.
+- sutra: पञ्चम्यपाङ्परिभिः
+  id: 2.3.10
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?prAtipadika"
+      - "?!has_viBakti"
+    llp:
+      - and
+      - "?karmapravacanIya"
+      - "?kp_pancami_para"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 600: प्रतिनिधिप्रतिदाने च यस्मात् (2.3.11) — the source-noun governed by the
+# pratinidhi/pratidāna karmapravacanīya prati → pañcamī. प्रद्युम्नः कृष्णात्प्रति.
+# The particle is the noun's rrp (कृष्णात्प्रति: prati follows the noun → kp_pUrva
+# governs the LEFT noun), so peek rrp. Direction-distinct from 2.3.10 (llp +
+# kp_para) so apa/āṅ/pari never reach this rule. Apavāda to 2.3.46.
+- sutra: प्रतिनिधिप्रतिदाने च यस्मात्
+  id: 2.3.11
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?prAtipadika"
+      - "?!has_viBakti"
+    rrp:
+      - and
+      - "?karmapravacanIya"
+      - "?kp_pancami_pUrva"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 601: अकर्तर्यृणे पञ्चमी (2.3.24) — when a debt (ṛṇa) is the non-agent cause →
+# pañcamī. शताद्बद्धः ("bound on account of a [hundred-]debt"). akartari kim →
+# शतेन बन्धितः (the debt as the karaṇa/agent of binding → tṛtīyā, 2.3.18).
+# Apavāda to 2.3.46. The non-agency is modelled by ?!kAraka (no kartṛ/karaṇa
+# saṁjñā taken — the noun is a plain hetu-debt).
+- sutra: अकर्तर्यृणे पञ्चमी
+  id: 2.3.24
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_fRa"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 602: विभाषा गुणेऽस्त्रियाम् (2.3.25) — when a non-feminine quality (guṇa) is the
+# hetu, the pañcamī is OPTIONAL (else tṛtīyā via 2.3.23 hetu). जाड्याज्जाड्येन वा
+# (बद्धः). Vibhāṣā → fork: apply → viBakti_5 (जाड्यात्); skip → the noun also
+# carries semantic_hetu so it falls to 2.3.23 → viBakti_3 (जाड्येन). Same shape as
+# K4 1.4.44. (The yoga-vibhāga अगुणे/स्त्रियाम् extension is deferred.)
+- sutra: विभाषा गुणेऽस्त्रियाम्
+  id: 2.3.25
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46", "2.3.23"]
+  condition:
+    lp:
+      - and
+      - "?semantic_guRahetu"
+      - "?!strI"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 604: करणे च स्तोकाल्पकृच्छ्रकतिपयस्यासत्त्ववचनस्य (2.3.33) — for stoka/alpa/kṛcchra/
+# katipaya as karaṇa, when NOT denoting a substance (adravya), the tṛtīyā/pañcamī
+# are OPTIONAL. स्तोकेन स्तोकाद्वा (मुक्तः). Vibhāṣā → fork: apply → viBakti_5
+# (स्तोकात्); skip → the noun also carries semantic_sADakatama so 1.4.42 karaṇa →
+# 2.3.18 → viBakti_3 (स्तोकेन). dravye tu → स्तोकेन विषेण हतः (a substance, plain
+# karaṇa → tṛtīyā only). Same shape as K4 1.4.44.
+- sutra: करणे च स्तोकाल्पकृच्छ्रकतिपयस्यासत्त्ववचनस्य
+  id: 2.3.33
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_stokAdi"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 603: पृथग्विनानानाभिस्तृतीयान्यतरस्याम् (2.3.32) — with pṛthak/vinā/nānā the noun
+# is tṛtīyā, pañcamī, OR dvitīyā (samuccaya). पृथग् रामेण रामात् रामं वा. Modelled
+# as three rules ordered HIGH→LOW so the two optional arms win first and fork;
+# the ?!has_viBakti guard yields exactly {viBakti_3, viBakti_5, viBakti_2}. The
+# yoga-word (pṛthak/vinā/nānā) is read via llp/rrp, as in 2.3.19 saha-yoga.
+# Apavāda to 2.3.46.
+- sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
+  id: 2.3.32.2
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp: [=pfTak, =vinA, =nAnA]
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp: [=pfTak, =vinA, =nAnA]
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+- sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
+  id: 2.3.32.1
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp: [=pfTak, =vinA, =nAnA]
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp: [=pfTak, =vinA, =nAnA]
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+- sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
+  id: 2.3.32
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp: [=pfTak, =vinA, =nAnA]
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp: [=pfTak, =vinA, =nAnA]
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+
+# 605: दूरान्तिकार्थेभ्यो द्वितीया च (2.3.35) — for dūra/antika-sense words the noun
+# is dvitīyā, pañcamī, OR tṛtīyā. ग्रामस्य दूरं दूरात् दूरेण वा; अन्तिकम् अन्तिकात्
+# अन्तिकेन वा. dūra/antika decline themselves (a-stem napuṃsaka pratipadikas like
+# Sata) and carry semantic_dUrAntika. Three-arm fork (HIGH→LOW: viBakti_2 wins
+# first, then viBakti_5, then the non-optional viBakti_3) → exactly three
+# branches. (असत्त्ववचनस्य anuvṛtti → दूरः पन्थाः excluded, out of scope.) Apavāda
+# to 2.3.46.
+- sutra: दूरान्तिकार्थेभ्यो द्वितीया च
+  id: 2.3.35.2
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_dUrAntika"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+- sutra: दूरान्तिकार्थेभ्यो द्वितीया च
+  id: 2.3.35.1
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_dUrAntika"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+- sutra: दूरान्तिकार्थेभ्यो द्वितीया च
+  id: 2.3.35
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_dUrAntika"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
 

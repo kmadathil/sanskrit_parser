@@ -154,3 +154,21 @@ anugfRAti    = tinanta_pada("anugfRAti",    "kartari", ["anupratigF"])          
 parikrIRIte  = tinanta_pada("parikrIRIte",  "kartari", ["parikrayaRa"])         # परिक्रीणीते "hires" — 1.4.44 (vibhāṣā)
 manyate      = tinanta_pada("manyate",      "kartari", ["manyarTa"])            # मन्यते "considers" — 2.3.17 (vibhāṣā)
 gacCati      = tinanta_pada("gacCati",      "kartari", ["gatyarTa"])            # गच्छति "goes to" — 2.3.12 (vibhāṣā)
+
+# ── Kāraka Phase K5 (karaka_plan.md §K5): apādāna + pañcamī verb tags ─────────
+# Meaning-class tags read via rp by the apādāna saṁjñā rules 1.4.25–31:
+#  - BItrA       : bhī/trā "fear/protect-from" (bibheti)         — 1.4.25 (bhaya-hetu → apādāna)
+#  - parAji      : parā-ji "fail/give up" (parājayate)           — 1.4.26 (asoḍha → apādāna)
+#  - vAraRArTa   : vāraṇa "ward off" (vārayati)                  — 1.4.27 (īpsita → apādāna)
+#  - antarDi     : "hide from" (nilīyate, in concealment)        — 1.4.28
+#  - upayoga     : ākhyātṛ/learn-from (adhīte, in upayoga)       — 1.4.29
+#  - jani        : √jan "be born" (prajāyate)                    — 1.4.30 (prakṛti → apādāna)
+#  - praBava     : √bhū "originate from" (prabhavati)            — 1.4.31
+Ayati        = tinanta_pada("Ayati",        "kartari")                          # आयाति "comes (from)" — 1.4.24 general apādāna
+biBeti       = tinanta_pada("biBeti",       "kartari", ["BItrA"])               # बिभेति "fears" — 1.4.25
+parAjayate   = tinanta_pada("parAjayate",   "kartari", ["parAji"])              # पराजयते "gives up" — 1.4.26
+vArayati     = tinanta_pada("vArayati",     "kartari", ["vAraRArTa"])           # वारयति "wards off" — 1.4.27
+nilIyate     = tinanta_pada("nilIyate",     "kartari", ["antarDi"])             # निलीयते "hides" — 1.4.28
+aDIte        = tinanta_pada("aDIte",        "kartari", ["upayoga"])             # अधीते "studies" — 1.4.29
+prajAyate    = tinanta_pada("prajAyate",    "kartari", ["jani"])                # प्रजायते "is born" — 1.4.30
+praBavati    = tinanta_pada("praBavati",    "kartari", ["praBava"])             # प्रभवति "originates" — 1.4.31
