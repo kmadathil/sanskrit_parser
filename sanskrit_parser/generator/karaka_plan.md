@@ -1,11 +1,15 @@
 # Kāraka-prakaraṇam Implementation Plan (SK 532–646)
 
-**Status:** Phase K0 complete (2026-06-11): engine pre-pass + sup insertion +
-param carve-out + main-scan split landed in antaranga_prakriya.py; SK532/533/535/
-537/559/560/561/606 live as `bahiranga: -1` rules; SK534/536 engine semantics;
-26 cases in test/karaka_list.py green. Phases K1–K7 and K-UI not started.
-Architecture v2 (2026-06-10): integrated into the existing engine after review —
-see §2 *Design evolution*.
+**Status:** Rule phases **K0–K7 complete** (2026-06-14). The full kāraka-prakaraṇam
+SK 532–646 derives as `bahiranga: -1` tag rules on the integrated engine (tagging
+pre-pass + sup insertion + 1.4.23–1.4.98 param carve-out + the optional-fork). K0–K4
+landed sequentially; **K5 (apādāna/pañcamī, SK586–605), K6 (ṣaṣṭhī, SK607–631) and
+K7 (adhikaraṇa/saptamī, SK632–646) were built in parallel worktrees and merged into
+`claude/cranky-bhabha-1df4d6`**, resolving two cross-phase collisions (the `biBeti`
+duplicate, and the dūra/antika `semantic_dUrAntika` four-way fork split out as
+2.3.36.1). 144 cases in test/karaka_list.py green. Only the optional **Phase K-UI**
+(Vākya Composer, §4) remains. Architecture v2 (2026-06-10): integrated into the
+existing engine after review — see §2 *Design evolution*.
 **Scope:** 115 sutras — SK 532 (प्रातिपदिकार्थलिङ्गपरिमाणवचनमात्रे प्रथमा, 2.3.46) through
 SK 646 (विभाषा कृञि, 1.4.98). The section ends right before SK 647 (समर्थः पदविधिः),
 which opens the samāsa-prakaraṇam and is **out of scope** here.
