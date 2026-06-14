@@ -1655,4 +1655,402 @@ karaka_tests = [
              "forms": ["अन्तिकम्", "अन्तिकात्", "अन्तिकाद्", "अन्तिकेन"]},
         ],
     },
+
+    # Phase K6 — Ṣaṣṭhī (SK607–631; karaka_plan.md §K6). The ṣaṣṭhī chapter.
+    # Three families: (a) yoga-word peeks — a fixed-surface particle (hetoH,
+    # dakziRatas, …) read via llp/rrp, like K2/K3 saha/namas; (b) verb-conditioned
+    # śeṣa-ṣaṣṭhī (2.3.51–58/61) — the noun carries semantic_Seza, the rule reads
+    # the verb's meaning-class tag via rp, apavāda to 2.3.50; (c) kṛd-yoga
+    # (2.3.65–71) — the governing kṛdanta noun carries a kṛt-TYPE tag (kft /
+    # kta_vartamAna / kta_aDikaraRa / kftya / kft_aSazWI) read via llp/rrp.
+    # Deferred: SK624 (2.3.66 ubhaya-prāpti); SK627/628 (2.3.69/70) are realized
+    # as the ?!kft_aSazWI guard on 2.3.65 (asserted via the घातुक negative).
+    # Examples from references/siddhantakaumudi.html anchors SK607–631; the
+    # fixed-surface yoga-words (hetoH/dakziRatas/…) pass through bare (s-final
+    # avyaya keep their s, e.g. दक्षिणतस्) — the rule of interest is the cause/
+    # kāraka noun's vibhakti, not the particle surface.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK607 (2.3.26): hetu-word → cause ṣaṣṭhī ─────────────────────────────
+    {
+        # अन्नस्य हेतोर्वसति (reduced: अन्नस्य हेतोः) — anna → ṣaṣṭhī (hetu-word peek).
+        "label": "SK607-annasya-hetoh",
+        "sutras": ["2.3.26"],
+        "sentence": [
+            {"stem": "anna", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"word": "hetoH"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["अन्नस्य"]},
+            {"forms": ["हेतोः"]},
+        ],
+    },
+
+    # ── SK608 (2.3.27): sarvanāman cause + hetu → tṛtīyā / ṣaṣṭhī fork ────────
+    {
+        # केन हेतुना / कस्य हेतोः — the sarvanāman kim is optionally tṛtīyā (केन, via
+        # 2.3.27) or ṣaṣṭhī (कस्य, fall-through to 2.3.26). Fork; the hetu-word is
+        # fixed-surface हेतुना here (both branches share it).
+        "label": "SK608-kena-kasya-hetuna",
+        "sutras": ["2.3.27", "2.3.26"],
+        "sentence": [
+            {"stem": "kim", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"word": "hetunA"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_3", "viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["केन", "कस्य"]},
+            {"forms": ["हेतुना"]},
+        ],
+    },
+
+    # ── SK609 (2.3.30): atasartha-pratyaya word → ṣaṣṭhī ─────────────────────
+    {
+        # ग्रामस्य दक्षिणतः — grāma → ṣaṣṭhī (dakṣiṇataḥ peek). dakziRatas is s-final
+        # avyaya → surfaces दक्षिणतस्.
+        "label": "SK609-gramasya-dakshinatah",
+        "sutras": ["2.3.30"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"word": "dakziRatas"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामस्य"]},
+            {"forms": ["दक्षिणतस्"]},
+        ],
+    },
+
+    # ── SK610 (2.3.31): enap-anta word → dvitīyā / ṣaṣṭhī fork ───────────────
+    {
+        # दक्षिणेन ग्रामं / ग्रामस्य — grāma is optionally dvitīyā (ग्रामम्, via 2.3.31)
+        # or ṣaṣṭhī (ग्रामस्य, via the 2.3.31.1 yoga-vibhāga companion). Fork.
+        "label": "SK610-dakshinena-gramam-gramasya",
+        "sutras": ["2.3.31", "2.3.31.1"],
+        "sentence": [
+            {"word": "dakziRena"},
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["दक्षिणेन"]},
+            {"karaka": None, "vibhakti": ["viBakti_2", "viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामम्", "ग्रामस्य"]},
+        ],
+    },
+
+    # ── SK611 (2.3.34): dūra/antika word → ṣaṣṭhī / pañcamī fork ─────────────
+    {
+        # दूरं ग्रामस्य / ग्रामात् — grāma is optionally ṣaṣṭhī (ग्रामस्य, via 2.3.34)
+        # or pañcamī (ग्रामात्, via the 2.3.34.1 companion). Fork.
+        "label": "SK611-duram-gramasya-gramat",
+        "sutras": ["2.3.34", "2.3.34.1"],
+        "sentence": [
+            {"word": "dUram"},
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["दूरम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_6", "viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामस्य", "ग्रामात्", "ग्रामाद्"]},
+        ],
+    },
+
+    # ── SK612 (2.3.51): jñā-non-know karaṇa → śeṣa ṣaṣṭhī ────────────────────
+    {
+        # सर्पिषो जानीते — the karaṇa sarpis, named (śeṣa), → ṣaṣṭhī. Apavāda to
+        # 2.3.50 (2.3.51 names the jñā-avidartha scope in the trace).
+        "label": "SK612-sarpiso-janite",
+        "sutras": ["2.3.51"],
+        "sentence": [
+            {"stem": "sarpis", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "jAnIte"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["सर्पिषः"]},
+            {"forms": ["जानीते"]},
+        ],
+    },
+
+    # ── SK613 (2.3.52): adhi-i/day/īś karman → śeṣa ṣaṣṭhī ───────────────────
+    {
+        # मातुः स्मरति — the karman mātṛ (remembered), named, → ṣaṣṭhī.
+        "label": "SK613-matuh-smarati",
+        "sutras": ["2.3.52"],
+        "sentence": [
+            {"stem": "mAtf", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "smarati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["मातुः"]},
+            {"forms": ["स्मरति"]},
+        ],
+    },
+
+    # ── SK614 (2.3.53): kṛ-pratiyatna karman → śeṣa ṣaṣṭhī ───────────────────
+    {
+        # ओदनस्योपस्कुरुते — the karman odana (in guṇādhāna), named, → ṣaṣṭhī.
+        "label": "SK614-odanasya-upaskurute",
+        "sutras": ["2.3.53"],
+        "sentence": [
+            {"stem": "odana", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "upaskurute"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["ओदनस्य"]},
+            {"forms": ["उपस्कुरुते"]},
+        ],
+    },
+
+    # ── SK615 (2.3.54): ruj-bhāva karman → śeṣa ṣaṣṭhī ───────────────────────
+    {
+        # चौरस्य रुजति — the karman caura (pained), named, → ṣaṣṭhī.
+        "label": "SK615-caurasya-rujati",
+        "sutras": ["2.3.54"],
+        "sentence": [
+            {"stem": "cOra", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "rujati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["चौरस्य"]},
+            {"forms": ["रुजति"]},
+        ],
+    },
+
+    # ── SK616 (2.3.55): nāth-āśis karman → śeṣa ṣaṣṭhī ───────────────────────
+    {
+        # सर्पिषो नाथते — the karman sarpis (blessed-for), named, → ṣaṣṭhī.
+        "label": "SK616-sarpiso-nathate",
+        "sutras": ["2.3.55"],
+        "sentence": [
+            {"stem": "sarpis", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "nATate"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["सर्पिषः"]},
+            {"forms": ["नाथते"]},
+        ],
+    },
+
+    # ── SK617 (2.3.56): hiṁsā-class karman → śeṣa ṣaṣṭhī ─────────────────────
+    {
+        # चौरस्योज्जासयति — the karman caura (destroyed), named, → ṣaṣṭhī.
+        "label": "SK617-caurasya-ujjasayati",
+        "sutras": ["2.3.56"],
+        "sentence": [
+            {"stem": "cOra", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "ujjAsayati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["चौरस्य"]},
+            {"forms": ["उज्जासयति"]},
+        ],
+    },
+
+    # ── SK618 (2.3.57): vyavahṛ/paṇ samartha karman → śeṣa ṣaṣṭhī ────────────
+    {
+        # शतस्य व्यवहरति — the karman śata (transacted), named, → ṣaṣṭhī.
+        "label": "SK618-satasya-vyavaharati",
+        "sutras": ["2.3.57"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "vyavaharati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["शतस्य"]},
+            {"forms": ["व्यवहरति"]},
+        ],
+    },
+
+    # ── SK619 (2.3.58): div-gamble karman → śeṣa ṣaṣṭhī (non-upasṛṣṭa) ───────
+    {
+        # शतस्य दीव्यति — the karman śata (gambled-for), named, → ṣaṣṭhī. dīvyati
+        # is non-upasṛṣṭa, so 2.3.58 (not the 2.3.59 vibhāṣā) fires.
+        "label": "SK619-satasya-divyati",
+        "sutras": ["2.3.58"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "dIvyatiK6"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50", "2.3.59"], "forms": ["शतस्य"]},
+            {"forms": ["दीव्यति"]},
+        ],
+    },
+
+    # ── SK620 (2.3.59): upasṛṣṭa div → ṣaṣṭhī / dvitīyā fork ─────────────────
+    {
+        # शतस्य / शतं प्रतिदीव्यति — with upasṛṣṭa prati-div the karman śata is
+        # optionally ṣaṣṭhī (शतस्य, via 2.3.59) or the plain karma dvitīyā (शतम्,
+        # via 2.3.2). Fork. The noun is kAraka_karma (1.4.49) in both branches.
+        "label": "SK620-satasya-satam-pratidivyati",
+        "sutras": ["2.3.59", "1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "pratidIvyati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_6", "viBakti_2"],
+             "forms": ["शतस्य", "शतम्"]},
+            {"forms": ["प्रतिदीव्यति"]},
+        ],
+    },
+
+    # ── SK621 (2.3.61): preṣ/brū havis devatā-sampradāna → śeṣa ṣaṣṭhī ───────
+    {
+        # छागस्य प्रेष्यति — the havis-related karman chāga, named, → ṣaṣṭhī.
+        "label": "SK621-chagasya-presyati",
+        "sutras": ["2.3.61"],
+        "sentence": [
+            {"stem": "CAga", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "prezyati"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["छागस्य"]},
+            {"forms": ["प्रेष्यति"]},
+        ],
+    },
+
+    # ── SK622 (2.3.64): kṛtvas-word + kāla adhikaraṇa → śeṣa ṣaṣṭhī ──────────
+    {
+        # पञ्चकृत्वोऽह्नः (reduced: पञ्चकृत्वः अह्नः) — the kāla ahan, named, → ṣaṣṭhī
+        # (kṛtvas-word peek). pañcakṛtvas is s-final avyaya → surfaces पञ्चकृत्वस्.
+        "label": "SK622-pancakrtvo-ahnah",
+        "sutras": ["2.3.64"],
+        "sentence": [
+            {"word": "paYcakftvas"},
+            {"stem": "ahan", "vacana": 1, "sem": ["semantic_Seza"]},
+        ],
+        "expect": [
+            {"forms": ["पञ्चकृत्वस्"]},
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50", "2.3.46"], "forms": ["अह्नः"]},
+        ],
+    },
+
+    # ── SK623 (2.3.65): kartṛ/karman in kṛd-yoga → ṣaṣṭhī ────────────────────
+    {
+        # ओदनस्य पाचकः — the karman odana, governed by the kṛdanta pācaka (?kft),
+        # → ṣaṣṭhī. No finite verb (empty-sentinel dhātu).
+        "label": "SK623-odanasya-pacakah",
+        "sutras": ["2.3.65"],
+        "sentence": [
+            {"stem": "odana", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"stem": "pAcaka", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.2"], "forms": ["ओदनस्य"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["पाचकः"]},
+        ],
+    },
+    {
+        # हरेः कृतिः — the kartṛ hari, governed by the kṛdanta kṛti (?kft), → ṣaṣṭhī.
+        "label": "SK623-hareh-krtih",
+        "sutras": ["2.3.65"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "kfti", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.18"], "forms": ["हरेः"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["कृतिः"]},
+        ],
+    },
+
+    # ── SK625 (2.3.67): kta-vartamāna governor → ṣaṣṭhī ──────────────────────
+    {
+        # राज्ञां मतः — the kartṛ rājan (pl.), governed by the present-sense kta
+        # mata, → ṣaṣṭhī.
+        "label": "SK625-rajnam-matah",
+        "sutras": ["2.3.67"],
+        "sentence": [
+            {"stem": "rAjan", "vacana": 3, "sem": ["semantic_svatantra"]},
+            {"stem": "mata", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.18"], "forms": ["राज्ञाम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["मतः"]},
+        ],
+    },
+
+    # ── SK626 (2.3.68): kta-adhikaraṇa governor → ṣaṣṭhī ─────────────────────
+    {
+        # एतेषामासितम् — the kartṛ etad (pl.), governed by the adhikaraṇa-kta āsita,
+        # → ṣaṣṭhī.
+        "label": "SK626-etesham-asitam",
+        "sutras": ["2.3.68"],
+        "sentence": [
+            {"stem": "etad", "vacana": 3, "sem": ["semantic_svatantra"]},
+            {"stem": "Asita", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.18"], "forms": ["एतेषाम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["आसितम्"]},
+        ],
+    },
+
+    # ── SK627/628 (2.3.69/70): prohibition — 2.3.65 must NOT fire ────────────
+    {
+        # दैत्यान् घातुको हरिः (reduced: हरिं घातुकः) — the kṛt governor ghātuka carries
+        # kft_aSazWI (ukañ-bhaviṣyat, a 2.3.70 member), so the ?!kft_aSazWI guard on
+        # 2.3.65 keeps it OFF; the karman hari falls to 2.3.2 dvitīyā (हरिम्), NOT
+        # ṣaṣṭhī. This realizes the 2.3.69/70 niṣedha (no positive rule).
+        "label": "SK628-negative-harim-ghatukah",
+        "sutras": ["1.4.49", "2.3.2", "2.3.46"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"stem": "GAtuka", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.65"], "forms": ["हरिम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["घातुकः"]},
+        ],
+    },
+    {
+        # व्रजं गामी (reduced: ग्रामं गामी) — gāmin carries kft_aSazWI (ṇini ādhamarṇya,
+        # 2.3.70), so 2.3.65 is blocked; the goal grāma → 2.3.2 dvitīyā (ग्रामम्).
+        "label": "SK628-negative-gramam-gami",
+        "sutras": ["1.4.49", "2.3.2", "2.3.46"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"stem": "gAmin", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["2.3.65"], "forms": ["ग्रामम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["गामी"]},
+        ],
+    },
+
+    # ── SK629 (2.3.71): kṛtya kartṛ → ṣaṣṭhī / tṛtīyā fork ───────────────────
+    {
+        # मम / मया वा सेव्यः — the kartṛ asmad, governed by the kṛtya sevya, is
+        # optionally ṣaṣṭhī (मम/मे, via 2.3.71) or tṛtīyā (मया, fall-through to
+        # 2.3.18). Fork. asmad ṣaṣṭhī = मे/मम (form-set), tṛtīyā = मया.
+        "label": "SK629-mama-maya-sevyah",
+        "sutras": ["2.3.71", "1.4.54", "2.3.18"],
+        "sentence": [
+            {"stem": "asmad", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "sevya", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_6", "viBakti_3"],
+             "forms": ["मम", "मे", "मया"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["सेव्यः"]},
+        ],
+    },
 ]

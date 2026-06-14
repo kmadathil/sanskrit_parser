@@ -8498,3 +8498,362 @@
     olp: [+viBakti_3, +has_viBakti]
 
 
+# Phase K6 — Ṣaṣṭhī (SK 607–631; karaka_plan.md §K6). The ṣaṣṭhī chapter.
+# 2.3.50 (śeṣe) was pulled forward into K0 as the non-kāraka fallback. The
+# members here are all viBakti_6 ([+viBakti_6, +has_viBakti], guard
+# "?!has_viBakti") except the optional forks that pair it with another vibhakti.
+# Three rule families:
+#   (a) yoga-word peeks: a fixed-surface particle (hetoH, dakziRatas, …) sits
+#       adjacent to the governed noun; read via llp/rrp literal match, exactly
+#       like K2/K3/K4 (saha, namas, antarā).
+#   (b) verb-conditioned śeṣa-ṣaṣṭhī (2.3.51–58/61): the karaṇa/karman is named
+#       (not abhihita) so it relates as śeṣa; the noun carries semantic_Seza and
+#       the rule reads the meaning-class tag on the sentence dhātu via rp. Each
+#       is an apavāda to 2.3.50 (overrides: ["2.3.50"]) pinning the same ṣaṣṭhī
+#       with the sutra-specific scope, so the fired trace names the right sutra.
+#   (c) kṛd-yoga (2.3.65–71): the governing word is a pre-formed kṛdanta noun
+#       carrying a kṛt-TYPE tag (kft / kta_vartamAna / kta_aDikaraRa / kftya /
+#       kft_aSazWI), read off the physical neighbour via llp/rrp. The kāraka noun
+#       carries its semantic primitive (svatantra/Ipsitatama). Real kṛt
+#       derivation is deferred (karaka_plan.md §6).
+#
+# Deferred (generator_status.md Skipped):
+#   - SK624 (2.3.66 ubhaya-prāpti): needs a genuine dual-kāraka kṛt-frame
+#     analysis (which of two simultaneously-prāpta kārakas is *the* karman) — no
+#     kṛt-derivation support yet.
+#   - SK627/628 (2.3.69/70 prohibitions) are realized as the negative guard
+#     "?!kft_aSazWI" on 2.3.65 (the prohibited governors — laT-ādeśa/avyaya/
+#     niṣṭhā/khalartha/tṛn, future-aka, ādhamarṇya-in — carry kft_aSazWI); they
+#     have no positive YAML rule. Asserted via the negative case
+#     (दैत्यान् घातुको हरिः → 2.3.65 must NOT fire → karman → dvitīyā).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 607: षष्ठी हेतुप्रयोगे (2.3.26) — when the word hetu ("by reason of") is used, the
+# cause → ṣaṣṭhī: अन्नस्य हेतोर्वसति. The hetu-word sits adjacent (llp/rrp peek).
+# Apavāda to 2.3.46.
+- sutra: षष्ठी हेतुप्रयोगे
+  id: 2.3.26
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=hetoH, =hetunA]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=hetoH, =hetunA]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 608: सर्वनाम्नस्तृतीया च (2.3.27) — when the cause is a sarvanāman used with hetu,
+# tṛtīyā OR ṣaṣṭhī: केन हेतुना / कस्य हेतोः. Vibhāṣā fork on the sarvanāman: apply →
+# tṛtīyā (केन); skip → 2.3.26 ṣaṣṭhī (कस्य). overrides 2.3.26 (so the apply branch
+# wins it) and 2.3.46.
+- sutra: सर्वनाम्नस्तृतीया च
+  id: 2.3.27
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.26", "2.3.46"]
+  condition:
+    - lp: [and, "?sarvanAma", "?!has_viBakti", "?!kAraka"]
+      llp: [=hetoH, =hetunA]
+    - lp: [and, "?sarvanAma", "?!has_viBakti", "?!kAraka"]
+      rrp: [=hetoH, =hetunA]
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 609: षष्ठ्यतसर्थप्रत्ययेन (2.3.30) — a noun construed with an atasartha pratyaya
+# word (dakṣiṇataḥ, puras, upari …) → ṣaṣṭhī: ग्रामस्य दक्षिणतः. Apavāda to the
+# pañcamī of dik-śabda 2.3.28 (out of scope) and to 2.3.46.
+- sutra: षष्ठ्यतसर्थप्रत्ययेन
+  id: 2.3.30
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=dakziRatas]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=dakziRatas]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 610: एनपा द्वितीया (2.3.31) — a noun construed with an enap-anta word (dakṣiṇena
+# …) → dvitīyā, and by yoga-vibhāga also ṣaṣṭhī: दक्षिणेन ग्रामं / ग्रामस्य.
+# Vibhāṣā fork: apply → dvitīyā (ग्रामम्); skip → ṣaṣṭhī (ग्रामस्य). The skip-branch
+# ṣaṣṭhī is supplied by the companion fixed rule 2.3.31.1 (guarded on the same
+# enap-word). overrides 2.3.46.
+- sutra: एनपा द्वितीया
+  id: 2.3.31
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46", "2.3.31.1"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=dakziRena]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=dakziRena]
+  update:
+    olp: [+viBakti_2, +has_viBakti]
+
+# 2.3.31 yoga-vibhāga ṣaṣṭhī: the skip branch of the 2.3.31 vibhāṣā needs a
+# vibhakti or it falls to 2.3.46 prathamā. Fixed rule, guarded on the enap-word;
+# 2.3.31 (para) beats it in the apply branch (both override 2.3.46, neither
+# overrides the other → higher aps 2.3.31.1 ... see note). To make the apply
+# branch deterministic, 2.3.31 overrides this companion.
+- sutra: एनपा षष्ठी
+  id: 2.3.31.1
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=dakziRena]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=dakziRena]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 611: दूरान्तिकार्थैः षष्ठ्यन्यतरस्याम् (2.3.34) — a noun construed with a dūra/antika
+# word (dūram, nikaṭam …) → ṣaṣṭhī OR pañcamī: दूरं ग्रामस्य / ग्रामात्. Vibhāṣā
+# fork: apply → ṣaṣṭhī (ग्रामस्य); skip → pañcamī (ग्रामात्, viBakti_5, companion
+# rule). overrides 2.3.46.
+- sutra: दूरान्तिकार्थैः षष्ठ्यन्यतरस्याम्
+  id: 2.3.34
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46", "2.3.34.1"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=dUram, =nikawam]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=dUram, =nikawam]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 2.3.34 skip-branch pañcamī companion: supplies ग्रामात् when the 2.3.34 ṣaṣṭhī is
+# not applied. Guarded on the same dūra/antika word.
+- sutra: दूरान्तिकार्थैः पञ्चमी
+  id: 2.3.34.1
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      llp: [=dUram, =nikawam]
+    - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
+      rrp: [=dUram, =nikawam]
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# ── Verb-conditioned śeṣa-ṣaṣṭhī (2.3.51–58, 2.3.61) ─────────────────────────
+# The karaṇa/karman is named (śeṣe vivakṣite), so the noun carries semantic_Seza;
+# each rule reads its meaning-class tag on the sentence dhātu (rp). Apavādas to
+# 2.3.50 (overrides: ["2.3.50"]).
+
+# 612: ज्ञोऽविदर्थस्य करणे (2.3.51) — for √jñā NOT in the "know" sense (avidartha),
+# the karaṇa in śeṣa → ṣaṣṭhī: सर्पिषो जानीते (= ज्ञानम्).
+- sutra: ज्ञोऽविदर्थस्य करणे
+  id: 2.3.51
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?jYAvid"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 613: अधीगर्थदयेशां कर्मणि (2.3.52) — for adhi-i (smṛ-sense) / day / īś, the karman
+# in śeṣa → ṣaṣṭhī: मातुः स्मरति.
+- sutra: अधीगर्थदयेशां कर्मणि
+  id: 2.3.52
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?aDIgartha"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 614: कृञः प्रतियत्ने (2.3.53) — for √kṛ in pratiyatna (guṇādhāna), the karman in
+# śeṣa → ṣaṣṭhī: एधोदकस्योपस्करोति.
+- sutra: कृञः प्रतियत्ने
+  id: 2.3.53
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?kfYpratiyatna"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 615: रुजार्थानां भाववचनानामज्वरेः (2.3.54) — for ruj-sense bhāva-verbs (excl. jvar),
+# the karman in śeṣa → ṣaṣṭhī: चौरस्य रुजति.
+- sutra: रुजार्थानां भाववचनानामज्वरेः
+  id: 2.3.54
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?rujArTa"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 616: आशिषि नाथः (2.3.55) — for √nāth in the āśis (blessing) sense, the karman in
+# śeṣa → ṣaṣṭhī: सर्पिषो नाथते.
+- sutra: आशिषि नाथः
+  id: 2.3.55
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?nATASis"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 617: जासिनिप्रहणनाटक्राथपिषां हिंसायाम् (2.3.56) — for jāsi/ni-prahaṇa/nāṭa/krātha/piṣ
+# in the hiṁsā sense, the karman in śeṣa → ṣaṣṭhī: चौरस्योज्जासयति.
+- sutra: जासिनिप्रहणनाटक्राथपिषां हिंसायाम्
+  id: 2.3.56
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?hiMsArTa"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 618: व्यवहृपणोः समर्थयोः (2.3.57) — for vyavahṛ/paṇ in the equal (samartha = dyūta/
+# kraya-vikraya) sense, the karman in śeṣa → ṣaṣṭhī: शतस्य व्यवहरति.
+- sutra: व्यवहृपणोः समर्थयोः
+  id: 2.3.57
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?vyavahfpaR"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 619: दिवस्तदर्थस्य (2.3.58) — for √div in the gambling / buy-sell sense, the karman
+# → ṣaṣṭhī: शतस्य दीव्यति. The non-upasṛṣṭa (nitya) ṣaṣṭhī — guarded ?!upasfzwa so
+# the upasṛṣṭa case falls to the 2.3.59 vibhāṣā instead.
+- sutra: दिवस्तदर्थस्य
+  id: 2.3.58
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: [and, "?divtadarTa", "?!upasfzwa"]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 620: विभाषोपसर्गे (2.3.59) — when √div (in the 2.3.58 sense) is UPASṚṢṬA the karman
+# is OPTIONALLY ṣaṣṭhī (else the plain karma dvitīyā): शतस्य / शतं प्रतिदीव्यति.
+# The noun carries semantic_Ipsitatama (so it is kAraka_karma → 2.3.2 dvitīyā in
+# the skip branch); vibhāṣā fork: apply → ṣaṣṭhī (शतस्य); skip → 2.3.2 (शतम्).
+# Apavāda to 2.3.2 (पूर्वयोगापवादः) when it fires.
+- sutra: विभाषोपसर्गे
+  id: 2.3.59
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.2"]
+  condition:
+    lp: [and, "?kAraka_karma", "?!has_viBakti"]
+    rp: [and, "?divtadarTa", "?upasfzwa"]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 621: प्रेष्यब्रुवोर्हविषो देवतासंप्रदाने (2.3.61) — for preṣ/brū in devatā-sampradāna,
+# the havis-denoting karman in śeṣa → ṣaṣṭhī: छागस्य हविषः प्रेष्य.
+- sutra: प्रेष्यब्रुवोर्हविषो देवतासंप्रदाने
+  id: 2.3.61
+  bahiranga: -1
+  overrides: ["2.3.50"]
+  condition:
+    lp: [and, "?semantic_Seza", "?!has_viBakti"]
+    rp: "?prezyabrU"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 622: कृत्वोर्थप्रयोगे कालेऽधिकरणे (2.3.64) — when a kṛtvas-artha word (pañcakṛtvaḥ …)
+# is used, a kāla-denoting adhikaraṇa in śeṣa → ṣaṣṭhī: पञ्चकृत्वोऽह्नो भोजनम् (अह्नः).
+# The kṛtvas-word sits adjacent (llp/rrp peek). overrides 2.3.46 / 2.3.50.
+- sutra: कृत्वोर्थप्रयोगे कालेऽधिकरणे
+  id: 2.3.64
+  bahiranga: -1
+  overrides: ["2.3.46", "2.3.50"]
+  condition:
+    - lp: [and, "?semantic_Seza", "?!has_viBakti"]
+      llp: [=paYcakftvas]
+    - lp: [and, "?semantic_Seza", "?!has_viBakti"]
+      rrp: [=paYcakftvas]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# ── kṛd-yoga block (2.3.65–71) ───────────────────────────────────────────────
+
+# 623: कर्तृकर्मणोः कृति (2.3.65) — in a kṛd-yoga the kartṛ and karman → ṣaṣṭhī:
+# हरेः कृतिः, ओदनस्य पाचकः. The kāraka noun carries its semantic primitive
+# (semantic_svatantra for kartṛ / semantic_Ipsitatama for karma); the governing
+# kṛdanta carries ?kft (read via llp/rrp). Prohibited governors (2.3.69/70) carry
+# ?kft_aSazWI — the ?!kft_aSazWI guard then keeps this off, so the karman falls to
+# 2.3.2 dvitīyā (no finite verb → rp ?!karmaRi true). Apavāda to 2.3.2 / 2.3.18.
+- sutra: कर्तृकर्मणोः कृति
+  id: 2.3.65
+  bahiranga: -1
+  overrides: ["2.3.2", "2.3.18"]
+  condition:
+    - lp: [and, "?semantic_Ipsitatama", "?!has_viBakti"]
+      llp: [and, "?kft", "?!kft_aSazWI"]
+    - lp: [and, "?semantic_Ipsitatama", "?!has_viBakti"]
+      rrp: [and, "?kft", "?!kft_aSazWI"]
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      llp: [and, "?kft", "?!kft_aSazWI"]
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      rrp: [and, "?kft", "?!kft_aSazWI"]
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 625: क्तस्य च वर्तमाने (2.3.67) — with a kta in the present sense the related
+# kartṛ → ṣaṣṭhī: राज्ञां मतः. Apavāda to the 2.3.69 niṣṭhā-prohibition (the kta is
+# present, not past) — modelled by the kta_vartamAna governor (no kft_aSazWI).
+- sutra: क्तस्य च वर्तमाने
+  id: 2.3.67
+  bahiranga: -1
+  overrides: ["2.3.2", "2.3.18"]
+  condition:
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      llp: "?kta_vartamAna"
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      rrp: "?kta_vartamAna"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 626: अधिकरणवाचिनश्च (2.3.68) — with a kta naming the adhikaraṇa/bhāva the related
+# kartṛ → ṣaṣṭhī: एतेषामासितम्.
+- sutra: अधिकरणवाचिनश्च
+  id: 2.3.68
+  bahiranga: -1
+  overrides: ["2.3.2", "2.3.18"]
+  condition:
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      llp: "?kta_aDikaraRa"
+    - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
+      rrp: "?kta_aDikaraRa"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+# 629: कृत्यानां कर्तरि वा (2.3.71) — with a kṛtya the kartṛ is OPTIONALLY ṣaṣṭhī
+# (else tṛtīyā): मम / मया वा सेव्यः. Vibhāṣā fork: apply → ṣaṣṭhī (मम); skip →
+# 2.3.18 tṛtīyā (मया). The noun carries semantic_svatantra → kAraka_kartA (so
+# 2.3.18 fires in the skip branch). Apavāda to 2.3.18 when it fires.
+- sutra: कृत्यानां कर्तरि वा
+  id: 2.3.71
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.18"]
+  condition:
+    - lp: [and, "?kAraka_kartA", "?!has_viBakti"]
+      llp: "?kftya"
+    - lp: [and, "?kAraka_kartA", "?!has_viBakti"]
+      rrp: "?kftya"
+  update:
+    olp: [+viBakti_6, +has_viBakti]
+
+
