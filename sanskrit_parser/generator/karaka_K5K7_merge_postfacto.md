@@ -130,6 +130,6 @@ deferred and should be confirmed against the project's counting convention.
 ## 5. Remaining work
 
 - [x] Fix the two collisions above; kāraka tests **144/144**.
-- [ ] Run the **full generator suite** on the merged branch (awaiting go-ahead).
+- [x] **Full generator suite: 8009/8009 passed** on the merged branch (run 2026-06-14).
 - [ ] Optional **Phase K-UI** — Vākya Composer (`karaka_plan.md` §4).
-- [ ] Update `karaka_plan.md`'s top Status line (still says "K1–K7 not started").
+- [x] Update `karaka_plan.md`'s top Status line — now reads "K0–K7 complete".
