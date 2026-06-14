@@ -180,6 +180,19 @@ su_kp    = Pratipadika("su",    "pum", other_tags=["nipAta"])   # सु (1.4.94
 ati_kp   = Pratipadika("ati",   "pum", other_tags=["nipAta"])   # अति (1.4.95)
 api_kp   = Pratipadika("api",   "pum", other_tags=["nipAta"])   # अपि (1.4.96)
 
+# ── Kāraka Phase K6: ṣaṣṭhī-chapter yoga-words (karaka_plan.md §K6) ───────────
+# Fixed-surface "peek" words read by the K6 ṣaṣṭhī rules via llp/rrp (literal
+# =word match), exactly like the K2/K3/K4 yoga particles (saha, namas, antarā).
+# Each enters pre-inflected to its SK surface (kṛt/taddhita inflection of these
+# is out of scope); they pass through bare (nipāta → SK447 avyaya → 2.4.82 luk).
+hetoH       = Pratipadika("hetoH",      "pum", other_tags=["nipAta"])  # हेतोः (2.3.26/27 hetu-word, ṣaṣṭhī surface)
+hetunA      = Pratipadika("hetunA",     "pum", other_tags=["nipAta"])  # हेतुना (2.3.27 hetu-word, tṛtīyā surface)
+dakziRatas  = Pratipadika("dakziRatas", "pum", other_tags=["nipAta"])  # दक्षिणतः (2.3.30 atasartha-pratyaya word)
+dakziRena   = Pratipadika("dakziRena",  "pum", other_tags=["nipAta"])  # दक्षिणेन (2.3.31 enap-anta word)
+dUram       = Pratipadika("dUram",      "pum", other_tags=["nipAta"])  # दूरम् (2.3.34 dūrārtha word)
+nikawam     = Pratipadika("nikawam",    "pum", other_tags=["nipAta"])  # निकटम् (2.3.34 antikārtha word)
+paYcakftvas = Pratipadika("paYcakftvas","pum", other_tags=["nipAta"])  # पञ्चकृत्वः (2.3.64 kṛtvas-artha word)
+
 # ── nipāta upasargas ──────────────────────────────────────────────────────────
 AN_upasarga  = Pratyaya("A",   its=["N"], other_tags=["nipAta", "upasarga", "pada"])
 mAN_upasarga = Pratyaya("mA",  its=["N"], other_tags=["nipAta", "upasarga", "pada", "svarAdi"])

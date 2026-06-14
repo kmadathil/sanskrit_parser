@@ -917,3 +917,37 @@ jyezWa        = Pratipadika("jyezWa",       "pum", other_tags=["ajAdi"])  # 31 �
 kanizWa       = Pratipadika("kanizWa",      "pum", other_tags=["ajAdi"])  # 32 कनिष्ठ (youngest)
 maDyama       = Pratipadika("maDyama",      "pum", other_tags=["ajAdi"])  # 33 मध्यम (middle)
 # ──────────────────────────────────────────────────────────────────────────────────────
+
+# ── Kāraka Phase K6 (karaka_plan.md §K6): ṣaṣṭhī-chapter stems ────────────────
+# Plain participant stems for the ṣaṣṭhī test sentences (decline through the
+# existing ajanta/halanta phonology — verified). The kṛd-yoga governors carry
+# a kṛt-TYPE tag which the kṛd-yoga rules (SK623/625/626/629 + the SK627/628
+# pratiṣedha guards) read off the *physical neighbour* via llp/rrp. Distinct
+# names so they never collide with the real pratyaya tags kta/tfn:
+#   - kft          : generic kṛt (2.3.65 kartṛ-karmaṇoḥ kṛti)
+#   - kta_vartamAna: kta in the present sense (2.3.67)
+#   - kta_aDikaraRa: kta naming the adhikaraṇa/bhāva (2.3.68)
+#   - kftya        : a kṛtya pratyaya (2.3.71)
+#   - kft_aSazWI   : prohibition marker (2.3.69/70 members — laT-ādeśa/avyaya/
+#                    niṣṭhā/khalartha/tṛn, future-aka, ādhamarṇya-in). A
+#                    prohibited governor IS a kṛt (carries kft too) but the
+#                    ?!kft_aSazWI guard on 2.3.65 keeps the ṣaṣṭhī off.
+# The kṛt DERIVATION itself is deferred (karaka_plan.md §6): these enter as
+# pre-formed kṛdanta nouns the way the verb enters as a pre-formed tiṅanta pada.
+anna   = Pratipadika("anna",   "napum")            # अन्न n. "food" — SK607 अन्नस्य हेतोर्वसति
+cOra   = Pratipadika("cOra",   "pum")              # चौर m. "thief" — SK615/617 रुज/हिंसा karman
+CAga   = Pratipadika("CAga",   "pum")              # छाग m. "goat" — SK621 छागस्य हविषः
+havis  = Pratipadika("havis",  "napum", other_tags=["AdeSa_s"])  # हविस् n. "oblation" — SK621 हविषः
+tulya  = Pratipadika("tulya",  "pum")              # तुल्य "equal" — SK630 tulyārtha peek-word
+Ayuzya = Pratipadika("Ayuzya", "napum")            # आयुष्य n. "long-life (blessing)" — SK631 āśis peek-word
+
+# kṛd-yoga governor nouns (pre-formed kṛdantas, kṛt derivation deferred):
+kfti   = Pratipadika("kfti",   "strI", other_tags=["kft"])              # कृति f. (ktin) "the doing" — SK623 हरेः कृतिः
+pAcaka = Pratipadika("pAcaka", "pum",  other_tags=["kft"])              # पाचक m. (ṇvul, aka) "cook" — SK623 ओदनस्य पाचकः
+kartf  = Pratipadika("kartf",  "pum",  other_tags=["kft"])              # कर्तृ m. (tṛc) "doer" — SK623 हरेः कर्ता (tṛc ≠ tṛn → ṣaṣṭhī allowed)
+mata   = Pratipadika("mata",   "pum",  other_tags=["kta_vartamAna"])   # मत m. (kta, vartamāna) "esteemed" — SK625 राज्ञां मतः (kta is niṣṭhā → NOT kft; 2.3.67 re-permits the present-sense ṣaṣṭhī)
+Asita  = Pratipadika("Asita",  "napum", other_tags=["kta_aDikaraRa"])  # आसित n. (kta, adhikaraṇa/bhāva) "sitting" — SK626 एतेषामासितम् (2.3.68 owns it, not 2.3.65)
+GAtuka = Pratipadika("GAtuka", "pum",  other_tags=["kft", "kft_aSazWI"])  # घातुक m. (ukañ, bhaviṣyat) "slayer" — SK627/628 prohibition
+gAmin  = Pratipadika("gAmin",  "pum",  other_tags=["kft", "kft_aSazWI"])  # गामिन् m. (ṇini, future/ādhamarṇya) "goer" — SK628 prohibition व्रजं गामी
+sevya  = Pratipadika("sevya",  "pum",  other_tags=["kftya"])           # सेव्य m. (yat/kṛtya) "to-be-served" — SK629 मया/मम वा सेव्यो हरिः (kftya only, NOT kft — 2.3.71 owns it, not 2.3.65)
+# ──────────────────────────────────────────────────────────────────────────────────────
