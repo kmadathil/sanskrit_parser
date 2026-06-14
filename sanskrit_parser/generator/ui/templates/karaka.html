@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanskrit Generator — Vākya Composer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px;
+           color: #1a1a2e; background: #f5f5f0; min-height: 100vh; }
+
+    header { background: #1a1a2e; color: #e8d5b0; padding: 14px 24px;
+             display: flex; align-items: center; gap: 16px;
+             box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+    header h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: .3px; flex: 1; }
+    header a.nav { color: #e8d5b0; text-decoration: none; border: 1px solid #e8d5b0;
+                   border-radius: 6px; padding: 4px 12px; font-size: .85rem; opacity: .85; }
+    header a.nav:hover { opacity: 1; background: rgba(232,213,176,.12); }
+    header .sanskrit-title { font-size: 1.1rem; opacity: .75; }
+
+    .layout { display: grid; grid-template-columns: 360px 1fr; gap: 0;
+              height: calc(100vh - 54px); }
+    .controls { background: #fff; border-right: 1px solid #ddd; padding: 18px;
+                overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .results { padding: 22px 26px; overflow-y: auto; }
+
+    h2.sec { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+             color: #888; margin-bottom: 8px; }
+
+    select, input[type=number] {
+      width: 100%; padding: 7px 9px; border: 1px solid #c8c8c8; border-radius: 6px;
+      font-size: .9rem; background: #fafafa; color: #1a1a2e; }
+    select:focus, input:focus { outline: 2px solid #c17f24; }
+
+    .btn { border: none; border-radius: 6px; padding: 8px 14px; font-size: .9rem;
+           cursor: pointer; font-weight: 600; }
+    .btn-primary { background: #c17f24; color: #fff; }
+    .btn-primary:hover { background: #a96d18; }
+    .btn-add { background: #ece4d4; color: #5a4a2a; font-size: .82rem; padding: 6px 10px;
+               font-weight: 500; }
+    .btn-add:hover { background: #e0d4bc; }
+    .btn-ghost { background: transparent; color: #999; font-size: .8rem; padding: 2px 7px; }
+    .btn-ghost:hover { color: #c0392b; }
+
+    .el-card { border: 1px solid #ddd; border-radius: 8px; padding: 10px 11px;
+               background: #fcfbf8; display: flex; flex-direction: column; gap: 8px; }
+    .el-head { display: flex; align-items: center; gap: 8px; }
+    .el-kind { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+               font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+    .k-noun { background: #d6e8f5; color: #1c5a87; }
+    .k-particle { background: #efe2c9; color: #87651c; }
+    .k-verb { background: #e0d6ef; color: #5a3c87; }
+    .el-head .grow { flex: 1; }
+    .row2 { display: grid; grid-template-columns: 1fr 70px; gap: 8px; }
+    .sem-box { border: 1px solid #e2dccc; border-radius: 6px; max-height: 132px;
+               overflow-y: auto; padding: 5px 7px; background: #fff; }
+    .sem-box.collapsed { display: none; }
+    .sem-toggle { font-size: .78rem; color: #c17f24; cursor: pointer; user-select: none; }
+    .sem-opt { display: flex; align-items: flex-start; gap: 6px; font-size: .8rem;
+               padding: 2px 0; line-height: 1.25; cursor: pointer; }
+    .sem-opt input { width: auto; margin-top: 2px; }
+    .add-bar { display: flex; gap: 6px; flex-wrap: wrap; }
+    .examples { display: flex; flex-direction: column; gap: 5px; }
+    .ex-btn { text-align: left; background: #fff; border: 1px solid #e0dccd;
+              border-radius: 6px; padding: 6px 9px; cursor: pointer; font-size: .85rem; }
+    .ex-btn:hover { border-color: #c17f24; }
+    .ex-btn .dev { font-size: 1.05rem; }
+    .ex-btn small { color: #999; }
+
+    /* results */
+    .placeholder { color: #aaa; font-size: 1rem; margin-top: 40px; text-align: center; }
+    .err { background: #fdecea; border: 1px solid #f5c6cb; color: #a13030;
+           padding: 12px 14px; border-radius: 8px; }
+    .branches { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+    .branch-card { border: 1px solid #d8cfb8; border-radius: 10px; padding: 14px 18px;
+                   background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .branch-card .lbl { font-size: .7rem; text-transform: uppercase; color: #b08a3a;
+                        letter-spacing: .06em; margin-bottom: 6px; }
+    .branch-card .sent { font-size: 1.7rem; color: #1a1a2e; }
+
+    table.words { border-collapse: collapse; width: 100%; margin-bottom: 22px; background: #fff;
+                  border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    table.words th { background: #1a1a2e; color: #e8d5b0; font-size: .72rem;
+                     text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px;
+                     text-align: left; font-weight: 600; }
+    table.words td { padding: 9px 12px; border-top: 1px solid #eee; vertical-align: top; }
+    table.words tr.verb td, table.words tr.particle td { color: #888; }
+    .word-in { font-size: 1.15rem; }
+    .chip { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: .78rem;
+            margin: 1px 3px 1px 0; }
+    .chip-k { background: #d6e8f5; color: #1c5a87; }
+    .chip-v { background: #e8f0d6; color: #4a6a1c; }
+    .word-form { font-size: 1.15rem; color: #7a5418; font-weight: 600; }
+    .muted { color: #bbb; }
+
+    .trace { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+             overflow: hidden; }
+    .trace summary { cursor: pointer; padding: 10px 14px; font-weight: 600;
+                     background: #f0ece0; font-size: .9rem; }
+    .trace-row { display: flex; gap: 12px; padding: 7px 14px; border-top: 1px solid #f0f0f0;
+                 align-items: baseline; }
+    .trace-row .aps { font-family: 'SF Mono', Menlo, monospace; font-size: .82rem;
+                      color: #c17f24; min-width: 58px; }
+    .trace-row .sk { color: #999; font-size: .78rem; min-width: 52px; }
+    .trace-row .txt { font-size: 1.02rem; }
+    .spin { color: #c17f24; margin-top: 36px; text-align: center; font-size: 1rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Sanskrit Generator — Vākya Composer <span style="opacity:.6;font-weight:400;font-size:.85rem;">(kāraka-prakaraṇam)</span></h1>
+  <a class="nav" href="/karaka/gallery">Test Gallery →</a>
+  <a class="nav" href="/">← Declensions</a>
+  <span class="sanskrit-title">वाक्यरचनयन्त्रम्</span>
+</header>
+
+<div class="layout">
+  <!-- ───────────────── Composer controls ───────────────── -->
+  <div class="controls">
+    <div>
+      <h2 class="sec">Encoding</h2>
+      <select id="encoding">
+        <option value="devanagari">Devanagari</option>
+        <option value="iast">IAST</option>
+        <option value="slp1">SLP1</option>
+      </select>
+    </div>
+
+    <div>
+      <h2 class="sec">Sentence elements</h2>
+      <div id="elements" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <div class="add-bar" style="margin-top:10px;">
+        <button class="btn btn-add" onclick="addEl('noun')">+ Noun</button>
+        <button class="btn btn-add" onclick="addEl('particle')">+ Particle</button>
+        <button class="btn btn-add" onclick="addEl('verb')">+ Verb</button>
+        <button class="btn btn-ghost" onclick="clearEls()">clear</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;" onclick="derive()">Derive →</button>
+
+    <div>
+      <h2 class="sec">Examples</h2>
+      <div class="examples" id="examples"></div>
+    </div>
+  </div>
+
+  <!-- ───────────────── Results ───────────────── -->
+  <div class="results" id="results">
+    <div class="placeholder">Compose a sentence on the left and press <b>Derive</b>.<br>
+      Each participant's kāraka → vibhakti → surface form is derived in one prakriyā.</div>
+  </div>
+</div>
+
+<script>
+const INV = {{ inventories|tojson }};
+const VIB_NAMES = {{ vibhaktis|tojson }};
+
+// ── element state ────────────────────────────────────────────────────────
+let elements = [];
+let _uid = 0;
+
+function addEl(kind, preset) {
+  const e = { id: ++_uid, kind };
+  if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); }
+  if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); }
+  if (kind === 'verb')     { e.verb = (INV.verbs[0]||{}).name; }
+  if (preset) Object.assign(e, preset);
+  if (preset && preset.sem)  e.sem  = new Set(preset.sem);
+  if (preset && preset.psem) e.psem = new Set(preset.psem);
+  elements.push(e);
+  render();
+}
+function removeEl(id)  { elements = elements.filter(e => e.id !== id); render(); }
+function moveEl(id, d) {
+  const i = elements.findIndex(e => e.id === id), j = i + d;
+  if (j < 0 || j >= elements.length) return;
+  [elements[i], elements[j]] = [elements[j], elements[i]]; render();
+}
+function clearEls() { elements = []; render(); }
+
+function opts(list, sel, deva) {
+  return list.map(o => {
+    const lbl = deva ? `${o.deva}  (${o.name})` : o.name;
+    return `<option value="${o.name}" ${o.name===sel?'selected':''}>${lbl}</option>`;
+  }).join('');
+}
+
+function render() {
+  const box = document.getElementById('elements');
+  if (!elements.length) { box.innerHTML = '<div class="muted" style="font-size:.85rem;">No elements yet — add a noun, particle, or verb.</div>'; return; }
+  box.innerHTML = elements.map((e, i) => {
+    let body = '';
+    if (e.kind === 'noun') {
+      const v = INV.verbs; // unused
+      body = `
+        <div class="row2">
+          <select onchange="setF(${e.id},'stem',this.value)">${opts(INV.stems, e.stem, true)}</select>
+          <select onchange="setF(${e.id},'vacana',+this.value)">
+            <option value="1" ${e.vacana===1?'selected':''}>sg</option>
+            <option value="2" ${e.vacana===2?'selected':''}>du</option>
+            <option value="3" ${e.vacana===3?'selected':''}>pl</option>
+          </select>
+        </div>
+        <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
+          semantic primitives (${e.sem.size} selected) ▾</div>
+        <div class="sem-box ${e.sem.size?'':'collapsed'}">
+          ${INV.sem_tags.map(t => `
+            <label class="sem-opt"><input type="checkbox" ${e.sem.has(t.tag)?'checked':''}
+              onchange="toggleSem(${e.id},'sem','${t.tag}',this.checked)">
+              <span><b>${t.tag.replace('semantic_','')}</b> — ${t.label.split(' — ').slice(1).join(' — ')||t.label}</span></label>`).join('')}
+        </div>`;
+    } else if (e.kind === 'particle') {
+      body = `
+        <select onchange="setF(${e.id},'word',this.value)">${opts(INV.particles, e.word, true)}</select>
+        <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
+          karmapravacanīya sense (${e.psem.size} selected) ▾</div>
+        <div class="sem-box ${e.psem.size?'':'collapsed'}">
+          ${INV.psem_tags.map(t => `
+            <label class="sem-opt"><input type="checkbox" ${e.psem.has(t.tag)?'checked':''}
+              onchange="toggleSem(${e.id},'psem','${t.tag}',this.checked)">
+              <span><b>${t.tag.replace('semantic_','')}</b> — ${t.label.split(' — ').slice(1).join(' — ')||t.label}</span></label>`).join('')}
+        </div>`;
+    } else {
+      const cur = INV.verbs.find(v => v.name === e.verb) || {};
+      const meta = [cur.prayoga, ...(cur.meaning||[])].filter(Boolean).join(', ');
+      body = `
+        <select onchange="setF(${e.id},'verb',this.value)">${opts(INV.verbs, e.verb, true)}</select>
+        <div class="muted" style="font-size:.78rem;">${meta || '—'}</div>`;
+    }
+    return `<div class="el-card">
+      <div class="el-head">
+        <span class="el-kind k-${e.kind}">${e.kind}</span>
+        <span class="grow"></span>
+        <button class="btn btn-ghost" onclick="moveEl(${e.id},-1)" title="up">↑</button>
+        <button class="btn btn-ghost" onclick="moveEl(${e.id},1)" title="down">↓</button>
+        <button class="btn btn-ghost" onclick="removeEl(${e.id})" title="remove">✕</button>
+      </div>
+      ${body}
+    </div>`;
+  }).join('');
+}
+
+function setF(id, f, v)  { const e = elements.find(x => x.id===id); if (e) e[f] = v;
+                           if (f==='verb') render(); }
+function toggleSem(id, f, tag, on) {
+  const e = elements.find(x => x.id===id); if (!e) return;
+  if (on) e[f].add(tag); else e[f].delete(tag);
+}
+
+// ── derive ───────────────────────────────────────────────────────────────
+function toSpec() {
+  return elements.map(e => {
+    if (e.kind === 'noun')     return { stem: e.stem, vacana: e.vacana, sem: [...e.sem] };
+    if (e.kind === 'particle') return { word: e.word, sem: [...e.psem] };
+    return { verb: e.verb };
+  });
+}
+
+async function derive() {
+  const sentence = toSpec();
+  if (!sentence.length) return;
+  const enc = document.getElementById('encoding').value;
+  const res = document.getElementById('results');
+  res.innerHTML = '<div class="spin">Deriving…</div>';
+  try {
+    const r = await fetch('/api/karaka', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ sentence, encoding: enc }) });
+    const data = await r.json();
+    if (!r.ok || data.error) { res.innerHTML = `<div class="err">${data.error||'Error'}</div>`; return; }
+    renderResult(data);
+  } catch (err) { res.innerHTML = `<div class="err">${err}</div>`; }
+}
+
+function kChips(arr, cls, pre) {
+  if (!arr.length) return '<span class="muted">—</span>';
+  return arr.map(t => `<span class="chip ${cls}">${pre(t)}</span>`).join('');
+}
+const vibName = t => { const n = +t.slice(8); return VIB_NAMES[n-1] || t; };
+
+function renderResult(d) {
+  const branchHtml = d.branches.map((s, i) => `
+    <div class="branch-card">
+      <div class="lbl">${d.branches.length>1 ? 'Vibhāṣā branch '+(i+1) : 'Derived sentence'}</div>
+      <div class="sent">${s}</div>
+    </div>`).join('');
+
+  const rows = d.words.map(w => `
+    <tr class="${w.kind}">
+      <td class="word-in">${w.input}</td>
+      <td>${w.kind==='noun' ? kChips(w.karaka,'chip-k', t=>t.replace('kAraka_','')) : '<span class="muted">—</span>'}</td>
+      <td>${kChips(w.vibhakti,'chip-v', vibName)}</td>
+      <td class="word-form">${w.forms.join('  /  ')}</td>
+    </tr>`).join('');
+
+  const trace = d.fired.length ? `
+    <details class="trace" open>
+      <summary>Fired kāraka sūtras (${d.fired.length})</summary>
+      ${d.fired.map(f => `<div class="trace-row">
+          <span class="aps">${f.aps}</span>
+          <span class="sk">${f.sk||''}</span>
+          <span class="txt">${f.text||''}</span></div>`).join('')}
+    </details>` :
+    '<div class="muted" style="margin-top:10px;">No kāraka rules fired (no semantic tags → skip-guard).</div>';
+
+  document.getElementById('results').innerHTML = `
+    <div class="branches">${branchHtml}</div>
+    <table class="words">
+      <thead><tr><th>Word</th><th>Kāraka</th><th>Vibhakti</th><th>Form(s)</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    ${trace}`;
+}
+
+// ── presets ──────────────────────────────────────────────────────────────
+const EXAMPLES = [
+  { dev: 'हरिं भजति', note: 'SK537 — karma → dvitīyā',
+    els: [ {kind:'noun', stem:'hari', vacana:1, sem:['semantic_Ipsitatama']},
+           {kind:'verb', verb:'Bajati'} ] },
+  { dev: 'हरिः सेव्यते', note: 'SK536 — abhihita karma → prathamā (karmaṇi)',
+    els: [ {kind:'noun', stem:'hari', vacana:1, sem:['semantic_Ipsitatama']},
+           {kind:'verb', verb:'sevyate'} ] },
+  { dev: 'हे राम', note: 'SK533 — sambodhana → vocative',
+    els: [ {kind:'particle', word:'he', psem:[]},
+           {kind:'noun', stem:'rAma', vacana:1, sem:['semantic_samboDana']} ] },
+  { dev: 'रामस्य पुत्रः', note: 'SK606 — śeṣa → ṣaṣṭhī',
+    els: [ {kind:'noun', stem:'rAma', vacana:1, sem:['semantic_Seza']},
+           {kind:'noun', stem:'putra', vacana:1, sem:[]} ] },
+  { dev: 'अक्षैः / अक्षान् दीव्यति', note: 'SK562 — vibhāṣā (two branches)',
+    els: [ {kind:'noun', stem:'akza', vacana:3, sem:['semantic_sADakatama']},
+           {kind:'verb', verb:'dIvyati'} ] },
+];
+function loadExample(ix) {
+  clearEls();
+  EXAMPLES[ix].els.forEach(p => addEl(p.kind, p));
+}
+document.getElementById('examples').innerHTML = EXAMPLES.map((e, i) =>
+  `<button class="ex-btn" onclick="loadExample(${i})">
+     <span class="dev">${e.dev}</span><br><small>${e.note}</small></button>`).join('');
+
+// start with the canonical example loaded
+loadExample(0);
+</script>
+</body>
+</html>

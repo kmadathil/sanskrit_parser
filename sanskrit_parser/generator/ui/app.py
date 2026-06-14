@@ -120,6 +120,14 @@ from sanskrit_parser.generator.prakriya import PrakriyaVakya            # noqa: 
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya  # noqa: E402
 from sanskrit_parser.generator.paninian_object import PaninianObject        # noqa: E402
 
+# Kāraka layer (karaka_plan.md §4 — Vākya Composer). The composer builds tagged
+# sentences by introspecting the same generator modules the test driver uses, so
+# whole modules are imported here (not just the curated globals above).
+import os                                                                   # noqa: E402
+from copy import deepcopy                                                   # noqa: E402
+import sanskrit_parser.generator.dhatu as _dhatu_module                     # noqa: E402
+import sanskrit_parser.generator.avyaya as _avyaya_module                   # noqa: E402
+
 # ---------------------------------------------------------------------------
 # App setup
 # ---------------------------------------------------------------------------
@@ -949,6 +957,375 @@ def _run_single_form(objects, enc, tag_display=False, capture_eval=False):
 
 
 # ---------------------------------------------------------------------------
+# Kāraka layer — Vākya Composer (karaka_plan.md §4)
+# ---------------------------------------------------------------------------
+#
+# The kāraka-prakaraṇam (SK532–646) derives a whole sentence in ONE prakriyā:
+# a tagging pre-pass assigns kAraka_*/viBakti_* tags, a sup-insertion step turns
+# them into case endings, then the existing phonology runs. This section drives
+# that pipeline exactly as generator/test/test_karaka.py does (the authoritative
+# reference) and presents the result sentence-first instead of table-first.
+
+# --- ground-truth inventories, lifted from the kāraka test data ----------------
+# karaka_list.py is pure data (no engine imports); the stems/verbs/particles/
+# semantic tags it exercises are precisely the combinations the rules support, so
+# the composer dropdowns stay in sync with the rule set automatically.
+import sys as _sys                                                          # noqa: E402
+_KARAKA_TEST_DIR = os.path.join(os.path.dirname(__file__), "..", "test")
+if _KARAKA_TEST_DIR not in _sys.path:
+    _sys.path.insert(0, _KARAKA_TEST_DIR)
+try:
+    from karaka_list import karaka_tests as _KARAKA_TESTS                   # noqa: E402
+except Exception as _exc:  # noqa: BLE001
+    logging.getLogger(__name__).warning("Could not import karaka_list: %s", _exc)
+    _KARAKA_TESTS = []
+
+# Human-readable labels for the semantic primitives the sutras condition on.
+# (The sutra wording's primitive — īpsitatama, dhruva-apāya … — never a kāraka
+# name; see karaka_plan.md §2.) Unlisted tags fall back to a prettified name.
+_SEM_LABELS = {
+    "semantic_Ipsitatama":    "īpsitatama — most desired by the agent (→ karma)",
+    "semantic_svatantra":     "svatantra — independent (→ kartṛ)",
+    "semantic_sADakatama":    "sādhakatama — most effective means (→ karaṇa)",
+    "semantic_samboDana":     "sambodhana — one addressed (→ vocative)",
+    "semantic_anIpsita":      "anīpsita — undesired, yet reached (→ karma)",
+    "semantic_akaTita":       "akathita — the unnamed second karma (dvikarmaka)",
+    "semantic_apraDAna":      "apradhāna — subordinate (saha-yoga → tṛtīyā)",
+    "semantic_prIyamARa":     "prīyamāṇa — the one pleased (ruc-class → sampradāna)",
+    "semantic_DruvApAya":     "dhruva (apāye) — fixed point of separation (→ apādāna)",
+    "semantic_Bayahetu":      "bhaya-hetu — cause of fear (→ apādāna)",
+    "semantic_asoQa":         "asoḍha — what is not endured (parā-ji → apādāna)",
+    "semantic_Ipsita_vAraRa": "īpsita (vāraṇe) — what one is kept from (→ apādāna)",
+    "semantic_antardhi":      "antardhi — concealment locus (→ apādāna)",
+    "semantic_AKyAtf":        "ākhyātṛ (upayoge) — the teacher learnt from (→ apādāna)",
+    "semantic_janiprakfti":   "jani-prakṛti — source of birth (→ apādāna)",
+    "semantic_praBava":       "prabhava — point of origin (→ apādāna)",
+    "semantic_Seza":          "śeṣa — mere relation, no kāraka (→ ṣaṣṭhī)",
+    "semantic_ADAra":         "ādhāra — locus/substratum (→ adhikaraṇa)",
+    "semantic_aDikaraRa":     "adhikaraṇa — locus (→ saptamī)",
+    "semantic_uttamarRa":     "uttamarṇa — the creditor (dhṛ → sampradāna)",
+    "semantic_fRa":           "ṛṇa — debt (akartari → tṛtīyā/ṣaṣṭhī)",
+    "semantic_hetu":          "hetu — cause/motive (→ tṛtīyā)",
+    "semantic_guRahetu":      "guṇa-hetu — qualitative cause (vibhāṣā)",
+    "semantic_aNgavikAra":    "aṅga-vikāra — bodily defect (→ tṛtīyā)",
+    "semantic_itTamBUtalakzaRa": "itthambhūta-lakṣaṇa — characterising mark (→ tṛtīyā)",
+    "semantic_apavarga":      "apavarga — completion (→ tṛtīyā)",
+    "semantic_prAtipadikArTa": "prātipadikārtha — bare stem-meaning (→ prathamā)",
+    "semantic_atyantasaMyoga": "atyanta-saṁyoga — uninterrupted extent (kāla/adhvan → dvitīyā)",
+    "semantic_kAlADvan":      "kāla/adhvan — time / road extent",
+    "semantic_deSakAlAdhvan": "deśa/kāla/adhvan — place/time/road (akarmaka karma)",
+    "semantic_nirDAraRa":     "nirdhāraṇa — selection from a group (→ ṣaṣṭhī/saptamī)",
+    "semantic_viBakta":       "vibhakta — separated/distinguished (→ pañcamī)",
+    "semantic_arcA":          "arcā — esteem (sādhu/nipuṇa → saptamī)",
+    "semantic_prasitotsuka":  "prasita/utsuka — engrossed/eager (→ saptamī)",
+    "semantic_BAvalakzaRa":   "bhāva-lakṣaṇa — one act marking another (sati-saptamī)",
+    "semantic_anAdara":       "anādara — disregard (→ ṣaṣṭhī/saptamī)",
+    "semantic_kArakamaDya":   "kāraka-madhye — amid the kārakas (→ saptamī/pañcamī)",
+    "semantic_dUrAntika":     "dūra/antika — far / near",
+    "semantic_AsevA":         "āsevā — repeated action context",
+    "semantic_aBipreta":      "abhipreta — intended recipient",
+    "semantic_parikrIta":     "parikrīta — hired (parikrayaṇa, vibhāṣā)",
+    "semantic_kopyamAna":     "kopyamāna — the one angered at (krudh-class)",
+    "semantic_stokAdi":       "stoka/alpa/kṛcchra/katipaya — small-quantity karaṇa",
+    "semantic_pratidAna":     "pratidāna — return/exchange",
+    "semantic_nakzatralup":   "nakṣatra (lupi) — asterism with luk",
+    # particle (karmapravacanīya) senses
+    "semantic_lakzaRa":       "lakṣaṇa — sign/along (karmapravacanīya)",
+    "semantic_itTamBUta":     "itthambhūta — characterised state",
+    "semantic_hIna":          "hīna — short of / below",
+    "semantic_aDika":         "adhika — in excess of",
+    "semantic_varjana":       "varjana — exclusion (apa/pari)",
+    "semantic_maryAdA":       "maryādā — limit (āṅ)",
+    "semantic_pratiniDi":     "pratinidhi — substitution (prati)",
+    "semantic_atikramaRa":    "atikramaṇa — surpassing",
+    "semantic_pUjA":          "pūjā — honour (api)",
+    "semantic_saMBAvanA":     "sambhāvanā — esteeming/inclusion",
+    "semantic_ESvara":        "aiśvarya — lordship (adhi → īśvara)",
+    "semantic_tftIyArTa":     "tṛtīyā-artha — instrumental sense",
+}
+
+
+def _sem_label(tag):
+    if tag in _SEM_LABELS:
+        return _SEM_LABELS[tag]
+    return tag[len("semantic_"):] if tag.startswith("semantic_") else tag
+
+
+def _obj_deva(obj):
+    """Devanagari surface of a generator object (best-effort)."""
+    try:
+        return sanscript.transliterate(obj.canonical(), sanscript.SLP1, sanscript.DEVANAGARI)
+    except Exception:  # noqa: BLE001
+        return str(obj)
+
+
+_PRAYOGAS = ("kartari", "karmaRi", "BAve")
+_STRUCTURAL_VERB_TAGS = {"pada", "tiNanta", *_PRAYOGAS}
+
+
+def _build_karaka_inventories():
+    """Build the composer dropdown inventories from the kāraka test corpus.
+
+    Returns dicts of:
+      stems     : sorted [{name, deva}]
+      verbs     : sorted [{name, deva, prayoga, meaning}]
+      particles : sorted [{name, deva}]
+      sem_tags  : ordered [{tag, label}]   (noun semantic primitives)
+      psem_tags : ordered [{tag, label}]   (particle karmapravacanīya senses)
+    """
+    stems, verbs, words, sems, psems = set(), set(), set(), set(), set()
+    for c in _KARAKA_TESTS:
+        for w in c["sentence"]:
+            if "stem" in w:
+                stems.add(w["stem"]); sems.update(w.get("sem", []))
+            elif "verb" in w:
+                verbs.add(w["verb"])
+            elif "word" in w:
+                words.add(w["word"]); psems.update(w.get("sem", []))
+
+    stem_items = []
+    for n in sorted(stems):
+        obj = getattr(_pp_module, n, None)
+        if obj is not None:
+            stem_items.append({"name": n, "deva": _obj_deva(obj)})
+
+    verb_items = []
+    for n in sorted(verbs):
+        obj = getattr(_dhatu_module, n, None)
+        if obj is None:
+            continue
+        prayoga = next((t for t in obj.tags if t in _PRAYOGAS), "")
+        meaning = sorted(t for t in obj.tags if t not in _STRUCTURAL_VERB_TAGS)
+        verb_items.append({"name": n, "deva": _obj_deva(obj),
+                           "prayoga": prayoga, "meaning": meaning})
+
+    particle_items = []
+    for n in sorted(words):
+        obj = getattr(_avyaya_module, n, None)
+        if obj is not None:
+            particle_items.append({"name": n, "deva": _obj_deva(obj)})
+
+    sem_items = [{"tag": t, "label": _sem_label(t)} for t in sorted(sems)]
+    psem_items = [{"tag": t, "label": _sem_label(t)} for t in sorted(psems)]
+    return {
+        "stems":     stem_items,
+        "verbs":     verb_items,
+        "particles": particle_items,
+        "sem_tags":  sem_items,
+        "psem_tags": psem_items,
+    }
+
+
+KARAKA_INVENTORIES = _build_karaka_inventories()
+
+# aps → sutra text (the engine stores names in SLP1; show them in Devanagari).
+_APS_TO_TEXT = {}
+for _s in sutra_list:
+    try:
+        _APS_TO_TEXT[_s.aps] = sanscript.transliterate(
+            str(_s.name), sanscript.SLP1, sanscript.DEVANAGARI)
+    except Exception:  # noqa: BLE001
+        pass
+
+# aps → SK number, parsed from the §7 table in karaka_plan.md (rows like
+# "| K0 | 532 | 2.3.46 |"). Best-effort: a parse miss just drops the SK label.
+_APS_TO_SK = {}
+try:
+    import re as _re
+    _plan_path = os.path.join(os.path.dirname(__file__), "..", "karaka_plan.md")
+    with open(_plan_path, encoding="utf-8") as _pf:
+        for _m in _re.finditer(r"\|\s*K\S*\s*\|\s*(\d+)\s*\|\s*([\d.]+)\s*\|", _pf.read()):
+            _APS_TO_SK[_m.group(2)] = f"SK{_m.group(1)}"
+except Exception as _exc:  # noqa: BLE001
+    logging.getLogger(__name__).warning("Could not parse SK map from karaka_plan.md: %s", _exc)
+
+
+def _aps_key(aps):
+    """Sort key for an aps id like '1.4.49' → (1, 4, 49)."""
+    try:
+        return tuple(int(x) for x in aps.split("."))
+    except Exception:  # noqa: BLE001
+        return (9999,)
+
+
+def _build_word(spec):
+    """Turn one sentence-element spec into a tagged PaninianObject.
+
+    Mirrors generator/test/test_karaka.py:_build_word. Three shapes:
+      {"stem", "vacana", "sem":[...]}  → pratipadika + vacana_N + semantic_* tags
+      {"verb"}                         → pre-formed tiṅanta pada (carries prayoga)
+      {"word", "sem":[...]}            → avyaya particle + optional sense tags
+    """
+    if "stem" in spec:
+        obj = getattr(_pp_module, spec["stem"], None)
+        if obj is None:
+            raise KeyError(f"Unknown stem {spec['stem']!r}")
+        p = deepcopy(obj)
+        p.setTag(f"vacana_{int(spec.get('vacana', 1))}")
+        for t in spec.get("sem", []):
+            p.setTag(t)
+        return p
+    if "verb" in spec:
+        obj = getattr(_dhatu_module, spec["verb"], None)
+        if obj is None:
+            raise KeyError(f"Unknown verb {spec['verb']!r}")
+        return deepcopy(obj)
+    if "word" in spec:
+        obj = getattr(_avyaya_module, spec["word"], None)
+        if obj is None:
+            raise KeyError(f"Unknown particle {spec['word']!r}")
+        p = deepcopy(obj)
+        for t in spec.get("sem", []):
+            p.setTag(t)
+        return p
+    raise ValueError(f"Unknown word spec {spec!r}")
+
+
+def run_karaka(sentence, enc):
+    """Build the tagged vākya, run the engine, and read back per-word kāraka/
+    vibhakti, the vibhāṣā branch sentences, and the fired-sutra trace.
+
+    Returns a dict: {words, branches, fired}. Raises on a bad spec.
+    """
+    # 1. Build [Adya, w0, avasAna, w1, avasAna, …]; record each word's index.
+    pl = [Adya]
+    word_ix = []
+    for spec in sentence:
+        word_ix.append(len(pl))
+        pl.append(_build_word(spec))
+        pl.append(avasAna)
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
+    p.execute()
+
+    # 2. Aggregate the pre-pass log by word index, unioning across vibhāṣā
+    #    branches (exactly as test_karaka.py does).
+    agg = {}
+    for e in p.karaka_log:
+        a = agg.setdefault(e["index"], {"tags": set(), "fired": set()})
+        a["tags"].update(e["tags"])
+        a["fired"].update(e["fired"])
+
+    # 3. Per-branch surface sentences + per-position form sets. Words are
+    #    avasAna-separated, so splitting the joined SLP1 on the avasAna marker
+    #    recovers the per-word forms in order (Adya contributes nothing).
+    sep = avasAna.canonical()
+    pos_forms = [set() for _ in sentence]
+    branches, seen = [], set()
+    for o in p.output():
+        slp = "".join(x.transcoded(sanscript.SLP1) for x in list(o))
+        pieces = [w for w in slp.split(sep) if w != ""]
+        for i, w in enumerate(pieces):
+            if i < len(pos_forms):
+                pos_forms[i].add(sanscript.transliterate(w, sanscript.SLP1, enc))
+        sent = " ".join(sanscript.transliterate(w, sanscript.SLP1, enc) for w in pieces)
+        if sent not in seen:
+            seen.add(sent)
+            branches.append(sent)
+
+    # 4. Per-word view.
+    words_out = []
+    for i, spec in enumerate(sentence):
+        entry = agg.get(word_ix[i], {"tags": set(), "fired": set()})
+        karakas = sorted(t for t in entry["tags"] if t.startswith("kAraka_"))
+        vibhaktis = sorted(
+            (t for t in entry["tags"] if t.startswith("viBakti_") and t[8:].isdigit()),
+            key=lambda t: int(t[8:]))
+        words_out.append({
+            "input":   _spec_label(spec, enc),
+            "kind":    "verb" if "verb" in spec else ("particle" if "word" in spec else "noun"),
+            "karaka":  karakas,
+            "vibhakti": vibhaktis,
+            "forms":   sorted(pos_forms[i]),
+            "fired":   sorted(entry["fired"], key=_aps_key),
+        })
+
+    fired_all = sorted({a for e in agg.values() for a in e["fired"]}, key=_aps_key)
+    fired_out = [{"aps": a, "sk": _APS_TO_SK.get(a), "text": _APS_TO_TEXT.get(a, "")}
+                 for a in fired_all]
+
+    return {"words": words_out, "branches": branches, "fired": fired_out}
+
+
+def _spec_label(spec, enc):
+    """Readable label for a sentence-element spec (input word, in target enc)."""
+    if "verb" in spec:
+        obj = getattr(_dhatu_module, spec["verb"], None)
+    elif "word" in spec:
+        obj = getattr(_avyaya_module, spec["word"], None)
+    else:
+        obj = getattr(_pp_module, spec.get("stem", ""), None)
+    if obj is None:
+        return spec.get("stem") or spec.get("verb") or spec.get("word") or "?"
+    try:
+        return sanscript.transliterate(obj.canonical(), sanscript.SLP1, enc)
+    except Exception:  # noqa: BLE001
+        return _obj_deva(obj)
+
+
+def _expected_karaka_set(exp):
+    k = exp.get("karaka", None)
+    if k is None:
+        return set()
+    return {k} if isinstance(k, str) else set(k)
+
+
+_KARAKA_CASES_CACHE = {}
+
+
+def _run_karaka_cases(enc):
+    """Run every karaka_list.py case through the engine and tag each with a
+    pass/fail status (saṁjñā + vibhakti + fired-trace, mirroring test_karaka.py).
+    Cached per-encoding after first build (144 engine runs)."""
+    if enc in _KARAKA_CASES_CACHE:
+        return _KARAKA_CASES_CACHE[enc]
+
+    results = []
+    n_pass = 0
+    for case in _KARAKA_TESTS:
+        row = {"label": case["label"], "sutras": case.get("sutras", []),
+               "words": [], "branches": [], "status": "pass", "reason": ""}
+        try:
+            res = run_karaka(case["sentence"], enc)
+        except Exception as exc:  # noqa: BLE001
+            row["status"] = "error"
+            row["reason"] = str(exc)
+            results.append(row)
+            continue
+        row["branches"] = res["branches"]
+        fired_all = {f["aps"] for f in res["fired"]}
+        # fired-trace check
+        missing = [s for s in case.get("sutras", []) if s not in fired_all]
+        if missing:
+            row["status"] = "fail"
+            row["reason"] = f"missing sutras {missing}"
+        # per-word saṁjñā / vibhakti check
+        for spec, exp, got in zip(case["sentence"], case["expect"], res["words"]):
+            exp_k = _expected_karaka_set(exp)
+            got_k = set(got["karaka"])
+            ok_k = ("karaka" not in exp) or (got_k == exp_k)
+            exp_v = set(exp.get("vibhakti", got["vibhakti"]))
+            got_v = set(got["vibhakti"])
+            ok_v = ("vibhakti" not in exp) or (got_v == exp_v)
+            if not (ok_k and ok_v) and row["status"] == "pass":
+                row["status"] = "fail"
+                row["reason"] = (f"{got['input']}: kāraka {sorted(got_k)}≠{sorted(exp_k)} "
+                                 f"or vibhakti {sorted(got_v)}≠{sorted(exp_v)}")
+            row["words"].append({
+                "input": got["input"], "kind": got["kind"],
+                "karaka": got["karaka"], "vibhakti": got["vibhakti"],
+                "exp_karaka": sorted(exp_k), "exp_vibhakti": sorted(exp_v),
+                "forms": got["forms"], "ok": bool(ok_k and ok_v),
+            })
+        if row["status"] == "pass":
+            n_pass += 1
+        results.append(row)
+
+    out = {"cases": results, "n_pass": n_pass, "n_total": len(results)}
+    _KARAKA_CASES_CACHE[enc] = out
+    return out
+
+
+# ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
 
@@ -1089,6 +1466,57 @@ def api_run():
             })
     except Exception as exc:  # noqa: BLE001
         return jsonify({"error": str(exc)}), 500
+
+
+# ---------------------------------------------------------------------------
+# Kāraka routes (Vākya Composer)
+# ---------------------------------------------------------------------------
+
+@app.route("/karaka")
+def karaka_page():
+    return render_template(
+        "karaka.html",
+        inventories=KARAKA_INVENTORIES,
+        vibhaktis=VIBHAKTI_NAMES,
+        vacanas=VACANA_NAMES,
+    )
+
+
+@app.route("/karaka/gallery")
+def karaka_gallery_page():
+    return render_template("karaka_gallery.html")
+
+
+@app.route("/api/karaka", methods=["POST"])
+def api_karaka():
+    body     = request.get_json(force=True) or {}
+    sentence = body.get("sentence", [])
+    enc_name = body.get("encoding", "devanagari")
+
+    if not sentence:
+        return jsonify({"error": "Empty sentence"}), 400
+
+    enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
+    try:
+        result = run_karaka(sentence, enc)
+    except (KeyError, ValueError) as exc:
+        return jsonify({"error": f"Sentence error: {exc}"}), 400
+    except Exception as exc:  # noqa: BLE001
+        return jsonify({"error": str(exc)}), 500
+
+    result["enc"] = enc_name
+    return jsonify(result)
+
+
+@app.route("/api/karaka/cases")
+def api_karaka_cases():
+    enc_name = request.args.get("encoding", "devanagari")
+    enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
+    try:
+        data = _run_karaka_cases(enc)
+    except Exception as exc:  # noqa: BLE001
+        return jsonify({"error": str(exc)}), 500
+    return jsonify(data)
 
 
 # ---------------------------------------------------------------------------

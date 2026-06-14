@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanskrit Generator — Kāraka Gallery</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px;
+           color: #1a1a2e; background: #f5f5f0; min-height: 100vh; }
+
+    header { background: #1a1a2e; color: #e8d5b0; padding: 14px 24px;
+             display: flex; align-items: center; gap: 16px;
+             box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+    header h1 { font-size: 1.25rem; font-weight: 600; flex: 1; }
+    header a.nav { color: #e8d5b0; text-decoration: none; border: 1px solid #e8d5b0;
+                   border-radius: 6px; padding: 4px 12px; font-size: .85rem; opacity: .85; }
+    header a.nav:hover { opacity: 1; background: rgba(232,213,176,.12); }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 22px 26px; }
+
+    .summary { display: flex; align-items: center; gap: 18px; margin-bottom: 18px;
+               background: #fff; border-radius: 10px; padding: 16px 22px;
+               box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .summary .big { font-size: 2rem; font-weight: 700; }
+    .summary .big.ok { color: #4a8a2a; }
+    .summary .big.bad { color: #c0392b; }
+    .summary .filters { margin-left: auto; display: flex; gap: 8px; }
+    .filters button { border: 1px solid #ccc; background: #fff; border-radius: 16px;
+                      padding: 5px 14px; cursor: pointer; font-size: .85rem; }
+    .filters button.active { background: #1a1a2e; color: #e8d5b0; border-color: #1a1a2e; }
+
+    .case { background: #fff; border-radius: 9px; padding: 12px 16px; margin-bottom: 9px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05); border-left: 4px solid #ccc;
+            display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+    .case.pass  { border-left-color: #5aa02a; }
+    .case.fail  { border-left-color: #c0392b; }
+    .case.error { border-left-color: #d68a1a; }
+    .case .badge { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em;
+                   font-weight: 700; padding: 2px 9px; border-radius: 10px; min-width: 52px;
+                   text-align: center; }
+    .badge.pass  { background: #e2f0d4; color: #4a7a1c; }
+    .badge.fail  { background: #fbe0dd; color: #b02a1c; }
+    .badge.error { background: #f8e8cc; color: #8a5a10; }
+    .case .label { font-family: 'SF Mono', Menlo, monospace; font-size: .78rem; color: #999;
+                   min-width: 230px; }
+    .sentence { font-size: 1.35rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+    .w { display: inline-flex; flex-direction: column; align-items: center; }
+    .w .form { line-height: 1.1; }
+    .w .vib { font-size: .6rem; letter-spacing: .03em; margin-top: 2px; padding: 0 5px;
+              border-radius: 7px; }
+    .w.bad .form { color: #c0392b; text-decoration: underline wavy #c0392b; }
+    .case .reason { width: 100%; font-size: .82rem; color: #b02a1c; padding-left: 68px; }
+    /* vibhakti color palette (1..8) */
+    .v1{background:#e8f0d6;color:#4a6a1c}.v2{background:#d6e8f5;color:#1c5a87}
+    .v3{background:#efe2c9;color:#87651c}.v4{background:#e0d6ef;color:#5a3c87}
+    .v5{background:#f5dada;color:#8a2c2c}.v6{background:#d6efe6;color:#1c7a5a}
+    .v7{background:#efd6e6;color:#872c5a}.v8{background:#e2e2e2;color:#555}
+    .vx{background:#eee;color:#999}
+    .alt { font-size: .85rem; color: #999; }
+    .spin { text-align: center; color: #c17f24; font-size: 1.05rem; margin-top: 60px; }
+    .spin small { display:block; color:#aaa; margin-top:8px; font-size:.85rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kāraka Test Gallery <span style="opacity:.6;font-weight:400;font-size:.85rem;">— karaka_list.py regression view</span></h1>
+  <a class="nav" href="/karaka">← Composer</a>
+  <a class="nav" href="/">Declensions</a>
+</header>
+
+<div class="wrap">
+  <div id="content">
+    <div class="spin">Running all derivations through the engine…
+      <small>144 single-prakriyā runs; first load takes ~2 minutes, then it's cached.</small></div>
+  </div>
+</div>
+
+<script>
+const VIB_NAMES = ['nom','acc','inst','dat','abl','gen','loc','voc'];
+let CASES = [], FILTER = 'all';
+
+function vibClass(t) { const n = +(''+t).slice(8); return (n>=1&&n<=8) ? 'v'+n : 'vx'; }
+function vibAbbr(t)  { const n = +(''+t).slice(8); return VIB_NAMES[n-1] || ''; }
+
+function caseHtml(c) {
+  const words = (c.words||[]).map(w => {
+    const vib = (w.vibhakti && w.vibhakti.length) ? w.vibhakti : null;
+    const vibTag = vib
+      ? `<span class="vib ${vibClass(vib[0])}">${vib.map(vibAbbr).join('/')}</span>`
+      : `<span class="vib vx">—</span>`;
+    const form = (w.forms && w.forms.length) ? w.forms.join('/') : w.input;
+    return `<span class="w ${w.ok===false?'bad':''}"><span class="form">${form}</span>${vibTag}</span>`;
+  }).join('');
+  const alt = (c.branches && c.branches.length > 1)
+    ? `<span class="alt">+${c.branches.length-1} branch${c.branches.length>2?'es':''}</span>` : '';
+  const reason = c.reason ? `<div class="reason">${c.reason}</div>` : '';
+  return `<div class="case ${c.status}" data-status="${c.status}">
+    <span class="badge ${c.status}">${c.status}</span>
+    <span class="sentence">${words || '<span class="alt">'+(c.branches||[]).join(' | ')+'</span>'} ${alt}</span>
+    <span class="label">${c.label}</span>
+    ${reason}
+  </div>`;
+}
+
+function applyFilter() {
+  document.querySelectorAll('.case').forEach(el => {
+    el.style.display = (FILTER==='all' || el.dataset.status===FILTER) ? '' : 'none';
+  });
+  document.querySelectorAll('.filters button').forEach(b =>
+    b.classList.toggle('active', b.dataset.f===FILTER));
+}
+function setFilter(f) { FILTER = f; applyFilter(); }
+
+async function load() {
+  try {
+    const r = await fetch('/api/karaka/cases');
+    const d = await r.json();
+    if (d.error) { document.getElementById('content').innerHTML = `<div class="spin">Error: ${d.error}</div>`; return; }
+    CASES = d.cases;
+    const nFail = d.n_total - d.n_pass;
+    const cls = nFail === 0 ? 'ok' : 'bad';
+    document.getElementById('content').innerHTML = `
+      <div class="summary">
+        <div class="big ${cls}">${d.n_pass}/${d.n_total}</div>
+        <div>cases passing<br><span class="alt">${nFail} need attention</span></div>
+        <div class="filters">
+          <button data-f="all" class="active" onclick="setFilter('all')">All</button>
+          <button data-f="pass" onclick="setFilter('pass')">Pass</button>
+          <button data-f="fail" onclick="setFilter('fail')">Fail</button>
+          <button data-f="error" onclick="setFilter('error')">Error</button>
+        </div>
+      </div>
+      <div id="list">${CASES.map(caseHtml).join('')}</div>`;
+  } catch (e) {
+    document.getElementById('content').innerHTML = `<div class="spin">Error: ${e}</div>`;
+  }
+}
+load();
+</script>
+</body>
+</html>
