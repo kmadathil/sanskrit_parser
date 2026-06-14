@@ -154,3 +154,15 @@ anugfRAti    = tinanta_pada("anugfRAti",    "kartari", ["anupratigF"])          
 parikrIRIte  = tinanta_pada("parikrIRIte",  "kartari", ["parikrayaRa"])         # परिक्रीणीते "hires" — 1.4.44 (vibhāṣā)
 manyate      = tinanta_pada("manyate",      "kartari", ["manyarTa"])            # मन्यते "considers" — 2.3.17 (vibhāṣā)
 gacCati      = tinanta_pada("gacCati",      "kartari", ["gatyarTa"])            # गच्छति "goes to" — 2.3.12 (vibhāṣā)
+
+# ── Kāraka Phase K7 (karaka_plan.md §K7): adhikaraṇa + saptamī verb tags ──────
+# The adhikaraṇa saṁjñā (1.4.45) reads only the noun's semantic_ADAra, so most
+# K7 verbs need no special tag — they just supply the prayoga + a dhātu for the
+# pre-pass rp.  kfYi marks √kṛ for SK646 (विभाषा कृञि: adhi optionally kp before
+# √kṛ); pravavarza is the verbless-rain example dhātu for the absolute SK634.
+icCAsti      = tinanta_pada("icCAsti",      "kartari", ["akarmaka"])            # इच्छास्ति "desire exists" — 1.4.45 (मोक्षे इच्छास्ति)
+pacati       = tinanta_pada("pacati",       "kartari")                          # पचति "cooks" — 1.4.45 (स्थाल्यां पचति)
+gataH        = tinanta_pada("gataH",        "kartari", ["gatyarTa"])            # गतः "[he] left/went" — 2.3.37 (गोषु दुह्यमानासु गतः)
+prAvrAjIt    = tinanta_pada("prAvrAjIt",    "kartari")                          # प्राव्राजीत् "renounced" — 2.3.38 (रुदति/रुदतो वा)
+biBeti       = tinanta_pada("biBeti",       "kartari")                          # बिभेति "fears" — generic adhikaraṇa example verb
+aDikarizyati = tinanta_pada("aDikarizyati", "kartari", ["kfYi"])               # अधिकरिष्यति "will appoint" — 1.4.98 (vibhāṣā kṛñi)

@@ -1261,4 +1261,374 @@ karaka_tests = [
             {"forms": ["भजति"]},
         ],
     },
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase K7 — adhikaraṇa + saptamī (SK632–646; karaka_plan.md §K7). FINAL
+    # kāraka phase. 1.4.45 adhikaraṇa saṁjñā → 2.3.36 saptamī; the sati-saptamī
+    # absolute construction (2.3.37, both partners semantic_BAvalakzaRa); the
+    # ṣaṣṭhī/saptamī forks (2.3.38–41, default ṣaṣṭhī via 2.3.50) and the
+    # adhikaraṇa-default forks (2.3.7/44/45, default saptamī via 2.3.36); the
+    # pañcamī (2.3.42) and sādhu/nipuṇa-arcā (2.3.43) apavādas; and the adhi/upa
+    # īśvara/adhika karmapravacanīya tail (1.4.97/1.4.87.1 → kp_saptamI → 2.3.9
+    # saptamī, overriding 2.3.8). Examples from references/siddhantakaumudi.html
+    # anchors SK632–646. Vasu (vasu_english.txt) agrees throughout.
+    # ════════════════════════════════════════════════════════════════════════
+
+    # ── SK632 (1.4.45) + SK633 (2.3.36): ādhāra → adhikaraṇa → saptamī ────────
+    {
+        # कटे आस्ते — the seat (kaṭa) is the locus → adhikaraṇa → saptamī (कटे).
+        "label": "SK633-kate-aste",
+        "sutras": ["1.4.45", "2.3.36"],
+        "sentence": [
+            {"stem": "kawa", "vacana": 1, "sem": ["semantic_ADAra"]},
+            {"verb": "Aste"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa", "vibhakti": ["viBakti_7"], "forms": ["कटे"]},
+            {"forms": ["आस्ते"]},
+        ],
+    },
+    {
+        # मोक्षे इच्छास्ति — mokṣa is the vaiṣayika ādhāra → saptamī (मोक्षे).
+        "label": "SK633-mokshe-icchasti",
+        "sutras": ["1.4.45", "2.3.36"],
+        "sentence": [
+            {"stem": "mokza", "vacana": 1, "sem": ["semantic_ADAra"]},
+            {"verb": "icCAsti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa", "vibhakti": ["viBakti_7"], "forms": ["मोक्षे"]},
+            {"forms": ["इच्छास्ति"]},
+        ],
+    },
+    {
+        # स्थाल्यां पचति — the pot (sthālī, ī-stem) is the aupaśleṣika ādhāra →
+        # saptamī (स्थाल्याम्).
+        "label": "SK633-sthalyam-pacati",
+        "sutras": ["1.4.45", "2.3.36"],
+        "sentence": [
+            {"stem": "sTAlI", "vacana": 1, "sem": ["semantic_ADAra"]},
+            {"verb": "pacati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa", "vibhakti": ["viBakti_7"], "forms": ["स्थाल्याम्"]},
+            {"forms": ["पचति"]},
+        ],
+    },
+    {
+        # चकाराद्दूरान्तिकार्थेभ्यः — दूरे आस्ते: the dūra-sense word → saptamī by
+        # the च of 2.3.36 (semantic_dUrAntika, NOT a kāraka). वनस्य दूरे.
+        "label": "SK633-dure-durantika",
+        "sutras": ["2.3.36"],
+        "sentence": [
+            {"stem": "dUra", "vacana": 1, "sem": ["semantic_dUrAntika"]},
+            {"verb": "Aste"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7"], "forms": ["दूरे"]},
+            {"forms": ["आस्ते"]},
+        ],
+    },
+
+    # ── SK634 (2.3.37): sati-saptamī (bhāva-lakṣaṇa absolute) ─────────────────
+    {
+        # गोषु दुह्यमानासु गतः — "he left while the cows were being milked".
+        # The absolute pair (go, duhyamānā) both carry semantic_BAvalakzaRa and
+        # are adjacent; each sees the other via llp/rrp → both → saptamī
+        # (गोषु loc.pl., दुह्यमानासु loc.pl.). 2.3.46 prathamā is overridden.
+        "label": "SK634-goshu-duhyamanasu-gatah",
+        "sutras": ["2.3.37"],
+        "sentence": [
+            {"stem": "go", "vacana": 3, "sem": ["semantic_BAvalakzaRa"]},
+            {"stem": "duhyamAnA", "vacana": 3, "sem": ["semantic_BAvalakzaRa"]},
+            {"verb": "gataH"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7"],
+             "not_fired": ["2.3.46"], "forms": ["गोषु"]},
+            {"karaka": None, "vibhakti": ["viBakti_7"], "forms": ["दुह्यमानासु"]},
+            {"forms": ["गतः"]},
+        ],
+    },
+
+    # ── SK635 (2.3.38): षष्ठी चानादरे — anādara bhāva-lakṣaṇa, vibhāṣā 7/6 ──────
+    {
+        # रुदति रुदतो वा प्राव्राजीत् — "he renounced, disregarding [the kin]
+        # weeping". The bhāva-lakṣaṇa locus (rudat, śatṛ) is semantic_Seza +
+        # semantic_anAdara → 2.3.50 ṣaṣṭhī by default; 2.3.38 forks the optional
+        # saptamī. apply ⇒ रुदति (7); skip ⇒ रुदतः (6, via 2.3.50).
+        "label": "SK635-rudati-rudato-pravrajit",
+        "sutras": ["2.3.38", "2.3.50"],
+        "sentence": [
+            {"stem": "rudat", "vacana": 1,
+             "sem": ["semantic_Seza", "semantic_anAdara"]},
+            {"verb": "prAvrAjIt"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
+             "forms": ["रुदति", "रुदतः"]},
+            {"forms": ["प्राव्राजीत्", "प्राव्राजीद्"]},
+        ],
+    },
+
+    # ── SK636 (2.3.39): svāmi-yoga — vibhāṣā 6/7 ─────────────────────────────
+    {
+        # गवां गोषु वा स्वामी — "the owner of/over the cows". go is semantic_Seza,
+        # the yoga-word svāmin is adjacent (rrp peek) → 2.3.50 ṣaṣṭhī default,
+        # 2.3.39 forks the optional saptamī. apply ⇒ गोषु (7); skip ⇒ गवाम् (6).
+        # svāmin itself → prathamā (स्वामी).
+        "label": "SK636-gavam-goshu-svami",
+        "sutras": ["2.3.39", "2.3.50"],
+        "sentence": [
+            {"stem": "go", "vacana": 3, "sem": ["semantic_Seza"]},
+            {"stem": "svAmin", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
+             "forms": ["गोषु", "गवाम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["स्वामी"]},
+        ],
+    },
+
+    # ── SK637 (2.3.40): āyukta/kuśala āsevā — vibhāṣā 6/7 ─────────────────────
+    {
+        # पूजने पूजनस्य वा कुशलः — "skilled at (devoted to) worship". pūjana is
+        # semantic_Seza + semantic_AsevA, the yoga-word kuśala is adjacent →
+        # 2.3.50 ṣaṣṭhī default, 2.3.40 forks the optional saptamī.
+        # apply ⇒ पूजने (7); skip ⇒ पूजनस्य (6). kuśala → prathamā (कुशलः).
+        "label": "SK637-pujane-pujanasya-kusalah",
+        "sutras": ["2.3.40", "2.3.50"],
+        "sentence": [
+            {"stem": "pUjana", "vacana": 1,
+             "sem": ["semantic_Seza", "semantic_AsevA"]},
+            {"stem": "kuSala", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
+             "forms": ["पूजने", "पूजनस्य"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["कुशलः"]},
+        ],
+    },
+
+    # ── SK638 (2.3.41): यतश्च निर्धारणम् — nirdhāraṇa whole, vibhāṣā 6/7 ─────────
+    {
+        # नृणां नृषु वा ब्राह्मणः श्रेष्ठः — "the best AMONG men". The whole (nṛ) is
+        # semantic_Seza + semantic_nirDAraRa → 2.3.50 ṣaṣṭhī default; 2.3.41
+        # forks the optional saptamī. apply ⇒ नृषु (7); skip ⇒ नृणाम्/नॄणाम् (6).
+        # The singled-out brāhmaṇa → prathamā (ब्राह्मणः).
+        "label": "SK638-nrnam-nrshu-brahmanah",
+        "sutras": ["2.3.41", "2.3.50"],
+        "sentence": [
+            {"stem": "nf", "vacana": 3,
+             "sem": ["semantic_Seza", "semantic_nirDAraRa"]},
+            {"stem": "brAhmaRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
+             "forms": ["नृषु", "नृणाम्", "नॄणाम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["ब्राह्मणः"]},
+        ],
+    },
+
+    # ── SK639 (2.3.42): पञ्चमी विभक्ते — nirdhāraṇa by separation → pañcamī ──────
+    {
+        # माथुराः पाटलिपुत्रकेभ्य आढ्यतराः — "the Mathurans are wealthier THAN the
+        # Pāṭaliputrans". The separated set (pāṭaliputraka) is semantic_viBakta →
+        # pañcamī (पाटलिपुत्रकेभ्यः). The Mathurans → prathamā (माथुराः).
+        "label": "SK639-mathurah-pataliputrakebhyah",
+        "sutras": ["2.3.42"],
+        "sentence": [
+            {"stem": "mATura", "vacana": 3, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "pAwaliputraka", "vacana": 3, "sem": ["semantic_viBakta"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["माथुराः"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["पाटलिपुत्रकेभ्यः"]},
+        ],
+    },
+
+    # ── SK640 (2.3.43): sādhu/nipuṇa arcā → saptamī ──────────────────────────
+    {
+        # मातरि साधुः — "good towards (his) mother" (praise). The object (mātṛ) is
+        # semantic_arcA, the yoga-word sādhu adjacent → saptamī (मातरि). sādhu →
+        # prathamā (साधुः). Apavāda to 2.3.46.
+        "label": "SK640-matari-sadhuh",
+        "sutras": ["2.3.43"],
+        "sentence": [
+            {"stem": "mAtf", "vacana": 1, "sem": ["semantic_arcA"]},
+            {"stem": "sADu", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_7"],
+             "not_fired": ["2.3.46"], "forms": ["मातरि"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["साधुः"]},
+        ],
+    },
+
+    # ── SK641 (2.3.44): प्रसितोत्सुकाभ्यां तृतीया च — vibhāṣā 3/7 ─────────────────
+    {
+        # प्रसित उत्सुको वा हरिणा हरौ वा — "intent on / eager for Hari". The object
+        # (hari) is semantic_ADAra (adhikaraṇa-like) → 2.3.36 saptamī default;
+        # 2.3.44 forks the tṛtīyā. apply ⇒ हरिणा (3); skip ⇒ हरौ (7).
+        "label": "SK641-harina-harau-prasita",
+        "sutras": ["2.3.44", "2.3.36"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1,
+             "sem": ["semantic_ADAra", "semantic_prasitotsuka"]},
+            {"verb": "biBeti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa",
+             "vibhakti": ["viBakti_3", "viBakti_7"], "forms": ["हरिणा", "हरौ"]},
+            {"forms": ["बिभेति"]},
+        ],
+    },
+
+    # ── SK642 (2.3.45): नक्षत्रे च लुपि — taddhita-lup nakṣatra, vibhāṣā 3/7 ──────
+    {
+        # मूलेन मूले वा आवाहयेत् — under the (deferred, §6) taddhita-lup the nakṣatra
+        # form mūla → tṛtīyā or saptamī (adhikaraṇe). semantic_nakzatralup +
+        # semantic_ADAra → 2.3.36 saptamī default; 2.3.45 forks the tṛtīyā.
+        # apply ⇒ मूलेन (3); skip ⇒ मूले (7). (modelled on the plain stem मूल.)
+        "label": "SK642-mulena-mule-nakshatra",
+        "sutras": ["2.3.45", "2.3.36"],
+        "sentence": [
+            {"stem": "mUla", "vacana": 1,
+             "sem": ["semantic_ADAra", "semantic_nakzatralup"]},
+            {"verb": "pacati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa",
+             "vibhakti": ["viBakti_3", "viBakti_7"], "forms": ["मूलेन", "मूले"]},
+            {"forms": ["पचति"]},
+        ],
+    },
+
+    # ── SK643 (2.3.7): सप्तमीपञ्चम्यौ कारकमध्ये — kāla/adhvan between śaktis, 7/5 ──
+    {
+        # द्व्यहे द्व्यहाद्वा भोक्ता — "he will eat in / after two days". The kāla
+        # (dvyaha) lies between kartṛ-karma śaktis: semantic_ADAra +
+        # semantic_kArakamaDya → 2.3.36 saptamī default; 2.3.7 forks the pañcamī.
+        # apply ⇒ द्व्यहात्/द्व्यहाद् (5); skip ⇒ द्व्यहे (7).
+        "label": "SK643-dvyahe-dvyahat-karakamadhya",
+        "sutras": ["2.3.7", "2.3.36"],
+        "sentence": [
+            {"stem": "dvyaha", "vacana": 1,
+             "sem": ["semantic_ADAra", "semantic_kArakamaDya"]},
+            {"verb": "icCAsti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa",
+             "vibhakti": ["viBakti_5", "viBakti_7"],
+             "forms": ["द्व्यहात्", "द्व्यहाद्", "द्व्यहे"]},
+            {"forms": ["इच्छास्ति"]},
+        ],
+    },
+    {
+        # क्रोशे क्रोशाद्वा लक्ष्यं विध्येत् — the adhvan (krośa) between kartṛ-karma →
+        # saptamī or pañcamī. Same fork on krośa.
+        "label": "SK643-krose-krosat-karakamadhya",
+        "sutras": ["2.3.7", "2.3.36"],
+        "sentence": [
+            {"stem": "kroSa", "vacana": 1,
+             "sem": ["semantic_ADAra", "semantic_kArakamaDya"]},
+            {"verb": "biBeti"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_aDikaraRa",
+             "vibhakti": ["viBakti_5", "viBakti_7"],
+             "forms": ["क्रोशात्", "क्रोशाद्", "क्रोशे"]},
+            {"forms": ["बिभेति"]},
+        ],
+    },
+
+    # ── SK644 (1.4.97) + SK645 (2.3.9): अधि-ईश्वरे karmapravacanīya → saptamī ──
+    {
+        # अधि भुवि रामः — "Rama [rules] over the earth" (sva-svāmi-bhāva). adhi in
+        # the īśvara sense → karmapravacanīya (kp_para, governs the following
+        # noun) carrying kp_saptamI → 2.3.9 saptamī (भुवि / भुवाम्), overriding
+        # the 2.3.8 dvitīyā. The lord (rāma) → prathamā (रामः).
+        "label": "SK644-adhi-bhuvi-ramah",
+        "sutras": ["1.4.97", "2.3.9"],
+        "sentence": [
+            {"word": "aDi_kp", "sem": ["semantic_ESvara"]},
+            {"stem": "BU", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अधि"]},
+            {"karaka": None, "vibhakti": ["viBakti_7"],
+             "not_fired": ["2.3.8"], "forms": ["भुवि", "भुवाम्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["रामः"]},
+        ],
+    },
+    {
+        # उप परार्धे हरेर्गुणाः — "Hari's qualities are MORE than half the universe".
+        # upa in the adhika sense → karmapravacanīya (1.4.87.1, kp_para,
+        # kp_saptamI) → 2.3.9 saptamī (परार्धे).
+        "label": "SK645-upa-pararhe-adhika",
+        "sutras": ["1.4.87.1", "2.3.9"],
+        "sentence": [
+            {"word": "upa_kp", "sem": ["semantic_aDika"]},
+            {"stem": "parArDa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["उप"]},
+            {"karaka": None, "vibhakti": ["viBakti_7"],
+             "not_fired": ["2.3.8"], "forms": ["परार्धे"]},
+        ],
+    },
+
+    # ── SK646 (1.4.98): विभाषा कृञि — adhi optionally kp before √kṛ (saṁjñā fork) ─
+    {
+        # यदत्र माम् अधिकरिष्यति — before √kṛ, adhi (īśvara sense) is OPTIONALLY a
+        # karmapravacanīya, else a gati. Saṁjñā-level fork on the adhi particle:
+        # the apply branch fires 1.4.98 (adhi → karmapravacanīya, kp_saptamI),
+        # the skip branch leaves adhi a bare gati. No governed-noun vibhakti
+        # here (surface deferred, §6) — the adhi avyaya surfaces as अधि either way.
+        "label": "SK646-adhi-kr-vibhasha",
+        "sutras": ["1.4.98"],
+        "sentence": [
+            {"word": "aDi_kp", "sem": ["semantic_ESvara"]},
+            {"verb": "aDikarizyati"},
+        ],
+        "expect": [
+            {"forms": ["अधि"]},
+            {"forms": ["अधिकरिष्यति"]},
+        ],
+    },
+
+    # ── Negative: a plain karma noun (not ādhāra) → no adhikaraṇa/saptamī ─────
+    {
+        # हरिं भजति — hari is īpsitatama karma, NOT an ādhāra; 1.4.45 / 2.3.36
+        # must not fire. Counter to SK633.
+        "label": "SK633-negative-not-adhara",
+        "sutras": ["1.4.49", "2.3.2"],
+        "sentence": [
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"verb": "Bajati"},
+        ],
+        "expect": [
+            {"karaka": "kAraka_karma", "vibhakti": ["viBakti_2"],
+             "not_fired": ["1.4.45", "2.3.36"], "forms": ["हरिम्"]},
+            {"forms": ["भजति"]},
+        ],
+    },
+    {
+        # अधि without the īśvara sense → adhi is NOT a karmapravacanīya here;
+        # 1.4.97 / 2.3.9 must not fire. (The bare adhi is a plain gati/passthrough
+        # avyaya; the noun falls through to prathamā.) Counter to SK644.
+        "label": "SK644-negative-adhi-not-isvara",
+        "sutras": ["2.3.46"],
+        "sentence": [
+            {"word": "aDi_kp"},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["अधि"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["1.4.97", "2.3.9"], "forms": ["रामः"]},
+        ],
+    },
 ]
