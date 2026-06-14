@@ -104,20 +104,21 @@ committing. Their uncommitted work was committed as-is on each branch, then merg
 
 ---
 
-## 4. Open issues (must fix before declaring K5–K7 green)
+## 4. Cross-phase collisions found at merge — RESOLVED
 
-Two **cross-phase symbol collisions** (both K5↔K7) survive the mechanical merge and
-regress 3 kāraka tests (141/144 pass):
+Two **cross-phase symbol collisions** (both K5↔K7) surfaced after the mechanical
+merge (141/144) and were fixed in-tree (now **144/144**):
 
-1. **`biBeti` redefinition** — `dhatu.py` defines it twice: K5 with the `BItrA` tag
-   (1.4.25 bhaya-hetu→apādāna) and K7 untagged ("generic adhikaraṇa verb"). K7's later
-   definition shadows K5's ⇒ **SK588 चोराद्बिभेति** fails. *Fix:* rename K7's generic
-   verb (e.g. its adhikaraṇa example uses a different dhātu) or have it reuse K5's.
-2. **`semantic_dUrAntika` tag reuse** — K5's 2.3.35 (dūra/antika 3-way fork) and K7's
-   2.3.36 (च: dūra/antika → saptamī) both key on it, so K7's rule fires on K5's SK605
-   sentences ⇒ **SK605 दूरम्/अन्तिकम्** (×2) fail (fired trace `['2.3.36']`). *Fix:*
-   give the two rules distinct tags (e.g. `semantic_dUrAntika_apAdAna` vs
-   `_aDikaraRa`) and update the dependent yaml conditions + the SK605/SK633 test rows.
+1. **`biBeti` redefinition** — defined twice in `dhatu.py` (K5 `BItrA`-tagged; K7
+   untagged). **Fix applied:** dropped K7's copy so its adhikaraṇa tests reuse K5's
+   `?BItrA`-tagged pada (inert there, since those nouns are `semantic_ADAra`).
+2. **`semantic_dUrAntika` tag reuse** — K5's 2.3.35 and K7's 2.3.36 both key on the
+   one tag. **Fix applied (per direction — keep one tag, make a four-way fork):** the
+   2.3.36 च-arm was split into the optional rule **`2.3.36.1`** (highest aps,
+   `optional: true`) that joins the 2.3.35 fork chain; a `semantic_dUrAntika` word now
+   forks **four** ways {viBakti_2/5/3/7} = दूरम्/दूरात्/दूरेण/दूरे. The 2.3.36
+   adhikaraṇa arm stays nitya (कटे आस्ते unchanged). SK605 (×2) and SK633-dure tests
+   updated to expect all four options.
 
 Also note the **count accounting is approximate** — K5 and K7 never updated their
 branch counters, and the K4-era buckets (implemented/deferred/uncatalogued/total)
@@ -128,7 +129,7 @@ deferred and should be confirmed against the project's counting convention.
 
 ## 5. Remaining work
 
-- [ ] Fix the two collisions above; re-run kāraka tests to 144/144.
+- [x] Fix the two collisions above; kāraka tests **144/144**.
 - [ ] Run the **full generator suite** on the merged branch (awaiting go-ahead).
 - [ ] Optional **Phase K-UI** — Vākya Composer (`karaka_plan.md` §4).
 - [ ] Update `karaka_plan.md`'s top Status line (still says "K1–K7 not started").

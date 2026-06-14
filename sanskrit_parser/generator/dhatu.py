@@ -213,5 +213,7 @@ icCAsti      = tinanta_pada("icCAsti",      "kartari", ["akarmaka"])            
 pacati       = tinanta_pada("pacati",       "kartari")                          # पचति "cooks" — 1.4.45 (स्थाल्यां पचति)
 gataH        = tinanta_pada("gataH",        "kartari", ["gatyarTa"])            # गतः "[he] left/went" — 2.3.37 (गोषु दुह्यमानासु गतः)
 prAvrAjIt    = tinanta_pada("prAvrAjIt",    "kartari")                          # प्राव्राजीत् "renounced" — 2.3.38 (रुदति/रुदतो वा)
-biBeti       = tinanta_pada("biBeti",       "kartari")                          # बिभेति "fears" — generic adhikaraṇa example verb
+# biBeti (बिभेति "fears") is defined in the K5 apādāna block above (carries ?BItrA);
+# reused here as the generic adhikaraṇa example verb (the ?BItrA tag is inert when the
+# locus noun is semantic_ADAra, not semantic_Bayahetu).
 aDikarizyati = tinanta_pada("aDikarizyati", "kartari", ["kfYi"])               # अधिकरिष्यति "will appoint" — 1.4.98 (vibhāṣā kṛñi)

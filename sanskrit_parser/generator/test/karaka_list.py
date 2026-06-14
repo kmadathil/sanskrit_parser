@@ -1625,34 +1625,34 @@ karaka_tests = [
         ],
     },
 
-    # ── SK605 (2.3.35): dūra/antika → THREE-way dvitīyā/pañcamī/tṛtīyā ────────
+    # ── SK605 (2.3.35 + 2.3.36.1 च): dūra/antika → FOUR-way 2/5/3/7 ──────────
     {
         # ग्रामस्य दूरं दूरात् दूरेण वा — dūra (a-stem napuṃsaka, declines itself) is
         # dvitīyā (दूरम्, 2.3.35.2), pañcamī (दूरात्/दूराद्, 2.3.35.1), OR tṛtīyā
         # (दूरेण, 2.3.35). Three-arm fork.
         "label": "SK605-duram-durat-durena",
-        "sutras": ["2.3.35.2", "2.3.35.1", "2.3.35"],
+        "sutras": ["2.3.36.1", "2.3.35.2", "2.3.35.1", "2.3.35"],
         "sentence": [
             {"stem": "dUra", "vacana": 1, "sem": ["semantic_dUrAntika"]},
         ],
         "expect": [
             {"karaka": None,
-             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5", "viBakti_7"],
              "not_fired": ["2.3.46"],
-             "forms": ["दूरम्", "दूरात्", "दूराद्", "दूरेण"]},
+             "forms": ["दूरम्", "दूरात्", "दूराद्", "दूरेण", "दूरे"]},
         ],
     },
     {
         # अन्तिकम् अन्तिकात् अन्तिकेन वा — same three-way fork with antika.
         "label": "SK605-antikam-antikat-antikena",
-        "sutras": ["2.3.35.2", "2.3.35.1", "2.3.35"],
+        "sutras": ["2.3.36.1", "2.3.35.2", "2.3.35.1", "2.3.35"],
         "sentence": [
             {"stem": "antika", "vacana": 1, "sem": ["semantic_dUrAntika"]},
         ],
         "expect": [
             {"karaka": None,
-             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5"],
-             "forms": ["अन्तिकम्", "अन्तिकात्", "अन्तिकाद्", "अन्तिकेन"]},
+             "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5", "viBakti_7"],
+             "forms": ["अन्तिकम्", "अन्तिकात्", "अन्तिकाद्", "अन्तिकेन", "अन्तिके"]},
         ],
     },
 
@@ -2111,13 +2111,14 @@ karaka_tests = [
         # चकाराद्दूरान्तिकार्थेभ्यः — दूरे आस्ते: the dūra-sense word → saptamī by
         # the च of 2.3.36 (semantic_dUrAntika, NOT a kāraka). वनस्य दूरे.
         "label": "SK633-dure-durantika",
-        "sutras": ["2.3.36"],
+        "sutras": ["2.3.36.1", "2.3.35.2", "2.3.35.1", "2.3.35"],
         "sentence": [
             {"stem": "dUra", "vacana": 1, "sem": ["semantic_dUrAntika"]},
             {"verb": "Aste"},
         ],
         "expect": [
-            {"karaka": None, "vibhakti": ["viBakti_7"], "forms": ["दूरे"]},
+            {"karaka": None, "vibhakti": ["viBakti_2", "viBakti_3", "viBakti_5", "viBakti_7"],
+             "forms": ["दूरम्", "दूरात्", "दूराद्", "दूरेण", "दूरे"]},
             {"forms": ["आस्ते"]},
         ],
     },

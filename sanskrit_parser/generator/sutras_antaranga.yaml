@@ -8457,9 +8457,10 @@
 # 605: दूरान्तिकार्थेभ्यो द्वितीया च (2.3.35) — for dūra/antika-sense words the noun
 # is dvitīyā, pañcamī, OR tṛtīyā. ग्रामस्य दूरं दूरात् दूरेण वा; अन्तिकम् अन्तिकात्
 # अन्तिकेन वा. dūra/antika decline themselves (a-stem napuṃsaka pratipadikas like
-# Sata) and carry semantic_dUrAntika. Three-arm fork (HIGH→LOW: viBakti_2 wins
-# first, then viBakti_5, then the non-optional viBakti_3) → exactly three
-# branches. (असत्त्ववचनस्य anuvṛtti → दूरः पन्थाः excluded, out of scope.) Apavāda
+# Sata) and carry semantic_dUrAntika. Combined with the saptamī च-arm of 2.3.36
+# (rule 2.3.36.1, below) this is a FOUR-arm fork (HIGH→LOW aps: 2.3.36.1 viBakti_7,
+# then 2.3.35.2 viBakti_2, 2.3.35.1 viBakti_5, non-optional 2.3.35 viBakti_3) →
+# exactly four branches. (असत्त्ववचनस्य anuvṛtti → दूरः पन्थाः excluded, out of scope.) Apavāda
 # to 2.3.46.
 - sutra: दूरान्तिकार्थेभ्यो द्वितीया च
   id: 2.3.35.2
@@ -8904,24 +8905,39 @@
   update:
     olp: [+kAraka_aDikaraRa, +kAraka]
 
-# 633: सप्तम्यधिकरणे च (2.3.36) — adhikaraṇa → saptamī; च adds the dūra/antika-
-# sense words (dūrāntikārthebhyaḥ). कटे आस्ते, मोक्षे इच्छास्ति; वनस्य दूरे/अन्तिके.
-# For the adhikaraṇa arm this is nitya (?kAraka blocks 2.3.46 arm-1 anyway); the
-# dūra/antika arm B (a non-kāraka, semantic_dUrAntika) DOES compete with 2.3.46,
-# so the rule carries overrides: [2.3.46] (harmless to the kāraka arm).
+# 633: सप्तम्यधिकरणे च (2.3.36) — adhikaraṇa → saptamī. कटे आस्ते, मोक्षे इच्छास्ति.
+# nitya for the kāraka arm (?kAraka blocks 2.3.46 arm-1 anyway; overrides: [2.3.46]
+# is harmless). The च also gives the dūra/antika-sense words a saptamī option, but
+# those are non-kāraka and combine with 2.3.35 into ONE four-way fork, so that arm is
+# split out below as the optional rule 2.3.36.1.
 - sutra: सप्तम्यधिकरणे च
   id: 2.3.36
   bahiranga: -1
   overrides: ["2.3.46"]
   condition:
-    - lp:
-        - and
-        - "?kAraka_aDikaraRa"
-        - "?!has_viBakti"
-    - lp:
-        - and
-        - "?semantic_dUrAntika"
-        - "?!has_viBakti"
+    lp:
+      - and
+      - "?kAraka_aDikaraRa"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 633 (cont.): the च-arm of 2.3.36 for the dūra/antika-sense words. A
+# semantic_dUrAntika noun is non-kāraka and already forks dvitīyā/pañcamī/tṛtīyā via
+# 2.3.35; this adds SAPTAMĪ as the FOURTH option. It is the highest aps of the four
+# (23036.1 > 23035.2 > 23035.1 > 23035), and optional, so it wins the fork first and
+# peels off the viBakti_7 branch while the 2.3.35 chain yields the other three.
+# ग्रामस्य दूरे/दूरम्/दूरात्/दूरेण. (overrides 2.3.46 like its sibling.)
+- sutra: सप्तम्यधिकरणे च
+  id: 2.3.36.1
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_dUrAntika"
+      - "?!has_viBakti"
   update:
     olp: [+viBakti_7, +has_viBakti]
 
