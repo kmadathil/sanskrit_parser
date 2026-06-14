@@ -8857,3 +8857,340 @@
     olp: [+viBakti_6, +has_viBakti]
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# Phase K7 — adhikaraṇa + saptamī (SK 632–646; karaka_plan.md §K7) — FINAL phase
+#
+# 1.4.45 ādhāra → kAraka_aDikaraRa; 2.3.36 maps it (and dūra/antika) → saptamī.
+# The saptamī chapter has several SET-valued (vibhāṣā) results, all riding the
+# K3 pre-pass optional-fork (antaranga_prakriya._run_fixpoint): the apply-branch
+# writes the marked vibhakti, the skip-branch falls through to the general rule,
+# and each fork derives as a separate output sentence (tests assert the set).
+#
+# Two fork families:
+#  (a) ṣaṣṭhī/saptamī (SK635/636/637/638): the noun carries semantic_Seza + the
+#      specific primitive, so 2.3.50 (K0) gives ṣaṣṭhī by DEFAULT; the marked
+#      rule is optional + overrides 2.3.50 → apply ⇒ saptamī, skip ⇒ ṣaṣṭhī.
+#  (b) adhikaraṇa-default (SK641/642/643): the noun is kAraka_aDikaraRa so 2.3.36
+#      gives saptamī by DEFAULT; the marked rule is optional + overrides 2.3.36
+#      → apply ⇒ its vibhakti (tṛtīyā / pañcamī), skip ⇒ saptamī.
+# This matches the SK gloss ("ṣaṣṭhī/saptamī already obtained; the rule is for
+# the optional other vibhakti").
+#
+# sati-saptamī (2.3.37) / anādara absolute construction: the paired words are
+# adjacent elements both tagged semantic_BAvalakzaRa; _neighbours skips the
+# avasāna separators, so each partner sees the other via llp/rrp.
+#
+# KP tail (SK644–646): adhi/upa in the īśvara/adhika sense → karmapravacanīya
+# carrying both a direction tag (kp_para — these particles precede their noun)
+# and the kp_saptamI marker; 2.3.9 reads kp_saptamI (like K2's 2.3.8 reads the
+# bare kp) and gives saptamī, overriding the 2.3.8 dvitīyā.
+#
+# Deferred (generator_status.md Skipped): the SK642 taddhita-lup machinery
+# itself (nakṣatra → plain stems per §6); the śeṣa-pratiṣedha vārttikas under
+# SK633 (kta+in, sādhvasādhu, nimitta-yoga); 2.3.9's aiśvarya pakṣa beyond the
+# adhi/upa examples; SK646 surface (no tiṅanta for adhi-√kṛ — saṁjñā fork only).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 632: आधारोऽधिकरणम् (1.4.45) — the locus (ādhāra) of the action, reached via
+# the kartṛ/karma → adhikaraṇa saṁjñā. कटे आस्ते, स्थाल्यां पचति, मोक्षे इच्छास्ति.
+- sutra: आधारोऽधिकरणम्
+  id: 1.4.45
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?semantic_ADAra"
+      - "?!kAraka"
+  update:
+    olp: [+kAraka_aDikaraRa, +kAraka]
+
+# 633: सप्तम्यधिकरणे च (2.3.36) — adhikaraṇa → saptamī; च adds the dūra/antika-
+# sense words (dūrāntikārthebhyaḥ). कटे आस्ते, मोक्षे इच्छास्ति; वनस्य दूरे/अन्तिके.
+# For the adhikaraṇa arm this is nitya (?kAraka blocks 2.3.46 arm-1 anyway); the
+# dūra/antika arm B (a non-kāraka, semantic_dUrAntika) DOES compete with 2.3.46,
+# so the rule carries overrides: [2.3.46] (harmless to the kāraka arm).
+- sutra: सप्तम्यधिकरणे च
+  id: 2.3.36
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?kAraka_aDikaraRa"
+        - "?!has_viBakti"
+    - lp:
+        - and
+        - "?semantic_dUrAntika"
+        - "?!has_viBakti"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 634: यस्य च भावेन भावलक्षणम् (2.3.37) — sati-saptamī: when one action marks the
+# time of another, the locus action's noun → saptamī. गोषु दुह्यमानासु गतः ("he
+# left while the cows were being milked"). Both members of the absolute pair
+# carry semantic_BAvalakzaRa; the rule fires on a member whose adjacent partner
+# (llp or rrp) is also semantic_BAvalakzaRa, so each partner takes saptamī
+# independently. Apavāda to the 2.3.46 prathamā default.
+- sutra: यस्य च भावेन भावलक्षणम्
+  id: 2.3.37
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp:
+        - and
+        - "?semantic_BAvalakzaRa"
+        - "?!has_viBakti"
+      llp: "?semantic_BAvalakzaRa"
+    - lp:
+        - and
+        - "?semantic_BAvalakzaRa"
+        - "?!has_viBakti"
+      rrp: "?semantic_BAvalakzaRa"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 635: षष्ठी चानादरे (2.3.38) — in disrespect (anādara), the bhāva-lakṣaṇa locus
+# is OPTIONALLY ṣaṣṭhī or saptamī. रुदति रुदतो वा प्राव्राजीत् ("he renounced,
+# disregarding [the kin] weeping"). The noun carries semantic_Seza, so 2.3.50
+# (K0) gives ṣaṣṭhī by default; this optional rule (overrides 2.3.50) forks the
+# saptamī. apply ⇒ viBakti_7 (रुदति); skip ⇒ 2.3.50 viBakti_6 (रुदतः).
+- sutra: षष्ठी चानादरे
+  id: 2.3.38
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.50"]
+  condition:
+    lp:
+      - and
+      - "?semantic_Seza"
+      - "?semantic_anAdara"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 636: स्वामीश्वराधिपतिदायादसाक्षिप्रतिभूप्रसूतैश्च (2.3.39) — in connection with one
+# of svāmin/īśvara/adhipati/dāyāda/sākṣin/pratibhū/prasūta, the related noun is
+# OPTIONALLY ṣaṣṭhī or saptamī (ṣaṣṭhī already obtained; rule supplies the
+# optional saptamī). गवां गोषु वा स्वामी. The yoga-word sits adjacent (llp/rrp);
+# the noun carries semantic_Seza → 2.3.50 ṣaṣṭhī default. apply ⇒ 7 (गोषु);
+# skip ⇒ 2.3.50 ⇒ 6 (गवाम्).
+- sutra: स्वामीश्वराधिपतिदायादसाक्षिप्रतिभूप्रसूतैश्च
+  id: 2.3.39
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.50"]
+  condition:
+    - lp: [and, "?semantic_Seza", "?!has_viBakti"]
+      llp: [=svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta]
+    - lp: [and, "?semantic_Seza", "?!has_viBakti"]
+      rrp: [=svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta]
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 637: आयुक्तकुशलाभ्यां चासेवायाम् (2.3.40) — with āyukta ("engaged in") or kuśala
+# ("skilled at"), in the sense of āsevā (devoted application), the object →
+# OPTIONALLY ṣaṣṭhī or saptamī. हरिपूजने हरिपूजनस्य वा कुशलः. Yoga-word adjacent;
+# noun carries semantic_Seza → 2.3.50 ṣaṣṭhī default. apply ⇒ 7; skip ⇒ 6.
+- sutra: आयुक्तकुशलाभ्यां चासेवायाम्
+  id: 2.3.40
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.50"]
+  condition:
+    - lp: [and, "?semantic_Seza", "?semantic_AsevA", "?!has_viBakti"]
+      llp: [=Ayukta, =kuSala]
+    - lp: [and, "?semantic_Seza", "?semantic_AsevA", "?!has_viBakti"]
+      rrp: [=Ayukta, =kuSala]
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 638: यतश्च निर्धारणम् (2.3.41) — the whole from which a part is singled out
+# (nirdhāraṇa, by jāti/guṇa/kriyā/saṁjñā) → OPTIONALLY ṣaṣṭhī or saptamī.
+# नृणां नृषु वा ब्राह्मणः श्रेष्ठः; गवां गोषु वा कृष्णा बहुक्षीरा. The whole carries
+# semantic_Seza + semantic_nirDAraRa → 2.3.50 ṣaṣṭhī default. apply ⇒ 7; skip ⇒ 6.
+- sutra: यतश्च निर्धारणम्
+  id: 2.3.41
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.50"]
+  condition:
+    lp:
+      - and
+      - "?semantic_Seza"
+      - "?semantic_nirDAraRa"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 639: पञ्चमी विभक्ते (2.3.42) — when the nirdhāraṇa is by separation (bheda, not
+# a part-of-whole) the singled set → pañcamī. माथुराः पाटलिपुत्रकेभ्य आढ्यतराः
+# ("the Mathurans are wealthier THAN the Pāṭaliputrans"). semantic_viBakta.
+# Apavāda to the 2.3.46 prathamā default.
+- sutra: पञ्चमी विभक्ते
+  id: 2.3.42
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    lp:
+      - and
+      - "?semantic_viBakta"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 640: साधुनिपुणाभ्यामर्चायां सप्तम्यप्रतेः (2.3.43) — with sādhu / nipuṇa in the
+# arcā (praise) sense, the object → saptamī (but NOT when prati is present).
+# मातरि साधुर्निपुणो वा. Yoga-word (sādhu/nipuṇa) adjacent via llp/rrp; the noun
+# carries semantic_arcA. Apavāda to 2.3.46. (apratéḥ / aprati-ādibhiḥ vārttika —
+# prati-yoga blocking — deferred; the bare praise reading is modelled.)
+- sutra: साधुनिपुणाभ्यामर्चायां सप्तम्यप्रतेः
+  id: 2.3.43
+  bahiranga: -1
+  overrides: ["2.3.46"]
+  condition:
+    - lp: [and, "?semantic_arcA", "?!has_viBakti"]
+      llp: [=sADu, =nipuRa]
+    - lp: [and, "?semantic_arcA", "?!has_viBakti"]
+      rrp: [=sADu, =nipuRa]
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 641: प्रसितोत्सुकाभ्यां तृतीया च (2.3.44) — with prasita / utsuka ("intent on /
+# eager for"), the object → tṛtīyā, and (च) saptamī. प्रसित उत्सुको वा हरिणा हरौ वा.
+# The object is an adhikaraṇa-like locus (semantic_ADAra) → 2.3.36 saptamī
+# default; this optional rule (overrides 2.3.36) forks the tṛtīyā:
+# apply ⇒ viBakti_3 (हरिणा); skip ⇒ 2.3.36 viBakti_7 (हरौ).
+- sutra: प्रसितोत्सुकाभ्यां तृतीया च
+  id: 2.3.44
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.36"]
+  condition:
+    lp:
+      - and
+      - "?semantic_prasitotsuka"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 642: नक्षत्रे च लुपि (2.3.45) — under taddhita-lup on a nakṣatra stem, the form
+# in the elided suffix's sense → tṛtīyā or saptamī (adhikaraṇe). मूलेन / मूले
+# (आवाहयेद्देवीम्). semantic_nakzatralup; the noun is also semantic_ADAra → 2.3.36
+# saptamī default. apply ⇒ viBakti_3 (मूलेन); skip ⇒ 2.3.36 viBakti_7 (मूले).
+# (taddhita-lup machinery deferred, §6 — modelled on the plain stem मूल.)
+- sutra: नक्षत्रे च लुपि
+  id: 2.3.45
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.36"]
+  condition:
+    lp:
+      - and
+      - "?semantic_nakzatralup"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_3, +has_viBakti]
+
+# 643: सप्तमीपञ्चम्यौ कारकमध्ये (2.3.7) — a kāla/adhvan lying BETWEEN two śaktis
+# (kartṛ-karma etc.) → saptamī or pañcamī. अद्य भुक्त्वाऽयं द्व्यहे द्व्यहाद्वा भोक्ता;
+# इहस्थोऽयं क्रोशे क्रोशाद्वा लक्ष्यं विध्येत्. semantic_kArakamaDya; the noun is also
+# semantic_ADAra → 2.3.36 saptamī default. apply ⇒ viBakti_5 (द्व्यहात्/क्रोशात्);
+# skip ⇒ 2.3.36 viBakti_7 (द्व्यहे/क्रोशे).
+- sutra: सप्तमीपञ्चम्यौ कारकमध्ये
+  id: 2.3.7
+  bahiranga: -1
+  optional: true
+  overrides: ["2.3.36"]
+  condition:
+    lp:
+      - and
+      - "?semantic_kArakamaDya"
+      - "?!has_viBakti"
+  update:
+    olp: [+viBakti_5, +has_viBakti]
+
+# 644: अधिरीश्वरे (1.4.97) — adhi in the īśvara (lordship / sva-svāmi-bhāva) sense
+# → karmapravacanīya. अधि भुवि रामः / अधि रामे भूः. adhi precedes its noun
+# (kp_para, governs rightward) and sets the kp_saptamI marker so 2.3.9 (below)
+# can give saptamī instead of the 2.3.8 dvitīyā.
+- sutra: अधिरीश्वरे
+  id: 1.4.97
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=aDi"
+      - "?semantic_ESvara"
+      - "?!karmapravacanIya"
+    rp: "?!kfYi"      # before √kṛ the saṁjñā is OPTIONAL (1.4.98 विभाषा कृञि), not obligatory
+  update:
+    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+
+# 644b: उपोऽधिके च (1.4.87, adhika arm) — upa in the adhika ("more than") sense →
+# karmapravacanīya; like adhi-īśvara it gives saptamī (2.3.9), so it sets
+# kp_saptamI (the K2 hīna arm of 1.4.87 sets only kp_para → 2.3.8 dvitīyā).
+# उप परार्धे हरेर्गुणाः ("Hari's qualities are MORE than half-of-the-universe").
+- sutra: उपोऽधिके च
+  id: 1.4.87.1
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=upa"
+      - "?semantic_aDika"
+      - "?!karmapravacanIya"
+  update:
+    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+
+# 645: यस्मादधिकं यस्य चेश्वरवचनं तत्र सप्तमी (2.3.9) — a noun governed by a
+# kp_saptamI-marked karmapravacanīya (adhi-īśvara / upa-adhika) → saptamī.
+# Direction-keyed like 2.3.8: arm A = particle is the noun's llp governing
+# rightward (kp_para — अधि भुवि, उप परार्धे); arm B = particle is the noun's rrp
+# governing leftward (kp_pUrva). Overrides 2.3.8 so these kp give saptamī, not
+# the general karmapravacanīya-dvitīyā.
+- sutra: यस्मादधिकं यस्य चेश्वरवचनं तत्र सप्तमी
+  id: 2.3.9
+  bahiranga: -1
+  overrides: ["2.3.8"]
+  condition:
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_saptamI"
+        - "?kp_para"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_saptamI"
+        - "?kp_pUrva"
+  update:
+    olp: [+viBakti_7, +has_viBakti]
+
+# 646: विभाषा कृञि (1.4.98) — before √kṛ, adhi (in the īśvara sense) is OPTIONALLY
+# karmapravacanīya, else a gati (upasarga). यदत्र माम् अधिकरिष्यति. Vibhāṣā →
+# pre-pass fork on the adhi particle: apply ⇒ karmapravacanīya (+kp_para,
+# +kp_saptamI); skip ⇒ adhi stays a bare gati (no kp). rp = √kṛ (?kfYi).
+# Saṁjñā-level only — no governed-noun example here (māmadhikariṣyati's माम् is
+# the kṛ-karma); surface deferred (no tiṅanta for adhi-√kṛ, §6).
+- sutra: विभाषा कृञि
+  id: 1.4.98
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=aDi"
+      - "?semantic_ESvara"
+      - "?!karmapravacanIya"
+    rp: "?kfYi"
+  update:
+    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+

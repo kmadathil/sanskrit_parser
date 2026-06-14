@@ -82,6 +82,36 @@ giri = Pratipadika("giri", "pum")     # गिरि — क्रोशं ग�
 # Kāraka Phase K3 sentence stems (tṛtīyā cluster; SK562–568).
 tApasa = Pratipadika("tApasa", "pum")   # तापस — जटाभिस्तापसः (SK566 itthambhūta-lakṣaṇa)
 kARa   = Pratipadika("kARa",   "pum")   # काण — अक्ष्णा काणः (SK565 aṅga-vikāra; the one-eyed one)
+# Kāraka Phase K7 sentence stems (adhikaraṇa + saptamī; SK632–646). Most reuse
+# existing a-/i-/ṛ-/o-stem paradigms; the new ones below cover the SK examples.
+#  - mokza  : मोक्ष — मोक्षे इच्छास्ति (SK633 vaiṣayika ādhāra → saptamī)
+#  - BU     : भू "earth" (ū-stem strī) — अधि भुवि रामः / अधि रामे भूः (SK644/645)
+#  - parArDa: परार्ध — उप परार्धे हरेर्गुणाः (SK645 upa adhika → kp_saptamī)
+#  - sTAlI  : स्थाली (ī-stem strī, NI) — स्थाल्यां पचति (SK633 aupaśleṣika ādhāra)
+#  - pAwaliputraka / mATura : SK639 पञ्चमी विभक्ते — माथुराः पाटलिपुत्रकेभ्यः
+#  - duhyamAnA : दुह्यमाना (passive participle, ā-stem strī) — गोषु दुह्यमानासु गतः
+#                (SK634 sati-saptamī partner; loc. pl. दुह्यमानासु)
+#  - rudat  : रुदत् (śatṛ pum, √rud class 2, no vikaraṇa) — रुदति/रुदतो (SK635 anādara)
+mokza   = Pratipadika("mokza",   "pum")
+parArDa = Pratipadika("parArDa", "pum")
+dUra    = Pratipadika("dUra",    "napum")  # दूर — वनस्य दूरे (SK633 dūrāntika → saptamī)
+pUjana  = Pratipadika("pUjana",  "napum")  # पूजन — पूजने/पूजनस्य कुशलः (SK637 āsevā)
+BU      = Pratipadika("BU",      "strI", other_tags=["BrU"])  # monosyllabic ū-stem strī: iyuvaṅ + optional nadī (भुवि/भ्वाम्), like bhrū
+sTAlI   = Pratipadika("sTAlI",   "strI", other_tags=["NI"])
+pAwaliputraka = Pratipadika("pAwaliputraka", "pum")
+mATura  = Pratipadika("mATura",  "pum")
+dvyaha  = Pratipadika("dvyaha",  "pum")   # द्व्यह — द्व्यहे/द्व्यहात् (SK643 kāraka-madhya)
+# Yoga-words peeked by literal (=svAmin …) via llp/rrp during the pre-pass
+# (matched on the bare stem, before any sup is inserted); each also takes its
+# own prathamā as a sentence word. SK636/637/640 (svāmi-yoga, āyukta/kuśala,
+# sādhu/nipuṇa). The other six members of 2.3.39 are documented in the rule.
+svAmin  = Pratipadika("svAmin",  "pum")   # स्वामिन् — गवां/गोषु वा स्वामी (SK636)
+Ayukta  = Pratipadika("Ayukta",  "pum")   # आयुक्त — आयुक्तः … (SK637)
+kuSala  = Pratipadika("kuSala",  "pum")   # कुशल — कुशलः … (SK637/640)
+sADu    = Pratipadika("sADu",    "pum")   # साधु — मातरि साधुः (SK640)
+nipuRa  = Pratipadika("nipuRa",  "pum")   # निपुण — निपुणो वा (SK640)
+duhyamAnA = Pratipadika("duhyamAnA", "strI", other_tags=["Ap"])
+rudat   = Pratipadika("rudat",   "pum", its=["f"], other_tags=["Satf"])
 # Kāraka Phase K4 sentence stems (sampradāna + caturthī; SK569–585).
 grAma = Pratipadika("grAma", "pum")   # ग्राम — ग्रामं/ग्रामाय गच्छति (SK585 2.3.12 vibhāṣā)
 vipra = Pratipadika("vipra", "pum")   # विप्र — विप्राय गां ददाति (SK569 1.4.32 general sampradāna)

@@ -28,7 +28,7 @@ def _is_karaka_tag(t):
             or (t.startswith("vacana_") and t[7:].isdigit())
             or t in ("kAraka", "has_viBakti",
                      "karmapravacanIya", "kp_pUrva", "kp_para",
-                     "kp_pancami_pUrva", "kp_pancami_para"))
+                     "kp_pancami_pUrva", "kp_pancami_para", "kp_saptamI"))
 
 
 class PaninianObject(SanskritObject):
