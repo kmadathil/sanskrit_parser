@@ -11,7 +11,12 @@ Case format:
   sentence : ordered word specs —
                {"stem": <pratipadika name>, "vacana": 1|2|3, "sem": [semantic_* tags]}
                {"verb": <dhatu-module pre-formed pada name>}   (tiṅanta stub, §6)
-               {"word": <avyaya-module name>}                  (particle, passthrough)
+               {"word": <avyaya-module name>, "sem": [...], "dir": "pUrva"|"para"}
+                   (particle; "sem" carries a karmapravacanīya's per-usage sense,
+                    "dir" its governance direction — pūrva governs the preceding
+                    noun, para the following — a USER choice, not sense-derived,
+                    defaulting to "pUrva" when a sense is present; plain particles
+                    pass through bare)
              Words are separated by avasAna in the built vakya, so each word
              derives without inter-word sandhi and the joined output is the
              concatenation of per-word forms + "." separators.
@@ -653,9 +658,12 @@ karaka_tests = [
     # ════════════════════════════════════════════════════════════════════════
     # Phase K2 — karmapravacanīya + dvitīyā (SK546–558; karaka_plan.md §K2).
     # The particle is an avyaya carrying its per-usage sense tag; Pass A assigns
-    # karmapravacanIya + a governance-direction tag (kp_pUrva = governs the noun
-    # to its left; kp_para = to its right); 2.3.8 reads it via rrp/llp. Particles
-    # take their own su → 2.4.82 luk → bare avyaya form.
+    # karmapravacanIya + the case marker kp_dvitIyA. The governance DIRECTION is a
+    # separate user input on the particle, given here as "dir": "pUrva" (governs
+    # the noun to its left) or "para" (to its right); _build_word maps it to
+    # kp_pUrva/kp_para and 2.3.8 reads it via rrp/llp. "dir" defaults to "pUrva"
+    # when a sense is present, so pūrva cases may omit it. Particles take their own
+    # su → 2.4.82 luk → bare avyaya form.
     # ════════════════════════════════════════════════════════════════════════
 
     # ── SK547 (1.4.84) + SK548 (2.3.8): anu lakṣaṇa, noun precedes ───────────
@@ -665,7 +673,7 @@ karaka_tests = [
         "sutras": ["1.4.84", "2.3.8"],
         "sentence": [
             {"stem": "japa", "vacana": 1, "sem": []},
-            {"word": "anu_kp", "sem": ["semantic_lakzaRa"]},
+            {"word": "anu_kp", "sem": ["semantic_lakzaRa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_2"],
@@ -680,7 +688,7 @@ karaka_tests = [
         "sutras": ["1.4.85", "2.3.8"],
         "sentence": [
             {"stem": "nadI", "vacana": 1, "sem": []},
-            {"word": "anu_kp", "sem": ["semantic_tftIyArTa"]},
+            {"word": "anu_kp", "sem": ["semantic_tftIyArTa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["नदीम्"]},
@@ -693,7 +701,7 @@ karaka_tests = [
         "label": "SK550-anu-harim",
         "sutras": ["1.4.86", "2.3.8"],
         "sentence": [
-            {"word": "anu_kp", "sem": ["semantic_hIna"]},
+            {"word": "anu_kp", "sem": ["semantic_hIna"], "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": []},
         ],
         "expect": [
@@ -708,7 +716,7 @@ karaka_tests = [
         "label": "SK551-upa-harim",
         "sutras": ["1.4.87", "2.3.8"],
         "sentence": [
-            {"word": "upa_kp", "sem": ["semantic_hIna"]},
+            {"word": "upa_kp", "sem": ["semantic_hIna"], "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": []},
         ],
         "expect": [
@@ -723,7 +731,7 @@ karaka_tests = [
         "sutras": ["1.4.90", "2.3.8"],
         "sentence": [
             {"stem": "vfkza", "vacana": 1, "sem": []},
-            {"word": "prati_kp", "sem": ["semantic_lakzaRa"]},
+            {"word": "prati_kp", "sem": ["semantic_lakzaRa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["वृक्षम्"]},
@@ -736,7 +744,7 @@ karaka_tests = [
         "sutras": ["1.4.90", "2.3.8"],
         "sentence": [
             {"stem": "vizRu", "vacana": 1, "sem": []},
-            {"word": "prati_kp", "sem": ["semantic_itTamBUta"]},
+            {"word": "prati_kp", "sem": ["semantic_itTamBUta"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["विष्णुम्"]},
@@ -750,7 +758,7 @@ karaka_tests = [
         "sutras": ["1.4.91", "2.3.8"],
         "sentence": [
             {"stem": "hari", "vacana": 1, "sem": []},
-            {"word": "aBi_kp", "sem": ["semantic_lakzaRa"]},
+            {"word": "aBi_kp", "sem": ["semantic_lakzaRa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_2"], "forms": ["हरिम्"]},
@@ -764,7 +772,7 @@ karaka_tests = [
         "label": "SK556-ati-devan-krsnah",
         "sutras": ["1.4.95", "2.3.8", "2.3.46"],
         "sentence": [
-            {"word": "ati_kp", "sem": ["semantic_atikramaRa"]},
+            {"word": "ati_kp", "sem": ["semantic_atikramaRa"], "dir": "para"},
             {"stem": "deva", "vacana": 3, "sem": []},
             {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
@@ -777,14 +785,15 @@ karaka_tests = [
     },
     # ── Direction disambiguation: particle between two nouns ─────────────────
     {
-        # कृष्णम् अनु रामः — anu in lakṣaṇa (kp_pUrva) governs the PRECEDING noun
-        # (kṛṣṇa → dvitīyā); rāma follows anu, so 2.3.8 (kp_para arm) does not fire
-        # on it → prathamā. Confirms only the intended noun is tagged.
+        # कृष्णम् अनु रामः — anu in lakṣaṇa with dir=pUrva governs the PRECEDING noun
+        # (kṛṣṇa → dvitīyā); rāma follows anu, so 2.3.8's kp_para arm does not fire
+        # on it → prathamā. Confirms direction is the user's choice and only the
+        # intended noun is tagged.
         "label": "SK548-krsnam-anu-ramah-direction",
         "sutras": ["1.4.84", "2.3.8", "2.3.46"],
         "sentence": [
             {"stem": "kfzRa", "vacana": 1, "sem": []},
-            {"word": "anu_kp", "sem": ["semantic_lakzaRa"]},
+            {"word": "anu_kp", "sem": ["semantic_lakzaRa"], "dir": "pUrva"},
             {"stem": "rAma", "vacana": 1, "sem": []},
         ],
         "expect": [
@@ -1454,7 +1463,7 @@ karaka_tests = [
         "label": "SK598-apa-hareh",
         "sutras": ["1.4.88", "2.3.10"],
         "sentence": [
-            {"word": "apa_kp", "sem": ["semantic_varjana"]},
+            {"word": "apa_kp", "sem": ["semantic_varjana"], "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1468,7 +1477,7 @@ karaka_tests = [
         "label": "SK598-pari-hareh",
         "sutras": ["1.4.88", "2.3.10"],
         "sentence": [
-            {"word": "pari_kp", "sem": ["semantic_varjana"]},
+            {"word": "pari_kp", "sem": ["semantic_varjana"], "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1484,7 +1493,7 @@ karaka_tests = [
         "label": "SK597-a-hareh-maryada",
         "sutras": ["1.4.89", "2.3.10"],
         "sentence": [
-            {"word": "AN_kp", "sem": ["semantic_maryAdA"]},
+            {"word": "AN_kp", "sem": ["semantic_maryAdA"], "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1497,12 +1506,13 @@ karaka_tests = [
     {
         # कृष्णात्प्रति (प्रद्युम्नः) — prati (pratinidhi "in place of") is kp governing
         # the PRECEDING noun (kṛṣṇa) → pañcamī. Modelled with hari (हरेः प्रति);
-        # prati is hari's rrp. Distinct direction from 2.3.10 apa/āṅ/pari.
+        # prati is hari's rrp (dir=pUrva). The kp_pancamI_pratinidhi marker keeps
+        # this on 2.3.11, distinct from 2.3.10 (apa/āṅ/pari, kp_pancamI).
         "label": "SK600-hareh-prati-pratinidhi",
         "sutras": ["1.4.92", "2.3.11"],
         "sentence": [
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
-            {"word": "prati_kp", "sem": ["semantic_pratiniDi"]},
+            {"word": "prati_kp", "sem": ["semantic_pratiniDi"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_5"],
@@ -1517,7 +1527,7 @@ karaka_tests = [
         "sutras": ["1.4.92", "2.3.11"],
         "sentence": [
             {"stem": "Sata", "vacana": 1, "sem": ["semantic_pratidAna"]},
-            {"word": "prati_kp", "sem": ["semantic_pratidAna"]},
+            {"word": "prati_kp", "sem": ["semantic_pratidAna"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_5"], "forms": ["शताद्", "शतात्"]},
@@ -2339,13 +2349,13 @@ karaka_tests = [
     # ── SK644 (1.4.97) + SK645 (2.3.9): अधि-ईश्वरे karmapravacanīya → saptamī ──
     {
         # अधि भुवि रामः — "Rama [rules] over the earth" (sva-svāmi-bhāva). adhi in
-        # the īśvara sense → karmapravacanīya (kp_para, governs the following
-        # noun) carrying kp_saptamI → 2.3.9 saptamī (भुवि / भुवाम्), overriding
-        # the 2.3.8 dvitīyā. The lord (rāma) → prathamā (रामः).
+        # the īśvara sense → karmapravacanīya carrying kp_saptamI; with dir=para
+        # (governs the following noun) → 2.3.9 saptamī (भुवि / भुवाम्). 2.3.8 cannot
+        # fire (no kp_dvitIyA). The lord (rāma) → prathamā (रामः).
         "label": "SK644-adhi-bhuvi-ramah",
         "sutras": ["1.4.97", "2.3.9"],
         "sentence": [
-            {"word": "aDi_kp", "sem": ["semantic_ESvara"]},
+            {"word": "aDi_kp", "sem": ["semantic_ESvara"], "dir": "para"},
             {"stem": "BU", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
             {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
@@ -2358,12 +2368,12 @@ karaka_tests = [
     },
     {
         # उप परार्धे हरेर्गुणाः — "Hari's qualities are MORE than half the universe".
-        # upa in the adhika sense → karmapravacanīya (1.4.87.1, kp_para,
-        # kp_saptamI) → 2.3.9 saptamī (परार्धे).
+        # upa in the adhika sense → karmapravacanīya (1.4.87.1, kp_saptamI); with
+        # dir=para → 2.3.9 saptamī (परार्धे).
         "label": "SK645-upa-pararhe-adhika",
         "sutras": ["1.4.87.1", "2.3.9"],
         "sentence": [
-            {"word": "upa_kp", "sem": ["semantic_aDika"]},
+            {"word": "upa_kp", "sem": ["semantic_aDika"], "dir": "para"},
             {"stem": "parArDa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -2383,7 +2393,7 @@ karaka_tests = [
         "label": "SK646-adhi-kr-vibhasha",
         "sutras": ["1.4.98"],
         "sentence": [
-            {"word": "aDi_kp", "sem": ["semantic_ESvara"]},
+            {"word": "aDi_kp", "sem": ["semantic_ESvara"], "dir": "para"},
             {"verb": "aDikarizyati"},
         ],
         "expect": [

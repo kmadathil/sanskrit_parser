@@ -31,16 +31,19 @@ committing. Their uncommitted work was committed as-is on each branch, then merg
   `?jani`, `?praBava`).
 - **Vibhakti pañcamī:** 2.3.28 (`kAraka_apAdAna`→viBakti_5); 2.3.29 yoga-word peek
   (`=anya/=ArAt/=itara/=fte/=pUrva`); 2.3.24 akartari ṛṇe; karmapravacanīya pañcamī
-  1.4.88/89/92 → 2.3.10/2.3.11 using **new** direction tags
-  `kp_pancami_pUrva`/`kp_pancami_para` (kept distinct from K2's dvitīyā
-  `kp_pUrva`/`kp_para` so 2.3.8 never fires on them).
+  1.4.88/89/92 → 2.3.10/2.3.11. **(Refactored 2026-06-15:** the old direction
+  tags `kp_pancami_pUrva`/`kp_pancami_para` were replaced by direction-free case
+  markers `kp_pancamI` (2.3.10) / `kp_pancamI_pratinidhi` (2.3.11); direction is now
+  the shared user-chosen `kp_pUrva`/`kp_para`, and the markers are disjoint from
+  `kp_dvitIyA` so 2.3.8 never fires on them.)
 - **Forks:** two 2-way vibhāṣā (2.3.25 guṇe, 2.3.33 stoka) and **two 3-way** forks
   (2.3.32 pṛthak/vinā/nānā, 2.3.35 dūra/antika) modelled as three rules with
   sub-sutra aps ordered HIGH→LOW so the two `optional` arms fork first and the
   non-optional arm is the final fall-through (exactly 3 branches via `?!has_viBakti`).
 - **Lexicon:** `dhatu.py` Ayati/biBeti/parAjayate/vArayati/nilIyate/aDIte/prajAyate/
   praBavati; `pratipadika.py` cora/upADyAya/Satru/aDyayana/jAqya/stoka/**dUra/antika**/
-  himavat/gaNgA; `avyaya.py` apa_kp/AN_kp; `paninian_object.py` +kp_pancami_*.
+  himavat/gaNgA; `avyaya.py` apa_kp/AN_kp; `paninian_object.py` +kp_pancamI/
+  kp_pancamI_pratinidhi (post-refactor).
 - **Tests:** 23 new cases (→ 101). **Deferred:** SK587/594 vā vārttikas, SK595
   ñc/āc/āhi yoga-words, SK602 yoga-vibhāga branch.
 - *Counts on branch were left at the K4 baseline (394/68) — not updated.*
@@ -69,8 +72,10 @@ committing. Their uncommitted work was committed as-is on each branch, then merg
   ṣaṣṭhī; the marked rule is `optional: true` + `overrides:[2.3.50]` (apply⇒saptamī,
   skip⇒ṣaṣṭhī). **adhikaraṇa-default forks** (2.3.44/45/2.3.7): `overrides:[2.3.36]`.
 - **KP tail:** 1.4.97 adhi-īśvare + a second 1.4.87 arm (`1.4.87.1`, upa-adhika), both
-  setting `kp_saptamI`; 2.3.9 reads `?kp_saptamI` (overrides 2.3.8); 1.4.98 vibhāṣā
-  kṛñi (fork). `paninian_object.py` +`kp_saptamI`.
+  setting `kp_saptamI`; 2.3.9 reads `?kp_saptamI` + the user's direction tag
+  (overrides 2.3.8 **and 2.3.46** post-refactor); 1.4.98 vibhāṣā kṛñi (fork).
+  `paninian_object.py` +`kp_saptamI`. **(Refactored 2026-06-15:** direction is now
+  the user-chosen `kp_pUrva`/`kp_para`, not the rule-set `kp_para`.)
 - **Tests:** 20 new cases. **Deferred:** SK642 taddhita-lup, SK633/640 vārttikas,
   2.3.9 broader aiśvarya, SK646 surface. **Counts on branch left at 394/68 — not
   updated** (the agent planned 409/71 but stopped before writing it).
@@ -97,7 +102,9 @@ committing. Their uncommitted work was committed as-is on each branch, then merg
      144 test cases, parses clean.
    - `dhatu.py`: single-hunk union (K5+K6 block then K7 block).
    - `paninian_object.py`: unioned the `_is_karaka_tag` tuple
-     (`kp_pUrva/kp_para/kp_pancami_*` **and** `kp_saptamI`).
+     (`kp_pUrva/kp_para/kp_pancami_*` **and** `kp_saptamI`; the pañcamī twins were
+     later replaced by `kp_dvitIyA/kp_pancamI/kp_pancamI_pratinidhi` in the
+     2026-06-15 direction refactor).
    - `generator_status.md`: resolved expediently during merges, then rebuilt
      authoritatively (commit `a75ab14`): K7 last, K6/K5 earlier, Next→K-UI, counts
      reconciled to **449 implemented / 78 deferred / ~592 total**.

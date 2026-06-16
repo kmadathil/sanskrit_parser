@@ -86,7 +86,9 @@ def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_dis
             kv = [t for t in e["tags"]
                   if t.startswith("kAraka_")
                   or (t.startswith("viBakti_") and t[8:].isdigit())
-                  or t in ("karmapravacanIya", "kp_pUrva", "kp_para")]
+                  or t in ("karmapravacanIya", "kp_pUrva", "kp_para",
+                           "kp_dvitIyA", "kp_pancamI", "kp_pancamI_pratinidhi",
+                           "kp_saptamI")]
             fired = ", ".join(e["fired"]) if e["fired"] else "—"
             print(f"  @{e['index']}: {', '.join(kv) or 'no tags'}  (fired: {fired})")
     return o
@@ -308,16 +310,28 @@ class CustomActionKaraka(Action):
 
 
 class CustomActionWord(Action):
-    """-w / --word <name> [sem ...]: a predefined object by name (verb pada like
-    Bajati/sevyate, a plain particle like he, or a karmapravacanīya particle like
-    anu_kp), appended as a deep copy. Positional like -k (minus vacana): the
-    first token is the object; every following token is a semantic sense tag set
-    on it (bare → semantic_<tok>, or used as-is if already semantic_-prefixed) —
-    this is how a karmapravacanīya particle carries its per-usage sense, e.g.
-    `-w anu_kp lakzaRa` (anu in the lakṣaṇa sense → karmapravacanīya). For several
-    words give -w repeatedly (`-w he -w antarA`). Shares dest="karaka_words" with
-    --karaka to preserve sentence order.
+    """-w / --word <name> [sem ...] [pUrva|para]: a predefined object by name (verb
+    pada like Bajati/sevyate, a plain particle like he, or a karmapravacanīya
+    particle like anu_kp), appended as a deep copy. Positional like -k (minus
+    vacana): the first token is the object; following tokens are either
+
+      * a governance-DIRECTION token — pUrva / para (or kp_pUrva / kp_para) → sets
+        the kp_pUrva / kp_para tag (which neighbour the karmapravacanīya governs:
+        the preceding noun for pūrva, the following noun for para), or
+      * a semantic sense tag (bare → semantic_<tok>, or used as-is if already
+        semantic_-prefixed) — how a karmapravacanīya particle carries its sense.
+
+    E.g. `-w anu_kp lakzaRa` (anu in the lakṣaṇa sense; direction defaults to
+    pūrva) or `-w anu_kp hIna para` (governs the following noun). The direction is
+    a USER choice, not derived from the sense; if a sense is given and no
+    direction token is supplied it defaults to kp_pUrva. Plain particles with no
+    sense (he, saha) get no direction. For several words give -w repeatedly
+    (`-w he -w antarA`). Shares dest="karaka_words" with --karaka to preserve
+    sentence order.
     """
+    _DIRECTIONS = {"pUrva": "kp_pUrva", "kp_pUrva": "kp_pUrva",
+                   "para": "kp_para", "kp_para": "kp_para"}
+
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         super(CustomActionWord, self).__init__(option_strings, dest, nargs, **kwargs)
         logger.debug(f"Initializing CustomActionWord {option_strings}, {dest}")
@@ -331,9 +345,23 @@ class CustomActionWord(Action):
         name = values[0]
         assert name in globals(), f"{name} is not defined!"
         obj = deepcopy(globals()[name])
+        direction = None
+        has_sense = False
         for tok in values[1:]:
-            tag = tok if tok.startswith("semantic_") else "semantic_" + tok
-            obj.setTag(tag)
+            if tok in self._DIRECTIONS:
+                direction = self._DIRECTIONS[tok]
+            else:
+                tag = tok if tok.startswith("semantic_") else "semantic_" + tok
+                obj.setTag(tag)
+                has_sense = True
+        # Direction is a user choice. Default to kp_pUrva when a karmapravacanīya
+        # sense was given but no direction token was supplied (the engine itself
+        # does no inference — without a direction tag 2.3.8/9/10/11 do not fire).
+        # Plain particles (no sense) get no direction.
+        if direction is None and has_sense:
+            direction = "kp_pUrva"
+        if direction is not None:
+            obj.setTag(direction)
         getattr(namespace, self.dest).append(obj)
 
 
@@ -405,8 +433,9 @@ def get_args(argv=None):
                              "(e.g. -k hari 1 Ipsitatama)")
     parser.add_argument('-w', '--word', nargs="+", dest="karaka_words", action=CustomActionWord,
                         help="Predefined object (verb pada, particle) by name for a kāraka sentence, "
-                             "with optional semantic sense tags for a karmapravacanīya particle "
-                             "(e.g. -w Bajati ; -w anu_kp lakzaRa)")
+                             "with optional semantic sense tag(s) and a governance-direction token "
+                             "(pUrva|para, default pUrva) for a karmapravacanīya particle "
+                             "(e.g. -w Bajati ; -w anu_kp lakzaRa ; -w anu_kp hIna para)")
     parser.add_argument("--sandhi", action="store_true",
                         help="Kāraka sentence: apply inter-word sandhi (connected sentence) "
                              "instead of the default avasāna-separated per-word forms")

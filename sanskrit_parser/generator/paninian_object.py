@@ -17,18 +17,20 @@ logger = logging.getLogger(__name__)
 def _is_karaka_tag(t):
     """True for the kāraka-section tag families (karaka_plan.md §2): the
     semantic_*/kAraka_*/viBakti_N/vacana_M tags and the kAraka/has_viBakti
-    guards, plus the karmapravacanīya scaffolding (karmapravacanIya + the
-    kp_pUrva/kp_para governance-direction tags, karaka_plan.md §K2; plus the K5
-    pañcamī-kp direction tags kp_pancami_pUrva/kp_pancami_para for 2.3.10/2.3.11,
-    kept distinct from the dvitīyā kp_pUrva/kp_para so they never trigger 2.3.8).
-    The digit suffix checks exclude the pre-existing viBakti_pada sup-merge marker
-    (and any future *_pada variant) from this set."""
+    guards, plus the karmapravacanīya scaffolding (karaka_plan.md §K2):
+    karmapravacanIya itself; the user-chosen governance-DIRECTION tags
+    kp_pUrva/kp_para (shared across all cases); and the sense-derived
+    case-governance markers kp_dvitIyA (2.3.8), kp_pancamI (2.3.10),
+    kp_pancamI_pratinidhi (2.3.11) and kp_saptamI (2.3.9). The digit suffix
+    checks exclude the pre-existing viBakti_pada sup-merge marker (and any future
+    *_pada variant) from this set."""
     return (t.startswith(("semantic_", "kAraka_"))
             or (t.startswith("viBakti_") and t[8:].isdigit())
             or (t.startswith("vacana_") and t[7:].isdigit())
             or t in ("kAraka", "has_viBakti",
                      "karmapravacanIya", "kp_pUrva", "kp_para",
-                     "kp_pancami_pUrva", "kp_pancami_para", "kp_saptamI"))
+                     "kp_dvitIyA", "kp_pancamI", "kp_pancamI_pratinidhi",
+                     "kp_saptamI"))
 
 
 class PaninianObject(SanskritObject):

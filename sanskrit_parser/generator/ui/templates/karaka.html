@@ -164,7 +164,7 @@ let _uid = 0;
 function addEl(kind, preset) {
   const e = { id: ++_uid, kind };
   if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); }
-  if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); }
+  if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); e.dir = 'pUrva'; }
   if (kind === 'verb')     { e.verb = (INV.verbs[0]||{}).name; }
   if (preset) Object.assign(e, preset);
   if (preset && preset.sem)  e.sem  = new Set(preset.sem);
@@ -214,6 +214,13 @@ function render() {
     } else if (e.kind === 'particle') {
       body = `
         <select onchange="setF(${e.id},'word',this.value)">${opts(INV.particles, e.word, true)}</select>
+        <div class="row2" style="margin-top:6px;align-items:center;">
+          <label class="muted" style="font-size:.78rem;">governs the</label>
+          <select onchange="setF(${e.id},'dir',this.value)">
+            <option value="pUrva" ${e.dir==='pUrva'?'selected':''}>preceding noun (pūrva)</option>
+            <option value="para"  ${e.dir==='para'?'selected':''}>following noun (para)</option>
+          </select>
+        </div>
         <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
           karmapravacanīya sense (${e.psem.size} selected) ▾</div>
         <div class="sem-box ${e.psem.size?'':'collapsed'}">
@@ -253,7 +260,7 @@ function toggleSem(id, f, tag, on) {
 function toSpec() {
   return elements.map(e => {
     if (e.kind === 'noun')     return { stem: e.stem, vacana: e.vacana, sem: [...e.sem] };
-    if (e.kind === 'particle') return { word: e.word, sem: [...e.psem] };
+    if (e.kind === 'particle') return { word: e.word, sem: [...e.psem], dir: e.dir };
     return { verb: e.verb };
   });
 }
@@ -331,6 +338,14 @@ const EXAMPLES = [
   { dev: 'अक्षैः / अक्षान् दीव्यति', note: 'SK562 — vibhāṣā (two branches)',
     els: [ {kind:'noun', stem:'akza', vacana:3, sem:['semantic_sADakatama']},
            {kind:'verb', verb:'dIvyati'} ] },
+  { dev: 'कृष्णम् अनु रामः', note: 'SK548 — anu (kp) governs the pūrva noun → dvitīyā',
+    els: [ {kind:'noun', stem:'kfzRa', vacana:1, sem:[]},
+           {kind:'particle', word:'anu_kp', psem:['semantic_lakzaRa'], dir:'pUrva'},
+           {kind:'noun', stem:'rAma', vacana:1, sem:[]} ] },
+  { dev: 'कृष्णः अनु रामम्', note: 'SK548 — same anu, para choice → dvitīyā on the following noun',
+    els: [ {kind:'noun', stem:'kfzRa', vacana:1, sem:[]},
+           {kind:'particle', word:'anu_kp', psem:['semantic_lakzaRa'], dir:'para'},
+           {kind:'noun', stem:'rAma', vacana:1, sem:[]} ] },
 ];
 function loadExample(ix) {
   clearEls();

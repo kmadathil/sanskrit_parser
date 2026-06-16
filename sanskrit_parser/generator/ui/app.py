@@ -1154,7 +1154,13 @@ def _build_word(spec):
     Mirrors generator/test/test_karaka.py:_build_word. Three shapes:
       {"stem", "vacana", "sem":[...]}  → pratipadika + vacana_N + semantic_* tags
       {"verb"}                         → pre-formed tiṅanta pada (carries prayoga)
-      {"word", "sem":[...]}            → avyaya particle + optional sense tags
+      {"word", "sem":[...], "dir":...} → avyaya particle + optional sense tags +
+                                         optional governance direction ("pUrva"/
+                                         "para"). The direction (which neighbour a
+                                         karmapravacanīya governs) is a user choice,
+                                         not sense-derived; it maps to kp_pUrva/
+                                         kp_para and defaults to "pUrva" when a
+                                         sense is present (matching cmd_line/test).
     """
     if "stem" in spec:
         obj = getattr(_pp_module, spec["stem"], None)
@@ -1175,8 +1181,15 @@ def _build_word(spec):
         if obj is None:
             raise KeyError(f"Unknown particle {spec['word']!r}")
         p = deepcopy(obj)
-        for t in spec.get("sem", []):
+        sems = spec.get("sem", [])
+        for t in sems:
             p.setTag(t)
+        # Direction is meaningful only for a karmapravacanīya usage (a particle
+        # carrying a sense). Plain particles ignore it; for a karmapravacanīya the
+        # user's choice defaults to "pUrva".
+        if sems:
+            direction = spec.get("dir") or "pUrva"
+            p.setTag("kp_pUrva" if direction == "pUrva" else "kp_para")
         return p
     raise ValueError(f"Unknown word spec {spec!r}")
 

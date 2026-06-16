@@ -7502,11 +7502,14 @@
 # *particle* element (?nipAta + a semantic_* sense tag) BEFORE the noun pass, so
 # 2.3.8 can read the particle's karmapravacanIya via llp/rrp. Each saṁjñā rule
 # matches the particle by literal (=anu …) + its sense primitive, guards
-# "?!karmapravacanIya" (ekā-saṁjñā), and writes +karmapravacanIya plus a
-# governance-direction tag: +kp_pUrva (governs the noun to its LEFT — japam anu)
-# or +kp_para (governs the noun to its RIGHT — anu harim). 2.3.8 is then
-# direction-keyed. The particle still takes its own su via 2.3.46 (avyaya →
-# 2.4.82 luk in the main scan), so no guard is added there.
+# "?!karmapravacanIya" (ekā-saṁjñā), and writes +karmapravacanIya plus the
+# case-governance marker +kp_dvitIyA (this particle governs dvitīyā; read by
+# 2.3.8). The governance DIRECTION — kp_pUrva (governs the noun to its LEFT —
+# japam anu) vs kp_para (governs the noun to its RIGHT — anu harim) — is NOT
+# sense-derived: it is a separate user input on the particle (defaulting to
+# kp_pUrva in cmd_line/UI), and 2.3.8 is keyed on kp_dvitIyA + that direction.
+# The particle still takes its own su via 2.3.46 (avyaya → 2.4.82 luk in the
+# main scan), so no guard is added there.
 #
 # Sense long-tail deferred (Skipped, generator_status.md): bhāga/vīpsā (1.4.90),
 # vīpsā (1.4.91), padArTa/anvavasarga/garhA/samuccaya (1.4.96), and anu's
@@ -7515,8 +7518,9 @@
 # SK554 (1.4.93 adhi/pari anarthaka) deferred — needs the gati-saṁjñā/nighāta layer.
 # ════════════════════════════════════════════════════════════════════════════
 
-# 547: अनुर्लक्षणे (1.4.84) — anu in the lakṣaṇa (mark) sense → karmapravacanīya;
-# the lakṣaṇa-noun precedes (kp_pUrva). जपमनु प्रावर्षत्.
+# 547: अनुर्लक्षणे (1.4.84) — anu in the lakṣaṇa (mark) sense → karmapravacanīya
+# governing dvitīyā (kp_dvitIyA). Which noun it governs (pūrva/para) is a user
+# choice; the classic जपमनु प्रावर्षत् is the pūrva reading.
 - sutra: अनुर्लक्षणे
   id: 1.4.84
   bahiranga: -1
@@ -7527,10 +7531,10 @@
       - "?semantic_lakzaRa"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_pUrva]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
-# 549: तृतीयार्थे (1.4.85) — anu in the tṛtīyā ("along with") sense → kp; noun
-# precedes. नदीमन्ववसिता सेना.
+# 549: तृतीयार्थे (1.4.85) — anu in the tṛtīyā ("along with") sense → kp governing
+# dvitīyā (kp_dvitIyA). Direction is a user choice; नदीमन्ववसिता सेना is pūrva.
 - sutra: तृतीयार्थे
   id: 1.4.85
   bahiranga: -1
@@ -7541,10 +7545,10 @@
       - "?semantic_tftIyArTa"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_pUrva]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
-# 550: हीने (1.4.86) — anu in the hīna ("inferior to") sense → kp; the noun
-# FOLLOWS (kp_para). अनु हरिं सुराः.
+# 550: हीने (1.4.86) — anu in the hīna ("inferior to") sense → kp governing
+# dvitīyā (kp_dvitIyA). Direction is a user choice; अनु हरिं सुराः is para.
 - sutra: हीने
   id: 1.4.86
   bahiranga: -1
@@ -7555,10 +7559,11 @@
       - "?semantic_hIna"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_para]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
-# 551: उपोऽधिके च (1.4.87) — upa in hīna (here) and adhika → kp; noun follows.
-# हीने उप हरिं सुराः. (The adhika sense → saptamī, 2.3.9 / K7 — deferred.)
+# 551: उपोऽधिके च (1.4.87, hīna arm) — upa in hīna → kp governing dvitīyA
+# (kp_dvitIyA). Direction is a user choice; हीने उप हरिं सुराः is para. (The
+# adhika sense → saptamī, 2.3.9, via the 1.4.87.1 arm in K7.)
 - sutra: उपोऽधिके च
   id: 1.4.87
   bahiranga: -1
@@ -7569,11 +7574,12 @@
       - "?semantic_hIna"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_para]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
 # 552: लक्षणेत्थंभूताख्यानभागवीप्सासु प्रतिपर्यनवः (1.4.90) — prati/pari (here; anu's
-# senses are 1.4.84–86) in lakṣaṇa/itthaṁbhūta → kp; noun precedes (kp_pUrva).
-# वृक्षं प्रति विद्योतते, भक्तो विष्णुं प्रति. (bhāga/vīpsā senses deferred.)
+# senses are 1.4.84–86) in lakṣaṇa/itthaṁbhūta → kp governing dvitīyā
+# (kp_dvitIyA). Direction is a user choice; वृक्षं प्रति, भक्तो विष्णुं प्रति are pūrva.
+# (bhāga/vīpsā senses deferred.)
 - sutra: लक्षणेत्थंभूताख्यानभागवीप्सासु प्रतिपर्यनवः
   id: 1.4.90
   bahiranga: -1
@@ -7583,10 +7589,11 @@
     - lp: [and, "=pari", "?semantic_lakzaRa", "?!karmapravacanIya"]
     - lp: [and, "=pari", "?semantic_itTamBUta", "?!karmapravacanIya"]
   update:
-    olp: [+karmapravacanIya, +kp_pUrva]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
-# 553: अभिरभागे (1.4.91) — abhi, except in the bhāga sense, in lakṣaṇādi → kp;
-# noun precedes. हरिमभि वर्तते, भक्तो हरिमभि. (vīpsā देवं देवमभि deferred.)
+# 553: अभिरभागे (1.4.91) — abhi, except in the bhāga sense, in lakṣaṇādi → kp
+# governing dvitīyā (kp_dvitIyA). Direction is a user choice; हरिमभि वर्तते,
+# भक्तो हरिमभि are pūrva. (vīpsā देवं देवमभि deferred.)
 - sutra: अभिरभागे
   id: 1.4.91
   bahiranga: -1
@@ -7594,7 +7601,7 @@
     - lp: [and, "=aBi", "?semantic_lakzaRa", "?!karmapravacanIya"]
     - lp: [and, "=aBi", "?semantic_itTamBUta", "?!karmapravacanIya"]
   update:
-    olp: [+karmapravacanIya, +kp_pUrva]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
 # 555: सुः पूजायाम् (1.4.94) — su in the pūjā sense → kp (saṁjñā only; su prefixes
 # a participle, no governed noun → no dvitīyā). सुसिक्तम् (anupasargatvāt na ṣatva).
@@ -7610,8 +7617,8 @@
   update:
     olp: [+karmapravacanIya]
 
-# 556: अतिरतिक्रमणे च (1.4.95) — ati in atikramaṇa (and pūjā) → kp; noun follows.
-# अति देवान् कृष्णः.
+# 556: अतिरतिक्रमणे च (1.4.95) — ati in atikramaṇa (and pūjā) → kp governing
+# dvitīyā (kp_dvitIyA). Direction is a user choice; अति देवान् कृष्णः is para.
 - sutra: अतिरतिक्रमणे च
   id: 1.4.95
   bahiranga: -1
@@ -7619,7 +7626,7 @@
     - lp: [and, "=ati", "?semantic_atikramaRa", "?!karmapravacanIya"]
     - lp: [and, "=ati", "?semantic_pUjA", "?!karmapravacanIya"]
   update:
-    olp: [+karmapravacanIya, +kp_para]
+    olp: [+karmapravacanIya, +kp_dvitIyA]
 
 # 557: अपिः पदार्थसंभावनान्ववसर्गगर्हासमुच्चयेषु (1.4.96) — api in sambhāvanā etc. →
 # kp (saṁjñā only; द्वितीया तु नेह प्रवर्तते — no dvitīyā). अपि स्तुयाद्विष्णुम्.
@@ -7636,10 +7643,12 @@
   update:
     olp: [+karmapravacanIya]
 
-# 548: कर्मप्रवचनीययुक्ते द्वितीया (2.3.8) — a noun governed by a karmapravacanīya
-# → dvitīyā. Direction-keyed: arm A = the particle is the noun's rrp and governs
-# leftward (kp_pUrva); arm B = the particle is the noun's llp and governs
-# rightward (kp_para). जपमनु, अनु हरिम्. Apavāda to 2.3.46.
+# 548: कर्मप्रवचनीययुक्ते द्वितीया (2.3.8) — a noun governed by a dvitīyā-governing
+# karmapravacanīya (kp_dvitIyA) → dvitīyā. Direction-keyed on the particle's
+# user-chosen tag: arm A = the particle is the noun's rrp and governs leftward
+# (kp_pUrva); arm B = the particle is the noun's llp and governs rightward
+# (kp_para). जपमनु, अनु हरिम्. Gating on kp_dvitIyA keeps this off pañcamī/saptamī
+# karmapravacanīyas (which carry only kp_pancamI*/kp_saptamI). Apavāda to 2.3.46.
 - sutra: कर्मप्रवचनीययुक्ते द्वितीया
   id: 2.3.8
   bahiranga: -1
@@ -7652,6 +7661,7 @@
       rrp:
         - and
         - "?karmapravacanIya"
+        - "?kp_dvitIyA"
         - "?kp_pUrva"
     - lp:
         - and
@@ -7660,6 +7670,7 @@
       llp:
         - and
         - "?karmapravacanIya"
+        - "?kp_dvitIyA"
         - "?kp_para"
   update:
     olp: [+viBakti_2, +has_viBakti]
@@ -8259,9 +8270,10 @@
     olp: [+viBakti_5, +has_viBakti]
 
 # 596: अपपरी वर्जने (1.4.88) — apa and pari in the varjana (exclusion) sense →
-# karmapravacanīya; the excluded noun FOLLOWS. अप हरेः, परि हरेः संसारः. Uses the
-# dedicated pañcamī-kp direction tag kp_pancami_para (not the dvitīyā kp_para)
-# so 2.3.8 never fires on these — only 2.3.10 (pañcamī).
+# karmapravacanīya governing pañcamī. Sets the pañcamī case marker kp_pancamI
+# (read by 2.3.10, not the dvitīyā kp_dvitIyA → 2.3.8 never fires). The
+# governance DIRECTION is a separate user input (kp_pUrva/kp_para); अप हरेः,
+# परि हरेः संसारः is the para reading.
 - sutra: अपपरी वर्जने
   id: 1.4.88
   bahiranga: -1
@@ -8269,11 +8281,12 @@
     - lp: [and, "=apa", "?semantic_varjana", "?!karmapravacanIya"]
     - lp: [and, "=pari", "?semantic_varjana", "?!karmapravacanIya"]
   update:
-    olp: [+karmapravacanIya, +kp_pancami_para]
+    olp: [+karmapravacanIya, +kp_pancamI]
 
-# 597: आङ् मर्यादावचने (1.4.89) — āṅ in the maryādā ("up to") sense → kp; the
-# limit-noun FOLLOWS (kp_pancami_para). आमुक्तेः संसारः ("saṁsāra lasts up to
-# mukti"). āṅ surfaces आ (the it-marker ṅ is not in the string).
+# 597: आङ् मर्यादावचने (1.4.89) — āṅ in the maryādā ("up to") sense → kp governing
+# pañcamī (kp_pancamI, read by 2.3.10). Direction is a user input; आमुक्तेः संसारः
+# ("saṁsāra lasts up to mukti") is the para reading. āṅ surfaces आ (the it-marker
+# ṅ is not in the string).
 - sutra: आङ् मर्यादावचने
   id: 1.4.89
   bahiranga: -1
@@ -8284,11 +8297,13 @@
       - "?semantic_maryAdA"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_pancami_para]
+    olp: [+karmapravacanIya, +kp_pancamI]
 
 # 599: प्रतिः प्रतिनिधिप्रतिदानयोः (1.4.92) — prati in the pratinidhi (substitute)
-# and pratidāna (in-exchange) senses → kp; the source-noun PRECEDES (kp_pUrva,
-# prati sits to its right). प्रद्युम्नः कृष्णात्प्रति, तिलेभ्यः प्रतियच्छति माषान्.
+# and pratidāna (in-exchange) senses → kp governing pañcamī, via its own marker
+# kp_pancamI_pratinidhi (read by 2.3.11, keeping it distinct from the 2.3.10
+# apa/āṅ/pari scope). Direction is a user input; प्रद्युम्नः कृष्णात्प्रति,
+# तिलेभ्यः प्रतियच्छति माषान् are the pūrva reading.
 - sutra: प्रतिः प्रतिनिधिप्रतिदानयोः
   id: 1.4.92
   bahiranga: -1
@@ -8296,46 +8311,69 @@
     - lp: [and, "=prati", "?semantic_pratiniDi", "?!karmapravacanIya"]
     - lp: [and, "=prati", "?semantic_pratidAna", "?!karmapravacanIya"]
   update:
-    olp: [+karmapravacanIya, +kp_pancami_pUrva]
+    olp: [+karmapravacanIya, +kp_pancamI_pratinidhi]
 
 # 598: पञ्चम्यपाङ्परिभिः (2.3.10) — a noun governed by the karmapravacanīya
-# apa/āṅ/pari → pañcamī. अप हरेः, आमुक्तेः, परि हरेः. Direction-keyed like 2.3.8
-# (here all three govern rightward → the particle is the noun's llp + kp_para).
-# Apavāda to 2.3.46.
+# apa/āṅ/pari (kp_pancamI) → pañcamī. अप हरेः, आमुक्तेः, परि हरेः. Direction-keyed
+# like 2.3.8 on the particle's user-chosen tag: arm A = particle is the noun's
+# rrp + kp_pUrva; arm B = particle is the noun's llp + kp_para. Gating on the
+# kp_pancamI marker keeps it distinct from 2.3.11 (prati pratinidhi/pratidāna,
+# kp_pancamI_pratinidhi). Apavāda to 2.3.46.
 - sutra: पञ्चम्यपाङ्परिभिः
   id: 2.3.10
   bahiranga: -1
   overrides: ["2.3.46"]
   condition:
-    lp:
-      - and
-      - "?prAtipadika"
-      - "?!has_viBakti"
-    llp:
-      - and
-      - "?karmapravacanIya"
-      - "?kp_pancami_para"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_pancamI"
+        - "?kp_pUrva"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_pancamI"
+        - "?kp_para"
   update:
     olp: [+viBakti_5, +has_viBakti]
 
 # 600: प्रतिनिधिप्रतिदाने च यस्मात् (2.3.11) — the source-noun governed by the
-# pratinidhi/pratidāna karmapravacanīya prati → pañcamī. प्रद्युम्नः कृष्णात्प्रति.
-# The particle is the noun's rrp (कृष्णात्प्रति: prati follows the noun → kp_pUrva
-# governs the LEFT noun), so peek rrp. Direction-distinct from 2.3.10 (llp +
-# kp_para) so apa/āṅ/pari never reach this rule. Apavāda to 2.3.46.
+# pratinidhi/pratidāna karmapravacanīya prati (kp_pancamI_pratinidhi) → pañcamī.
+# प्रद्युम्नः कृष्णात्प्रति. Direction-keyed like 2.3.10 on the user's tag: arm A =
+# particle is the noun's rrp + kp_pUrva (कृष्णात्प्रति: prati follows the noun);
+# arm B = particle is the noun's llp + kp_para. The kp_pancamI_pratinidhi marker
+# keeps apa/āṅ/pari (kp_pancamI → 2.3.10) off this rule. Apavāda to 2.3.46.
 - sutra: प्रतिनिधिप्रतिदाने च यस्मात्
   id: 2.3.11
   bahiranga: -1
   overrides: ["2.3.46"]
   condition:
-    lp:
-      - and
-      - "?prAtipadika"
-      - "?!has_viBakti"
-    rrp:
-      - and
-      - "?karmapravacanIya"
-      - "?kp_pancami_pUrva"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      rrp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_pancamI_pratinidhi"
+        - "?kp_pUrva"
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?!has_viBakti"
+      llp:
+        - and
+        - "?karmapravacanIya"
+        - "?kp_pancamI_pratinidhi"
+        - "?kp_para"
   update:
     olp: [+viBakti_5, +has_viBakti]
 
@@ -9126,9 +9164,10 @@
     olp: [+viBakti_5, +has_viBakti]
 
 # 644: अधिरीश्वरे (1.4.97) — adhi in the īśvara (lordship / sva-svāmi-bhāva) sense
-# → karmapravacanīya. अधि भुवि रामः / अधि रामे भूः. adhi precedes its noun
-# (kp_para, governs rightward) and sets the kp_saptamI marker so 2.3.9 (below)
-# can give saptamī instead of the 2.3.8 dvitīyā.
+# → karmapravacanīya governing saptamī. Sets the kp_saptamI marker so 2.3.9
+# (below) gives saptamī instead of the 2.3.8 dvitīyā. The governance DIRECTION
+# is a user input (kp_pUrva/kp_para); अधि भुवि रामः is the para reading (adhi
+# precedes its noun), अधि रामे भूः likewise.
 - sutra: अधिरीश्वरे
   id: 1.4.97
   bahiranga: -1
@@ -9140,12 +9179,13 @@
       - "?!karmapravacanIya"
     rp: "?!kfYi"      # before √kṛ the saṁjñā is OPTIONAL (1.4.98 विभाषा कृञि), not obligatory
   update:
-    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+    olp: [+karmapravacanIya, +kp_saptamI]
 
 # 644b: उपोऽधिके च (1.4.87, adhika arm) — upa in the adhika ("more than") sense →
 # karmapravacanīya; like adhi-īśvara it gives saptamī (2.3.9), so it sets
-# kp_saptamI (the K2 hīna arm of 1.4.87 sets only kp_para → 2.3.8 dvitīyā).
-# उप परार्धे हरेर्गुणाः ("Hari's qualities are MORE than half-of-the-universe").
+# kp_saptamI (the K2 hīna arm of 1.4.87 sets kp_dvitIyA → 2.3.8 dvitīyā instead).
+# Direction is a user input; उप परार्धे हरेर्गुणाः ("Hari's qualities are MORE than
+# half-of-the-universe") is the para reading.
 - sutra: उपोऽधिके च
   id: 1.4.87.1
   bahiranga: -1
@@ -9156,18 +9196,20 @@
       - "?semantic_aDika"
       - "?!karmapravacanIya"
   update:
-    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+    olp: [+karmapravacanIya, +kp_saptamI]
 
 # 645: यस्मादधिकं यस्य चेश्वरवचनं तत्र सप्तमी (2.3.9) — a noun governed by a
 # kp_saptamI-marked karmapravacanīya (adhi-īśvara / upa-adhika) → saptamī.
-# Direction-keyed like 2.3.8: arm A = particle is the noun's llp governing
+# Direction-keyed on the user's tag: arm A = particle is the noun's llp governing
 # rightward (kp_para — अधि भुवि, उप परार्धे); arm B = particle is the noun's rrp
-# governing leftward (kp_pUrva). Overrides 2.3.8 so these kp give saptamī, not
-# the general karmapravacanīya-dvitīyā.
+# governing leftward (kp_pUrva). Overrides 2.3.8 (so these kp give saptamī, not
+# the general karmapravacanīya-dvitīyā) and 2.3.46 directly — a saptamī
+# karmapravacanīya carries no kp_dvitIyA, so 2.3.8 no longer matches it and the
+# override of the prathamā default can no longer be inherited transitively.
 - sutra: यस्मादधिकं यस्य चेश्वरवचनं तत्र सप्तमी
   id: 2.3.9
   bahiranga: -1
-  overrides: ["2.3.8"]
+  overrides: ["2.3.8", "2.3.46"]
   condition:
     - lp:
         - and
@@ -9192,8 +9234,8 @@
 
 # 646: विभाषा कृञि (1.4.98) — before √kṛ, adhi (in the īśvara sense) is OPTIONALLY
 # karmapravacanīya, else a gati (upasarga). यदत्र माम् अधिकरिष्यति. Vibhāṣā →
-# pre-pass fork on the adhi particle: apply ⇒ karmapravacanīya (+kp_para,
-# +kp_saptamI); skip ⇒ adhi stays a bare gati (no kp). rp = √kṛ (?kfYi).
+# pre-pass fork on the adhi particle: apply ⇒ karmapravacanīya (+kp_saptamI,
+# direction from user input); skip ⇒ adhi stays a bare gati (no kp). rp = √kṛ (?kfYi).
 # Saṁjñā-level only — no governed-noun example here (māmadhikariṣyati's माम् is
 # the kṛ-karma); surface deferred (no tiṅanta for adhi-√kṛ, §6).
 - sutra: विभाषा कृञि
@@ -9208,5 +9250,5 @@
       - "?!karmapravacanIya"
     rp: "?kfYi"
   update:
-    olp: [+karmapravacanIya, +kp_para, +kp_saptamI]
+    olp: [+karmapravacanIya, +kp_saptamI]
 

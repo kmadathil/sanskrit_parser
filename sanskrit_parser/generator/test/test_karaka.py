@@ -37,11 +37,21 @@ def _build_word(spec):
         return deepcopy(getattr(_dhatu, spec["verb"]))
     if "word" in spec:
         # Particles (avyaya). A karmapravacanīya particle carries its per-usage
-        # sense tag at input (e.g. semantic_lakzaRa on anu); plain particles
-        # (he, antarA) carry none and pass through bare.
+        # sense tag at input (e.g. semantic_lakzaRa on anu) plus a governance-
+        # DIRECTION tag — kp_pUrva (governs the preceding noun) or kp_para
+        # (governs the following noun) — which is a user choice, NOT derived from
+        # the sense. spec["dir"] is "pUrva"/"para" (default "pUrva" when a sense
+        # is present, mirroring cmd_line/UI). Plain particles (he, antarA) carry
+        # neither and pass through bare.
         p = deepcopy(getattr(_avyaya, spec["word"]))
-        for t in spec.get("sem", []):
+        sems = spec.get("sem", [])
+        for t in sems:
             p.setTag(t)
+        # Direction is meaningful only for a karmapravacanīya usage (sense present);
+        # plain particles ignore it. The user's choice defaults to "pUrva".
+        if sems:
+            direction = spec.get("dir") or "pUrva"
+            p.setTag("kp_pUrva" if direction == "pUrva" else "kp_para")
         return p
     raise ValueError(f"Unknown word spec {spec}")
 
