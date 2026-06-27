@@ -280,9 +280,16 @@ class CustomActionKaraka(Action):
     Builds a deep copy of the predefined pratipadika <stem>, sets vacana_<N>
     (a digit token; default vacana_1) and each semantic primitive as a
     semantic_<prim> tag (used as-is if it already starts with "semantic_").
+    A pUrva/para (or yoga_pUrva/yoga_para) token sets the yoga-word governance
+    DIRECTION tag yoga_pUrva/yoga_para — used when this noun is itself a non-kp
+    yoga-word (anya/itara/a dik-word in 2.3.29, etc.): pūrva = governs the
+    preceding noun, para = the following noun. Harmless on a plain participant.
     Appends to dest="karaka_words" — shared with --word so the sentence word
     order is preserved across the two options. Does NOT touch last_option/pointer.
     """
+    _DIRECTIONS = {"pUrva": "yoga_pUrva", "yoga_pUrva": "yoga_pUrva",
+                   "para": "yoga_para", "yoga_para": "yoga_para"}
+
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         super(CustomActionKaraka, self).__init__(option_strings, dest, nargs, **kwargs)
         logger.debug(f"Initializing CustomActionKaraka {option_strings}, {dest}")
@@ -299,6 +306,8 @@ class CustomActionKaraka(Action):
         for tok in values[1:]:
             if tok.isdigit():
                 vacana = int(tok)
+            elif tok in self._DIRECTIONS:
+                obj.setTag(self._DIRECTIONS[tok])
             elif tok.startswith("semantic_"):
                 sems.append(tok)
             else:
@@ -315,22 +324,25 @@ class CustomActionWord(Action):
     particle like anu_kp), appended as a deep copy. Positional like -k (minus
     vacana): the first token is the object; following tokens are either
 
-      * a governance-DIRECTION token — pUrva / para (or kp_pUrva / kp_para) → sets
-        the kp_pUrva / kp_para tag (which neighbour the karmapravacanīya governs:
-        the preceding noun for pūrva, the following noun for para), or
+      * a governance-DIRECTION token — pUrva / para → which neighbour the word
+        governs: the preceding noun for pūrva, the following noun for para, or
       * a semantic sense tag (bare → semantic_<tok>, or used as-is if already
         semantic_-prefixed) — how a karmapravacanīya particle carries its sense.
 
-    E.g. `-w anu_kp lakzaRa` (anu in the lakṣaṇa sense; direction defaults to
-    pūrva) or `-w anu_kp hIna para` (governs the following noun). The direction is
-    a USER choice, not derived from the sense; if a sense is given and no
-    direction token is supplied it defaults to kp_pUrva. Plain particles with no
-    sense (he, saha) get no direction. For several words give -w repeatedly
+    The direction maps to a kp_pUrva/kp_para tag when the word is a karmapravacanīya
+    usage (a sense was given), else to a yoga_pUrva/yoga_para tag for a non-kp
+    yoga-word particle (dakṣiṇataḥ/dakṣiṇena/pañcakṛtvas/hetoḥ/saha…). E.g.
+    `-w anu_kp lakzaRa` (anu in the lakṣaṇa sense; kp direction defaults to pūrva),
+    `-w anu_kp hIna para` (governs the following noun), or `-w dakziRatas para`
+    (atasartha yoga-word governing the following noun). The direction is a USER
+    choice, not derived from the sense; if a sense is given and no direction token
+    is supplied it defaults to kp_pUrva. Plain particles with no sense and no
+    direction (he) get neither. For several words give -w repeatedly
     (`-w he -w antarA`). Shares dest="karaka_words" with --karaka to preserve
     sentence order.
     """
-    _DIRECTIONS = {"pUrva": "kp_pUrva", "kp_pUrva": "kp_pUrva",
-                   "para": "kp_para", "kp_para": "kp_para"}
+    _DIRECTIONS = {"pUrva": "pUrva", "kp_pUrva": "pUrva", "yoga_pUrva": "pUrva",
+                   "para": "para", "kp_para": "para", "yoga_para": "para"}
 
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         super(CustomActionWord, self).__init__(option_strings, dest, nargs, **kwargs)
@@ -345,23 +357,23 @@ class CustomActionWord(Action):
         name = values[0]
         assert name in globals(), f"{name} is not defined!"
         obj = deepcopy(globals()[name])
-        direction = None
+        raw_dir = None  # "pUrva" / "para"
         has_sense = False
         for tok in values[1:]:
             if tok in self._DIRECTIONS:
-                direction = self._DIRECTIONS[tok]
+                raw_dir = self._DIRECTIONS[tok]
             else:
                 tag = tok if tok.startswith("semantic_") else "semantic_" + tok
                 obj.setTag(tag)
                 has_sense = True
-        # Direction is a user choice. Default to kp_pUrva when a karmapravacanīya
-        # sense was given but no direction token was supplied (the engine itself
-        # does no inference — without a direction tag 2.3.8/9/10/11 do not fire).
-        # Plain particles (no sense) get no direction.
-        if direction is None and has_sense:
-            direction = "kp_pUrva"
-        if direction is not None:
-            obj.setTag(direction)
+        # Direction is a user choice (the engine does no inference). A kp particle
+        # (sense present) gets kp_<dir>, defaulting to pūrva; a non-kp yoga-word
+        # (no sense) with an explicit direction gets yoga_<dir>. Plain particles
+        # (no sense, no direction) get nothing.
+        if has_sense:
+            obj.setTag("kp_" + (raw_dir or "pUrva"))
+        elif raw_dir is not None:
+            obj.setTag("yoga_" + raw_dir)
         getattr(namespace, self.dest).append(obj)
 
 

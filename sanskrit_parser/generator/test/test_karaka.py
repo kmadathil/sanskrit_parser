@@ -26,12 +26,27 @@ from conftest import sutra_list
 from karaka_list import karaka_tests
 
 
+def _yoga_dir_tag(spec):
+    """yoga_pUrva/yoga_para for a non-kp yoga-word's user-chosen governance
+    direction (2.3.4/16/19/26/27/29/30/31/32/34/39/40/43/44/64): pūrva governs
+    the preceding noun, para the following. Returns None when spec has no "dir"."""
+    d = spec.get("dir")
+    if d is None:
+        return None
+    return "yoga_pUrva" if d == "pUrva" else "yoga_para"
+
+
 def _build_word(spec):
     if "stem" in spec:
         p = deepcopy(getattr(_pratipadika, spec["stem"]))
         p.setTag(f"vacana_{spec['vacana']}")
         for t in spec.get("sem", []):
             p.setTag(t)
+        # A nominal yoga-word (anya/itara/a dik-word in 2.3.29, prasita/utsuka in
+        # 2.3.44) carries a user-chosen governance direction; plain nouns omit it.
+        yt = _yoga_dir_tag(spec)
+        if yt is not None:
+            p.setTag(yt)
         return p
     if "verb" in spec:
         return deepcopy(getattr(_dhatu, spec["verb"]))
@@ -41,17 +56,20 @@ def _build_word(spec):
         # DIRECTION tag — kp_pUrva (governs the preceding noun) or kp_para
         # (governs the following noun) — which is a user choice, NOT derived from
         # the sense. spec["dir"] is "pUrva"/"para" (default "pUrva" when a sense
-        # is present, mirroring cmd_line/UI). Plain particles (he, antarA) carry
-        # neither and pass through bare.
+        # is present, mirroring cmd_line/UI). A non-kp yoga-word particle
+        # (dakṣiṇataḥ/dakṣiṇena/pañcakṛtvas/hetoḥ/saha…) has no sense but takes the
+        # same direction via yoga_pUrva/yoga_para. Plain particles (he) carry none.
         p = deepcopy(getattr(_avyaya, spec["word"]))
         sems = spec.get("sem", [])
         for t in sems:
             p.setTag(t)
-        # Direction is meaningful only for a karmapravacanīya usage (sense present);
-        # plain particles ignore it. The user's choice defaults to "pUrva".
         if sems:
             direction = spec.get("dir") or "pUrva"
             p.setTag("kp_pUrva" if direction == "pUrva" else "kp_para")
+        else:
+            yt = _yoga_dir_tag(spec)
+            if yt is not None:
+                p.setTag(yt)
         return p
     raise ValueError(f"Unknown word spec {spec}")
 

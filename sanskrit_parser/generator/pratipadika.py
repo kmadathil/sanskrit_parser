@@ -730,6 +730,16 @@ namas = Pratipadika("namas", "napum")
 anya = Pratipadika("anya", "napum", other_tags=["qatarAdi", "sarvanAma"])
 anyatara = Pratipadika("anyatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
+# dik-śabdas (पूर्व/उत्तर… — pūrvādi sarvanāma, 1.1.34) used as 2.3.29 yoga-words
+# (अन्यारादितरर्ते-दिक्शब्द…): पूर्वो ग्रामात्. Tagged dikSabda so the rule matches the
+# whole dik-word class rather than a single literal.
+pUrva_dik = Pratipadika("pUrva", "pum", other_tags=["dikSabda", "sarvanAma"])
+uttara_dik = Pratipadika("uttara", "pum", other_tags=["dikSabda", "sarvanAma"])
+# prasita / utsuka ("intent on / eager for") — the 2.3.44 yoga-adjectives. The
+# object they govern → tṛtīyā (vibhāṣā, च saptamī). Tagged prasitotsuka so the
+# rule peeks them via llp/rrp; they themselves take their own (prathamā) form.
+prasita = Pratipadika("prasita", "pum", other_tags=["prasitotsuka"])
+utsuka = Pratipadika("utsuka", "pum", other_tags=["prasitotsuka"])
 qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
 vAri = Pratipadika("vAri", "napum", other_tags=["bahvAdi"])  # bahvādi #9 (SK503) → वारिः / वारी

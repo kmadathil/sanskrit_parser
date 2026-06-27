@@ -181,28 +181,36 @@ praBavati    = tinanta_pada("praBavati",    "kartari", ["praBava"])             
 # semantic_Seza and these rules are apavādas to 2.3.50 (śeṣe ṣaṣṭhī) that pin
 # the SAME viBakti_6 with the verb-specific scope the sutras describe.
 #  - jYAvid    : √jñā NOT in the "know" sense (avid-artha), karaṇa     — 2.3.51
-#  - aDIgartha : adhi-i (smṛ-sense) / day / īś, karman                 — 2.3.52
+#  - aDIga / daya / IS : the three verb-groups of अधीगर्थदयेशां — adhi-i
+#                (smṛ-sense), day, īś — the karman → ṣaṣṭhī               — 2.3.52
 #  - kfYpratiyatna : √kṛ in pratiyatna (guṇādhāna), karman            — 2.3.53
 #  - rujArTa   : ruj-sense bhāva-verbs (not jvar), karman              — 2.3.54
 #  - nATASis   : √nāth in āśis (blessing) sense, karman                — 2.3.55
-#  - hiMsArTa  : jāsi/ni-prahaṇa/nāṭa/krātha/piṣ hiṁsā-verbs, karman  — 2.3.56
-#  - vyavahfpaR : vyavahṛ/paṇ in equal (samartha) sense, karman        — 2.3.57
-#  - divtadarTa : √div in gambling / buy-sell sense, karman            — 2.3.58
-#  - prezyabrU : preṣ/brū in devatā-sampradāna with a havis-word       — 2.3.61
+#  - jasAdi + hiMsArTa : the jāsi/ni-prahaṇa/nāṭa/krātha/piṣ roots (jasAdi)
+#                used in the hiṁsā sense (hiMsArTa), karman             — 2.3.56
+#  - vyavahf / paR : √vyavahṛ / √paṇ in the equal (samartha) sense, karman — 2.3.57
+#  - div + paRArTa : √div in the paṇ-artha (gambling / buy-sell) sense, karman — 2.3.58
+#  - prez / brU + devatAsaMpradAna : preṣ / brū in devatā-sampradāna; the
+#                havis-denoting karman (semantic_havis on the noun) → ṣaṣṭhī — 2.3.61
 jAnIte       = tinanta_pada("jAnIte",       "kartari", ["jYAvid"])      # जानीते "knows-of/recognizes" (avid-artha) — 2.3.51 सर्पिषो जानीते
-smarati      = tinanta_pada("smarati",      "kartari", ["aDIgartha"])   # स्मरति "remembers" (adhi-i) — 2.3.52 मातुः स्मरति
+smarati      = tinanta_pada("smarati",      "kartari", ["aDIga"])      # स्मरति "remembers" (adhi-i) — 2.3.52 मातुः स्मरति
+dayate       = tinanta_pada("dayate",       "kartari", ["daya"])       # दयते "has compassion on" (day) — 2.3.52 मातुर्दयते
+ISte         = tinanta_pada("Izwe",         "kartari", ["IS"])         # ईष्टे "owns/rules" (īś) — 2.3.52 गवामीष्टे
 upaskurute   = tinanta_pada("upaskurute",   "kartari", ["kfYpratiyatna"])  # उपस्कुरुते "prepares (guṇādhāna)" — 2.3.53
 rujati       = tinanta_pada("rujati",       "kartari", ["rujArTa"])     # रुजति "pains/breaks" — 2.3.54 चौरस्य रुजति
 nATate       = tinanta_pada("nATate",       "kartari", ["nATASis"])     # नाथते "blesses/asks" (āśis) — 2.3.55 सर्पिषो नाथते
-ujjAsayati   = tinanta_pada("ujjAsayati",   "kartari", ["hiMsArTa"])    # उज्जासयति "destroys" (hiṁsā) — 2.3.56 चौरस्य उज्जासयति
-vyavaharati  = tinanta_pada("vyavaharati",  "kartari", ["vyavahfpaR"])  # व्यवहरति "deals/trades" (samartha) — 2.3.57 शतस्य व्यवहरति
-prezyati     = tinanta_pada("prezyati",     "kartari", ["prezyabrU"])   # प्रेष्य "directs" (devatā-sampradāna) — 2.3.61 छागस्य हविषः प्रेष्य
+ujjAsayati   = tinanta_pada("ujjAsayati",   "kartari", ["jasAdi", "hiMsArTa"])  # उज्जासयति "destroys" (jāsi, hiṁsā) — 2.3.56 चौरस्योज्जासयति
+pinazwi      = tinanta_pada("pinazwi",      "kartari", ["jasAdi", "hiMsArTa"])  # पिनष्टि "crushes/harms" (piṣ, hiṁsā) — 2.3.56
+vyavaharati  = tinanta_pada("vyavaharati",  "kartari", ["vyavahf"])    # व्यवहरति "deals/trades" (samartha) — 2.3.57 शतस्य व्यवहरति
+paRate       = tinanta_pada("paRate",       "kartari", ["paR"])        # पणते "wagers/transacts" (samartha) — 2.3.57 शतस्य पणते
+prezyati     = tinanta_pada("prezyati",     "kartari", ["prez", "devatAsaMpradAna"])  # प्रेष्य "directs" — 2.3.61 छागस्य हविषः प्रेष्य
+brUte        = tinanta_pada("brUte",        "kartari", ["brU", "devatAsaMpradAna"])   # ब्रूते "announces (to the deity)" — 2.3.61 छागस्य हविषो ब्रूते
 
 # √div in gambling sense for SK619/620 — reuses the K3 "div" tag (1.4.43) PLUS
-# the SK619 "divtadarTa" karman-ṣaṣṭhī scope; prati-div is the upasṛṣṭa variant
-# for the SK620 vibhāṣā fork (otherwise the SK619 ṣaṣṭhī falls to 2.3.2 dvitīyā).
-dIvyatiK6     = tinanta_pada("dIvyati",     "kartari", ["div", "divtadarTa"])              # दीव्यति "gambles for" — 2.3.58 शतस्य दीव्यति
-pratidIvyati  = tinanta_pada("pratidIvyati", "kartari", ["div", "divtadarTa", "upasfzwa"])  # प्रतिदीव्यति "gambles against" — 2.3.59 (vibhāṣā)
+# the SK619 "paRArTa" (paṇ-artha) karman-ṣaṣṭhī scope; prati-div is the upasṛṣṭa
+# variant for the SK620 vibhāṣā fork (else the SK619 ṣaṣṭhī falls to 2.3.2 dvitīyā).
+dIvyatiK6     = tinanta_pada("dIvyati",     "kartari", ["div", "paRArTa"])              # दीव्यति "gambles for" — 2.3.58 शतस्य दीव्यति
+pratidIvyati  = tinanta_pada("pratidIvyati", "kartari", ["div", "paRArTa", "upasfzwa"])  # प्रतिदीव्यति "gambles against" — 2.3.59 (vibhāṣā)
 
 # ── Kāraka Phase K7 (karaka_plan.md §K7): adhikaraṇa + saptamī verb tags ──────
 # The adhikaraṇa saṁjñā (1.4.45) reads only the noun's semantic_ADAra, so most

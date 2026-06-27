@@ -187,13 +187,21 @@ api_kp   = Pratipadika("api",   "pum", other_tags=["nipAta"])   # अपि (1.4
 # =word match), exactly like the K2/K3/K4 yoga particles (saha, namas, antarā).
 # Each enters pre-inflected to its SK surface (kṛt/taddhita inflection of these
 # is out of scope); they pass through bare (nipāta → SK447 avyaya → 2.4.82 luk).
-hetoH       = Pratipadika("hetoH",      "pum", other_tags=["nipAta"])  # हेतोः (2.3.26/27 hetu-word, ṣaṣṭhī surface)
-hetunA      = Pratipadika("hetunA",     "pum", other_tags=["nipAta"])  # हेतुना (2.3.27 hetu-word, tṛtīyā surface)
-dakziRatas  = Pratipadika("dakziRatas", "pum", other_tags=["nipAta"])  # दक्षिणतः (2.3.30 atasartha-pratyaya word)
-dakziRena   = Pratipadika("dakziRena",  "pum", other_tags=["nipAta"])  # दक्षिणेन (2.3.31 enap-anta word)
+# Class tags let the K6 rules match by artha/pratyaya rather than a single literal:
+#   hetu        — the hetu-word (2.3.26/27)
+#   atasuCarTa  — an atasartha-pratyaya word (atasuc/tasil… : dakṣiṇataḥ, puras…) (2.3.30)
+#   enap        — an enap-anta word (dakṣiṇena, uttareṇa…) (2.3.31)
+#   kftvasuCarTa — a kṛtvasuc-artha word (pañcakṛtvaḥ, saptakṛtvaḥ…) (2.3.64)
+hetoH       = Pratipadika("hetoH",      "pum", other_tags=["nipAta", "hetu"])  # हेतोः (2.3.26/27 hetu-word, ṣaṣṭhī surface)
+hetunA      = Pratipadika("hetunA",     "pum", other_tags=["nipAta", "hetu"])  # हेतुना (2.3.27 hetu-word, tṛtīyā surface)
+dakziRatas  = Pratipadika("dakziRatas", "pum", other_tags=["nipAta", "atasuCarTa"])  # दक्षिणतः (2.3.30 atasartha-pratyaya word)
+uttaratas   = Pratipadika("uttaratas",  "pum", other_tags=["nipAta", "atasuCarTa"])  # उत्तरतः (2.3.30 atasartha-pratyaya word)
+dakziRena   = Pratipadika("dakziRena",  "pum", other_tags=["nipAta", "enap"])  # दक्षिणेन (2.3.31 enap-anta word)
+uttareRa    = Pratipadika("uttareRa",   "pum", other_tags=["nipAta", "enap"])  # उत्तरेण (2.3.31 enap-anta word)
 dUram       = Pratipadika("dUram",      "pum", other_tags=["nipAta"])  # दूरम् (2.3.34 dūrārtha word)
 nikawam     = Pratipadika("nikawam",    "pum", other_tags=["nipAta"])  # निकटम् (2.3.34 antikārtha word)
-paYcakftvas = Pratipadika("paYcakftvas","pum", other_tags=["nipAta"])  # पञ्चकृत्वः (2.3.64 kṛtvas-artha word)
+paYcakftvas = Pratipadika("paYcakftvas","pum", other_tags=["nipAta", "kftvasuCarTa"])  # पञ्चकृत्वः (2.3.64 kṛtvas-artha word)
+saptakftvas = Pratipadika("saptakftvas","pum", other_tags=["nipAta", "kftvasuCarTa"])  # सप्तकृत्वः (2.3.64 kṛtvas-artha word)
 
 # ── nipāta upasargas ──────────────────────────────────────────────────────────
 AN_upasarga  = Pratyaya("A",   its=["N"], other_tags=["nipAta", "upasarga", "pada"])

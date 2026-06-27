@@ -101,17 +101,21 @@ def process_yaml(y):
                                 else:
                                     _x = isSavarna(sk, k)   # noqa: F405
                                 return _x
-                            if isinstance(_s[k], list):
-                                if _s[k][0] == "and":
-                                    _x = True
-                                    for sk in _s[k][1:]:
-                                        _x = _x and _cond_single(sk, env[k])
-                                else:
-                                    _x = False
-                                    for sk in _s[k]:
-                                        _x = _x or _cond_single(sk, env[k])
-                            else:
-                                _x = _cond_single(_s[k], env[k])
+                            # A condition value is a string leaf check, or a list
+                            # group. A list led by "and"/"or" is that boolean over
+                            # its remaining elements; a bare list is an OR (legacy).
+                            # Elements may themselves be groups → recurse, so e.g.
+                            # [and, [or, =anya, =ArAt], "?yoga_pUrva"] is expressible.
+                            def _eval_group(v, kk):
+                                if isinstance(v, list):
+                                    if v and v[0] == "and":
+                                        return all(_eval_group(e, kk) for e in v[1:])
+                                    elif v and v[0] == "or":
+                                        return any(_eval_group(e, kk) for e in v[1:])
+                                    else:
+                                        return any(_eval_group(e, kk) for e in v)
+                                return _cond_single(v, kk)
+                            _x = _eval_group(_s[k], env[k])
                             results[k] = (_s[k], _x)
                             x = x and _x
                         parts = "  ".join(f"{k}:{v[0]}={'✓' if v[1] else '✗'}" for k, v in results.items())

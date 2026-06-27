@@ -7482,16 +7482,18 @@
   bahiranga: -1
   overrides: ["2.3.46"]
   condition:
+    # yoga_para: particle precedes the noun (noun's llp); yoga_pUrva: particle
+    # follows it (noun's rrp). The user's direction choice fires exactly one arm.
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=antarA, =antareRa]
+      llp: [and, [or, =antarA, =antareRa], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=antarA, =antareRa]
+      rrp: [and, [or, =antarA, =antareRa], "?yoga_pUrva"]
   update:
     olp: [+viBakti_2, +has_viBakti]
 
@@ -7752,12 +7754,12 @@
         - and
         - "?semantic_apraDAna"
         - "?!has_viBakti"
-      llp: [=saha, =sAkam, =sArDam, =samam]
+      llp: [and, [or, =saha, =sAkam, =sArDam, =samam], "?yoga_para"]
     - lp:
         - and
         - "?semantic_apraDAna"
         - "?!has_viBakti"
-      rrp: [=saha, =sAkam, =sArDam, =samam]
+      rrp: [and, [or, =saha, =sAkam, =sArDam, =samam], "?yoga_pUrva"]
   update:
     olp: [+viBakti_3, +has_viBakti]
 
@@ -8039,12 +8041,12 @@
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=namas, =svasti, =svAhA, =svaDA, =alam, =vazaw]
+      llp: [and, [or, =namas, =svasti, =svAhA, =svaDA, =alam, =vazaw], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=namas, =svasti, =svAhA, =svaDA, =alam, =vazaw]
+      rrp: [and, [or, =namas, =svasti, =svAhA, =svaDA, =alam, =vazaw], "?yoga_pUrva"]
   update:
     olp: [+viBakti_4, +has_viBakti]
 
@@ -8248,9 +8250,11 @@
 
 # 595: अन्यारादितरर्तेदिक्शब्दाञ्चूत्तरपदाजाहियुक्ते (2.3.29) — a noun in yoga with
 # anya/ārāt/itara/ṛte/a dik-word → pañcamī. अन्यो रामात्, आराद्वनात्, ऋते कृष्णात्,
-# पूर्वो ग्रामात्. The yoga-word sits adjacent to the governed noun (llp or rrp
-# peek), as in 2.3.16. (ñc-uttarapada/āc/āhi-yukta yoga-words deferred.) Apavāda
-# to 2.3.46.
+# पूर्वो ग्रामात्. The yoga-word sits adjacent to the governed noun (llp/rrp peek)
+# with a user-chosen direction (yoga_para before / yoga_pUrva after). anya/ārāt/
+# itara/ṛte stay literal; the dik-word class is matched by the ?dikSabda tag
+# (पूर्व/उत्तर…), so further dik-words need only the tag. (ñc-uttarapada/āc/āhi-yukta
+# yoga-words deferred.) Apavāda to 2.3.46.
 - sutra: अन्यारादितरर्तेदिक्शब्दाञ्चूत्तरपदाजाहियुक्ते
   id: 2.3.29
   bahiranga: -1
@@ -8260,12 +8264,12 @@
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=anya, =ArAt, =itara, =fte, =pUrva]
+      llp: [and, [or, =anya, =ArAt, =itara, =fte, "?dikSabda"], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=anya, =ArAt, =itara, =fte, =pUrva]
+      rrp: [and, [or, =anya, =ArAt, =itara, =fte, "?dikSabda"], "?yoga_pUrva"]
   update:
     olp: [+viBakti_5, +has_viBakti]
 
@@ -8380,8 +8384,10 @@
 # 601: अकर्तर्यृणे पञ्चमी (2.3.24) — when a debt (ṛṇa) is the non-agent cause →
 # pañcamī. शताद्बद्धः ("bound on account of a [hundred-]debt"). akartari kim →
 # शतेन बन्धितः (the debt as the karaṇa/agent of binding → tṛtīyā, 2.3.18).
-# Apavāda to 2.3.46. The non-agency is modelled by ?!kAraka (no kartṛ/karaṇa
-# saṁjñā taken — the noun is a plain hetu-debt).
+# Apavāda to 2.3.46. akartari is modelled by excluding both the agent
+# (?!semantic_svatantra, the kartṛ-sense of 1.4.54) and the causative agent
+# (?!semantic_prayojaka, the prayojaka kartṛ of 1.4.55): when the ṛṇa-noun is
+# itself the agent it keeps its own kartṛ case and this pañcamī must not apply.
 - sutra: अकर्तर्यृणे पञ्चमी
   id: 2.3.24
   bahiranga: -1
@@ -8391,6 +8397,8 @@
       - and
       - "?semantic_fRa"
       - "?!has_viBakti"
+      - "?!semantic_svatantra"
+      - "?!semantic_prayojaka"
   update:
     olp: [+viBakti_5, +has_viBakti]
 
@@ -8448,12 +8456,12 @@
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=pfTak, =vinA, =nAnA]
+      llp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=pfTak, =vinA, =nAnA]
+      rrp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_pUrva"]
   update:
     olp: [+viBakti_3, +has_viBakti]
 - sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
@@ -8466,12 +8474,12 @@
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=pfTak, =vinA, =nAnA]
+      llp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=pfTak, =vinA, =nAnA]
+      rrp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_pUrva"]
   update:
     olp: [+viBakti_5, +has_viBakti]
 - sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
@@ -8483,12 +8491,12 @@
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      llp: [=pfTak, =vinA, =nAnA]
+      llp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_para"]
     - lp:
         - and
         - "?prAtipadika"
         - "?!has_viBakti"
-      rrp: [=pfTak, =vinA, =nAnA]
+      rrp: [and, [or, =pfTak, =vinA, =nAnA], "?yoga_pUrva"]
   update:
     olp: [+viBakti_2, +has_viBakti]
 
@@ -8576,9 +8584,9 @@
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=hetoH, =hetunA]
+      llp: [and, "?hetu", "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=hetoH, =hetunA]
+      rrp: [and, "?hetu", "?yoga_pUrva"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8593,9 +8601,9 @@
   overrides: ["2.3.26", "2.3.46"]
   condition:
     - lp: [and, "?sarvanAma", "?!has_viBakti", "?!kAraka"]
-      llp: [=hetoH, =hetunA]
+      llp: [and, "?hetu", "?yoga_para"]
     - lp: [and, "?sarvanAma", "?!has_viBakti", "?!kAraka"]
-      rrp: [=hetoH, =hetunA]
+      rrp: [and, "?hetu", "?yoga_pUrva"]
   update:
     olp: [+viBakti_3, +has_viBakti]
 
@@ -8608,9 +8616,9 @@
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=dakziRatas]
+      llp: [and, "?atasuCarTa", "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=dakziRatas]
+      rrp: [and, "?atasuCarTa", "?yoga_pUrva"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8626,9 +8634,9 @@
   overrides: ["2.3.46", "2.3.31.1"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=dakziRena]
+      llp: [and, "?enap", "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=dakziRena]
+      rrp: [and, "?enap", "?yoga_pUrva"]
   update:
     olp: [+viBakti_2, +has_viBakti]
 
@@ -8643,9 +8651,9 @@
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=dakziRena]
+      llp: [and, "?enap", "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=dakziRena]
+      rrp: [and, "?enap", "?yoga_pUrva"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8660,9 +8668,9 @@
   overrides: ["2.3.46", "2.3.34.1"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=dUram, =nikawam]
+      llp: [and, [or, =dUram, =nikawam], "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=dUram, =nikawam]
+      rrp: [and, [or, =dUram, =nikawam], "?yoga_pUrva"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8674,9 +8682,9 @@
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      llp: [=dUram, =nikawam]
+      llp: [and, [or, =dUram, =nikawam], "?yoga_para"]
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
-      rrp: [=dUram, =nikawam]
+      rrp: [and, [or, =dUram, =nikawam], "?yoga_pUrva"]
   update:
     olp: [+viBakti_5, +has_viBakti]
 
@@ -8705,7 +8713,7 @@
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
-    rp: "?aDIgartha"
+    rp: [or, "?aDIga", "?daya", "?IS"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8753,7 +8761,7 @@
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
-    rp: "?hiMsArTa"
+    rp: [and, "?jasAdi", "?hiMsArTa"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8765,7 +8773,7 @@
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
-    rp: "?vyavahfpaR"
+    rp: [or, "?vyavahf", "?paR"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8778,7 +8786,7 @@
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
-    rp: [and, "?divtadarTa", "?!upasfzwa"]
+    rp: [and, "?div", "?paRArTa", "?!upasfzwa"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8794,7 +8802,7 @@
   overrides: ["2.3.2"]
   condition:
     lp: [and, "?kAraka_karma", "?!has_viBakti"]
-    rp: [and, "?divtadarTa", "?upasfzwa"]
+    rp: [and, "?div", "?paRArTa", "?upasfzwa"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8805,8 +8813,8 @@
   bahiranga: -1
   overrides: ["2.3.50"]
   condition:
-    lp: [and, "?semantic_Seza", "?!has_viBakti"]
-    rp: "?prezyabrU"
+    lp: [and, "?semantic_Seza", "?semantic_havis", "?!has_viBakti"]
+    rp: [and, [or, "?prez", "?brU"], "?devatAsaMpradAna"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
@@ -8819,13 +8827,19 @@
   overrides: ["2.3.46", "2.3.50"]
   condition:
     - lp: [and, "?semantic_Seza", "?!has_viBakti"]
-      llp: [=paYcakftvas]
+      llp: [and, "?kftvasuCarTa", "?yoga_para"]
     - lp: [and, "?semantic_Seza", "?!has_viBakti"]
-      rrp: [=paYcakftvas]
+      rrp: [and, "?kftvasuCarTa", "?yoga_pUrva"]
   update:
     olp: [+viBakti_6, +has_viBakti]
 
 # ── kṛd-yoga block (2.3.65–71) ───────────────────────────────────────────────
+# NOTE: unlike the avyaya yoga-words above (2.3.4/16/19/26/27/29/30/32/34/39/40/
+# 43/64), these kṛd/kṛtya peeks are deliberately NOT direction-keyed. The governed
+# noun is selected by its own kāraka-sense tag (semantic_svatantra kartṛ /
+# semantic_Ipsitatama karma / kAraka_kartA), not by bare adjacency, so an
+# unrelated neighbour never matches — and 2.3.65 correctly governs BOTH the kartṛ
+# and the karman of one kṛdanta to ṣaṣṭhī. A pūrva/para choice would be wrong here.
 
 # 623: कर्तृकर्मणोः कृति (2.3.65) — in a kṛd-yoga the kartṛ and karman → ṣaṣṭhī:
 # हरेः कृतिः, ओदनस्य पाचकः. The kāraka noun carries its semantic primitive
@@ -8981,25 +8995,19 @@
 
 # 634: यस्य च भावेन भावलक्षणम् (2.3.37) — sati-saptamī: when one action marks the
 # time of another, the locus action's noun → saptamī. गोषु दुह्यमानासु गतः ("he
-# left while the cows were being milked"). Both members of the absolute pair
-# carry semantic_BAvalakzaRa; the rule fires on a member whose adjacent partner
-# (llp or rrp) is also semantic_BAvalakzaRa, so each partner takes saptamī
-# independently. Apavāda to the 2.3.46 prathamā default.
+# left while the cows were being milked"). The noun (with its participle) carries
+# semantic_BAvalakzaRa and takes saptamī on its own tag — no adjacency requirement
+# (the locus-action need not be physically next to its partner). Apavāda to the
+# 2.3.46 prathamā default.
 - sutra: यस्य च भावेन भावलक्षणम्
   id: 2.3.37
   bahiranga: -1
   overrides: ["2.3.46"]
   condition:
-    - lp:
-        - and
-        - "?semantic_BAvalakzaRa"
-        - "?!has_viBakti"
-      llp: "?semantic_BAvalakzaRa"
-    - lp:
-        - and
-        - "?semantic_BAvalakzaRa"
-        - "?!has_viBakti"
-      rrp: "?semantic_BAvalakzaRa"
+    lp:
+      - and
+      - "?semantic_BAvalakzaRa"
+      - "?!has_viBakti"
   update:
     olp: [+viBakti_7, +has_viBakti]
 
@@ -9035,9 +9043,9 @@
   overrides: ["2.3.50"]
   condition:
     - lp: [and, "?semantic_Seza", "?!has_viBakti"]
-      llp: [=svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta]
+      llp: [and, [or, =svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta], "?yoga_para"]
     - lp: [and, "?semantic_Seza", "?!has_viBakti"]
-      rrp: [=svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta]
+      rrp: [and, [or, =svAmin, =ISvara, =aDipati, =dAyAda, =sAkzin, =pratiBU, =prasUta], "?yoga_pUrva"]
   update:
     olp: [+viBakti_7, +has_viBakti]
 
@@ -9052,9 +9060,9 @@
   overrides: ["2.3.50"]
   condition:
     - lp: [and, "?semantic_Seza", "?semantic_AsevA", "?!has_viBakti"]
-      llp: [=Ayukta, =kuSala]
+      llp: [and, [or, =Ayukta, =kuSala], "?yoga_para"]
     - lp: [and, "?semantic_Seza", "?semantic_AsevA", "?!has_viBakti"]
-      rrp: [=Ayukta, =kuSala]
+      rrp: [and, [or, =Ayukta, =kuSala], "?yoga_pUrva"]
   update:
     olp: [+viBakti_7, +has_viBakti]
 
@@ -9103,27 +9111,30 @@
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?semantic_arcA", "?!has_viBakti"]
-      llp: [=sADu, =nipuRa]
+      llp: [and, [or, =sADu, =nipuRa], "?yoga_para"]
     - lp: [and, "?semantic_arcA", "?!has_viBakti"]
-      rrp: [=sADu, =nipuRa]
+      rrp: [and, [or, =sADu, =nipuRa], "?yoga_pUrva"]
   update:
     olp: [+viBakti_7, +has_viBakti]
 
 # 641: प्रसितोत्सुकाभ्यां तृतीया च (2.3.44) — with prasita / utsuka ("intent on /
 # eager for"), the object → tṛtīyā, and (च) saptamī. प्रसित उत्सुको वा हरिणा हरौ वा.
-# The object is an adhikaraṇa-like locus (semantic_ADAra) → 2.3.36 saptamī
-# default; this optional rule (overrides 2.3.36) forks the tṛtīyā:
-# apply ⇒ viBakti_3 (हरिणा); skip ⇒ 2.3.36 viBakti_7 (हरौ).
+# prasita/utsuka are separate adjective-words (tagged ?prasitotsuka) governing an
+# adjacent object; the object is an adhikaraṇa-like locus (semantic_ADAra →
+# kAraka_aDikaraRa) → 2.3.36 saptamī default. This optional rule (overrides 2.3.36)
+# peeks the prasita/utsuka word via llp/rrp with a user-chosen direction (like the
+# other yoga-words — the "595 caveat") and forks the tṛtīyā: apply ⇒ viBakti_3
+# (हरिणा); skip ⇒ 2.3.36 viBakti_7 (हरौ).
 - sutra: प्रसितोत्सुकाभ्यां तृतीया च
   id: 2.3.44
   bahiranga: -1
   optional: true
   overrides: ["2.3.36"]
   condition:
-    lp:
-      - and
-      - "?semantic_prasitotsuka"
-      - "?!has_viBakti"
+    - lp: [and, "?kAraka_aDikaraRa", "?!has_viBakti"]
+      llp: [and, "?prasitotsuka", "?yoga_para"]
+    - lp: [and, "?kAraka_aDikaraRa", "?!has_viBakti"]
+      rrp: [and, "?prasitotsuka", "?yoga_pUrva"]
   update:
     olp: [+viBakti_3, +has_viBakti]
 

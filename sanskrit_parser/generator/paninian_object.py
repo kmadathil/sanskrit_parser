@@ -30,7 +30,11 @@ def _is_karaka_tag(t):
             or t in ("kAraka", "has_viBakti",
                      "karmapravacanIya", "kp_pUrva", "kp_para",
                      "kp_dvitIyA", "kp_pancamI", "kp_pancamI_pratinidhi",
-                     "kp_saptamI"))
+                     "kp_saptamI",
+                     # non-kp yoga-word governance DIRECTION (2.3.4/16/19/26/27/29/
+                     # 30/31/32/34/39/40/43/44/64): a user choice on which adjacent
+                     # noun the yoga-word governs, shared across all those cases.
+                     "yoga_pUrva", "yoga_para"))
 
 
 class PaninianObject(SanskritObject):

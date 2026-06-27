@@ -614,7 +614,7 @@ karaka_tests = [
         "label": "SK545-antarena-harim",
         "sutras": ["2.3.4"],
         "sentence": [
-            {"word": "antareRa"},
+            {"word": "antareRa", "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -628,7 +628,7 @@ karaka_tests = [
         "label": "SK545-antara-krsnam",
         "sutras": ["2.3.4"],
         "sentence": [
-            {"word": "antarA"},
+            {"word": "antarA", "dir": "para"},
             {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -643,7 +643,7 @@ karaka_tests = [
         "label": "SK545-adjacency-harim-krsnah",
         "sutras": ["2.3.4", "2.3.46"],
         "sentence": [
-            {"word": "antareRa"},
+            {"word": "antareRa", "dir": "para"},
             {"stem": "hari", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
             {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
@@ -938,7 +938,7 @@ karaka_tests = [
         "sutras": ["2.3.19", "2.3.46"],
         "sentence": [
             {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
-            {"word": "saha"},
+            {"word": "saha", "dir": "pUrva"},
             {"stem": "pitf", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -953,7 +953,7 @@ karaka_tests = [
         "label": "SK564-saha-putrena-llp",
         "sutras": ["2.3.19"],
         "sentence": [
-            {"word": "saha"},
+            {"word": "saha", "dir": "para"},
             {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
         ],
         "expect": [
@@ -968,7 +968,7 @@ karaka_tests = [
         "sutras": ["2.3.19"],
         "sentence": [
             {"stem": "putra", "vacana": 1, "sem": ["semantic_apraDAna"]},
-            {"word": "sAkam"},
+            {"word": "sAkam", "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_3"], "forms": ["पुत्रेण"]},
@@ -1175,7 +1175,7 @@ karaka_tests = [
         "label": "SK583-namo-devebhyah",
         "sutras": ["2.3.16", "2.3.46"],
         "sentence": [
-            {"stem": "namas", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "namas", "vacana": 1, "sem": ["semantic_prAtipadikArTa"], "dir": "para"},
             {"stem": "deva", "vacana": 3, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1446,13 +1446,69 @@ karaka_tests = [
         "label": "SK595-anyo-ramat",
         "sutras": ["2.3.29", "2.3.46"],
         "sentence": [
-            {"stem": "anya", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "anya", "vacana": 1, "sem": ["semantic_prAtipadikArTa"], "dir": "para"},
             {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["अन्यत्", "अन्यद्"]},
             {"karaka": None, "vibhakti": ["viBakti_5"],
              "not_fired": ["2.3.46"], "forms": ["रामात्", "रामाद्"]},
+        ],
+    },
+    {
+        # Direction (the headline review case): कृष्ण अन्य(para) राम — anya with
+        # dir=para governs ONLY the following rāma (→ pañcamī रामात्); the preceding
+        # kṛṣṇa is NOT governed and defaults to prathamā (कृष्णः). Pre-fix this gave
+        # both kṛṣṇād AND rāmāt (anya fired on both neighbours).
+        "label": "SK595-krsna-anya-rama-para",
+        "sutras": ["2.3.29", "2.3.46"],
+        "sentence": [
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "anya", "vacana": 1,
+             "sem": ["semantic_prAtipadikArTa"], "dir": "para"},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.29"], "forms": ["कृष्णः"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["अन्यत्", "अन्यद्"]},
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["रामात्", "रामाद्"]},
+        ],
+    },
+    {
+        # Mirror with dir=pUrva: कृष्ण(←anya) — anya governs the PRECEDING kṛṣṇa
+        # (→ कृष्णात्); the following rāma defaults to prathamā.
+        "label": "SK595-krsna-anya-rama-purva",
+        "sutras": ["2.3.29", "2.3.46"],
+        "sentence": [
+            {"stem": "kfzRa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "anya", "vacana": 1,
+             "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
+            {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["कृष्णात्", "कृष्णाद्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["अन्यत्", "अन्यद्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"],
+             "not_fired": ["2.3.29"], "forms": ["रामः"]},
+        ],
+    },
+    {
+        # dik-word class via the ?dikSabda tag (not a literal): पूर्वो ग्रामात् —
+        # pūrva (a dik-śabda) with dir=pUrva governs the preceding grāma → pañcamī.
+        "label": "SK595-grama-purva-diksabda",
+        "sutras": ["2.3.29", "2.3.46"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "pUrva_dik", "vacana": 1,
+             "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_5"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामात्", "ग्रामाद्"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["पूर्वः"]},
         ],
     },
 
@@ -1563,6 +1619,22 @@ karaka_tests = [
              "not_fired": ["2.3.24"], "forms": ["शतेन"]},
         ],
     },
+    {
+        # akartari guard: a debt that IS the agent (semantic_fRa + svatantra kartṛ)
+        # must NOT take the 2.3.24 pañcamī. With no abhihita verb the kartā is
+        # anabhihita → 2.3.18 tṛtīyā (शतेन); the key point is 2.3.24 does not fire.
+        # Confirms the ?!semantic_svatantra guard added to 2.3.24.
+        "label": "SK601-negative-rna-svatantra",
+        "sutras": ["1.4.54", "2.3.18"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1,
+             "sem": ["semantic_fRa", "semantic_svatantra"]},
+        ],
+        "expect": [
+            {"karaka": "kAraka_kartA", "vibhakti": ["viBakti_3"],
+             "not_fired": ["2.3.24"], "forms": ["शतेन"]},
+        ],
+    },
 
     # ── SK602 (2.3.25): vibhāṣā guṇe astriyām → pañcamī / tṛtīyā ──────────────
     {
@@ -1608,7 +1680,7 @@ karaka_tests = [
         "label": "SK603-prthag-ramena-ramat-ramam",
         "sutras": ["2.3.32.2", "2.3.32.1", "2.3.32"],
         "sentence": [
-            {"word": "pfTak"},
+            {"word": "pfTak", "dir": "para"},
             {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1624,7 +1696,7 @@ karaka_tests = [
         "label": "SK603-vina-ramena-ramat-ramam",
         "sutras": ["2.3.32.2", "2.3.32.1", "2.3.32"],
         "sentence": [
-            {"word": "vinA"},
+            {"word": "vinA", "dir": "para"},
             {"stem": "rAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1688,7 +1760,7 @@ karaka_tests = [
         "sutras": ["2.3.26"],
         "sentence": [
             {"stem": "anna", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
-            {"word": "hetoH"},
+            {"word": "hetoH", "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_6"],
@@ -1706,7 +1778,7 @@ karaka_tests = [
         "sutras": ["2.3.27", "2.3.26"],
         "sentence": [
             {"stem": "kim", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
-            {"word": "hetunA"},
+            {"word": "hetunA", "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_3", "viBakti_6"],
@@ -1723,12 +1795,27 @@ karaka_tests = [
         "sutras": ["2.3.30"],
         "sentence": [
             {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
-            {"word": "dakziRatas"},
+            {"word": "dakziRatas", "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_6"],
              "not_fired": ["2.3.46"], "forms": ["ग्रामस्य"]},
             {"forms": ["दक्षिणतस्"]},
+        ],
+    },
+    {
+        # Generality: a SECOND atasartha word (uttaratas) via the ?atasuCarTa tag,
+        # not a literal. ग्रामस्य उत्तरतः → ṣaṣṭhī.
+        "label": "SK609-gramasya-uttaratah",
+        "sutras": ["2.3.30"],
+        "sentence": [
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"word": "uttaratas", "dir": "pUrva"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामस्य"]},
+            {"forms": ["उत्तरतस्"]},
         ],
     },
 
@@ -1739,11 +1826,26 @@ karaka_tests = [
         "label": "SK610-dakshinena-gramam-gramasya",
         "sutras": ["2.3.31", "2.3.31.1"],
         "sentence": [
-            {"word": "dakziRena"},
+            {"word": "dakziRena", "dir": "para"},
             {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
             {"forms": ["दक्षिणेन"]},
+            {"karaka": None, "vibhakti": ["viBakti_2", "viBakti_6"],
+             "not_fired": ["2.3.46"], "forms": ["ग्रामम्", "ग्रामस्य"]},
+        ],
+    },
+    {
+        # Generality: a SECOND enap-anta word (uttareṇa) via the ?enap tag.
+        # उत्तरेण ग्रामं / ग्रामस्य → same dvitīyā/ṣaṣṭhī fork.
+        "label": "SK610-uttarena-gramam-gramasya",
+        "sutras": ["2.3.31", "2.3.31.1"],
+        "sentence": [
+            {"word": "uttareRa", "dir": "para"},
+            {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+        ],
+        "expect": [
+            {"forms": ["उत्तरेण"]},
             {"karaka": None, "vibhakti": ["viBakti_2", "viBakti_6"],
              "not_fired": ["2.3.46"], "forms": ["ग्रामम्", "ग्रामस्य"]},
         ],
@@ -1756,7 +1858,7 @@ karaka_tests = [
         "label": "SK611-duram-gramasya-gramat",
         "sutras": ["2.3.34", "2.3.34.1"],
         "sentence": [
-            {"word": "dUram"},
+            {"word": "dUram", "dir": "para"},
             {"stem": "grAma", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -1796,6 +1898,34 @@ karaka_tests = [
             {"karaka": None, "vibhakti": ["viBakti_6"],
              "not_fired": ["2.3.50"], "forms": ["मातुः"]},
             {"forms": ["स्मरति"]},
+        ],
+    },
+    {
+        # मातुर्दयते — the day-group of 2.3.52 (?daya arm); karman mātṛ → ṣaṣṭhī.
+        "label": "SK613-matuh-dayate",
+        "sutras": ["2.3.52"],
+        "sentence": [
+            {"stem": "mAtf", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "dayate"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["मातुः"]},
+            {"forms": ["दयते"]},
+        ],
+    },
+    {
+        # गवामीष्टे — the īś-group of 2.3.52 (?IS arm); karman go → ṣaṣṭhī.
+        "label": "SK613-gavam-iste",
+        "sutras": ["2.3.52"],
+        "sentence": [
+            {"stem": "go", "vacana": 3, "sem": ["semantic_Seza"]},
+            {"verb": "ISte"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["गवाम्"]},
+            {"forms": ["ईष्टे"]},
         ],
     },
 
@@ -1862,6 +1992,21 @@ karaka_tests = [
             {"forms": ["उज्जासयति"]},
         ],
     },
+    {
+        # चौरस्य पिनष्टि — a second jāsi-class (jasAdi) hiṁsā verb (√piṣ); the
+        # named karman caura → ṣaṣṭhī. Confirms 2.3.56 keys on ?jasAdi, not a literal.
+        "label": "SK617-caurasya-pinasti",
+        "sutras": ["2.3.56"],
+        "sentence": [
+            {"stem": "cOra", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "pinazwi"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["चौरस्य"]},
+            {"forms": ["पिनष्टि"]},
+        ],
+    },
 
     # ── SK618 (2.3.57): vyavahṛ/paṇ samartha karman → śeṣa ṣaṣṭhī ────────────
     {
@@ -1876,6 +2021,20 @@ karaka_tests = [
             {"karaka": None, "vibhakti": ["viBakti_6"],
              "not_fired": ["2.3.50"], "forms": ["शतस्य"]},
             {"forms": ["व्यवहरति"]},
+        ],
+    },
+    {
+        # शतस्य पणते — the √paṇ arm of 2.3.57 (?paR); the named karman śata → ṣaṣṭhī.
+        "label": "SK618-satasya-panate",
+        "sutras": ["2.3.57"],
+        "sentence": [
+            {"stem": "Sata", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"verb": "paRate"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["शतस्य"]},
+            {"forms": ["पणते"]},
         ],
     },
 
@@ -1920,13 +2079,28 @@ karaka_tests = [
         "label": "SK621-chagasya-presyati",
         "sutras": ["2.3.61"],
         "sentence": [
-            {"stem": "CAga", "vacana": 1, "sem": ["semantic_Seza"]},
+            {"stem": "CAga", "vacana": 1, "sem": ["semantic_Seza", "semantic_havis"]},
             {"verb": "prezyati"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_6"],
              "not_fired": ["2.3.50"], "forms": ["छागस्य"]},
             {"forms": ["प्रेष्यति"]},
+        ],
+    },
+    {
+        # छागस्य ब्रूते — same 2.3.61 with √brū (the other listed root); the
+        # havis-karman chāga → ṣaṣṭhī. Exercises the ?brU arm + havis guard.
+        "label": "SK621-chagasya-brute",
+        "sutras": ["2.3.61"],
+        "sentence": [
+            {"stem": "CAga", "vacana": 1, "sem": ["semantic_Seza", "semantic_havis"]},
+            {"verb": "brUte"},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50"], "forms": ["छागस्य"]},
+            {"forms": ["ब्रूते"]},
         ],
     },
 
@@ -1937,11 +2111,26 @@ karaka_tests = [
         "label": "SK622-pancakrtvo-ahnah",
         "sutras": ["2.3.64"],
         "sentence": [
-            {"word": "paYcakftvas"},
+            {"word": "paYcakftvas", "dir": "para"},
             {"stem": "ahan", "vacana": 1, "sem": ["semantic_Seza"]},
         ],
         "expect": [
             {"forms": ["पञ्चकृत्वस्"]},
+            {"karaka": None, "vibhakti": ["viBakti_6"],
+             "not_fired": ["2.3.50", "2.3.46"], "forms": ["अह्नः"]},
+        ],
+    },
+    {
+        # Generality: a SECOND kṛtvas-artha word (saptakṛtvas) via the ?kftvasuCarTa
+        # tag. सप्तकृत्वोऽह्नः → ṣaṣṭhī.
+        "label": "SK622-saptakrtvo-ahnah",
+        "sutras": ["2.3.64"],
+        "sentence": [
+            {"word": "saptakftvas", "dir": "para"},
+            {"stem": "ahan", "vacana": 1, "sem": ["semantic_Seza"]},
+        ],
+        "expect": [
+            {"forms": ["सप्तकृत्वस्"]},
             {"karaka": None, "vibhakti": ["viBakti_6"],
              "not_fired": ["2.3.50", "2.3.46"], "forms": ["अह्नः"]},
         ],
@@ -2184,7 +2373,7 @@ karaka_tests = [
         "sutras": ["2.3.39", "2.3.50"],
         "sentence": [
             {"stem": "go", "vacana": 3, "sem": ["semantic_Seza"]},
-            {"stem": "svAmin", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "svAmin", "vacana": 1, "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
@@ -2204,7 +2393,7 @@ karaka_tests = [
         "sentence": [
             {"stem": "pUjana", "vacana": 1,
              "sem": ["semantic_Seza", "semantic_AsevA"]},
-            {"stem": "kuSala", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "kuSala", "vacana": 1, "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_7", "viBakti_6"],
@@ -2260,7 +2449,7 @@ karaka_tests = [
         "sutras": ["2.3.43"],
         "sentence": [
             {"stem": "mAtf", "vacana": 1, "sem": ["semantic_arcA"]},
-            {"stem": "sADu", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
+            {"stem": "sADu", "vacana": 1, "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": None, "vibhakti": ["viBakti_7"],
@@ -2271,20 +2460,37 @@ karaka_tests = [
 
     # ── SK641 (2.3.44): प्रसितोत्सुकाभ्यां तृतीया च — vibhāṣā 3/7 ─────────────────
     {
-        # प्रसित उत्सुको वा हरिणा हरौ वा — "intent on / eager for Hari". The object
-        # (hari) is semantic_ADAra (adhikaraṇa-like) → 2.3.36 saptamī default;
-        # 2.3.44 forks the tṛtīyā. apply ⇒ हरिणा (3); skip ⇒ हरौ (7).
+        # हरिणा प्रसितः — "intent on Hari". The object hari is semantic_ADAra
+        # (→ kAraka_aDikaraRa → 2.3.36 saptamī default); the adjacent prasita word
+        # (yoga_pUrva, governing the preceding hari) forks the 2.3.44 tṛtīyā.
+        # apply ⇒ हरिणा (3); skip ⇒ हरौ (7). prasita itself → prathamā (प्रसितः).
         "label": "SK641-harina-harau-prasita",
         "sutras": ["2.3.44", "2.3.36"],
         "sentence": [
-            {"stem": "hari", "vacana": 1,
-             "sem": ["semantic_ADAra", "semantic_prasitotsuka"]},
-            {"verb": "biBeti"},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_ADAra"]},
+            {"stem": "prasita", "vacana": 1,
+             "sem": ["semantic_prAtipadikArTa"], "dir": "pUrva"},
         ],
         "expect": [
             {"karaka": "kAraka_aDikaraRa",
              "vibhakti": ["viBakti_3", "viBakti_7"], "forms": ["हरिणा", "हरौ"]},
-            {"forms": ["बिभेति"]},
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["प्रसितः"]},
+        ],
+    },
+    {
+        # उत्सुको हरिणा हरौ वा — utsuka FIRST (yoga_para, governs the following
+        # hari); same 3/7 fork. Exercises the other root and the para direction.
+        "label": "SK641-utsuko-harina-harau",
+        "sutras": ["2.3.44", "2.3.36"],
+        "sentence": [
+            {"stem": "utsuka", "vacana": 1,
+             "sem": ["semantic_prAtipadikArTa"], "dir": "para"},
+            {"stem": "hari", "vacana": 1, "sem": ["semantic_ADAra"]},
+        ],
+        "expect": [
+            {"karaka": None, "vibhakti": ["viBakti_1"], "forms": ["उत्सुकः"]},
+            {"karaka": "kAraka_aDikaraRa",
+             "vibhakti": ["viBakti_3", "viBakti_7"], "forms": ["हरिणा", "हरौ"]},
         ],
     },
 

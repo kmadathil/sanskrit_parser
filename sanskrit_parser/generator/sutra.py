@@ -146,24 +146,37 @@ class LRSutra(Sutra):
             detail.append({"var": var_name, "check": sk, "result": r})
             return r
 
+        # Mirror process_yaml._exec_cond: a value is a string leaf check or a list
+        # group ("and"/"or"-led, or a bare list = OR); elements may be nested groups.
+        def _eval_group(v, var_name):
+            if isinstance(v, list):
+                if v and v[0] == "and":
+                    res = True
+                    for e in v[1:]:
+                        res = res and _eval_group(e, var_name)
+                        if not res:
+                            break
+                    return res
+                elif v and v[0] == "or":
+                    res = False
+                    for e in v[1:]:
+                        res = res or _eval_group(e, var_name)
+                        if res:
+                            break
+                    return res
+                else:
+                    res = False
+                    for e in v:
+                        res = res or _eval_group(e, var_name)
+                        if res:
+                            break
+                    return res
+            return _single(v, var_name)
+
         def _eval_one(_s):
             x = True
             for kv in _s:
-                if isinstance(_s[kv], list):
-                    if _s[kv][0] == "and":
-                        _x = True
-                        for sk in _s[kv][1:]:
-                            _x = _x and _single(sk, kv)
-                            if not _x:
-                                break
-                    else:
-                        _x = False
-                        for sk in _s[kv]:
-                            _x = _x or _single(sk, kv)
-                            if _x:
-                                break
-                else:
-                    _x = _single(_s[kv], kv)
+                _x = _eval_group(_s[kv], kv)
                 x = x and _x
             return x
 
