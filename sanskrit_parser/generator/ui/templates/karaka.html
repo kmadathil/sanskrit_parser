@@ -163,7 +163,7 @@ let _uid = 0;
 
 function addEl(kind, preset) {
   const e = { id: ++_uid, kind };
-  if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); }
+  if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); e.dir = ''; }
   if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); e.dir = 'pUrva'; }
   if (kind === 'verb')     { e.verb = (INV.verbs[0]||{}).name; }
   if (preset) Object.assign(e, preset);
@@ -210,13 +210,22 @@ function render() {
             <label class="sem-opt"><input type="checkbox" ${e.sem.has(t.tag)?'checked':''}
               onchange="toggleSem(${e.id},'sem','${t.tag}',this.checked)">
               <span><b>${t.tag.replace('semantic_','')}</b> — ${t.label.split(' — ').slice(1).join(' — ')||t.label}</span></label>`).join('')}
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label class="muted" style="font-size:.78rem;white-space:nowrap;">yoga-word governs</label>
+          <select style="flex:1;" onchange="setF(${e.id},'dir',this.value)">
+            <option value=""      ${e.dir?'':'selected'}>— (not a yoga-word)</option>
+            <option value="pUrva" ${e.dir==='pUrva'?'selected':''}>preceding (pūrva)</option>
+            <option value="para"  ${e.dir==='para'?'selected':''}>following (para)</option>
+          </select>
         </div>`;
     } else if (e.kind === 'particle') {
       body = `
         <select onchange="setF(${e.id},'word',this.value)">${opts(INV.particles, e.word, true)}</select>
-        <div class="row2" style="margin-top:6px;align-items:center;">
-          <label class="muted" style="font-size:.78rem;">governs the</label>
-          <select onchange="setF(${e.id},'dir',this.value)">
+        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+          <label class="muted" style="font-size:.78rem;white-space:nowrap;">governs the</label>
+          <select style="flex:1;" onchange="setF(${e.id},'dir',this.value)">
+            <option value=""      ${e.dir?'':'selected'}>— (no governance)</option>
             <option value="pUrva" ${e.dir==='pUrva'?'selected':''}>preceding noun (pūrva)</option>
             <option value="para"  ${e.dir==='para'?'selected':''}>following noun (para)</option>
           </select>
@@ -259,8 +268,16 @@ function toggleSem(id, f, tag, on) {
 // ── derive ───────────────────────────────────────────────────────────────
 function toSpec() {
   return elements.map(e => {
-    if (e.kind === 'noun')     return { stem: e.stem, vacana: e.vacana, sem: [...e.sem] };
-    if (e.kind === 'particle') return { word: e.word, sem: [...e.psem], dir: e.dir };
+    if (e.kind === 'noun') {
+      const s = { stem: e.stem, vacana: e.vacana, sem: [...e.sem] };
+      if (e.dir) s.dir = e.dir;          // only a nominal yoga-word carries a direction
+      return s;
+    }
+    if (e.kind === 'particle') {
+      const s = { word: e.word, sem: [...e.psem] };
+      if (e.dir) s.dir = e.dir;          // omit for a plain particle with no governance
+      return s;
+    }
     return { verb: e.verb };
   });
 }
@@ -346,6 +363,16 @@ const EXAMPLES = [
     els: [ {kind:'noun', stem:'kfzRa', vacana:1, sem:[]},
            {kind:'particle', word:'anu_kp', psem:['semantic_lakzaRa'], dir:'para'},
            {kind:'noun', stem:'rAma', vacana:1, sem:[]} ] },
+  { dev: 'पुत्रेण सह पिता', note: 'SK564 — saha (yoga-word, pūrva) → apradhāna tṛtīyā',
+    els: [ {kind:'noun', stem:'putra', vacana:1, sem:['semantic_apraDAna']},
+           {kind:'particle', word:'saha', dir:'pUrva'},
+           {kind:'noun', stem:'pitf', vacana:1, sem:['semantic_prAtipadikArTa']} ] },
+  { dev: 'नमो देवेभ्यः', note: 'SK583 — namas (nominal yoga-word, para) → caturthī',
+    els: [ {kind:'noun', stem:'namas', vacana:1, sem:['semantic_prAtipadikArTa'], dir:'para'},
+           {kind:'noun', stem:'deva', vacana:3, sem:['semantic_prAtipadikArTa']} ] },
+  { dev: 'अन्यो रामात्', note: 'SK595 — anya (nominal yoga-word, para) → pañcamī (sandhi branches)',
+    els: [ {kind:'noun', stem:'anya', vacana:1, sem:['semantic_prAtipadikArTa'], dir:'para'},
+           {kind:'noun', stem:'rAma', vacana:1, sem:['semantic_prAtipadikArTa']} ] },
 ];
 function loadExample(ix) {
   clearEls();

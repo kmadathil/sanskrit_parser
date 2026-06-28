@@ -299,8 +299,18 @@ green with no measurable slowdown (the pre-pass skip-guard is what protects this
 > (stems/verbs/particles/semantic primitives) are derived from `test/karaka_list.py`
 > so they stay in sync with the rule set. The per-case status in the gallery mirrors
 > `test_karaka.py` (saṁjñā + vibhakti + fired-trace). The cases endpoint is cached
-> per-encoding (144 engine runs ≈ 2.5 min on first hit, instant after). No engine
+> per-encoding (one engine run per case ≈ 2–3 min on first hit, instant after). No engine
 > changes. Run: `PYTHONPATH=. python sanskrit_parser/generator/ui/app.py` → port 5001.
+>
+> **Update — directional yoga-words (post kāraka-review round, 157 cases):** every
+> yoga-word now carries a user-chosen **governance direction** (pūrva = follows its
+> noun / governs the preceding; para = precedes / governs the following). `_build_word`
+> in `ui/app.py` is a 1:1 mirror of `test_karaka.py`: a karmapravacanīya particle (sense
+> present) → `kp_pUrva/kp_para` (default pūrva); a sense-less yoga-word particle
+> (saha/dakṣiṇataḥ/hetoḥ…) or a nominal yoga-word stem (anya/namas/svāmin/dik/prasita/
+> utsuka…) → `yoga_pUrva/yoga_para` (only when a direction is given). The composer
+> exposes the direction on **both** particle cards (none/pūrva/para) and noun cards
+> ("yoga-word governs", default off); `toSpec` sends `dir` only when set.
 
 
 The existing Flask UI (`generator/ui/app.py`, port 5001) is table-oriented: pick a stem,

@@ -1148,19 +1148,31 @@ def _aps_key(aps):
         return (9999,)
 
 
+def _yoga_dir_tag(spec):
+    """yoga_pUrva/yoga_para for a non-kp yoga-word's user-chosen governance
+    direction: pūrva governs the preceding noun (the word is the noun's rrp),
+    para the following (the word is the noun's llp). Returns None when the spec
+    carries no "dir". Mirrors test_karaka.py:_yoga_dir_tag."""
+    d = spec.get("dir")
+    if d is None:
+        return None
+    return "yoga_pUrva" if d == "pUrva" else "yoga_para"
+
+
 def _build_word(spec):
     """Turn one sentence-element spec into a tagged PaninianObject.
 
-    Mirrors generator/test/test_karaka.py:_build_word. Three shapes:
-      {"stem", "vacana", "sem":[...]}  → pratipadika + vacana_N + semantic_* tags
+    1:1 mirror of generator/test/test_karaka.py:_build_word. Three shapes:
+      {"stem", "vacana", "sem":[...], "dir":...} → pratipadika + vacana_N +
+          semantic_* tags; an optional governance direction when the noun is
+          itself a nominal yoga-word (anya/namas/svāmin/dik/prasita/utsuka…)
+          → yoga_pUrva/yoga_para.
       {"verb"}                         → pre-formed tiṅanta pada (carries prayoga)
       {"word", "sem":[...], "dir":...} → avyaya particle + optional sense tags +
-                                         optional governance direction ("pUrva"/
-                                         "para"). The direction (which neighbour a
-                                         karmapravacanīya governs) is a user choice,
-                                         not sense-derived; it maps to kp_pUrva/
-                                         kp_para and defaults to "pUrva" when a
-                                         sense is present (matching cmd_line/test).
+          optional governance direction. A karmapravacanīya (sense present) maps
+          the direction to kp_pUrva/kp_para (default "pUrva"); a sense-less
+          yoga-word particle (saha/dakṣiṇataḥ/hetoḥ…) maps it to yoga_pUrva/
+          yoga_para; a plain particle (he) with no sense and no dir gets neither.
     """
     if "stem" in spec:
         obj = getattr(_pp_module, spec["stem"], None)
@@ -1170,6 +1182,9 @@ def _build_word(spec):
         p.setTag(f"vacana_{int(spec.get('vacana', 1))}")
         for t in spec.get("sem", []):
             p.setTag(t)
+        yt = _yoga_dir_tag(spec)
+        if yt is not None:
+            p.setTag(yt)
         return p
     if "verb" in spec:
         obj = getattr(_dhatu_module, spec["verb"], None)
@@ -1184,12 +1199,15 @@ def _build_word(spec):
         sems = spec.get("sem", [])
         for t in sems:
             p.setTag(t)
-        # Direction is meaningful only for a karmapravacanīya usage (a particle
-        # carrying a sense). Plain particles ignore it; for a karmapravacanīya the
-        # user's choice defaults to "pUrva".
         if sems:
+            # karmapravacanīya: direction is a user choice, default "pUrva".
             direction = spec.get("dir") or "pUrva"
             p.setTag("kp_pUrva" if direction == "pUrva" else "kp_para")
+        else:
+            # sense-less yoga-word particle: yoga_* only when a dir is given.
+            yt = _yoga_dir_tag(spec)
+            if yt is not None:
+                p.setTag(yt)
         return p
     raise ValueError(f"Unknown word spec {spec!r}")
 
@@ -1288,7 +1306,7 @@ _KARAKA_CASES_CACHE = {}
 def _run_karaka_cases(enc):
     """Run every karaka_list.py case through the engine and tag each with a
     pass/fail status (saṁjñā + vibhakti + fired-trace, mirroring test_karaka.py).
-    Cached per-encoding after first build (144 engine runs)."""
+    Cached per-encoding after first build (one engine run per case)."""
     if enc in _KARAKA_CASES_CACHE:
         return _KARAKA_CASES_CACHE[enc]
 
