@@ -104,6 +104,15 @@
     .trace-row .sk { color: #999; font-size: .78rem; min-width: 52px; }
     .trace-row .txt { font-size: 1.02rem; }
     .spin { color: #c17f24; margin-top: 36px; text-align: center; font-size: 1rem; }
+
+    .sem-search { width: 100%; padding: 5px 8px; margin-bottom: 5px; border: 1px solid #d8cdb6;
+                  border-radius: 5px; font-size: .82rem; background: #fffdf8; position: sticky; top: 0; }
+    .detail { font-size: .76rem; color: #555; padding: 3px 0 1px 70px; line-height: 1.5; }
+    .tg { display: inline-block; background: #eef1e6; color: #4a6a1c; border-radius: 4px;
+          padding: 0 5px; font-size: .72rem; margin: 1px 1px; font-family: 'SF Mono', Menlo, monospace; }
+    .cand { display: inline-block; background: #f0ece0; color: #777; border-radius: 4px;
+            padding: 0 5px; font-size: .72rem; margin: 1px 2px; }
+    .cand.win { background: #c17f24; color: #fff; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -136,6 +145,13 @@
         <button class="btn btn-add" onclick="addEl('verb')">+ Verb</button>
         <button class="btn btn-ghost" onclick="clearEls()">clear</button>
       </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <label class="sem-opt" style="font-size:.82rem;"><input type="checkbox" id="opt-tags">
+        <span>show object tags at each sūtra</span></label>
+      <label class="sem-opt" style="font-size:.82rem;"><input type="checkbox" id="opt-eval">
+        <span>show evaluation at each sūtra</span></label>
     </div>
 
     <button class="btn btn-primary" style="width:100%;" onclick="derive()">Derive →</button>
@@ -206,6 +222,7 @@ function render() {
         <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
           semantic primitives (${e.sem.size} selected) ▾</div>
         <div class="sem-box ${e.sem.size?'':'collapsed'}">
+          <input class="sem-search" placeholder="filter primitives…" oninput="filterSem(this)">
           ${INV.sem_tags.map(t => `
             <label class="sem-opt"><input type="checkbox" ${e.sem.has(t.tag)?'checked':''}
               onchange="toggleSem(${e.id},'sem','${t.tag}',this.checked)">
@@ -233,6 +250,7 @@ function render() {
         <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
           karmapravacanīya sense (${e.psem.size} selected) ▾</div>
         <div class="sem-box ${e.psem.size?'':'collapsed'}">
+          <input class="sem-search" placeholder="filter senses…" oninput="filterSem(this)">
           ${INV.psem_tags.map(t => `
             <label class="sem-opt"><input type="checkbox" ${e.psem.has(t.tag)?'checked':''}
               onchange="toggleSem(${e.id},'psem','${t.tag}',this.checked)">
@@ -282,16 +300,26 @@ function toSpec() {
   });
 }
 
+// Focus-safe filter of a sem-box's options (no re-render → input keeps focus).
+function filterSem(input) {
+  const q = input.value.toLowerCase();
+  input.closest('.sem-box').querySelectorAll('.sem-opt').forEach(o => {
+    o.style.display = o.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
 async function derive() {
   const sentence = toSpec();
   if (!sentence.length) return;
-  const enc = document.getElementById('encoding').value;
+  const enc  = document.getElementById('encoding').value;
+  const tags = document.getElementById('opt-tags').checked;
+  const ev   = document.getElementById('opt-eval').checked;
   const res = document.getElementById('results');
   res.innerHTML = '<div class="spin">Deriving…</div>';
   try {
     const r = await fetch('/api/karaka', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ sentence, encoding: enc }) });
+      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev }) });
     const data = await r.json();
     if (!r.ok || data.error) { res.innerHTML = `<div class="err">${data.error||'Error'}</div>`; return; }
     renderResult(data);
@@ -329,13 +357,54 @@ function renderResult(d) {
     </details>` :
     '<div class="muted" style="margin-top:10px;">No kāraka rules fired (no semantic tags → skip-guard).</div>';
 
+  // Phonological / other sūtras fired in the word derivations (sup-insertion,
+  // sandhi …) — separate from the sentence-level kāraka rules above.
+  const phon = (d.phon && d.phon.length) ? `
+    <details class="trace" style="margin-top:14px;">
+      <summary>Other sūtras fired — phonology & sup (${d.phon.length})</summary>
+      ${d.phon.map(s => phonRow(s)).join('')}
+    </details>` : '';
+
   document.getElementById('results').innerHTML = `
     <div class="branches">${branchHtml}</div>
     <table class="words">
       <thead><tr><th>Word</th><th>Kāraka</th><th>Vibhakti</th><th>Form(s)</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    ${trace}`;
+    ${trace}
+    ${phon}`;
+}
+
+function tagList(arr) {
+  if (arr === null || arr === undefined) return '<span class="muted">·</span>';
+  if (!arr.length) return '<span class="muted">none</span>';
+  return arr.map(t => `<span class="tg">${t}</span>`).join(' ');
+}
+
+function phonRow(s) {
+  const change = s.changed
+    ? `${s.from} <span style="color:#c17f24;">→</span> ${s.to}`
+    : `<span class="muted">${s.from} (no change)</span>`;
+  let detail = '';
+  if (s.tags) {
+    detail += `<div class="detail">
+      <div><b>in</b> &nbsp;${tagList(s.tags.in_l)} &nbsp;│&nbsp; ${tagList(s.tags.in_r)}</div>
+      <div><b>out</b> ${tagList(s.tags.out_l)} &nbsp;│&nbsp; ${tagList(s.tags.out_r)}</div>
+    </div>`;
+  }
+  if (s.eval) {
+    const cand = s.eval.candidates.map(c =>
+      `<span class="cand ${c.aps===s.aps?'win':''}">${c.aps} ${c.dev}${c.disabled_by?' ✗('+c.disabled_by+')':''}</span>`).join(' ');
+    detail += `<div class="detail"><b>eval</b> ${s.eval.n_evaluated} checked · matched: ${cand || '<span class="muted">none</span>'}</div>`;
+  }
+  return `<div class="trace-row" style="flex-direction:column;align-items:stretch;gap:3px;">
+      <div style="display:flex;gap:12px;align-items:baseline;">
+        <span class="aps">${s.aps}${s.opt?' *':''}</span>
+        <span class="txt" style="flex:1;">${s.name}</span>
+        <span style="font-size:1rem;">${change}</span>
+      </div>
+      ${detail}
+    </div>`;
 }
 
 // ── presets ──────────────────────────────────────────────────────────────
@@ -382,8 +451,29 @@ document.getElementById('examples').innerHTML = EXAMPLES.map((e, i) =>
   `<button class="ex-btn" onclick="loadExample(${i})">
      <span class="dev">${e.dev}</span><br><small>${e.note}</small></button>`).join('');
 
-// start with the canonical example loaded
-loadExample(0);
+// Convert a karaka_list sentence spec into the composer's element presets.
+function specToPreset(w) {
+  if ('verb' in w) return { kind: 'verb', verb: w.verb };
+  if ('word' in w) return { kind: 'particle', word: w.word, psem: w.sem || [], dir: w.dir || '' };
+  return { kind: 'noun', stem: w.stem, vacana: w.vacana || 1, sem: w.sem || [], dir: w.dir || '' };
+}
+
+// A gallery click stashes a sentence spec here; load + derive it on arrival.
+function loadFromStorage() {
+  let raw;
+  try { raw = sessionStorage.getItem('karaka_compose'); } catch (e) { return false; }
+  if (!raw) return false;
+  sessionStorage.removeItem('karaka_compose');
+  let spec; try { spec = JSON.parse(raw); } catch (e) { return false; }
+  if (!Array.isArray(spec) || !spec.length) return false;
+  clearEls();
+  spec.forEach(w => addEl(specToPreset(w).kind, specToPreset(w)));
+  derive();
+  return true;
+}
+
+// Prefill from a gallery click if present, else load the canonical example.
+if (!loadFromStorage()) loadExample(0);
 </script>
 </body>
 </html>

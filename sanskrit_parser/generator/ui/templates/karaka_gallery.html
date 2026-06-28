@@ -32,7 +32,11 @@
 
     .case { background: #fff; border-radius: 9px; padding: 12px 16px; margin-bottom: 9px;
             box-shadow: 0 1px 3px rgba(0,0,0,.05); border-left: 4px solid #ccc;
-            display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+            display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+            cursor: pointer; transition: box-shadow .12s, transform .12s; }
+    .case:hover { box-shadow: 0 2px 10px rgba(0,0,0,.12); transform: translateX(2px); }
+    .open-hint { margin-left: auto; font-size: .72rem; color: #c17f24; opacity: 0; white-space: nowrap; }
+    .case:hover .open-hint { opacity: .9; }
     .case.pass  { border-left-color: #5aa02a; }
     .case.fail  { border-left-color: #c0392b; }
     .case.error { border-left-color: #d68a1a; }
@@ -84,7 +88,7 @@ let CASES = [], FILTER = 'all';
 function vibClass(t) { const n = +(''+t).slice(8); return (n>=1&&n<=8) ? 'v'+n : 'vx'; }
 function vibAbbr(t)  { const n = +(''+t).slice(8); return VIB_NAMES[n-1] || ''; }
 
-function caseHtml(c) {
+function caseHtml(c, i) {
   const words = (c.words||[]).map(w => {
     const vib = (w.vibhakti && w.vibhakti.length) ? w.vibhakti : null;
     const vibTag = vib
@@ -96,12 +100,22 @@ function caseHtml(c) {
   const alt = (c.branches && c.branches.length > 1)
     ? `<span class="alt">+${c.branches.length-1} branch${c.branches.length>2?'es':''}</span>` : '';
   const reason = c.reason ? `<div class="reason">${c.reason}</div>` : '';
-  return `<div class="case ${c.status}" data-status="${c.status}">
+  return `<div class="case ${c.status}" data-status="${c.status}" onclick="openCase(${i})"
+       title="Open in the Vākya Composer">
     <span class="badge ${c.status}">${c.status}</span>
     <span class="sentence">${words || '<span class="alt">'+(c.branches||[]).join(' | ')+'</span>'} ${alt}</span>
     <span class="label">${c.label}</span>
+    <span class="open-hint">open in composer →</span>
     ${reason}
   </div>`;
+}
+
+// Stash the case's raw sentence spec and jump to the composer, which loads it.
+function openCase(i) {
+  const c = CASES[i];
+  if (!c || !c.sentence) return;
+  try { sessionStorage.setItem('karaka_compose', JSON.stringify(c.sentence)); } catch (e) {}
+  location.href = '/karaka';
 }
 
 function applyFilter() {
@@ -132,7 +146,7 @@ async function load() {
           <button data-f="error" onclick="setFilter('error')">Error</button>
         </div>
       </div>
-      <div id="list">${CASES.map(caseHtml).join('')}</div>`;
+      <div id="list">${CASES.map((c, i) => caseHtml(c, i)).join('')}</div>`;
   } catch (e) {
     document.getElementById('content').innerHTML = `<div class="spin">Error: ${e}</div>`;
   }

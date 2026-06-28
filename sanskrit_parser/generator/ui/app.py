@@ -1212,11 +1212,84 @@ def _build_word(spec):
     raise ValueError(f"Unknown word spec {spec!r}")
 
 
-def run_karaka(sentence, enc):
-    """Build the tagged vākya, run the engine, and read back per-word kāraka/
-    vibhakti, the vibhāṣā branch sentences, and the fired-sutra trace.
+def _obj_enc(obj, enc):
+    """Window object → target-encoding string (skip None/list/markers)."""
+    if obj is None or isinstance(obj, list):
+        return ""
+    slp1 = obj.transcoded(sanscript.SLP1) if hasattr(obj, "transcoded") else str(obj)
+    if not slp1.strip("."):
+        return ""
+    return sanscript.transliterate(slp1, sanscript.SLP1, enc)
 
-    Returns a dict: {words, branches, fired}. Raises on a bad spec.
+
+def _node_window_tags(node):
+    """In/out window object tags for one PrakriyaNode (for the tag display)."""
+    ix = node.index
+
+    def tg(seq, k):
+        obj = seq[k] if 0 <= k < len(seq) else None
+        if obj is None or isinstance(obj, list):
+            return None
+        return sorted(obj.tags) if getattr(obj, "tags", None) else []
+
+    return {"in_l": tg(node.inputs, ix), "in_r": tg(node.inputs, ix + 1),
+            "out_l": tg(node.outputs, ix), "out_r": tg(node.outputs, ix + 1)}
+
+
+def _eval_summary(eval_log):
+    """Compact view of a node's eval_log: which sutras matched at this window.
+    Mirrors the data the declension explorer captures (condition_pass / disabled
+    / priority). Returns {candidates:[{aps,dev,fired,disabled_by}], n_evaluated}."""
+    if not eval_log:
+        return None
+    cands = []
+    for rec in eval_log.get("sutras", []):
+        if rec.get("condition_pass"):
+            cands.append({"aps": rec["aps"], "dev": rec.get("dev", ""),
+                          "disabled_by": rec.get("disabled_by")})
+    return {"candidates": cands, "n_evaluated": len(eval_log.get("sutras", []))}
+
+
+def _collect_phon_steps(tree, enc, want_tags, want_eval):
+    """DFS-walk a PrakriyaTree collecting the (phonological/main-scan) sutra
+    firings — everything the kāraka pre-pass does NOT cover. Deduplicates
+    identical (aps, before, after) steps so vibhāṣā branches don't repeat the
+    shared phonology. Returns an ordered list of step dicts."""
+    steps, seen = [], set()
+
+    def visit(n):
+        s = getattr(n, "sutra", None)
+        if s is not None and not isinstance(s, str) and getattr(s, "aps", None) not in (None, "0.0.0"):
+            ix = n.index
+            f = " | ".join(x for x in (_obj_enc(n.inputs[ix] if ix < len(n.inputs) else None, enc),
+                                       _obj_enc(n.inputs[ix + 1] if ix + 1 < len(n.inputs) else None, enc)) if x)
+            t = " | ".join(x for x in (_obj_enc(n.outputs[ix] if ix < len(n.outputs) else None, enc),
+                                       _obj_enc(n.outputs[ix + 1] if ix + 1 < len(n.outputs) else None, enc)) if x)
+            key = (s.aps, f, t)
+            if key not in seen:
+                seen.add(key)
+                step = {"aps": s.aps, "name": s.name.devanagari(),
+                        "opt": bool(getattr(s, "optional", False)),
+                        "from": f, "to": t, "changed": f != t}
+                if want_tags:
+                    step["tags"] = _node_window_tags(n)
+                if want_eval:
+                    step["eval"] = _eval_summary(getattr(n, "eval_log", None))
+                steps.append(step)
+        for c in tree.children.get(n, []):
+            visit(c)
+
+    for r in tree.get_root():
+        visit(r)
+    return steps
+
+
+def run_karaka(sentence, enc, want_tags=False, want_eval=False):
+    """Build the tagged vākya, run the engine, and read back per-word kāraka/
+    vibhakti, the vibhāṣā branch sentences, the fired kāraka-sutra trace, and the
+    phonological (non-kāraka) sutra steps (with optional per-step tags/eval).
+
+    Returns {words, branches, fired, phon}. Raises on a bad spec.
     """
     # 1. Build [Adya, w0, avasAna, w1, avasAna, …]; record each word's index.
     pl = [Adya]
@@ -1225,7 +1298,7 @@ def run_karaka(sentence, enc):
         word_ix.append(len(pl))
         pl.append(_build_word(spec))
         pl.append(avasAna)
-    p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl), capture_eval=want_eval)
     p.execute()
 
     # 2. Aggregate the pre-pass log by word index, unioning across vibhāṣā
@@ -1274,7 +1347,15 @@ def run_karaka(sentence, enc):
     fired_out = [{"aps": a, "sk": _APS_TO_SK.get(a), "text": _APS_TO_TEXT.get(a, "")}
                  for a in fired_all]
 
-    return {"words": words_out, "branches": branches, "fired": fired_out}
+    # 5. Phonological (non-kāraka) sutra steps from the main derivation tree,
+    #    plus any inner (compound) prakriyās — the same trace the declension
+    #    explorer shows, scoped to whatever the kāraka pre-pass did not do.
+    phon = _collect_phon_steps(p.tree, enc, want_tags, want_eval)
+    for hp in getattr(p, "hier_prakriyas", []):
+        if getattr(hp, "tree", None) is not None:
+            phon.extend(_collect_phon_steps(hp.tree, enc, want_tags, want_eval))
+
+    return {"words": words_out, "branches": branches, "fired": fired_out, "phon": phon}
 
 
 def _spec_label(spec, enc):
@@ -1314,6 +1395,7 @@ def _run_karaka_cases(enc):
     n_pass = 0
     for case in _KARAKA_TESTS:
         row = {"label": case["label"], "sutras": case.get("sutras", []),
+               "sentence": case["sentence"],   # raw spec → composer prefill
                "words": [], "branches": [], "status": "pass", "reason": ""}
         try:
             res = run_karaka(case["sentence"], enc)
@@ -1520,16 +1602,18 @@ def karaka_gallery_page():
 
 @app.route("/api/karaka", methods=["POST"])
 def api_karaka():
-    body     = request.get_json(force=True) or {}
-    sentence = body.get("sentence", [])
-    enc_name = body.get("encoding", "devanagari")
+    body      = request.get_json(force=True) or {}
+    sentence  = body.get("sentence", [])
+    enc_name  = body.get("encoding", "devanagari")
+    want_tags = bool(body.get("tags", False))
+    want_eval = bool(body.get("eval", False))
 
     if not sentence:
         return jsonify({"error": "Empty sentence"}), 400
 
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
     try:
-        result = run_karaka(sentence, enc)
+        result = run_karaka(sentence, enc, want_tags=want_tags, want_eval=want_eval)
     except (KeyError, ValueError) as exc:
         return jsonify({"error": f"Sentence error: {exc}"}), 400
     except Exception as exc:  # noqa: BLE001
