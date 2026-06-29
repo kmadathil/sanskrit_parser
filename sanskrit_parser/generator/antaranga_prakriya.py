@@ -623,8 +623,13 @@ class AntarangaPrakriya(PrakriyaBase):
             inputs.replace_at(b, nrp)
             lp, rp = inputs[a], inputs[b]
         if fired:
+            # Log BOTH members: the uttara (b) carries the saṁjñā + the fired
+            # trace; the pūrva (a) carries samAsaPurva/upasarjana — so the CLI
+            # and UI can show the full compound structure.
             self.karaka_log.append({"index": b, "fired": fired,
                                     "tags": sorted(rp.tags), "samasa": True})
+            self.karaka_log.append({"index": a, "fired": [],
+                                    "tags": sorted(lp.tags), "samasa": True})
 
     def _apply_antadivat(self, s, r):
         """6.1.85 antādivat boundary marking. Called from _exec AND from the

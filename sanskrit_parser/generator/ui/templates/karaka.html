@@ -179,12 +179,13 @@ let _uid = 0;
 
 function addEl(kind, preset) {
   const e = { id: ++_uid, kind };
-  if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); e.dir = ''; }
-  if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); e.dir = 'pUrva'; }
+  if (kind === 'noun')     { e.stem = (INV.stems[0]||{}).name; e.vacana = 1; e.sem = new Set(); e.dir = ''; e.samasa = false; e.ssem = new Set(); }
+  if (kind === 'particle') { e.word = (INV.particles[0]||{}).name; e.psem = new Set(); e.dir = 'pUrva'; e.samasa = false; e.ssem = new Set(); }
   if (kind === 'verb')     { e.verb = (INV.verbs[0]||{}).name; }
   if (preset) Object.assign(e, preset);
   if (preset && preset.sem)  e.sem  = new Set(preset.sem);
   if (preset && preset.psem) e.psem = new Set(preset.psem);
+  if (preset && preset.ssem) e.ssem = new Set(preset.ssem);
   elements.push(e);
   render();
 }
@@ -208,6 +209,22 @@ function render() {
   if (!elements.length) { box.innerHTML = '<div class="muted" style="font-size:.85rem;">No elements yet — add a noun, particle, or verb.</div>'; return; }
   box.innerHTML = elements.map((e, i) => {
     let body = '';
+    // Samāsa toggle (noun/particle): mark the element a compound member
+    // (?samAsa_vivakza); when on, offer the avyayībhāva sense list. Consecutive
+    // samāsa members form one compound (the backend omits avasāna between them).
+    const samasaCtl = (e.kind === 'verb') ? '' : `
+      <label class="sem-opt" style="font-size:.82rem;margin-top:8px;border-top:1px dashed #e2dccc;padding-top:6px;">
+        <input type="checkbox" ${e.samasa?'checked':''} onchange="setF(${e.id},'samasa',this.checked);render()">
+        <span><b>samāsa member</b> — avyayībhāva (?samAsa_vivakza)</span></label>
+      ${e.samasa ? `
+        <div class="sem-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed')">
+          samāsa sense (${e.ssem.size} selected) ▾</div>
+        <div class="sem-box ${e.ssem.size?'':'collapsed'}">
+          ${(INV.sam_sem_tags||[]).map(t => `
+            <label class="sem-opt"><input type="checkbox" ${e.ssem.has(t.tag)?'checked':''}
+              onchange="toggleSem(${e.id},'ssem','${t.tag}',this.checked)">
+              <span><b>${t.tag.replace('semantic_','')}</b> — ${t.label.split(' — ').slice(1).join(' — ')||t.label}</span></label>`).join('')}
+        </div>` : ''}`;
     if (e.kind === 'noun') {
       const v = INV.verbs; // unused
       body = `
@@ -271,7 +288,7 @@ function render() {
         <button class="btn btn-ghost" onclick="moveEl(${e.id},1)" title="down">↓</button>
         <button class="btn btn-ghost" onclick="removeEl(${e.id})" title="remove">✕</button>
       </div>
-      ${body}
+      ${body}${samasaCtl}
     </div>`;
   }).join('');
 }
@@ -287,13 +304,18 @@ function toggleSem(id, f, tag, on) {
 function toSpec() {
   return elements.map(e => {
     if (e.kind === 'noun') {
-      const s = { stem: e.stem, vacana: e.vacana, sem: [...e.sem] };
+      // a samāsa member adds its avyayībhāva sense(s) + the samasa flag.
+      const s = { stem: e.stem, vacana: e.vacana,
+                  sem: [...e.sem, ...(e.samasa ? [...e.ssem] : [])] };
       if (e.dir) s.dir = e.dir;          // only a nominal yoga-word carries a direction
+      if (e.samasa) s.samasa = true;
       return s;
     }
     if (e.kind === 'particle') {
-      const s = { word: e.word, sem: [...e.psem] };
-      if (e.dir) s.dir = e.dir;          // omit for a plain particle with no governance
+      // samāsa avyaya: use the samāsa sense(s), drop karmapravacanīya governance.
+      const s = { word: e.word, sem: e.samasa ? [...e.ssem] : [...e.psem] };
+      if (e.dir && !e.samasa) s.dir = e.dir;   // omit for a plain/samāsa particle
+      if (e.samasa) s.samasa = true;
       return s;
     }
     return { verb: e.verb };
@@ -339,13 +361,24 @@ function renderResult(d) {
       <div class="sent">${s}</div>
     </div>`).join('');
 
+  const anySamasa = d.words.some(w => (w.samasa||[]).length);
   const rows = d.words.map(w => `
     <tr class="${w.kind}">
       <td class="word-in">${w.input}</td>
       <td>${w.kind==='noun' ? kChips(w.karaka,'chip-k', t=>t.replace('kAraka_','')) : '<span class="muted">—</span>'}</td>
       <td>${kChips(w.vibhakti,'chip-v', vibName)}</td>
+      ${anySamasa ? `<td>${kChips(w.samasa||[],'chip-k', t=>t)}</td>` : ''}
       <td class="word-form">${w.forms.join('  /  ')}</td>
     </tr>`).join('');
+
+  // Samāsa output: the formed compound(s), shown like the derived-sentence cards.
+  const compHtml = (d.compounds && d.compounds.length) ? `
+    <div class="branches">${d.compounds.map(c => `
+      <div class="branch-card">
+        <div class="lbl">समासः${c.type.length ? ' — '+c.type.join(', ') : ''}</div>
+        <div class="sent">${c.surface.join('  /  ')}</div>
+        <div class="muted" style="font-size:.75rem;margin-top:4px;">${c.members.join(' + ')}</div>
+      </div>`).join('')}</div>` : '';
 
   const trace = d.fired.length ? `
     <details class="trace" open>
@@ -366,9 +399,10 @@ function renderResult(d) {
     </details>` : '';
 
   document.getElementById('results').innerHTML = `
+    ${compHtml}
     <div class="branches">${branchHtml}</div>
     <table class="words">
-      <thead><tr><th>Word</th><th>Kāraka</th><th>Vibhakti</th><th>Form(s)</th></tr></thead>
+      <thead><tr><th>Word</th><th>Kāraka</th><th>Vibhakti</th>${anySamasa?'<th>Samāsa</th>':''}<th>Form(s)</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
     ${trace}
@@ -442,6 +476,16 @@ const EXAMPLES = [
   { dev: 'अन्यो रामात्', note: 'SK595 — anya (nominal yoga-word, para) → pañcamī (sandhi branches)',
     els: [ {kind:'noun', stem:'anya', vacana:1, sem:['semantic_prAtipadikArTa'], dir:'para'},
            {kind:'noun', stem:'rAma', vacana:1, sem:['semantic_prAtipadikArTa']} ] },
+  // ── Avyayībhāva samāsa (consecutive samāsa members → one compound) ──
+  { dev: 'उपकृष्णम्', note: 'SK652 (2.1.6) — upa + kṛṣṇa (samīpa), a-stem → 2.4.83 अम्',
+    els: [ {kind:'particle', word:'upa_avyaya', samasa:true, ssem:['semantic_samIpa']},
+           {kind:'noun', stem:'kfzRa', vacana:1, samasa:true} ] },
+  { dev: 'प्रत्यग्नि', note: 'SK668 (2.1.14) — prati + agni (vibhāṣā, only-when-intended)',
+    els: [ {kind:'particle', word:'prati_avyaya', samasa:true, ssem:[]},
+           {kind:'noun', stem:'agni', vacana:1, samasa:true} ] },
+  { dev: 'उपशरदम्', note: 'SK677 (5.4.107) — upa + śarad + TaC samāsānta',
+    els: [ {kind:'particle', word:'upa_avyaya', samasa:true, ssem:['semantic_samIpa']},
+           {kind:'noun', stem:'Sarad', vacana:1, samasa:true} ] },
 ];
 function loadExample(ix) {
   clearEls();

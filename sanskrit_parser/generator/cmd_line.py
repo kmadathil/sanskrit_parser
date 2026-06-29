@@ -88,9 +88,13 @@ def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_dis
                   or (t.startswith("viBakti_") and t[8:].isdigit())
                   or t in ("karmapravacanIya", "kp_pUrva", "kp_para",
                            "kp_dvitIyA", "kp_pancamI", "kp_pancamI_pratinidhi",
-                           "kp_saptamI")]
+                           "kp_saptamI",
+                           # samāsa role/saṁjñā tags (avyayībhāva pre-pass)
+                           "samAsa", "samAsaPurva", "upasarjana",
+                           "avyayIBAva", "bahuvrIhi", "dvigu")]
             fired = ", ".join(e["fired"]) if e["fired"] else "—"
-            print(f"  @{e['index']}: {', '.join(kv) or 'no tags'}  (fired: {fired})")
+            label = "samāsa" if e.get("samasa") else "kāraka"
+            print(f"  @{e['index']} ({label}): {', '.join(kv) or 'no tags'}  (fired: {fired})")
     return o
 
 
@@ -451,6 +455,11 @@ def get_args(argv=None):
     parser.add_argument("--sandhi", action="store_true",
                         help="Kāraka sentence: apply inter-word sandhi (connected sentence) "
                              "instead of the default avasāna-separated per-word forms")
+    parser.add_argument("--samasa", action="store_true",
+                        help="Compose the -k/-w members as an avyayībhāva samāsa: marks each "
+                             "member ?samAsa_vivakza, drops karmapravacanīya tags, and runs them "
+                             "adjacent (implies --sandhi) so the samāsa pre-pass forms the compound "
+                             "(e.g. -w upa_avyaya samIpa -k kfzRa 1 --samasa → उपकृष्णम्)")
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -476,8 +485,20 @@ def cmd_line():
     # Kāraka sentence path (-k / -w): assemble a tagged sentence and run it
     # through the engine, which does the kāraka pre-pass + sup insertion.
     if getattr(args, "karaka_words", None):
+        sandhi = args.sandhi
+        if getattr(args, "samasa", False):
+            # Avyayībhāva samāsa: mark each member ?samAsa_vivakza (the intent
+            # tag the samāsa pre-pass scans for), drop any karmapravacanīya tags
+            # that -w set from a sense, and run the members adjacent so the
+            # samāsa pre-pass + main scan form one compound.
+            for w in args.karaka_words:
+                w.setTag("samAsa_vivakza")
+                for t in ("kp_pUrva", "kp_para"):
+                    if w.hasTag(t):
+                        w.deleteTag(t)
+            sandhi = True
         run_karaka(args.karaka_words, args.prakriya, sutra_list,
-                   sandhi=args.sandhi, verbose=args.verbose,
+                   sandhi=sandhi, verbose=args.verbose,
                    tag_display=args.tag_display)
         return
     logger.info(f"Inputs {args.inputs}")

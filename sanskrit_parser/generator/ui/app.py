@@ -979,6 +979,11 @@ try:
 except Exception as _exc:  # noqa: BLE001
     logging.getLogger(__name__).warning("Could not import karaka_list: %s", _exc)
     _KARAKA_TESTS = []
+try:
+    from samasa_list import samasa_tests as _SAMASA_TESTS                  # noqa: E402
+except Exception as _exc:  # noqa: BLE001
+    logging.getLogger(__name__).warning("Could not import samasa_list: %s", _exc)
+    _SAMASA_TESTS = []
 
 # Human-readable labels for the semantic primitives the sutras condition on.
 # (The sutra wording's primitive — īpsitatama, dhruva-apāya … — never a kāraka
@@ -1105,14 +1110,41 @@ def _build_karaka_inventories():
         if obj is not None:
             particle_items.append({"name": n, "deva": _obj_deva(obj)})
 
+    # Samāsa inventory: the avyayas (pūrva/uttara), stems and senses used by the
+    # avyayībhāva cases — merged into the stem/particle dropdowns, plus a
+    # dedicated samāsa-sense list for the composer's samāsa toggle.
+    sam_words, sam_stems, sam_sems = set(), set(), set()
+    for c in _SAMASA_TESTS:
+        for m in (c.get("purva"), c.get("uttara")):
+            if not m:
+                continue
+            if "avyaya" in m:
+                sam_words.add(m["avyaya"])
+            elif "stem" in m:
+                sam_stems.add(m["stem"])
+            if m.get("sem"):
+                sam_sems.add(m["sem"])
+    for n in sorted(sam_words):
+        obj = getattr(_avyaya_module, n, None)
+        if obj is not None and not any(p["name"] == n for p in particle_items):
+            particle_items.append({"name": n, "deva": _obj_deva(obj)})
+    for n in sorted(sam_stems):
+        obj = getattr(_pp_module, n, None)
+        if obj is not None and not any(s["name"] == n for s in stem_items):
+            stem_items.append({"name": n, "deva": _obj_deva(obj)})
+    particle_items.sort(key=lambda d: d["name"])
+    stem_items.sort(key=lambda d: d["name"])
+
     sem_items = [{"tag": t, "label": _sem_label(t)} for t in sorted(sems)]
     psem_items = [{"tag": t, "label": _sem_label(t)} for t in sorted(psems)]
+    sam_sem_items = [{"tag": t, "label": _sem_label(t)} for t in sorted(sam_sems)]
     return {
         "stems":     stem_items,
         "verbs":     verb_items,
         "particles": particle_items,
         "sem_tags":  sem_items,
         "psem_tags": psem_items,
+        "sam_sem_tags": sam_sem_items,
     }
 
 
@@ -1174,6 +1206,9 @@ def _build_word(spec):
           yoga-word particle (saha/dakṣiṇataḥ/hetoḥ…) maps it to yoga_pUrva/
           yoga_para; a plain particle (he) with no sense and no dir gets neither.
     """
+    # A samāsa member carries the ?samAsa_vivakza intent tag (the samāsa
+    # pre-pass scans for it); an avyaya member skips the karmapravacanīya tags.
+    samasa = bool(spec.get("samasa"))
     if "stem" in spec:
         obj = getattr(_pp_module, spec["stem"], None)
         if obj is None:
@@ -1182,9 +1217,14 @@ def _build_word(spec):
         p.setTag(f"vacana_{int(spec.get('vacana', 1))}")
         for t in spec.get("sem", []):
             p.setTag(t)
+        if int(spec.get("vibhakti", 0)):   # a pre-supplied external vibhakti (2.4.84)
+            p.setTag(f"viBakti_{int(spec['vibhakti'])}")
+            p.setTag("has_viBakti")
         yt = _yoga_dir_tag(spec)
         if yt is not None:
             p.setTag(yt)
+        if samasa:
+            p.setTag("samAsa_vivakza")
         return p
     if "verb" in spec:
         obj = getattr(_dhatu_module, spec["verb"], None)
@@ -1199,7 +1239,10 @@ def _build_word(spec):
         sems = spec.get("sem", [])
         for t in sems:
             p.setTag(t)
-        if sems:
+        if samasa:
+            # samāsa avyaya member: intent tag, no karmapravacanīya direction.
+            p.setTag("samAsa_vivakza")
+        elif sems:
             # karmapravacanīya: direction is a user choice, default "pUrva".
             direction = spec.get("dir") or "pUrva"
             p.setTag("kp_pUrva" if direction == "pUrva" else "kp_para")
@@ -1292,12 +1335,22 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
     Returns {words, branches, fired, phon}. Raises on a bad spec.
     """
     # 1. Build [Adya, w0, avasAna, w1, avasAna, …]; record each word's index.
+    #    Compound grouping: a maximal run of consecutive specs flagged "samasa"
+    #    forms ONE compound — its members sit adjacent (no avasAna between), so
+    #    the samāsa pre-pass + main scan combine them. Every other boundary gets
+    #    an avasAna. With no samāsa specs this is the original per-word build.
     pl = [Adya]
     word_ix = []
-    for spec in sentence:
+    groups = []   # list of [spec_index, …]; one entry per surface piece
+    for si, spec in enumerate(sentence):
         word_ix.append(len(pl))
         pl.append(_build_word(spec))
-        pl.append(avasAna)
+        prev_same = spec.get("samasa") and si > 0 and sentence[si - 1].get("samasa")
+        (groups[-1].append(si) if prev_same else groups.append([si]))
+        next_same = (spec.get("samasa") and si + 1 < len(sentence)
+                     and sentence[si + 1].get("samasa"))
+        if not next_same:
+            pl.append(avasAna)
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl), capture_eval=want_eval)
     p.execute()
 
@@ -1309,22 +1362,49 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
         a["tags"].update(e["tags"])
         a["fired"].update(e["fired"])
 
-    # 3. Per-branch surface sentences + per-position form sets. Words are
-    #    avasAna-separated, so splitting the joined SLP1 on the avasAna marker
-    #    recovers the per-word forms in order (Adya contributes nothing).
+    # 3. Per-branch surface sentences + per-position form sets. Splitting the
+    #    joined SLP1 on the avasAna marker recovers one piece per GROUP (a
+    #    compound is one piece); each piece's form attaches to every member of
+    #    its group (Adya contributes nothing).
     sep = avasAna.canonical()
-    pos_forms = [set() for _ in sentence]
+    group_forms = [set() for _ in groups]
     branches, seen = [], set()
     for o in p.output():
         slp = "".join(x.transcoded(sanscript.SLP1) for x in list(o))
         pieces = [w for w in slp.split(sep) if w != ""]
-        for i, w in enumerate(pieces):
-            if i < len(pos_forms):
-                pos_forms[i].add(sanscript.transliterate(w, sanscript.SLP1, enc))
+        for gi, w in enumerate(pieces):
+            if gi < len(group_forms):
+                group_forms[gi].add(sanscript.transliterate(w, sanscript.SLP1, enc))
         sent = " ".join(sanscript.transliterate(w, sanscript.SLP1, enc) for w in pieces)
         if sent not in seen:
             seen.add(sent)
             branches.append(sent)
+    # Per-spec forms: a compound's surface attaches to each of its members.
+    pos_forms = [set() for _ in sentence]
+    for gi, grp in enumerate(groups):
+        for si in grp:
+            pos_forms[si] = group_forms[gi]
+
+    _SAMASA_ROLE = ("samAsa", "samAsaPurva", "upasarjana",
+                    "avyayIBAva", "bahuvrIhi", "dvigu")
+
+    # Per-spec samāsa role tags: read from the final pre-pass branch by member
+    # order (the samāsa pre-pass logs POST-sup-insertion indices, which don't
+    # line up with word_ix, so karaka_log is unreliable for the role tags). The
+    # k-th prātipadika member in the branch is the k-th non-verb spec.
+    samasa_by_spec = {}
+    if any(sp.get("samasa") for sp in sentence):
+        branch = (getattr(p, "_karaka_branches", None) or [None])[0]
+        if branch is not None:
+            members = [o for o in branch
+                       if getattr(o, "hasTag", None) and o.canonical()
+                       and o.hasTag("prAtipadika") and not o.hasTag("sup")
+                       and not o.hasTag("tiNanta")]
+            non_verb = [i for i, sp in enumerate(sentence) if "verb" not in sp]
+            for k, si in enumerate(non_verb):
+                if k < len(members):
+                    samasa_by_spec[si] = sorted(
+                        t for t in members[k].tags if t in _SAMASA_ROLE)
 
     # 4. Per-word view.
     words_out = []
@@ -1334,13 +1414,29 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
         vibhaktis = sorted(
             (t for t in entry["tags"] if t.startswith("viBakti_") and t[8:].isdigit()),
             key=lambda t: int(t[8:]))
+        samasa = samasa_by_spec.get(
+            i, sorted(t for t in entry["tags"] if t in _SAMASA_ROLE))
         words_out.append({
             "input":   _spec_label(spec, enc),
             "kind":    "verb" if "verb" in spec else ("particle" if "word" in spec else "noun"),
             "karaka":  karakas,
             "vibhakti": vibhaktis,
+            "samasa":  samasa,
             "forms":   sorted(pos_forms[i]),
             "fired":   sorted(entry["fired"], key=_aps_key),
+        })
+
+    # 4b. Compound view: one entry per multi-member group (the samāsa output).
+    compounds = []
+    for gi, grp in enumerate(groups):
+        if len(grp) < 2:
+            continue
+        ctype = sorted({t for si in grp for t in samasa_by_spec.get(si, [])
+                        if t in ("avyayIBAva", "bahuvrIhi", "dvigu")})
+        compounds.append({
+            "members": [_spec_label(sentence[si], enc) for si in grp],
+            "type":    ctype,
+            "surface": sorted(group_forms[gi]),
         })
 
     fired_all = sorted({a for e in agg.values() for a in e["fired"]}, key=_aps_key)
@@ -1355,7 +1451,8 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
         if getattr(hp, "tree", None) is not None:
             phon.extend(_collect_phon_steps(hp.tree, enc, want_tags, want_eval))
 
-    return {"words": words_out, "branches": branches, "fired": fired_out, "phon": phon}
+    return {"words": words_out, "branches": branches, "fired": fired_out,
+            "phon": phon, "compounds": compounds}
 
 
 def _spec_label(spec, enc):
