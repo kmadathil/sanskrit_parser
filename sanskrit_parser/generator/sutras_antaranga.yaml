@@ -9294,10 +9294,53 @@
       - - or
         - "?semantic_samIpa"
         - "?semantic_vibhakti"
+        - "?semantic_atyaya"
+        - "?semantic_yOgapadya"
       - "?!samAsaPurva"
     rp:
       - and
       - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 663/2.1.9: सुप्प्रतिना मात्रार्थे (2.1.9) — a noun (sup-anta) in the mātrā ("a
+# little") sense + प्रति → avyayībhāva: शाकप्रति (शाकस्य लेशः). NOUN-pūrva: the
+# prathamā-nirdiṣṭa सुप् (noun) is upasarjana (pūrva), प्रति is the uttara avyaya.
+- sutra: सुप्प्रतिना मात्रार्थे
+  id: 2.1.9
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?prAtipadika"
+      - "?semantic_mAtrA"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "=prati"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 664/2.1.10: अक्षशलाकासंख्याः परिणा (2.1.10) — akṣa / śalākā / a saṁkhyā + परि →
+# avyayībhāva (dyūta/vyāvṛtti sense): अक्षपरि. NOUN-pūrva (noun is upasarjana).
+- sutra: अक्षशलाकासंख्याः परिणा
+  id: 2.1.10
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - - or
+        - "=akza"
+        - "=SalAkA"
+        - "?saMKyA"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "=pari"
       - "?!samAsa"
   update:
     olp: [+samAsaPurva]
@@ -9317,6 +9360,194 @@
   update:
     olp: [+upasarjana]
 
+# 661/2.1.7: यथाऽसादृश्ये (2.1.7) — yathā (in the yogyatā/vīpsā/anativṛtti senses,
+# NOT sādṛśya) + noun → avyayībhāva: यथाशक्ति (शक्तिमनतिक्रम्य). Avyaya-pūrva.
+- sutra: यथाऽसादृश्ये
+  id: 2.1.7
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?nipAta"
+      - "?semantic_yaTArTa"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 662/2.1.8: यावदवधारणे (2.1.8) — yāvat (in the avadhāraṇa/limit sense) + noun →
+# avyayībhāva: यावज्जीवम् (a-stem jīva → am; pūrva yāvat + j → yāvaj sandhi).
+- sutra: यावदवधारणे
+  id: 2.1.8
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?nipAta"
+      - "?semantic_avaDAraRa"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# ── S2: vibhāṣā block (SK 665–675 / 2.1.11–2.1.21) ───────────────────────────
+# 2.1.11 विभाषा is the "only-when-intended" adhikāra — it is NOT a fork. Each
+# rule below therefore carries a ?samAsa_vivakza condition: the compound forms
+# only when the user marks the members with that intent tag; without it the
+# words stay separate (a different input, not a branch). Mechanics otherwise
+# identical to the nitya block (single result).
+
+# 666/2.1.12: अपपरिबहिरञ्चवः पञ्चम्या (2.1.12) — apa/pari/bahir/añcu + (pañcamī)
+# noun → avyayībhāva: अपग्रामम् ("away from the village").
+- sutra: अपपरिबहिरञ्चवः पञ्चम्या
+  id: 2.1.12
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - - or
+        - "=apa"
+        - "=pari"
+        - "=bahis"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 667/2.1.13: आङ्मर्यादाभिविध्योः (2.1.13) — āṅ (ā) in maryādā/abhividhi + noun →
+# avyayībhāva: आसमुद्रम् ("up to / including the ocean").
+- sutra: आङ्मर्यादाभिविध्योः
+  id: 2.1.13
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=A"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 668/2.1.14: लक्षणेनाभिप्रती आभिमुख्ये (2.1.14) — abhi/prati (in ābhimukhya, facing
+# a lakṣaṇa) + noun → avyayībhāva: प्रत्यग्नि ("towards the fire"). [flagship]
+- sutra: लक्षणेनाभिप्रती आभिमुख्ये
+  id: 2.1.14
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - - or
+        - "=prati"
+        - "=aBi"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 669/2.1.15: अनुर्यत्समया (2.1.15) — anu (the lakṣaṇa near which a thing lies,
+# samayā) + noun → avyayībhāva: अनुवनम् ("near the forest").
+- sutra: अनुर्यत्समया
+  id: 2.1.15
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anu"
+      - "?semantic_samayA"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 670/2.1.16: यस्य चायामः (2.1.16) — anu in the āyāma (length-along) sense + noun
+# → avyayībhāva: अनुगङ्गम् ("along the Gaṅgā"; ā-stem → 2.4.18 napum → 1.2.47
+# hrasva → 2.4.83 am).
+- sutra: यस्य चायामः
+  id: 2.1.16
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anu"
+      - "?semantic_AyAma"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 673/2.1.19: संख्या वंश्येन (2.1.19) — a saṁkhyā + a vaṁśya (lineage member) noun
+# → avyayībhāva: द्विमुनि ("two sages in succession"). saṁkhyā-pūrva.
+- sutra: संख्या वंश्येन
+  id: 2.1.19
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?saMKyA"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?vaMSya"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 674/2.1.20: नदीभिश्च (2.1.20) — a saṁkhyā + a river-name (nadī) → avyayībhāva:
+# सप्तगङ्गम् ("seven Gaṅgās"; ā-stem → napum → hrasva → am).
+- sutra: नदीभिश्च
+  id: 2.1.20
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?saMKyA"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?nadI_saMjYA"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
 # ── Avyayībhāva-final morphology (main scan; fires on the uttara member + its
 #    sup BEFORE the merge — bahiranga ≤ 2 vs the merge's 99+) ──────────────────
 
@@ -9335,6 +9566,22 @@
   update:
     olp: +avyaya
 
+# 659/2.4.18: अव्ययीभावश्च (2.4.18) — the avyayībhāva (samāsa) is napuṁsaka.
+# Saṁjñā tag on the uttara member (which carries ?avyayIBAva). For an a-stem
+# this aligns the अम् (2.4.83 / napuṁsaka 7.1.24); the compound is avyaya
+# (1.1.41) so its sup luks/am's regardless of gender.
+- sutra: अव्ययीभावश्च
+  id: 2.4.18
+  domain: saMjYA
+  bahiranga: 0
+  condition:
+    lp:
+      - and
+      - "?avyayIBAva"
+      - "?!napum"
+  update:
+    olp: [+napum, -pum]
+
 # 657/2.4.83: नाव्ययीभावादतोऽम् (2.4.83, apañcamyāḥ deferred) — after an
 # a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am).
 # Overrides 2.4.82 → उपकृष्णम् (upa + kṛṣṇa + am). i-/other stems fall through
@@ -9352,4 +9599,68 @@
     rp: "?sup"
   update:
     orp: =am
+
+# 658/2.4.84: तृतीयासप्तम्योर्बहुलम् (2.4.84) — for a tṛtīyā/saptamī-sense
+# avyayībhāva the अम् (2.4.83) is BAHULA (optional). Modeled as an optional fork
+# on the uttara when it carries viBakti_3/7: the fork branch drops ?avyaya
+# (overriding 2.4.83), so the real tṛtīyā/saptamī sup surfaces and the compound
+# declines (उपकृष्णे); the other branch keeps avyaya → 2.4.83 अम् (उपकृष्णम्).
+# (सुमद्रम्/उन्मत्तगङ्गम् nitya-am in saptamī — that exception list is deferred.)
+- sutra: तृतीयासप्तम्योर्बहुलम्
+  id: 2.4.84
+  bahiranga: 1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?avyayIBAva"
+      - "?avyaya"
+      - - or
+        - "?viBakti_3"
+        - "?viBakti_7"
+    rp: "?sup"
+  update:
+    olp: [-avyaya]
+
+# 660/6.3.81: अव्ययीभावे चाकाले (6.3.81) — सहस्य सः: saha → sa in an avyayībhāva,
+# but NOT in the kāla (time) sense. सचक्रम् (saha+cakra, चक्रेण युगपत्). The kāla
+# exception (सहपूर्वाह्णम्) is guarded by ?!kAla. Main-scan pūrva-pada
+# substitution on the saha samAsaPurva (before its sup luks).
+- sutra: अव्ययीभावे चाकाले
+  id: 6.3.81
+  bahiranga: 1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?samAsaPurva"
+      - "?!kAla"
+    rp: "?sup"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# ── S3: samāsānta (SK 676/677) ──────────────────────────────────────────────
+# 677/5.4.107: अव्ययीभावे शरत्प्रभृतिभ्यः (5.4.107) — an avyayībhāva ending in a
+# śarat-prabhṛti word takes the TaC (टच्) samāsānta (5.4.68 समासान्ताः adhikāra).
+# Implemented in the samāsa pre-pass (_insert_samasanta): a wac (?tadDita)
+# affix is inserted after a ?SaratpraBfti uttara of an ?avyayIBAva, so the
+# consonant stem becomes an a-stem → 2.4.83 अम् → उपशरदम्. (No YAML rule: the
+# insertion is structural, like _insert_sups. 6.3.81 junction / 2.4.84 bahula
+# and the rest of the samāsānta gaṇa are deferred.)
+
+# 650/2.4.71: सुपो धातुप्रातिपदिकयोः (2.4.71) — the internal sup of a compound
+# member is luk'd once it is part of a samāsa-prātipadika. Scoped to the PŪRVA
+# member (?samAsaPurva): luks the pūrva's sup. (The uttara's sup is handled by
+# 1.1.41 + 2.4.82, or 2.4.83 for a-stems.) Needed for the noun-pūrva compounds
+# 2.1.9/2.1.10 (शाकप्रति, अक्षपरि) whose pūrva is not itself an avyaya; for the
+# avyaya-pūrva 2.1.6/7/8 it coincides with the existing 2.4.82 luk.
+- sutra: सुपो धातुप्रातिपदिकयोः
+  id: 2.4.71
+  bahiranga: 2
+  condition:
+    lp: "?samAsaPurva"
+    rp: "?sup"
+  update:
+    orp: =luk_sup
 

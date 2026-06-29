@@ -63,6 +63,16 @@ putra = Pratipadika("putra", "pum")   # पुत्र — रामस्य �
 mAza = Pratipadika("mAza", "pum")     # माष — माषेष्वश्वं बध्नाति counterexample (SK535)
 bARa = Pratipadika("bARa", "pum")     # बाण — बाणेन (SK561 karaṇa)
 kfzRa = Pratipadika("kfzRa", "pum")   # कृष्ण — कृष्णः (SK532 prathamā)
+# Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
+jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
+SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
+Sakti = Pratipadika("Sakti", "strI")  # शक्ति — यथाशक्ति (2.1.7, i-stem fem → luk)
+# S2 vibhāṣā-block uttara nouns
+samudra = Pratipadika("samudra", "pum")  # समुद्र — आसमुद्रम् (2.1.13, a-stem → am)
+vana = Pratipadika("vana", "napum")      # वन — अनुवनम् (2.1.15, a-stem → am)
+muni = Pratipadika("muni", "pum")        # मुनि — द्विमुनि (2.1.19 vaṁśya, i-stem → luk)
+cakra = Pratipadika("cakra", "napum")    # चक्र — सचक्रम् (6.3.81 saha→sa, a-stem → am)
+Sarad = Pratipadika("Sarad", "strI", other_tags=["SaratpraBfti"])  # शरद् — उपशरदम् (5.4.107 TaC)
 # Kāraka Phase K1 sentence stems (test/karaka_list.py; a-/i-stems reuse the
 # rAma/hari paradigms).
 mAsa = Pratipadika("mAsa", "pum")     # मास — मासमास्ते (SK539 akarmaka vārttika)

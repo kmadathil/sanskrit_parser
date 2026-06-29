@@ -189,6 +189,17 @@ api_kp   = Pratipadika("api",   "pum", other_tags=["nipAta"])   # अपि (1.4
 # the compound and tags the uttara ?avyayIBAva.
 upa_avyaya = Pratipadika("upa", "pum", other_tags=["nipAta"])   # उप (समीपम् — उपकृष्णम्)
 aDi_avyaya = Pratipadika("aDi", "pum", other_tags=["nipAta"])   # अधि (विभक्ति — अधिहरि)
+# S1B pūrva avyayas
+ati_avyaya = Pratipadika("ati", "pum", other_tags=["nipAta"])   # अति (अत्यय — अतिहिमम्)
+yaTA       = Pratipadika("yaTA", "pum", other_tags=["nipAta"])  # यथा (2.1.7 — यथाशक्ति)
+# S1B uttara avyayas (noun-pūrva compounds 2.1.9/2.1.10 — avyaya is the uttara)
+prati_avyaya = Pratipadika("prati", "pum", other_tags=["nipAta"])  # प्रति (2.1.9 मात्रार्थे — शाकप्रति)
+pari_avyaya  = Pratipadika("pari",  "pum", other_tags=["nipAta"])  # परि (2.1.10 — अक्षपरि)
+# S2 vibhāṣā-block pūrva avyayas (2.1.12–2.1.16; gated by ?samAsa_vivakza)
+apa_avyaya = Pratipadika("apa", "pum", other_tags=["nipAta"])  # अप (2.1.12 पञ्चम्या — अपग्रामम्)
+AN_avyaya  = Pratipadika("A",   "pum", other_tags=["nipAta"])  # आङ् (2.1.13 मर्यादा/अभिविधि — आसमुद्रम्)
+aBi_avyaya = Pratipadika("aBi", "pum", other_tags=["nipAta"])  # अभि (2.1.14 आभिमुख्ये)
+anu_avyaya = Pratipadika("anu", "pum", other_tags=["nipAta"])  # अनु (2.1.15 समया — अनुवनम्; 2.1.16 आयाम — अनुगङ्गम्)
 
 # ── Kāraka Phase K6: ṣaṣṭhī-chapter yoga-words (karaka_plan.md §K6) ───────────
 # Fixed-surface "peek" words read by the K6 ṣaṣṭhī rules via llp/rrp (literal

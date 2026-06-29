@@ -17,7 +17,7 @@ from decimal import Decimal
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject, _SLP1_VOWELS
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
-from sanskrit_parser.generator.pratyaya import Pratyaya, sups
+from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac
 from sanskrit_parser.generator.sutra import Sutra
 
 from copy import deepcopy, copy
@@ -342,7 +342,12 @@ class AntarangaPrakriya(PrakriyaBase):
                        for t in o.tags)
 
         # Skip-guard: zero impact on prakriyas without kāraka-layer inputs.
-        if not any(_is_semantic(o) for _, o in _scalars(self.inputs)):
+        # ?samAsa_vivakza (samāsa intent) also trips it: a compound needs its
+        # members' sups inserted (सह सुपा 2.1.4) before the samāsa pre-pass, even
+        # when no kāraka sense is present (e.g. the structural nitya 2.1.10
+        # akṣa+pari). Default prathamā (2.3.46) then supplies su to each member.
+        if not any(_is_semantic(o) or o.hasTag("samAsa_vivakza")
+                   for _, o in _scalars(self.inputs)):
             self._karaka_branches = [self.inputs]
             return
 
@@ -567,6 +572,25 @@ class AntarangaPrakriya(PrakriyaBase):
             if not (_flagged(inputs[a]) or _flagged(inputs[b])):
                 continue
             self._samasa_window_fixpoint(inputs, a, b)
+        self._insert_samasanta(inputs)
+
+    def _insert_samasanta(self, inputs):
+        """5.4.107 अव्ययीभावे शरत्प्रभृतिभ्यः — insert the TaC (wac) samāsānta
+        after a śarat-prabhṛti uttara of an avyayībhāva, so the consonant-stem
+        compound becomes an a-stem (उप+शरद् → उपशरद+अ → 2.4.83 अम् → उपशरदम्).
+        The wac (?tadDita) is placed just before the uttara's sup; the main scan
+        merges śarad+wac, and join_objects carries ?avyayIBAva through that
+        tadDita merge so 1.1.41/2.4.83 still apply. (5.4.68 समासान्ताः adhikāra;
+        other samāsānta affixes / 6.3.81 junction / 2.4.84 bahula deferred.)"""
+        for ix in range(len(inputs)):
+            o = inputs[ix]
+            if not (self._is_samasa_member(o)
+                    and o.hasTag("avyayIBAva") and o.hasTag("SaratpraBfti")):
+                continue
+            # Insert wac just after the uttara (before its sup, if present).
+            jx = ix + 1
+            inputs.insert_at(jx, deepcopy(wac))
+            break
 
     def _samasa_window_fixpoint(self, inputs, a, b):
         """Run the bahiranga == -1 rules on the (pūrva | uttara) member window

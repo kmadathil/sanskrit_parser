@@ -252,7 +252,10 @@ class PaninianObject(SanskritObject):
             _propagate(first, ["bahuvrIhi", "dvigu",
                                "parimARa", "bistAdi", "kARqa", "puruza",
                                "kzetre", "pramARe",
-                               "sUryAdi"])  # SK499 (6.4.149): y-lopa for sūrya/tiṣya-derived bha-aṅgas
+                               "sUryAdi",   # SK499 (6.4.149): y-lopa for sūrya/tiṣya-derived bha-aṅgas
+                               "avyayIBAva"])  # 5.4.107 TaC: avyayībhāva saṁjñā survives the
+                                               # samāsānta (wac) merge so 1.1.41/2.4.83 still
+                                               # see it on the TaC-ext stem (उपशरदम्)
 
         # --- samāsa-only: ajAdi rides from the uttara-pada (last) to the compound ---
         # A samāsa ending in an ajādi-gaṇa word inherits ?ajAdi so SK454 (4.1.4) and
