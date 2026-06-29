@@ -1,5 +1,13 @@
 # Kāraka-prakaraṇam Implementation Plan (SK 532–646)
 
+> **⚠️ Renumber note (avyayībhāva samāsa work):** the kāraka pre-pass class was moved
+> from `bahiranga: -1` to **`bahiranga: -2`** to make room for the samāsa pre-pass at
+> `-1` (which runs *after* kāraka + sup-insertion, since सह सुपा compounds padas-with-sup).
+> Lower = more antaraṅga = earlier, so kāraka (-2) → samāsa (-1) → main scan (>-1).
+> **Throughout this document, read every "`bahiranga: -1`" as "`-2`".** The split predicate
+> in `antaranga_prakriya.py` is now `_karaka_sutras == -2`, `_samasa_sutras == -1`,
+> `_main_sutras > -1`.
+
 **Status:** **COMPLETE** — rule phases **K0–K7 + Phase K-UI done** (2026-06-14). The
 full kāraka-prakaraṇam SK 532–646 derives as `bahiranga: -1` tag rules on the
 integrated engine (tagging pre-pass + sup insertion + 1.4.23–1.4.98 param carve-out +

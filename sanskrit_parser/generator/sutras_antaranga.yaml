@@ -7173,11 +7173,17 @@
 # ════════════════════════════════════════════════════════════════════════════
 # कारकप्रकरणम् (SK 532–646) — karaka_plan.md §2 conventions
 #
-# bahiranga: -1 is RESERVED for kāraka pre-pass rules (sentence-level tagging;
+# bahiranga: -2 is RESERVED for kāraka pre-pass rules (sentence-level tagging;
 # AntarangaPrakriya._karaka_prepass runs exactly this class on the synthetic
 # window lp = the noun, rp = the sentence's dhātu — NOT the physical
-# neighbour; llp/rrp are the physical neighbour words). Never assign -1
+# neighbour; llp/rrp are the physical neighbour words). Never assign -2
 # merely as a priority boost.
+#
+# bahiranga: -1 is RESERVED for samāsa pre-pass rules (compound formation;
+# AntarangaPrakriya._samasa_prepass runs exactly this class AFTER the kāraka
+# pre-pass + sup-insertion — samāsa combines padas-with-sup, सह सुपा 2.1.4).
+# Lower = more antaraṅga = earlier: kāraka (-2) fixes vibhakti, samāsa (-1)
+# consumes its output. See the avyayībhāva samāsa plan.
 #
 # Tag conventions:
 #   - semantic_* : input primitives in the sutra wording (never kāraka names)
@@ -7196,7 +7202,7 @@
 # 535: कर्तुरीप्सिततमं कर्म (1.4.49) — what the agent most desires to reach → karma
 - sutra: कर्तुरीप्सिततमं कर्म
   id: 1.4.49
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7208,7 +7214,7 @@
 # 559: स्वतन्त्रः कर्ता (1.4.54) — the independent participant → kartṛ
 - sutra: स्वतन्त्रः कर्ता
   id: 1.4.54
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7220,7 +7226,7 @@
 # 560: साधकतमं करणम् (1.4.42) — the most effective means → karaṇa
 - sutra: साधकतमं करणम्
   id: 1.4.42
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7234,7 +7240,7 @@
 # through to 2.3.46 prathamā instead.
 - sutra: कर्मणि द्वितीया
   id: 2.3.2
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7248,7 +7254,7 @@
 # abhihita by tiṅ in our scope) → tṛtīyā. रामेण (सेव्यते), बाणेन.
 - sutra: कर्तृकरणयोस्तृतीया
   id: 2.3.18
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp:
         - and
@@ -7267,7 +7273,7 @@
 # there keeps the competition out of the nitya simulation entirely.
 - sutra: संबोधने च
   id: 2.3.47
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7280,7 +7286,7 @@
 # ṣaṣṭhī. रामस्य पुत्रः. Pulled forward from K6 as the śeṣa fallback.
 - sutra: षष्ठी शेषे
   id: 2.3.50
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7296,7 +7302,7 @@
 # रामो (हरिं भजति).
 - sutra: प्रातिपदिकार्थलिङ्गपरिमाणवचनमात्रे प्रथमा
   id: 2.3.46
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp:
         - and
@@ -7330,7 +7336,7 @@
 # īpsitatama but *not* desired (anīpsita) is also karma. ग्रामं गच्छन् तृणं स्पृशति.
 - sutra: तथायुक्तं चानीप्सितम्
   id: 1.4.50
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7345,7 +7351,7 @@
 # an intransitive verb, deśa/kāla/bhāva/adhvan → karma: मासमास्ते, कुरून् स्वपिति.
 - sutra: अकथितं च
   id: 1.4.51
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp:
         - and
@@ -7366,7 +7372,7 @@
 # to 1.4.54 (the prayojya would otherwise be kartā). One OR arm per meaning class.
 - sutra: गतिबुद्धिप्रत्यवसानार्थशब्दकर्माकर्मकाणामणि कर्ता स णौ
   id: 1.4.52
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["1.4.54"]
   condition:
     - lp:
@@ -7418,7 +7424,7 @@
 # (dvitīyā) reading only. Apavāda to 1.4.54.
 - sutra: हृक्रोरन्यतरस्याम्
   id: 1.4.53
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["1.4.54"]
   condition:
     lp:
@@ -7436,7 +7442,7 @@
 # → karma: अध्यास्ते वैकुण्ठं हरिः. (Apavāda to 1.4.45 ādhāro 'dhikaraṇam, K7.)
 - sutra: अधिशीङ्स्थासां कर्म
   id: 1.4.46
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7450,7 +7456,7 @@
 # अभिनिविशते सन्मार्गम्.
 - sutra: अभिनिविशश्च
   id: 1.4.47
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7464,7 +7470,7 @@
 # उपवसति वैकुण्ठं हरिः. (Vārttika अभुक्त्यर्थस्य न — वने उपवसति saptamī — deferred, K7.)
 - sutra: उपान्वध्याङ्वसः
   id: 1.4.48
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7479,7 +7485,7 @@
 # Apavāda to the 2.3.46 prathamā default.
 - sutra: अन्तरान्तरेण युक्ते
   id: 2.3.4
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     # yoga_para: particle precedes the noun (noun's llp); yoga_pUrva: particle
@@ -7525,7 +7531,7 @@
 # choice; the classic जपमनु प्रावर्षत् is the pūrva reading.
 - sutra: अनुर्लक्षणे
   id: 1.4.84
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7539,7 +7545,7 @@
 # dvitīyā (kp_dvitIyA). Direction is a user choice; नदीमन्ववसिता सेना is pūrva.
 - sutra: तृतीयार्थे
   id: 1.4.85
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7553,7 +7559,7 @@
 # dvitīyā (kp_dvitIyA). Direction is a user choice; अनु हरिं सुराः is para.
 - sutra: हीने
   id: 1.4.86
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7568,7 +7574,7 @@
 # adhika sense → saptamī, 2.3.9, via the 1.4.87.1 arm in K7.)
 - sutra: उपोऽधिके च
   id: 1.4.87
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7584,7 +7590,7 @@
 # (bhāga/vīpsā senses deferred.)
 - sutra: लक्षणेत्थंभूताख्यानभागवीप्सासु प्रतिपर्यनवः
   id: 1.4.90
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp: [and, "=prati", "?semantic_lakzaRa", "?!karmapravacanIya"]
     - lp: [and, "=prati", "?semantic_itTamBUta", "?!karmapravacanIya"]
@@ -7598,7 +7604,7 @@
 # भक्तो हरिमभि are pūrva. (vīpsā देवं देवमभि deferred.)
 - sutra: अभिरभागे
   id: 1.4.91
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp: [and, "=aBi", "?semantic_lakzaRa", "?!karmapravacanIya"]
     - lp: [and, "=aBi", "?semantic_itTamBUta", "?!karmapravacanIya"]
@@ -7609,7 +7615,7 @@
 # a participle, no governed noun → no dvitīyā). सुसिक्तम् (anupasargatvāt na ṣatva).
 - sutra: सुः पूजायाम्
   id: 1.4.94
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7623,7 +7629,7 @@
 # dvitīyā (kp_dvitIyA). Direction is a user choice; अति देवान् कृष्णः is para.
 - sutra: अतिरतिक्रमणे च
   id: 1.4.95
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp: [and, "=ati", "?semantic_atikramaRa", "?!karmapravacanIya"]
     - lp: [and, "=ati", "?semantic_pUjA", "?!karmapravacanIya"]
@@ -7635,7 +7641,7 @@
 # (padArTa/anvavasarga/garhA/samuccaya senses deferred.)
 - sutra: अपिः पदार्थसंभावनान्ववसर्गगर्हासमुच्चयेषु
   id: 1.4.96
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7653,7 +7659,7 @@
 # karmapravacanīyas (which carry only kp_pancamI*/kp_saptamI). Apavāda to 2.3.46.
 - sutra: कर्मप्रवचनीययुक्ते द्वितीया
   id: 2.3.8
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -7682,7 +7688,7 @@
 # applies when the saṁyoga is not continuous (मासस्य द्विरधीते).
 - sutra: कालाध्वनोरत्यन्तसंयोगे
   id: 2.3.5
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -7713,7 +7719,7 @@
 # by the kāraka-adhikāra param carve-out (14043 > 14042) when it does fire.
 - sutra: दिवः कर्म च
   id: 1.4.43
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -7730,7 +7736,7 @@
 # (no completion → 2.3.5 dvitīyā). Apavāda to 2.3.46.
 - sutra: अपवर्गे तृतीया
   id: 2.3.6
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -7747,7 +7753,7 @@
 # Particle sits adjacent to the governed noun (llp or rrp peek). Apavāda to 2.3.46.
 - sutra: सहयुक्तेऽप्रधाने
   id: 2.3.19
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -7768,7 +7774,7 @@
 # (the eye itself, no aṅga-vikāra → not tṛtīyā). Apavāda to 2.3.46.
 - sutra: येनाङ्गविकारः
   id: 2.3.20
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -7784,7 +7790,7 @@
 # karmapravacanīya semantic_itTamBUta sense.)
 - sutra: इत्थंभूतलक्षणे
   id: 2.3.21
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -7800,7 +7806,7 @@
 # noun is already kAraka_karma (1.4.49); beats 2.3.2 by para when it fires.
 - sutra: संज्ञोऽन्यतरस्यां कर्मणि
   id: 2.3.22
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -7816,7 +7822,7 @@
 # पुण्येन दृष्टो हरिः. Apavāda to 2.3.46.
 - sutra: हेतौ
   id: 2.3.23
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -7847,7 +7853,7 @@
 # of the karma (the gift) → sampradāna. General definition. विप्राय गां ददाति.
 - sutra: कर्मणा यमभिप्रैति स संप्रदानम्
   id: 1.4.32
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7860,7 +7866,7 @@
 # one pleased → sampradāna. हरये रोचते भक्तिः (the bhakti is the kartṛ → prathamā).
 - sutra: रुच्यर्थानां प्रीयमाणः
   id: 1.4.33
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7874,7 +7880,7 @@
 # the agent wishes to inform (jñīpsyamāna) → sampradāna. विप्राय श्लाघते.
 - sutra: श्लाघह्नुङ्स्थाशपां ज्ञीप्स्यमानः
   id: 1.4.34
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7888,7 +7894,7 @@
 # (uttamarṇa) → sampradāna. देवदत्ताय शतं धारयति (śata the debt = karma).
 - sutra: धारेरुत्तमर्णः
   id: 1.4.35
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7902,7 +7908,7 @@
 # (īpsita) → sampradāna. पुष्पेभ्यः स्पृहयति.
 - sutra: स्पृहेरीप्सितः
   id: 1.4.36
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7917,7 +7923,7 @@
 # Two arms (the two verb-class tags). Beaten by 1.4.38 when the verb is upasṛṣṭa.
 - sutra: क्रुधद्रुहेर्ष्यासूयार्थानां यं प्रति कोपः
   id: 1.4.37
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp:
         - and
@@ -7939,7 +7945,7 @@
 # are excluded here — they never take an upasarga in this sense.)
 - sutra: क्रुधद्रुहोरुपसृष्टयोः कर्म
   id: 1.4.38
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7956,7 +7962,7 @@
 # inquires (vipraśna) → sampradāna. कृष्णाय राध्यति.
 - sutra: राधीक्ष्योर्यस्य विप्रश्नः
   id: 1.4.39
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7971,7 +7977,7 @@
 # देवदत्ताय प्रतिशृणोति.
 - sutra: प्रत्याङ्भ्यां श्रुवः पूर्वस्य कर्ता
   id: 1.4.40
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -7985,7 +7991,7 @@
 # the prior agent → sampradāna. होत्रेऽनुगृणाति.
 - sutra: अनुप्रतिगृणश्च
   id: 1.4.41
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8002,7 +8008,7 @@
 # semantic_sADakatama). Beats 1.4.42 by param (14044 > 14042) when it fires.
 - sutra: परिक्रयणे संप्रदानमन्यतरस्याम्
   id: 1.4.44
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -8018,7 +8024,7 @@
 # fires on it; this is the nitya vibhakti for the saṁjñā.
 - sutra: चतुर्थी संप्रदाने
   id: 2.3.13
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8034,7 +8040,7 @@
 # literal.) Apavāda to 2.3.46.
 - sutra: नमःस्वस्तिस्वाहास्वधालंवषड्योगाच्च
   id: 2.3.16
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -8057,7 +8063,7 @@
 # by para when it fires.
 - sutra: मन्यकर्मण्यनादरे विभाषाऽप्राणिषु
   id: 2.3.17
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -8079,7 +8085,7 @@
 # not the simple-gati dvitīyā/caturthī option.)
 - sutra: गत्यर्थकर्मणि द्वितीयाचतुर्थ्यौ चेष्टायामनध्वनि
   id: 2.3.12
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -8121,7 +8127,7 @@
 # ग्रामादायाति ("comes from the village"). kārakam kim → वृक्षस्य पर्णं पतति.
 - sutra: ध्रुवमपायेऽपादानम्
   id: 1.4.24
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8135,7 +8141,7 @@
 # अरण्ये बिभेति (the forest, mere locus → not apādāna). (SK उses चोराद्.)
 - sutra: भीत्रार्थानां भयहेतुः
   id: 1.4.25
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8150,7 +8156,7 @@
 # soḍhaḥ kim → शत्रून्पराजयते ("defeats the enemies", abhibhava → plain karma).
 - sutra: पराजेरसोढः
   id: 1.4.26
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8165,7 +8171,7 @@
 # from the barley"). īpsitaḥ kim → यवेभ्यो गां वारयति क्षेत्रे (the field, locus).
 - sutra: वारणार्थानामीप्सितः
   id: 1.4.27
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8180,7 +8186,7 @@
 # hides from his mother"). antardhau kim → चौरान्न दिदृक्षते (no concealment).
 - sutra: अन्तर्धौ येनादर्शनमिच्छति
   id: 1.4.28
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8195,7 +8201,7 @@
 # (टस्य गाथां शृणोति — casual hearing, no upayoga).
 - sutra: आख्यातोपयोगे
   id: 1.4.29
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8210,7 +8216,7 @@
 # from Brahmā").
 - sutra: जनिकर्तुः प्रकृतिः
   id: 1.4.30
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8224,7 +8230,7 @@
 # agent of √bhū → apādāna. हिमवतो गङ्गा प्रभवति ("the Ganga rises from Himavat").
 - sutra: भुवः प्रभवः
   id: 1.4.31
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8239,7 +8245,7 @@
 # fires on it; this is the nitya vibhakti for the saṁjñā.
 - sutra: अपादाने पञ्चमी
   id: 2.3.28
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8257,7 +8263,7 @@
 # yoga-words deferred.) Apavāda to 2.3.46.
 - sutra: अन्यारादितरर्तेदिक्शब्दाञ्चूत्तरपदाजाहियुक्ते
   id: 2.3.29
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -8280,7 +8286,7 @@
 # परि हरेः संसारः is the para reading.
 - sutra: अपपरी वर्जने
   id: 1.4.88
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp: [and, "=apa", "?semantic_varjana", "?!karmapravacanIya"]
     - lp: [and, "=pari", "?semantic_varjana", "?!karmapravacanIya"]
@@ -8293,7 +8299,7 @@
 # ṅ is not in the string).
 - sutra: आङ् मर्यादावचने
   id: 1.4.89
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8310,7 +8316,7 @@
 # तिलेभ्यः प्रतियच्छति माषान् are the pūrva reading.
 - sutra: प्रतिः प्रतिनिधिप्रतिदानयोः
   id: 1.4.92
-  bahiranga: -1
+  bahiranga: -2
   condition:
     - lp: [and, "=prati", "?semantic_pratiniDi", "?!karmapravacanIya"]
     - lp: [and, "=prati", "?semantic_pratidAna", "?!karmapravacanIya"]
@@ -8325,7 +8331,7 @@
 # kp_pancamI_pratinidhi). Apavāda to 2.3.46.
 - sutra: पञ्चम्यपाङ्परिभिः
   id: 2.3.10
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -8357,7 +8363,7 @@
 # keeps apa/āṅ/pari (kp_pancamI → 2.3.10) off this rule. Apavāda to 2.3.46.
 - sutra: प्रतिनिधिप्रतिदाने च यस्मात्
   id: 2.3.11
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -8390,7 +8396,7 @@
 # itself the agent it keeps its own kartṛ case and this pañcamī must not apply.
 - sutra: अकर्तर्यृणे पञ्चमी
   id: 2.3.24
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -8409,7 +8415,7 @@
 # K4 1.4.44. (The yoga-vibhāga अगुणे/स्त्रियाम् extension is deferred.)
 - sutra: विभाषा गुणेऽस्त्रियाम्
   id: 2.3.25
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46", "2.3.23"]
   condition:
@@ -8429,7 +8435,7 @@
 # karaṇa → tṛtīyā only). Same shape as K4 1.4.44.
 - sutra: करणे च स्तोकाल्पकृच्छ्रकतिपयस्यासत्त्ववचनस्य
   id: 2.3.33
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -8448,7 +8454,7 @@
 # Apavāda to 2.3.46.
 - sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
   id: 2.3.32.2
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -8466,7 +8472,7 @@
     olp: [+viBakti_3, +has_viBakti]
 - sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
   id: 2.3.32.1
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -8484,7 +8490,7 @@
     olp: [+viBakti_5, +has_viBakti]
 - sutra: पृथग्विनानानाभिस्तृतीयान्यतरस्याम्
   id: 2.3.32
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp:
@@ -8510,7 +8516,7 @@
 # to 2.3.46.
 - sutra: दूरान्तिकार्थेभ्यो द्वितीया च
   id: 2.3.35.2
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -8522,7 +8528,7 @@
     olp: [+viBakti_2, +has_viBakti]
 - sutra: दूरान्तिकार्थेभ्यो द्वितीया च
   id: 2.3.35.1
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -8534,7 +8540,7 @@
     olp: [+viBakti_5, +has_viBakti]
 - sutra: दूरान्तिकार्थेभ्यो द्वितीया च
   id: 2.3.35
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -8580,7 +8586,7 @@
 # Apavāda to 2.3.46.
 - sutra: षष्ठी हेतुप्रयोगे
   id: 2.3.26
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
@@ -8596,7 +8602,7 @@
 # wins it) and 2.3.46.
 - sutra: सर्वनाम्नस्तृतीया च
   id: 2.3.27
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.26", "2.3.46"]
   condition:
@@ -8612,7 +8618,7 @@
 # pañcamī of dik-śabda 2.3.28 (out of scope) and to 2.3.46.
 - sutra: षष्ठ्यतसर्थप्रत्ययेन
   id: 2.3.30
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
@@ -8629,7 +8635,7 @@
 # enap-word). overrides 2.3.46.
 - sutra: एनपा द्वितीया
   id: 2.3.31
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46", "2.3.31.1"]
   condition:
@@ -8647,7 +8653,7 @@
 # branch deterministic, 2.3.31 overrides this companion.
 - sutra: एनपा षष्ठी
   id: 2.3.31.1
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
@@ -8663,7 +8669,7 @@
 # rule). overrides 2.3.46.
 - sutra: दूरान्तिकार्थैः षष्ठ्यन्यतरस्याम्
   id: 2.3.34
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46", "2.3.34.1"]
   condition:
@@ -8678,7 +8684,7 @@
 # not applied. Guarded on the same dūra/antika word.
 - sutra: दूरान्तिकार्थैः पञ्चमी
   id: 2.3.34.1
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?prAtipadika", "?!has_viBakti", "?!kAraka"]
@@ -8697,7 +8703,7 @@
 # the karaṇa in śeṣa → ṣaṣṭhī: सर्पिषो जानीते (= ज्ञानम्).
 - sutra: ज्ञोऽविदर्थस्य करणे
   id: 2.3.51
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8709,7 +8715,7 @@
 # in śeṣa → ṣaṣṭhī: मातुः स्मरति.
 - sutra: अधीगर्थदयेशां कर्मणि
   id: 2.3.52
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8721,7 +8727,7 @@
 # śeṣa → ṣaṣṭhī: एधोदकस्योपस्करोति.
 - sutra: कृञः प्रतियत्ने
   id: 2.3.53
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8733,7 +8739,7 @@
 # the karman in śeṣa → ṣaṣṭhī: चौरस्य रुजति.
 - sutra: रुजार्थानां भाववचनानामज्वरेः
   id: 2.3.54
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8745,7 +8751,7 @@
 # śeṣa → ṣaṣṭhī: सर्पिषो नाथते.
 - sutra: आशिषि नाथः
   id: 2.3.55
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8757,7 +8763,7 @@
 # in the hiṁsā sense, the karman in śeṣa → ṣaṣṭhī: चौरस्योज्जासयति.
 - sutra: जासिनिप्रहणनाटक्राथपिषां हिंसायाम्
   id: 2.3.56
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8769,7 +8775,7 @@
 # kraya-vikraya) sense, the karman in śeṣa → ṣaṣṭhī: शतस्य व्यवहरति.
 - sutra: व्यवहृपणोः समर्थयोः
   id: 2.3.57
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8782,7 +8788,7 @@
 # the upasṛṣṭa case falls to the 2.3.59 vibhāṣā instead.
 - sutra: दिवस्तदर्थस्य
   id: 2.3.58
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8797,7 +8803,7 @@
 # Apavāda to 2.3.2 (पूर्वयोगापवादः) when it fires.
 - sutra: विभाषोपसर्गे
   id: 2.3.59
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.2"]
   condition:
@@ -8810,7 +8816,7 @@
 # the havis-denoting karman in śeṣa → ṣaṣṭhī: छागस्य हविषः प्रेष्य.
 - sutra: प्रेष्यब्रुवोर्हविषो देवतासंप्रदाने
   id: 2.3.61
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.50"]
   condition:
     lp: [and, "?semantic_Seza", "?semantic_havis", "?!has_viBakti"]
@@ -8823,7 +8829,7 @@
 # The kṛtvas-word sits adjacent (llp/rrp peek). overrides 2.3.46 / 2.3.50.
 - sutra: कृत्वोर्थप्रयोगे कालेऽधिकरणे
   id: 2.3.64
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46", "2.3.50"]
   condition:
     - lp: [and, "?semantic_Seza", "?!has_viBakti"]
@@ -8849,7 +8855,7 @@
 # 2.3.2 dvitīyā (no finite verb → rp ?!karmaRi true). Apavāda to 2.3.2 / 2.3.18.
 - sutra: कर्तृकर्मणोः कृति
   id: 2.3.65
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.2", "2.3.18"]
   condition:
     - lp: [and, "?semantic_Ipsitatama", "?!has_viBakti"]
@@ -8868,7 +8874,7 @@
 # present, not past) — modelled by the kta_vartamAna governor (no kft_aSazWI).
 - sutra: क्तस्य च वर्तमाने
   id: 2.3.67
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.2", "2.3.18"]
   condition:
     - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
@@ -8882,7 +8888,7 @@
 # kartṛ → ṣaṣṭhī: एतेषामासितम्.
 - sutra: अधिकरणवाचिनश्च
   id: 2.3.68
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.2", "2.3.18"]
   condition:
     - lp: [and, "?semantic_svatantra", "?!has_viBakti"]
@@ -8898,7 +8904,7 @@
 # 2.3.18 fires in the skip branch). Apavāda to 2.3.18 when it fires.
 - sutra: कृत्यानां कर्तरि वा
   id: 2.3.71
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.18"]
   condition:
@@ -8948,7 +8954,7 @@
 # the kartṛ/karma → adhikaraṇa saṁjñā. कटे आस्ते, स्थाल्यां पचति, मोक्षे इच्छास्ति.
 - sutra: आधारोऽधिकरणम्
   id: 1.4.45
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -8964,7 +8970,7 @@
 # split out below as the optional rule 2.3.36.1.
 - sutra: सप्तम्यधिकरणे च
   id: 2.3.36
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -8982,7 +8988,7 @@
 # ग्रामस्य दूरे/दूरम्/दूरात्/दूरेण. (overrides 2.3.46 like its sibling.)
 - sutra: सप्तम्यधिकरणे च
   id: 2.3.36.1
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.46"]
   condition:
@@ -9001,7 +9007,7 @@
 # 2.3.46 prathamā default.
 - sutra: यस्य च भावेन भावलक्षणम्
   id: 2.3.37
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -9018,7 +9024,7 @@
 # saptamī. apply ⇒ viBakti_7 (रुदति); skip ⇒ 2.3.50 viBakti_6 (रुदतः).
 - sutra: षष्ठी चानादरे
   id: 2.3.38
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.50"]
   condition:
@@ -9038,7 +9044,7 @@
 # skip ⇒ 2.3.50 ⇒ 6 (गवाम्).
 - sutra: स्वामीश्वराधिपतिदायादसाक्षिप्रतिभूप्रसूतैश्च
   id: 2.3.39
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.50"]
   condition:
@@ -9055,7 +9061,7 @@
 # noun carries semantic_Seza → 2.3.50 ṣaṣṭhī default. apply ⇒ 7; skip ⇒ 6.
 - sutra: आयुक्तकुशलाभ्यां चासेवायाम्
   id: 2.3.40
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.50"]
   condition:
@@ -9072,7 +9078,7 @@
 # semantic_Seza + semantic_nirDAraRa → 2.3.50 ṣaṣṭhī default. apply ⇒ 7; skip ⇒ 6.
 - sutra: यतश्च निर्धारणम्
   id: 2.3.41
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.50"]
   condition:
@@ -9090,7 +9096,7 @@
 # Apavāda to the 2.3.46 prathamā default.
 - sutra: पञ्चमी विभक्ते
   id: 2.3.42
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     lp:
@@ -9107,7 +9113,7 @@
 # prati-yoga blocking — deferred; the bare praise reading is modelled.)
 - sutra: साधुनिपुणाभ्यामर्चायां सप्तम्यप्रतेः
   id: 2.3.43
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.46"]
   condition:
     - lp: [and, "?semantic_arcA", "?!has_viBakti"]
@@ -9127,7 +9133,7 @@
 # (हरिणा); skip ⇒ 2.3.36 viBakti_7 (हरौ).
 - sutra: प्रसितोत्सुकाभ्यां तृतीया च
   id: 2.3.44
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.36"]
   condition:
@@ -9145,7 +9151,7 @@
 # (taddhita-lup machinery deferred, §6 — modelled on the plain stem मूल.)
 - sutra: नक्षत्रे च लुपि
   id: 2.3.45
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.36"]
   condition:
@@ -9163,7 +9169,7 @@
 # skip ⇒ 2.3.36 viBakti_7 (द्व्यहे/क्रोशे).
 - sutra: सप्तमीपञ्चम्यौ कारकमध्ये
   id: 2.3.7
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   overrides: ["2.3.36"]
   condition:
@@ -9181,7 +9187,7 @@
 # precedes its noun), अधि रामे भूः likewise.
 - sutra: अधिरीश्वरे
   id: 1.4.97
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -9199,7 +9205,7 @@
 # half-of-the-universe") is the para reading.
 - sutra: उपोऽधिके च
   id: 1.4.87.1
-  bahiranga: -1
+  bahiranga: -2
   condition:
     lp:
       - and
@@ -9219,7 +9225,7 @@
 # override of the prathamā default can no longer be inherited transitively.
 - sutra: यस्मादधिकं यस्य चेश्वरवचनं तत्र सप्तमी
   id: 2.3.9
-  bahiranga: -1
+  bahiranga: -2
   overrides: ["2.3.8", "2.3.46"]
   condition:
     - lp:
@@ -9251,7 +9257,7 @@
 # the kṛ-karma); surface deferred (no tiṅanta for adhi-√kṛ, §6).
 - sutra: विभाषा कृञि
   id: 1.4.98
-  bahiranga: -1
+  bahiranga: -2
   optional: true
   condition:
     lp:
@@ -9262,4 +9268,88 @@
     rp: "?kfYi"
   update:
     olp: [+karmapravacanIya, +kp_saptamI]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — अव्ययीभावसमासः (SK 647–677) — avyayībhāva samāsa plan
+#
+# bahiranga: -1 → samāsa pre-pass (AntarangaPrakriya._samasa_prepass): runs on
+# each adjacent compound-member window (pūrva = lp | uttara = rp), AFTER the
+# kāraka pre-pass + sup-insertion (सह सुपा 2.1.4). Assigns saṁjñā / member-role
+# / upasarjana tags; does NOT luk internal vibhakti (main scan, 2.4.71) and does
+# NOT physically reorder (2.2.30 deferred — avyaya is already pūrva).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 651/652: अव्ययीभावः (2.1.5) + अव्ययं विभक्तिसमीप… (2.1.6) — avyayībhāva vidhi.
+# An avyaya (nipāta) pūrva carrying an avyayībhāva sense (samīpa/vibhakti/…)
+# followed by a noun (?prAtipadika + vacana_*) forms an avyayībhāva: the uttara
+# (last member) gets ?samAsa + ?avyayIBAva, the pūrva gets ?samAsaPurva. (The
+# saṁjñā 2.1.5 and vidhi 2.1.6 are fused into one pre-pass rule for S1A.)
+- sutra: अव्ययं विभक्तिसमीपसमृद्ध्यर्थाभावात्ययासंप्रतिशब्दप्रादुर्भावपश्चाद्यथानुपूर्व्ययौगपद्यसादृश्यसंपत्तिसाकल्यान्तवचनेषु
+  id: 2.1.6
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?nipAta"
+      - - or
+        - "?semantic_samIpa"
+        - "?semantic_vibhakti"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +avyayIBAva]
+
+# 653: प्रथमानिर्दिष्टं समास उपसर्जनम् (1.2.43) — the term named in prathamā in
+# the vidhi (the avyaya of 2.1.6) is upasarjana. Tags the pūrva ?upasarjana.
+- sutra: प्रथमानिर्दिष्टं समास उपसर्जनम्
+  id: 1.2.43
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?!upasarjana"
+    rp: "?samAsa"
+  update:
+    olp: [+upasarjana]
+
+# ── Avyayībhāva-final morphology (main scan; fires on the uttara member + its
+#    sup BEFORE the merge — bahiranga ≤ 2 vs the merge's 99+) ──────────────────
+
+# 659/1.1.41: अव्ययीभावश्च (1.1.41) — the avyayībhāva is an avyaya. Sets ?avyaya
+# on the uttara member (the one carrying ?avyayIBAva), so its sup then luks via
+# the existing 2.4.82 (अव्ययादाप्सुपः) — e.g. i-stem अधिहरि (hari + su → luk).
+- sutra: अव्ययीभावश्च
+  id: 1.1.41
+  domain: saMjYA
+  bahiranga: 0
+  condition:
+    lp:
+      - and
+      - "?avyayIBAva"
+      - "?!avyaya"
+  update:
+    olp: +avyaya
+
+# 657/2.4.83: नाव्ययीभावादतोऽम् (2.4.83, apañcamyāḥ deferred) — after an
+# a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am).
+# Overrides 2.4.82 → उपकृष्णम् (upa + kṛṣṇa + am). i-/other stems fall through
+# to 2.4.82 luk. (apañcamyāḥ carve-out and 2.4.84 bahula deferred to S1B/S3.)
+- sutra: नाव्ययीभावादतोऽम्
+  id: 2.4.83
+  bahiranga: 2
+  overrides: 2.4.82
+  condition:
+    l: at
+    lp:
+      - and
+      - "?avyayIBAva"
+      - "?avyaya"
+    rp: "?sup"
+  update:
+    orp: =am
 

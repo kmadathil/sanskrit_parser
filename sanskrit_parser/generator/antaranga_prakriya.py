@@ -194,10 +194,17 @@ class AntarangaPrakriya(PrakriyaBase):
         # Set to True to capture per-step evaluation data (opt-in; slower)
         # Must be set before the inner prakriya loop so inner prakriyas inherit it.
         self._capture_eval = capture_eval
-        # Kāraka layer rule split (karaka_plan.md §2): bahiranga == -1 marks the
-        # sentence-level tagging pre-pass class (kāraka-saṁjñā + vibhakti-vidhi
-        # rules); the main window scan runs only the > -1 (phonological) rules.
+        # Pre-pass rule split (karaka_plan.md §2 + avyayībhāva samāsa plan):
+        #   bahiranga == -2 → kāraka pre-pass (sentence-level kāraka-saṁjñā +
+        #     vibhakti-vidhi tagging; runs first, fixes vibhakti).
+        #   bahiranga == -1 → samāsa pre-pass (compound formation; runs AFTER
+        #     the kāraka pass + sup-insertion, since सह सुपा 2.1.4 compounds
+        #     padas-with-sup). Lower = more antaraṅga = earlier.
+        #   bahiranga  > -1 → main window scan (phonological rules), unchanged
+        #     (already excludes both -2 and -1).
         self._karaka_sutras = [s for s in sutra_list
+                               if getattr(s, "bahiranga", 9) == -2]
+        self._samasa_sutras = [s for s in sutra_list
                                if getattr(s, "bahiranga", 9) == -1]
         self._main_sutras = [s for s in sutra_list
                              if getattr(s, "bahiranga", 9) > -1]
@@ -237,6 +244,12 @@ class AntarangaPrakriya(PrakriyaBase):
         self.karaka_log = []
         if karaka and self._karaka_sutras:
             self._karaka_prepass()
+        # Samāsa pre-pass (avyayībhāva samāsa plan): runs AFTER the kāraka
+        # pre-pass + sup-insertion (सह सुपा 2.1.4 — compounding needs the sups),
+        # on each kāraka branch. No-op until -1 samāsa rules exist / a compound
+        # candidate is present (skip-guard inside).
+        if karaka and self._samasa_sutras:
+            self._samasa_prepass()
         self.hier_prakriyas = []
         self.need_hier = False
         # Kāraka pre-pass branches (karaka_plan.md §2 point 3): a vibhāṣā
@@ -309,7 +322,7 @@ class AntarangaPrakriya(PrakriyaBase):
         """Sentence-level kāraka/vibhakti tagging pre-pass + sup insertion.
 
         For each participant element (scalar, ?prAtipadika + a vacana_N tag),
-        run exactly the bahiranga == -1 rules on the synthetic window
+        run exactly the bahiranga == -2 rules on the synthetic window
         (element | sentence-dhātu) to fixpoint — 1.4.x rules write kAraka_*,
         2.3.x rules write viBakti_N (naturally sequenced: the latter condition
         on the former). disabled_sutras bookkeeping mirrors _exec. Then insert
@@ -379,7 +392,7 @@ class AntarangaPrakriya(PrakriyaBase):
             return inputs[ix]
 
         def _run_fixpoint(inputs, ix, fired_prefix=None):
-            # Run the bahiranga == -1 rules on element ix (window = elem | dhātu)
+            # Run the bahiranga == -2 rules on element ix (window = elem | dhātu)
             # to fixpoint, mirroring _exec's bookkeeping. A vibhāṣā (optional)
             # winner FORKS: one branch (a deep clone with the rule disabled on the
             # element) re-runs the fixpoint — falling through to the general rule
@@ -502,6 +515,92 @@ class AntarangaPrakriya(PrakriyaBase):
         # Apply right-to-left so collected indices stay valid.
         for jx, supobj in reversed(insertions):
             inputs.insert_at(jx, supobj)
+
+    # ── Samāsa layer (avyayībhāva samāsa plan) ───────────────────────────────
+    def _samasa_prepass(self):
+        """Samāsa formation pre-pass — runs AFTER the kāraka pre-pass +
+        _insert_sups, on padas-with-sup (सह सुपा 2.1.4).
+
+        Runs exactly the bahiranga == -1 rules on each adjacent compound-member
+        window (pūrva | uttara) to fixpoint. The rules assign the samāsa saṁjñā
+        (?avyayIBAva …), the member roles (?samAsaPurva on the pūrva, ?samAsa on
+        the uttara) and ?upasarjana (1.2.43). It does NOT delete internal
+        vibhakti (sup-luk is a main-scan job, 2.4.71) and does NOT physically
+        reorder (2.2.30 deferred — in avyayībhāva the avyaya is already pūrva).
+
+        A compound candidate is a maximal run of adjacent member prātipadikas
+        (their inserted sups skipped) NOT separated by an avasAna, flagged for
+        samāsa — either ?samAsa_vivakza (user intent; the vibhāṣā block ≥ SK665)
+        or a samāsa sense a nitya rule keys on (≤ SK664). Skip-guard: no-op
+        unless some -1 rule exists AND a candidate run is present. Operates on
+        each kāraka branch in place; mirrors _karaka_prepass's bookkeeping."""
+        if not self._samasa_sutras:
+            return
+        for inputs in (getattr(self, "_karaka_branches", None) or [self.inputs]):
+            self._samasa_prepass_branch(inputs)
+
+    @staticmethod
+    def _is_samasa_member(o):
+        # A compound member: a prātipadika that is not its own inserted sup /
+        # pratyaya, not a separator (Adya/avasAna), not the verb pada.
+        return (_isScalar(o) and o.hasTag("prAtipadika")
+                and not o.hasTag("sup") and not o.hasTag("pratyaya")
+                and not o.hasTag("avasAna") and not o.hasTag("Adya")
+                and not o.hasTag("tiNanta"))
+
+    def _samasa_prepass_branch(self, inputs):
+        def _flagged(o):
+            return (o.hasTag("samAsa_vivakza")
+                    or any(t.startswith("semantic_") for t in o.tags))
+
+        def _avasana_between(i, j):
+            return any(_isScalar(inputs[k]) and inputs[k].hasTag("avasAna")
+                       for k in range(i + 1, j))
+
+        members = [ix for ix in range(len(inputs))
+                   if self._is_samasa_member(inputs[ix])]
+        # Apply -1 rules to each adjacent (pūrva | uttara) member pair that is a
+        # compound candidate (no avasAna between; flagged for samāsa).
+        for a, b in zip(members, members[1:]):
+            if _avasana_between(a, b):
+                continue
+            if not (_flagged(inputs[a]) or _flagged(inputs[b])):
+                continue
+            self._samasa_window_fixpoint(inputs, a, b)
+
+    def _samasa_window_fixpoint(self, inputs, a, b):
+        """Run the bahiranga == -1 rules on the (pūrva | uttara) member window
+        (indices a, b) to fixpoint, writing tags back to both members. llp/rrp
+        context = the physical neighbours just outside the window."""
+        lp, rp = inputs[a], inputs[b]
+        fired = []
+        while True:
+            ctx = (inputs[a - 1] if a - 1 >= 0 else None,
+                   inputs[b + 1] if b + 1 < len(inputs) else None)
+            triggered = [s for s in self._samasa_sutras
+                         if (s.aps not in lp.disabled_sutras)
+                         and s.isTriggered(lp, rp, context=ctx)]
+            if not triggered:
+                break
+            s = self.sutra_priority(triggered, [lp, rp])
+            r = s.operate(lp, rp)
+            r = s.update(lp, rp, *r)
+            nlp, nrp = r[0], r[1]
+            nlp.disabled_sutras.append(s.aps)
+            nlp.disabled_by[s.aps] = s.aps
+            if s.overrides is not None:
+                for so_aps in s.overrides:
+                    nlp.disabled_sutras.append(so_aps)
+                    nlp.disabled_by[so_aps] = s.aps
+            fired.append(s.aps)
+            logger.debug(f"Samāsa pre-pass [{s.aps}] @({a},{b}): "
+                         f"{nlp}|{nrp} tags {sorted(nlp.tags)}/{sorted(nrp.tags)}")
+            inputs.replace_at(a, nlp)
+            inputs.replace_at(b, nrp)
+            lp, rp = inputs[a], inputs[b]
+        if fired:
+            self.karaka_log.append({"index": b, "fired": fired,
+                                    "tags": sorted(rp.tags), "samasa": True})
 
     def _apply_antadivat(self, s, r):
         """6.1.85 antādivat boundary marking. Called from _exec AND from the
@@ -883,7 +982,8 @@ class AntarangaPrakriya(PrakriyaBase):
 
     def _exec(self, node):
         # Window scan runs only the phonological (bahiranga > -1) rules; the
-        # bahiranga == -1 kāraka class belongs to the pre-pass (karaka_plan.md §2).
+        # bahiranga == -2 kāraka and == -1 samāsa classes belong to the
+        # pre-passes (karaka_plan.md §2 + avyayībhāva samāsa plan).
         l = self._main_sutras  # noqa: E741
         found_pratyaya = False
         found_samasa   = False

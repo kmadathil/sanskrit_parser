@@ -182,6 +182,14 @@ su_kp    = Pratipadika("su",    "pum", other_tags=["nipAta"])   # सु (1.4.94
 ati_kp   = Pratipadika("ati",   "pum", other_tags=["nipAta"])   # अति (1.4.95)
 api_kp   = Pratipadika("api",   "pum", other_tags=["nipAta"])   # अपि (1.4.96)
 
+# ── Avyayībhāva-samāsa pūrva-pada avyayas (avyayībhāva samāsa plan, S1A) ──────
+# Prādi avyayas that head an avyayībhāva (2.1.6). nipāta → avyaya saṁjñā via
+# SK447 (1.1.37). They carry their per-usage avyayībhāva sense at input
+# (semantic_samIpa, semantic_vibhakti, …); the samāsa pre-pass 2.1.6 then forms
+# the compound and tags the uttara ?avyayIBAva.
+upa_avyaya = Pratipadika("upa", "pum", other_tags=["nipAta"])   # उप (समीपम् — उपकृष्णम्)
+aDi_avyaya = Pratipadika("aDi", "pum", other_tags=["nipAta"])   # अधि (विभक्ति — अधिहरि)
+
 # ── Kāraka Phase K6: ṣaṣṭhī-chapter yoga-words (karaka_plan.md §K6) ───────────
 # Fixed-surface "peek" words read by the K6 ṣaṣṭhī rules via llp/rrp (literal
 # =word match), exactly like the K2/K3/K4 yoga particles (saha, namas, antarā).
