@@ -90,3 +90,41 @@ def test_samasa_avyayibhava(case):
     want = case["surfaces"] if "surfaces" in case else [case["surface"]]
     expected = {_to_slp1(s) for s in want}
     assert got == expected, f"{case['label']}: surface {got} != {expected}"
+
+
+# ── Full vibhakti sweep for an a-stem avyayībhāva (उपकृष्ण) ───────────────────
+# The avyayībhāva is avyaya, so it declines invariantly as उपकृष्णम् (अम्, 2.4.83)
+# — EXCEPT the ablative उपकृष्णात् (apañcamyāḥ, 2.4.83.1; both pada-final त्/द्
+# surface variants) and the OPTIONAL tṛtīyā/saptamī forms उपकृष्णेन/उपकृष्णे
+# (2.4.84 bahula, which fork alongside the अम् form).
+_AVYAYIBHAVA_VIBHAKTIS = {
+    1: ["उपकृष्णम्"],
+    2: ["उपकृष्णम्"],
+    3: ["उपकृष्णम्", "उपकृष्णेन"],            # 2.4.84 bahula
+    4: ["उपकृष्णम्"],
+    5: ["उपकृष्णात्", "उपकृष्णाद्"],          # 2.4.83.1 apañcamyāḥ (त्/द् variants)
+    6: ["उपकृष्णम्"],
+    7: ["उपकृष्णम्", "उपकृष्णे"],            # 2.4.84 bahula
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_AVYAYIBHAVA_VIBHAKTIS))
+def test_avyayibhava_vibhakti_sweep(vib_n):
+    """उप + कृष्ण (samīpa, a-stem) declined in each vibhakti — exercises 2.4.83
+    (अम्), 2.4.83.1 (apañcamyāḥ → ablative), and 2.4.84 (bahula tṛtīyā/saptamī)."""
+    purva = deepcopy(getattr(_avyaya, "upa_avyaya"))
+    purva.setTag("semantic_samIpa")
+    uttara = deepcopy(getattr(_pratipadika, "kfzRa"))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")
+    uttara.setTag("has_viBakti")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    expected = {_to_slp1(s) for s in _AVYAYIBHAVA_VIBHAKTIS[vib_n]}
+    assert got == expected, \
+        f"avyayībhāva viBakti_{vib_n}: {got} != {expected}"
+    # The pañcamī must NOT collapse to the अम् form (the apañcamyāḥ point).
+    if vib_n == 5:
+        assert _to_slp1("उपकृष्णम्") not in got, "pañcamī wrongly got अम्"

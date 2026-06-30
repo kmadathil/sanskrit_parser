@@ -9551,7 +9551,7 @@
 # ── Avyayībhāva-final morphology (main scan; fires on the uttara member + its
 #    sup BEFORE the merge — bahiranga ≤ 2 vs the merge's 99+) ──────────────────
 
-# 659/1.1.41: अव्ययीभावश्च (1.1.41) — the avyayībhāva is an avyaya. Sets ?avyaya
+# 451/1.1.41: अव्ययीभावश्च (1.1.41) — the avyayībhāva is an avyaya. Sets ?avyaya
 # on the uttara member (the one carrying ?avyayIBAva), so its sup then luks via
 # the existing 2.4.82 (अव्ययादाप्सुपः) — e.g. i-stem अधिहरि (hari + su → luk).
 - sutra: अव्ययीभावश्च
@@ -9583,9 +9583,11 @@
     olp: [+napum, -pum]
 
 # 657/2.4.83: नाव्ययीभावादतोऽम् (2.4.83, apañcamyāḥ deferred) — after an
-# a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am).
-# Overrides 2.4.82 → उपकृष्णम् (upa + kṛṣṇa + am). i-/other stems fall through
-# to 2.4.82 luk. (apañcamyāḥ carve-out and 2.4.84 bahula deferred to S1B/S3.)
+# a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am)
+# — EXCEPT in the pañcamī (त्वपञ्चम्याः; see 2.4.83.1 below). Overrides 2.4.82 →
+# उपकृष्णम्. i-/other stems fall through to 2.4.82 luk. So the avyayībhāva
+# declines invariantly as उपकृष्णम् save the ablative उपकृष्णात् (apañcamyāḥ) and
+# the optional tṛtīyā/saptamī forms (2.4.84 bahula).
 - sutra: नाव्ययीभावादतोऽम्
   id: 2.4.83
   bahiranga: 2
@@ -9596,9 +9598,29 @@
       - and
       - "?avyayIBAva"
       - "?avyaya"
+      - "?!viBakti_5"          # त्वपञ्चम्याः: am does NOT apply in the pañcamī
     rp: "?sup"
   update:
     orp: =am
+
+# 657.1/2.4.83 (त्वपञ्चम्याः sub-rule) — in the pañcamī the अम् of 2.4.83 does
+# NOT apply; the real ablative ending surfaces instead (उपकृष्णात्, अपदिशात्).
+# Modeled by dropping ?avyaya on the a-ending avyayībhāva uttara when it carries
+# viBakti_5, so neither 2.4.83 (am) nor 2.4.82 (luk) fires and the ṅasi → आत्
+# a-stem ablative declines normally. Fires before both (bahiranga 1).
+- sutra: नाव्ययीभावादतोऽम् त्वपञ्चम्याः
+  id: 2.4.83.1
+  bahiranga: 1
+  condition:
+    l: at
+    lp:
+      - and
+      - "?avyayIBAva"
+      - "?avyaya"
+      - "?viBakti_5"
+    rp: "?sup"
+  update:
+    olp: [-avyaya]
 
 # 658/2.4.84: तृतीयासप्तम्योर्बहुलम् (2.4.84) — for a tṛtīyā/saptamī-sense
 # avyayībhāva the अम् (2.4.83) is BAHULA (optional). Modeled as an optional fork
