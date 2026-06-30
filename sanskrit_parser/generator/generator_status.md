@@ -618,12 +618,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 448 | 1.1.38 | तद्धितश्चाऽसर्वविभक्तिः | For later — taddhita engine pending | avyaya saṁjñā for taddhita-ending words that lack full vibhakti paradigms (tasil and similar) |
 | 449 | 1.1.39 | कृन्मेजन्तः | For later — kṛt engine pending | avyaya saṁjñā for kṛt suffixes ending in m or ec (smāram smāram, jīvase, pibadhai) |
 | 450 | 1.1.40 | क्त्वातोसुन्कसुनः | For later — kṛdanta forms not yet generated | avyaya saṁjñā for gerunds/absolutives: ktvā (kṛtvā), tosun (udetoḥ), kasun (visṛpaḥ) |
-| 654 | 2.2.30 | उपसर्जनं पूर्वम् | Partial — the upasarjana saṁjñā is recorded in the samāsa pre-pass, but physical pūrva-nipāta (moving the upasarjana to the front, carrying its sup) is deferred; avyayībhāva needs no reorder (avyaya is already pūrva) | tatpuruṣa/bahuvrīhi/dvandva where the upasarjana is not the pūrva |
-| 665 | 2.1.11 | विभाषा | Natural — the "only-when-intended" adhikāra is realized as the `?samAsa_vivakza` gate on the ≥SK665 (S2) rules; not a standalone rule block | S2 vibhāṣā block (अपग्रामम्, प्रत्यग्नि …) |
-| 671 | 2.1.17 | तिष्ठद्गुप्रभृतीनि च | For later — tiṣṭhadgu-gaṇa of ready-made avyayībhāvas (a lexical list) | gaṇa members (tiṣṭhadgu, āyatīgavam, …) |
-| 672 | 2.1.18 | पारे मध्ये षष्ठ्या वा | For later — pāre/madhye need pre-inflected irregular pūrva members (पारेगङ्गम्) | pāre/madhye ṣaṣṭhī-vā compounds |
-| 675 | 2.1.21 | अन्यपदार्थे च संज्ञायाम् | For later — anyapadārtha (bahuvrīhi-like) avyayībhāva as a saṁjñā | named anyapadārtha compounds (कण्ठेकालम् etc.) |
-| 676 | 5.4.68 | समासान्ताः | Natural — samāsānta adhikāra; realized as the affix-insertion path for 5.4.107. Other samāsānta affixes/gaṇa and the 2.4.84 सुमद्रम्/उन्मत्तगङ्गम् nitya-am exception list are deferred | samāsānta affixes beyond TaC |
 | 453 | 4.1.3 | स्त्रियाम् | Natural — adhikāra scope marker; domain: prakfti covers it | All stripratyaya rules SK454+ |
 | 456 | 4.1.7 | वनो र च | Partial — vārttikas pending | "vano na haśaḥ" (no NIp/n→r when van follows a haś-pratyāhāra consonant in the underlying dhātu, e.g. sahayudhvan f. = sahayudhvā) and "bahuvrīhau vā" (optional NIp in bahuvrīhi, e.g. bahudhīvarī ~ bahudhīvā via ḍāp) — deferred; require dhātu-history tracking and a bahuvrīhi tag respectively |
 | 458 | 4.1.9 | टाबृचि | For later — requires ṛk-meter semantic context (ऋचि वाच्यायाम्) | TAp after pād-final feminine in the sense of an ṛk verse (द्विपदा ऋक्); engine has no semantic tracking, would emit a spurious द्विपदा for dvipAd_strI |
@@ -675,6 +669,12 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 | 624 | 2.3.66 | उभयप्राप्तौ कर्मणि | Deferred (K6) — needs a genuine dual-kāraka kṛt-valency frame | when both kartṛ and karman could take ṣaṣṭhī under 2.3.65, the karman (ubhaya-prāpti) is fixed as karman; requires a kṛt governor with two simultaneous kārakas, which the single-kāraka test frames do not model |
 | 630 | 2.3.72 | तुल्यार्थैरतुलोपमाभ्यां तृतीयान्यतरस्याम् | Deferred (K6) — tulya-artha comparison long tail | with tulya-artha words (except atula/upamā) the standard of comparison optionally → tṛtīyā (else ṣaṣṭhī): तुल्यो देवदत्तेन / देवदत्तस्य; no tulya-yoga test frame yet |
 | 631 | 2.3.73 | चतुर्थी चाशिष्यायुष्यमद्रभद्रकुशलसुखार्थहितैः | Deferred (K6) — āśiṣ benediction long tail | in benediction (āśiṣ) with āyuṣya/madra/bhadra/kuśala/sukha-artha/hita words the person optionally → caturthī (else ṣaṣṭhī): आयुष्यं देवदत्ताय / देवदत्तस्य; not yet modelled |
+| 654 | 2.2.30 | उपसर्जनं पूर्वम् | Partial (avyayībhāva S0) — the upasarjana saṁjñā is recorded in the samāsa pre-pass, but physical pūrva-nipāta (moving the upasarjana to the front, carrying its sup) is deferred; avyayībhāva needs no reorder (avyaya is already pūrva) | tatpuruṣa/bahuvrīhi/dvandva where the upasarjana is not the pūrva |
+| 665 | 2.1.11 | विभाषा | Natural (avyayībhāva S2) — the "only-when-intended" adhikāra is realized as the `?samAsa_vivakza` gate on the ≥SK665 rules; not a standalone rule block | S2 vibhāṣā block (अपग्रामम्, प्रत्यग्नि …) |
+| 671 | 2.1.17 | तिष्ठद्गुप्रभृतीनि च | For later (avyayībhāva) — tiṣṭhadgu-gaṇa of ready-made avyayībhāvas (a lexical list) | gaṇa members (tiṣṭhadgu, āyatīgavam, …) |
+| 672 | 2.1.18 | पारे मध्ये षष्ठ्या वा | For later (avyayībhāva) — pāre/madhye need pre-inflected irregular pūrva members (पारेगङ्गम्) | pāre/madhye ṣaṣṭhī-vā compounds |
+| 675 | 2.1.21 | अन्यपदार्थे च संज्ञायाम् | For later (avyayībhāva) — anyapadārtha (bahuvrīhi-like) avyayībhāva as a saṁjñā | named anyapadārtha compounds (कण्ठेकालम् etc.) |
+| 676 | 5.4.68 | समासान्ताः | Natural (avyayībhāva S3) — samāsānta adhikāra; realized as the affix-insertion path for 5.4.107. Other samāsānta affixes/gaṇa and the 2.4.84 सुमद्रम्/उन्मत्तगङ्गम् nitya-am exception list are deferred | samāsānta affixes beyond TaC |
 
 ---
 
