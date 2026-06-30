@@ -1240,8 +1240,13 @@ def _build_word(spec):
         for t in sems:
             p.setTag(t)
         if samasa:
-            # samāsa avyaya member: intent tag, no karmapravacanīya direction.
+            # samāsa avyaya member: intent tag + kp_para (it governs the
+            # FOLLOWING uttara). For a kp sense (apa/pari varjana, āṅ maryAdā)
+            # this lets the kāraka layer assign the noun pañcamī (1.4.88/89 →
+            # 2.3.10 → viBakti_5) which 2.1.12/2.1.13 require; for a non-kp sense
+            # (samīpa etc.) a bare kp_para is inert.
             p.setTag("samAsa_vivakza")
+            p.setTag("kp_para")
         elif sems:
             # karmapravacanīya: direction is a user choice, default "pUrva".
             direction = spec.get("dir") or "pUrva"

@@ -2804,6 +2804,27 @@
   insert:
      l:  str("n")
 
+# 679/6.4.144: नस्तद्धिते (6-4-144) — the न् of an an-stem aṅga drops before a
+# taddhita affix. For the avyayībhāva samāsānta उपराजम् the TaC (wac, ?tadDita)
+# follows rājan → the अन् gives way → rāj, then + टच् अ → rāja (a-stem) → 2.4.83
+# अम् → उपराजम्. Overrides the an-ablaut 6.4.134 (which would give rājñ) in the
+# taddhita context. (Scoped to the ?rAjan an-marker; generalize to any an-stem
+# when more an-final uttaras are needed.)
+- sutra: नस्तद्धिते
+  id: 6.4.144
+  overrides: 6.4.134
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?rAjan
+     ll: at
+     l: n
+     rp: ?tadDita
+  xform:
+     lc: lc[:-1]
+     l: null
+
 # 237: विभाषा ङिश्योः (6-4-136)
 - sutra: विभाषा ङिश्योः
   id: 6.4.136
@@ -9405,8 +9426,13 @@
 # words stay separate (a different input, not a branch). Mechanics otherwise
 # identical to the nitya block (single result).
 
-# 666/2.1.12: अपपरिबहिरञ्चवः पञ्चम्या (2.1.12) — apa/pari/bahir/añcu + (pañcamī)
-# noun → avyayībhāva: अपग्रामम् ("away from the village").
+# 666/2.1.12: अपपरिबहिरञ्चवः पञ्चम्या (2.1.12) — apa/pari/bahir/añcu + a noun in
+# the PAÑCAMĪ (पञ्चम्या) → avyayībhāva: अपग्रामम् ("away from the village"). The
+# noun's pañcamī is set by the kāraka layer (apa/pari + semantic_varjana → 1.4.88
+# kp_pancamI → 2.3.10 → viBakti_5), which 2.1.12 reads as ?viBakti_5 on rp. The
+# internal pañcamī (vigraha case) is then CONSUMED: swap it to prathamā +
+# swap_viBakti, so _swap_sups replaces the ṅasi sup with su and the compound
+# declines externally as अम् (अपग्रामम्, not the ablative अपग्रामात्).
 - sutra: अपपरिबहिरञ्चवः पञ्चम्या
   id: 2.1.12
   bahiranga: -1
@@ -9422,13 +9448,16 @@
     rp:
       - and
       - "?prAtipadika"
+      - "?viBakti_5"
       - "?!samAsa"
   update:
     olp: [+samAsaPurva]
-    orp: [+samAsa, +avyayIBAva]
+    orp: [+samAsa, +avyayIBAva, -viBakti_5, +viBakti_1, +swap_viBakti]
 
-# 667/2.1.13: आङ्मर्यादाभिविध्योः (2.1.13) — āṅ (ā) in maryādā/abhividhi + noun →
-# avyayībhāva: आसमुद्रम् ("up to / including the ocean").
+# 667/2.1.13: आङ्मर्यादाभिविध्योः (2.1.13) — āṅ (ā) in maryādā/abhividhi + a noun
+# in the PAÑCAMĪ → avyayībhāva: आसमुद्रम् ("up to / including the ocean"). pañcamī
+# set by the kāraka layer (A + semantic_maryAdA → 1.4.89 → 2.3.10 → viBakti_5);
+# consumed via swap_viBakti exactly as 2.1.12.
 - sutra: आङ्मर्यादाभिविध्योः
   id: 2.1.13
   bahiranga: -1
@@ -9441,10 +9470,11 @@
     rp:
       - and
       - "?prAtipadika"
+      - "?viBakti_5"
       - "?!samAsa"
   update:
     olp: [+samAsaPurva]
-    orp: [+samAsa, +avyayIBAva]
+    orp: [+samAsa, +avyayIBAva, -viBakti_5, +viBakti_1, +swap_viBakti]
 
 # 668/2.1.14: लक्षणेनाभिप्रती आभिमुख्ये (2.1.14) — abhi/prati (in ābhimukhya, facing
 # a lakṣaṇa) + noun → avyayībhāva: प्रत्यग्नि ("towards the fire"). [flagship]
@@ -9548,8 +9578,11 @@
     olp: [+samAsaPurva]
     orp: [+samAsa, +avyayIBAva]
 
-# ── Avyayībhāva-final morphology (main scan; fires on the uttara member + its
-#    sup BEFORE the merge — bahiranga ≤ 2 vs the merge's 99+) ──────────────────
+# ── Avyayībhāva saṁjñās set in the samāsa PRE-PASS (bahiranga -1) so the uttara
+#    enters the main scan already carrying ?avyaya / ?napum (no ordering
+#    dependency in the window scan). In the pre-pass window the ?avyayIBAva tag
+#    is on the uttara = rp, so these condition on rp / update orp (cf. the
+#    main-scan versions which were lp/olp). ──────────────────────────────────────
 
 # 451/1.1.41: अव्ययीभावश्च (1.1.41) — the avyayībhāva is an avyaya. Sets ?avyaya
 # on the uttara member (the one carrying ?avyayIBAva), so its sup then luks via
@@ -9557,14 +9590,14 @@
 - sutra: अव्ययीभावश्च
   id: 1.1.41
   domain: saMjYA
-  bahiranga: 0
+  bahiranga: -1
   condition:
-    lp:
+    rp:
       - and
       - "?avyayIBAva"
       - "?!avyaya"
   update:
-    olp: +avyaya
+    orp: +avyaya
 
 # 659/2.4.18: अव्ययीभावश्च (2.4.18) — the avyayībhāva (samāsa) is napuṁsaka.
 # Saṁjñā tag on the uttara member (which carries ?avyayIBAva). For an a-stem
@@ -9573,14 +9606,14 @@
 - sutra: अव्ययीभावश्च
   id: 2.4.18
   domain: saMjYA
-  bahiranga: 0
+  bahiranga: -1
   condition:
-    lp:
+    rp:
       - and
       - "?avyayIBAva"
       - "?!napum"
   update:
-    olp: [+napum, -pum]
+    orp: [+napum, -pum]
 
 # 657/2.4.83: नाव्ययीभावादतोऽम् (2.4.83, apañcamyāḥ deferred) — after an
 # a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am)
@@ -9662,14 +9695,86 @@
     lc: str("")
     l: str("sa")
 
-# ── S3: samāsānta (SK 676/677) ──────────────────────────────────────────────
-# 677/5.4.107: अव्ययीभावे शरत्प्रभृतिभ्यः (5.4.107) — an avyayībhāva ending in a
-# śarat-prabhṛti word takes the TaC (टच्) samāsānta (5.4.68 समासान्ताः adhikāra).
-# Implemented in the samāsa pre-pass (_insert_samasanta): a wac (?tadDita)
-# affix is inserted after a ?SaratpraBfti uttara of an ?avyayIBAva, so the
-# consonant stem becomes an a-stem → 2.4.83 अम् → उपशरदम्. (No YAML rule: the
-# insertion is structural, like _insert_sups. 6.3.81 junction / 2.4.84 bahula
-# and the rest of the samāsānta gaṇa are deferred.)
+# ── S3/S4: samāsānta (SK 676–683) — rule-driven ?samasanta_TaC ───────────────
+# 5.4.68 समासान्ताः is the adhikāra; each rule below (pre-pass -1) sets
+# ?samasanta_TaC on the qualifying avyayībhāva uttara, and the pre-pass step
+# _insert_samasanta inserts the TaC (wac) affix after it (the decision is
+# rule-driven; the structural insert mirrors _insert_sups — the YAML `insert:`
+# routes a ṭ-it affix by its it-marker, unsuitable for this peer-insertion).
+
+# 677/5.4.107: अव्ययीभावे शरत्प्रभृतिभ्यः — a śarat-prabhṛti uttara → TaC → उपशरदम्.
+- sutra: अव्ययीभावे शरत्प्रभृतिभ्यः
+  id: 5.4.107
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "?SaratpraBfti"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 678/5.4.108: अनश्च — an-final uttara → TaC → उपराजम् (upa + rājan). The n drops
+# before the taddhita by 6.4.144 (नस्तद्धिते).
+- sutra: अनश्च
+  id: 5.4.108
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "?rAjan"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 681/5.4.110: नदीपौर्णमास्याग्रहायणीभ्यः — a nadī (river/ī-fem) uttara → TaC → उपनदम्.
+- sutra: नदीपौर्णमास्याग्रहायणीभ्यः
+  id: 5.4.110
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "?NI"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 682/5.4.111: झयः — a jhay-final (stop-final) uttara → TaC → उपसमिधम्.
+- sutra: झयः
+  id: 5.4.111
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "?jhayanta"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 683/5.4.112: गिरेश्च सेनकस्य — giri uttara → TaC (Senaka's view) → उपगिरम्.
+- sutra: गिरेश्च सेनकस्य
+  id: 5.4.112
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "=giri"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 680/5.4.109: नपुंसकादन्यतरस्याम् — optional TaC for a napuṁsaka uttara. DEFERRED:
+# its trigger (the uttara being inherently napuṁsaka) is indistinguishable from
+# the ?napum that 2.4.18 assigns to EVERY avyayībhāva uttara, so a `?napum`
+# condition would fire on all compounds. A faithful version needs the uttara's
+# inherent gender tracked separately from the compound's assigned napuṁsaka; its
+# distinct scope (napuṁsaka uttaras not already covered by 5.4.108/110/111/112)
+# is a narrow long-tail.
 
 # 650/2.4.71: सुपो धातुप्रातिपदिकयोः (2.4.71) — the internal sup of a compound
 # member is luk'd once it is part of a samāsa-prātipadika. Scoped to the PŪRVA

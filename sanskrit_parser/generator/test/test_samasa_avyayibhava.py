@@ -33,6 +33,8 @@ def _build_member(spec):
             p.setTag(f"vacana_{spec['vacana']}")
     if spec.get("sem"):
         p.setTag(spec["sem"])
+    if spec.get("dir"):        # kp governance direction (kāraka-driven pañcamī, 2.1.12/2.1.13)
+        p.setTag("kp_pUrva" if spec["dir"] == "pUrva" else "kp_para")
     if spec.get("vivakza"):
         p.setTag("samAsa_vivakza")
     if spec.get("vibhakti"):   # a pre-supplied external vibhakti (e.g. 2.4.84 saptamī)

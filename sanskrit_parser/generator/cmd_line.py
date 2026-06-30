@@ -488,14 +488,15 @@ def cmd_line():
         sandhi = args.sandhi
         if getattr(args, "samasa", False):
             # Avyayībhāva samāsa: mark each member ?samAsa_vivakza (the intent
-            # tag the samāsa pre-pass scans for), drop any karmapravacanīya tags
-            # that -w set from a sense, and run the members adjacent so the
-            # samāsa pre-pass + main scan form one compound.
+            # tag the samāsa pre-pass scans for) and run the members adjacent so
+            # the samāsa pre-pass + main scan form one compound. A kp direction
+            # (kp_pUrva/kp_para) the user set on a kp-sense avyaya is KEPT — the
+            # pañcamī-governing avyayībhāvas (2.1.12/2.1.13: apa/pari + varjana,
+            # āṅ + maryAdā) need it so the kāraka layer assigns the noun pañcamī
+            # (1.4.88/89 → 2.3.10 → viBakti_5). A bare kp_* with no kp sense is
+            # inert, so keeping it is harmless for the nitya samīpa-type cases.
             for w in args.karaka_words:
                 w.setTag("samAsa_vivakza")
-                for t in ("kp_pUrva", "kp_para"):
-                    if w.hasTag(t):
-                        w.deleteTag(t)
             sandhi = True
         run_karaka(args.karaka_words, args.prakriya, sutra_list,
                    sandhi=sandhi, verbose=args.verbose,

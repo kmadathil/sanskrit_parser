@@ -73,6 +73,7 @@ vana = Pratipadika("vana", "napum")      # वन — अनुवनम् (2.1
 muni = Pratipadika("muni", "pum")        # मुनि — द्विमुनि (2.1.19 vaṁśya, i-stem → luk)
 cakra = Pratipadika("cakra", "napum")    # चक्र — सचक्रम् (6.3.81 saha→sa, a-stem → am)
 Sarad = Pratipadika("Sarad", "strI", other_tags=["SaratpraBfti"])  # शरद् — उपशरदम् (5.4.107 TaC)
+samiD = Pratipadika("samiD", "strI", other_tags=["jhayanta"])      # समिध् — उपसमिधम् (5.4.111 jhay TaC)
 # Kāraka Phase K1 sentence stems (test/karaka_list.py; a-/i-stems reuse the
 # rAma/hari paradigms).
 mAsa = Pratipadika("mAsa", "pum")     # मास — मासमास्ते (SK539 akarmaka vārttika)

@@ -73,17 +73,21 @@ samasa_tests = [
     },
     # ── S2: vibhāṣā block (≥ SK665) — only-when-intended (gated by samAsa_vivakza) ──
     {
-        "label": "S2-apagrAmam-2.1.12",           # apa + grāma (pañcamī), a-stem → am
-        "purva": {"avyaya": "apa_avyaya", "vivakza": True},
+        # apa + grāma: the noun's pañcamī is set by the kāraka layer
+        # (apa + semantic_varjana → 1.4.88 → 2.3.10 → viBakti_5), which 2.1.12
+        # checks (rp ?viBakti_5) and consumes (swap → prathamā) → अपग्रामम्.
+        "label": "S2-apagrAmam-2.1.12",
+        "purva": {"avyaya": "apa_avyaya", "sem": "semantic_varjana", "dir": "para", "vivakza": True},
         "uttara": {"stem": "grAma", "vacana": 1, "vivakza": True},
-        "fired": ["2.1.12", "1.2.43"],
+        "fired": ["1.4.88", "2.3.10", "2.1.12", "1.2.43"],
         "surface": "अपग्रामम्",
     },
     {
-        "label": "S2-Asamudram-2.1.13",           # ā + samudra (maryādā/abhividhi), a-stem → am
-        "purva": {"avyaya": "AN_avyaya", "vivakza": True},
+        # ā + samudra: pañcamī via A + semantic_maryAdA → 1.4.89 → 2.3.10.
+        "label": "S2-Asamudram-2.1.13",
+        "purva": {"avyaya": "AN_avyaya", "sem": "semantic_maryAdA", "dir": "para", "vivakza": True},
         "uttara": {"stem": "samudra", "vacana": 1, "vivakza": True},
-        "fired": ["2.1.13", "1.2.43"],
+        "fired": ["1.4.89", "2.3.10", "2.1.13", "1.2.43"],
         "surface": "आसमुद्रम्",
     },
     {
@@ -130,13 +134,41 @@ samasa_tests = [
         "fired": [],
         "no_samasa": True,
     },
-    # ── S3: samāsānta — 5.4.107 TaC (अव्ययीभावे शरत्प्रभृतिभ्यः) ──
+    # ── S3/S4: samāsānta — rule-driven ?samasanta_TaC (5.4.107–112) ──
     {
-        "label": "S3-upaSaradam-5.4.107",         # upa + śarad (samīpa) + TaC → उपशरदम्
+        "label": "S3-upaSaradam-5.4.107",         # upa + śarad → TaC → उपशरदम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "Sarad", "vacana": 1},
-        "fired": ["2.1.6", "1.2.43"],             # 5.4.107 TaC inserted structurally (pre-pass)
+        "fired": ["2.1.6", "1.2.43", "5.4.107"],
         "surface": "उपशरदम्",
+    },
+    {
+        "label": "S4-uparAjam-5.4.108",           # upa + rājan (an-final) → TaC + 6.4.144 → उपराजम्
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "rAjan", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.108"],
+        "surface": "उपराजम्",
+    },
+    {
+        "label": "S4-upanadam-5.4.110",           # upa + nadī (ī-fem) → TaC → उपनदम्
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "nadI", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.110"],
+        "surface": "उपनदम्",
+    },
+    {
+        "label": "S4-upasamiDam-5.4.111",         # upa + samidh (jhay-final) → TaC → उपसमिधम्
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "samiD", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.111"],
+        "surface": "उपसमिधम्",
+    },
+    {
+        "label": "S4-upagiram-5.4.112",           # upa + giri (Senaka) → TaC → उपगिरम्
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "giri", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.112"],
+        "surface": "उपगिरम्",
     },
     # ── S3: 6.3.81 अव्ययीभावे चाकाले — saha → sa (non-kāla) ──
     {

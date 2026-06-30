@@ -572,25 +572,65 @@ class AntarangaPrakriya(PrakriyaBase):
             if not (_flagged(inputs[a]) or _flagged(inputs[b])):
                 continue
             self._samasa_window_fixpoint(inputs, a, b)
+        self._swap_sups(inputs)
         self._insert_samasanta(inputs)
 
-    def _insert_samasanta(self, inputs):
-        """5.4.107 अव्ययीभावे शरत्प्रभृतिभ्यः — insert the TaC (wac) samāsānta
-        after a śarat-prabhṛti uttara of an avyayībhāva, so the consonant-stem
-        compound becomes an a-stem (उप+शरद् → उपशरद+अ → 2.4.83 अम् → उपशरदम्).
-        The wac (?tadDita) is placed just before the uttara's sup; the main scan
-        merges śarad+wac, and join_objects carries ?avyayIBAva through that
-        tadDita merge so 1.1.41/2.4.83 still apply. (5.4.68 समासान्ताः adhikāra;
-        other samāsānta affixes / 6.3.81 junction / 2.4.84 bahula deferred.)"""
+    def _swap_sups(self, inputs):
+        """For each member a samāsa rule tagged ?swap_viBakti — i.e. it swapped
+        the member's internal (kāraka-assigned, vigraha) vibhakti to the
+        compound's external one (e.g. 2.1.12/2.1.13 consume the kāraka pañcamī,
+        resetting to prathamā) — REPLACE its already-inserted sup with the sup
+        for the new viBakti_N/vacana_M (exactly the _insert_sups lookup) and
+        clear the tag. The internal sup (e.g. ṅasi) is thus physically replaced
+        by the external one (su), so the compound declines as am (2.4.83), not
+        the ablative. Generic: reads the target vibhakti/vacana off the member
+        (reusable for bahuvrīhi)."""
         for ix in range(len(inputs)):
             o = inputs[ix]
-            if not (self._is_samasa_member(o)
-                    and o.hasTag("avyayIBAva") and o.hasTag("SaratpraBfti")):
+            if not (_isScalar(o) and o.hasTag("swap_viBakti")):
                 continue
-            # Insert wac just after the uttara (before its sup, if present).
+            o.deleteTag("swap_viBakti")
+            vib = next((t for t in o.tags
+                        if t.startswith("viBakti_") and t[8:].isdigit()), None)
+            vac = next((t for t in o.tags
+                        if t.startswith("vacana_") and t[7:].isdigit()), None)
+            if vib is None or vac is None:
+                continue
+            n, m = int(vib[8:]), int(vac[7:])
+            # Scroll past this word's kṛt/taddhita/strī pratyayas to its sup
+            # (mirrors _insert_sups), then replace it with the new vibhakti's sup.
             jx = ix + 1
-            inputs.insert_at(jx, deepcopy(wac))
-            break
+            while jx < len(inputs):
+                nxt = inputs[jx]
+                if (_isScalar(nxt) and nxt.hasTag("pratyaya")
+                        and (nxt.hasTag("krt") or nxt.hasTag("tadDita")
+                             or nxt.hasTag("strI"))):
+                    jx += 1
+                else:
+                    break
+            if (jx < len(inputs) and _isScalar(inputs[jx])
+                    and inputs[jx].hasTag("sup")):
+                logger.debug(f"Samāsa sup-swap @{jx}: -> sups[{n-1}][{m-1}]")
+                inputs.replace_at(jx, sups[n-1][m-1])
+
+    def _insert_samasanta(self, inputs):
+        """Insert the TaC (wac) samāsānta after any uttara tagged ?samasanta_TaC
+        (5.4.68 समासान्ताः adhikāra). The DECISION is rule-driven: the 5.4.107–112
+        rules set ?samasanta_TaC on the qualifying uttara (śarat-prabhṛti, an-final,
+        nadī…); this step just performs the structural insertion (like _insert_sups).
+        The wac (?tadDita) is placed just after the uttara (before its sup); the
+        main scan merges stem+wac → a-stem, and join_objects carries ?avyayIBAva /
+        ?avyaya through that tadDita merge so 2.4.83 still applies (उप+शरद्+अ →
+        उपशरदम्; उप+राजन्+अ → 6.4.144 न-lopa → उपराजम्)."""
+        for ix in range(len(inputs)):
+            o = inputs[ix]
+            if not (self._is_samasa_member(o) and o.hasTag("samasanta_TaC")):
+                continue
+            o.deleteTag("samasanta_TaC")
+            # Insert wac just after this uttara (before its sup, if present).
+            inputs.insert_at(ix + 1, deepcopy(wac))
+            # Re-scan from scratch: indices shifted; another member may qualify.
+            return self._insert_samasanta(inputs)
 
     def _samasa_window_fixpoint(self, inputs, a, b):
         """Run the bahiranga == -1 rules on the (pūrva | uttara) member window
