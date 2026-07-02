@@ -72,8 +72,22 @@ samudra = Pratipadika("samudra", "pum")  # समुद्र — आसमु�
 vana = Pratipadika("vana", "napum")      # वन — अनुवनम् (2.1.15, a-stem → am)
 muni = Pratipadika("muni", "pum")        # मुनि — द्विमुनि (2.1.19 vaṁśya, i-stem → luk)
 cakra = Pratipadika("cakra", "napum")    # चक्र — सचक्रम् (6.3.81 saha→sa, a-stem → am)
-Sarad = Pratipadika("Sarad", "strI", other_tags=["SaratpraBfti"])  # शरद् — उपशरदम् (5.4.107 TaC)
+# ── शरदादि / शरत्प्रभृति gaṇa (5.4.107: avyayībhāva TaC) — full gaṇa (SK, śarad…kiyat).
+# The ?SaratpraBfti tag is read only by 5.4.107 (in an avyayībhāva), so it is inert
+# elsewhere. Members already defined below (upAnah, himavat, anaquh, catur, tyad,
+# tad, yad) get the tag at their own definitions.
+Sarad  = Pratipadika("Sarad",  "strI",  other_tags=["SaratpraBfti"])  # शरद् — उपशरदम्
+vipAS  = Pratipadika("vipAS",  "strI",  other_tags=["SaratpraBfti"])  # विपाश् (river/nadī, fem; ś-final)
+anas   = Pratipadika("anas",   "napum", other_tags=["SaratpraBfti"])  # अनस् (cart; s-final n.)
+manas  = Pratipadika("manas",  "napum", other_tags=["SaratpraBfti"])  # मनस् (mind; s-final n.)
+div    = Pratipadika("div",    "strI",  other_tags=["SaratpraBfti"])  # दिव् (heaven; v-final)
+diS    = Pratipadika("diS",    "strI",  other_tags=["SaratpraBfti"])  # दिश् (direction; ś-final)
+dfS_np = Pratipadika("dfS",    "strI",  other_tags=["SaratpraBfti"])  # दृश् (sight, fem; ś-final). Binding is dfS_np — the bare name dfS is the √dṛś dhātu (dhatu.py), which vibhaktis_list's yādṛśa/tādṛśa reuse via `from dhatu import *`; a pratipadika dfS would shadow it.
+viS    = Pratipadika("viS",    "strI",  other_tags=["SaratpraBfti"])  # विश् (people; ś-final)
+cetas  = Pratipadika("cetas",  "napum", other_tags=["SaratpraBfti"])  # चेतस् (consciousness; s-final n.)
+kiyat  = Pratipadika("kiyat",  "napum", other_tags=["SaratpraBfti"])  # कियत् (how much; t-final)
 samiD = Pratipadika("samiD", "strI", other_tags=["jhayanta"])      # समिध् — उपसमिधम् (5.4.111 jhay TaC)
+carman = Pratipadika("carman", "napum")  # चर्मन् — उपचर्म/उपचर्मम् (5.4.109 napuṁsaka optional TaC; an-stem)
 # Kāraka Phase K1 sentence stems (test/karaka_list.py; a-/i-stems reuse the
 # rAma/hari paradigms).
 mAsa = Pratipadika("mAsa", "pum")     # मास — मासमास्ते (SK539 akarmaka vārttika)
@@ -562,7 +576,7 @@ vftra = Pratipadika("vftra", "pum")   # pūrva-pada; ṛ provides ratva cause fo
 # nah-stems (ending in √nah "bind/tie")
 # SK440 (8.2.34): h→D (dh) before jhal or at pada-end.
 # Nom/voc sg: upAnaD→t (8.4.56 car at avasāna); inst/dat/abl du/pl: upAnaD+Bh.
-upAnah = Pratipadika("upAnah", "pum", other_tags=["nah"])
+upAnah = Pratipadika("upAnah", "pum", other_tags=["nah", "SaratpraBfti"])  # शरदादि (5.4.107)
 
 # f
 pitf = Pratipadika("pitf", "pum")
@@ -597,7 +611,7 @@ mahat = Pratipadika("mahat", "pum", its=['u'])
 # SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
-himavat = Pratipadika("himavat", "pum", its=['u'])  # himavat (hima + matup): pañcamī sg हिमवतः — हिमवतो गङ्गा प्रभवति (SK594 1.4.31)
+himavat = Pratipadika("himavat", "pum", its=['u'], other_tags=["SaratpraBfti"])  # himavat (hima + matup); शरदादि (5.4.107). pañcamī sg हिमवतः — हिमवतो गङ्गा प्रभवति (SK594 1.4.31)
 
 # SK427+SK428: śatṛ (ṛ-it = f-it) stems.
 # śatṛ suffix is ṛ-it → its=["f"]; SK361 (7.1.70) +f block fires → nUM in sarvanamasthana.
@@ -642,7 +656,7 @@ kati = Pratipadika("kati", "pum", other_tags=["qati", "nityabahuvacana"])
 tri = Pratipadika("tri", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 dvi = Pratipadika("dvi", "pum", other_tags=["saMKyA", "nityadvivacana",
                                             'tyadAdi'])
-catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana"])
+catur = Pratipadika("catur", "pum", other_tags=["saMKyA", "nityabahuvacana", "SaratpraBfti"])  # शरदादि (5.4.107)
 # n-final ṣaṭ-saṃjñā numerals 5-10 (1.1.26 assigns +zaw automatically via saMKyA+n-final)
 paYcan = Pratipadika("paYcan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 saptan = Pratipadika("saptan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
@@ -786,7 +800,7 @@ DvaMs_kvip = Pratipadika("Dvas", "pum", other_tags=["DAtu", "kvip"])
 div_kvip = Pratipadika("div", "pum", other_tags=["DAtu", "kvip"])
 praSAm_kvip = Pratipadika("praSAm", "pum", other_tags=["DAtu", "kvip"])
 
-anaquh = Pratipadika("anaquh", "pum", other_tags=["anaquh"])
+anaquh = Pratipadika("anaquh", "pum", other_tags=["anaquh", "SaratpraBfti"])  # शरदादि (5.4.107)
 turAsAh = Pratipadika("turAsAh", "pum", other_tags=["DAtu", "kvip", "sah", "Ric"])
 
 # kvin-derived consonant-final stems (SK373 / 3.2.59)
@@ -863,10 +877,10 @@ idam_anu = Pratipadika("idam", "pum", other_tags=["idam", "sarvanAma", "tyadAdi"
 # tyadādi demonstratives (SK381 / 7.2.106): non-final t/d → s before su (nom sg)
 # Feminines of tad/etad/yad/kim are formed in tests as [stem, strI_abs] —
 # SK441 commentary ("त्यदाद्यत्वं टाप्"): 7.2.102/103 fires first, then SK454 TAp.
-tad  = Pratipadika("tad",  "pum", other_tags=["tad",  "sarvanAma", "tyadAdi"])  # "that"
+tad  = Pratipadika("tad",  "pum", other_tags=["tad",  "sarvanAma", "tyadAdi", "SaratpraBfti"])  # "that"; शरदादि (5.4.107)
 etad = Pratipadika("etad", "pum", other_tags=["etad", "sarvanAma", "tyadAdi"])  # "this (near)"
-yad  = Pratipadika("yad",  "pum", other_tags=["yad",  "sarvanAma", "tyadAdi"])  # "which/who" (relative)
-tyad = Pratipadika("tyad", "pum", other_tags=["tyad", "sarvanAma", "tyadAdi"])  # "that (yonder)"
+yad  = Pratipadika("yad",  "pum", other_tags=["yad",  "sarvanAma", "tyadAdi", "SaratpraBfti"])  # "which/who" (relative); शरदादि (5.4.107)
+tyad = Pratipadika("tyad", "pum", other_tags=["tyad", "sarvanAma", "tyadAdi", "SaratpraBfti"])  # "that (yonder)"; शरदादि (5.4.107)
 adas = Pratipadika("adas", "pum", other_tags=["adas", "sarvanAma", "tyadAdi"])  # "that (far)"
 
 # Personal pronouns — alinga (no gender distinction)

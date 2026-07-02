@@ -2804,12 +2804,21 @@
   insert:
      l:  str("n")
 
-# 679/6.4.144: नस्तद्धिते (6-4-144) — the न् of an an-stem aṅga drops before a
-# taddhita affix. For the avyayībhāva samāsānta उपराजम् the TaC (wac, ?tadDita)
-# follows rājan → the अन् gives way → rāj, then + टच् अ → rāja (a-stem) → 2.4.83
-# अम् → उपराजम्. Overrides the an-ablaut 6.4.134 (which would give rājñ) in the
-# taddhita context. (Scoped to the ?rAjan an-marker; generalize to any an-stem
-# when more an-final uttaras are needed.)
+# 679/6.4.144: नस्तद्धिते (6-4-144) — the ṭi (final vowel + न्) of a नकारान्त aṅga
+# drops before a taddhita affix. For the avyayībhāva samāsānta उपराजम् the TaC
+# (wac, ?tadDita) follows rājan → the ṭि अन् drops → rāj, then + टच् अ → rāja
+# (a-stem) → 2.4.83 अम् → उपराजम्. Overrides the an-ablaut 6.4.134 (rājñ) in the
+# taddhita context.
+#
+# Scope = ?Ba (bha-saṁjñā), NOT a stem marker: 6.4.144 sits in the भस्य adhikāra
+# (6.4.129 भस्य), so it applies only when the aṅga is भ — i.e. before a य्- or
+# अच्-initial affix (1.4.18 यचि भम्). This is general (any नकारान्त bha, ll: _ac)
+# yet correctly EXCLUDES yuvan + ति (SK531): ति is consonant-initial, so yuvan is
+# NOT bha → 6.4.144 does not fire, and the न् drops instead by 8.2.7 नलोपः
+# प्रातिपदिकान्तस्य (न्-only) → युवति → युवती. The vowel-initial TaC (wac) DOES make
+# rājan/carman/van bha, so 6.4.144 applies to those. (van, the 6.4.148 यस्येति-च
+# transient from vana, is likewise bha before wac; it is kept out via the 6.4.22
+# ābhīya asiddhavat edge 6.4.144→6.4.148 in antaranga_prakriya._ASIDDHA_PEERS.)
 - sutra: नस्तद्धिते
   id: 6.4.144
   overrides: 6.4.134
@@ -2817,13 +2826,39 @@
      lp:
        - and
        - ?aNga
-       - ?rAjan
-     ll: at
+       - ?Ba
+     ll: _ac
      l: n
      rp: ?tadDita
   xform:
      lc: lc[:-1]
      l: null
+
+# 6.4.145 अह्नष्टखोरेव (SK789) — niyama restricting 6.4.144 for ahan: the ṭi-lopa of
+# अहन् happens ONLY (एव) before a ट- or ख-it taddhita. So for any OTHER taddhita
+# (rp neither ?wa=टच्-class nor ?Ka), 6.4.145 fires and OVERRIDES (suppresses)
+# 6.4.144, keeping the न् — the a-lopa 6.4.134 (अल्लोपोऽनः) then runs instead
+# (ahan → ahn), so dvi+ahan+wac → द्व्यह्न (not द्व्यह). Pure niyama-blocker
+# (xform: null); mirrors 6.4.144's (…न् | taddhita) window so the override lands
+# on the same slot. wac (टच्) is NOT tagged ?wa here, so the samāsānta path keeps
+# the न्; a genuinely ट/ख-marked taddhita would fail ?!wa/?!Ka and let 6.4.144 run.
+- sutra: अह्नष्टखोरेव
+  id: 6.4.145
+  overrides: 6.4.144
+  condition:
+     lp:
+       - and
+       - ?aNga
+       - ?Ba
+       - =ahan
+     ll: _ac
+     l: n
+     rp:
+       - and
+       - ?tadDita
+       - ?!wa
+       - ?!Ka
+  xform: null
 
 # 237: विभाषा ङिश्योः (6-4-136)
 - sutra: विभाषा ङिश्योः
@@ -9600,9 +9635,11 @@
     orp: +avyaya
 
 # 659/2.4.18: अव्ययीभावश्च (2.4.18) — the avyayībhāva (samāsa) is napuṁsaka.
-# Saṁjñā tag on the uttara member (which carries ?avyayIBAva). For an a-stem
-# this aligns the अम् (2.4.83 / napuṁsaka 7.1.24); the compound is avyaya
-# (1.1.41) so its sup luks/am's regardless of gender.
+# Sets a DEFERRED marker ?samasa_napum (NOT ?napum) on the uttara, so the
+# samāsānta rules 5.4.108 (?!napum) and 5.4.109 (?napum) can still read the
+# uttara's NATIVE gender during the sweep. `_commit_samasa_napum` then turns
+# ?samasa_napum → ?napum at end-of-sweep (before the main scan), so 1.2.47 /
+# 7.1.24 / the अम् path see the compound as napuṁsaka.
 - sutra: अव्ययीभावश्च
   id: 2.4.18
   domain: saMjYA
@@ -9611,9 +9648,9 @@
     rp:
       - and
       - "?avyayIBAva"
-      - "?!napum"
+      - "?!samasa_napum"
   update:
-    orp: [+napum, -pum]
+    orp: [+samasa_napum]
 
 # 657/2.4.83: नाव्ययीभावादतोऽम् (2.4.83, apañcamyāḥ deferred) — after an
 # a-ending avyayībhāva, the sup is NOT luk'd (2.4.82) but replaced by अम् (am)
@@ -9715,8 +9752,10 @@
   update:
     orp: [+samasanta_TaC]
 
-# 678/5.4.108: अनश्च — an-final uttara → TaC → उपराजम् (upa + rājan). The n drops
-# before the taddhita by 6.4.144 (नस्तद्धिते).
+# 678/5.4.108: अनश्च — a (non-napuṁsaka) an-final uttara → TaC → उपराजम् (upa +
+# rājan). The n drops before the taddhita by 6.4.144 (नस्तद्धिते). The `?!napum`
+# guard cedes napuṁsaka an-stems to the specific 5.4.109 (apavāda) — reads the
+# NATIVE gender (2.4.18's napuṁsaka is deferred as ?samasa_napum).
 - sutra: अनश्च
   id: 5.4.108
   bahiranga: -1
@@ -9725,6 +9764,7 @@
       - and
       - "?avyayIBAva"
       - "?rAjan"
+      - "?!napum"
       - "?!samasanta_TaC"
   update:
     orp: [+samasanta_TaC]
@@ -9768,13 +9808,28 @@
   update:
     orp: [+samasanta_TaC]
 
-# 680/5.4.109: नपुंसकादन्यतरस्याम् — optional TaC for a napuṁsaka uttara. DEFERRED:
-# its trigger (the uttara being inherently napuṁsaka) is indistinguishable from
-# the ?napum that 2.4.18 assigns to EVERY avyayībhāva uttara, so a `?napum`
-# condition would fire on all compounds. A faithful version needs the uttara's
-# inherent gender tracked separately from the compound's assigned napuṁsaka; its
-# distinct scope (napuṁsaka uttaras not already covered by 5.4.108/110/111/112)
-# is a narrow long-tail.
+# 680/5.4.109: नपुंसकादन्यतरस्याम् — for a NATIVELY napuṁsaka uttara, the TaC is
+# OPTIONAL (अन्यतरस्याम्) → उपचर्म / उपचर्मम् (upa + carman, napuṁsaka an-stem).
+# The `optional: true` forks the samāsa pre-pass (one branch takes TaC, one does
+# not). Reads the native ?napum — clean now that 2.4.18 defers to ?samasa_napum.
+# `overrides: 5.4.108` makes 5.4.109 the governing apavāda for napuṁsaka an-stems
+# (108 already cedes via its ?!napum guard, but this pins the priority). No
+# vowel-final guard is needed: an a-stem uttara + TaC (अ) → 6.1.97 अतो गुणे
+# (a+a→a, not ā) → same surface as no-TaC (the fork collapses on dedup); an
+# i-/ī-final → 6.4.148 यस्येति च (as in उपगिरम्).
+- sutra: नपुंसकादन्यतरस्याम्
+  id: 5.4.109
+  bahiranga: -1
+  optional: true
+  overrides: 5.4.108
+  condition:
+    rp:
+      - and
+      - "?avyayIBAva"
+      - "?napum"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
 
 # 650/2.4.71: सुपो धातुप्रातिपदिकयोः (2.4.71) — the internal sup of a compound
 # member is luk'd once it is part of a samāsa-prātipadika. Scoped to the PŪRVA

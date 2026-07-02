@@ -143,6 +143,13 @@ samasa_tests = [
         "surface": "उपशरदम्",
     },
     {
+        "label": "S4-upamanasam-5.4.107-gana",    # upa + manas (śaradādi s-stem) → TaC → उपमनसम्
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "manas", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.107"],
+        "surface": "उपमनसम्",
+    },
+    {
         "label": "S4-uparAjam-5.4.108",           # upa + rājan (an-final) → TaC + 6.4.144 → उपराजम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "rAjan", "vacana": 1},
@@ -169,6 +176,15 @@ samasa_tests = [
         "uttara": {"stem": "giri", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.112"],
         "surface": "उपगिरम्",
+    },
+    {
+        # upa + carman (napuṁsaka an-stem): 5.4.109 अन्यतरस्याम् — TaC OPTIONAL →
+        # the samāsa pre-pass forks: उपचर्मम् (TaC) / उपचर्म (no TaC).
+        "label": "S4-upacarma-5.4.109-fork",
+        "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
+        "uttara": {"stem": "carman", "vacana": 1},
+        "fired": ["2.1.6", "1.2.43", "5.4.109"],
+        "surfaces": ["उपचर्म", "उपचर्मम्"],
     },
     # ── S3: 6.3.81 अव्ययीभावे चाकाले — saha → sa (non-kāla) ──
     {

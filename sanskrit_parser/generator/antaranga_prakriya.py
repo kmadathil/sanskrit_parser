@@ -74,6 +74,21 @@ _ASIDDHA_PEERS = {
     "6.4.134": frozenset({"6.4.148"}),
     "6.4.150": frozenset({"6.4.148"}),
     "6.4.149": frozenset({"6.4.148"}),
+    # 6.4.144 (नस्तद्धिते) drops the ṭi (final अन्) of a नकारान्त stem before a
+    # taddhita (rājan + TaC → rāj → उपराजम्). It must NOT see 6.4.148's a-lopa:
+    # for an a-stem uttara like vana, 6.4.148 (यस्येति च) elides the final 'a'
+    # → the TRANSIENT 'van', which is not a genuine नकारान्त stem. Reading the
+    # pre-148 snapshot ('vana', a-final), 6.4.144 correctly does not fire, and
+    # vana + wac → vana → उपवनम्. For a real an-stem (rājan, carman) 6.4.148
+    # never fires (न्-final, not a/ī-final), so 6.4.144 applies unchanged.
+    #
+    # ASYMMETRIC on purpose (single edge, not a mutual pair): the reverse
+    # (6.4.148 blind to 6.4.144's output) must NOT be added. yuvatī derives
+    # yuvan + ti → 6.4.144 → yuva → yuvatī, where 6.4.148 correctly does *not*
+    # elide the 'a' of the yuva that 6.4.144 produced; making 6.4.148 read the
+    # pre-144 'yuvan' snapshot breaks that (→ yuvtiḥ). Only the 144→148 edge is
+    # grammatically needed here.
+    "6.4.144": frozenset({"6.4.148"}),
 }
 
 
@@ -541,8 +556,15 @@ class AntarangaPrakriya(PrakriyaBase):
         each kāraka branch in place; mirrors _karaka_prepass's bookkeeping."""
         if not self._samasa_sutras:
             return
+        # A vibhāṣā samāsa rule (5.4.109) forks a kāraka branch into several, so
+        # collect the expanded set and REPLACE _karaka_branches — the __init__
+        # root-building loop (which runs after this) then makes one derivation
+        # per branch (उपचर्म / उपचर्मम् surface as two outputs). Non-forking
+        # branches return a 1-element list, identical to before.
+        new_branches = []
         for inputs in (getattr(self, "_karaka_branches", None) or [self.inputs]):
-            self._samasa_prepass_branch(inputs)
+            new_branches.extend(self._samasa_prepass_branch(inputs))
+        self._karaka_branches = new_branches
 
     @staticmethod
     def _is_samasa_member(o):
@@ -565,15 +587,41 @@ class AntarangaPrakriya(PrakriyaBase):
         members = [ix for ix in range(len(inputs))
                    if self._is_samasa_member(inputs[ix])]
         # Apply -1 rules to each adjacent (pūrva | uttara) member pair that is a
-        # compound candidate (no avasAna between; flagged for samāsa).
+        # compound candidate (no avasAna between; flagged for samāsa). A vibhāṣā
+        # rule forks, so thread a list of branches through the member-pair loop.
+        branches = [inputs]
         for a, b in zip(members, members[1:]):
             if _avasana_between(a, b):
                 continue
             if not (_flagged(inputs[a]) or _flagged(inputs[b])):
                 continue
-            self._samasa_window_fixpoint(inputs, a, b)
-        self._swap_sups(inputs)
-        self._insert_samasanta(inputs)
+            nxt = []
+            for br in branches:
+                nxt.extend(self._samasa_window_fixpoint(br, a, b))
+            branches = nxt
+        # Per-branch post-fixpoint steps: commit the deferred napuṁsaka
+        # (samasa_napum → napum) BEFORE the main scan, swap any consumed internal
+        # vibhakti, and insert the samāsānta affix.
+        for br in branches:
+            self._commit_samasa_napum(br)
+            self._swap_sups(br)
+            self._insert_samasanta(br)
+        return branches
+
+    def _commit_samasa_napum(self, inputs):
+        """Commit the samāsa-assigned napuṁsaka to the real ?napum at end-of-sweep.
+        2.4.18 sets a DEFERRED marker ?samasa_napum (not ?napum) so 5.4.108/5.4.109
+        can read the uttara's NATIVE gender during the sweep; here — after the
+        sweep, before the main scan — it becomes the real ?napum (removing the
+        member's native pum/strI) so 1.2.47 / 7.1.24 / the am path see the compound
+        as napuṁsaka. Generic (bahuvrīhi, which also assigns gender, will reuse it)."""
+        for o in inputs:
+            if _isScalar(o) and o.hasTag("samasa_napum"):
+                o.deleteTag("samasa_napum")
+                o.setTag("napum")
+                for g in ("pum", "strI"):
+                    if o.hasTag(g):
+                        o.deleteTag(g)
 
     def _swap_sups(self, inputs):
         """For each member a samāsa rule tagged ?swap_viBakti — i.e. it swapped
@@ -632,12 +680,20 @@ class AntarangaPrakriya(PrakriyaBase):
             # Re-scan from scratch: indices shifted; another member may qualify.
             return self._insert_samasanta(inputs)
 
-    def _samasa_window_fixpoint(self, inputs, a, b):
+    def _samasa_window_fixpoint(self, inputs, a, b, fired_prefix=None):
         """Run the bahiranga == -1 rules on the (pūrva | uttara) member window
         (indices a, b) to fixpoint, writing tags back to both members. llp/rrp
-        context = the physical neighbours just outside the window."""
+        context = the physical neighbours just outside the window.
+
+        A vibhāṣā (optional) winner FORKS (mirrors the kāraka `_run_fixpoint`):
+        the not-applied branch is a deep clone with the rule disabled at the
+        window, run to its own fixpoint; this branch applies the rule. Returns
+        the list of branch inputs — one element for the common non-optional case,
+        two (or more) when an optional rule such as 5.4.109 forks (उपचर्म/उपचर्मम्).
+        The a,b indices are stable across the clone (rules only write tags)."""
+        fired = list(fired_prefix or [])
+        forked = []
         lp, rp = inputs[a], inputs[b]
-        fired = []
         while True:
             ctx = (inputs[a - 1] if a - 1 >= 0 else None,
                    inputs[b + 1] if b + 1 < len(inputs) else None)
@@ -647,6 +703,14 @@ class AntarangaPrakriya(PrakriyaBase):
             if not triggered:
                 break
             s = self.sutra_priority(triggered, [lp, rp])
+            if s.optional:
+                # Vibhāṣā fork: clone with s disabled at the window, run its own
+                # fixpoint; this branch falls through and applies s below.
+                skip = PrakriyaVakya(inputs.v)
+                se = skip[a]
+                se.disabled_sutras.append(s.aps)
+                se.disabled_by[s.aps] = s.aps
+                forked.extend(self._samasa_window_fixpoint(skip, a, b, fired))
             r = s.operate(lp, rp)
             r = s.update(lp, rp, *r)
             nlp, nrp = r[0], r[1]
@@ -670,6 +734,7 @@ class AntarangaPrakriya(PrakriyaBase):
                                     "tags": sorted(rp.tags), "samasa": True})
             self.karaka_log.append({"index": a, "fired": [],
                                     "tags": sorted(lp.tags), "samasa": True})
+        return [inputs] + forked
 
     def _apply_antadivat(self, s, r):
         """6.1.85 antādivat boundary marking. Called from _exec AND from the
