@@ -9846,3 +9846,65 @@
   update:
     orp: =luk_sup
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः (SK 684–) — tatpuruṣa samāsa plan, Phase T0
+#
+# Unlike the avyayībhāva (which becomes an indeclinable → invariant अम्), a
+# tatpuruṣa DECLINES NORMALLY in the uttara's gender (2.4.26 परवल्लिङ्गम्): the
+# uttara keeps its own sup and inflects; the pūrva (the case-marked / upasarjana
+# member) sup-luks via the existing 2.4.71. So we do NOT tag ?avyaya/?napum on
+# the uttara. Gender inheritance is already realized by join_objects (the merge
+# prefers the last member's gender), so 2.4.26 is a documenting saṁjñā here; the
+# T-liṅga exceptions (2.4.19/29/30/31) will actively override it later.
+#
+# T0 = the dvitīyā-tatpuruṣa proof-of-concept: pūrva ?viBakti_2 + ?samAsa_vivakza,
+# uttara ?srita_gaRa → कृष्णश्रितः (a-stem masc, declines fully). Reuses the samāsa
+# pre-pass spine, 1.2.43 (upasarjana) and 2.4.71 (pūrva sup-luk) unchanged.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 684/2.1.22 + 686/2.1.24: तत्पुरुषः (2.1.22, saṁjñā adhikāra) + द्वितीया
+# श्रितातीतपतितगतात्यस्तप्राप्तापन्नैः (2.1.24, vidhi) — a noun in the DVITĪYĀ
+# (?viBakti_2) + a śrita-gaṇa word (श्रित/अतीत/पतित/गत/अत्यस्त/प्राप्त/आपन्न) forms a
+# tatpuruṣa: the pūrva (dvitīyā, upasarjana) gets ?samAsaPurva, the uttara gets
+# ?samAsa + ?tatpuruza. (2.1.22 saṁjñā fused into the 2.1.24 vidhi, as 2.1.5 was
+# fused into 2.1.6.) "only-when-intended" → gated on ?samAsa_vivakza. The pūrva's
+# dvitīyā sup then luks via 2.4.71 (no swap: the pūrva does not surface); the
+# uttara's sup (viBakti_1 by default via 2.3.46, or the sweep's external case)
+# is RETAINED → कृष्णश्रितः / कृष्णश्रितम् / … .
+- sutra: द्वितीया श्रितातीतपतितगतात्यस्तप्राप्तापन्नैः
+  id: 2.1.24
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_2"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?srita_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 812/2.4.26: परवल्लिङ्गं द्वन्द्वतत्पुरुषयोः — a tatpuruṣa (and dvandva) takes the
+# gender of its LAST member. For generation this is already realized by
+# join_objects (the compound merge prefers the uttara's liṅga; paninian_object.py
+# ~line 154), so the uttara declines in its own gender with no change here. This
+# pre-pass saṁjñā records that paravalliṅga licenses the compound gender (?paravalliNga
+# marker) — it documents the rule firing and gives the T-liṅga exceptions
+# (2.4.19/29/30/31 napuṁsaka/puṁvad overrides) a clean saṁjñā to override.
+- sutra: परवल्लिङ्गं द्वन्द्वतत्पुरुषयोः
+  id: 2.4.26
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?!paravalliNga"
+  update:
+    orp: [+paravalliNga]
+

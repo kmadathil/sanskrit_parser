@@ -63,6 +63,10 @@ putra = Pratipadika("putra", "pum")   # पुत्र — रामस्य �
 mAza = Pratipadika("mAza", "pum")     # माष — माषेष्वश्वं बध्नाति counterexample (SK535)
 bARa = Pratipadika("bARa", "pum")     # बाण — बाणेन (SK561 karaṇa)
 kfzRa = Pratipadika("kfzRa", "pum")   # कृष्ण — कृष्णः (SK532 prathamā)
+# Tatpuruṣa-samāsa T0 uttara: the śrita-gaṇa (2.1.24 द्वितीया श्रितातीत…) — a kṛdanta
+# treated as a pre-formed a-stem. ?srita_gaRa marks membership (श्रित/अतीत/पतित/गत/
+# अत्यस्त/प्राप्त/आपन्न); the dvitīyā-tatpuruṣa fires on it → कृष्णश्रितः.
+Srita = Pratipadika("Srita", "pum", other_tags=["srita_gaRa"])   # श्रित — कृष्णश्रितः (2.1.24)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)

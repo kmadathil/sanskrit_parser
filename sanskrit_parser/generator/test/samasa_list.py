@@ -203,3 +203,32 @@ samasa_tests = [
         "surfaces": ["उपकृष्णम्", "उपकृष्णे"],
     },
 ]
+
+
+# ── Tatpuruṣa-samāsa test cases (tatpuruṣa samāsa plan, Phase T0) ──────────────
+# Unlike the avyayībhāva, a tatpuruṣa DECLINES NORMALLY in the uttara's gender
+# (2.4.26 परवल्लिङ्गम्) — no ?avyaya/?napum, the uttara's sup surfaces. Structure
+# assertion: pūrva samAsaPurva + upasarjana, uttara samAsa + tatpuruza (NOT
+# avyayIBAva). Driver: test_samasa_tatpurusha.py.
+#
+# The pūrva carries the vigraha vibhakti directly ("vibhakti": N — decoupled from
+# full kṛdanta-kāraka coverage); the uttara's śrita-gaṇa membership (?srita_gaRa)
+# is intrinsic to the Srita pratipadika.
+samasa_tp_tests = [
+    # ── T0: 2.1.24 dvitīyā-tatpuruṣa (śrita-gaṇa uttara), a-stem masc ──
+    {
+        "label": "T0-kRSNaSritaH-2.1.24",         # कृष्णं श्रितः → कृष्णश्रितः (nom sg)
+        "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 2, "vivakza": True},
+        "uttara": {"stem": "Srita", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.24", "1.2.43", "2.4.26"],
+        "surface": "कृष्णश्रितः",
+    },
+    # negative: WITHOUT ?samAsa_vivakza no tatpuruṣa forms (only-when-intended).
+    {
+        "label": "T0-kRSNaSrita-no-vivakza",
+        "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 2},
+        "uttara": {"stem": "Srita", "vacana": 1},
+        "fired": [],
+        "no_samasa": True,
+    },
+]
