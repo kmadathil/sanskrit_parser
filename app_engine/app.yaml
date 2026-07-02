@@ -1,4 +1,4 @@
-runtime: python314
+runtime: python313
 instance_class: F2
 entrypoint: gunicorn -b :$PORT -w 1 main:app
 automatic_scaling:
