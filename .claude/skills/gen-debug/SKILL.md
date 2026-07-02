@@ -341,7 +341,7 @@ python scripts/sanskrit_generator -t <pratipadika> -p <pratyaya> -a --verbose
 python scripts/sanskrit_generator -t <pratipadika> --vibhakti
 
 # Run all vibhakti tests to catch regressions
-# CORRECT way (run.sh uses pytest-xdist -n 6 for parallel execution):
+# CORRECT way (run.sh uses pytest-xdist -n 8 --dist worksteal for parallel execution):
 source /Users/karthik/personal_projects/sanskrit_parser/sourceme   # sets PYTHONPATH
 cd /Users/karthik/personal_projects/sanskrit_parser/sanskrit_parser/generator/test
 bash run.sh

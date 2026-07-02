@@ -181,6 +181,38 @@ def _compose_abhiya(snapshot_str, current_str, target_str):
     return ''.join(out)
 
 
+# The bahiranga split and the antādivat aps sets depend only on the (shared,
+# effectively immutable) sutra_list, so compute them once per list instead of
+# in every AntarangaPrakriya (incl. every inner hierarchical prakriya). The
+# cache keeps a strong reference to the list so an id() can't be reused.
+_sutra_split_cache = {}
+
+
+def _split_sutras(sutra_list):
+    cached = _sutra_split_cache.get(id(sutra_list))
+    if cached is not None and cached[0] is sutra_list:
+        return cached[1]
+    karaka_sutras = [s for s in sutra_list
+                     if getattr(s, "bahiranga", 9) == -2]
+    samasa_sutras = [s for s in sutra_list
+                     if getattr(s, "bahiranga", 9) == -1]
+    main_sutras = [s for s in sutra_list
+                   if getattr(s, "bahiranga", 9) > -1]
+    purvapara_aps = [s.aps for s in sutra_list
+                     if getattr(s, "purvapara", False)]
+    ekadesha_block_aps = list(purvapara_aps)
+    _seen = set(ekadesha_block_aps)
+    for s in sutra_list:
+        if (s.aps not in _seen
+                and _cond_has_both_l_and_r(getattr(s, "_cond_dict", None))):
+            ekadesha_block_aps.append(s.aps)
+            _seen.add(s.aps)
+    split = (karaka_sutras, samasa_sutras, main_sutras,
+             purvapara_aps, ekadesha_block_aps)
+    _sutra_split_cache[id(sutra_list)] = (sutra_list, split)
+    return split
+
+
 def _deduplicate_hier_outputs(outputs):
     """If all PrakriyaVakya outputs produce the same canonical string,
     return a single-element list. Otherwise return the original list."""
@@ -217,32 +249,23 @@ class AntarangaPrakriya(PrakriyaBase):
         #     padas-with-sup). Lower = more antaraṅga = earlier.
         #   bahiranga  > -1 → main window scan (phonological rules), unchanged
         #     (already excludes both -2 and -1).
-        self._karaka_sutras = [s for s in sutra_list
-                               if getattr(s, "bahiranga", 9) == -2]
-        self._samasa_sutras = [s for s in sutra_list
-                               if getattr(s, "bahiranga", 9) == -1]
-        self._main_sutras = [s for s in sutra_list
-                             if getattr(s, "bahiranga", 9) > -1]
-        # 6.1.85 antādivat: aps ids of every ekādeśa (pūrvaparayoḥ) rule. When
-        # one fires, this whole set PLUS the saṁhitā ac-sandhi junction rules
-        # 6.1.77 (iko yaṇaci) and 6.1.78 (eco'yavāyāvaḥ) is disabled at that
-        # boundary — the two vowels have coalesced into one phoneme, so no
-        # further ac-sandhi applies at the resolved junction (see _exec).
-        self._purvapara_aps = [s.aps for s in sutra_list
-                               if getattr(s, "purvapara", False)]
-        # The set disabled at an antādivat boundary = the ekādeśa rules
-        # themselves PLUS every rule whose condition references both `l` and `r`
-        # in one block (the saṁhitā vowel-junction rules — 6.1.77/78 and the
-        # tripādī sandhi mass). At a resolved ekādeśa junction l == r == the
-        # single substitute, so such a rule would mis-fire (the antādivat
-        # simultaneity caveat: one phoneme cannot fill both slots). This is
-        # pre-merge-scoped (join_objects resets disabled_sutras) and safe for the
-        # consonant-`r` members, which cannot match the vowel substitute anyway.
-        self._ekadesha_block_aps = list(self._purvapara_aps)
-        for s in sutra_list:
-            if (s.aps not in self._ekadesha_block_aps
-                    and _cond_has_both_l_and_r(getattr(s, "_cond_dict", None))):
-                self._ekadesha_block_aps.append(s.aps)
+        # 6.1.85 antādivat (_purvapara_aps): aps ids of every ekādeśa
+        # (pūrvaparayoḥ) rule. When one fires, this whole set PLUS the saṁhitā
+        # ac-sandhi junction rules 6.1.77 (iko yaṇaci) and 6.1.78
+        # (eco'yavāyāvaḥ) is disabled at that boundary — the two vowels have
+        # coalesced into one phoneme, so no further ac-sandhi applies at the
+        # resolved junction (see _exec).
+        # The set disabled at an antādivat boundary (_ekadesha_block_aps) =
+        # the ekādeśa rules themselves PLUS every rule whose condition
+        # references both `l` and `r` in one block (the saṁhitā vowel-junction
+        # rules — 6.1.77/78 and the tripādī sandhi mass). At a resolved
+        # ekādeśa junction l == r == the single substitute, so such a rule
+        # would mis-fire (the antādivat simultaneity caveat: one phoneme
+        # cannot fill both slots). This is pre-merge-scoped (join_objects
+        # resets disabled_sutras) and safe for the consonant-`r` members,
+        # which cannot match the vowel substitute anyway.
+        (self._karaka_sutras, self._samasa_sutras, self._main_sutras,
+         self._purvapara_aps, self._ekadesha_block_aps) = _split_sutras(sutra_list)
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update

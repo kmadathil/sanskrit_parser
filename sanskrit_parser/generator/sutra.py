@@ -112,8 +112,9 @@ class LRSutra(Sutra):
             c = self.cond(env)
         else:
             c = True
-        n = "Nitya " if nitya_check else ""
-        logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
+        if logger.isEnabledFor(logging.DEBUG):
+            n = "Nitya " if nitya_check else ""
+            logger.debug(f"{'✓' if c else '·'} {n}{self}   {s1} | {s2}")
         return c
 
     def evalConditionDetail(self, s1, s2, context=None):

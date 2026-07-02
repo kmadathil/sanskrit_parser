@@ -138,7 +138,7 @@ git commit -m "Merge <branch-2>: <brief description>"
 Then run the full test suite:
 ```bash
 cd sanskrit_parser/generator/test
-PYTHONPATH=<worktree-root> /Users/karthik/venvs/sanskrit/bin/pytest -n 6
+PYTHONPATH=<worktree-root> /Users/karthik/venvs/sanskrit/bin/pytest -n 8 --dist worksteal
 ```
 
 All tests must pass. If any fail, diagnose before proceeding — don't paper over failures.

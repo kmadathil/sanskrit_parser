@@ -182,41 +182,51 @@ class HierPrakriya(PrakriyaBase):
 
     # pUrvaparanityAntaraNgApavAdAnamuttarottaraM balIyaH
     def sutra_priority(self, sutras: list):
+        _dbg = logger.isEnabledFor(logging.DEBUG)
+
         def _winner(s1, s2):
-            logger.debug(f"{s1} overrides {s1.overrides}")
-            logger.debug(f"{s2} overrides {s2.overrides}")
+            if _dbg:
+                logger.debug(f"{s1} overrides {s1.overrides}")
+                logger.debug(f"{s2} overrides {s2.overrides}")
             # Apavada
             if (s2.overrides is not None) and (s1.aps in s2.overrides):
-                logger.debug(f"{s2} overrides {s1}")
+                if _dbg:
+                    logger.debug(f"{s2} overrides {s1}")
                 return s2
             elif (s1.overrides is not None) and (s2.aps in s1.overrides):
-                logger.debug(f"{s1} overrides {s2}")
+                if _dbg:
+                    logger.debug(f"{s1} overrides {s2}")
                 return s1
             # Nitya
             # Antaranga
             elif (s1.bahiranga < s2.bahiranga):
-                logger.debug(f"{s1} antaranga {s2}")
+                if _dbg:
+                    logger.debug(f"{s1} antaranga {s2}")
                 return s1
             elif (s2.bahiranga < s1.bahiranga):
-                logger.debug(f"{s2} antaranga {s1}")
+                if _dbg:
+                    logger.debug(f"{s2} antaranga {s1}")
                 return s2
             # samjYA before 1.4.2 vipratizeDe param kAryam
             elif (s1._aps_num < 14000) or (s2._aps_num < 14000):
-                logger.debug(f"SaMjYA, lower of {s1} {s2}")
+                if _dbg:
+                    logger.debug(f"SaMjYA, lower of {s1} {s2}")
                 if s1._aps_num < s2._aps_num:
                     return s1
                 else:
                     return s2
             # Also handles if one sutra is spsp and one tp
             elif (s1._aps_num > 82000) or (s2._aps_num > 82000):
-                logger.debug(f"Tripadi, lower of {s1} {s2}")
+                if _dbg:
+                    logger.debug(f"Tripadi, lower of {s1} {s2}")
                 if s1._aps_num < s2._aps_num:
                     return s1
                 else:
                     return s2
             else:
                 # Para > purva
-                logger.debug(f"Sapadasaptapadi, higher of {s1} {s2}")
+                if _dbg:
+                    logger.debug(f"Sapadasaptapadi, higher of {s1} {s2}")
                 if s1._aps_num > s2._aps_num:
                     return s1
                 else:
@@ -339,10 +349,12 @@ class HierPrakriya(PrakriyaBase):
         return {"sutras": records, "priority_trace": priority_trace}
 
     def _exec_single(self, node):
+        _dbg = logger.isEnabledFor(logging.DEBUG)
         l = self.sutra_list  # noqa: E741
         # Sliding window, check from left
         for ix in range(len(node.outputs)-1):
-            logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
+            if _dbg:
+                logger.debug(f"Disabled Sutras at window {ix} {[s for s in node.outputs[ix].disabled_sutras]}")
             triggered = []
             triggered = [s for s in l if ((s.aps not in node.outputs[ix].disabled_sutras)
                                           and s.isInDomain(self.domains) and s.isTriggered(*self.view(s, node, ix)))]
@@ -350,13 +362,16 @@ class HierPrakriya(PrakriyaBase):
             if triggered:
                 _ix = ix
                 break
-        logger.debug(f"I [{node.id}]: {node.outputs}  tags: {[set(_r.tags) for _r in node.outputs]}")
+        if _dbg:
+            logger.debug(f"I [{node.id}]: {node.outputs}  tags: {[set(_r.tags) for _r in node.outputs]}")
         if triggered:
             ix = _ix
-            logger.debug(f"Triggered at window {ix}: {[str(t) for t in triggered]}")
+            if _dbg:
+                logger.debug(f"Triggered at window {ix}: {[str(t) for t in triggered]}")
             s = self.sutra_priority(triggered)
             v = self.view(s, node, ix)
-            logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
+            if _dbg:
+                logger.debug(f"Sutra {s} View {v} Disabled: {[s for s in v[0].disabled_sutras]}")
             assert s.aps not in v[0].disabled_sutras
             # Transformation
             r = s.operate(*v)
@@ -382,7 +397,8 @@ class HierPrakriya(PrakriyaBase):
                     r[i] = r[i][i]  # Appropriate sub-object for insertion
                     r[i].update("".join([o.canonical() for o in hpo[0]]))
                     
-            logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
+            if _dbg:
+                logger.debug(f"Op result [{s.aps}]: {r}  tags: {[sorted(_r.tags) for _r in r]}")
             
             
             # Sutras that run disable not only themselves but the utsargas they override  from running again by the
@@ -405,10 +421,12 @@ class HierPrakriya(PrakriyaBase):
                             # Prevent optional sutra's overridden sutras from executing on the same node again
                             v0.disabled_sutras.append(so.aps)
                             v0.disabled_by[so.aps] = s.aps
-                        logger.debug(f"Disabling overriden {so}")
+                        if _dbg:
+                            logger.debug(f"Disabling overriden {so}")
             # FIXME: disable sutras for AkaqArAdekA saMjYA
 
-            logger.debug(f"O [{s.aps}]: {r}  tags: {[set(_r.tags) for _r in r]}  disabled: {[list(_r.disabled_sutras) for _r in r]}")
+            if _dbg:
+                logger.debug(f"O [{s.aps}]: {r}  tags: {[set(_r.tags) for _r in r]}  disabled: {[list(_r.disabled_sutras) for _r in r]}")
 
                     
             # Update Prakriya Tree
@@ -517,14 +535,16 @@ class PrakriyaNode(object):
     def __str__(self):
         return f"{self.id} {self.sutra} {self.inputs} {self.index}-> {self.outputs}"
 
+    # id is globally unique per node, and __str__ embeds it, so equality by id
+    # matches the old str-based equality while keeping dict lookups O(1).
     def __hash__(self):
-        return hash("{self.sutra} {self.inputs} {self.index}-> {self.outputs}")
+        return hash(self.id)
 
     def __eq__(self, other):
-        return str(self) == str(other)
+        return isinstance(other, PrakriyaNode) and self.id == other.id
 
     def __ne__(self, other):
-        return str(self) != str(other)
+        return not self.__eq__(other)
 
     def describe(self, step=None, indent="  ", hier_map=None, tag_display=False):
         step_label = f"Step {step:2d}" if step is not None else "     "
