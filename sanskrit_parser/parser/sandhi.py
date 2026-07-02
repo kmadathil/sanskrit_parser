@@ -106,7 +106,7 @@ import datetime
 from zipfile import ZipFile
 from sanskrit_parser.base.sanskrit_base import SanskritNormalizedString, outputctx
 from sanskrit_parser.util.data_manager import data_file_path
-
+from marisa_trie import BytesTrie
 
 class Sandhi(object):
     """
@@ -127,24 +127,21 @@ class Sandhi(object):
         self.logger = logger or logging.getLogger(__name__)
 
     @staticmethod
-    def _load_rules_pickle(filename):
+    def _load_rules_file(filename):
         zip_path = data_file_path('sandhi_rules.zip')
         with ZipFile(zip_path) as myzip:
             with myzip.open(filename) as f:
-                return pickle.load(f)
+                return BytesTrie().frombytes(f.read())
 
     def _load_forward(self):
         if self.forward is None:
-            self.forward = self._load_rules_pickle('sandhi_forward.pkl')
-            keys = self.forward.keys()
-            self.lc_len_max = max(len(k[0]) for k in keys)
-            self.rc_len_max = max(len(k[1]) for k in keys)
+            self.forward = self._load_rules_file("sandhi_forward.marisa")
+            self.lc_len_max = int.from_bytes(self.forward["__lc_len_max__"][0], "big")
+            self.rc_len_max = int.from_bytes(self.forward["__rc_len_max__"][0], "big")
 
     def _load_backward(self):
         if self.backward is None:
-            self.backward = self._load_rules_pickle('sandhi_backward.pkl')
-            keys = self.backward.keys()
-            self.after_len_max = max(len(k) for k in keys)
+            self.backward = self._load_rules_file("sandhi_backward.marisa")
 
     def join(self, first_in, second_in):
         """
@@ -169,9 +166,10 @@ class Sandhi(object):
         self.logger.debug("left_chars = %s, right_chars %s", left_chars, right_chars)
         joins = set()
         for key in itertools.product(left_chars, right_chars):
-            afters = self.forward.get(key)
+            afters = self.forward.get("+".join(key))
             if afters:
-                for after, annotation in afters:
+                for a in afters:
+                    after, annotation = a.decode().split(",")
                     self.logger.debug("Found sandhi %s = %s (%s)", key, after, annotation)
                     joins.add(first[:-len(key[0])] + after + second[len(key[1]):])
         if len(joins) == 0:
@@ -193,26 +191,22 @@ class Sandhi(object):
         word = word_in.canonical()
         self.logger.debug("Split: %s, %d", word, idx)
         splits = set()
-        # Figure out how may chars we can extract for the afters
-        stop = min(idx+self.after_len_max, len(word))
-        afters = [word[idx:i] for i in range(idx+1, stop+1)]
+        word_right = word[idx:]
+        afters = self.backward.prefixes(word_right)
         for after in afters:
-            self.logger.debug("Trying after %s", after)
             befores = self.backward[after]
-            if befores:
-                for before, annotation in befores:
-                    self.logger.debug("Found split %s -> %s (%s)", after, before, annotation)
-                    # Do we have a beginning-of-line match rule
-                    if before[0][0] == "^":
-                        if idx != 0:
-                            # Can't allow matches at any other position
-                            continue
-                        else:
-                            # drop the ^ in the result
-                            before = (before[0][1:], before[1])
-                    left = word[:idx] + before[0]
-                    right = before[1] + word[idx+len(after):]
-                    splits.add((left, right))
+            for before in befores:
+                l, r, annotation = before.decode().split(",")
+                if l[0] == "^":
+                    if idx != 0:
+                        # Can't allow matches at any other position
+                        continue
+                    else:
+                        # drop the ^ in the result
+                        l = l[1:]
+                left = word[:idx] + l
+                right = r + word[idx+len(after):]
+                splits.add((left, right))
 
         if len(splits) == 0:
             self.logger.debug("No split found")
