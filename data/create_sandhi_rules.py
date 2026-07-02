@@ -11,6 +11,7 @@ import re
 import inspect
 import logging
 import pickle
+from marisa_trie import BytesTrie
 
 
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -31,8 +32,10 @@ class Sandhi(object):
         :param use_default_rules: reads pre-built-rules from sandhi_rules dir under module directory
         :param logger: instance of python logger to use
         """
-        self.forward = defaultdict(set)
-        self.backward = defaultdict(set)
+        self.lc_len_max = 0
+        self.rc_len_max = 0
+        self.forward = []
+        self.backward = []
         self.logger = logging.getLogger(__name__)
 
         base_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -46,8 +49,10 @@ class Sandhi(object):
         :param before: tuple of length two of the varNas involved in the sandhi
         :param after: result of the sandhi
         """
-        self.forward[before].add((after, annotation))
-        self.backward[after].add((before, annotation))
+        self.lc_len_max = max(self.lc_len_max, len(before[0]))
+        self.rc_len_max = max(self.rc_len_max, len(before[1]))
+        self.forward.append((f"{before[0]}+{before[1]}", f"{after},{annotation}".encode()))
+        self.backward.append((after, f"{before[0]},{before[1]},{annotation}".encode()))
 
     def expand_rule(self, rule):
         """
@@ -147,7 +152,7 @@ class Sandhi(object):
                 self.logger.debug("Processing rule %s", line)
                 rule = SanskritImmutableString(line).canonical()
                 for r in self.expand_rule(rule):
-                    self.add_rule(*r, annotation="%s:%d" % (filename, linenum+1))
+                    self.add_rule(*r, annotation="%s:%d" % (filename[0], linenum+1))
 
     def add_rules_from_dir(self, directory):
         """
@@ -168,12 +173,17 @@ class Sandhi(object):
                 continue
 
     def save_rules(self, output_path):
+        assert self.lc_len_max < 255 and self.rc_len_max < 255
+        self.forward.append(("__lc_len_max__", self.lc_len_max.to_bytes(1, "big")))
+        self.forward.append(("__rc_len_max__", self.rc_len_max.to_bytes(1, "big")))
         zip_path = os.path.join(output_path, 'sandhi_rules.zip')
         with ZipFile(zip_path, mode='w', compression=ZIP_DEFLATED) as myzip:
-            with myzip.open('sandhi_forward.pkl', mode='w') as f:
-                pickle.dump(self.forward, f)
-            with myzip.open('sandhi_backward.pkl', mode='w') as f:
-                pickle.dump(self.backward, f)
+            with myzip.open('sandhi_forward.marisa', mode='w') as f:
+                trie = BytesTrie(self.forward)
+                f.write(trie.tobytes())
+            with myzip.open('sandhi_backward.marisa', mode='w') as f:
+                trie = BytesTrie(self.backward)
+                f.write(trie.tobytes())
 
 
 if __name__ == "__main__":
