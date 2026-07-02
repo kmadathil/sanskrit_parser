@@ -1332,18 +1332,26 @@ def _collect_phon_steps(tree, enc, want_tags, want_eval):
     return steps
 
 
-def run_karaka(sentence, enc, want_tags=False, want_eval=False):
+def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
     """Build the tagged vākya, run the engine, and read back per-word kāraka/
     vibhakti, the vibhāṣā branch sentences, the fired kāraka-sutra trace, and the
     phonological (non-kāraka) sutra steps (with optional per-step tags/eval).
 
-    Returns {words, branches, fired, phon}. Raises on a bad spec.
+    With sandhi=False (default) each word is followed by its own avasAna, so the
+    words stay isolated (no inter-word sandhi) and the joined output splits cleanly
+    into per-word forms. With sandhi=True only a single trailing avasAna is added,
+    so adjacent words sandhi together — but the fused output can no longer be split,
+    so per-word/compound surface forms are omitted (only the derived sentence(s)).
+
+    Returns {words, branches, fired, phon, compounds}. Raises on a bad spec.
     """
     # 1. Build [Adya, w0, avasAna, w1, avasAna, …]; record each word's index.
     #    Compound grouping: a maximal run of consecutive specs flagged "samasa"
     #    forms ONE compound — its members sit adjacent (no avasAna between), so
     #    the samāsa pre-pass + main scan combine them. Every other boundary gets
     #    an avasAna. With no samāsa specs this is the original per-word build.
+    #    In sandhi mode we drop the internal avasAnas (only a trailing one below)
+    #    so every boundary is a saMhitā juncture where inter-word sandhi applies.
     pl = [Adya]
     word_ix = []
     groups = []   # list of [spec_index, …]; one entry per surface piece
@@ -1354,8 +1362,10 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
         (groups[-1].append(si) if prev_same else groups.append([si]))
         next_same = (spec.get("samasa") and si + 1 < len(sentence)
                      and sentence[si + 1].get("samasa"))
-        if not next_same:
+        if not sandhi and not next_same:
             pl.append(avasAna)
+    if sandhi:
+        pl.append(avasAna)
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl), capture_eval=want_eval)
     p.execute()
 
@@ -1377,14 +1387,18 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False):
     for o in p.output():
         slp = "".join(x.transcoded(sanscript.SLP1) for x in list(o))
         pieces = [w for w in slp.split(sep) if w != ""]
-        for gi, w in enumerate(pieces):
-            if gi < len(group_forms):
-                group_forms[gi].add(sanscript.transliterate(w, sanscript.SLP1, enc))
+        # In sandhi mode there is a single fused piece — it is the derived
+        # sentence, but it cannot be split back into per-word/compound forms.
+        if not sandhi:
+            for gi, w in enumerate(pieces):
+                if gi < len(group_forms):
+                    group_forms[gi].add(sanscript.transliterate(w, sanscript.SLP1, enc))
         sent = " ".join(sanscript.transliterate(w, sanscript.SLP1, enc) for w in pieces)
         if sent not in seen:
             seen.add(sent)
             branches.append(sent)
-    # Per-spec forms: a compound's surface attaches to each of its members.
+    # Per-spec forms: a compound's surface attaches to each of its members. Left
+    # empty in sandhi mode (group_forms unpopulated — the fused output can't split).
     pos_forms = [set() for _ in sentence]
     for gi, grp in enumerate(groups):
         for si in grp:
@@ -1709,13 +1723,15 @@ def api_karaka():
     enc_name  = body.get("encoding", "devanagari")
     want_tags = bool(body.get("tags", False))
     want_eval = bool(body.get("eval", False))
+    want_sandhi = bool(body.get("sandhi", False))
 
     if not sentence:
         return jsonify({"error": "Empty sentence"}), 400
 
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
     try:
-        result = run_karaka(sentence, enc, want_tags=want_tags, want_eval=want_eval)
+        result = run_karaka(sentence, enc, want_tags=want_tags, want_eval=want_eval,
+                            sandhi=want_sandhi)
     except (KeyError, ValueError) as exc:
         return jsonify({"error": f"Sentence error: {exc}"}), 400
     except Exception as exc:  # noqa: BLE001

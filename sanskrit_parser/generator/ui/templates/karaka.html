@@ -152,6 +152,8 @@
         <span>show object tags at each sūtra</span></label>
       <label class="sem-opt" style="font-size:.82rem;"><input type="checkbox" id="opt-eval">
         <span>show evaluation at each sūtra</span></label>
+      <label class="sem-opt" style="font-size:.82rem;"><input type="checkbox" id="opt-sandhi">
+        <span>join words with sandhi (संहिता) — omits per-word forms</span></label>
     </div>
 
     <button class="btn btn-primary" style="width:100%;" onclick="derive()">Derive →</button>
@@ -336,14 +338,16 @@ async function derive() {
   const enc  = document.getElementById('encoding').value;
   const tags = document.getElementById('opt-tags').checked;
   const ev   = document.getElementById('opt-eval').checked;
+  const sandhi = document.getElementById('opt-sandhi').checked;
   const res = document.getElementById('results');
   res.innerHTML = '<div class="spin">Deriving…</div>';
   try {
     const r = await fetch('/api/karaka', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev }) });
+      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev, sandhi }) });
     const data = await r.json();
     if (!r.ok || data.error) { res.innerHTML = `<div class="err">${data.error||'Error'}</div>`; return; }
+    data.sandhi = sandhi;
     renderResult(data);
   } catch (err) { res.innerHTML = `<div class="err">${err}</div>`; }
 }
@@ -355,9 +359,10 @@ function kChips(arr, cls, pre) {
 const vibName = t => { const n = +t.slice(8); return VIB_NAMES[n-1] || t; };
 
 function renderResult(d) {
+  const sandhiLbl = d.sandhi ? ' (संहिता)' : '';
   const branchHtml = d.branches.map((s, i) => `
     <div class="branch-card">
-      <div class="lbl">${d.branches.length>1 ? 'Vibhāṣā branch '+(i+1) : 'Derived sentence'}</div>
+      <div class="lbl">${d.branches.length>1 ? 'Vibhāṣā branch '+(i+1) : 'Derived sentence'}${sandhiLbl}</div>
       <div class="sent">${s}</div>
     </div>`).join('');
 
