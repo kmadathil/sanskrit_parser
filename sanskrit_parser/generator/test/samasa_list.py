@@ -231,4 +231,47 @@ samasa_tp_tests = [
         "fired": [],
         "no_samasa": True,
     },
+    # ── T0 dvitīyā extensions (2.1.25–29) ──
+    {
+        # स्वयम् + कृत → स्वयंकृतम् (correct form). The rule + pre-pass tags are
+        # correct; only the compound-INTERNAL म्→anusvāra (8.3.24 नश्चापदान्तस्य झलि)
+        # does not fire on the merged compound (?pada-gated; a pre-existing engine
+        # limitation for compound-internal anusvāra — the engine emits स्वयम्कृतम्).
+        # Surface deferred; correct form स्वयंकृतम्. (sāmi 2.1.27, i-final, is unaffected.)
+        "label": "T0-svayaMkRtam-2.1.25",
+        "purva": {"avyaya": "svayam", "vivakza": True},
+        "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.25", "1.2.43", "2.4.26"],
+        "surface": "स्वयंकृतम्",
+        "surface_deferred": True,
+    },
+    {
+        "label": "T0-KawvArUQaH-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
+        "purva": {"stem": "KawvA", "vacana": 1, "vibhakti": 2, "sem": "semantic_kzepa"},
+        "uttara": {"stem": "rUQa", "vacana": 1},
+        "fired": ["2.1.26", "1.2.43", "2.4.26"],
+        "surface": "खट्वारूढः",
+    },
+    {
+        "label": "T0-sAmikRtam-2.1.27",           # सामि + कृत → सामिकृतम्
+        "purva": {"avyaya": "sAmi", "vivakza": True},
+        "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.27", "1.2.43", "2.4.26"],
+        "surface": "सामिकृतम्",
+    },
+    {
+        "label": "T0-mAsapramitaH-2.1.28",        # मास (dvitīyā, kāla, non-atyanta) + प्रमित → मासप्रमितः
+        "purva": {"stem": "mAsa", "vacana": 1, "vibhakti": 2, "vivakza": True},
+        "uttara": {"stem": "pramita", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.28", "1.2.43", "2.4.26"],
+        "surface": "मासप्रमितः",
+    },
+    {
+        "label": "T0-muhUrtasuKam-2.1.29",        # मुहूर्त (dvitīyā, kāla, atyantasaṃyoga) + सुख → मुहूर्तसुखम्
+        "purva": {"stem": "muhUrta", "vacana": 1, "vibhakti": 2,
+                  "sem": "semantic_atyantasaMyoga", "vivakza": True},
+        "uttara": {"stem": "suKa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.29", "1.2.43", "2.4.26"],
+        "surface": "मुहूर्तसुखम्",
+    },
 ]

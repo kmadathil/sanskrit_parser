@@ -58,8 +58,9 @@ in avyayībhāva. 2.2.30 physical reorder lands only when bahuvrīhi/dvandva nee
 
 | Block | SK / sūtra | Phase |
 |---|---|---|
-| tatpuruṣa saṁjñā, dvigu saṁjñā | 684 (2.1.22), 685 (2.1.23) | T0 |
-| **dvitīyā** श्रितातीत… | 686–691 (2.1.24–29) | T0 |
+| tatpuruṣa saṁjñā | 684 (2.1.22) | T0 ✅ |
+| dvigu saṁjñā | 685 (2.1.23) | T2 (with dvigu formation) |
+| **dvitīyā** श्रितातीत… | 686–691 (2.1.24–29) | T0 ✅ |
 | **tṛtīyā** तत्कृतार्थेन… | 692–697 (2.1.30–35) | T1 |
 | **caturthī** तदर्थ… | 698 (2.1.36) | T1 |
 | **pañcamī** भयेन, अपेत… | 699–701 (2.1.37–39) | T1 |
@@ -88,9 +89,17 @@ worktrees. When spawning worktree-isolated background agents, pin the base branc
 
 ## 3. Phases
 
-### Phase T0 — Spine + tatpuruṣa saṁjñā + dvitīyā (proof of concept)
+### Phase T0 — Spine + tatpuruṣa saṁjñā + full dvitīyā block ✅ DONE
 
 The foundational slice that proves the **normally-declining compound** path.
+**Status: implemented** — the whole dvitīyā-tatpuruṣa block SK 684–691 (2.1.22
+saṁjñā fused + 2.1.24–29) plus 2.4.26, reusing 1.2.43 / 2.4.71. Derives कृष्णश्रितः
+(+ full vibhakti sweep), स्वयंकृतम् (surface deferred — see below), खट्वारूढः,
+सामिकृतम्, मासप्रमितः, मुहूर्तसुखम्. 14 cases in `test/test_samasa_tatpurusha.py`; full
+suite green. **Known limitation:** स्वयंकृत's compound-internal म्→anusvāra (8.3.24) is
+not applied (?pada-gated; pre-existing, general to compound-internal anusvāra) — the
+rule + pre-pass tags are correct, only the surface is deferred. The bullets below
+describe the 2.1.24 core; 2.1.25–29 follow the same shape (see `generator_status.md`).
 
 - **2.1.22 तत्पुरुषः** (SK684): pre-pass saṁjñā. Fused with the first vidhi (2.1.24):
   sets `?samAsaPurva` on the pūrva, `?samAsa` + `?tatpuruza` on the uttara.

@@ -67,6 +67,15 @@ kfzRa = Pratipadika("kfzRa", "pum")   # कृष्ण — कृष्णः (
 # treated as a pre-formed a-stem. ?srita_gaRa marks membership (श्रित/अतीत/पतित/गत/
 # अत्यस्त/प्राप्त/आपन्न); the dvitīyā-tatpuruṣa fires on it → कृष्णश्रितः.
 Srita = Pratipadika("Srita", "pum", other_tags=["srita_gaRa"])   # श्रित — कृष्णश्रितः (2.1.24)
+# Tatpuruṣa-samāsa T0 dvitīyā extensions (2.1.25–29): kta-participle uttaras
+# (?kta) + a khaṭvā pūrva + kāla-word (?kAlavAcaka) pūrvas.
+kfta    = Pratipadika("kfta",    "napum", other_tags=["kta"])  # कृत — स्वयंकृतम् (2.1.25) / सामिकृतम् (2.1.27)
+rUQa    = Pratipadika("rUQa",    "pum",   other_tags=["kta"])  # रूढ — खट्वारूढः (2.1.26 kṣepa)
+pramita = Pratipadika("pramita", "pum",   other_tags=["kta"])  # प्रमित — मासप्रमितः (2.1.28 kāla)
+suKa    = Pratipadika("suKa",    "napum")                       # सुख — मुहूर्तसुखम् (2.1.29, non-kta)
+KawvA   = Pratipadika("KawvA",   "strI")                        # खट्वा — खट्वारूढः (2.1.26, dvitīyā pūrva)
+muhUrta = Pratipadika("muhUrta", "pum",   other_tags=["kAlavAcaka"])   # मुहूर्त — मुहूर्तसुखम् (2.1.29)
+# (मास is defined below at the SK539 site — ?kAlavAcaka added there for 2.1.28)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
@@ -94,7 +103,7 @@ samiD = Pratipadika("samiD", "strI", other_tags=["jhayanta"])      # समि�
 carman = Pratipadika("carman", "napum")  # चर्मन् — उपचर्म/उपचर्मम् (5.4.109 napuṁsaka optional TaC; an-stem)
 # Kāraka Phase K1 sentence stems (test/karaka_list.py; a-/i-stems reuse the
 # rAma/hari paradigms).
-mAsa = Pratipadika("mAsa", "pum")     # मास — मासमास्ते (SK539 akarmaka vārttika)
+mAsa = Pratipadika("mAsa", "pum", other_tags=["kAlavAcaka"])   # मास — मासमास्ते (SK539); ?kAlavAcaka → मासप्रमितः (2.1.28)
 svarga = Pratipadika("svarga", "pum")  # स्वर्ग — शत्रूनगमयत्स्वर्गम् (SK540)
 veda = Pratipadika("veda", "pum")     # वेद — वेदमध्यापयद्विधिम् (SK540 buddhi)
 viDi = Pratipadika("viDi", "pum")     # विधि — the prayojya kartṛ→karma (SK540)

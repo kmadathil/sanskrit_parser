@@ -9908,3 +9908,121 @@
   update:
     orp: [+paravalliNga]
 
+# ── T0 dvitīyā extensions (2.1.25–29) — the rest of the dvitīyā-tatpuruṣa block.
+# All share the 2.1.24 shape (pūrva ?samAsaPurva, uttara ?samAsa+?tatpuruza; the
+# pūrva sup luks via 2.4.71, the uttara declines). Gated on ?samAsa_vivakza (or a
+# semantic sense) — the avyayībhāva "only-when-intended" precedent, not a fork.
+# 2.1.25/27 have an indeclinable pūrva (svayam/sāmi, NO dvitīyā — SK687: द्वितीया
+# न संबद्ध्यते); 2.1.26/28 take a dvitīyā pūrva + a ?kta uttara; 2.1.29 takes any
+# uttara (अक्तान्तार्थम्).
+
+# 687/2.1.25: स्वयं क्तेन — the indeclinable स्वयम् + a क्त-ending word → तत्पुरुष:
+# स्वयंकृतम् (m→anusvāra before k). svayam is an avyaya (no viBakti_2 — the 2.1.24
+# dvitīyā does not connect), so its default su luks via 2.4.71/2.4.82.
+- sutra: स्वयं क्तेन
+  id: 2.1.25
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=svayam"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 688/2.1.26: खट्वा क्षेपे — खट्वा (in the dvitīyā) + a क्त-word, in निन्दा (kṣepa) →
+# तत्पुरुष: खट्वारूढः (a worthless fellow). Nitya in the kṣepa sense — gated on
+# ?semantic_kzepa (trips the pre-pass candidate/skip guards; no vivakṣā needed).
+- sutra: खट्वा क्षेपे
+  id: 2.1.26
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=KawvA"
+      - "?viBakti_2"
+      - "?semantic_kzepa"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 689/2.1.27: सामि — the indeclinable सामि ("half") + a क्त-word → तत्पुरुष:
+# सामिकृतम्. Like 2.1.25 (avyaya pūrva, no dvitīyā).
+- sutra: सामि
+  id: 2.1.27
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=sAmi"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 690/2.1.28: कालाः — a time-word (?kAlavAcaka) in the dvitīyā + a क्त-word →
+# तत्पुरुष (optionally; SK690 अनत्यन्तसंयोगार्थम्): मासप्रमितः. Optional → the
+# only-when-intended ?samAsa_vivakza gate. Restricted to NON-atyantasaṃyoga
+# (?!semantic_atyantasaMyoga) — the atyanta case is 2.1.29.
+- sutra: कालाः
+  id: 2.1.28
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?kAlavAcaka"
+      - "?viBakti_2"
+      - "?!semantic_atyantasaMyoga"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 691/2.1.29: अत्यन्तसंयोगे च — a time-word (?kAlavAcaka) in the dvitīyā, in
+# अत्यन्तसंयोग (continuous conjunction), + ANY word (अक्तान्तार्थम् — not limited to
+# क्त) → तत्पुरुष (optionally): मुहूर्तसुखम्. The ?semantic_atyantasaMyoga tag both
+# selects this over 2.1.28 and (via 2.3.5) supplies the pūrva's dvitīyā.
+- sutra: अत्यन्तसंयोगे च
+  id: 2.1.29
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?kAlavAcaka"
+      - "?viBakti_2"
+      - "?semantic_atyantasaMyoga"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
