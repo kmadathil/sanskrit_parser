@@ -83,6 +83,7 @@ setup(
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.13',
   ],
 
   # What does your project relate to?
@@ -104,6 +105,7 @@ setup(
                     'six', 'flask', 'flask_restx', 'flask_cors',
                     'jsonpickle', 'sanskrit_util', 'sqlalchemy>=1.4',
                     'pydot', 'pandas', 'xlrd', 'importlib_resources', "marisa_trie",
+                    'pyyaml',
                     # Remove when https://github.com/python-restx/flask-restx/issues/460 is fixed
                     'werkzeug==3.1.6'
                     ],
