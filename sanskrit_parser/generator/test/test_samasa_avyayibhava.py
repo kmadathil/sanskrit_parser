@@ -58,8 +58,14 @@ def test_samasa_avyayibhava(case):
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
     # ── Level 1: structure (pre-pass member tags, before the main-scan merge) ──
+    # The samāsa pre-pass nests the compound members into a sub-list (so the
+    # compound resolves as one samasta_pada — see _nest_samasa_members), so
+    # flatten one level before scanning for member objects.
     branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
-    members = [o for o in branch
+    flat = []
+    for o in branch:
+        flat.extend(o if isinstance(o, list) else [o])
+    members = [o for o in flat
                if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
     assert len(members) == 2, f"{case['label']}: expected 2 members, got {members}"
     purva_o, uttara_o = members

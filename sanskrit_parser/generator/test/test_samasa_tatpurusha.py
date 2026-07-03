@@ -61,8 +61,14 @@ def test_samasa_tatpurusha(case):
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
     # ── Level 1: structure (pre-pass member tags, before the main-scan merge) ──
+    # The samāsa pre-pass nests the compound members into a sub-list (so the
+    # compound resolves as one samasta_pada — see _nest_samasa_members), so
+    # flatten one level before scanning for member objects.
     branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
-    members = [o for o in branch
+    flat = []
+    for o in branch:
+        flat.extend(o if isinstance(o, list) else [o])
+    members = [o for o in flat
                if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
     assert len(members) == 2, f"{case['label']}: expected 2 members, got {members}"
     purva_o, uttara_o = members
@@ -139,13 +145,15 @@ def test_tatpurusha_vibhakti_sweep(vib_n):
         f"tatpuruṣa viBakti_{vib_n}: {got} != {expected}"
 
 
-# ── T1 vibhakti sweeps: masc (caturthī) + napuṁsaka (ṣaṣṭhī) declension ────────
+# ── T1 vibhakti sweeps: masc (ṣaṣṭhī + caturthī) + napuṁsaka (ṣaṣṭhī) ──────────
 # Each proves the compound declines NORMALLY in the uttara's gender (2.4.26
-# परवल्लिङ्गम्): धान्यार्थ as a masc a-stem (राम paradigm), जीवसुख as a napuṁsaka
-# a-stem (nom=acc जीवसुखम्, the hallmark napuṁsaka अम्). Both are chosen ṇatva-safe
-# (धान्यार्थ: the dental थ blocks 8.4.2 across श्रित-style; जीवसुख: no र/ष/ऋ at all),
-# mirroring the T0 कृष्णश्रित sweep — cross-member ṇatva inside a declining compound
-# is a KNOWN pre-pipeline limitation (see generator_status.md), not a T1 rule gap.
+# परवल्लिङ्गम्): राजपुरुष / धान्यार्थ as masc a-stems (राम paradigm), जीवसुख as a
+# napuṁsaka a-stem (nom=acc जीवसुखम्, the hallmark napuṁsaka अम्). राजपुरुष exercises
+# ṇatva (राजपुरुषेण, inst) — the compound resolves as one samasta_pada via the
+# pre-pass member-nesting (_nest_samasa_members), so the uttara ष triggers 8.4.2
+# across एन just as in a plain pada. (A pūrva-only ṇatva trigger reaching the
+# uttara's sup — चोरभयेण — is still not applied; a pre-existing engine gap seen on
+# the CLI in_compound path too, unrelated to T1. See generator_status.md.)
 def _sweep(purva_stem, purva_vib, uttara_stem, vib_n):
     purva = deepcopy(getattr(_pratipadika, purva_stem))
     purva.setTag("vacana_1")
@@ -181,6 +189,28 @@ def test_tatpurusha_caturthi_sweep(vib_n):
     got = _sweep("DAnya", 4, "arTa", vib_n)
     expected = {_to_slp1(s) for s in _DHANYARTHA_VIBHAKTIS[vib_n]}
     assert got == expected, f"धान्यार्थ viBakti_{vib_n}: {got} != {expected}"
+
+
+_RAJAPURUSHA_VIBHAKTIS = {           # राज्ञः पुरुषः (ṣaṣṭhī 2.2.8) — masc a-stem, ṇatva
+    1: ["राजपुरुषः"],
+    2: ["राजपुरुषम्"],
+    3: ["राजपुरुषेण"],               # ṇatva: uttara ष → न्→ण् across एन (8.4.2) — the fix
+    4: ["राजपुरुषाय"],
+    5: ["राजपुरुषात्", "राजपुरुषाद्"],
+    6: ["राजपुरुषस्य"],
+    7: ["राजपुरुषे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_RAJAPURUSHA_VIBHAKTIS))
+def test_tatpurusha_sasthi_natva_sweep(vib_n):
+    """राज्ञः पुरुषः (ṣaṣṭhī-tatpuruṣa) declined per vibhakti (sg). The an-stem
+    pūrva राजन् → राज (8.2.7 न-lopa), and the compound resolves as one
+    samasta_pada (pre-pass nesting) so the uttara ष triggers ṇatva → राजपुरुषेण
+    (inst) — the previously-missing ṇatva that motivated _nest_samasa_members."""
+    got = _sweep("rAjan", 6, "puruza", vib_n)
+    expected = {_to_slp1(s) for s in _RAJAPURUSHA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"राजपुरुष viBakti_{vib_n}: {got} != {expected}"
 
 
 _JIVASUKHA_VIBHAKTIS = {            # जीवस्य सुखम् (ṣaṣṭhī 2.2.8) — napuṁsaka a-stem

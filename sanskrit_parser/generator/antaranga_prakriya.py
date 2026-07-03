@@ -624,12 +624,56 @@ class AntarangaPrakriya(PrakriyaBase):
             branches = nxt
         # Per-branch post-fixpoint steps: commit the deferred napuṁsaka
         # (samasa_napum → napum) BEFORE the main scan, swap any consumed internal
-        # vibhakti, and insert the samāsānta affix.
+        # vibhakti, insert the samāsānta affix, then group the members into a
+        # hierarchical sub-prakriya so the compound resolves as one samasta_pada.
         for br in branches:
             self._commit_samasa_napum(br)
             self._swap_sups(br)
             self._insert_samasanta(br)
+            self._nest_samasa_members(br)
         return branches
+
+    def _nest_samasa_members(self, inputs):
+        """Wrap each contiguous compound-member span (the members + their inserted
+        sups) into a NESTED sub-list so the __init__ hierarchical scan
+        (need_hierarchy_at) processes it as one sub-prakriya.
+
+        The samāsa pre-pass otherwise only TAGS members in place, leaving them
+        flat at the top level. A flat compound never coalesces into a single
+        `samasta_pada` before the trailing avasāna (or a neighbour word) merges
+        into the uttara — so the samānapada ṇatva rules (8.4.1/8.4.2, gated on
+        ?!merged_pada) never fire (राजपुरुषेन instead of राजपुरुषेण). Nesting makes
+        the compound resolve fully — pūrva sup-luk (2.4.71), 8.2.7 न-lopa, the
+        uttara declension, ṇatva, and the samasta_pada merge — as one unit,
+        exactly as the CLI in_compound / -m path already does, before it meets
+        the sentence context. (No physical reorder — 2.2.30 stays deferred.)
+
+        A span starts at a member (?samAsaPurva / ?samAsa) and greedily extends
+        over following sups and further members; it is wrapped only if it holds
+        >1 element (a lone member with no sup is left as-is). Non-member padas,
+        Adya and avasAna stay at the top level and bound the spans."""
+        def _is_member(o):
+            return (_isScalar(o) and self._is_samasa_member(o)
+                    and (o.hasTag("samAsaPurva") or o.hasTag("samAsa")))
+
+        i = 0
+        while i < len(inputs):
+            if _is_member(inputs[i]):
+                j = i + 1
+                # Extend over the members' pratyayas — their inserted sups AND a
+                # samāsānta affix (the wac tadDita inserted by _insert_samasanta,
+                # e.g. उपराज+अ → उपराजम्) — so the whole compound is one sub-list.
+                while j < len(inputs) and _isScalar(inputs[j]) and (
+                        inputs[j].hasTag("pratyaya") or _is_member(inputs[j])):
+                    j += 1
+                if j - i > 1:
+                    span = [inputs[k] for k in range(i, j)]
+                    inputs.v[i:j] = [span]
+                    i += 1
+                    continue
+                i = j
+            else:
+                i += 1
 
     def _commit_samasa_napum(self, inputs):
         """Commit the samāsa-assigned napuṁsaka to the real ?napum at end-of-sweep.
