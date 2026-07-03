@@ -322,4 +322,44 @@ samasa_tp_tests = [
         "fired": ["2.1.40", "1.2.43", "2.4.26"],
         "surface": "अक्षशौण्डः",
     },
+    # ── T1 extension rules (one case each, previously untested) ──
+    {
+        "label": "T1-guqasvAduH-2.1.30",          # गुडेन स्वादुः → गुडस्वादुः (tṛtīyā, guṇavacana; u-stem uttara)
+        "purva": {"stem": "guqa", "vacana": 1, "vibhakti": 3, "vivakza": True},
+        "uttara": {"stem": "svAdu", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.30", "1.2.43", "2.4.26"],
+        "surface": "गुडस्वादुः",
+    },
+    {
+        "label": "T1-ahihataH-2.1.32",            # अहिना हतः → अहिहतः (tṛtīyā kartṛ/karaṇa + kṛta)
+        "purva": {"stem": "ahi", "vacana": 1, "vibhakti": 3, "vivakza": True},
+        "uttara": {"stem": "hata", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.32", "1.2.43", "2.4.26"],
+        "surface": "अहिहतः",
+    },
+    {
+        "label": "T1-suKApetaH-2.1.38",           # सुखात् अपेतः → सुखापेतः (pañcamī, apeta-gaṇa)
+        "purva": {"stem": "suKa", "vacana": 1, "vibhakti": 5, "vivakza": True},
+        "uttara": {"stem": "apeta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.38", "1.2.43", "2.4.26"],
+        "surface": "सुखापेतः",
+    },
+    {
+        # स्तोकात् मुक्तः → स्तोकमुक्तः. NOTE: the classical aluk form स्तोकान्मुक्तः (the
+        # pañcamī is RETAINED via 6.3.2 पञ्चम्याः स्तोकादिभ्यः) is not modelled — this
+        # rule luks the pūrva sup like the others, so the surface is स्तोकमुक्तः. The
+        # aluk exception is deferred (recorded in generator_status.md).
+        "label": "T1-stokamuktaH-2.1.39",
+        "purva": {"stem": "stoka", "vacana": 1, "vibhakti": 5, "vivakza": True},
+        "uttara": {"stem": "mukta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.39", "1.2.43", "2.4.26"],
+        "surface": "स्तोकमुक्तः",
+    },
+    {
+        "label": "T1-svargasidDaH-2.1.41",        # स्वर्गे सिद्धः → स्वर्गसिद्धः (saptamī, siddha-gaṇa)
+        "purva": {"stem": "svarga", "vacana": 1, "vibhakti": 7, "vivakza": True},
+        "uttara": {"stem": "sidDa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.41", "1.2.43", "2.4.26"],
+        "surface": "स्वर्गसिद्धः",
+    },
 ]

@@ -85,6 +85,13 @@ DAnya   = Pratipadika("DAnya",   "napum")                                # ध�
 Baya    = Pratipadika("Baya",    "napum", other_tags=["Baya_gaRa"])      # भय — चोरभयम् (pañcamī 2.1.37 भयेन)
 SORqa   = Pratipadika("SORqa",   "pum",   other_tags=["SORqa_gaRa"])     # शौण्ड — अक्षशौण्डः (saptamī 2.1.40 शौण्डैः)
 kAya_ed = Pratipadika("kAya",    "pum",   other_tags=["ekadeSin"])       # काय — पूर्वकायः (ṣaṣṭhī 2.2.1 एकदेशी)
+# T1 extension-rule test stems (2.1.30/32/38/39/41):
+guqa    = Pratipadika("guqa",    "pum")                                  # गुड — गुडस्वादुः (2.1.30 tṛtīyā guṇavacana pūrva)
+ahi     = Pratipadika("ahi",     "pum")                                  # अहि — अहिहतः (2.1.32 kartṛ/karaṇa pūrva; i-stem)
+hata    = Pratipadika("hata",    "pum",   other_tags=["kta"])            # हत — अहिहतः (2.1.32 kṛta uttara)
+apeta   = Pratipadika("apeta",   "pum",   other_tags=["apeta_gaRa"])     # अपेत — सुखापेतः (pañcamī 2.1.38)
+mukta   = Pratipadika("mukta",   "pum",   other_tags=["kta"])            # मुक्त — स्तोकमुक्तः (pañcamī 2.1.39 kṛta uttara)
+sidDa   = Pratipadika("sidDa",   "pum",   other_tags=["siDDa_gaRa"])     # सिद्ध — स्वर्गसिद्धः (saptamī 2.1.41)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
@@ -766,7 +773,7 @@ Sata = Pratipadika("Sata", "napum")   # शत — देवदत्ताय �
 # Kāraka Phase K5 napuṃsaka a-stems (apādāna + pañcamī; SK586–605).
 aDyayana = Pratipadika("aDyayana", "napum")  # अध्ययन — अध्ययनात्पराजयते (SK589 1.4.26 asoḍha → apādāna)
 jAqya    = Pratipadika("jAqya",    "napum")  # जाड्य — जाड्याज्जाड्येन वा (SK602 2.3.25 guṇa-hetu vibhāṣā)
-stoka    = Pratipadika("stoka",    "napum")  # स्तोक — स्तोकात्/स्तोकेन मुक्तः (SK604 2.3.33 karaṇa vibhāṣā)
+stoka    = Pratipadika("stoka",    "napum", other_tags=["stoka_gaRa"])  # स्तोक — स्तोकात्/स्तोकेन मुक्तः (SK604 2.3.33 karaṇa vibhāṣā); ?stoka_gaRa → स्तोकमुक्तः (2.1.39)
 dUra     = Pratipadika("dUra",     "napum")  # दूर — दूरं दूरात् दूरेण वा (SK605 2.3.35 three-way fork)
 antika   = Pratipadika("antika",   "napum")  # अन्तिक — अन्तिकम् अन्तिकात् अन्तिकेन वा (SK605)
 # नमस् n. — नमो देवेभ्यः (SK583 2.3.16). Modelled as the neuter s-stem noun (its
