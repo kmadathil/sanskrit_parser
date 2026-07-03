@@ -250,6 +250,13 @@ Use the exact insertion point found in Step 2. Insert the full block including t
    **Last implemented:** SK <N> — <id> <sutra>
    **Next to implement:** SK <N+1> (<id> — <sutra>)
    ```
+   **Keep these two lines concise — 1–3 sentences each.** They are a pointer, not a
+   changelog: put the full detail in the SK-order table rows / Skipped table / the
+   relevant `*_plan.md`, and reference those. **Do not let older summaries linger** —
+   when a new block lands, REPLACE the previous "Last implemented" paragraph (do not
+   demote it to a second lingering paragraph); the superseded detail already lives in
+   the Implemented-Sutras table, so fold at most a one-line pointer into the
+   "_Earlier sets_" note at the top and delete the rest.
 
 2. Add a row to **"Implemented Sutras (SK order)"** table (4 columns; after the preceding SK row):
    ```
