@@ -8,7 +8,7 @@ _Earlier sets — the entire kāraka-prakaraṇam (SK 532–646, phases K0–K7 
 — are recorded in the Implemented-Sutras tables below, in `karaka_plan.md` /
 `tatpuruza_plan.md`, and in git history._
 
-**Last implemented:** Tatpuruṣa samāsa, Phase T0 — the dvitīyā-tatpuruṣa block SK 684–691 (2.1.22 saṁjñā + 2.1.24–29) plus 2.4.26 परवल्लिङ्गम्. Key idea: a tatpuruṣa declines in the **uttara's gender** (no `?avyaya`/`?napum`), unlike the avyayībhāva's invariant अम्; reuses the samāsa pre-pass, 1.2.43 and 2.4.71. Derives कृष्णश्रितः (full vibhakti sweep), खट्वारूढः, सामिकृतम्, मासप्रमितः, मुहूर्तसुखम्. Details: SK-order table rows 684–691 + `tatpuruza_plan.md`; one deferred surface (स्वयंकृत anusvāra) in the Skipped table.
+**Last implemented:** Tatpuruṣa samāsa, Phase T0 — the dvitīyā-tatpuruṣa block SK 684–691 (2.1.22 saṁjñā + 2.1.24–29) plus 2.4.26 परवल्लिङ्गम्. Key idea: a tatpuruṣa declines in the **uttara's gender** (no `?avyaya`/`?napum`), unlike the avyayībhāva's invariant अम्; reuses the samāsa pre-pass, 1.2.43 and 2.4.71. Derives कृष्णश्रितः (full vibhakti sweep), स्वयंकृतम्/स्वयङ्कृतम्, खट्वारूढः, सामिकृतम्, मासप्रमितः, मुहूर्तसुखम्. Details: SK-order table rows 684–691 + `tatpuruza_plan.md`.
 
 **Next to be implemented:** Tatpuruṣa Phase T1 — the other five vibhakti-tatpuruṣas (tṛtīyā, caturthī, pañcamī, **ṣaṣṭhī राजपुरुषः**, saptamī), same shape as T0; then T2–T5 + T-liṅga + T-UI (karmadhāraya/dvigu incl. 2.1.23, nañ, prādi/gati, samāsānta, gender, composer/CLI). See `tatpuruza_plan.md` for phasing + session prompts. (Kāraka and strī/taddhita deferrals remain in the Skipped table.)
 
@@ -19,9 +19,9 @@ _Earlier sets — the entire kāraka-prakaraṇam (SK 532–646, phases K0–K7 
 | Category | Count |
 |---|---|
 | Sutras implemented | 533 |
-| Sutras skipped / deferred | 98 |
+| Sutras skipped / deferred | 97 |
 | Sutras uncatalogued / not yet planned | ~29 |
-| **Total sutras accounted for** | **~660** |
+| **Total sutras accounted for** | **~659** |
 | Stems with full vibhakti test tables | 315 |
 | Stems with partial vibhakti test tables | 3 |
 
@@ -551,7 +551,7 @@ The "Forms affected" column uses the convention:
 | 683 | 5.4.112 | गिरेश्च सेनकस्य | Avyayībhāva (S4, Senaka's view): giri uttara → ?samasanta_TaC → TaC → उपगिरम् |
 | 684 | 2.1.22 | तत्पुरुषः | Tatpuruṣa (**T0**): the tatpuruṣa-saṁjñā adhikāra — fused into the 2.1.24 vidhi (sets ?tatpuruza on the uttara), as 2.1.5 was fused into 2.1.6. Unlike the avyayībhāva, the compound declines normally in the uttara's gender (no ?avyaya/?napum) |
 | 686 | 2.1.24 | द्वितीया श्रितातीतपतितगतात्यस्तप्राप्तापन्नैः | Tatpuruṣa (**T0**, `bahiranga: -1`): a dvitīyā noun (?viBakti_2 + ?samAsa_vivakza) + a śrita-gaṇa uttara (?srita_gaRa) → pūrva ?samAsaPurva, uttara ?samAsa + ?tatpuruza → कृष्णश्रितः. Pūrva sup luks via 2.4.71 (no swap — the pūrva does not surface); uttara sup retained → declines as a-stem masc (full vibhakti sweep). 1.2.43 (upasarjana) reused |
-| 687 | 2.1.25 | स्वयं क्तेन | Tatpuruṣa (**T0**): the indeclinable स्वयम् + a ?kta word → स्वयंकृतम् (svayam avyaya-pūrva, no dvitīyā — SK687 द्वितीया न संबद्ध्यते). Surface deferred: compound-internal म्→anusvāra (8.3.24) — see Skipped table |
+| 687 | 2.1.25 | स्वयं क्तेन | Tatpuruṣa (**T0**): the indeclinable स्वयम् + a ?kta word → स्वयंकृतम् / स्वयङ्कृतम् (svayam avyaya-pūrva, no dvitīyā — SK687 द्वितीया न संबद्ध्यते; 8.3.23 म्→anusvāra + 8.4.58 optional parasavarṇa at the junction). Needs a semantic sense on the pūrva (as kāraka/CLI input has) to keep it ?pada |
 | 688 | 2.1.26 | खट्वा क्षेपे | Tatpuruṣa (**T0**): खट्वा (dvitīyā) + a ?kta word, in निन्दा (?semantic_kzepa) → खट्वारूढः. Nitya in the kṣepa sense |
 | 689 | 2.1.27 | सामि | Tatpuruṣa (**T0**): the indeclinable सामि + a ?kta word → सामिकृतम् (like 2.1.25; i-final, no anusvāra issue) |
 | 690 | 2.1.28 | कालाः | Tatpuruṣa (**T0**): a time-word (?kAlavAcaka) in the dvitīyā + a ?kta word → मासप्रमितः (optional → ?samAsa_vivakza gate; restricted to non-atyantasaṃyoga) |
@@ -592,7 +592,6 @@ These sutras are implemented in `sutras_antaranga.yaml`. SK numbers sourced from
 
 | SK | Sutra ID | Sutra | Reason | Affects |
 |----|----------|-------|--------|---------|
-| 687 | 8.3.24 | नश्चापदान्तस्य झलि (in samāsa) | Partial — compound-internal म्→anusvāra not applied | The tatpuruṣa 2.1.25 स्वयंकृत surfaces as स्वयम्कृत, not स्वयंकृत: an avyaya samAsaPurva's pada-final म् before the uttara's झल् is not converted (8.3.23/8.3.24 are ?pada-gated, and the merged compound is not tagged ?pada at the junction). Pre-existing engine limitation, general to compound-internal anusvāra; 2.1.25 rule + pre-pass tags are correct (structure/fired tested). Fix belongs in a focused pada-tagging pass |
 | 55 | 8.4.48 | नादिन्याक्रोशे पुत्रस्य | Skipping for now | Vedic/accent |
 | 56 | 8.4.50 | त्रिप्रभृतिषु शाकटायनस्य | Skipping for now | Śākaṭāyana option |
 | 57 | 8.4.51 | सर्वत्र शाकल्यस्य | Skipping for now | Śākalya option |

@@ -91,11 +91,6 @@ def test_samasa_tatpurusha(case):
             f"{case['label']}: {aps} missing from pre-pass trace {sorted(fired)}"
 
     # ── Level 3: surface (full pipeline) ──
-    # surface_deferred: the rule + pre-pass tags are correct, but a downstream
-    # phonological detail is a known engine limitation (documented per case) — so
-    # the surface is not pinned here. The correct form is kept in the case comment.
-    if case.get("surface_deferred"):
-        return
     p.execute()
     got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
            for o in p.output()}

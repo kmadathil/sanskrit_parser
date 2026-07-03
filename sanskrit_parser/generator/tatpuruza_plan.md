@@ -94,11 +94,12 @@ worktrees. When spawning worktree-isolated background agents, pin the base branc
 The foundational slice that proves the **normally-declining compound** path.
 **Status: implemented** — the whole dvitīyā-tatpuruṣa block SK 684–691 (2.1.22
 saṁjñā fused + 2.1.24–29) plus 2.4.26, reusing 1.2.43 / 2.4.71. Derives कृष्णश्रितः
-(+ full vibhakti sweep), स्वयंकृतम् (surface deferred — see below), खट्वारूढः,
-सामिकृतम्, मासप्रमितः, मुहूर्तसुखम्. 14 cases in `test/test_samasa_tatpurusha.py`; full
-suite green. **Known limitation:** स्वयंकृत's compound-internal म्→anusvāra (8.3.24) is
-not applied (?pada-gated; pre-existing, general to compound-internal anusvāra) — the
-rule + pre-pass tags are correct, only the surface is deferred. The bullets below
+(+ full vibhakti sweep), स्वयंकृतम्/स्वयङ्कृतम्, खट्वारूढः, सामिकृतम्, मासप्रमितः,
+मुहूर्तसुखम्. 14 cases in `test/test_samasa_tatpurusha.py`; full suite green. **Test-infra
+note:** an avyaya pūrva (svayam/sāmi) needs a **semantic sense** on it — as every
+kāraka/CLI-composed word carries (`-w svayam 1` → `semantic_1`) — for the junction
+sandhi to fire (it keeps the pūrva `?pada`, so 8.3.23 म्→anusvāra applies →
+स्वयंकृतम्/स्वयङ्कृतम्). Hand-built test inputs must include it. The bullets below
 describe the 2.1.24 core; 2.1.25–29 follow the same shape (see `generator_status.md`).
 
 - **2.1.22 तत्पुरुषः** (SK684): pre-pass saṁjñā. Fused with the first vidhi (2.1.24):

@@ -233,17 +233,16 @@ samasa_tp_tests = [
     },
     # ── T0 dvitīyā extensions (2.1.25–29) ──
     {
-        # स्वयम् + कृत → स्वयंकृतम् (correct form). The rule + pre-pass tags are
-        # correct; only the compound-INTERNAL म्→anusvāra (8.3.24 नश्चापदान्तस्य झलि)
-        # does not fire on the merged compound (?pada-gated; a pre-existing engine
-        # limitation for compound-internal anusvāra — the engine emits स्वयम्कृतम्).
-        # Surface deferred; correct form स्वयंकृतम्. (sāmi 2.1.27, i-final, is unaffected.)
+        # स्वयम् + कृत → स्वयंकृतम् / स्वयङ्कृतम् (8.3.23 म्→anusvāra at the junction, +
+        # 8.4.58 optional parasavarṇa ṅ). The pūrva carries a semantic sense
+        # ("sem") exactly as the kāraka/CLI path does (`-w svayam 1` → semantic_1):
+        # it rides through the compound merge and keeps the avyaya pūrva ?pada, so
+        # 8.3.23 fires. (Without it a degenerate input leaves svayam non-?pada → म्.)
         "label": "T0-svayaMkRtam-2.1.25",
-        "purva": {"avyaya": "svayam", "vivakza": True},
+        "purva": {"avyaya": "svayam", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.25", "1.2.43", "2.4.26"],
-        "surface": "स्वयंकृतम्",
-        "surface_deferred": True,
+        "surfaces": ["स्वयंकृतम्", "स्वयङ्कृतम्"],
     },
     {
         "label": "T0-KawvArUQaH-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
@@ -253,8 +252,10 @@ samasa_tp_tests = [
         "surface": "खट्वारूढः",
     },
     {
-        "label": "T0-sAmikRtam-2.1.27",           # सामि + कृत → सामिकृतम्
-        "purva": {"avyaya": "sAmi", "vivakza": True},
+        # सामि + कृत → सामिकृतम् (i-final pūrva, no junction sandhi). Same avyaya-pūrva
+        # shape as 2.1.25 — carries a semantic sense to mirror the kāraka/CLI path.
+        "label": "T0-sAmikRtam-2.1.27",
+        "purva": {"avyaya": "sAmi", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.27", "1.2.43", "2.4.26"],
         "surface": "सामिकृतम्",
