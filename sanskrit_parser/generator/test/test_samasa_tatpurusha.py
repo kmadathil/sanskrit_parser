@@ -137,3 +137,67 @@ def test_tatpurusha_vibhakti_sweep(vib_n):
     expected = {_to_slp1(s) for s in _TATPURUSHA_VIBHAKTIS[vib_n]}
     assert got == expected, \
         f"tatpuruṣa viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── T1 vibhakti sweeps: masc (caturthī) + napuṁsaka (ṣaṣṭhī) declension ────────
+# Each proves the compound declines NORMALLY in the uttara's gender (2.4.26
+# परवल्लिङ्गम्): धान्यार्थ as a masc a-stem (राम paradigm), जीवसुख as a napuṁsaka
+# a-stem (nom=acc जीवसुखम्, the hallmark napuṁsaka अम्). Both are chosen ṇatva-safe
+# (धान्यार्थ: the dental थ blocks 8.4.2 across श्रित-style; जीवसुख: no र/ष/ऋ at all),
+# mirroring the T0 कृष्णश्रित sweep — cross-member ṇatva inside a declining compound
+# is a KNOWN pre-pipeline limitation (see generator_status.md), not a T1 rule gap.
+def _sweep(purva_stem, purva_vib, uttara_stem, vib_n):
+    purva = deepcopy(getattr(_pratipadika, purva_stem))
+    purva.setTag("vacana_1")
+    purva.setTag(f"viBakti_{purva_vib}")   # vigraha vibhakti (luks via 2.4.71)
+    purva.setTag("has_viBakti")
+    purva.setTag("samAsa_vivakza")
+    uttara = deepcopy(getattr(_pratipadika, uttara_stem))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")       # external compound case
+    uttara.setTag("has_viBakti")
+    uttara.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    return {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+            for o in p.output()}
+
+
+_DHANYARTHA_VIBHAKTIS = {           # धान्याय अर्थः (caturthī 2.1.36) — masc a-stem
+    1: ["धान्यार्थः"],
+    2: ["धान्यार्थम्"],
+    3: ["धान्यार्थेन"],
+    4: ["धान्यार्थाय"],
+    5: ["धान्यार्थात्", "धान्यार्थाद्"],
+    6: ["धान्यार्थस्य"],
+    7: ["धान्यार्थे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_DHANYARTHA_VIBHAKTIS))
+def test_tatpurusha_caturthi_sweep(vib_n):
+    """धान्याय अर्थः (caturthī-tatpuruṣa) declined per vibhakti (sg) — a normal
+    masc a-stem, proving the tatpuruṣa is not indeclinable."""
+    got = _sweep("DAnya", 4, "arTa", vib_n)
+    expected = {_to_slp1(s) for s in _DHANYARTHA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"धान्यार्थ viBakti_{vib_n}: {got} != {expected}"
+
+
+_JIVASUKHA_VIBHAKTIS = {            # जीवस्य सुखम् (ṣaṣṭhī 2.2.8) — napuṁsaka a-stem
+    1: ["जीवसुखम्"],
+    2: ["जीवसुखम्"],                 # napuṁsaka nom=acc अम् (2.4.26 → uttara सुख napuṁsaka)
+    3: ["जीवसुखेन"],
+    4: ["जीवसुखाय"],
+    5: ["जीवसुखात्", "जीवसुखाद्"],
+    6: ["जीवसुखस्य"],
+    7: ["जीवसुखे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_JIVASUKHA_VIBHAKTIS))
+def test_tatpurusha_napumsaka_sweep(vib_n):
+    """जीवस्य सुखम् (ṣaṣṭhī-tatpuruṣa) declined per vibhakti (sg) — a napuṁsaka
+    a-stem (nom=acc जीवसुखम्), proving 2.4.26 inherits the uttara's napuṁsaka."""
+    got = _sweep("jIva", 6, "suKa", vib_n)
+    expected = {_to_slp1(s) for s in _JIVASUKHA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"जीवसुख viBakti_{vib_n}: {got} != {expected}"

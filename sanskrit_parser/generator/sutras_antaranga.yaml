@@ -9845,6 +9845,12 @@
     rp: "?sup"
   update:
     orp: =luk_sup
+    # 1.1.63 न लुमताङ्गस्य: the luk'd sup leaves no aṅga-saṁjñā, so revoke the
+    # bha-saṁjñā (1.4.18 यचि भम्) that the now-elided vigraha sup had conditioned
+    # on the pūrva. Otherwise a stale ?Ba lets 6.4.134 अल्लोपोऽनः misfire on an
+    # an-stem pūrva (राजन् → राज्ञ् → राक्…) instead of the correct 8.2.7 न-lopa
+    # (राजन् → राज → राजपुरुषः).
+    olp: [-Ba]
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासप्रकरणम् — तत्पुरुषसमासः (SK 684–) — tatpuruṣa samāsa plan, Phase T0
@@ -10025,4 +10031,258 @@
   update:
     olp: [+samAsaPurva]
     orp: [+samAsa, +tatpuruza]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T1: the remaining five vibhakti-tatpuruṣas
+# (tṛtīyā/caturthī/pañcamī/ṣaṣṭhī/saptamī). Every branch is the T0 dvitīyā shape:
+# the pūrva carries its vigraha vibhakti (?viBakti_N) + the ?samAsa_vivakza intent
+# gate + ?!samAsaPurva; the uttara matches a semantic/lexical uttara-class (+?!samAsa);
+# → pūrva +samAsaPurva (then 1.2.43 upasarjana, 2.4.71 pūrva sup-luk — both reused),
+# uttara +samAsa +tatpuruza (then 2.4.26 paravalliṅga sets the compound gender). No
+# ?swap_viBakti is needed: the pūrva sup luks entirely (it never surfaces), exactly
+# as in T0. The compound then DECLINES NORMALLY in the uttara's gender.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── tṛtīyā-tatpuruṣa (SK 692–697 / 2.1.30–35) ────────────────────────────────
+# 692/2.1.30: तृतीया तत्कृतार्थेन गुणवचनेन — a noun in the TṚTĪYĀ (?viBakti_3)
+# compounds with a गुणवचन (quality-word, ?guRavacana) [or a तत्कृत word]: e.g.
+# शङ्कुलया खण्डः = शङ्कुलाखण्डः. Same shape as 2.1.24.
+- sutra: तृतीया तत्कृतार्थेन गुणवचनेन
+  id: 2.1.30
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_3"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?guRavacana"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 693/2.1.31: पूर्वसदृशसमोनार्थकलहनिपुणमिश्रश्लक्ष्णैः — a tṛtīyā compounds with one
+# of पूर्व/सदृश/सम/ऊन/अर्थ/कलह/निपुण/मिश्र/श्लक्ष्ण (?pUrvasadfSa_gaRa): मासेन पूर्वः =
+# मासपूर्वः (earlier by a month). T1 headline test case.
+- sutra: पूर्वसदृशसमोनार्थकलहनिपुणमिश्रश्लक्ष्णैः
+  id: 2.1.31
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_3"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?pUrvasadfSa_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 694/2.1.32: कर्तृकरणे कृता बहुलम् — a tṛtīyā denoting the kartṛ or karaṇa
+# compounds (variously) with a कृत (kṛt-participle, ?kta): अहिना हतः = अहिहतः,
+# नखैः निर्भिन्नः = नखनिर्भिन्नः. Modelled non-optionally (gated on vivakṣā).
+- sutra: कर्तृकरणे कृता बहुलम्
+  id: 2.1.32
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_3"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+# (2.1.33 कृत्यैरधिकार्थवचने, 2.1.34 अन्नेन व्यञ्जनम्, 2.1.35 भक्ष्येण मिश्रीकरणम् —
+# specialized lexical classes, DEFERRED; add when a kṛtya / anna / bhakṣya case
+# is needed. Recorded in generator_status.md.)
+
+# ── caturthī-tatpuruṣa (SK 698 / 2.1.36) ─────────────────────────────────────
+# 698/2.1.36: चतुर्थी तदर्थार्थबलिहितसुखरक्षितैः — a noun in the CATURTHĪ (?viBakti_4)
+# compounds with one of तदर्थ/अर्थ/बलि/हित/सुख/रक्षित (?tadarTa_gaRa): यूपाय दारु =
+# यूपदारु, धान्याय अर्थः = धान्यार्थः. T1 headline test case.
+- sutra: चतुर्थी तदर्थार्थबलिहितसुखरक्षितैः
+  id: 2.1.36
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_4"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?tadarTa_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# ── pañcamī-tatpuruṣa (SK 699–701 / 2.1.37–39) ───────────────────────────────
+# 699/2.1.37: पञ्चमी भयेन — a noun in the PAÑCAMĪ (?viBakti_5) compounds with भय
+# (?Baya_gaRa): चोरात् भयम् = चोरभयम्. T1 headline test case.
+- sutra: पञ्चमी भयेन
+  id: 2.1.37
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_5"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?Baya_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 700/2.1.38: अपेतापोढमुक्तपतितापत्रस्तैरल्पशः — a pañcamī compounds (rarely) with
+# अपेत/अपोढ/मुक्त/पतित/अपत्रस्त (?apeta_gaRa): स्वर्गात् पतितः = स्वर्गपतितः.
+- sutra: अपेतापोढमुक्तपतितापत्रस्तैरल्पशः
+  id: 2.1.38
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_5"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?apeta_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 701/2.1.39: स्तोकान्तिकदूरार्थकृच्छ्राणि क्तेन — a pañcamī pūrva of the
+# स्तोक/अन्तिक/दूर/कृच्छ्र class (?stoka_gaRa) compounds with a कृत (?kta):
+# स्तोकात् मुक्तः = स्तोकान्मुक्तः.
+- sutra: स्तोकान्तिकदूरार्थकृच्छ्राणि क्तेन
+  id: 2.1.39
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_5"
+      - "?stoka_gaRa"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?kta"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# ── ṣaṣṭhī-tatpuruṣa (SK 702–716 / 2.2.8–11, 2.2.1–5) — the canonical tatpuruṣa ─
+# 702/2.2.8: षष्ठी — a noun in the ṢAṢṬHĪ (?viBakti_6) compounds with a noun →
+# tatpuruṣa: राज्ञः पुरुषः = राजपुरुषः. The most general vibhakti-tatpuruṣa (any
+# uttara noun); gated on ?samAsa_vivakza (only-when-intended). HIGH-VALUE case.
+- sutra: षष्ठी
+  id: 2.2.8
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_6"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 695(≈)/2.2.1: पूर्वापराधरोत्तरमेकदेशिनैकाधिकरणे — पूर्व/अपर/अधर/उत्तर (a
+# directional/part word, ?diS or literal) as pūrva compounds with the एकदेशिन्
+# (?ekadeSin, the whole of which they are a part), in one locus: पूर्वं कायस्य =
+# पूर्वकायः. The pūrva here is prathamā-nirdiṣṭa (the part-word); it need not carry
+# ṣaṣṭhī, so no ?viBakti gate. Fires before 2.2.8.
+- sutra: पूर्वापराधरोत्तरमेकदेशिनैकाधिकरणे
+  id: 2.2.1
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?prAtipadika"
+      - "?dikSabda"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?ekadeSin"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+# (2.2.2 अर्धं नपुंसकम्, 2.2.3–5, 2.2.9 याजकादि, 2.2.10 न निर्धारणे, 2.2.11
+# पूरणगुण… exceptions — DEFERRED; recorded in generator_status.md.)
+
+# ── saptamī-tatpuruṣa (SK 717–725 / 2.1.40–48) ───────────────────────────────
+# 717/2.1.40: सप्तमी शौण्डैः — a noun in the SAPTAMĪ (?viBakti_7) compounds with a
+# शौण्ड-gaṇa word (शौण्ड/धूर्त/…, ?SORqa_gaRa): अक्षेषु शौण्डः = अक्षशौण्डः (expert at
+# dice). T1 headline test case.
+- sutra: सप्तमी शौण्डैः
+  id: 2.1.40
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_7"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?SORqa_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# 718/2.1.41: सिद्धशुष्कपक्वबन्धैश्च — a saptamī compounds with सिद्ध/शुष्क/पक्व/बन्ध
+# (?siDDa_gaRa): सांकाश्ये सिद्धः = सांकाश्यसिद्धः. Same shape as 2.1.40.
+- sutra: सिद्धशुष्कपक्वबन्धैश्च
+  id: 2.1.41
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_7"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?siDDa_gaRa"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+# (2.1.42–48 ध्वाङ्क्षेण…, पात्रेसमितादयश्च etc. — specialized lexical classes,
+# DEFERRED; recorded in generator_status.md.)
 

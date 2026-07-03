@@ -275,4 +275,51 @@ samasa_tp_tests = [
         "fired": ["2.1.29", "1.2.43", "2.4.26"],
         "surface": "मुहूर्तसुखम्",
     },
+    # ── T1: the remaining five vibhakti-tatpuruṣas (2.1.30–48, 2.2.1–11) ──
+    # Each: pūrva carries its vigraha vibhakti (viBakti_N) + vivakṣā; the uttara's
+    # class membership (?guRavacana/?pUrvasadfSa_gaRa/?tadarTa_gaRa/?Baya_gaRa/
+    # ?SORqa_gaRa/?ekadeSin) is intrinsic to the pratipadika. The compound declines
+    # normally in the uttara's gender (masc/napuṁsaka a-stem).
+    {
+        "label": "T1-mAsapUrvaH-2.1.31",          # मासेन पूर्वः → मासपूर्वः (tṛtīyā, pūrvasadṛśa)
+        "purva": {"stem": "mAsa", "vacana": 1, "vibhakti": 3, "vivakza": True},
+        "uttara": {"stem": "pUrva_tp", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.31", "1.2.43", "2.4.26"],
+        "surface": "मासपूर्वः",
+    },
+    {
+        "label": "T1-DAnyArTaH-2.1.36",           # धान्याय अर्थः → धान्यार्थः (caturthī, tadartha)
+        "purva": {"stem": "DAnya", "vacana": 1, "vibhakti": 4, "vivakza": True},
+        "uttara": {"stem": "arTa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.36", "1.2.43", "2.4.26"],
+        "surface": "धान्यार्थः",
+    },
+    {
+        "label": "T1-coraBayam-2.1.37",           # चोरात् भयम् → चोरभयम् (pañcamī, bhaya; napuṁsaka)
+        "purva": {"stem": "cora", "vacana": 1, "vibhakti": 5, "vivakza": True},
+        "uttara": {"stem": "Baya", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.37", "1.2.43", "2.4.26"],
+        "surface": "चोरभयम्",
+    },
+    {
+        "label": "T1-rAjapuruSaH-2.2.8",          # राज्ञः पुरुषः → राजपुरुषः (ṣaṣṭhī — the canonical tatpuruṣa)
+        "purva": {"stem": "rAjan", "vacana": 1, "vibhakti": 6, "vivakza": True},
+        "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.8", "1.2.43", "2.4.26"],
+        "surface": "राजपुरुषः",
+    },
+    {
+        "label": "T1-pUrvakAyaH-2.2.1",           # पूर्वं कायस्य → पूर्वकायः (ṣaṣṭhī pūrvāpara/ekadeśī)
+        "purva": {"stem": "pUrva_dik", "vacana": 1, "vibhakti": 1, "vivakza": True},
+        "uttara": {"stem": "kAya_ed", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.1", "1.2.43", "2.4.26"],
+        "surface": "पूर्वकायः",
+    },
+    {
+        "label": "T1-akzaSORqaH-2.1.40",          # अक्षेषु शौण्डः → अक्षशौण्डः (saptamī, śauṇḍa)
+        "purva": {"stem": "akza", "vacana": 1, "vibhakti": 7, "vivakza": True},
+        "uttara": {"stem": "SORqa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.40", "1.2.43", "2.4.26"],
+        "surface": "अक्षशौण्डः",
+    },
 ]

@@ -76,6 +76,15 @@ suKa    = Pratipadika("suKa",    "napum")                       # सुख — 
 KawvA   = Pratipadika("KawvA",   "strI")                        # खट्वा — खट्वारूढः (2.1.26, dvitīyā pūrva)
 muhUrta = Pratipadika("muhUrta", "pum",   other_tags=["kAlavAcaka"])   # मुहूर्त — मुहूर्तसुखम् (2.1.29)
 # (मास is defined below at the SK539 site — ?kAlavAcaka added there for 2.1.28)
+# ── Tatpuruṣa T1: the remaining five vibhakti-tatpuruṣas (2.1.30–48, 2.2.1–11).
+# Each uttara-class membership is intrinsic to the pratipadika (like ?srita_gaRa on
+# Srita), so the test composer supplies only the pūrva's vigraha vibhakti + vivakṣā.
+pUrva_tp = Pratipadika("pUrva", "pum", other_tags=["pUrvasadfSa_gaRa"])  # पूर्व — मासपूर्वः (tṛtīyā 2.1.31 पूर्वसदृश…)
+arTa    = Pratipadika("arTa",    "pum",   other_tags=["tadarTa_gaRa"])   # अर्थ — धान्यार्थः (caturthī 2.1.36 तदर्थ…)
+DAnya   = Pratipadika("DAnya",   "napum")                                # धान्य — धान्यार्थः caturthī pūrva
+Baya    = Pratipadika("Baya",    "napum", other_tags=["Baya_gaRa"])      # भय — चोरभयम् (pañcamī 2.1.37 भयेन)
+SORqa   = Pratipadika("SORqa",   "pum",   other_tags=["SORqa_gaRa"])     # शौण्ड — अक्षशौण्डः (saptamī 2.1.40 शौण्डैः)
+kAya_ed = Pratipadika("kAya",    "pum",   other_tags=["ekadeSin"])       # काय — पूर्वकायः (ṣaṣṭhī 2.2.1 एकदेशी)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
