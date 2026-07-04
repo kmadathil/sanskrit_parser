@@ -10477,3 +10477,90 @@
   update:
     orp: [+samasanta_TaC]
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T3: नञ्समास (the nañ-tatpuruṣa).
+#
+# The negative particle नञ् (an avyaya; upadeśa नञ् = "naY", the ञ् an इत्, so its
+# real form is न) is the PŪRVA. न + noun → tatpuruṣa: अब्राह्मणः, अनश्वः, अनजः. Reuses
+# the T0 spine wholesale — 1.2.43 (upasarjana), 2.4.71 (pūrva sup-luk, though the
+# avyaya sup already luks via 2.4.82), 2.4.26 (paravalliṅga) — so the compound
+# DECLINES NORMALLY in the uttara's gender (masc a-stem अब्राह्मणः/अनश्वः). The one
+# nañ-specific mechanism is the junction mutation of न:
+#   6.3.73 नलोपो नञः  — न → अ before a consonant (अब्राह्मणः)
+#   6.3.74 तस्मान्नुडचि — न → अन् before a vowel (नुṭ augment: अनश्वः, अनजः)
+# both char-window rules on the नञ् samAsaPurva, keyed by ?naY (set by 2.2.6),
+# modelled on 6.3.81 (saha→sa). 6.3.75/6.3.77 prakṛtibhāva exceptions deferred.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 756/2.2.6: नञ् — the नञ् (न) + a noun forms a tatpuruṣa. Pre-pass saṁjñā
+# (bahiranga: -1), same shape as 2.1.24: matches the नञ् pūrva by form (=na), sets
+# the pūrva ?samAsaPurva + ?naY (the nañ-membership marker the 6.3.73/74 junction
+# rules gate on) and the uttara ?samAsa + ?tatpuruza. Gated on ?samAsa_vivakza
+# (only-when-intended). 1.2.43 (upasarjana) and 2.4.26 (paravalliṅga) then fire on
+# the resulting ?samAsaPurva / ?tatpuruza. The नञ् has no vigraha vibhakti.
+- sutra: नञ्
+  id: 2.2.6
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=na"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva, +naY]
+    orp: [+samAsa, +tatpuruza]
+
+# 757/6.3.73: नलोपो नञः — the न of नञ् (its न-कार) is elided before a CONSONANT,
+# leaving just अ: न + ब्राह्मण → अ + ब्राह्मण → अब्राह्मणः. Runs in the samāsa pre-pass
+# member-window (bahiranga: -1) — the SAME (pūrva | uttara) window 2.2.6 fires in, so
+# the uttara stem's first char is `r` (the intervening pūrva-sup, still un-lukked, is
+# skipped) and the नञ् tags 2.2.6 just set (?naY / ?samAsaPurva) are on the same lp
+# object. The window fixpoint runs 2.2.6 first (which sets those tags) then this rule.
+# The pūrva "na" (lc=न्, l=अ): xform lc→"" deletes the न् → pūrva "a". The window
+# fixpoint disables the rule after firing (no re-fire). Doing the नलोप here — before
+# the main scan — means "a"|ब्राह्मण never meets a vowel-sandhi rule. r:_hal gates the
+# consonant-initial uttara (the 6.3.74 अच् case is disjoint).
+- sutra: नलोपो नञः
+  id: 6.3.73
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?naY"
+      - "?samAsaPurva"
+    l: a
+    rp: "?samAsa"
+    r: _hal
+  xform:
+    lc: str("")
+
+# 758/6.3.74: तस्मान्नुडचि — after that [अ of 6.3.73], the नुṭ (न्) augment is added
+# before a VOWEL: न + अश्व → अ + नश्व → अनश्वः; न + अज → अनजः. Since 6.3.73 fires only
+# before a consonant, this rule does BOTH the न-lopa and the नुṭ in one step, keeping
+# them on the CORRECT sides: the pūrva "na" → "a" (नलोप, lc→""), and the नुṭ न् is
+# prepended to the UTTARA (अश्व → नश्व, xform r → न+r). नुṭ is a टकित् augment, so by
+# 1.1.46 आद्यन्तौ टकितौ it attaches at the front of the अच् (the uttara) — NOT as the
+# pūrva's final. Keeping it on the uttara is essential: an "an"-final pūrva would be
+# hit by 8.2.7 नलोपः प्रातिपदिकान्तस्य (→ आश्वः). Runs in the same pre-pass member-window
+# as 6.3.73 (bahiranga: -1); the नलोप+नुṭ precede the main scan, so "a"|नश्व meets no
+# savarṇa-dīrgha. Self-limiting (window fixpoint disables after firing).
+- sutra: तस्मान्नुडचि
+  id: 6.3.74
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?naY"
+      - "?samAsaPurva"
+    l: a
+    rp: "?samAsa"
+    r: _ac
+  xform:
+    lc: str("")
+    r: str("n")+r
+

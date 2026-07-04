@@ -259,3 +259,41 @@ def test_real_dvigu_ngiip_trilokI():
     got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
            for o in p.output()}
     assert got == {_to_slp1("त्रिलोकी")}, f"real-dvigu त्रिलोकी: {got}"
+
+
+# ── T3 nañ vibhakti sweep: अनश्व (न + अश्व) as a clean masc a-stem ─────────────
+# न → अन् before the vowel of अश्व (6.3.74, नुṭ augment) → अनश्व, which then declines
+# NORMALLY in the uttara's masc gender (2.4.26 परवल्लिङ्गम्) — the राम paradigm. अश्व
+# has no र/ष, so the sweep stays off the ṇatva-blocker corner that अब्राह्मणेन hits
+# (there the ण of ब्राह्मण blocks the र from ṇatva-ising the -ena न — an engine detail
+# unrelated to the nañ mechanism; अब्राह्मणः is asserted nom-sg only in samasa_list.py).
+_ANASHVA_VIBHAKTIS = {
+    1: ["अनश्वः"],
+    2: ["अनश्वम्"],
+    3: ["अनश्वेन"],
+    4: ["अनश्वाय"],
+    5: ["अनश्वात्", "अनश्वाद्"],    # a-stem ablative (त्/द् pada-final variants)
+    6: ["अनश्वस्य"],
+    7: ["अनश्वे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_ANASHVA_VIBHAKTIS))
+def test_tatpurusha_nan_sweep(vib_n):
+    """न + अश्व (nañ-tatpuruṣa) declined per vibhakti (sg) — proves the nañ compound
+    declines as a normal masc a-stem after न→अन् (6.3.74), unlike the avyayībhāva's
+    invariant अम्."""
+    purva = deepcopy(getattr(_avyaya, "naY"))
+    purva.setTag("semantic_1")       # keeps the avyaya pūrva a distinct ?pada member
+    purva.setTag("samAsa_vivakza")
+    uttara = deepcopy(getattr(_pratipadika, "aSva"))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")   # external compound case
+    uttara.setTag("has_viBakti")
+    uttara.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    expected = {_to_slp1(s) for s in _ANASHVA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"अनश्व viBakti_{vib_n}: {got} != {expected}"

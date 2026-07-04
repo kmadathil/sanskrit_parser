@@ -430,4 +430,32 @@ samasa_tp_tests = [
         "fired": ["2.1.52", "2.4.1", "1.2.43", "2.4.26"],
         "surface": "त्रिलोकम्",
     },
+    # ── T3: nañ-tatpuruṣa (2.2.6 saṁjñā + 6.3.73/74 junction mutation of न) ──
+    # The नञ् pūrva (avyaya naY, surface न) has NO vigraha vibhakti; it carries a
+    # semantic sense (as the T0 avyaya-pūrvas svayam/sāmi did) so it rides through
+    # the merge as a distinct ?pada member. 6.3.73/74 run in the samāsa pre-pass
+    # member-window (bahiranga: -1, same window 2.2.6 fires in — the uttara stem's
+    # first char is visible as `r`, the un-lukked pūrva sup skipped), so they DO
+    # appear in the pre-pass trace and mutate न → अ / अन् before the main scan.
+    {
+        "label": "T3-abrAhmaNaH-6.3.73",     # न + ब्राह्मण → अब्राह्मणः (na→a before consonant)
+        "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "brAhmaRa", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.6", "6.3.73", "1.2.43", "2.4.26"],
+        "surface": "अब्राह्मणः",
+    },
+    {
+        "label": "T3-anaSvaH-6.3.74",        # न + अश्व → अनश्वः (na→an before vowel, नुṭ)
+        "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "aSva", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.6", "6.3.74", "1.2.43", "2.4.26"],
+        "surface": "अनश्वः",
+    },
+    {
+        "label": "T3-anajaH-6.3.74",         # न + अज → अनजः
+        "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "aja", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.6", "6.3.74", "1.2.43", "2.4.26"],
+        "surface": "अनजः",
+    },
 ]

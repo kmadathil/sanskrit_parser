@@ -40,7 +40,7 @@ avas      = Pratipadika("avas",      "pum", other_tags=["svarAdi"])  # अवस
 samayA    = Pratipadika("samayA",    "pum", other_tags=["svarAdi"])  # समया "near"
 nikazA    = Pratipadika("nikazA",    "pum", other_tags=["svarAdi"])  # निकषा "near/close by"
 vfTA      = Pratipadika("vfTA",      "pum", other_tags=["svarAdi"])  # वृथा "in vain"
-naY       = Pratipadika("naY",       "pum", other_tags=["svarAdi"])  # नञ् "not"
+naY       = Pratipadika("na",        "pum", other_tags=["svarAdi"])  # नञ् "not" (compound pūrva न; surface na, ञ् is इत्)
 hetO      = Pratipadika("hetO",      "pum", other_tags=["svarAdi"])  # हेतौ "by reason of"
 idDA      = Pratipadika("idDA",      "pum", other_tags=["svarAdi"])  # इद्धा "truly"
 adDA      = Pratipadika("adDA",      "pum", other_tags=["svarAdi"])  # अद्धा "evidently"
