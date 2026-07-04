@@ -362,4 +362,72 @@ samasa_tp_tests = [
         "fired": ["2.1.41", "1.2.43", "2.4.26"],
         "surface": "स्वर्गसिद्धः",
     },
+    # ── T2: karmadhāraya (samānādhikaraṇa) + dvigu (saṅkhyā-pūrva) ──
+    # KARMADHĀRAYA — both members the SAME case (samānādhikaraṇa), so the pūrva
+    # carries ?viBakti_1 (not a 2–7 case) + the viśeṣaṇa/pūrvakāla role tag. 1.2.42
+    # names it karmadhāraya (a ?tatpuruza sub-tag); it still declines paravalliṅga
+    # (2.4.26) in the uttara's gender.
+    {
+        "label": "T2-nIlotpalam-2.1.57",          # नीलम् उत्पलम् → नीलोत्पलम् (viśeṣaṇa; napuṁsaka)
+        "purva": {"stem": "nIla", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "utpala", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "1.2.43", "2.4.26"],
+        "surface": "नीलोत्पलम्",
+    },
+    {
+        "label": "T2-kRSNasarpaH-2.1.57",         # कृष्णः सर्पः → कृष्णसर्पः (viśeṣaṇa; masc)
+        "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "sarpa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "1.2.43", "2.4.26"],
+        "surface": "कृष्णसर्पः",
+    },
+    {
+        "label": "T2-snAtAnuliptaH-2.1.49",        # स्नातः अनुलिप्तः → स्नातानुलिप्तः (pūrvakāla)
+        "purva": {"stem": "snAta", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["pUrvakAla"]},
+        "uttara": {"stem": "anulipta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.49", "1.2.42", "1.2.43", "2.4.26"],
+        "surface": "स्नातानुलिप्तः",
+    },
+    {
+        # कल्याणी + प्रियः → कल्याणप्रियः. 6.3.42 puṃvadbhāva: the fem viśeṣaṇa pūrva
+        # takes its masc form (कल्याणी → कल्याण). The composer supplies कल्याण (the
+        # masc form) + ?puMvat directly; 6.3.42 fires as the puṃvadbhāva saṁjñā
+        # (the full ṅīp-strip derivation कल्याणी→कल्याण is deferred — see status).
+        "label": "T2-kalyARapriyaH-6.3.42",
+        "purva": {"stem": "kalyARa", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa", "puMvat"]},
+        "uttara": {"stem": "priya", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "6.3.42", "1.2.43", "2.4.26"],
+        "surface": "कल्याणप्रियः",
+    },
+    # DVIGU — a saṅkhyā-pūrva tatpuruṣa. 2.1.52 forms + names it ?dvigu; a समाहार
+    # (aggregate) dvigu is napuṁsaka singular (2.4.1); a go-final dvigu takes the
+    # ṬaC samāsānta (5.4.92). The pūrva carries ?saMKyA (no vigraha vibhakti).
+    {
+        # पञ्च गावः (समाहारे) → पञ्चगवम्. 5.4.92 गोरतद्धितलुकि: go-final → ṬaC (गो+अ→गव);
+        # 2.4.1 द्विगुरेकवचनम्: samāhāra → napuṁsaka sg (nom=acc अम्).
+        "label": "T2-paYcagavam-2.4.1",
+        "purva": {"stem": "paYca", "vacana": 1, "vivakza": True, "tags": ["saMKyA"]},
+        "uttara": {"stem": "go", "vacana": 1, "vivakza": True, "tags": ["samAhAra"]},
+        "fired": ["2.1.52", "2.4.1", "5.4.92", "1.2.43", "2.4.26"],
+        "surface": "पञ्चगवम्",
+    },
+    {
+        # त्रयाणां लोकानां समाहारः → त्रिलोकम् (napuṁsaka sg, 2.4.1). tri carries ?saMKyA
+        # intrinsically; a-stem uttara (लोक), no samāsānta. This same dvigu त्रि+लोक
+        # declines FEMININE (ṅīप) → त्रिलोकी when strī is intended (see the real-dvigu
+        # ṅīp test in test_samasa_tatpurusha.py), proving 2.1.52's ?dvigu drives both.
+        # (त्रिभुवनम् — the plan's other example — is DEFERRED: त्रि's र would ṇatva-ise
+        # bhuvana's न cross the pūrva/uttara boundary → त्रिभुवण; modelling the 8.4.3
+        # पूर्वपदात्संज्ञायाम् restriction that blocks cross-member ṇatva in a non-saṁjñā
+        # is a pre-existing ṇatva-engine gap, same family as चोरभयेन. See status.)
+        "label": "T2-trilokam-2.4.1",
+        "purva": {"stem": "tri", "vivakza": True},   # tri: ?saMKyA + nityabahuvacana
+        "uttara": {"stem": "loka", "vacana": 1, "vivakza": True, "tags": ["samAhAra"]},
+        "fired": ["2.1.52", "2.4.1", "1.2.43", "2.4.26"],
+        "surface": "त्रिलोकम्",
+    },
 ]

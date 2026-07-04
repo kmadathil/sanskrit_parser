@@ -10286,3 +10286,194 @@
 # (2.1.42–48 ध्वाङ्क्षेण…, पात्रेसमितादयश्च etc. — specialized lexical classes,
 # DEFERRED; recorded in generator_status.md.)
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T2: karmadhāraya + dvigu.
+#
+# KARMADHĀRAYA (समानाधिकरणस्तत्पुरुषः): both members stand in the SAME case
+# (samānādhikaraṇa — one referent, both prathamā in the vigraha: नीलम् उत्पलम्),
+# so the pūrva carries ?viBakti_1 (not a 2–7 case as in the vibhakti-tatpuruṣas).
+# A karmadhāraya IS a tatpuruṣa (declines paravalliṅga via 2.4.26); 1.2.42 just
+# names the samānādhikaraṇa sub-class. The vidhi rules (2.1.57 viśeṣaṇa, 2.1.49
+# pūrvakāla) set +samAnADikaraRa so 1.2.42 can name only the genuinely
+# same-case compounds (NOT e.g. the ekadeśī पूर्वकायः, whose pūrva is viBakti_1
+# but is a ṣaṣṭhī/ekadeśī tatpuruṣa, not a karmadhāraya).
+#
+# DVIGU (द्विगुः): a saṅkhyā-pūrva tatpuruṣa (पञ्च गावः, त्रीणि भुवनानि). 2.1.52
+# forms it AND names it dvigu; 2.4.1 makes a समाहार (aggregate) dvigu napuṁsaka
+# singular; 5.4.92 gives a go-final dvigu the ṬaC samāsānta (पञ्च + गो → पञ्चगव).
+# The ?dvigu tag reaches the merged stem (join_objects Tier-3) so the existing
+# 4.1.21 (SK479) ṅīp fires on a REAL dvigu (त्रिलोकी), not the in_compound shim.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── karmadhāraya (SK 726, 736, 745, 746, 751) ────────────────────────────────
+# 736/2.1.57: विशेषणं विशेष्येण बहुलम् — a विशेषण (qualifier, ?viSezaRa) as pūrva
+# compounds (bahulam) with its विशेष्य (the qualified noun), both in the SAME case
+# (samānādhikaraṇa; the pūrva's vigraha vibhakti is prathamā = ?viBakti_1):
+# नीलम् उत्पलम् = नीलोत्पलम्, कृष्णः सर्पः = कृष्णसर्पः. The pūrva sup luks (2.4.71); the
+# uttara declines paravalliṅga (2.4.26) → नीलोत्पलम् (napuṁsaka), कृष्णसर्पः (masc).
+# Sets +samAnADikaraRa so 1.2.42 names it karmadhāraya.
+- sutra: विशेषणं विशेष्येण बहुलम्
+  id: 2.1.57
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_1"
+      - "?viSezaRa"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza, +samAnADikaraRa]
+
+# 726/2.1.49: पूर्वकालैकसर्वजरत्पुराणनवकेवलाः समानाधिकरणेन — a पूर्वकाल (prior-action,
+# ?pUrvakAla) word [or eka/sarva/jarat/… ] as pūrva compounds with a same-case
+# noun: स्नातः (having bathed, prior) + अनुलिप्तः (then anointed) = स्नातानुलिप्तः.
+# Same samānādhikaraṇa shape as 2.1.57; pūrva is prathamā (?viBakti_1).
+- sutra: पूर्वकालैकसर्वजरत्पुराणनवकेवलाः समानाधिकरणेन
+  id: 2.1.49
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_1"
+      - "?pUrvakAla"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza, +samAnADikaraRa]
+
+# 745/1.2.42: तत्पुरुषः समानाधिकरणः कर्मधारयः — a samānādhikaraṇa tatpuruṣa (both
+# members the same case, marked +samAnADikaraRa by 2.1.57/2.1.49) is named
+# KARMADHĀRAYA. A saṁjñā only (?karmaDAraya is a ?tatpuruza sub-tag); the
+# compound still declines paravalliṅga via 2.4.26. eka-vibhakti (1.2.44) is the
+# adhikāra under which the pūrva's single vibhakti already luks (2.4.71).
+- sutra: तत्पुरुषः समानाधिकरणः कर्मधारयः
+  id: 1.2.42
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?samAnADikaraRa"
+      - "?!karmaDAraya"
+  update:
+    orp: [+karmaDAraya]
+
+# 746/6.3.42: पुंवत्कर्मधारयजातीयदेशीयेषु — in a karmadhāraya, a feminine viśeṣaṇa
+# pūrva that has a corresponding masculine form takes that PUṂVAT (masculine)
+# form: कल्याणी + प्रियः → कल्याणप्रियः (कल्याणी → कल्याण). Modelled as a pre-pass
+# pūrva-substitution: on a ?puMvat pūrva of a karmadhāraya, swap the feminine
+# stem to its supplied masculine (?puMvat_of) counterpart. (Recorded as a
+# lexical-substitution model — the composer supplies कल्याण directly, so this
+# rule fires as a saṁjñā documenting the puṃvadbhāva; the full ṅīp-stripping
+# derivation कल्याणी→कल्याण is deferred — see generator_status.md.)
+- sutra: पुंवत्कर्मधारयजातीयदेशीयेषु
+  id: 6.3.42
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - "?!puMvadBAva"
+    rp: "?karmaDAraya"
+  update:
+    olp: [+puMvadBAva]
+
+# 751/2.2.38: कडाराः कर्मधारये — the kaḍāra-gaṇa (?kaqAra) words are OPTIONALLY the
+# pūrva of a karmadhāraya (an-yatarasyām: either member may lead). Modelled as a
+# saṁjñā tag on the pūrva; the optional reordering (2.2.30 physical nipāta) stays
+# deferred, so only the input-order compound surfaces. (Recorded in status.)
+- sutra: कडाराः कर्मधारये
+  id: 2.2.38
+  domain: saMjYA
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?kaqAra"
+      - "?!kaqAra_pUrva"
+    rp: "?karmaDAraya"
+  update:
+    olp: [+kaqAra_pUrva]
+
+# ── dvigu (SK 727–731 / 2.1.52, 2.4.1, 5.4.92) ───────────────────────────────
+# 730/2.1.52: संख्यापूर्वो द्विगुः — a saṅkhyā-pūrva (?saMKyA) tatpuruṣa is a DVIGU.
+# Fused vidhi + saṁjñā (as 2.1.22 was fused into 2.1.24): forms the compound
+# (पञ्च + गो, त्रि + भुवन, त्रि + लोक) and names it ?dvigu. The pūrva sup luks
+# (2.4.71); the ?dvigu tag rides to the merged stem (join_objects Tier-3) so the
+# existing 4.1.21 (SK479) ṅīp fires on a REAL dvigu (त्रिलोकी). Gated on the
+# ?samAsa_vivakza intent (only-when-intended).
+- sutra: संख्यापूर्वो द्विगुः
+  id: 2.1.52
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?saMKyA"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      # A saṅkhyā + vaṁśya (2.1.19) or + nadī (2.1.20) is an AVYAYĪBHĀVA, not a
+      # dvigu — those specific senses are apavādas to the general saṅkhyā-dvigu
+      # (द्विमुनि, द्विगङ्गम् stay avyayībhāva). Exclude them here.
+      - "?!vaMSya"
+      - "?!nadI_saMjYA"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza, +dvigu]
+
+# 731/2.4.1: द्विगुरेकवचनम् — a समाहार (aggregate, ?samAhAra) dvigu is napuṁsaka
+# EKAVACANA (singular): पञ्च गावः → समाहारे पञ्चगवम्; त्रीणि भुवनानि → त्रिभुवनम्.
+# Reuses the deferred-napuṁsaka marker ?samasa_napum (→ ?napum via
+# _commit_samasa_napum, before the main scan) exactly as 2.4.18 does for the
+# avyayībhāva; the ekavacana is the composed vacana_1. So the compound declines
+# as a napuṁsaka a-stem (nom = acc = अम्).
+- sutra: द्विगुरेकवचनम्
+  id: 2.4.1
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?dvigu"
+      - "?samAhAra"
+      - "?!samasa_napum"
+  update:
+    orp: [+samasa_napum]
+
+# 729/5.4.92: गोरतद्धितलुकि — a go-final dvigu/tatpuruṣa (no taddhita-luk) takes the
+# ṬaC samāsānta: पञ्च + गो → पञ्चगो + अ(टच्) → पञ्चगव (o → av before the अ, 6.1.78).
+# Rule-driven via the proven ?samasanta_TaC + _insert_samasanta path (same as the
+# avyayībhāva 5.4.107–112): sets the marker on the go-final uttara; _insert_samasanta
+# inserts the wac. ?!luk_tadDita keeps it to the no-taddhita-luk case (अतद्धितलुकि).
+- sutra: गोरतद्धितलुकि
+  id: 5.4.92
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "=go"
+      - "?!luk_tadDita"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+

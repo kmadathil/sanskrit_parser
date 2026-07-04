@@ -231,3 +231,31 @@ def test_tatpurusha_napumsaka_sweep(vib_n):
     got = _sweep("jIva", 6, "suKa", vib_n)
     expected = {_to_slp1(s) for s in _JIVASUKHA_VIBHAKTIS[vib_n]}
     assert got == expected, f"जीवसुख viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── T2 real-dvigu ṅīp: त्रिलोकी from a REAL dvigu (2.1.52), not the in_compound shim ─
+# The T2 dvigu saṁjñā (2.1.52 संख्यापूर्वो द्विगुः) tags the compound ?dvigu via real
+# compound formation in the samāsa pre-pass. That ?dvigu rides to the merged stem
+# (join_objects Tier-3) so the existing 4.1.21 (SK479) द्विगोः ṅīप fires at the
+# (loka | strI_abs) window → त्रिलोकी. This replaces the vibhaktis_list.py shim
+# (in_context(in_compound(loka), "dvigu")) that set ?dvigu by hand — the shim tests
+# (त्रिलोकी/त्रिफला/पञ्चाश्वी) still stand, but the tag now also has a real producer.
+def test_real_dvigu_ngiip_trilokI():
+    """त्रि + लोक (a REAL saṅkhyā-pūrva dvigu, 2.1.52) + strī → त्रिलोकी: the ?dvigu
+    the pre-pass assigns drives SK479 (4.1.21) ṅīp, exactly as the hand-tagged
+    shim did — proving the dvigu saṁjñā is wired to the feminine-pratyaya path."""
+    from sanskrit_parser.generator.pratyaya import strI_abs
+    tri = deepcopy(getattr(_pratipadika, "tri"))       # tri: ?saMKyA (intrinsic)
+    tri.setTag("samAsa_vivakza")
+    loka = deepcopy(getattr(_pratipadika, "loka"))
+    loka.setTag("vacana_1")
+    loka.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list,
+                          PrakriyaVakya([Adya, tri, loka, deepcopy(strI_abs), avasAna]))
+    # ?dvigu is set by the REAL rule 2.1.52 (not a composer shim).
+    fired = {aps for e in p.karaka_log for aps in e["fired"]}
+    assert "2.1.52" in fired, f"2.1.52 (dvigu saṁjñā) did not fire: {sorted(fired)}"
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    assert got == {_to_slp1("त्रिलोकी")}, f"real-dvigu त्रिलोकी: {got}"

@@ -686,6 +686,12 @@ class AntarangaPrakriya(PrakriyaBase):
             if _isScalar(o) and o.hasTag("samasa_napum"):
                 o.deleteTag("samasa_napum")
                 o.setTag("napum")
+                # Lock the samāsa-assigned gender so a later samāsānta affix
+                # (wac, which hard-codes ?pum for the 2.4.29 rātrāhnāhāḥ puṃsi
+                # ahar-case) cannot override it at the (uttara | wac) merge —
+                # a samāhāra dvigu (2.4.1) or avyayībhāva (2.4.18) stays napuṁsaka
+                # (पञ्चगवम्, not पञ्चगवः). join_objects honours ?samasa_liNga_locked.
+                o.setTag("samasa_liNga_locked")
                 for g in ("pum", "strI"):
                     if o.hasTag(g):
                         o.deleteTag(g)

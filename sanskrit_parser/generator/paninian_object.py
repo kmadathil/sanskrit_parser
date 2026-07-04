@@ -152,15 +152,26 @@ class PaninianObject(SanskritObject):
                 so.setIt(it)
 
         # --- Gender: prefer last element's; fall back to first's ---
-        for t in ["pum", "strI", "napum"]:
-            if last.hasTag(t):
-                so.setTag(t)
-                break
-        else:
+        # EXCEPT when the first (stem) carries a samāsa-locked gender
+        # (?samasa_liNga_locked, set by _commit_samasa_napum for a napuṁsaka
+        # samāhāra-dvigu / avyayībhāva): a samāsānta affix (wac hard-codes ?pum
+        # for 2.4.29) must NOT override it — पञ्चगवम् stays napuṁsaka, not पञ्चगवः.
+        if first.hasTag("samasa_liNga_locked"):
             for t in ["pum", "strI", "napum"]:
                 if first.hasTag(t):
                     so.setTag(t)
                     break
+            so.setTag("samasa_liNga_locked")
+        else:
+            for t in ["pum", "strI", "napum"]:
+                if last.hasTag(t):
+                    so.setTag(t)
+                    break
+            else:
+                for t in ["pum", "strI", "napum"]:
+                    if first.hasTag(t):
+                        so.setTag(t)
+                        break
 
         # ── Phase 2: Stem identity markers ────────────────────────────────────────
 

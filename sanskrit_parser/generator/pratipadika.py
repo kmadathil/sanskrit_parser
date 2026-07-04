@@ -92,6 +92,17 @@ hata    = Pratipadika("hata",    "pum",   other_tags=["kta"])            # ह�
 apeta   = Pratipadika("apeta",   "pum",   other_tags=["apeta_gaRa"])     # अपेत — सुखापेतः (pañcamī 2.1.38)
 mukta   = Pratipadika("mukta",   "pum",   other_tags=["kta"])            # मुक्त — स्तोकमुक्तः (pañcamī 2.1.39 kṛta uttara)
 sidDa   = Pratipadika("sidDa",   "pum",   other_tags=["siDDa_gaRa"])     # सिद्ध — स्वर्गसिद्धः (saptamī 2.1.41)
+# ── Tatpuruṣa T2: karmadhāraya + dvigu (samānādhikaraṇa / saṅkhyā-pūrva). The
+# pūrva's viśeṣaṇa/pūrvakāla/saṅkhyā role is supplied by the composer (?viSezaRa /
+# ?pUrvakAla / ?saMKyA), so these uttara stems just carry their gender.
+utpala   = Pratipadika("utpala",  "napum")   # उत्पल (lotus) — नीलोत्पलम् (2.1.57 viśeṣaṇa, napuṁsaka)
+sarpa    = Pratipadika("sarpa",   "pum")     # सर्प (snake) — कृष्णसर्पः (2.1.57 viśeṣaṇa, masc)
+snAta    = Pratipadika("snAta",   "pum",   other_tags=["kta"])   # स्नात — स्नातानुलिप्तः pūrva (2.1.49 pūrvakāla)
+anulipta = Pratipadika("anulipta","pum",   other_tags=["kta"])   # अनुलिप्त — स्नातानुलिप्तः uttara
+priya    = Pratipadika("priya",   "pum")     # प्रिय — कल्याणप्रियः uttara (6.3.42 puṃvad)
+kalyARa  = Pratipadika("kalyARa", "pum")     # कल्याण — the puṃvat (masc) form of कल्याणी (6.3.42)
+# (भुवन for त्रिभुवनम् is not added — that case is deferred: cross-member ṇatva. The
+# samāhāra-dvigu napuṁsaka path is exercised by पञ्चगवम् + त्रिलोकम् via existing stems.)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
