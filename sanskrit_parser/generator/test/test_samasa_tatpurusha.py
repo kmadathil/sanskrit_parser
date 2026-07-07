@@ -297,3 +297,113 @@ def test_tatpurusha_nan_sweep(vib_n):
            for o in p.output()}
     expected = {_to_slp1(s) for s in _ANASHVA_VIBHAKTIS[vib_n]}
     assert got == expected, f"अनश्व viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── T4 prādi vibhakti sweep: प्राचार्य (प्र + आचार्य) as a clean masc a-stem ─────
+# The prādi pūrva प्र (avyaya, sup luks) + आचार्य → प्राचार्य (a+ā→ā), which then
+# declines NORMALLY in the uttara's masc gender (2.4.26 परवल्लिङ्गम्) — the राम
+# paradigm — proving the prādi-tatpuruṣa is not indeclinable.
+_PRACARYA_VIBHAKTIS = {
+    1: ["प्राचार्यः"],
+    2: ["प्राचार्यम्"],
+    3: ["प्राचार्येण"],
+    4: ["प्राचार्याय"],
+    5: ["प्राचार्यात्", "प्राचार्याद्"],
+    6: ["प्राचार्यस्य"],
+    7: ["प्राचार्ये"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_PRACARYA_VIBHAKTIS))
+def test_tatpurusha_pradi_sweep(vib_n):
+    """प्र + आचार्य (prādi-tatpuruṣa, 2.2.18) declined per vibhakti (sg) — a normal
+    masc a-stem, proving the prādi compound declines (not an indeclinable)."""
+    purva = deepcopy(getattr(_pratipadika, "pra"))
+    purva.setTag("semantic_1")       # keeps the avyaya pūrva a distinct ?pada member
+    purva.setTag("samAsa_vivakza")
+    uttara = deepcopy(getattr(_pratipadika, "AcArya"))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")   # external compound case
+    uttara.setTag("has_viBakti")
+    uttara.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    expected = {_to_slp1(s) for s in _PRACARYA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"प्राचार्य viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── T5 samāsānta vibhakti sweep: परमराज (परम + राजन् + टच्) as a masc a-stem ────
+# 5.4.91 राजाहःसखिभ्यष्टच् turns the rājan-final tatpuruṣa into an a-stem (परमराज,
+# न-lopa via 6.4.144), so it declines as the राम paradigm — proving the samāsānta
+# makes the compound a normally-declining a-stem (not the an-stem राजा).
+_PARAMARAJA_VIBHAKTIS = {
+    1: ["परमराजः"],
+    2: ["परमराजम्"],
+    3: ["परमराजेन"],
+    4: ["परमराजाय"],
+    5: ["परमराजात्", "परमराजाद्"],
+    6: ["परमराजस्य"],
+    7: ["परमराजे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_PARAMARAJA_VIBHAKTIS))
+def test_tatpurusha_samasanta_sweep(vib_n):
+    """परम + राजन् + टच् (5.4.91) declined per vibhakti (sg) — a masc a-stem
+    (परमराज), proving the ṬaC samāsānta yields a normally-declining compound."""
+    purva = deepcopy(getattr(_pratipadika, "parama"))
+    purva.setTag("vacana_1")
+    purva.setTag("viBakti_1")           # karmadhāraya pūrva (prathamā, luks via 2.4.71)
+    purva.setTag("has_viBakti")
+    purva.setTag("viSezaRa")
+    purva.setTag("samAsa_vivakza")
+    uttara = deepcopy(getattr(_pratipadika, "rAjan"))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")   # external compound case
+    uttara.setTag("has_viBakti")
+    uttara.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    expected = {_to_slp1(s) for s in _PARAMARAJA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"परमराज viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── T-liṅga: 2.4.29 रात्राह्नाहाः पुंसि — the ahan-family gender override ─────────
+# An ahan-final (non-samāhāra) tatpuruṣa is MASCULINE (2.4.29), overriding the
+# native napuṁsaka of अहन्. This is a pre-pass gender override: the uttara अहन् is
+# re-tagged ?pum (dropping ?napum) and locked (?samasa_liNga_locked), so the
+# compound declines masculine, NOT napuṁsaka. Asserted at the structure/trace
+# level — the full a-stem SURFACE (द्व्यहः) needs the deferred ahar टच् samāsānta
+# (5.4.91 ahar-arm; see the T5 Skipped row), so this proves the gender override
+# without depending on that surface.
+def test_tatpurusha_liNga_ahan_pumsi():
+    """द्वि + अहन् (a non-samāhāra dvigu-tatpuruṣa): 2.4.29 रात्राह्नाहाः पुंसि forces
+    the natively-napuṁsaka अहन् uttara to MASCULINE (overriding 2.4.26)."""
+    dvi = deepcopy(getattr(_pratipadika, "dvi"))     # ?saMKyA
+    dvi.setTag("samAsa_vivakza")
+    ahan = deepcopy(getattr(_pratipadika, "ahan"))   # natively ?napum
+    ahan.setTag("vacana_1")
+    ahan.setTag("viBakti_1")
+    ahan.setTag("has_viBakti")
+    ahan.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, dvi, ahan, avasAna]))
+    fired = {aps for e in p.karaka_log for aps in e["fired"]}
+    assert "2.4.29" in fired, f"2.4.29 did not fire: {sorted(fired)}"
+    # Locate the ahan uttara in the (nested) pre-pass branch.
+    branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
+    flat = []
+    for o in branch:
+        flat.extend(o if isinstance(o, list) else [o])
+    members = [o for o in flat
+               if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
+    uttara = members[-1]
+    assert uttara.hasTag("tatpuruza"), f"uttara {uttara} not a tatpuruṣa"
+    assert uttara.hasTag("pum"), f"2.4.29: uttara {uttara} not masc ({sorted(uttara.tags)})"
+    assert not uttara.hasTag("napum"), \
+        f"2.4.29: uttara {uttara} still napuṁsaka ({sorted(uttara.tags)})"
+    assert uttara.hasTag("samasa_liNga_locked"), \
+        f"2.4.29: uttara {uttara} gender not locked ({sorted(uttara.tags)})"

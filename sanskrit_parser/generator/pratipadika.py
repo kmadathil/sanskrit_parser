@@ -273,8 +273,8 @@ puruza   = Pratipadika("puruza",   "pum",   other_tags=["puruza"])
 UDas    = Pratipadika("UDas",    "napum", other_tags=["uDanta"])
 kuRqa   = Pratipadika("kuRqa",   "napum", other_tags=["jAnapadAdi"])  # ?jAnapadAdi: SK500 (4.1.42)
 Gawa    = Pratipadika("Gawa",    "pum")
-# ati: avyaya pūrva-pada for atyUDnI (SK485 avyayādi arm)
-ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya"])
+# ati: avyaya pūrva-pada for atyUDnI (SK485 avyayādi arm); also prādi (2.2.18): अतिमालः
+ati     = Pratipadika("ati",     "pum",   other_tags=["avyaya", "prAdi"])
 
 # SK486 (4.1.27) test bases. ?dAman / ?hAyana let the rule target these stems;
 # the saṃkhyā pūrva-pada is read via llp: ?saMKyA (and the 4.1.27.1 vārttika n→ṇ
@@ -648,6 +648,7 @@ hAhA = Pratipadika("hAhA", "pum")
 
 rAjan = Pratipadika("rAjan", "pum")
 mahat = Pratipadika("mahat", "pum", its=['u'])
+parama = Pratipadika("parama", "pum")   # परम — viśeṣaṇa pūrva for परमराजः (5.4.91 ṭac, T5)
 # SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
@@ -862,7 +863,13 @@ pur_kvip     = Pratipadika("pur",     "pum",  other_tags=["DAtu", "kvip"])      
 # Generic prefix pratipadikas — reusable with many Dhatus (not tied to añcatir specifically)
 # 6.1.77 fires at (prati|ac) → pratyac; 6.1.101 fires at (pra|ac) → prAc
 prati = Pratipadika("prati", "pum", other_tags=["nipAta"])
-pra   = Pratipadika("pra",   "pum", other_tags=["nipAta"])
+pra   = Pratipadika("pra",   "pum", other_tags=["nipAta", "prAdi"])   # प्र — prādi (2.2.18): प्राचार्यः
+# ── prādi / ku pūrva-elements for the prādi-tatpuruṣa (2.2.18 कुगतिप्रादयः, T4) ──
+# The prādi upasargas + कु are ?nipAta → avyaya (1.1.37), so the pūrva sup luks;
+# ?prAdi / ?ku are the membership tags 2.2.18 matches. (?gati words — puras/namas
+# — already carry ?gati intrinsically and feed the third arm of 2.2.18.)
+ku    = Pratipadika("ku",    "pum", other_tags=["nipAta", "ku"])      # कु "bad" — कुपुरुषः
+mAla  = Pratipadika("mAla",  "pum")                                   # माल m. — अतिमालः (ati + māla)
 tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras", "svarAdi"])  # svarAdi per SK447
 ud    = Pratipadika("ud",    "pum", other_tags=["nipAta"])
 sam   = Pratipadika("sam",   "pum", other_tags=["nipAta", "sam"])

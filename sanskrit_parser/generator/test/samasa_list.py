@@ -458,4 +458,51 @@ samasa_tp_tests = [
         "fired": ["2.2.6", "6.3.74", "1.2.43", "2.4.26"],
         "surface": "अनजः",
     },
+    # ── T4: prādi / ku tatpuruṣa (2.2.18 कुगतिप्रादयः) ──
+    # The prādi/ku particle is the pūrva (an avyaya ?nipAta → 1.1.37, so its sup
+    # luks; no vigraha vibhakti, like the नञ् of T3). It carries a semantic sense
+    # ("sem") to ride through the merge as a distinct ?pada member. The compound
+    # declines normally in the uttara's masc gender (2.4.26) → the राम paradigm.
+    {
+        "label": "T4-prAcAryaH-2.2.18",       # प्र + आचार्य → प्राचार्यः (prādi; a+ā→ā savarṇadīrgha)
+        "purva": {"stem": "pra", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "AcArya", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.18", "1.2.43", "2.4.26"],
+        "surface": "प्राचार्यः",
+    },
+    {
+        "label": "T4-kupuruSaH-2.2.18",       # कु + पुरुष → कुपुरुषः (ku)
+        "purva": {"stem": "ku", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.18", "1.2.43", "2.4.26"],
+        "surface": "कुपुरुषः",
+    },
+    {
+        "label": "T4-atimAlaH-2.2.18",        # अति + माल → अतिमालः (prādi)
+        "purva": {"stem": "ati", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "mAla", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.18", "1.2.43", "2.4.26"],
+        "surface": "अतिमालः",
+    },
+    # ── T5: tatpuruṣa samāsānta (टच्/ṬaC via ?samasanta_TaC + _insert_samasanta) ──
+    # A rājan-final tatpuruṣa (5.4.91) takes टच् → an a-stem: परम + राजन् → परमराजः
+    # (न-lopa 6.4.144, exactly as the avyayībhāva उपराजम्). महत् + राजन् → महाराजः via
+    # 6.3.46 आन्महतः (महत् → महा) + 5.4.91. Modelled as karmadhārayas (परम/महत्
+    # viśeṣaṇa, viBakti_1), so 2.1.57 + 1.2.42 also fire. Decline masc a-stem.
+    {
+        "label": "T5-paramarAjaH-5.4.91",     # परम + राजन् → परमराजः (टच्, rājan-arm)
+        "purva": {"stem": "parama", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "rAjan", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "5.4.91", "1.2.43", "2.4.26"],
+        "surface": "परमराजः",
+    },
+    {
+        "label": "T5-mahArAjaH-6.3.46",        # महत् + राजन् → महाराजः (6.3.46 महत्→महा + 5.4.91 टच्)
+        "purva": {"stem": "mahat", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "rAjan", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "6.3.46", "5.4.91", "1.2.43", "2.4.26"],
+        "surface": "महाराजः",
+    },
 ]

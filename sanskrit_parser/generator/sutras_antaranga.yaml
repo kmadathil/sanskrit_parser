@@ -10564,3 +10564,140 @@
     lc: str("")
     r: str("n")+r
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T4: prādi / gati / ku tatpuruṣa.
+#
+# 2.2.18 कुगतिप्रादयः — कु, the गति words, and the प्रादि (upasarga) particles
+# compound with a subanta → tatpuruṣa: प्र + आचार्य = प्राचार्यः, कु + पुरुष = कुपुरुषः,
+# अति + माल = अतिमालः. The prādi/ku/gati particle is the PŪRVA (upasarjana). It is
+# an avyaya (?nipAta → 1.1.37 स्वरादिनिपातमव्ययम्), so its sup luks (2.4.71/2.4.82)
+# and it does not surface a case ending — like the नञ् pūrva of T3, it has no
+# vigraha vibhakti. Reuses the T0 spine wholesale — 1.2.43 (upasarjana), 2.4.26
+# (paravalliṅga) — so the compound DECLINES NORMALLY in the uttara's gender
+# (masc a-stem प्राचार्यः/कुपुरुषः/अतिमालः). The membership tags are intrinsic on the
+# pūrva element: ?prAdi (pra/ati…), ?ku (ku), ?gati (puras/namas — as they already
+# carry it; the gati saṁjñā 1.4.61/67/68 + long tail are recorded in status).
+# upapada (2.2.19 उपपदमतिङ् / 3.1.92) is DEFERRED — needs the kṛt-pratyaya
+# machinery (कुम्भकारः = कुम्भ + √कृ + अण्), out of the current samāsa scope.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 761/2.2.18: कुगतिप्रादयः — a कु / गति / प्रादि particle (?ku | ?gati | ?prAdi) as
+# pūrva compounds with any subanta (?prAtipadika) → tatpuruṣa. Gated on the
+# ?samAsa_vivakza intent (only-when-intended); ?!samAsaPurva keeps it single-fire.
+- sutra: कुगतिप्रादयः
+  id: 2.2.18
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - - or
+        - "?prAdi"
+        - "?ku"
+        - "?gati"
+      - "?samAsa_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +tatpuruza]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T5: tatpuruṣa samāsānta (टच्/ṬaC).
+#
+# Rule-driven via the proven ?samasanta_TaC + _insert_samasanta path (identical to
+# the avyayībhāva 5.4.107–112): each rule below sets ?samasanta_TaC on the
+# qualifying tatpuruṣa uttara, and the pre-pass step _insert_samasanta inserts the
+# टच् (wac, form अ) after it; the main scan merges stem + wac → an a-stem, so the
+# compound declines as a masc a-stem (परमराजः, महाराजः). The rājan-final case reuses
+# the exact rājan+wac → rāja path already proven by the avyayībhāva 5.4.108 (उपराजम्,
+# न-lopa via 6.4.144 नस्तद्धिते). 6.3.46 आन्महतः is a PŪRVA-substitution (महत् → महा),
+# modelled like 6.3.81 (saha→sa). Deferred (Skipped rows): the ahar/sakhi arms of
+# 5.4.91 (द्व्यहः — the ahar टच् collides with the existing dvyahna न्-retention, which
+# keeps the samāsānta wac deliberately non-ट-marked → द्व्यह्न, SK238), and 5.4.86
+# अङ्गुलि / 5.4.94 an-final / 5.4.101 khārī (stems not worth adding now).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 788/5.4.91: राजाहःसखिभ्यष्टच् — a rājan/ahar/sakhi-final tatpuruṣa takes the टच्
+# (ṬaC) samāsānta. Here the rājan arm (?rAjan uttara): परम + राजन् → परमराज + अ(टच्)
+# → परमराज (न-lopa 6.4.144, as उपराजम्) → declines masc a-stem परमराजः. Sets the
+# marker; _insert_samasanta inserts the wac. Disjoint from the avyayībhāva 5.4.108
+# (?avyayIBAva); this is gated on ?tatpuruza. (ahar/sakhi arms deferred — status.)
+- sutra: राजाहःसखिभ्यष्टच्
+  id: 5.4.91
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?rAjan"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 807/6.3.46: आन्महतः समानाधिकरणजातीययोः — a महत् pūrva becomes महा (आत्, i.e. →ā)
+# before a samānādhikaraṇa (karmadhāraya) / jātīya uttara: महत् + राजन् → महा + राजन्
+# → (5.4.91 टच्) → महाराजः. A PŪRVA-substitution in the samāsa pre-pass member-window
+# (bahiranga: -1, the same (pūrva | uttara) window the nañ junction rules 6.3.73/74
+# use): lp = महत् pūrva (?samAsaPurva), rp = the uttara carrying ?samAnADikaraRa
+# (set by 2.1.57 on the uttara — so gating rp, not lp, pins the genuine karmadhāraya,
+# not a ṣaṣṭhī महत्-pūrva). xform wipes the pūrva to महा (lc→"", l→"mahA"), as 6.3.81
+# does saha→sa. The window fixpoint runs 2.1.57 (sets the tags) first, then this.
+- sutra: आन्महतः समानाधिकरणजातीययोः
+  id: 6.3.46
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=mahat"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?samAnADikaraRa"
+  xform:
+    lc: str("")
+    l: str("mahA")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T-liṅga: gender EXCEPTIONS to 2.4.26.
+#
+# 2.4.26 परवल्लिङ्गम् (T0) makes a tatpuruṣa take the uttara's gender. The rules
+# below OVERRIDE that for specific uttara stem-classes, keyed on the uttara. They
+# reuse the ?samasa_liNga_locked flag join_objects already honours (set by
+# _commit_samasa_napum for the napuṁsaka overrides): a rule sets the target gender
+# on the uttara + the lock, so the (uttara | sup/wac) merge cannot revert it.
+# Implemented: 2.4.29 (rātra/ahan/aha-final → masculine). Deferred (Skipped rows):
+# 2.4.19 तत्पुरुषोऽनञ्कर्मधारयः (napuṁsaka only in the 2.4.17 saṃjñā-doubtful domain —
+# inert without saṃjñā tagging, and would wrongly napuṁsaka-ise ordinary masc
+# tatpuruṣas like राजपुरुषः), 2.4.30 अपथं नपुंसकम् (needs the pathin अच् samāsānta
+# 5.4.74, deferred), 2.4.31 अर्धर्चाः पुंसि च (needs the अर्धर्चादि stem set).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 814/2.4.29: रात्राह्नाहाः पुंसि — a tatpuruṣa ending in रात्र / अह्न / अह is MASCULINE,
+# overriding the uttara's native gender (रात्रि f., अहन् n. → the compound is masc).
+# Pre-pass gender override (bahiranga: -1, domain saṁjñā), keyed on the uttara
+# (?tatpuruza + the ?ahan/rātra family + native ?napum/?strI): set +pum, drop the
+# native gender, and lock (?samasa_liNga_locked) so the uttara-sup merge keeps masc.
+# Gated ?!samAhAra + ?!samasa_napum so it does NOT clobber a समाहार dvigu, which is
+# napuṁsaka by the apavāda 2.4.1 (द्व्यहम्). NOTE: the full a-stem surface (द्व्यहः) needs
+# the ahar टच् samāsānta (5.4.91 ahar-arm), deferred — see the T5 Skipped row; this
+# rule establishes the masculine gender-override on the ahan-family uttara.
+- sutra: रात्राह्नाहाः पुंसि
+  id: 2.4.29
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?ahan"
+      - "?napum"
+      - "?!samAhAra"
+      - "?!samasa_napum"
+      - "?!samasa_liNga_locked"
+  update:
+    orp: [-napum, +pum, +samasa_liNga_locked]
+

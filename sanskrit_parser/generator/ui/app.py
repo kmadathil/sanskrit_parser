@@ -1405,7 +1405,8 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
             pos_forms[si] = group_forms[gi]
 
     _SAMASA_ROLE = ("samAsa", "samAsaPurva", "upasarjana",
-                    "avyayIBAva", "bahuvrIhi", "dvigu")
+                    "avyayIBAva", "bahuvrIhi", "dvigu",
+                    "tatpuruza", "karmaDAraya")
 
     # Per-spec samāsa role tags: read from the final pre-pass branch by member
     # order (the samāsa pre-pass logs POST-sup-insertion indices, which don't
@@ -1415,7 +1416,13 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
     if any(sp.get("samasa") for sp in sentence):
         branch = (getattr(p, "_karaka_branches", None) or [None])[0]
         if branch is not None:
-            members = [o for o in branch
+            # A declining compound (tatpuruṣa) nests its members into a sub-list
+            # (_nest_samasa_members → one samasta_pada), so flatten one level
+            # before scanning for member objects (avyayībhāva stays flat).
+            flat = []
+            for o in branch:
+                flat.extend(o if isinstance(o, list) else [o])
+            members = [o for o in flat
                        if getattr(o, "hasTag", None) and o.canonical()
                        and o.hasTag("prAtipadika") and not o.hasTag("sup")
                        and not o.hasTag("tiNanta")]
@@ -1451,7 +1458,8 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
         if len(grp) < 2:
             continue
         ctype = sorted({t for si in grp for t in samasa_by_spec.get(si, [])
-                        if t in ("avyayIBAva", "bahuvrIhi", "dvigu")})
+                        if t in ("avyayIBAva", "bahuvrIhi", "dvigu",
+                                 "tatpuruza", "karmaDAraya")})
         compounds.append({
             "members": [_spec_label(sentence[si], enc) for si in grp],
             "type":    ctype,

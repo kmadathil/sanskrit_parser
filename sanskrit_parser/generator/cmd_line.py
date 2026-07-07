@@ -89,9 +89,10 @@ def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_dis
                   or t in ("karmapravacanIya", "kp_pUrva", "kp_para",
                            "kp_dvitIyA", "kp_pancamI", "kp_pancamI_pratinidhi",
                            "kp_saptamI",
-                           # samāsa role/saṁjñā tags (avyayībhāva pre-pass)
+                           # samāsa role/saṁjñā tags (avyayībhāva + tatpuruṣa pre-pass)
                            "samAsa", "samAsaPurva", "upasarjana",
-                           "avyayIBAva", "bahuvrIhi", "dvigu")]
+                           "avyayIBAva", "bahuvrIhi", "dvigu",
+                           "tatpuruza", "karmaDAraya", "naY")]
             fired = ", ".join(e["fired"]) if e["fired"] else "—"
             label = "samāsa" if e.get("samasa") else "kāraka"
             print(f"  @{e['index']} ({label}): {', '.join(kv) or 'no tags'}  (fired: {fired})")
@@ -279,11 +280,15 @@ class CustomActionPurvaPada(Action):
 
 
 class CustomActionKaraka(Action):
-    """-k / --karaka <stem> [vacana] [sem ...]: a kāraka participant noun.
+    """-k / --karaka <stem> [vacana] [vN] [sem ...]: a kāraka participant noun.
 
     Builds a deep copy of the predefined pratipadika <stem>, sets vacana_<N>
-    (a digit token; default vacana_1) and each semantic primitive as a
+    (a bare digit token; default vacana_1) and each semantic primitive as a
     semantic_<prim> tag (used as-is if it already starts with "semantic_").
+    A `vN` token (or `viBakti_N`) sets an explicit vigraha viBakti_<N> +
+    has_viBakti on the member — the pūrva's case in a tatpuruṣa vigraha, e.g.
+    `-k rAjan 1 v6` (ṣaṣṭhī rājan) for राजपुरुषः. With --samasa the pūrva sup
+    then luks (2.4.71) and the compound declines in the uttara's gender (2.4.26).
     A pUrva/para (or yoga_pUrva/yoga_para) token sets the yoga-word governance
     DIRECTION tag yoga_pUrva/yoga_para — used when this noun is itself a non-kp
     yoga-word (anya/itara/a dik-word in 2.3.29, etc.): pūrva = governs the
@@ -306,17 +311,25 @@ class CustomActionKaraka(Action):
         assert stem in globals(), f"{stem} is not defined!"
         obj = deepcopy(globals()[stem])
         vacana = 1
+        vibhakti = None
         sems = []
         for tok in values[1:]:
             if tok.isdigit():
                 vacana = int(tok)
             elif tok in self._DIRECTIONS:
                 obj.setTag(self._DIRECTIONS[tok])
+            elif tok.startswith("v") and tok[1:].isdigit():        # vN → vigraha viBakti_N
+                vibhakti = int(tok[1:])
+            elif tok.startswith("viBakti_") and tok[8:].isdigit():  # explicit viBakti_N
+                vibhakti = int(tok[8:])
             elif tok.startswith("semantic_"):
                 sems.append(tok)
             else:
                 sems.append("semantic_" + tok)
         obj.setTag(f"vacana_{vacana}")
+        if vibhakti is not None:
+            obj.setTag(f"viBakti_{vibhakti}")
+            obj.setTag("has_viBakti")
         for s in sems:
             obj.setTag(s)
         getattr(namespace, self.dest).append(obj)
@@ -445,8 +458,9 @@ def get_args(argv=None):
                         help="Mark uttara-pada(s) as in_compound(...) + ?bahuvrIhi (samāsa added automatically)")
     parser.add_argument('-s', '--string', nargs="+", dest="inputs", encoding=sanscript.SLP1, action=CustomActionString)
     parser.add_argument('-k', '--karaka', nargs="+", dest="karaka_words", action=CustomActionKaraka,
-                        help="Kāraka participant noun: <stem> [vacana] [semantic_primitive ...] "
-                             "(e.g. -k hari 1 Ipsitatama)")
+                        help="Kāraka participant noun: <stem> [vacana] [vN vigraha-vibhakti] "
+                             "[semantic_primitive ...] (e.g. -k hari 1 Ipsitatama ; "
+                             "-k rAjan 1 v6 --samasa for the ṣaṣṭhī pūrva of राजपुरुषः)")
     parser.add_argument('-w', '--word', nargs="+", dest="karaka_words", action=CustomActionWord,
                         help="Predefined object (verb pada, particle) by name for a kāraka sentence, "
                              "with optional semantic sense tag(s) and a governance-direction token "
@@ -456,10 +470,12 @@ def get_args(argv=None):
                         help="Kāraka sentence: apply inter-word sandhi (connected sentence) "
                              "instead of the default avasāna-separated per-word forms")
     parser.add_argument("--samasa", action="store_true",
-                        help="Compose the -k/-w members as an avyayībhāva samāsa: marks each "
-                             "member ?samAsa_vivakza, drops karmapravacanīya tags, and runs them "
-                             "adjacent (implies --sandhi) so the samāsa pre-pass forms the compound "
-                             "(e.g. -w upa_avyaya samIpa -k kfzRa 1 --samasa → उपकृष्णम्)")
+                        help="Compose the -k/-w members as a samāsa: marks each member "
+                             "?samAsa_vivakza, drops karmapravacanīya tags, and runs them "
+                             "adjacent (implies --sandhi) so the samāsa pre-pass forms the compound. "
+                             "Avyayībhāva: -w upa_avyaya samIpa -k kfzRa 1 --samasa → उपकृष्णम्. "
+                             "Tatpuruṣa (pūrva carries a vigraha vibhakti vN): "
+                             "-k rAjan 1 v6 -k puruza 1 --samasa → राजपुरुषः (declines normally)")
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -487,9 +503,11 @@ def cmd_line():
     if getattr(args, "karaka_words", None):
         sandhi = args.sandhi
         if getattr(args, "samasa", False):
-            # Avyayībhāva samāsa: mark each member ?samAsa_vivakza (the intent
-            # tag the samāsa pre-pass scans for) and run the members adjacent so
-            # the samāsa pre-pass + main scan form one compound. A kp direction
+            # Samāsa (avyayībhāva or tatpuruṣa): mark each member ?samAsa_vivakza
+            # (the intent tag the samāsa pre-pass scans for) and run the members
+            # adjacent so the samāsa pre-pass + main scan form one compound. For a
+            # tatpuruṣa the pūrva already carries its vigraha viBakti_N (via -k … vN),
+            # so the pre-pass matches the relevant vibhakti-tatpuruṣa rule. A kp direction
             # (kp_pUrva/kp_para) the user set on a kp-sense avyaya is KEPT — the
             # pañcamī-governing avyayībhāvas (2.1.12/2.1.13: apa/pari + varjana,
             # āṅ + maryAdā) need it so the kāraka layer assigns the noun pañcamī

@@ -311,6 +311,7 @@ function toSpec() {
                   sem: [...e.sem, ...(e.samasa ? [...e.ssem] : [])] };
       if (e.dir) s.dir = e.dir;          // only a nominal yoga-word carries a direction
       if (e.samasa) s.samasa = true;
+      if (e.vibhakti) s.vibhakti = e.vibhakti;   // tatpuruṣa pūrva's vigraha vibhakti
       return s;
     }
     if (e.kind === 'particle') {
@@ -491,6 +492,16 @@ const EXAMPLES = [
   { dev: 'उपशरदम्', note: 'SK677 (5.4.107) — upa + śarad + TaC samāsānta',
     els: [ {kind:'particle', word:'upa_avyaya', samasa:true, ssem:['semantic_samIpa']},
            {kind:'noun', stem:'Sarad', vacana:1, samasa:true} ] },
+  // ── Tatpuruṣa samāsa (pūrva carries a vigraha vibhakti; declines normally) ──
+  { dev: 'कृष्णश्रितः', note: 'SK686 (2.1.24) — kṛṣṇa (dvitīyā) + śrita → declines masc a-stem',
+    els: [ {kind:'noun', stem:'kfzRa', vacana:1, vibhakti:2, samasa:true},
+           {kind:'noun', stem:'Srita', vacana:1, samasa:true} ] },
+  { dev: 'राजपुरुषः', note: 'SK702 (2.2.8) — rājan (ṣaṣṭhī) + puruṣa (the canonical tatpuruṣa)',
+    els: [ {kind:'noun', stem:'rAjan', vacana:1, vibhakti:6, samasa:true},
+           {kind:'noun', stem:'puruza', vacana:1, samasa:true} ] },
+  { dev: 'नीलोत्पलम्', note: 'SK736 (2.1.57) — nīla + utpala (viśeṣaṇa karmadhāraya; napuṁsaka)',
+    els: [ {kind:'noun', stem:'nIla', vacana:1, vibhakti:1, samasa:true, sem:['viSezaRa']},
+           {kind:'noun', stem:'utpala', vacana:1, samasa:true} ] },
 ];
 function loadExample(ix) {
   clearEls();
