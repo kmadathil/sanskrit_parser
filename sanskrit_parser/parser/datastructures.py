@@ -177,16 +177,19 @@ class SandhiGraph(object):
         """
         if self.roots:
             self.lock_start()
-        if score:
-            self.score_graph()
-        paths = [x[1][1:-1] for x in k_shortest_paths_dag_optimized(self.G, self.start, self.end, max_paths)]
+        PATH_OVERSAMPLING_FACTOR = 5
+        # Find PATH_OVERSAMPLING_FACTOR x more paths than requested, using just the length of the path as the metric to find shorter paths
+        paths = [x[1][1:-1] for x in k_shortest_paths_dag_optimized(self.G, self.start, self.end, max_paths*PATH_OVERSAMPLING_FACTOR)]
         if score:
             scores = self.scorer.score_splits(paths)
-            path_scores = zip(paths, scores)
-            sorted_path_scores = sorted(path_scores, key=operator.itemgetter(1), reverse=True)
-            logger.debug("Sorted paths with scores:\n %s", sorted_path_scores)
-            paths, _ = zip(*sorted_path_scores)
-        return paths
+            # Primary key: word count (fewer words = better, anti-fragmentation
+            # prior).  Secondary key: CBOW score for equal-length paths.
+            # See scoring evaluation in metrics folder
+            path_scores = list(zip(paths, scores))
+            path_scores.sort(key=lambda ps: (len(ps[0]), -ps[1]))
+            logger.debug("Sorted paths with scores:\n %s", path_scores)
+            paths, _ = zip(*path_scores)
+        return islice(paths, max_paths)
 
     def __str__(self):
         """ Print representation of DAG """
