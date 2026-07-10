@@ -123,7 +123,7 @@ _TATPURUSHA_VIBHAKTIS = {
 
 @pytest.mark.parametrize("vib_n", sorted(_TATPURUSHA_VIBHAKTIS))
 def test_tatpurusha_vibhakti_sweep(vib_n):
-    """कृष्णं श्रितः (dvitīyā-tatpuruṣa) declined in each vibhakti (singular) —
+    """कृष्णं श्रितः (dvitīyā-tatpuruṣa, SK686/2.1.24) declined in each vibhakti (singular) —
     proves the compound inflects as a normal a-stem masc (परवल्लिङ्गम्), unlike
     the avyayībhāva's invariant अम्."""
     purva = deepcopy(getattr(_pratipadika, "kfzRa"))
@@ -171,7 +171,7 @@ def _sweep(purva_stem, purva_vib, uttara_stem, vib_n):
             for o in p.output()}
 
 
-_DHANYARTHA_VIBHAKTIS = {           # धान्याय अर्थः (caturthī 2.1.36) — masc a-stem
+_DHANYARTHA_VIBHAKTIS = {           # धान्याय अर्थः (caturthī SK698/2.1.36) — masc a-stem
     1: ["धान्यार्थः"],
     2: ["धान्यार्थम्"],
     3: ["धान्यार्थेन"],
@@ -191,7 +191,7 @@ def test_tatpurusha_caturthi_sweep(vib_n):
     assert got == expected, f"धान्यार्थ viBakti_{vib_n}: {got} != {expected}"
 
 
-_RAJAPURUSHA_VIBHAKTIS = {           # राज्ञः पुरुषः (ṣaṣṭhī 2.2.8) — masc a-stem, ṇatva
+_RAJAPURUSHA_VIBHAKTIS = {           # राज्ञः पुरुषः (ṣaṣṭhī SK702/2.2.8) — masc a-stem, ṇatva
     1: ["राजपुरुषः"],
     2: ["राजपुरुषम्"],
     3: ["राजपुरुषेण"],               # ṇatva: uttara ष → न्→ण् across एन (8.4.2) — the fix
@@ -213,7 +213,7 @@ def test_tatpurusha_sasthi_natva_sweep(vib_n):
     assert got == expected, f"राजपुरुष viBakti_{vib_n}: {got} != {expected}"
 
 
-_JIVASUKHA_VIBHAKTIS = {            # जीवस्य सुखम् (ṣaṣṭhī 2.2.8) — napuṁsaka a-stem
+_JIVASUKHA_VIBHAKTIS = {            # जीवस्य सुखम् (ṣaṣṭhī SK702/2.2.8) — napuṁsaka a-stem
     1: ["जीवसुखम्"],
     2: ["जीवसुखम्"],                 # napuṁsaka nom=acc अम् (2.4.26 → uttara सुख napuṁsaka)
     3: ["जीवसुखेन"],
@@ -262,7 +262,7 @@ def test_real_dvigu_ngiip_trilokI():
 
 
 # ── T3 nañ vibhakti sweep: अनश्व (न + अश्व) as a clean masc a-stem ─────────────
-# न → अन् before the vowel of अश्व (6.3.74, नुṭ augment) → अनश्व, which then declines
+# न → अन् before the vowel of अश्व (SK758/6.3.74, नुṭ augment) → अनश्व, which then declines
 # NORMALLY in the uttara's masc gender (2.4.26 परवल्लिङ्गम्) — the राम paradigm. अश्व
 # has no र/ष, so the sweep stays off the ṇatva-blocker corner that अब्राह्मणेन hits
 # (there the ण of ब्राह्मण blocks the र from ṇatva-ising the -ena न — an engine detail
@@ -281,7 +281,7 @@ _ANASHVA_VIBHAKTIS = {
 @pytest.mark.parametrize("vib_n", sorted(_ANASHVA_VIBHAKTIS))
 def test_tatpurusha_nan_sweep(vib_n):
     """न + अश्व (nañ-tatpuruṣa) declined per vibhakti (sg) — proves the nañ compound
-    declines as a normal masc a-stem after न→अन् (6.3.74), unlike the avyayībhāva's
+    declines as a normal masc a-stem after न→अन् (SK758/6.3.74), unlike the avyayībhāva's
     invariant अम्."""
     purva = deepcopy(getattr(_avyaya, "naY"))
     purva.setTag("semantic_1")       # keeps the avyaya pūrva a distinct ?pada member

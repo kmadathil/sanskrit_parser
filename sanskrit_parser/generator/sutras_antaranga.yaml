@@ -10412,12 +10412,17 @@
     olp: [+kaqAra_pUrva]
 
 # ── dvigu (SK 727–731 / 2.1.52, 2.4.1, 5.4.92) ───────────────────────────────
-# 730/2.1.52: संख्यापूर्वो द्विगुः — a saṅkhyā-pūrva (?saMKyA) tatpuruṣa is a DVIGU.
-# Fused vidhi + saṁjñā (as 2.1.22 was fused into 2.1.24): forms the compound
-# (पञ्च + गो, त्रि + भुवन, त्रि + लोक) and names it ?dvigu. The pūrva sup luks
-# (2.4.71); the ?dvigu tag rides to the merged stem (join_objects Tier-3) so the
-# existing 4.1.21 (SK479) ṅīp fires on a REAL dvigu (त्रिलोकी). Gated on the
-# ?samAsa_vivakza intent (only-when-intended).
+# SK730/2.1.52: संख्यापूर्वो द्विगुः — a saṅkhyā-pūrva (?saMKyA) tatpuruṣa is a DVIGU.
+# Fused vidhi + saṁjñā (as 2.1.22 was fused into 2.1.24), and it SUBSUMES the two
+# preceding dvigu sutras: SK685/2.1.23 द्विगुश्च (the द्विगु saṁjñā adhikāra) and
+# SK728/2.1.51 तद्धितार्थोत्तरपदसमाहारे च (the समाहार-vidhi — the aggregate sense that
+# gives पञ्चगवम्/त्रिलोकम् via 2.4.1). Forms the compound (पञ्च + गो, त्रि + भुवन, त्रि +
+# लोक) and names it ?dvigu. The pūrva sup luks (2.4.71); the ?dvigu tag rides to the
+# merged stem (join_objects Tier-3) so the existing 4.1.21 (SK479) ṅīp fires on a
+# REAL dvigu (त्रिलोकी). Gated on the ?samAsa_vivakza intent. (SK727/2.1.50 दिक्संख्ये
+# संज्ञायाम् — the dik-pūrva saṁjñā dvigu — is only PARTIALLY here: the saṅkhyā arm
+# overlaps this rule, but the dik-śabda saṁjñā arm needs saṁjñā-domain tagging,
+# deferred; Skipped table.)
 - sutra: संख्यापूर्वो द्विगुः
   id: 2.1.52
   bahiranga: -1

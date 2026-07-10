@@ -653,6 +653,8 @@ parama = Pratipadika("parama", "pum")   # परम — viśeṣaṇa pūrva for
 # {ahar/sarva/ekadeśa/saṅkhyāta/puṇya} takes the samāsānta अच् → रात्र (masc by 2.4.29).
 rAtri = Pratipadika("rAtri", "strI", other_tags=["rAtri"])   # रात्रि f. — पुण्यरात्रः
 puRya = Pratipadika("puRya", "pum", other_tags=["puRya"])    # पुण्य — viśeṣaṇa pūrva of पुण्यरात्रः
+# SK751/2.2.38 कडाराः कर्मधारये — a kaḍāra-gaṇa viśeṣaṇa optionally leads the karmadhāraya.
+kaqAra = Pratipadika("kaqAra", "pum", other_tags=["kaqAra"])  # कडार "brown" — कडारपुरुषः
 # SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg

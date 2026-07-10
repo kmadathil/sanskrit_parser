@@ -21,14 +21,14 @@ uses vivakza instead.
 samasa_tests = [
     # ── S1A: 2.1.6 core (avyaya-pūrva) ──
     {
-        "label": "S1A-upakRSNam-samIpa",          # समीप, a-stem → 2.4.83 am
+        "label": "S1A-upakRSNam-samIpa-SK652-2.1.6",          # समीप, a-stem → 2.4.83 am
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "kfzRa", "vacana": 1},
         "fired": ["2.1.6", "1.2.43"],
         "surface": "उपकृष्णम्",
     },
     {
-        "label": "S1A-adhihari-vibhakti",         # विभक्ति, i-stem → 1.1.41 → 2.4.82 luk
+        "label": "S1A-adhihari-vibhakti-SK652-2.1.6",         # विभक्ति, i-stem → 1.1.41 → 2.4.82 luk
         "purva": {"avyaya": "aDi_avyaya", "sem": "semantic_vibhakti"},
         "uttara": {"stem": "hari", "vacana": 1},
         "fired": ["2.1.6", "1.2.43"],
@@ -36,21 +36,21 @@ samasa_tests = [
     },
     # ── S1B: 2.1.6 further sense (atyaya), 2.1.7 yathā, 2.1.8 yāvat ──
     {
-        "label": "S1B-atihimam-atyaya",           # अत्यय, a-stem → am
+        "label": "S1B-atihimam-atyaya-SK652-2.1.6",           # अत्यय, a-stem → am
         "purva": {"avyaya": "ati_avyaya", "sem": "semantic_atyaya"},
         "uttara": {"stem": "hima", "vacana": 1},
         "fired": ["2.1.6", "1.2.43"],
         "surface": "अतिहिमम्",
     },
     {
-        "label": "S1B-yathASakti-2.1.7",          # यथा (anatikrama), i-stem fem → luk
+        "label": "S1B-yathASakti-SK661-2.1.7",          # यथा (anatikrama), i-stem fem → luk
         "purva": {"avyaya": "yaTA", "sem": "semantic_yaTArTa"},
         "uttara": {"stem": "Sakti", "vacana": 1},
         "fired": ["2.1.7", "1.2.43"],
         "surface": "यथाशक्ति",
     },
     {
-        "label": "S1B-yAvajjIvam-2.1.8",          # यावत् (avadhāraṇa), a-stem → am + t→j sandhi
+        "label": "S1B-yAvajjIvam-SK662-2.1.8",          # यावत् (avadhāraṇa), a-stem → am + t→j sandhi
         "purva": {"avyaya": "yAvat", "sem": "semantic_avaDAraRa"},
         "uttara": {"stem": "jIva", "vacana": 1},
         "fired": ["2.1.8", "1.2.43"],
@@ -58,14 +58,14 @@ samasa_tests = [
     },
     # ── S1B: 2.1.9 / 2.1.10 (NOUN-pūrva, avyaya is the uttara; needs 2.4.71) ──
     {
-        "label": "S1B-SAkaprati-2.1.9",           # śāka (mātrā) + prati; prati i-stem → luk
+        "label": "S1B-SAkaprati-SK663-2.1.9",           # śāka (mātrā) + prati; prati i-stem → luk
         "purva": {"stem": "SAka", "vacana": 1, "sem": "semantic_mAtrA"},
         "uttara": {"avyaya": "prati_avyaya"},
         "fired": ["2.1.9", "1.2.43"],
         "surface": "शाकप्रति",
     },
     {
-        "label": "S1B-akzapari-2.1.10",           # akṣa + pari (structural nitya → vivakza)
+        "label": "S1B-akzapari-SK664-2.1.10",           # akṣa + pari (structural nitya → vivakza)
         "purva": {"stem": "akza", "vacana": 1, "vivakza": True},
         "uttara": {"avyaya": "pari_avyaya", "vivakza": True},
         "fired": ["2.1.10", "1.2.43"],
@@ -76,7 +76,7 @@ samasa_tests = [
         # apa + grāma: the noun's pañcamī is set by the kāraka layer
         # (apa + semantic_varjana → 1.4.88 → 2.3.10 → viBakti_5), which 2.1.12
         # checks (rp ?viBakti_5) and consumes (swap → prathamā) → अपग्रामम्.
-        "label": "S2-apagrAmam-2.1.12",
+        "label": "S2-apagrAmam-SK666-2.1.12",
         "purva": {"avyaya": "apa_avyaya", "sem": "semantic_varjana", "dir": "para", "vivakza": True},
         "uttara": {"stem": "grAma", "vacana": 1, "vivakza": True},
         "fired": ["1.4.88", "2.3.10", "2.1.12", "1.2.43"],
@@ -84,42 +84,42 @@ samasa_tests = [
     },
     {
         # ā + samudra: pañcamī via A + semantic_maryAdA → 1.4.89 → 2.3.10.
-        "label": "S2-Asamudram-2.1.13",
+        "label": "S2-Asamudram-SK667-2.1.13",
         "purva": {"avyaya": "AN_avyaya", "sem": "semantic_maryAdA", "dir": "para", "vivakza": True},
         "uttara": {"stem": "samudra", "vacana": 1, "vivakza": True},
         "fired": ["1.4.89", "2.3.10", "2.1.13", "1.2.43"],
         "surface": "आसमुद्रम्",
     },
     {
-        "label": "S2-pratyagni-2.1.14",           # prati + agni (ābhimukhya), i-stem → luk + sandhi
+        "label": "S2-pratyagni-SK668-2.1.14",           # prati + agni (ābhimukhya), i-stem → luk + sandhi
         "purva": {"avyaya": "prati_avyaya", "vivakza": True},
         "uttara": {"stem": "agni", "vacana": 1, "vivakza": True},
         "fired": ["2.1.14", "1.2.43"],
         "surface": "प्रत्यग्नि",
     },
     {
-        "label": "S2-anuvanam-2.1.15",            # anu (samayā) + vana, a-stem → am
+        "label": "S2-anuvanam-SK669-2.1.15",            # anu (samayā) + vana, a-stem → am
         "purva": {"avyaya": "anu_avyaya", "sem": "semantic_samayA", "vivakza": True},
         "uttara": {"stem": "vana", "vacana": 1, "vivakza": True},
         "fired": ["2.1.15", "1.2.43"],
         "surface": "अनुवनम्",
     },
     {
-        "label": "S2-anugaNgam-2.1.16",           # anu (āyāma) + gaṅgā, ā-stem → napum → hrasva → am
+        "label": "S2-anugaNgam-SK670-2.1.16",           # anu (āyāma) + gaṅgā, ā-stem → napum → hrasva → am
         "purva": {"avyaya": "anu_avyaya", "sem": "semantic_AyAma", "vivakza": True},
         "uttara": {"stem": "gaNgA", "vacana": 1, "vivakza": True},
         "fired": ["2.1.16", "1.2.43"],
         "surface": "अनुगङ्गम्",
     },
     {
-        "label": "S2-dvimuni-2.1.19",             # dvi + muni (vaṁśya), i-stem → luk
+        "label": "S2-dvimuni-SK673-2.1.19",             # dvi + muni (vaṁśya), i-stem → luk
         "purva": {"stem": "dvi", "vivakza": True},   # dvi: nityadvivacana — no forced vacana
         "uttara": {"stem": "muni", "vacana": 1, "vivakza": True, "tags": ["vaMSya"]},
         "fired": ["2.1.19", "1.2.43"],
         "surface": "द्विमुनि",
     },
     {
-        "label": "S2-dvigaNgam-2.1.20",           # dvi + gaṅgā (nadī), ā-stem → hrasva → am
+        "label": "S2-dvigaNgam-SK674-2.1.20",           # dvi + gaṅgā (nadī), ā-stem → hrasva → am
         "purva": {"stem": "dvi", "vivakza": True},   # dvi: nityadvivacana — no forced vacana
         "uttara": {"stem": "gaNgA", "vacana": 1, "vivakza": True, "tags": ["nadI_saMjYA"]},
         "fired": ["2.1.20", "1.2.43"],
@@ -128,7 +128,7 @@ samasa_tests = [
     # ── S2 negative: विभाषा is "only when intended" — WITHOUT samAsa_vivakza no
     #    compound forms (prati + agni stay as separate words). ──
     {
-        "label": "S2-pratyagni-no-vivakza",
+        "label": "S2-pratyagni-no-vivakza-SK668-2.1.14",
         "purva": {"avyaya": "prati_avyaya"},
         "uttara": {"stem": "agni", "vacana": 1},
         "fired": [],
@@ -136,42 +136,42 @@ samasa_tests = [
     },
     # ── S3/S4: samāsānta — rule-driven ?samasanta_TaC (5.4.107–112) ──
     {
-        "label": "S3-upaSaradam-5.4.107",         # upa + śarad → TaC → उपशरदम्
+        "label": "S3-upaSaradam-SK677-5.4.107",         # upa + śarad → TaC → उपशरदम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "Sarad", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.107"],
         "surface": "उपशरदम्",
     },
     {
-        "label": "S4-upamanasam-5.4.107-gana",    # upa + manas (śaradādi s-stem) → TaC → उपमनसम्
+        "label": "S4-upamanasam-SK677-5.4.107-gana",    # upa + manas (śaradādi s-stem) → TaC → उपमनसम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "manas", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.107"],
         "surface": "उपमनसम्",
     },
     {
-        "label": "S4-uparAjam-5.4.108",           # upa + rājan (an-final) → TaC + 6.4.144 → उपराजम्
+        "label": "S4-uparAjam-SK678-5.4.108",           # upa + rājan (an-final) → TaC + 6.4.144 → उपराजम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "rAjan", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.108"],
         "surface": "उपराजम्",
     },
     {
-        "label": "S4-upanadam-5.4.110",           # upa + nadī (ī-fem) → TaC → उपनदम्
+        "label": "S4-upanadam-SK681-5.4.110",           # upa + nadī (ī-fem) → TaC → उपनदम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "nadI", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.110"],
         "surface": "उपनदम्",
     },
     {
-        "label": "S4-upasamiDam-5.4.111",         # upa + samidh (jhay-final) → TaC → उपसमिधम्
+        "label": "S4-upasamiDam-SK682-5.4.111",         # upa + samidh (jhay-final) → TaC → उपसमिधम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "samiD", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.111"],
         "surface": "उपसमिधम्",
     },
     {
-        "label": "S4-upagiram-5.4.112",           # upa + giri (Senaka) → TaC → उपगिरम्
+        "label": "S4-upagiram-SK683-5.4.112",           # upa + giri (Senaka) → TaC → उपगिरम्
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "giri", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.112"],
@@ -180,7 +180,7 @@ samasa_tests = [
     {
         # upa + carman (napuṁsaka an-stem): 5.4.109 अन्यतरस्याम् — TaC OPTIONAL →
         # the samāsa pre-pass forks: उपचर्मम् (TaC) / उपचर्म (no TaC).
-        "label": "S4-upacarma-5.4.109-fork",
+        "label": "S4-upacarma-SK680-5.4.109-fork",
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "carman", "vacana": 1},
         "fired": ["2.1.6", "1.2.43", "5.4.109"],
@@ -188,7 +188,7 @@ samasa_tests = [
     },
     # ── S3: 6.3.81 अव्ययीभावे चाकाले — saha → sa (non-kāla) ──
     {
-        "label": "S3-sacakram-6.3.81",            # saha (yaugapadya) + cakra → सचक्रम् (saha→sa)
+        "label": "S3-sacakram-SK660-6.3.81",            # saha (yaugapadya) + cakra → सचक्रम् (saha→sa)
         "purva": {"stem": "saha", "sem": "semantic_yOgapadya", "vivakza": True},
         "uttara": {"stem": "cakra", "vacana": 1, "vivakza": True},
         "fired": ["2.1.6", "1.2.43"],             # 6.3.81 is a main-scan rule (not in pre-pass trace)
@@ -196,7 +196,7 @@ samasa_tests = [
     },
     # ── S3: 2.4.84 तृतीयासप्तम्योर्बहुलम् — bahula am for tṛtīyā/saptamī (optional fork) ──
     {
-        "label": "S3-upakRSNam-bahula-2.4.84",    # upa + kṛṣṇa (saptamī) → उपकृष्णम् / उपकृष्णे
+        "label": "S3-upakRSNam-bahula-SK658-2.4.84",    # upa + kṛṣṇa (saptamī) → उपकृष्णम् / उपकृष्णे
         "purva": {"avyaya": "upa_avyaya", "sem": "semantic_samIpa"},
         "uttara": {"stem": "kfzRa", "vacana": 1, "vibhakti": 7},
         "fired": ["2.1.6", "1.2.43"],
@@ -217,7 +217,7 @@ samasa_tests = [
 samasa_tp_tests = [
     # ── T0: 2.1.24 dvitīyā-tatpuruṣa (śrita-gaṇa uttara), a-stem masc ──
     {
-        "label": "T0-kRSNaSritaH-2.1.24",         # कृष्णं श्रितः → कृष्णश्रितः (nom sg)
+        "label": "T0-kRSNaSritaH-SK686-2.1.24",         # कृष्णं श्रितः → कृष्णश्रितः (nom sg)
         "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 2, "vivakza": True},
         "uttara": {"stem": "Srita", "vacana": 1, "vivakza": True},
         "fired": ["2.1.24", "1.2.43", "2.4.26"],
@@ -225,7 +225,7 @@ samasa_tp_tests = [
     },
     # negative: WITHOUT ?samAsa_vivakza no tatpuruṣa forms (only-when-intended).
     {
-        "label": "T0-kRSNaSrita-no-vivakza",
+        "label": "T0-kRSNaSrita-no-vivakza-SK686-2.1.24",
         "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 2},
         "uttara": {"stem": "Srita", "vacana": 1},
         "fired": [],
@@ -238,14 +238,14 @@ samasa_tp_tests = [
         # ("sem") exactly as the kāraka/CLI path does (`-w svayam 1` → semantic_1):
         # it rides through the compound merge and keeps the avyaya pūrva ?pada, so
         # 8.3.23 fires. (Without it a degenerate input leaves svayam non-?pada → म्.)
-        "label": "T0-svayaMkRtam-2.1.25",
+        "label": "T0-svayaMkRtam-SK687-2.1.25",
         "purva": {"avyaya": "svayam", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.25", "1.2.43", "2.4.26"],
         "surfaces": ["स्वयंकृतम्", "स्वयङ्कृतम्"],
     },
     {
-        "label": "T0-KawvArUQaH-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
+        "label": "T0-KawvArUQaH-SK688-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
         "purva": {"stem": "KawvA", "vacana": 1, "vibhakti": 2, "sem": "semantic_kzepa"},
         "uttara": {"stem": "rUQa", "vacana": 1},
         "fired": ["2.1.26", "1.2.43", "2.4.26"],
@@ -254,21 +254,21 @@ samasa_tp_tests = [
     {
         # सामि + कृत → सामिकृतम् (i-final pūrva, no junction sandhi). Same avyaya-pūrva
         # shape as 2.1.25 — carries a semantic sense to mirror the kāraka/CLI path.
-        "label": "T0-sAmikRtam-2.1.27",
+        "label": "T0-sAmikRtam-SK689-2.1.27",
         "purva": {"avyaya": "sAmi", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.27", "1.2.43", "2.4.26"],
         "surface": "सामिकृतम्",
     },
     {
-        "label": "T0-mAsapramitaH-2.1.28",        # मास (dvitīyā, kāla, non-atyanta) + प्रमित → मासप्रमितः
+        "label": "T0-mAsapramitaH-SK690-2.1.28",        # मास (dvitīyā, kāla, non-atyanta) + प्रमित → मासप्रमितः
         "purva": {"stem": "mAsa", "vacana": 1, "vibhakti": 2, "vivakza": True},
         "uttara": {"stem": "pramita", "vacana": 1, "vivakza": True},
         "fired": ["2.1.28", "1.2.43", "2.4.26"],
         "surface": "मासप्रमितः",
     },
     {
-        "label": "T0-muhUrtasuKam-2.1.29",        # मुहूर्त (dvitīyā, kāla, atyantasaṃyoga) + सुख → मुहूर्तसुखम्
+        "label": "T0-muhUrtasuKam-SK691-2.1.29",        # मुहूर्त (dvitīyā, kāla, atyantasaṃyoga) + सुख → मुहूर्तसुखम्
         "purva": {"stem": "muhUrta", "vacana": 1, "vibhakti": 2,
                   "sem": "semantic_atyantasaMyoga", "vivakza": True},
         "uttara": {"stem": "suKa", "vacana": 1, "vivakza": True},
@@ -281,42 +281,42 @@ samasa_tp_tests = [
     # ?SORqa_gaRa/?ekadeSin) is intrinsic to the pratipadika. The compound declines
     # normally in the uttara's gender (masc/napuṁsaka a-stem).
     {
-        "label": "T1-mAsapUrvaH-2.1.31",          # मासेन पूर्वः → मासपूर्वः (tṛtīyā, pūrvasadṛśa)
+        "label": "T1-mAsapUrvaH-SK693-2.1.31",          # मासेन पूर्वः → मासपूर्वः (tṛtīyā, pūrvasadṛśa)
         "purva": {"stem": "mAsa", "vacana": 1, "vibhakti": 3, "vivakza": True},
         "uttara": {"stem": "pUrva_tp", "vacana": 1, "vivakza": True},
         "fired": ["2.1.31", "1.2.43", "2.4.26"],
         "surface": "मासपूर्वः",
     },
     {
-        "label": "T1-DAnyArTaH-2.1.36",           # धान्याय अर्थः → धान्यार्थः (caturthī, tadartha)
+        "label": "T1-DAnyArTaH-SK698-2.1.36",           # धान्याय अर्थः → धान्यार्थः (caturthī, tadartha)
         "purva": {"stem": "DAnya", "vacana": 1, "vibhakti": 4, "vivakza": True},
         "uttara": {"stem": "arTa", "vacana": 1, "vivakza": True},
         "fired": ["2.1.36", "1.2.43", "2.4.26"],
         "surface": "धान्यार्थः",
     },
     {
-        "label": "T1-coraBayam-2.1.37",           # चोरात् भयम् → चोरभयम् (pañcamī, bhaya; napuṁsaka)
+        "label": "T1-coraBayam-SK699-2.1.37",           # चोरात् भयम् → चोरभयम् (pañcamī, bhaya; napuṁsaka)
         "purva": {"stem": "cora", "vacana": 1, "vibhakti": 5, "vivakza": True},
         "uttara": {"stem": "Baya", "vacana": 1, "vivakza": True},
         "fired": ["2.1.37", "1.2.43", "2.4.26"],
         "surface": "चोरभयम्",
     },
     {
-        "label": "T1-rAjapuruSaH-2.2.8",          # राज्ञः पुरुषः → राजपुरुषः (ṣaṣṭhī — the canonical tatpuruṣa)
+        "label": "T1-rAjapuruSaH-SK702-2.2.8",          # राज्ञः पुरुषः → राजपुरुषः (ṣaṣṭhī — the canonical tatpuruṣa)
         "purva": {"stem": "rAjan", "vacana": 1, "vibhakti": 6, "vivakza": True},
         "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
         "fired": ["2.2.8", "1.2.43", "2.4.26"],
         "surface": "राजपुरुषः",
     },
     {
-        "label": "T1-pUrvakAyaH-2.2.1",           # पूर्वं कायस्य → पूर्वकायः (ṣaṣṭhī pūrvāpara/ekadeśī)
+        "label": "T1-pUrvakAyaH-SK712-2.2.1",           # पूर्वं कायस्य → पूर्वकायः (ṣaṣṭhī pūrvāpara/ekadeśī)
         "purva": {"stem": "pUrva_dik", "vacana": 1, "vibhakti": 1, "vivakza": True},
         "uttara": {"stem": "kAya_ed", "vacana": 1, "vivakza": True},
         "fired": ["2.2.1", "1.2.43", "2.4.26"],
         "surface": "पूर्वकायः",
     },
     {
-        "label": "T1-akzaSORqaH-2.1.40",          # अक्षेषु शौण्डः → अक्षशौण्डः (saptamī, śauṇḍa)
+        "label": "T1-akzaSORqaH-SK717-2.1.40",          # अक्षेषु शौण्डः → अक्षशौण्डः (saptamī, śauṇḍa)
         "purva": {"stem": "akza", "vacana": 1, "vibhakti": 7, "vivakza": True},
         "uttara": {"stem": "SORqa", "vacana": 1, "vivakza": True},
         "fired": ["2.1.40", "1.2.43", "2.4.26"],
@@ -324,21 +324,21 @@ samasa_tp_tests = [
     },
     # ── T1 extension rules (one case each, previously untested) ──
     {
-        "label": "T1-guqasvAduH-2.1.30",          # गुडेन स्वादुः → गुडस्वादुः (tṛtīyā, guṇavacana; u-stem uttara)
+        "label": "T1-guqasvAduH-SK692-2.1.30",          # गुडेन स्वादुः → गुडस्वादुः (tṛtīyā, guṇavacana; u-stem uttara)
         "purva": {"stem": "guqa", "vacana": 1, "vibhakti": 3, "vivakza": True},
         "uttara": {"stem": "svAdu", "vacana": 1, "vivakza": True},
         "fired": ["2.1.30", "1.2.43", "2.4.26"],
         "surface": "गुडस्वादुः",
     },
     {
-        "label": "T1-ahihataH-2.1.32",            # अहिना हतः → अहिहतः (tṛtīyā kartṛ/karaṇa + kṛta)
+        "label": "T1-ahihataH-SK694-2.1.32",            # अहिना हतः → अहिहतः (tṛtīyā kartṛ/karaṇa + kṛta)
         "purva": {"stem": "ahi", "vacana": 1, "vibhakti": 3, "vivakza": True},
         "uttara": {"stem": "hata", "vacana": 1, "vivakza": True},
         "fired": ["2.1.32", "1.2.43", "2.4.26"],
         "surface": "अहिहतः",
     },
     {
-        "label": "T1-suKApetaH-2.1.38",           # सुखात् अपेतः → सुखापेतः (pañcamī, apeta-gaṇa)
+        "label": "T1-suKApetaH-SK700-2.1.38",           # सुखात् अपेतः → सुखापेतः (pañcamī, apeta-gaṇa)
         "purva": {"stem": "suKa", "vacana": 1, "vibhakti": 5, "vivakza": True},
         "uttara": {"stem": "apeta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.38", "1.2.43", "2.4.26"],
@@ -349,14 +349,14 @@ samasa_tp_tests = [
         # pañcamī is RETAINED via 6.3.2 पञ्चम्याः स्तोकादिभ्यः) is not modelled — this
         # rule luks the pūrva sup like the others, so the surface is स्तोकमुक्तः. The
         # aluk exception is deferred (recorded in generator_status.md).
-        "label": "T1-stokamuktaH-2.1.39",
+        "label": "T1-stokamuktaH-SK701-2.1.39",
         "purva": {"stem": "stoka", "vacana": 1, "vibhakti": 5, "vivakza": True},
         "uttara": {"stem": "mukta", "vacana": 1, "vivakza": True},
         "fired": ["2.1.39", "1.2.43", "2.4.26"],
         "surface": "स्तोकमुक्तः",
     },
     {
-        "label": "T1-svargasidDaH-2.1.41",        # स्वर्गे सिद्धः → स्वर्गसिद्धः (saptamī, siddha-gaṇa)
+        "label": "T1-svargasidDaH-SK718-2.1.41",        # स्वर्गे सिद्धः → स्वर्गसिद्धः (saptamī, siddha-gaṇa)
         "purva": {"stem": "svarga", "vacana": 1, "vibhakti": 7, "vivakza": True},
         "uttara": {"stem": "sidDa", "vacana": 1, "vivakza": True},
         "fired": ["2.1.41", "1.2.43", "2.4.26"],
@@ -368,7 +368,7 @@ samasa_tp_tests = [
     # names it karmadhāraya (a ?tatpuruza sub-tag); it still declines paravalliṅga
     # (2.4.26) in the uttara's gender.
     {
-        "label": "T2-nIlotpalam-2.1.57",          # नीलम् उत्पलम् → नीलोत्पलम् (viśeṣaṇa; napuṁsaka)
+        "label": "T2-nIlotpalam-SK736-2.1.57",          # नीलम् उत्पलम् → नीलोत्पलम् (viśeṣaṇa; napuṁsaka)
         "purva": {"stem": "nIla", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa"]},
         "uttara": {"stem": "utpala", "vacana": 1, "vivakza": True},
@@ -376,7 +376,7 @@ samasa_tp_tests = [
         "surface": "नीलोत्पलम्",
     },
     {
-        "label": "T2-kRSNasarpaH-2.1.57",         # कृष्णः सर्पः → कृष्णसर्पः (viśeṣaṇa; masc)
+        "label": "T2-kRSNasarpaH-SK736-2.1.57",         # कृष्णः सर्पः → कृष्णसर्पः (viśeṣaṇa; masc)
         "purva": {"stem": "kfzRa", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa"]},
         "uttara": {"stem": "sarpa", "vacana": 1, "vivakza": True},
@@ -384,7 +384,7 @@ samasa_tp_tests = [
         "surface": "कृष्णसर्पः",
     },
     {
-        "label": "T2-snAtAnuliptaH-2.1.49",        # स्नातः अनुलिप्तः → स्नातानुलिप्तः (pūrvakāla)
+        "label": "T2-snAtAnuliptaH-SK726-2.1.49",        # स्नातः अनुलिप्तः → स्नातानुलिप्तः (pūrvakāla)
         "purva": {"stem": "snAta", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["pUrvakAla"]},
         "uttara": {"stem": "anulipta", "vacana": 1, "vivakza": True},
@@ -396,7 +396,7 @@ samasa_tp_tests = [
         # takes its masc form (कल्याणी → कल्याण). The composer supplies कल्याण (the
         # masc form) + ?puMvat directly; 6.3.42 fires as the puṃvadbhāva saṁjñā
         # (the full ṅīp-strip derivation कल्याणी→कल्याण is deferred — see status).
-        "label": "T2-kalyARapriyaH-6.3.42",
+        "label": "T2-kalyARapriyaH-SK746-6.3.42",
         "purva": {"stem": "kalyARa", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa", "puMvat"]},
         "uttara": {"stem": "priya", "vacana": 1, "vivakza": True},
@@ -409,7 +409,7 @@ samasa_tp_tests = [
     {
         # पञ्च गावः (समाहारे) → पञ्चगवम्. 5.4.92 गोरतद्धितलुकि: go-final → ṬaC (गो+अ→गव);
         # 2.4.1 द्विगुरेकवचनम्: samāhāra → napuṁsaka sg (nom=acc अम्).
-        "label": "T2-paYcagavam-2.4.1",
+        "label": "T2-paYcagavam-SK731-2.4.1",
         "purva": {"stem": "paYca", "vacana": 1, "vivakza": True, "tags": ["saMKyA"]},
         "uttara": {"stem": "go", "vacana": 1, "vivakza": True, "tags": ["samAhAra"]},
         "fired": ["2.1.52", "2.4.1", "5.4.92", "1.2.43", "2.4.26"],
@@ -424,7 +424,7 @@ samasa_tp_tests = [
         # bhuvana's न cross the pūrva/uttara boundary → त्रिभुवण; modelling the 8.4.3
         # पूर्वपदात्संज्ञायाम् restriction that blocks cross-member ṇatva in a non-saṁjñā
         # is a pre-existing ṇatva-engine gap, same family as चोरभयेन. See status.)
-        "label": "T2-trilokam-2.4.1",
+        "label": "T2-trilokam-SK731-2.4.1",
         "purva": {"stem": "tri", "vivakza": True},   # tri: ?saMKyA + nityabahuvacana
         "uttara": {"stem": "loka", "vacana": 1, "vivakza": True, "tags": ["samAhAra"]},
         "fired": ["2.1.52", "2.4.1", "1.2.43", "2.4.26"],
@@ -438,21 +438,21 @@ samasa_tp_tests = [
     # first char is visible as `r`, the un-lukked pūrva sup skipped), so they DO
     # appear in the pre-pass trace and mutate न → अ / अन् before the main scan.
     {
-        "label": "T3-abrAhmaNaH-6.3.73",     # न + ब्राह्मण → अब्राह्मणः (na→a before consonant)
+        "label": "T3-abrAhmaNaH-SK757-6.3.73",     # न + ब्राह्मण → अब्राह्मणः (na→a before consonant)
         "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "brAhmaRa", "vacana": 1, "vivakza": True},
         "fired": ["2.2.6", "6.3.73", "1.2.43", "2.4.26"],
         "surface": "अब्राह्मणः",
     },
     {
-        "label": "T3-anaSvaH-6.3.74",        # न + अश्व → अनश्वः (na→an before vowel, नुṭ)
+        "label": "T3-anaSvaH-SK758-6.3.74",        # न + अश्व → अनश्वः (na→an before vowel, नुṭ)
         "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "aSva", "vacana": 1, "vivakza": True},
         "fired": ["2.2.6", "6.3.74", "1.2.43", "2.4.26"],
         "surface": "अनश्वः",
     },
     {
-        "label": "T3-anajaH-6.3.74",         # न + अज → अनजः
+        "label": "T3-anajaH-SK758-6.3.74",         # न + अज → अनजः
         "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "aja", "vacana": 1, "vivakza": True},
         "fired": ["2.2.6", "6.3.74", "1.2.43", "2.4.26"],
@@ -540,5 +540,17 @@ samasa_tp_tests = [
         "uttara": {"stem": "rAtri", "vacana": 1, "vivakza": True},
         "fired": ["2.1.57", "1.2.42", "5.4.87", "2.4.29", "1.2.43", "2.4.26"],
         "surface": "पुण्यरात्रः",
+    },
+    {
+        # SK751/2.2.38 कडाराः कर्मधारये — a kaḍāra-gaṇa viśeṣaṇa (कडार "brown", ?kaqAra)
+        # OPTIONALLY leads a karmadhāraya (an-yatarasyām). Modelled as a saṁjñā tag
+        # (+kaqAra_pUrva); the physical reordering (2.2.30) is deferred, so the surface
+        # is the input-order karmadhāraya कडारपुरुषः. Proves 2.2.38 fires (was untested).
+        "label": "T2-kaqArapuruSaH-SK751-2.2.38",
+        "purva": {"stem": "kaqAra", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "2.2.38", "2.4.26"],
+        "surface": "कडारपुरुषः",
     },
 ]
