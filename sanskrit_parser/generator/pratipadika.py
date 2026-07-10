@@ -649,6 +649,10 @@ hAhA = Pratipadika("hAhA", "pum")
 rAjan = Pratipadika("rAjan", "pum")
 mahat = Pratipadika("mahat", "pum", its=['u'])
 parama = Pratipadika("parama", "pum")   # परम — viśeṣaṇa pūrva for परमराजः (5.4.91 ṭac, T5)
+# SK787/5.4.87 अहस्सर्वैकदेशसंख्यातपुण्याच्च रात्रेः — a रात्रि-final tatpuruṣa after
+# {ahar/sarva/ekadeśa/saṅkhyāta/puṇya} takes the samāsānta अच् → रात्र (masc by 2.4.29).
+rAtri = Pratipadika("rAtri", "strI", other_tags=["rAtri"])   # रात्रि f. — पुण्यरात्रः
+puRya = Pratipadika("puRya", "pum", other_tags=["puRya"])    # पुण्य — viśeṣaṇa pūrva of पुण्यरात्रः
 # SK425 (6.4.14) test pratipadikas — matup (u-it) stems: upadhā dīrgha before su (nom sg)
 dhImat = Pratipadika("DImat", "pum", its=['u'])    # dhīmat (dhī + matup): dhīmān nom sg; SLP1 D=dh, I=ī
 gomat  = Pratipadika("gomat", "pum", its=['u'])    # gomat (go + matup): gomān nom sg
@@ -813,7 +817,7 @@ mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
 payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
 namas = Pratipadika("namas", "napum", other_tags=["avyaya", "gati", "svarAdi"])   # नमस् n. "obeisance" — SK154 (gati by 1.4.74); svarAdi per SK447
-puras = Pratipadika("puras", "napum", other_tags=["avyaya", "gati"])   # पुरस् adv. "in front" — SK154 (gati by 1.4.67)
+puras = Pratipadika("puras", "napum", other_tags=["avyaya"])   # पुरस् adv. "in front" — गति assigned by the real rule SK768/1.4.67 पुरोऽव्ययम् (not intrinsic); SK154 पुरस्कृतम्
 
 agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK88 test
 odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
@@ -870,6 +874,10 @@ pra   = Pratipadika("pra",   "pum", other_tags=["nipAta", "prAdi"])   # प्�
 # — already carry ?gati intrinsically and feed the third arm of 2.2.18.)
 ku    = Pratipadika("ku",    "pum", other_tags=["nipAta", "ku"])      # कु "bad" — कुपुरुषः
 mAla  = Pratipadika("mAla",  "pum")                                   # माल m. — अतिमालः (ati + māla)
+# gati pūrva-elements (SK762/1.4.61 ऊर्यादि… + SK769/1.4.68 अस्तं च): ?UryAdi /
+# gati words get the gati saṁjñā (→ ?gati) and feed the gati arm of 2.2.18.
+UrI   = Pratipadika("UrI",   "pum", other_tags=["nipAta", "UryAdi"])  # ऊरी — ऊर्यादि (1.4.61) → ऊरीकृतम्
+astam = Pratipadika("astam", "napum", other_tags=["nipAta"])         # अस्तम् — गति by 1.4.68 (अस्तं च)
 tiras = Pratipadika("tiras", "pum", other_tags=["nipAta", "tiras", "svarAdi"])  # svarAdi per SK447
 ud    = Pratipadika("ud",    "pum", other_tags=["nipAta"])
 sam   = Pratipadika("sam",   "pum", other_tags=["nipAta", "sam"])

@@ -464,25 +464,48 @@ samasa_tp_tests = [
     # ("sem") to ride through the merge as a distinct ?pada member. The compound
     # declines normally in the uttara's masc gender (2.4.26) → the राम paradigm.
     {
-        "label": "T4-prAcAryaH-2.2.18",       # प्र + आचार्य → प्राचार्यः (prādi; a+ā→ā savarṇadīrgha)
+        "label": "T4-prAcAryaH-SK761-2.2.18",       # प्र + आचार्य → प्राचार्यः (prādi; a+ā→ā savarṇadīrgha)
         "purva": {"stem": "pra", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "AcArya", "vacana": 1, "vivakza": True},
         "fired": ["2.2.18", "1.2.43", "2.4.26"],
         "surface": "प्राचार्यः",
     },
     {
-        "label": "T4-kupuruSaH-2.2.18",       # कु + पुरुष → कुपुरुषः (ku)
+        "label": "T4-kupuruSaH-SK761-2.2.18",       # कु + पुरुष → कुपुरुषः (ku)
         "purva": {"stem": "ku", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
         "fired": ["2.2.18", "1.2.43", "2.4.26"],
         "surface": "कुपुरुषः",
     },
     {
-        "label": "T4-atimAlaH-2.2.18",        # अति + माल → अतिमालः (prādi)
+        "label": "T4-atimAlaH-SK761-2.2.18",  # अति + माल → अतिमालः (prādi)
         "purva": {"stem": "ati", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "mAla", "vacana": 1, "vivakza": True},
         "fired": ["2.2.18", "1.2.43", "2.4.26"],
         "surface": "अतिमालः",
+    },
+    {
+        # NITYA-samāsa proof: 2.2.18 कुगतिप्रादयः is nitya (aswapada-vigraha), so it
+        # forms WITHOUT any ?samAsa_vivakza — only the pūrva's semantic sense triggers
+        # the pre-pass window. Neither member carries vivakza here (contrast every
+        # other case above). प्र + आचार्य → प्राचार्यः.
+        "label": "T4-prAcArya-nitya-SK761-2.2.18",
+        "purva": {"stem": "pra", "sem": "semantic_1"},   # no vivakza
+        "uttara": {"stem": "AcArya", "vacana": 1},       # no vivakza
+        "fired": ["2.2.18", "1.2.43", "2.4.26"],
+        "surface": "प्राचार्यः",
+    },
+    {
+        # GATI-saṁjñā (SK762/1.4.61 ऊर्यादिच्विडाचश्च): the ūryādi word ऊरी (?UryAdi, NOT
+        # intrinsically gati) is given the गति saṁjñā by the real rule 1.4.61, which then
+        # feeds the gati arm of 2.2.18 → ऊरी + कृत = ऊरीकृतम् (napuṁsaka, कृत is napum, as
+        # स्वयंकृतम्). The fired trace includes 1.4.61 — proving the gati saṁjñā is real,
+        # not an intrinsic ?gati tag. Nitya: no vivakza (only the pūrva's semantic sense).
+        "label": "T4-UrIkftam-SK762-1.4.61",
+        "purva": {"stem": "UrI", "sem": "semantic_1"},   # ?UryAdi, no vivakza
+        "uttara": {"stem": "kfta", "vacana": 1},
+        "fired": ["1.4.61", "2.2.18", "1.2.43", "2.4.26"],
+        "surface": "ऊरीकृतम्",
     },
     # ── T5: tatpuruṣa samāsānta (टच्/ṬaC via ?samasanta_TaC + _insert_samasanta) ──
     # A rājan-final tatpuruṣa (5.4.91) takes टच् → an a-stem: परम + राजन् → परमराजः
@@ -490,7 +513,7 @@ samasa_tp_tests = [
     # 6.3.46 आन्महतः (महत् → महा) + 5.4.91. Modelled as karmadhārayas (परम/महत्
     # viśeṣaṇa, viBakti_1), so 2.1.57 + 1.2.42 also fire. Decline masc a-stem.
     {
-        "label": "T5-paramarAjaH-5.4.91",     # परम + राजन् → परमराजः (टच्, rājan-arm)
+        "label": "T5-paramarAjaH-SK788-5.4.91",     # परम + राजन् → परमराजः (टच्, rājan-arm)
         "purva": {"stem": "parama", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa"]},
         "uttara": {"stem": "rAjan", "vacana": 1, "vivakza": True},
@@ -498,11 +521,24 @@ samasa_tp_tests = [
         "surface": "परमराजः",
     },
     {
-        "label": "T5-mahArAjaH-6.3.46",        # महत् + राजन् → महाराजः (6.3.46 महत्→महा + 5.4.91 टच्)
+        "label": "T5-mahArAjaH-SK807-6.3.46",        # महत् + राजन् → महाराजः (6.3.46 महत्→महा + 5.4.91 टच्)
         "purva": {"stem": "mahat", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa"]},
         "uttara": {"stem": "rAjan", "vacana": 1, "vivakza": True},
         "fired": ["2.1.57", "1.2.42", "6.3.46", "5.4.91", "1.2.43", "2.4.26"],
         "surface": "महाराजः",
+    },
+    {
+        # पुण्या रात्रिः → पुण्यरात्रः (karmadhāraya). SK787/5.4.87 अहस्सर्वैकदेशसंख्यातपुण्याच्च
+        # रात्रेः: the रात्रि-final tatpuruṣa after पुण्य takes the samāsānta → रात्र (i-lopa
+        # 6.4.148, as giri→उपगिरम्); SK814/2.4.29 रात्राह्नाहाः पुंसि then makes it MASCULINE
+        # (overriding रात्रि's native fem + 2.4.26) → पुण्यरात्रः, declining as the राम a-stem.
+        # This is the real surface for both 5.4.87 and the रात्रि arm of 2.4.29.
+        "label": "T5-puRyarAtraH-SK787-5.4.87",
+        "purva": {"stem": "puRya", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "rAtri", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "5.4.87", "2.4.29", "1.2.43", "2.4.26"],
+        "surface": "पुण्यरात्रः",
     },
 ]

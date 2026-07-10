@@ -334,6 +334,57 @@ def test_tatpurusha_pradi_sweep(vib_n):
     assert got == expected, f"प्राचार्य viBakti_{vib_n}: {got} != {expected}"
 
 
+# ── SK769/1.4.68 अस्तं च: the gati saṁjñā is a REAL pre-pass rule feeding 2.2.18 ──
+# astam is NOT tagged ?gati intrinsically; 1.4.68 (=astam) assigns ?gati in the samāsa
+# pre-pass window, which then feeds the gati arm of 2.2.18. (astam has no common
+# noun-compound surface; the 1.4.61 ऊरीकृतम् case above covers a gati SURFACE.)
+def test_gati_sanjna_astam_SK769_1_4_68():
+    astam = deepcopy(getattr(_pratipadika, "astam"))
+    assert not astam.hasTag("gati"), "astam must NOT be intrinsically ?gati (1.4.68 assigns it)"
+    astam.setTag("semantic_1")       # triggers the pre-pass window (nitya, no vivakza)
+    uttara = deepcopy(getattr(_pratipadika, "kfta"))
+    uttara.setTag("vacana_1")
+    uttara.setTag("viBakti_1")
+    uttara.setTag("has_viBakti")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, astam, uttara, avasAna]))
+    fired = {aps for e in p.karaka_log for aps in e["fired"]}
+    assert "1.4.68" in fired, f"1.4.68 (gati saṁjñā for astam) did not fire: {sorted(fired)}"
+    assert "2.2.18" in fired, f"2.2.18 gati arm did not fire for astam: {sorted(fired)}"
+    branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
+    flat = []
+    for o in branch:
+        flat.extend(o if isinstance(o, list) else [o])
+    members = [o for o in flat
+               if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
+    assert members[0].hasTag("gati"), "1.4.68 did not assign ?gati to astam"
+
+
+# ── SK768/1.4.67 पुरोऽव्ययम्: puras is NO LONGER intrinsically ?gati — the real rule
+# 1.4.67 (a main-scan saṁjñā, bahiranga: 0) now assigns the गति that the main-scan
+# sandhi 8.3.40 नमस्पुरसोर्गत्योः consumes → पुरस्कृतम् (H → s). This proves 1.4.67 does
+# real work (the पुरस्कृतम् in test_list.py::SK154 goes through this same path).
+def test_gati_sanjna_puras_SK768_1_4_67():
+    assert not getattr(_pratipadika, "puras").hasTag("gati"), \
+        "puras must NOT be intrinsically ?gati — 1.4.67 पुरोऽव्ययम् assigns it"
+    puras = deepcopy(getattr(_pratipadika, "puras"))
+    kfta = deepcopy(getattr(_pratipadika, "kfta"))
+    kfta.setTag("vacana_1")
+    kfta.setTag("viBakti_1")
+    kfta.setTag("has_viBakti")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, puras, kfta, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    # 1.4.67 → puras ?gati → 8.3.40 नमस्पुरसोर्गत्योः: the visarga becomes स् before कृत
+    # (पुरः → पुरस्कृ…), NOT पुरःकृ / पुरकृ. That s-junction is the proof 1.4.67 fired.
+    # (The full पुरस्कृतम् with the sup ending is asserted in test_list.py::SK154.)
+    assert any(g.startswith("puraskf") for g in got), \
+        f"1.4.67 → 8.3.40 H→s junction (puras+kfta) broken: {got}"
+
+
+# ── T5 samāsānta vibhakti sweep: परमराज (परम + राजन् + टच्) as a masc a-stem ────
+
+
 # ── T5 samāsānta vibhakti sweep: परमराज (परम + राजन् + टच्) as a masc a-stem ────
 # 5.4.91 राजाहःसखिभ्यष्टच् turns the rājan-final tatpuruṣa into an a-stem (परमराज,
 # न-lopa via 6.4.144), so it declines as the राम paradigm — proving the samāsānta
@@ -407,3 +458,43 @@ def test_tatpurusha_liNga_ahan_pumsi():
         f"2.4.29: uttara {uttara} still napuṁsaka ({sorted(uttara.tags)})"
     assert uttara.hasTag("samasa_liNga_locked"), \
         f"2.4.29: uttara {uttara} gender not locked ({sorted(uttara.tags)})"
+
+
+# ── SK787/5.4.87 + SK814/2.4.29 rātri arm: पुण्यरात्र declines masc a-stem ──────
+# पुण्य + रात्रि → SK787/5.4.87 अहस्सर्वैकदेशसंख्यातपुण्याच्च रात्रेः → रात्र (a-stem, i-lopa
+# 6.4.148), then SK814/2.4.29 रात्राह्नाहाः पुंसि makes the compound MASCULINE (overriding
+# रात्रि's native feminine + 2.4.26 paravalliṅga). This is the REAL surface that upgrades
+# 2.4.29 from the structure-only ahan check above — पुण्यरात्र follows the राम paradigm.
+_PUNYARATRA_VIBHAKTIS = {
+    1: ["पुण्यरात्रः"],
+    2: ["पुण्यरात्रम्"],
+    3: ["पुण्यरात्रेण"],          # ṇatva: रात्र's र → न्→ण् across एन (8.4.2)
+    4: ["पुण्यरात्राय"],
+    5: ["पुण्यरात्रात्", "पुण्यरात्राद्"],
+    6: ["पुण्यरात्रस्य"],
+    7: ["पुण्यरात्रे"],
+}
+
+
+@pytest.mark.parametrize("vib_n", sorted(_PUNYARATRA_VIBHAKTIS))
+def test_tatpurusha_ratri_samasanta_sweep(vib_n):
+    """पुण्य + रात्रि (SK787/5.4.87 → रात्र + SK814/2.4.29 → masc) declined per vibhakti
+    (sg) — a masc a-stem पुण्यरात्र, proving the रātri samāsānta + the masculine
+    gender-override together yield a normally-declining compound."""
+    purva = deepcopy(getattr(_pratipadika, "puRya"))
+    purva.setTag("vacana_1")
+    purva.setTag("viBakti_1")           # karmadhāraya pūrva (prathamā, luks via 2.4.71)
+    purva.setTag("has_viBakti")
+    purva.setTag("viSezaRa")
+    purva.setTag("samAsa_vivakza")
+    uttara = deepcopy(getattr(_pratipadika, "rAtri"))
+    uttara.setTag("vacana_1")
+    uttara.setTag(f"viBakti_{vib_n}")   # external compound case
+    uttara.setTag("has_viBakti")
+    uttara.setTag("samAsa_vivakza")
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya([Adya, purva, uttara, avasAna]))
+    p.execute()
+    got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
+           for o in p.output()}
+    expected = {_to_slp1(s) for s in _PUNYARATRA_VIBHAKTIS[vib_n]}
+    assert got == expected, f"पुण्यरात्र viBakti_{vib_n}: {got} != {expected}"

@@ -10565,25 +10565,85 @@
     r: str("n")+r
 
 # ════════════════════════════════════════════════════════════════════════════
-# समासप्रकरणम् — तत्पुरुषसमासः, Phase T4: prādi / gati / ku tatpuruṣa.
+# समासप्रकरणम् — तत्पुरुषसमासः, Phase T4: prādi / gati / ku tatpuruṣa (SK761/2.2.18).
 #
-# 2.2.18 कुगतिप्रादयः — कु, the गति words, and the प्रादि (upasarga) particles
+# SK761/2.2.18 कुगतिप्रादयः — कु, the गति words, and the प्रादि (upasarga) particles
 # compound with a subanta → tatpuruṣa: प्र + आचार्य = प्राचार्यः, कु + पुरुष = कुपुरुषः,
-# अति + माल = अतिमालः. The prādi/ku/gati particle is the PŪRVA (upasarjana). It is
-# an avyaya (?nipAta → 1.1.37 स्वरादिनिपातमव्ययम्), so its sup luks (2.4.71/2.4.82)
-# and it does not surface a case ending — like the नञ् pūrva of T3, it has no
-# vigraha vibhakti. Reuses the T0 spine wholesale — 1.2.43 (upasarjana), 2.4.26
-# (paravalliṅga) — so the compound DECLINES NORMALLY in the uttara's gender
-# (masc a-stem प्राचार्यः/कुपुरुषः/अतिमालः). The membership tags are intrinsic on the
-# pūrva element: ?prAdi (pra/ati…), ?ku (ku), ?gati (puras/namas — as they already
-# carry it; the gati saṁjñā 1.4.61/67/68 + long tail are recorded in status).
-# upapada (2.2.19 उपपदमतिङ् / 3.1.92) is DEFERRED — needs the kṛt-pratyaya
-# machinery (कुम्भकारः = कुम्भ + √कृ + अण्), out of the current samāsa scope.
+# अति + माल = अतिमालः. This is a NITYA-samāsa (aswapada-vigraha: the vigraha uses
+# OTHER words — कुपुरुष = कुत्सितः पुरुषः, not *कुना पुरुषः), so it is NOT under विभाषा:
+# it does NOT carry the ?samAsa_vivakza "only-when-intended" gate the ≥SK665 vibhāṣā
+# rules do. Like the nitya avyayībhāvas (≤SK664, e.g. SK652/2.1.6), it fires whenever
+# a प्रादि/गति/कु pūrva is adjacent to a subanta in a flagged member-window (the window
+# is entered on any member's semantic sense — `_flagged` in _samasa_prepass_branch).
+# Contrast the vibhakti-tatpuruṣas (2.1.24/2.2.8): those ARE aniyata (राजपुरुष has the
+# same-word vigraha राज्ञः पुरुषः) → they keep ?samAsa_vivakza.
+#
+# The prādi/ku/gati particle is the PŪRVA (upasarjana). It is an avyaya (?nipAta →
+# 1.1.37 स्वरादिनिपातमव्ययम्), so its sup luks (2.4.71/2.4.82) and it has no vigraha
+# vibhakti — like the नञ् pūrva of T3. Reuses the T0 spine — 1.2.43 (upasarjana), 2.4.26
+# (paravalliṅga) — so the compound DECLINES NORMALLY in the uttara's gender (masc a-stem
+# प्राचार्यः/कुपुरुषः/अतिमालः). Membership tags are intrinsic on the pūrva: ?prAdi (pra/ati…),
+# ?ku (ku), ?gati (puras/namas + the ūryādi/astam set — now assigned by the real gati
+# saṁjñā SK762/1.4.61, SK768/1.4.67, SK769/1.4.68 below). upapada (SK781/2.2.19 / 3.1.92)
+# is DEFERRED — needs the kṛt-pratyaya machinery (कुम्भकारः = कुम्भ + √कृ + अण्).
 # ════════════════════════════════════════════════════════════════════════════
 
-# 761/2.2.18: कुगतिप्रादयः — a कु / गति / प्रादि particle (?ku | ?gati | ?prAdi) as
-# pūrva compounds with any subanta (?prAtipadika) → tatpuruṣa. Gated on the
-# ?samAsa_vivakza intent (only-when-intended); ?!samAsaPurva keeps it single-fire.
+# ── gati-saṁjñā (SK762/1.4.61, SK768/1.4.67, SK769/1.4.68) — feeds 2.2.18's gati arm ─
+# The gati saṁjñā assigns ?gati to the ūryādi / puras / astam classes; a ?gati word is
+# a pūrva of the nitya कुगतिप्रादयः compound (2.2.18). Run in the samāsa pre-pass member
+# window (bahiranga: -1) so the ?gati is set BEFORE 2.2.18 (also -1) reads it — the
+# window fixpoint runs the saṁjñā first, then 2.2.18. (cvi X→Xī / ḍāc denominal
+# derivations of 1.4.61 are DEFERRED — need denominal-affix machinery; Skipped row.)
+
+# SK762/1.4.61: ऊर्यादिच्विडाचश्च — an ūryādi word (ऊरी, उररी… ?UryAdi) + च्वि + डाच् get
+# the गति saṁjñā (before कृ/भू/अस्): ऊरी → ?gati → ऊरी + कृत = ऊरीकृतम् (via 2.2.18).
+- sutra: ऊर्यादिच्विडाचश्च
+  id: 1.4.61
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?UryAdi"
+      - "?!gati"
+  update:
+    olp: [+gati]
+
+# SK768/1.4.67: पुरोऽव्ययम् — the avyaya पुरस् gets the गति saṁjñā → ?gati. A main-scan
+# saṁjñā (bahiranga: 0, like 1.1.37) so the ?gati it assigns is present for BOTH the
+# samāsa pre-pass window (2.2.18 gati arm) and the main-scan sandhi 8.3.40 नमस्पुरसोर्गत्योः
+# (पुरस्कृतम्) on the non-pre-pass derivation path. puras is NO LONGER tagged ?gati
+# intrinsically — this rule is now its real source. (namas keeps its own ?gati; its
+# source sutra 1.4.74 is out of scope.)
+- sutra: पुरोऽव्ययम्
+  id: 1.4.67
+  domain: saMjYA
+  bahiranga: 0
+  condition:
+    lp:
+      - and
+      - "=puras"
+      - "?!gati"
+  update:
+    olp: [+gati]
+
+# SK769/1.4.68: अस्तं च — अस्तम् gets the गति saṁjñā → ?gati (अस्तंगत…, via 2.2.18).
+- sutra: अस्तं च
+  id: 1.4.68
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=astam"
+      - "?!gati"
+  update:
+    olp: [+gati]
+
+# SK761/2.2.18: कुगतिप्रादयः — a कु / गति / प्रादि particle (?ku | ?gati | ?prAdi) as
+# pūrva compounds with any subanta (?prAtipadika) → tatpuruṣa. NITYA-samāsa: NO
+# ?samAsa_vivakza gate (unlike the vibhāṣā tatpuruṣas) — the semantic-sense window
+# trigger activates it. ?!samAsaPurva keeps it single-fire; ?nitya marks the class.
 - sutra: कुगतिप्रादयः
   id: 2.2.18
   bahiranga: -1
@@ -10594,15 +10654,14 @@
         - "?prAdi"
         - "?ku"
         - "?gati"
-      - "?samAsa_vivakza"
       - "?!samAsaPurva"
     rp:
       - and
       - "?prAtipadika"
       - "?!samAsa"
   update:
-    olp: [+samAsaPurva]
-    orp: [+samAsa, +tatpuruza]
+    olp: [+samAsaPurva, +nitya]
+    orp: [+samAsa, +tatpuruza, +nitya]
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासप्रकरणम् — तत्पुरुषसमासः, Phase T5: tatpuruṣa samāsānta (टच्/ṬaC).
@@ -10661,6 +10720,35 @@
     lc: str("")
     l: str("mahA")
 
+# SK787/5.4.87: अहस्सर्वैकदेशसंख्यातपुण्याच्च रात्रेः — a रात्रि-final tatpuruṣa after
+# अहन् / सर्व / एकदेश / संख्यात / पुण्य takes the समासान्त → रात्र (an a-stem): पुण्य + रात्रि =
+# पुण्यरात्रः, पूर्व + रात्रि = पूर्वरात्रः. Rule-driven via the proven ?samasanta_TaC +
+# _insert_samasanta path — रात्रि is i-final, so रात्रि + wac → रात्र (इ-lopa by 6.4.148
+# यस्येति च, exactly like giri → उपगिरम्); the अच्/टच् distinction is accent-only, not
+# modelled. The wac's ?pum + SK814/2.4.29 रात्राह्नाहाः पुंसि make the compound masc →
+# पुण्यरात्रः declines as the राम a-stem. Pūrva gated to the {puṇya/sarva/saṅkhyā/ahan}
+# set. (द्विरात्रः — a संख्या pūrva → समाहार dvigu — is DEFERRED: 2.4.1 napuṁsaka vs 2.4.29
+# masc priority is a separate carve-out; पुण्य avoids the dvigu.)
+- sutra: अहस्सर्वैकदेशसंख्यातपुण्याच्च रात्रेः
+  id: 5.4.87
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - - or
+        - "?puRya"
+        - "?sarva"
+        - "?ekadeSa"
+        - "?ahan"
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?rAtri"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
 # ════════════════════════════════════════════════════════════════════════════
 # समासप्रकरणम् — तत्पुरुषसमासः, Phase T-liṅga: gender EXCEPTIONS to 2.4.26.
 #
@@ -10676,15 +10764,15 @@
 # 5.4.74, deferred), 2.4.31 अर्धर्चाः पुंसि च (needs the अर्धर्चादि stem set).
 # ════════════════════════════════════════════════════════════════════════════
 
-# 814/2.4.29: रात्राह्नाहाः पुंसि — a tatpuruṣa ending in रात्र / अह्न / अह is MASCULINE,
+# SK814/2.4.29: रात्राह्नाहाः पुंसि — a tatpuruṣa ending in रात्र / अह्न / अह is MASCULINE,
 # overriding the uttara's native gender (रात्रि f., अहन् n. → the compound is masc).
 # Pre-pass gender override (bahiranga: -1, domain saṁjñā), keyed on the uttara
-# (?tatpuruza + the ?ahan/rātra family + native ?napum/?strI): set +pum, drop the
+# (?tatpuruza + the ?rAtri/?ahan family + native ?napum/?strI): set +pum, drop the
 # native gender, and lock (?samasa_liNga_locked) so the uttara-sup merge keeps masc.
-# Gated ?!samAhAra + ?!samasa_napum so it does NOT clobber a समाहार dvigu, which is
-# napuṁsaka by the apavāda 2.4.1 (द्व्यहम्). NOTE: the full a-stem surface (द्व्यहः) needs
-# the ahar टच् samāsānta (5.4.91 ahar-arm), deferred — see the T5 Skipped row; this
-# rule establishes the masculine gender-override on the ahan-family uttara.
+# The रात्रि arm has a full surface — पुण्यरात्रः: SK787/5.4.87 gives रात्रि → रात्र (a-stem),
+# then this rule makes it masc. Gated ?!samAhAra + ?!samasa_napum so it does NOT clobber
+# a समाहार dvigu (napuṁsaka by 2.4.1, द्व्यहम्/द्विरात्रम्). NOTE: the ahan-arm full a-stem
+# surface (द्व्यहः) still needs the ahar टच् (5.4.91 ahar-arm), deferred — T5 Skipped row.
 - sutra: रात्राह्नाहाः पुंसि
   id: 2.4.29
   domain: saMjYA
@@ -10693,11 +10781,15 @@
     rp:
       - and
       - "?tatpuruza"
-      - "?ahan"
-      - "?napum"
+      - - or
+        - "?rAtri"
+        - "?ahan"
+      - - or
+        - "?napum"
+        - "?strI"
       - "?!samAhAra"
       - "?!samasa_napum"
       - "?!samasa_liNga_locked"
   update:
-    orp: [-napum, +pum, +samasa_liNga_locked]
+    orp: [-napum, -strI, +pum, +samasa_liNga_locked]
 
