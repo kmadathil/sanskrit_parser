@@ -417,3 +417,51 @@ Quick slice while iterating: `pytest test_samasa_tatpurusha.py`.
 **Known deferrals (record in status):** 2.2.30 physical pūrva-nipāta (not needed for
 tatpuruṣa); upapada-kṛt compounds (2.2.19/3.1.92, need kṛt machinery); the gati
 long-tail (1.4.66–79); nañ prakṛtibhāva exceptions (6.3.75/77) if not reached.
+
+---
+
+## 7. Phase T-UI — implementation notes (AS BUILT)
+
+Implemented in commit `229d209` (no engine changes). File:line references are current.
+
+### CLI (`cmd_line.py`)
+- **Role-tag display** — the pre-pass summary tag list now prints the tatpuruṣa
+  saṁjñās: `"tatpuruza", "karmaDAraya", "naY"` were added alongside
+  `avyayIBAva`/`bahuvrIhi`/`dvigu` ([`cmd_line.py:95`](cmd_line.py)).
+- **Pūrva vigraha vibhakti (the real gap)** — the original plan assumed "members carry
+  a vibhakti from the kāraka args", but the `-k`/`--karaka` action only took
+  `<stem> [vacana] [sem…] [pUrva|para]` — no way to set the pūrva's *vigraha* case.
+  `CustomActionKaraka` now accepts a **`vN`** token (e.g. `v6`) — or the explicit
+  `viBakti_N` — which sets `viBakti_<N>` + `has_viBakti` on that member
+  ([`cmd_line.py:321`](cmd_line.py); docstring at `:283–290`, `-k` help at `:461`,
+  `--samasa` help at `:471–478`).
+- **Dispatch** — `--samasa` still just tags every member `?samAsa_vivakza`; the comment
+  at [`cmd_line.py:505`](cmd_line.py) now notes the tatpuruṣa pūrva carries its vigraha
+  `viBakti_N` (via `-k … vN`).
+- **Smoke (verified):** `-k rAjan 1 v6 -k puruza 1 --samasa` → **राजपुरुषः**;
+  `-k kfzRa 1 v2 -k Srita 1 --samasa` → **कृष्णश्रितः**; pre-pass summary shows
+  `samAsa, tatpuruza`.
+
+### Composer UI (`ui/app.py`, `ui/templates/karaka.html`)
+- **Compound-type readout** — `"tatpuruza"`/`"karmaDAraya"` added to `_SAMASA_ROLE`
+  ([`ui/app.py:1407`](ui/app.py)) and to the compound-`type` filter (`:1462`).
+- **Nested-member flatten (unplanned fix)** — a *declining* compound nests its members
+  into a sub-list (`_nest_samasa_members` → one `samasta_pada`), so the member scan for
+  the role tags had to flatten one level ([`ui/app.py:1420–1424`](ui/app.py)); without
+  it, `type` came back empty (`[]`) for every tatpuruṣa (avyayībhāva stays flat, so it
+  was unaffected). This was NOT in the original T-UI plan — found during verification.
+- **Surface** — unchanged: `surface` already collects the full per-group form set by
+  splitting the output on the avasāna marker, so the **full declension paradigm renders
+  with no surface-computation change** (contrast avyayībhāva's fixed अम्).
+- **Preset → spec plumbing** — `toSpec()` now forwards the pūrva's `vibhakti`
+  ([`karaka.html:314`](ui/templates/karaka.html)); `_build_word` (`app.py`) already
+  consumed a spec `vibhakti`.
+- **Gallery presets** — three tatpuruṣa presets added with the pūrva `vibhakti` set
+  ([`karaka.html:495–504`](ui/templates/karaka.html)): कृष्णश्रितः (SK686/2.1.24, dvitīyā),
+  राजपुरुषः (SK702/2.2.8, ṣaṣṭhī), नीलोत्पलम् (SK736/2.1.57, viśeṣaṇa karmadhāraya).
+- **Verified in-browser:** the gallery renders "समासः — TATPURUZA" with the member
+  roles (pūrva `samAsaPurva/upasarjana`, uttara `samAsa/tatpuruza`); no console errors.
+
+**Net:** the plan's "thin extension, no engine changes" held — the only real work beyond
+tag-list edits was (a) exposing the pūrva vigraha vibhakti on the CLI (`vN`) and in the
+composer (`toSpec`), and (b) the nested-member flatten fix for the compound-type readout.
