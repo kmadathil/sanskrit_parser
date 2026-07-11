@@ -9727,6 +9727,7 @@
       - "=saha"
       - "?samAsaPurva"
       - "?!kAla"
+      - "?!bahuvrIhi_saha"    # the bahuvrīhi saha is handled by 6.3.82 (optional, SK849)
     rp: "?sup"
   xform:
     lc: str("")
@@ -10965,4 +10966,98 @@
       - "?uttara_strI"
   update:
     olp: [+puMvadBAva_niziDDa]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — बहुव्रीहिसमासः, Phase B2 (bahuvrihi_plan.md): additional formation
+# types. Implemented: SK848/2.2.28 (saha) + SK849/6.3.82 (saha→sa) + SK850/6.3.83
+# (āśis prakṛtibhāva); SK845/2.2.26 (diś). Deferred (Skipped rows): SK843/2.2.25
+# (saṅkhyā → needs 5.4.73 ḍac, B3), SK846/2.2.27 (sarūpa → needs 5.4.127 ic, B4), and
+# the word-order rules SK898–900/2.2.35–37 (vyadhikaraṇa bahuvrīhi + physical
+# pūrva-nipāta 2.2.30, the deferred reorder mechanism).
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK848/2.2.28 तेन सहेति तुल्ययोगे — सह (with) in tulyayoga (equal association) with a
+# noun forms a bahuvrīhi: पुत्रेण सह (वर्तते) = सपुत्रः / सहपुत्रः. सह is an indeclinable
+# pūrva (no ?viBakti_1), so the general SK830/2.2.24 does not fire — this rule forms it.
+# Tags the saha pūrva ?bahuvrIhi_saha so 6.3.82 (not the avyayībhāva 6.3.81) handles the
+# optional saha→sa. Referent gender from the composer (?referent_*), locked like B0.
+- sutra: तेन सहेति तुल्ययोगे
+  id: 2.2.28
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva, +bahuvrIhi_saha]
+    orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
+
+# SK849/6.3.82 वोपसर्जनस्य — in a bahuvrīhi the upasarjana सह OPTIONALLY → स:
+# पुत्रेण सह = सपुत्रः / सहपुत्रः. Main-scan pūrva-substitution on the saha ?samAsaPurva
+# (mirrors the avyayībhāva 6.3.81), optional (वा), guarded ?!ASis — in a benediction
+# saha stays (SK850/6.3.83). Fires before the sup luks (bahiranga: 1 < 2.4.71's 2).
+- sutra: वोपसर्जनस्य
+  id: 6.3.82
+  bahiranga: 1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?samAsaPurva"
+      - "?bahuvrIhi_saha"
+      - "?!ASis"
+    rp: "?sup"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK850/6.3.83 प्रकृत्याशिषि — in a benediction (āśis) सह retains its form (prakṛtibhāva):
+# स्वस्ति राज्ञे सहपुत्राय. Modelled as a pre-pass saṁjñā marker on the saha pūrva when
+# ?ASis (composer-supplied) — it documents the prakṛtibhāva and pairs with 6.3.82's
+# ?!ASis guard, so in āśis only सहपुत्राय surfaces. The अगोवत्सहलेषु (go/vatsa/hala)
+# exception is deferred (Skipped row).
+- sutra: प्रकृत्याशिषि
+  id: 6.3.83
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?bahuvrIhi_saha"
+      - "?ASis"
+      - "?!prakftiBAva"
+  update:
+    olp: [+prakftiBAva]
+
+# SK845/2.2.26 दिङ्नामान्यन्तराले — the NAMES of directions (?dikSabda), in the
+# intermediate-direction sense (antarāla), form a bahuvrīhi: दक्षिणस्याः पूर्वस्याश्च दिशोः
+# अन्तरालम् = दक्षिणपूर्वा (SE). Both members are dik-names; the referent is a direction
+# (दिश्, f.). Fires before the generic 2.2.24 (higher _aps → para); gated on both members
+# ?dikSabda so it only matches direction compounds.
+- sutra: दिङ्नामान्यन्तराले
+  id: 2.2.26
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?dikSabda"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?dikSabda"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
 

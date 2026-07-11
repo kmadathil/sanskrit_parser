@@ -833,6 +833,8 @@ itara = Pratipadika("itara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 # whole dik-word class rather than a single literal.
 pUrva_dik = Pratipadika("pUrva", "pum", other_tags=["dikSabda", "sarvanAma"])
 uttara_dik = Pratipadika("uttara", "pum", other_tags=["dikSabda", "sarvanAma"])
+# दक्षिण — dik-name pūrva of the intermediate-direction bahuvrīhi दक्षिणपूर्वा (SK845/2.2.26).
+dakziRa_dik = Pratipadika("dakziRa", "pum", other_tags=["dikSabda", "sarvanAma"])
 # prasita / utsuka ("intent on / eager for") — the 2.3.44 yoga-adjectives. The
 # object they govern → tṛtīyā (vibhāṣā, च saptamī). Tagged prasitotsuka so the
 # rule peeks them via llp/rrp; they themselves take their own (prathamā) form.

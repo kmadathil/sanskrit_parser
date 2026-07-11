@@ -640,4 +640,37 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "6.3.40", "1.2.43"],
         "surface": "सुकेशीभार्यः",
     },
+
+    # ── B2 additional formation types (saha 2.2.28 + 6.3.82/6.3.83; diś 2.2.26) ──
+    # saha is an indeclinable pūrva (SK830/2.2.24 needs ?viBakti_1, so 2.2.28 forms it);
+    # it takes a sup (which luks) so 6.3.82 (main-scan, optional) can see the (saha|sup)
+    # window and fork सपुत्रः/सहपुत्रः. In a benediction (?ASis) saha stays (6.3.83).
+    {
+        # पुत्रेण सह = सपुत्रः / सहपुत्रः (SK849/6.3.82 optional saha→sa).
+        "label": "B2-saputraH-SK848-2.2.28",
+        "purva": {"stem": "saha", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "putra", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.28", "1.2.43"],
+        "surfaces": ["सपुत्रः", "सहपुत्रः"],
+    },
+    {
+        # स्वस्ति राज्ञे सहपुत्राय — āśis (benediction): saha stays (SK850/6.3.83), dative.
+        "label": "B2-sahaputrAya-SK850-6.3.83",
+        "purva": {"stem": "saha", "vacana": 1, "vibhakti": 1, "tags": ["ASis"]},
+        "uttara": {"stem": "putra", "vacana": 1, "vibhakti": 4},
+        "referent_linga": "pum",
+        "fired": ["2.2.28", "6.3.83", "1.2.43"],
+        "surface": "सहपुत्राय",
+    },
+    {
+        # दक्षिणस्याः पूर्वस्याश्च दिशोरन्तरालम् = दक्षिणपूर्वा (SK845/2.2.26; fem diś referent).
+        "label": "B2-dakziRapUrvA-SK845-2.2.26",
+        "purva": {"stem": "dakziRa_dik", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pUrva_dik", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.26", "1.2.43"],
+        "surface": "दक्षिणपूर्वा",
+    },
 ]
