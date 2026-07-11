@@ -554,3 +554,36 @@ samasa_tp_tests = [
         "surface": "कडारपुरुषः",
     },
 ]
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Bahuvrīhi B0 (bahuvrihi_plan.md) — EXOCENTRIC compound: declines in an EXTERNAL
+# referent's gender (anyapadārtha, SK830/2.2.24), NOT the uttara's (contrast
+# tatpuruṣa SK812/2.4.26). Both members prathamānta (?viBakti_1) + upasarjana. The
+# driver (test_samasa_bahuvrihi.py) supplies ?bahuvrIhi_vivakza on both members, the
+# referent case/vacana on the uttara, and "referent_linga" → the uttara's gender is
+# overridden to the referent liṅga (?referent_pum/strI/napum). Structure/fired levels
+# only here; the gender + vibhakti sweeps live in the driver.
+# ══════════════════════════════════════════════════════════════════════════════
+samasa_bv_tests = [
+    {
+        # पीत(1) + अम्बर(1, n.) → पीताम्बरः "yellow-garment-having" (m., of Viṣṇu). The
+        # referent is masc → the neuter अम्बर declines as a masc a-stem.
+        "label": "B0-pItAmbaraH-SK830-2.2.24",
+        "purva": {"stem": "pIta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "ambara", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "surface": "पीताम्बरः",
+    },
+    {
+        # प्राप्त(1, niṣṭhā) + उदक(1, n.) → प्राप्तोदकः (ग्रामः) "having-obtained-water"
+        # (m.). प्राप्त, a niṣṭhā, is already pūrva (SK899/2.2.36); referent ग्राम masc.
+        "label": "B0-prAptodakaH-SK830-2.2.24",
+        "purva": {"stem": "prApta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "udaka", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "surface": "प्राप्तोदकः",
+    },
+]

@@ -103,6 +103,15 @@ priya    = Pratipadika("priya",   "pum")     # प्रिय — कल्य�
 kalyARa  = Pratipadika("kalyARa", "pum")     # कल्याण — the puṃvat (masc) form of कल्याणी (6.3.42)
 # (भुवन for त्रिभुवनम् is not added — that case is deferred: cross-member ṇatva. The
 # samāhāra-dvigu napuṁsaka path is exercised by पञ्चगवम् + त्रिलोकम् via existing stems.)
+# ── Bahuvrīhi B0 (bahuvrihi_plan.md): the EXOCENTRIC compound declines in an EXTERNAL
+# referent's gender, not the uttara's. The uttara stems below carry their native gender;
+# the B0 referent-gender rule (SK830/2.2.24 anyapadārtha) overrides it from the composer's
+# ?referent_* tag. पीताम्बर = पीत+अम्बर (yellow-garment-having = Viṣṇu); प्राप्तोदक = प्राप्त+उदक
+# (having-obtained-water, of a village — प्राप्त niṣṭhā already pūrva, SK899/2.2.36).
+pIta     = Pratipadika("pIta",    "pum")     # पीत (yellow) — पीताम्बर pūrva-qualifier (sup luks)
+ambara   = Pratipadika("ambara",  "napum")   # अम्बर (garment, n.) — पीताम्बर uttara (a-stem)
+prApta   = Pratipadika("prApta",  "napum", other_tags=["kta"])  # प्राप्त — प्राप्तोदक niṣṭhā pūrva
+udaka    = Pratipadika("udaka",   "napum")   # उदक (water, n.) — प्राप्तोदक uttara (a-stem)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)

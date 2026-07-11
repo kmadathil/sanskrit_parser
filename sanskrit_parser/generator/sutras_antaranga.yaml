@@ -10798,3 +10798,50 @@
   update:
     orp: [-napum, -strI, +pum, +samasa_liNga_locked]
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — बहुव्रीहिसमासः, Phase B0 (bahuvrihi_plan.md): spine + saṁjñā +
+# anyapadārtha (referent) gender + core samānādhikaraṇa formation.
+#
+# A bahuvrīhi is EXOCENTRIC: it denotes ANOTHER thing (anyapadārtha) not connoted by
+# its members, so it declines in that EXTERNAL referent's gender — NOT the uttara's
+# (contrast tatpuruṣa SK812/2.4.26 परवल्लिङ्गम्, which takes the uttara gender). Both
+# members are prathamānta in the vigraha and both are upasarjana. The composer signals
+# bahuvrīhi intent with ?bahuvrIhi_vivakza (parallel to ?samAsa_vivakza; the CLI -B /
+# B-UI sets it), supplies the referent case/vacana on the uttara, and the referent
+# liṅga as ?referent_pum / ?referent_strI / ?referent_napum on the uttara.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK829/2.2.23 + SK830/2.2.24: शेषो बहुव्रीहिः (adhikāra) + अनेकमन्यपदार्थे (vidhi) —
+# two+ prathamānta words denoting ANOTHER thing (anyapadārtha) form a bahuvrīhi. In the
+# vigraha both members are prathamā (the pūrva carries ?viBakti_1 here); the UTTARA is
+# not viBakti-constrained because the composer sets its sup to the referent's EXTERNAL
+# case (like the tatpuruṣa uttara). The pūrva → ?samAsaPurva (upasarjana via SK-shared
+# 1.2.43), the uttara → ?samAsa + ?bahuvrIhi. Gated on ?bahuvrIhi_vivakza
+# ("only-when-intended"; bahuvrīhi has no lexical/uttara-class discriminator — any two
+# words — so an explicit intent is required). The pūrva's prathamā sup luks via 2.4.71;
+# the uttara's sup (the referent case) is RETAINED and inflects → पीताम्बरः / पीताम्बरम् / … .
+#
+# ANYAPADĀRTHA GENDER (fused here): the compound is EXOCENTRIC — it declines in the
+# EXTERNAL referent's gender, NOT the uttara's (contrast tatpuruṣa SK812/2.4.26). The
+# composer sets the referent liṅga on the uttara (?referent_pum/strI/napum, overriding
+# the native gender); this rule pins it with ?samasa_liNga_locked (the flag join_objects
+# honours, paninian_object.py:159–164) so the referent gender survives the (uttara | sup)
+# and any (uttara | samāsānta) merge — a later wac cannot revert it. Do NOT use 2.4.26.
+- sutra: अनेकमन्यपदार्थे
+  id: 2.2.24
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_1"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
+
