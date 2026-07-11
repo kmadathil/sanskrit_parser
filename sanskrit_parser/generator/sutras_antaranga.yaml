@@ -11061,3 +11061,62 @@
     olp: [+samAsaPurva]
     orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
 
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — बहुव्रीहिसमासः, Phase B3 (bahuvrihi_plan.md): samāsānta कप्.
+# The affix is inserted by the generalized _insert_samasanta (?samasanta_kap → kap,
+# antaranga_prakriya.py), mirroring the ?samasanta_TaC → wac path. This slice covers
+# the productive कप् family; the other samāsānta affixes (ap/ac/ṣac/ḍac/asic/anic/ic)
+# and the minor कप् rules (5.4.152/153, 7.4.13–15, 5.4.156/157/159/160) are remaining
+# B3 work — see generator_status.md.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK891/5.4.154 शेषाद्विभाषा — after a residual bahuvrīhi (śeṣa), कप् is OPTIONALLY added
+# → बहुयशस्कः / बहुयशाः. Sets ?samasanta_kap; _insert_samasanta inserts kap. Optional
+# (vibhāṣā → forks). Gated on the composer intent ?Seza_kap (the kap is speaker-optional,
+# and śeṣa-kap is not wanted on every bahuvrīhi); the prohibition 5.4.155 (saṁjñā)
+# overrides it. Pre-pass -1 (like the avyayībhāva 5.4.109 optional samāsānta).
+- sutra: शेषाद्विभाषा
+  id: 5.4.154
+  bahiranga: -1
+  optional: true
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?Seza_kap"
+      - "?!samasanta_kap"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_kap]
+
+# SK889/5.4.151 उरःप्रभृतिभ्यः कप् — an उरस्-prabhṛti stem (?uras_praBfti) final in a
+# bahuvrīhi takes कप् (NITYA): व्यूढमुरो यस्य = व्यूढोरस्कः. Sets ?samasanta_kap.
+- sutra: उरःप्रभृतिभ्यः कप्
+  id: 5.4.151
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uras_praBfti"
+      - "?!samasanta_kap"
+  update:
+    orp: [+samasanta_kap]
+
+# SK893/5.4.155 न संज्ञायाम् — कप् is NOT added when the bahuvrīhi is a NAME (?saMjYA):
+# विश्वे देवा अस्य = विश्वदेवः (a name), no kap. Apavāda to 5.4.154 (śeṣa kap); fires a
+# no-op ?samasanta_niziDDa marker so the kap fork is suppressed for the saṁjñā case.
+- sutra: न संज्ञायाम्
+  id: 5.4.155
+  bahiranga: -1
+  overrides: 5.4.154
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?Seza_kap"
+      - "?saMjYA"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_niziDDa]

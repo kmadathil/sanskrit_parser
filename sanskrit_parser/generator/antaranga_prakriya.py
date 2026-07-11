@@ -17,7 +17,7 @@ from decimal import Decimal
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject, _SLP1_VOWELS
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
-from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac
+from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac, kap
 from sanskrit_parser.generator.sutra import Sutra
 
 from copy import deepcopy, copy
@@ -734,22 +734,31 @@ class AntarangaPrakriya(PrakriyaBase):
                 logger.debug(f"Samāsa sup-swap @{jx}: -> sups[{n-1}][{m-1}]")
                 inputs.replace_at(jx, sups[n-1][m-1])
 
+    # Samāsānta affix markers → the affix (?tadDita) that _insert_samasanta inserts
+    # after the qualifying uttara. ?samasanta_TaC → wac (aC/ṬaC, avyayībhāva + tatpuruṣa
+    # samāsāntas 5.4.86–112); ?samasanta_kap → kap (the bahuvrīhi कप्, 5.4.151/154 etc.).
+    # Adding a new affix family (ap/ac/ṣac/ḍac/ic…) is one entry here + a Pratyaya.
+    _SAMASANTA_AFFIXES = {"samasanta_TaC": wac, "samasanta_kap": kap}
+
     def _insert_samasanta(self, inputs):
-        """Insert the TaC (wac) samāsānta after any uttara tagged ?samasanta_TaC
-        (5.4.68 समासान्ताः adhikāra). The DECISION is rule-driven: the 5.4.107–112
-        rules set ?samasanta_TaC on the qualifying uttara (śarat-prabhṛti, an-final,
-        nadī…); this step just performs the structural insertion (like _insert_sups).
-        The wac (?tadDita) is placed just after the uttara (before its sup); the
-        main scan merges stem+wac → a-stem, and join_objects carries ?avyayIBAva /
-        ?avyaya through that tadDita merge so 2.4.83 still applies (उप+शरद्+अ →
-        उपशरदम्; उप+राजन्+अ → 6.4.144 न-lopa → उपराजम्)."""
+        """Insert the samāsānta affix after any uttara tagged with a ?samasanta_*
+        marker (5.4.68 समासान्ताः adhikāra). The DECISION is rule-driven: the samāsānta
+        rules set the marker on the qualifying uttara (śarat-prabhṛti, an-final, nadī,
+        a bahuvrīhi taking कप्, …); this step just performs the structural insertion
+        (like _insert_sups). The affix (?tadDita) is placed just after the uttara
+        (before its sup); the main scan merges stem+affix, and join_objects carries the
+        compound-type tags through that tadDita merge (उप+शरद्+अ → उपशरदम्; बहु+यशस्+क →
+        बहुयशस्कः)."""
         for ix in range(len(inputs)):
             o = inputs[ix]
-            if not (self._is_samasa_member(o) and o.hasTag("samasanta_TaC")):
+            if not self._is_samasa_member(o):
                 continue
-            o.deleteTag("samasanta_TaC")
-            # Insert wac just after this uttara (before its sup, if present).
-            inputs.insert_at(ix + 1, deepcopy(wac))
+            marker = next((m for m in self._SAMASANTA_AFFIXES if o.hasTag(m)), None)
+            if marker is None:
+                continue
+            o.deleteTag(marker)
+            # Insert the affix just after this uttara (before its sup, if present).
+            inputs.insert_at(ix + 1, deepcopy(self._SAMASANTA_AFFIXES[marker]))
             # Re-scan from scratch: indices shifted; another member may qualify.
             return self._insert_samasanta(inputs)
 

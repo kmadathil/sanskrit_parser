@@ -673,4 +673,38 @@ samasa_bv_tests = [
         "fired": ["2.2.26", "1.2.43"],
         "surface": "दक्षिणपूर्वा",
     },
+
+    # ── B3 samāsānta कप् (SK891/5.4.154 optional, SK889/5.4.151 uras, SK893/5.4.155) ──
+    # The कप् affix is inserted by the generalized _insert_samasanta (?samasanta_kap →
+    # kap). 5.4.154 is gated on the composer intent ?Seza_kap (śeṣa-kap is speaker-
+    # optional, not wanted on every bahuvrīhi).
+    {
+        # बहु यशो यस्य = बहुयशस्कम् / बहुयशः (SK891/5.4.154 optional कप्; neuter referent —
+        # a masc s-stem would need the 6.4.14 dīrgha बहुयशाः, a separate declension gap).
+        "label": "B3-bahuyaSaskam-SK891-5.4.154",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1, "tags": ["Seza_kap"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.154", "1.2.43"],
+        "surfaces": ["बहुयशस्कम्", "बहुयशः"],
+    },
+    {
+        # SK893/5.4.155 न संज्ञायाम् — a NAME takes no kap: बहुयशः only (kap blocked).
+        "label": "B3-bahuyaSaH-saMjYA-SK893-5.4.155",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1,
+                   "tags": ["Seza_kap", "saMjYA"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.155", "1.2.43"],
+        "surface": "बहुयशः",
+    },
+    {
+        # व्यूढमुरो यस्य = व्यूढोरस्कः (SK889/5.4.151 उरःप्रभृतिभ्यः कप्, nitya).
+        "label": "B3-vyUQoraskaH-SK889-5.4.151",
+        "purva": {"stem": "vyUQa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "uras", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.151", "1.2.43"],
+        "surface": "व्यूढोरस्कः",
+    },
 ]

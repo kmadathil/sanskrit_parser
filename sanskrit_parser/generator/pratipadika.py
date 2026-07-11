@@ -835,6 +835,10 @@ pUrva_dik = Pratipadika("pUrva", "pum", other_tags=["dikSabda", "sarvanAma"])
 uttara_dik = Pratipadika("uttara", "pum", other_tags=["dikSabda", "sarvanAma"])
 # दक्षिण — dik-name pūrva of the intermediate-direction bahuvrīhi दक्षिणपूर्वा (SK845/2.2.26).
 dakziRa_dik = Pratipadika("dakziRa", "pum", other_tags=["dikSabda", "sarvanAma"])
+# ── Bahuvrīhi B3 (bahuvrihi_plan.md): samāsānta कप् (SK889/5.4.151, SK891/5.4.154). The
+# affix is inserted by the generalized _insert_samasanta (?samasanta_kap → kap).
+uras  = Pratipadika("uras",  "napum", other_tags=["uras_praBfti"])  # उरस् (chest, s-final) — व्यूढोरस्कः
+vyUQa = Pratipadika("vyUQa", "pum")   # व्यूढ (broad) — व्यूढोरस्क pūrva
 # prasita / utsuka ("intent on / eager for") — the 2.3.44 yoga-adjectives. The
 # object they govern → tṛtīyā (vibhāṣā, च saptamī). Tagged prasitotsuka so the
 # rule peeks them via llp/rrp; they themselves take their own (prathamā) form.
