@@ -586,4 +586,58 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "1.2.43"],
         "surface": "प्राप्तोदकः",
     },
+
+    # ── B1 puṁvadbhāva (SK831/6.3.34 + prohibitions 6.3.37/38/40/41) ──
+    # A feminine pūrva → its masculine bhāṣitapuṁska form before a fem uttara. The
+    # composer supplies the masc form (दीर्घ) + ?puMvat for the applies-case; 6.3.34
+    # fires as the saṁjñā (real ṅīp/ṭāp-strip deferred, as 6.3.42). The prohibitions
+    # keep the fem form and OVERRIDE 6.3.34 (fem stem + a blocker-class tag baked into
+    # the pratipadika). ?uttara_strI marks the uttara's vigraha femininity (its native
+    # ?strI is overridden to the referent liṅga by the B0 anyapadārtha rule).
+    {
+        # दीर्घे जङ्घे यस्याः → दीर्घजङ्घा (दीर्घा → दीर्घ); fem referent, uttara a-stem base + ṭāp.
+        "label": "B1-dIrGajaNGA-SK831-6.3.34",
+        "purva": {"stem": "dIrGa", "vacana": 1, "vibhakti": 1, "tags": ["puMvat"]},
+        "uttara": {"stem": "jaNGa", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "6.3.34", "1.2.43"],
+        "surface": "दीर्घजङ्घा",
+    },
+    {
+        # SK842/6.3.41 जातेश्च — ब्राह्मणी (jāti) stays fem: ब्राह्मणीभार्यः (masc referent).
+        "label": "B1-brAhmaRIBAryaH-SK842-6.3.41",
+        "purva": {"stem": "brAhmaRI", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BArya", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.41", "1.2.43"],
+        "surface": "ब्राह्मणीभार्यः",
+    },
+    {
+        # SK839/6.3.38 संज्ञापूरण्योश्च — दत्ता (name) stays fem: दत्ताभार्यः.
+        "label": "B1-dattABAryaH-SK839-6.3.38",
+        "purva": {"stem": "dattA", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BArya", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.38", "1.2.43"],
+        "surface": "दत्ताभार्यः",
+    },
+    {
+        # SK838/6.3.37 न कोपधायाः — पाचिका (k-penult) stays fem: पाचिकाभार्यः.
+        "label": "B1-pAcikABAryaH-SK838-6.3.37",
+        "purva": {"stem": "pAcikA", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BArya", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.37", "1.2.43"],
+        "surface": "पाचिकाभार्यः",
+    },
+    {
+        # SK841/6.3.40 स्वाङ्गाच्चेतः — सुकेशी (svāṅga ī) stays fem: सुकेशीभार्यः.
+        "label": "B1-sukeSIBAryaH-SK841-6.3.40",
+        "purva": {"stem": "sukeSI", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BArya", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.40", "1.2.43"],
+        "surface": "सुकेशीभार्यः",
+    },
 ]

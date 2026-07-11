@@ -10845,3 +10845,124 @@
     olp: [+samAsaPurva]
     orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
 
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — बहुव्रीहिसमासः, Phase B1 (bahuvrihi_plan.md): puṁvadbhāva
+# (feminine pūrvapada → its masculine bhāṣitapuṁska form) in a samānādhikaraṇa
+# bahuvrīhi, + the prohibitions. Modelled on the tatpuruṣa karmadhāraya puṁvadbhāva
+# SK746/6.3.42: the composer supplies the masculine form (दीर्घ) + ?puMvat directly,
+# and the rule fires as a saṁjñā (?puMvadBAva) documenting the puṁvadbhāva — the full
+# ṅīp/ṭāp-stripping derivation (दीर्घा→दीर्घ) is deferred (see generator_status.md).
+# The "before a FEMININE uttara" (समानाधिकरणे स्त्रियाम्) condition is checked via a
+# stable ?uttara_strI tag the composer sets on the fem uttara — its native ?strI is
+# overridden to the referent liṅga by the B0 anyapadārtha rule, so ?uttara_strI carries
+# the vigraha femininity independently.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK831/6.3.34: स्त्रियाः पुंवद्भाषितपुंस्कादनूङ्समानाधिकरणे स्त्रियामपूरणीप्रियादिषु — a
+# bhāṣitapuṁska (has a masc counterpart), non-ūṅ FEMININE pūrva (?puMvat), in
+# apposition (samānādhikaraṇa) with a feminine uttara (?uttara_strI) of a bahuvrīhi,
+# takes its MASCULINE form — EXCEPT before an ordinal (pūraṇī) or a priyādi word. दीर्घे
+# जङ्घे यस्याः → दीर्घजङ्घा (दीर्घा → दीर्घ). Pre-pass pūrva-substitution saṁjñā (like
+# 6.3.42). The पूरणी/प्रियादि carve-outs are the apavādas below (6.3.38) + the ?!priyAdi
+# guard; the other prohibitions (6.3.37/40/41) override this rule.
+- sutra: स्त्रियाः पुंवद्भाषितपुंस्कादनूङ् समानाधिकरणे स्त्रियामपूरणीप्रियादिषु
+  id: 6.3.34
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - "?!priyAdi"
+      - "?!puMvadBAva"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uttara_strI"
+  update:
+    olp: [+puMvadBAva]
+
+# SK838/6.3.37: न कोपधायाः — a feminine with a penultimate क् (?kopaDa) does NOT take
+# the masculine (पाचिका → stays पाचिका): पाचिकाभार्यः. Apavāda to 6.3.34.
+- sutra: न कोपधायाः
+  id: 6.3.37
+  domain: saMjYA
+  bahiranga: -1
+  overrides: 6.3.34
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - "?kopaDa"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uttara_strI"
+  update:
+    olp: [+puMvadBAva_niziDDa]
+
+# SK839/6.3.38: संज्ञापूरण्योश्च — a feminine that is a NAME (?saMjYA) or an ORDINAL
+# (?pUraRI) does NOT take the masculine: दत्ताभार्यः (दत्ता, name), पञ्चमीभार्यः (पञ्चमी,
+# ordinal). Apavāda to 6.3.34.
+- sutra: संज्ञापूरण्योश्च
+  id: 6.3.38
+  domain: saMjYA
+  bahiranga: -1
+  overrides: 6.3.34
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - - or
+        - "?saMjYA"
+        - "?pUraRI"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uttara_strI"
+  update:
+    olp: [+puMvadBAva_niziDDa]
+
+# SK841/6.3.40: स्वाङ्गाच्चेतः — a feminine in ई (?svAnga_I) denoting a body-part (svāṅga)
+# does NOT take the masculine (except before मानिन्): सुकेशीभार्यः. Apavāda to 6.3.34.
+- sutra: स्वाङ्गाच्चेतः
+  id: 6.3.40
+  domain: saMjYA
+  bahiranga: -1
+  overrides: 6.3.34
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - "?svAnga_I"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uttara_strI"
+  update:
+    olp: [+puMvadBAva_niziDDa]
+
+# SK842/6.3.41: जातेश्च — a feminine denoting a JĀTI/class (?jAti) does NOT take the
+# masculine: ब्राह्मणीभार्यः, शूद्राभार्यः. Apavāda to 6.3.34.
+- sutra: जातेश्च
+  id: 6.3.41
+  domain: saMjYA
+  bahiranga: -1
+  overrides: 6.3.34
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?puMvat"
+      - "?jAti"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?uttara_strI"
+  update:
+    olp: [+puMvadBAva_niziDDa]
+

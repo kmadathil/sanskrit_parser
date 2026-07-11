@@ -72,6 +72,10 @@ def test_samasa_bahuvrihi(case):
     purva = _build_member(case["purva"])
     uttara = _build_member(case["uttara"], referent_linga=case.get("referent_linga"))
     pl = [Adya, purva, uttara, avasAna]
+    if case.get("uttara_strI_abs"):
+        # a fem-referent bahuvrīhi whose uttara is an a-stem base takes ṭāp: the
+        # strI_abs element at the (uttara | strī) window (e.g. जङ्घ → जङ्घा → दीर्घजङ्घा).
+        pl.insert(-1, deepcopy(strI_abs))
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
     # ── Level 1: structure (pre-pass member tags; flatten the nested sub-list) ──

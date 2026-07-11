@@ -112,6 +112,23 @@ pIta     = Pratipadika("pIta",    "pum")     # पीत (yellow) — पीत�
 ambara   = Pratipadika("ambara",  "napum")   # अम्बर (garment, n.) — पीताम्बर uttara (a-stem)
 prApta   = Pratipadika("prApta",  "napum", other_tags=["kta"])  # प्राप्त — प्राप्तोदक niṣṭhā pūrva
 udaka    = Pratipadika("udaka",   "napum")   # उदक (water, n.) — प्राप्तोदक uttara (a-stem)
+# ── Bahuvrīhi B1 (bahuvrihi_plan.md): puṁvadbhāva (SK831/6.3.34) — a fem pūrva → masc.
+# Composer supplies the masc form + ?puMvat for the applies-case (दीर्घ), and the FEM
+# form + a blocker class tag for the prohibitions (6.3.37/38/40/41). The fem uttaras
+# carry ?uttara_strI (set by the composer) so 6.3.34's समानाधिकरणे-स्त्रियाम् survives the
+# B0 referent-gender override.
+dIrGa    = Pratipadika("dIrGa",   "pum")     # दीर्घ (long) — masc puṁvat form of दीर्घा (दीर्घजङ्घा)
+# jaṅghā/bhāryā are inherently-feminine ā-stems; as a bahuvrīhi uttara the ṭāp drops
+# unless the referent is feminine, so they are modelled as a-stem BASES (like [rAma,
+# strI_abs] elsewhere) and the composer appends strI_abs only for a fem referent.
+jaNGa    = Pratipadika("jaNGa",   "pum")     # जङ्घ- base of जङ्घा (shank) — दीर्घजङ्घा/दीर्घजङ्घः uttara
+BArya    = Pratipadika("BArya",   "pum")     # भार्य- base of भार्या (wife) — X-भार्यः prohibition uttara
+# Feminine pūrvas that BLOCK puṁvadbhāva (6.3.37/38/40/41): supplied in their fem form
+# + a blocker-class tag; the pūrva sup luks (2.4.71) so the ī/ā-stem surface is retained.
+brAhmaRI = Pratipadika("brAhmaRI", "strI", other_tags=["puMvat", "jAti"])     # ब्राह्मणी — 6.3.41 jāti
+dattA    = Pratipadika("dattA",   "strI", other_tags=["puMvat", "saMjYA"])    # दत्ता (name) — 6.3.38
+pAcikA   = Pratipadika("pAcikA",  "strI", other_tags=["puMvat", "kopaDa"])    # पाचिका (k-penult) — 6.3.37
+sukeSI   = Pratipadika("sukeSI",  "strI", other_tags=["puMvat", "svAnga_I"])  # सुकेशी (svāṅga ī) — 6.3.40
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
