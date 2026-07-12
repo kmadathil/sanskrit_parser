@@ -758,4 +758,49 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "5.4.129", "1.2.43"],
         "surface": "प्रज्ञुः",
     },
+    {
+        # ऊर्ध्वे जानुनी यस्य = ऊर्ध्वज्ञुः / ऊर्ध्वजानुः (SK869/5.4.130 optional जानु→ज्ञु).
+        "label": "B4-UrDvajYuH-SK869-5.4.130",
+        "purva": {"stem": "UrDva", "vibhakti": 1},
+        "uttara": {"stem": "jAnu", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.130", "1.2.43"],
+        "surfaces": ["ऊर्ध्वज्ञुः", "ऊर्ध्वजानुः"],
+    },
+    {
+        # सुरभिर्गन्धो यस्य = सुगन्धिः (SK874/5.4.135 गन्ध final → इत्).
+        "label": "B4-sugandhiH-SK874-5.4.135",
+        "purva": {"stem": "su_pUrva", "vibhakti": 1},
+        "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.135", "1.2.43"],
+        "surface": "सुगन्धिः",
+    },
+    {
+        # शोभनं हृदयं यस्य = सुहृत् / सुहृद् (SK888/5.4.150 हृदय→हृद्; द्→त्/द् वाऽवसाने 8.4.56).
+        "label": "B4-suhft-SK888-5.4.150",
+        "purva": {"stem": "su_pUrva", "vibhakti": 1},
+        "uttara": {"stem": "hfdaya", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.150", "1.2.43"],
+        "surfaces": ["सुहृत्", "सुहृद्"],
+    },
+    {
+        # द्वौ पादौ यस्य = द्विपात् / द्विपाद् (SK879/5.4.140 पाद→पाद् consonant stem).
+        "label": "B4-dvipAt-SK879-5.4.140",
+        "purva": {"stem": "dvi", "vibhakti": 1},
+        "uttara": {"stem": "pAda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.140", "1.2.43"],
+        "surfaces": ["द्विपात्", "द्विपाद्"],
+    },
+    {
+        # शोभनं धनुर्यस्य = सुधन्वा (SK870/5.4.132 धनुस्→धन्वन् अनङ्, n-stem → धन्वा).
+        "label": "B4-suDanvA-SK870-5.4.132",
+        "purva": {"stem": "su_pUrva", "vibhakti": 1},
+        "uttara": {"stem": "Danus", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.132", "1.2.43"],
+        "surface": "सुधन्वा",
+    },
 ]

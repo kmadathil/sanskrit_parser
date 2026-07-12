@@ -11220,3 +11220,85 @@
   xform:
     rc: str("")
     r: str("jYu")
+
+# SK869/5.4.130 ऊर्ध्वाद्विभाषा — ऊर्ध्व + जानु → OPTIONALLY ज्ञु → ऊर्ध्वज्ञुः / ऊर्ध्वजानुः
+# (vibhāṣā). Same जानु→ज्ञु substitution as 5.4.129, optional, for the ऊर्ध्व pūrva.
+- sutra: ऊर्ध्वाद्विभाषा
+  id: 5.4.130
+  bahiranga: -1
+  optional: true
+  condition:
+    lp: "=UrDva"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=jAnu"
+  xform:
+    rc: str("")
+    r: str("jYu")
+
+# SK874/5.4.135 गन्धस्येदुत्पूतिसुसुरभिभ्यः — the final of गन्ध (final in a bahuvrīhi after
+# सु etc.) → इत् (i): सुरभिर्गन्धो यस्य = सुगन्धिः. Pre-pass uttara-substitution गन्ध→गन्धि.
+- sutra: गन्धस्येदुत्पूतिसुसुरभिभ्यः
+  id: 5.4.135
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=gandha"
+  xform:
+    rc: str("")
+    r: str("ganDi")
+
+# SK888/5.4.150 सुहृद्दुर्हृदौ मित्रामित्रयोः — सु/दुर् + हृदय → हृद् (nipātana, 'friend'/'foe'):
+# सुहृत् (मित्रम्), दुर्हृत् (अमित्रम्). Pre-pass uttara-substitution हृदय→हृद्.
+- sutra: सुहृद्दुर्हृदौ मित्रामित्रयोः
+  id: 5.4.150
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=su"
+      - "=dus"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=hfdaya"
+  xform:
+    rc: str("")
+    r: str("hfd")
+
+# SK879/5.4.140 संख्यासुपूर्वस्य — a saṅkhyā/सु-pūrva bahuvrīhi ending in पाद → पाद् (the
+# समासान्त पाद-लोप drops the final vowel → consonant stem): द्विपात्, सुपात्. Pre-pass
+# uttara-substitution पाद→पाद् (declines as a द्-stem → nom sg द्विपात्, 8.2.39 द्→त्).
+- sutra: संख्यासुपूर्वस्य
+  id: 5.4.140
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "?saMKyA"
+      - "=su"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=pAda"
+  xform:
+    rc: str("")
+    r: str("pAd")
+
+# SK870/5.4.132 धनुषश्च — a धनुस्-final bahuvrīhi takes अनङ् (धनुस् → धन्वन्, n-stem):
+# शोभनं धनुर्यस्य = सुधन्वा (शार्ङ्गधन्वा). Pre-pass uttara-substitution धनुस्→धन्वन्; the
+# n-stem then declines to nom sg धन्वा.
+- sutra: धनुषश्च
+  id: 5.4.132
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=Danus"
+  xform:
+    rc: str("")
+    r: str("Danvan")
