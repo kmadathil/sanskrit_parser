@@ -260,6 +260,14 @@ kap  = Pratyaya("ka",     its=["p"], other_tags=["svAdi", "tadDita", "satva_t", 
 kan  = Pratyaya("ka",     its=["n"], other_tags=["svAdi", "tadDita", "ka_pratyaya"])
 kAmyac = Pratyaya("kAmya", its=["c"], other_tags=["svAdi", "tadDita", "satva_t"])
 
+# Bahuvrīhi samāsānta affixes (5.4.x) — inserted by _insert_samasanta via the
+# _SAMASANTA_AFFIXES map. Each adds its string after the uttara; the ?tadDita tag lets
+# join_objects carry the compound-type tags through the merge, and 6.4.144 (न-lopa) /
+# 6.4.148 (yasyeti, a/i-lopa) fire on the stem before the affix as for wac.
+Sac  = Pratyaya("a", its=["z", "c"], other_tags=["svAdi", "tadDita", "pum"])  # षच् (5.4.113/115)
+ap_s = Pratyaya("a", its=["p"],      other_tags=["svAdi", "tadDita", "pum"])  # अप् (5.4.116/117)
+ic_s = Pratyaya("i", its=["c"],      other_tags=["svAdi", "tadDita"])         # इच् (5.4.127/128)
+
 
 # suc - SK2086
 suc =  Pratyaya("s", its=["c", "u"], other_tags=["svAdi", "tadDita", "suc"])

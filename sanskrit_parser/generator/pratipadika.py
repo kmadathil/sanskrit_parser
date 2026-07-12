@@ -839,6 +839,12 @@ dakziRa_dik = Pratipadika("dakziRa", "pum", other_tags=["dikSabda", "sarvanAma"]
 # affix is inserted by the generalized _insert_samasanta (?samasanta_kap → kap).
 uras  = Pratipadika("uras",  "napum", other_tags=["uras_praBfti"])  # उरस् (chest, s-final) — व्यूढोरस्कः
 vyUQa = Pratipadika("vyUQa", "pum")   # व्यूढ (broad) — व्यूढोरस्क pūrva
+# samāsānta ṣac/ap/ic uttaras (SK852/5.4.113, SK854/5.4.115, SK855/5.4.117, SK867/5.4.128).
+mUrDan = Pratipadika("mUrDan", "pum")    # मूर्धन् (head, n-stem) — द्विमूर्धः (ṣac; न-lopa 6.4.144)
+loman  = Pratipadika("loman",  "napum")  # लोमन् (hair, n-stem) — अन्तर्लोमः (ap; न-lopa 6.4.144)
+daRqa  = Pratipadika("daRqa",  "pum")    # दण्ड (stick) — द्विदण्डि (ic; a-lopa 6.4.148)
+# ── Bahuvrīhi B4 (bahuvrihi_plan.md): samāsānta ādeśa uttaras (pre-pass substitution).
+jAnu  = Pratipadika("jAnu",  "napum")  # जानु (knee) — प्रज्ञुः (जानु→ज्ञु, SK868/5.4.129)
 # prasita / utsuka ("intent on / eager for") — the 2.3.44 yoga-adjectives. The
 # object they govern → tṛtīyā (vibhāṣā, च saptamī). Tagged prasitotsuka so the
 # rule peeks them via llp/rrp; they themselves take their own (prathamā) form.

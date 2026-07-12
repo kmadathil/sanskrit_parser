@@ -707,4 +707,55 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "5.4.151", "1.2.43"],
         "surface": "व्यूढोरस्कः",
     },
+
+    # ── B3 samāsānta ṣac / ap / ic (SK852/5.4.113, SK854/5.4.115, SK855/5.4.117,
+    # SK867/5.4.128). A saṅkhyā pūrva (dvi) carries NO vacana — its ?nityadvivacana
+    # conflicts with a forced vacana_1 (→ द्व); the referent's vacana goes on the uttara.
+    {
+        # दीर्घे सक्थिनी यस्य = दीर्घसक्थः (SK852/5.4.113 ṣac; i-lopa 6.4.148).
+        "label": "B3-dIrGasakTaH-SK852-5.4.113",
+        "purva": {"stem": "dIrGa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "sakTi", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.113", "1.2.43"],
+        "surface": "दीर्घसक्थः",
+    },
+    {
+        # द्वौ मूर्धानौ यस्य = द्विमूर्धः (SK854/5.4.115 ṣa; न-lopa 6.4.144).
+        "label": "B3-dvimUrDaH-SK854-5.4.115",
+        "purva": {"stem": "dvi", "vibhakti": 1},
+        "uttara": {"stem": "mUrDan", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.115", "1.2.43"],
+        "surface": "द्विमूर्धः",
+    },
+    {
+        # बहिर्लोमानि यस्य = बहिर्लोमः (SK855/5.4.117 ap; न-lopa 6.4.144; र्ल doubling optional).
+        "label": "B3-bahirlomaH-SK855-5.4.117",
+        "purva": {"stem": "bahis", "vibhakti": 1},
+        "uttara": {"stem": "loman", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.117", "1.2.43"],
+        "surfaces": ["बहिर्लोमः", "बहिर्ल्लोमः"],
+    },
+    {
+        # द्वौ दण्डौ यस्मिन् प्रहरणे = द्विदण्डि (SK867/5.4.128 ic; a-lopa 6.4.148; n. weapon).
+        "label": "B3-dvidaRqi-SK867-5.4.128",
+        "purva": {"stem": "dvi", "vibhakti": 1},
+        "uttara": {"stem": "daRqa", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.128", "1.2.43"],
+        "surface": "द्विदण्डि",
+    },
+
+    # ── B4 samāsānta ādeśa (SK868/5.4.129 jānu→jñu) — pre-pass uttara-substitution ──
+    {
+        # प्रगते जानुनी यस्य = प्रज्ञुः (SK868/5.4.129 जानु→ज्ञु; u-stem).
+        "label": "B4-prajYuH-SK868-5.4.129",
+        "purva": {"stem": "pra", "vibhakti": 1},
+        "uttara": {"stem": "jAnu", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.129", "1.2.43"],
+        "surface": "प्रज्ञुः",
+    },
 ]

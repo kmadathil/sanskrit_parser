@@ -11120,3 +11120,103 @@
       - "?!samasanta_niziDDa"
   update:
     orp: [+samasanta_niziDDa]
+
+# ── B3 samāsānta ṣac / ap / ic (bahuvrihi_plan.md) — more affix families via the
+# generalized _insert_samasanta (?samasanta_Sac→Sac, _ap→ap_s, _ic→ic_s). The affix
+# adds a/i after the uttara; 6.4.144 (न-lopa) / 6.4.148 (a/i-lopa) fire on the stem.
+
+# SK852/5.4.113 सक्थ्यक्ष्णोः स्वाङ्गात्षच् — a svāṅga सक्थि / अक्षि final in a bahuvrīhi →
+# षच् → दीर्घसक्थः, जलजाक्षः (i-lopa 6.4.148: सक्थि+अ → सक्थ). Sets ?samasanta_Sac.
+- sutra: सक्थ्यक्ष्णोः स्वाङ्गात्षच्
+  id: 5.4.113
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "=sakTi"
+        - "=akzi"
+      - "?!samasanta_Sac"
+  update:
+    orp: [+samasanta_Sac]
+
+# SK854/5.4.115 द्वित्रिभ्यां ष मूर्ध्नः — द्वि/त्रि + मूर्धन् → ष (≡ ṣac segmentally) →
+# द्विमूर्धः, त्रिमूर्धः (न-lopa 6.4.144). Sets ?samasanta_Sac.
+- sutra: द्वित्रिभ्यां ष मूर्ध्नः
+  id: 5.4.115
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=dvi"
+      - "=tri"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=mUrDan"
+      - "?!samasanta_Sac"
+  update:
+    orp: [+samasanta_Sac]
+
+# SK855/5.4.117 अन्तर्बहिर्भ्यां च लोम्नः — अन्तर्/बहिस् + लोमन् → अप् → अन्तर्लोमः,
+# बहिर्लोमः (न-lopa 6.4.144). Sets ?samasanta_ap.
+- sutra: अन्तर्बहिर्भ्यां च लोम्नः
+  id: 5.4.117
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=antar"
+      - "=bahis"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=loman"
+      - "?!samasanta_ap"
+  update:
+    orp: [+samasanta_ap]
+
+# SK867/5.4.128 द्विदण्ड्यादिभ्यश्च — a dvidaṇḍi-ādi bahuvrīhi (a weapon "with two
+# sticks") → इच् → द्विदण्डि (a-lopa 6.4.148: दण्ड+इ → दण्डि). Sets ?samasanta_ic.
+- sutra: द्विदण्ड्यादिभ्यश्च
+  id: 5.4.128
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=dvi"
+      - "=tri"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=daRqa"
+      - "?!samasanta_ic"
+  update:
+    orp: [+samasanta_ic]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — बहुव्रीहिसमासः, Phase B4 (bahuvrihi_plan.md): samāsānta ĀDEŚA —
+# pre-pass uttara-substitution rules (rc→"" , r→"<new stem>", mirroring the tatpuruṣa
+# 6.3.46 महत्→महा pūrva-substitution). This slice covers the clean u-/consonant-stem
+# ādeśas; the n-stem (anaṅ dhanus→dhanvan, niṅ jāyā→jani) and pāda/kakud/gandha/hṛd
+# families are remaining B4 work — see generator_status.md.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK868/5.4.129 प्रसंभ्यां जानुनोर्ज्ञुः — प्र/सम् + जानु (final in a bahuvrīhi) → ज्ञु:
+# प्रगते जानुनी यस्य = प्रज्ञुः. Pre-pass uttara-substitution जानु→ज्ञु.
+- sutra: प्रसंभ्यां जानुनोर्ज्ञुः
+  id: 5.4.129
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=pra"
+      - "=sam"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=jAnu"
+  xform:
+    rc: str("")
+    r: str("jYu")
