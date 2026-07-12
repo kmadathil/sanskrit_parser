@@ -11302,3 +11302,33 @@
   xform:
     rc: str("")
     r: str("Danvan")
+
+# SK863/5.4.124 धर्मादनिच्केवलात् — a धर्म-final bahuvrīhi (after a KEVALA single pūrva)
+# takes अनिच् (धर्म→धर्मन्, n-stem) → कल्याणो धर्मोऽस्य = कल्याणधर्मा. Uttara-substitution
+# धर्म→धर्मन्; the n-stem declines to nom sg धर्मा (like सुधन्वा).
+- sutra: धर्मादनिच्केवलात्
+  id: 5.4.124
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=Darma"
+  xform:
+    rc: str("")
+    r: str("Darman")
+
+# SK884/5.4.146 ककुदस्यावस्थायां लोपः — the final of ककुद (final in a bahuvrīhi, age/
+# condition sense) is dropped → ककुद् (consonant stem): प्राप्तककुत् / प्राप्तककुद्
+# (8.4.56 वाऽवसाने). Uttara-substitution ककुद→ककुद्.
+- sutra: ककुदस्यावस्थायां लोपः
+  id: 5.4.146
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=kakuda"
+  xform:
+    rc: str("")
+    r: str("kakud")

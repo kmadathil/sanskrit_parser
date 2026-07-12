@@ -803,4 +803,22 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "5.4.132", "1.2.43"],
         "surface": "सुधन्वा",
     },
+    {
+        # कल्याणो धर्मोऽस्य = कल्याणधर्मा (SK863/5.4.124 अनिच्, धर्म→धर्मन् n-stem → धर्मा).
+        "label": "B4-kalyARaDarmA-SK863-5.4.124",
+        "purva": {"stem": "kalyARa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Darma", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.124", "1.2.43"],
+        "surface": "कल्याणधर्मा",
+    },
+    {
+        # अजातककुत् type = प्राप्तककुत् / प्राप्तककुद् (SK884/5.4.146 ककुद final-lopa; 8.4.56).
+        "label": "B4-prAptakakut-SK884-5.4.146",
+        "purva": {"stem": "prApta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kakuda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.146", "1.2.43"],
+        "surfaces": ["प्राप्तककुत्", "प्राप्तककुद्"],
+    },
 ]

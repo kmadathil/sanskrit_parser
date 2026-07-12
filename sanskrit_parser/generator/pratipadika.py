@@ -847,6 +847,10 @@ daRqa  = Pratipadika("daRqa",  "pum")    # दण्ड (stick) — द्वि
 UrDva  = Pratipadika("UrDva",  "pum")    # ऊर्ध्व (upward) — ऊर्ध्वज्ञुः pūrva (SK869/5.4.130)
 gandha = Pratipadika("gandha", "pum")    # गन्ध (smell) — सुगन्धिः (SK874/5.4.135 गन्ध final → i)
 hfdaya = Pratipadika("hfdaya", "napum")  # हृदय (heart) — सुहृत् (SK888/5.4.150 हृदय→हृद्)
+Darma  = Pratipadika("Darma",  "pum")    # धर्म — कल्याणधर्मा (SK863/5.4.124 अनिच्, धर्म→धर्मन् n-stem)
+jAyA   = Pratipadika("jAyA",   "strI", other_tags=["Ap"])  # जाया (wife) — युवजानिः (SK872/5.4.134 निङ्)
+kakuda = Pratipadika("kakuda", "napum")  # ककुद (hump) — अजातककुत् (SK884/5.4.146 ककुद final-lopa)
+yuvan  = Pratipadika("yuvan",  "pum")    # युवन् (young) — युवजानिः pūrva
 # ── Bahuvrīhi B4 (bahuvrihi_plan.md): samāsānta ādeśa uttaras (pre-pass substitution).
 jAnu  = Pratipadika("jAnu",  "napum")  # जानु (knee) — प्रज्ञुः (जानु→ज्ञु, SK868/5.4.129)
 # prasita / utsuka ("intent on / eager for") — the 2.3.44 yoga-adjectives. The
