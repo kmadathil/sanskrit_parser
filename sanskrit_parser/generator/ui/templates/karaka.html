@@ -154,6 +154,14 @@
         <span>show evaluation at each sūtra</span></label>
       <label class="sem-opt" style="font-size:.82rem;"><input type="checkbox" id="opt-sandhi">
         <span>join words with sandhi (संहिता) — omits per-word forms</span></label>
+      <label class="sem-opt" style="font-size:.82rem;">
+        <span><b>bahuvrīhi</b> — referent liṅga (exocentric, declines in the external referent):</span>
+        <select id="opt-referent-linga" style="margin-left:.4rem;">
+          <option value="">— (not a bahuvrīhi) —</option>
+          <option value="pum">puṁ (m.)</option>
+          <option value="strI">strī (f.)</option>
+          <option value="napum">napuṁ (n.)</option>
+        </select></label>
     </div>
 
     <button class="btn btn-primary" style="width:100%;" onclick="derive()">Derive →</button>
@@ -340,12 +348,13 @@ async function derive() {
   const tags = document.getElementById('opt-tags').checked;
   const ev   = document.getElementById('opt-eval').checked;
   const sandhi = document.getElementById('opt-sandhi').checked;
+  const referent_linga = document.getElementById('opt-referent-linga').value;
   const res = document.getElementById('results');
   res.innerHTML = '<div class="spin">Deriving…</div>';
   try {
     const r = await fetch('/api/karaka', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev, sandhi }) });
+      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev, sandhi, referent_linga }) });
     const data = await r.json();
     if (!r.ok || data.error) { res.innerHTML = `<div class="err">${data.error||'Error'}</div>`; return; }
     data.sandhi = sandhi;

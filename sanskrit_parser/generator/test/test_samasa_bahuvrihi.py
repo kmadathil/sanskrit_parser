@@ -161,3 +161,32 @@ def test_bahuvrihi_vibhakti_sweep(vib_n):
     got = _surface([Adya, purva, uttara, avasAna])
     expected = {_to_slp1(s) for s in _VIBHAKTI_SWEEP[vib_n]}
     assert got == expected, f"bahuvrīhi viBakti_{vib_n}: {got} != {expected}"
+
+
+# ── B-UI: the CLI --referent-linga path (cmd_line.prepare_bahuvrihi) ──────────────
+# Mirrors `sanskrit_generator -k <pūrva> 1 -k <uttara> 1 --samasa --referent-linga <L>`:
+# the --samasa loop tags each member ?samAsa_vivakza, then prepare_bahuvrihi adds the
+# bahuvrīhi intent + referent liṅga (+ strI_abs for a fem referent), and run_karaka
+# assembles [Adya, …members…, avasāna]. Proves the CLI composes the same forms.
+_CLI_CASES = [
+    (("pIta", "ambara"), "pum",   ["पीताम्बरः"]),
+    (("pIta", "ambara"), "strI",  ["पीताम्बरा"]),
+    (("pIta", "ambara"), "napum", ["पीताम्बरम्"]),
+    (("saha", "putra"),  "pum",   ["सपुत्रः", "सहपुत्रः"]),
+]
+
+
+@pytest.mark.parametrize("stems,linga,want", _CLI_CASES,
+                         ids=[f"{s[0]}-{s[1]}-{L}" for s, L, _ in _CLI_CASES])
+def test_cli_bahuvrihi(stems, linga, want):
+    from sanskrit_parser.generator.cmd_line import prepare_bahuvrihi
+    members = []
+    for stem in stems:
+        w = deepcopy(getattr(_pratipadika, stem))
+        w.setTag("vacana_1")
+        w.setTag("samAsa_vivakza")        # the --samasa loop
+        members.append(w)
+    words = prepare_bahuvrihi(members, linga)
+    got = _surface([Adya, *words, avasAna])   # run_karaka assembly (sandhi=True)
+    assert got == {_to_slp1(s) for s in want}, \
+        f"CLI {stems} referent {linga}: {got} != {want}"

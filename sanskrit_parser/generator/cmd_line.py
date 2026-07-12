@@ -54,6 +54,32 @@ def run_pp(s, prakriya, sutra_list, verbose=False, tag_display=False):
 # Kāraka sentence: assemble tagged participant nouns + verb/particle padas
 # (built by the -k/-w options) into one input list and run the engine. The
 # AntarangaPrakriya pre-pass assigns kāraka/vibhakti tags and inserts sups.
+def prepare_bahuvrihi(words, referent_linga):
+    """Tag the --samasa members as a BAHUVRĪHI (bahuvrihi_plan.md B0). The exocentric
+    compound declines in an EXTERNAL referent's liṅga (anyapadārtha, SK830/2.2.24), not
+    the uttara's. Marks every member ?bahuvrIhi_vivakza (the intent SK830/2.2.28/2.2.26
+    gate on) + a default prathamā vigraha viBakti_1; sets the referent liṅga on the
+    uttara (last member), preserving its vigraha femininity as ?uttara_strI (needed by
+    the B1 puṁvadbhāva). A strī referent appends strI_abs (ṭāp) so an a-stem uttara
+    feminises (पीताम्बर → पीताम्बरा). Returns the (possibly strI_abs-extended) word list."""
+    for w in words:
+        w.setTag("bahuvrIhi_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+    uttara = words[-1]
+    if uttara.hasTag("strI"):
+        uttara.setTag("uttara_strI")
+    for t in ("pum", "strI", "napum"):
+        if uttara.hasTag(t):
+            uttara.deleteTag(t)
+    uttara.setTag(referent_linga)
+    uttara.setTag(f"referent_{referent_linga}")
+    if referent_linga == "strI":
+        return list(words) + [deepcopy(strI_abs)]  # noqa: F405
+    return words
+
+
 def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_display=False):
     # A single Adya marks sentence start (added once). By default each word is
     # followed by its own avasAna (isolated per-word forms, no inter-word
@@ -476,6 +502,14 @@ def get_args(argv=None):
                              "Avyayībhāva: -w upa_avyaya samIpa -k kfzRa 1 --samasa → उपकृष्णम्. "
                              "Tatpuruṣa (pūrva carries a vigraha vibhakti vN): "
                              "-k rAjan 1 v6 -k puruza 1 --samasa → राजपुरुषः (declines normally)")
+    parser.add_argument("--referent-linga", dest="referent_linga",
+                        choices=["pum", "strI", "napum"], default=None,
+                        help="Compose the --samasa members as a BAHUVRĪHI: the exocentric "
+                             "compound declines in this EXTERNAL referent's liṅga (anyapadārtha, "
+                             "SK830/2.2.24), not the uttara's. Marks members ?bahuvrIhi_vivakza, "
+                             "sets the referent liṅga on the uttara (strI appends ṭāp via strI_abs). "
+                             "e.g. -k pIta 1 -k ambara 1 --samasa --referent-linga pum → पीताम्बरः; "
+                             "--referent-linga strI → पीताम्बरा; napum → पीताम्बरम्.")
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -516,6 +550,9 @@ def cmd_line():
             for w in args.karaka_words:
                 w.setTag("samAsa_vivakza")
             sandhi = True
+            if getattr(args, "referent_linga", None):
+                args.karaka_words = prepare_bahuvrihi(args.karaka_words,
+                                                      args.referent_linga)
         run_karaka(args.karaka_words, args.prakriya, sutra_list,
                    sandhi=sandhi, verbose=args.verbose,
                    tag_display=args.tag_display)

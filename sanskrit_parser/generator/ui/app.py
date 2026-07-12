@@ -1332,7 +1332,31 @@ def _collect_phon_steps(tree, enc, want_tags, want_eval):
     return steps
 
 
-def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
+def _apply_bahuvrihi(members, referent_linga):
+    """Tag built samāsa members as a BAHUVRĪHI (bahuvrihi_plan.md B0) — the exocentric
+    compound declines in an EXTERNAL referent's liṅga (anyapadārtha, SK830/2.2.24), not
+    the uttara's. Same tag contract as cmd_line.prepare_bahuvrihi: ?bahuvrIhi_vivakza +
+    a default prathamā viBakti_1 on each member, the referent liṅga on the uttara (last
+    member; its native ?strI preserved as ?uttara_strI for the B1 puṁvadbhāva). Returns
+    True when the caller must append strI_abs (ṭāp) after the uttara (fem referent)."""
+    for w in members:
+        w.setTag("bahuvrIhi_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+    uttara = members[-1]
+    if uttara.hasTag("strI"):
+        uttara.setTag("uttara_strI")
+    for t in ("pum", "strI", "napum"):
+        if uttara.hasTag(t):
+            uttara.deleteTag(t)
+    uttara.setTag(referent_linga)
+    uttara.setTag(f"referent_{referent_linga}")
+    return referent_linga == "strI"
+
+
+def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False,
+               referent_linga=None):
     """Build the tagged vākya, run the engine, and read back per-word kāraka/
     vibhakti, the vibhāṣā branch sentences, the fired kāraka-sutra trace, and the
     phonological (non-kāraka) sutra steps (with optional per-step tags/eval).
@@ -1366,6 +1390,14 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False):
             pl.append(avasAna)
     if sandhi:
         pl.append(avasAna)
+    # Bahuvrīhi (referent_linga set): tag the samāsa members exocentric and, for a fem
+    # referent, append strI_abs (ṭāp) after the uttara (before the trailing avasāna) so
+    # an a-stem uttara feminises (पीताम्बर → पीताम्बरा). Same contract as the CLI.
+    if referent_linga:
+        members = [o for o in pl if getattr(o, "hasTag", None)
+                   and o.hasTag("samAsa_vivakza") and o.hasTag("prAtipadika")]
+        if members and _apply_bahuvrihi(members, referent_linga):
+            pl.insert(len(pl) - 1, deepcopy(strI_abs))
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl), capture_eval=want_eval)
     p.execute()
 
@@ -1732,6 +1764,10 @@ def api_karaka():
     want_tags = bool(body.get("tags", False))
     want_eval = bool(body.get("eval", False))
     want_sandhi = bool(body.get("sandhi", False))
+    # Bahuvrīhi: an exocentric compound declining in this external referent's liṅga.
+    referent_linga = body.get("referent_linga") or None
+    if referent_linga not in (None, "pum", "strI", "napum"):
+        return jsonify({"error": f"Bad referent_linga {referent_linga!r}"}), 400
 
     if not sentence:
         return jsonify({"error": "Empty sentence"}), 400
@@ -1739,7 +1775,7 @@ def api_karaka():
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
     try:
         result = run_karaka(sentence, enc, want_tags=want_tags, want_eval=want_eval,
-                            sandhi=want_sandhi)
+                            sandhi=want_sandhi, referent_linga=referent_linga)
     except (KeyError, ValueError) as exc:
         return jsonify({"error": f"Sentence error: {exc}"}), 400
     except Exception as exc:  # noqa: BLE001
