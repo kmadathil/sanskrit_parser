@@ -18,6 +18,13 @@ samāsānta-affix cluster** (SK832–897 / 5.4.73–160, 7.4.13–15, 8.4.3/28, 
 `tatpuruza_plan.md` (T0–T5) and `karaka_plan.md` (K0–K7) structure. Each phase below
 ends with a self-contained *Session prompt*.
 
+> **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
+> every affix family that declines cleanly; the rest deferred on known engine gaps (see
+> §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
+> `test/test_samasa_bahuvrihi.py` = 39 cases; full generator suite 8188 green. The
+> Phases (§3) keep the original forward-looking Session prompts as a historical record —
+> **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
+
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
 compound is **exocentric**: it declines in the **external referent's gender**
@@ -132,9 +139,86 @@ base first.
 
 ---
 
+## 2a. Implementation status (as-built, 2026-07-11)
+
+Built sequentially on `generator` (not parallel worktrees). Commits: B0 `00a9b11`,
+B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, B4-ext
+`901965e`, B3/B4-more `0327301`, B-UI `45f435b`. Tests: `test/test_samasa_bahuvrihi.py`
+(39 cases: structure/fired/surface + gender & vibhakti sweeps + CLI smoke), cases in
+`test/samasa_list.py :: samasa_bv_tests`. Full suite 8188 green.
+
+### Files touched (the whole prakaraṇa)
+- `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
+  pre-pass rules appended after the tatpuruṣa block; plus a `?!bahuvrIhi_saha` guard
+  added to the avyayībhāva **6.3.81**.
+- `antaranga_prakriya.py` — **generalized `_insert_samasanta`**: a class-level
+  `_SAMASANTA_AFFIXES = {"samasanta_TaC": wac, "samasanta_kap": kap, "samasanta_Sac":
+  Sac, "samasanta_ap": ap_s, "samasanta_ic": ic_s}` map; the method inserts whichever
+  affix the uttara's `?samasanta_*` marker names. Adding a family = one map entry.
+- `pratyaya.py` — new samāsānta affixes `Sac` (षच्), `ap_s` (अप्), `ic_s` (इच्); `wac`/`kap` reused.
+- `pratipadika.py` — B0–B4 stems (pIta/ambara/prApta/udaka; dIrGa/jaNGa/BArya/brAhmaRI/
+  dattA/pAcikA/sukeSI; saha reused, dakziRa_dik; uras/vyUQa/mUrDan/loman/daRqa;
+  UrDva/gandha/hfdaya/Darma/kakuda; jAyA/yuvan defined for the deferred niṅ).
+- `cmd_line.py` — `--referent-linga` + `prepare_bahuvrihi(words, linga)`.
+- `ui/app.py` — `/api/karaka` `referent_linga` → `run_karaka(..., referent_linga)` →
+  `_apply_bahuvrihi`; `ui/templates/karaka.html` — referent-liṅga `<select>`.
+
+### The ONE new mechanism — anyapadārtha gender (B0)
+2.2.23+2.2.24 are **fused into a single `id: 2.2.24` rule** (the engine's `sutra_dict`
+forbids duplicate ids, so the adhikāra can't be its own rule). The referent-gender lock
+is **folded into that same rule** (`orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]`):
+the composer overrides the uttara's native gender to `?referent_pum|strI|napum` and the
+rule pins it, so `join_objects` (`paninian_object.py:159–164`) propagates the referent
+gender instead of the uttara's. Intent tag = **`?bahuvrIhi_vivakza`** (the composer/CLI
+sets it; the uttara is NOT viBakti-constrained — it carries the referent's external case,
+like the tatpuruṣa uttara). A **fem referent appends `strI_abs`** (ṭāp) so an a-stem
+uttara feminises (पीताम्बर→पीताम्बरा). Gender sweep पीताम्बरः/पीताम्बरा/पीताम्बरम् + masc vibhakti
+sweep prove exocentricity.
+
+### Per-phase as-built + deviations from the original plan
+| Phase | Done | Real detail / deviation |
+|---|---|---|
+| **B0** ✅ | SK829/830 fused | referent-gender lock folded into 2.2.24; `?bahuvrIhi_vivakza` intent; uttara not viBakti-gated; fem needs `strI_abs` |
+| **B1** ✅ | 6.3.34 + 6.3.37/38/40/41 | saṁjñā-marker model (like tatpuruṣa 6.3.42); composer supplies the masc form; **the vigraha-femininity of the uttara is carried by a stable `?uttara_strI` tag** (its native `?strI` is overwritten by the B0 referent override); inherently-fem ā-stem uttaras modelled as an a-stem BASE (jaNGa/BArya) + `strI_abs`. Deferred: 6.3.35/36 (affix-context), 6.3.39 (taddhita-vṛddhi) |
+| **B2** ✅ | 2.2.28 saha + 6.3.82/83; 2.2.26 diś | saha is indeclinable → its own formation rule (2.2.24 needs `?viBakti_1`); tags the saha pūrva `?bahuvrIhi_saha` so **6.3.82 (not the avyayībhāva 6.3.81) handles saha→sa** — 6.3.81 gained a `?!bahuvrIhi_saha` guard. saha needs a sup present (`has_viBakti`) for 6.3.82's `rp ?sup`. **Deviation from plan:** 2.2.25 (saṅkhyā→ḍac), 2.2.27 (sarūpa→ic), 2.2.35–37 (word order) deferred — see below |
+| **B3** ✅ (families) | kap 5.4.151/154/155; ṣac 5.4.113/115; ap 5.4.117; ic 5.4.128 | **generalized `_SAMASANTA_AFFIXES`** is the enabler. 5.4.154 gated on composer `?Seza_kap` (else it kap-ifies every bahuvrīhi). Cases use a **neuter referent** where the masc s-stem 6.4.14 dīrgha would be needed (बहुयशस्कम्/बहुयशः, not बहुयशाः) |
+| **B4** ✅ (families) | jñu 5.4.129/130; anaṅ 5.4.132; anic 5.4.124; gandha→id 5.4.135; pāda 5.4.140; kakud 5.4.146; hṛd 5.4.150 | pre-pass uttara-substitution (`rc→""`, `r→"<stem>"`, mirroring tatpuruṣa 6.3.46). **Tractability boundary discovered** — see below |
+| **B-UI** ✅ | CLI + composer API + frontend | `prepare_bahuvrihi`/`_apply_bahuvrihi` share the B0 tag contract; `referent_linga=""` is backward-compatible (avyayībhāva/tatpuruṣa unaffected). **Deviation:** the plan said "no engine changes" — true; but the UI needed a new `referent_linga` request field + `_apply_bahuvrihi` helper, not just presets |
+
+### The samāsānta-ādeśa tractability boundary (why the rest is deferred)
+A pre-pass uttara-substitution changes the stem but leaves the **already-inserted sup**
+(inserted before the pre-pass) in place. So:
+- **Works cleanly** — substitution to an **n-stem** (धनुस्→धन्वन्, धर्म→धर्मन्) or a
+  **consonant-final** stem (हृदय→हृद्, पाद→पाद्, ककुद→ककुद्): the existing `su` morpheme +
+  the main-scan class rules produce the right nom sg (सुधन्वा, कल्याणधर्मा, सुहृत्, द्विपात्;
+  8.4.56 वाऽवसाने gives the द्/त् pairs).
+- **Deferred (needs a sup re-insert)** — substitution that turns a **feminine ā-stem into
+  an i-/a-stem** (जाया→जानि niṅ 5.4.134, नासिका→नस अच् 5.4.118/119): the stale ā-stem sup
+  survives → the surface loses its nom-sg visarga (जानि/प्रनस); अच् additionally needs the
+  8.4.3/28 **ṇatva to fire across the compound** (प्रनस, not प्रणसः).
+
+### Remaining work — each needs a small ENGINE step, not more YAML
+- **Sup re-insertion after a class-changing substitution** (a `_swap_sups`-style post-pass
+  keyed on a `?resup` marker the ādeśa sets) → unlocks **niṅ 5.4.134** and the **अच्
+  नासिका→नस् family (5.4.118–121)** together (+ compound ṇatva for अच्).
+- **6.4.14 dīrgha under the gender-override** → unlocks **asic 5.4.122** (अप्रजाः) and the
+  masc s-stem form बहुयशाः.
+- **दतृ न्-declension** → **datṛ 5.4.141** (द्विदन्; engine currently gives द्विदत्).
+- **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
+- **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).
+- **5.4.133** dhanus-saṁjñā fork शतधनुः — the nitya 5.4.132 still fires in the vibhāṣā
+  skip branch (needs 5.4.133 to override 5.4.132 in BOTH branches).
+- Minor कप् (5.4.152/153/156/157/159/160, 7.4.13–15), अप् 5.4.116 (pūraṇī pl), gandha
+  5.4.136/137 (same गन्धि surface as 5.4.135, needs सूप/पद्म stems + sense tags).
+- **Formation deferrals (physical reorder):** 2.2.25 saṅkhyā (→ḍac), 2.2.27 sarūpa (→ic),
+  2.2.35–37 word order — all need the vyadhikaraṇa-bahuvrīhi + physical **pūrva-nipāta
+  2.2.30** engine step (the same mechanism tatpuruṣa deferred); B1 6.3.35/36/39.
+
+---
+
 ## 3. Phases
 
-### Phase B0 — Spine + bahuvrīhi saṁjñā + anyapadārtha gender + core formation
+### Phase B0 — Spine + bahuvrīhi saṁjñā + anyapadārtha gender + core formation — ✅ DONE (`00a9b11`; see §2a)
 
 The foundational slice that proves the **exocentric, referent-gender** compound.
 - **SK829 / 2.2.23 शेषो बहुव्रीहिः** — the adhikāra. No standalone rule needed; folded
@@ -192,7 +276,7 @@ SK-first — YAML `# 830: अनेकमन्यपदार्थे (SK830 /
 worksteal from generator/test). Update generator_status.md.
 ```
 
-### Phase B1 — Puṁvadbhāva (SK831,836–842 / 6.3.34–41)
+### Phase B1 — Puṁvadbhāva (SK831,836–842 / 6.3.34–41) — ✅ DONE (`b8690af`; 6.3.35/36/39 deferred; see §2a)
 
 Feminine pūrvapada → masculine form in a samānādhikaraṇa bahuvrīhi. Needs feminine
 stems that carry a **bhāṣitapuṁska** (corresponding-masculine) form + a not-ūṅ marker.
@@ -227,7 +311,7 @@ test_samasa_bahuvrihi.py, labels dual-numbered SK-first per §0 (e.g.
 generator_status.md; defer the priyādi-gaṇa long tail with a Skipped row if not reached.
 ```
 
-### Phase B2 — Additional formation types + word order
+### Phase B2 — Additional formation types + word order — ✅ DONE for saha + diś (`0cbac07`); 2.2.25/2.2.27/2.2.35–37 deferred (see §2a)
 
 - **SK843 / 2.2.25 संख्यया…**: indeclinable / āsanna / adūra / adhika + saṅkhyā →
   bahuvrīhi (उपदशाः "about ten"). Feeds ḍac in B3.
@@ -261,7 +345,7 @@ comments dual-numbered SK-first per §0 (e.g. "B2-saputraH-SK848-2.2.28"). Full 
 green. Update generator_status.md with the deferrals.
 ```
 
-### Phase B3 — Samāsānta: affix insertion (full)
+### Phase B3 — Samāsānta: affix insertion — ✅ DONE for kap/ṣac/ap/ic (`04de0a1`,`3f54b6f`); mechanism generalized; रest deferred (see §2a)
 
 All bahuvrīhi samāsānta rules that **add** an affix, via a generalized
 `?samasanta_TaC`-style marker + `_insert_samasanta` (extend the marker to carry the
@@ -318,7 +402,7 @@ SK-first per §0 (e.g. "B3-bahuyaSaskaH-SK891-5.4.154"). Full suite green (watch
 avyayībhāva/tatpuruṣa samāsānta tests). Update generator_status.md.
 ```
 
-### Phase B4 — Samāsānta: ādeśa / lopa / nipātana (full)
+### Phase B4 — Samāsānta: ādeśa / lopa / nipātana — ✅ DONE for jñu/anaṅ/anic/gandha/pāda/kakud/hṛd (`3f54b6f`,`901965e`,`0327301`); ā→i/a-stem cases deferred (see §2a)
 
 The samāsānta rules that **substitute or delete** part of the uttara stem (not
 affix-insertion). Implement as `bahiranga: -1` pre-pass uttara-substitution rules
@@ -364,7 +448,7 @@ label + YAML comment dual-numbered SK-first per §0 (e.g. "B4-prajYuH-SK868-5.4.
 Full suite green. Update generator_status.md.
 ```
 
-### Phase B-UI — Vākya Composer + CLI
+### Phase B-UI — Vākya Composer + CLI — ✅ DONE (`45f435b`; see §2a)
 
 - **CLI** (`cmd_line.py`): `-B` / `--bahuvrihi` already tags a member; add a
   `--referent-linga` (and reuse `--samasa`) so the exocentric gender is supplied on the
@@ -427,10 +511,12 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
    / kāraka / strī-block regressions** (the new rules are gated on `?bahuvrIhi` and the
    `?referent_*` tags; the referent-gender lock must not perturb the tatpuruṣa
    `join_objects` "prefer last" path).
-2. **CLI smoke** — `sanskrit_generator -k pIta 1 -B ambara --samasa --referent-linga
-   pum` → पीताम्बरः, then a gender + vibhakti sweep.
-3. **UI** — the Vākya Composer renders the bahuvrīhi `compounds` block with a
-   referent-driven paradigm; gallery regression view stays green.
+2. **CLI smoke** (as-built) — `-k pIta 1 -k ambara 1 --samasa --referent-linga pum` →
+   पीताम्बरः (strI → पीताम्बरा, napum → पीताम्बरम्); `-k saha 1 -k putra 1 --samasa
+   --referent-linga pum` → सपुत्रः/सहपुत्रः. (The uttara is a `-k … vN` member, not `-B`.)
+3. **UI** — `/api/karaka` with `referent_linga` renders the bahuvrīhi `compounds` block
+   (`type: bahuvrIhi`); the `karaka.html` referent-liṅga dropdown drives it. Verified via
+   the Flask test client; avyayībhāva उपकृष्णम् unregressed.
 4. **Status doc** — update `generator/generator_status.md`: add the bahuvrīhi SK rows
    (829–900) to the implemented table, add Skipped rows for the deferred physical
    reorder (2.2.30/35–37) and any priyādi/long-tail gaps, update the Last/Next header
@@ -438,26 +524,32 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 
 ---
 
-## 6. Deliverables
+## 6. Deliverables — ✅ delivered (see §2a for the full as-built account)
 
-- This doc, `generator/bahuvrihi_plan.md`, with per-phase copy-paste **Session prompts**
-  (as in `karaka_plan.md` / `tatpuruza_plan.md`) so B1–B4 can be run in parallel
-  worktrees and merged with `/gen-merge`.
-- New bahuvrīhi rule block in `sutras_antaranga.yaml` (B0–B4, keyed `bahiranga: -1`).
-- New **referent-gender override** pre-pass rule (the one new mechanism) + composer
-  `referent_linga` support.
-- Generalized `?samasanta_*` marker so `_insert_samasanta` handles all bahuvrīhi
-  affix families.
-- `test/test_samasa_bahuvrihi.py` + bahuvrīhi cases in `test/samasa_list.py`.
-- CLI `--referent-linga` + UI bahuvrīhi paradigm rendering + gallery presets.
-- `generator_status.md` updates (Implemented + Skipped rows carry SK and id columns).
+- ✅ Bahuvrīhi rule blocks in `sutras_antaranga.yaml` (B0–B4, `bahiranga: -1`).
+- ✅ **Anyapadārtha referent-gender** mechanism (the one new mechanism), folded into the
+  fused 2.2.24 rule + the composer's `?referent_*` override.
+- ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
+  `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
+  ādeśa families use pre-pass uttara-substitution instead).
+- ✅ `test/test_samasa_bahuvrihi.py` (39 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
+  (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
+- ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped
+  Skipped rows with the precise engine-blocker for each deferral).
+- This doc keeps the per-phase **Session prompts** as a historical record; **§2a is the
+  authoritative as-built account**.
 
 **Acceptance gate (per §0):** dual SK+Ashtadhyayi numbering, SK-first, is present in
 this doc's prose/tables, every `sutras_antaranga.yaml` `# <N>:` block comment, every
-`test/samasa_list.py` case `label`, and the `generator_status.md` rows. A phase is not
-complete until its sūtras are dual-numbered in all four places.
+`test/samasa_list.py` case `label`, and the `generator_status.md` rows — ✅ upheld.
 
-**Known deferrals (record in status):** physical pūrva-nipāta (2.2.30 and the reorder
-effect of SK898–900 / 2.2.35–37 — tagging + input-order validation only); accent-gated
-bahuvrīhi rules (SK 508/509 antodātta, already deferred); any priyādi / āhitāgnyādi /
-gaṇa long tails not reached in B1/B2.
+**Deferred (all recorded in `generator_status.md`, each with its engine blocker — see
+§2a for detail):** the ā-stem→i/a-stem samāsānta ādeśas (niṅ 5.4.134, अच् नासिका→नस्
+5.4.118–121) need **sup re-insertion after a class-changing substitution** (+ compound
+ṇatva for अच्); asic 5.4.122 + the masc बहुयशाः need **6.4.14 dīrgha under the
+gender-override**; datṛ 5.4.141 needs the **दतृ न्-declension**; reciprocal ic 5.4.127
+needs **reduplication**; ḍac 5.4.73 is **accent-only**; the formation deferrals
+(2.2.25/2.2.27/2.2.35–37) + B1 6.3.35/36/39 need the **physical pūrva-nipāta (2.2.30)**
+/ affix-context machinery; accent-gated SK 508/509 remain deferred. **None require more
+YAML — each is a small, well-scoped engine step.**
