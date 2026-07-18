@@ -1693,7 +1693,7 @@ viBakti["UrumAtrI"] = [
     ["ऊरुमात्रि", "ऊरुमात्र्यौ", "ऊरुमात्र्यः"],
 ]
 
-prAtipadika["paYcatayI"] = [paYca, tayap, strI_abs]   # noqa: F405
+prAtipadika["paYcatayI"] = [paYcan, tayap, strI_abs]   # noqa: F405  (पञ्चन्→पञ्च)
 viBakti["paYcatayI"] = [
     ["पञ्चतयी", "पञ्चतय्यौ", "पञ्चतय्यः"],
     ["पञ्चतयीम्", "पञ्चतय्यौ", "पञ्चतयीः"],
@@ -1953,7 +1953,7 @@ viBakti["triPalA"] = [
 # items 19–20. aśva has only ?ajAdi (no ?ajAdi_in_Dvigu), so 4.1.4.2 does
 # NOT fire and SK479 ṅīp wins → पञ्चाश्वी (nadī-type). No ṇatva in gen pl
 # पञ्चाश्वीनाम् — no r/ṛ/ṣ in the stem to trigger 8.4.1.
-prAtipadika["paYcASvI"] = [as_purva_pada(paYca), luk_sup,
+prAtipadika["paYcASvI"] = [as_purva_pada(paYcan), luk_sup,
                            in_context(in_compound(aSva), "dvigu"),
                            strI_abs]   # noqa: F405
 viBakti["paYcASvI"] = [
@@ -1972,7 +1972,7 @@ viBakti["paYcASvI"] = [
 # luk_tadDita is the empty taddhita-luk pratyaya; ?luk_tadDita rides through
 # the aṅga-gated propagation in paninian_object.join_objects.
 # Vasu's example पञ्चाश्वा: pañca+aśva (non-parimāṇa) → SK480 → ṭāp.
-prAtipadika["paYcASvA"] = [as_purva_pada(paYca), luk_sup,
+prAtipadika["paYcASvA"] = [as_purva_pada(paYcan), luk_sup,
                            in_context(in_compound(aSva), "dvigu"),
                            luk_tadDita, strI_abs]   # noqa: F405
 viBakti["paYcASvA"] = [

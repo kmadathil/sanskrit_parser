@@ -233,7 +233,7 @@ vrAja = Pratipadika("vrAja", "pum")
 # ūru+dvayasac/daghnac/mātrac, pañca+tayap, gārga (garga+yañ). indra/yad/dfS exist.
 utsa  = Pratipadika("utsa",  "pum")
 Uru   = Pratipadika("Uru",   "pum", other_tags=["Uru_uttara"])  # SK525 ūru uttara-pada (read in-window by 4.1.70)
-paYca = Pratipadika("paYca", "pum")
+# (पञ्च: use paYcan — the न्-final saṅkhyā stem; its न् drops via 8.2.7 once a sup luks.)
 garga = Pratipadika("garga", "pum")
 # vidyA: SK472 negative test base — विद्या + अण् → वैद्य (the 'ya' is base-internal,
 # NOT a taddhita ya), so ṅīp gives वैद्यी (no ya-lopa), cf. SC Vasu.

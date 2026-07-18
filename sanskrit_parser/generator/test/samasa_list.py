@@ -410,7 +410,7 @@ samasa_tp_tests = [
         # पञ्च गावः (समाहारे) → पञ्चगवम्. 5.4.92 गोरतद्धितलुकि: go-final → ṬaC (गो+अ→गव);
         # 2.4.1 द्विगुरेकवचनम्: samāhāra → napuṁsaka sg (nom=acc अम्).
         "label": "T2-paYcagavam-SK731-2.4.1",
-        "purva": {"stem": "paYca", "vacana": 1, "vivakza": True, "tags": ["saMKyA"]},
+        "purva": {"stem": "paYcan", "vacana": 1, "vivakza": True, "tags": ["saMKyA"]},
         "uttara": {"stem": "go", "vacana": 1, "vivakza": True, "tags": ["samAhAra"]},
         "fired": ["2.1.52", "2.4.1", "5.4.92", "1.2.43", "2.4.26"],
         "surface": "पञ्चगवम्",

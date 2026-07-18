@@ -995,7 +995,7 @@ saṁjñā/direction + fired sutras); `-a` (the existing trailing-avasāna optio
 | Uru_dvayasI | f | dvayasac (SK470) | [Uru, dvayasac, strI_abs]; ṅīp → ऊरुद्वयसी |
 | UrudaGnI | f | daghnac (SK470) | [Uru, daGnac, strI_abs]; ṅīp → ऊरुदघ्नी |
 | UrumAtrI | f | mātrac (SK470) | [Uru, mAtrac, strI_abs]; ṅīp → ऊरुमात्री (gen pl ṇatva → ऊरुमात्रीणाम्) |
-| paYcatayI | f | tayap (SK470) | [paYca, tayap, strI_abs]; ṅīp → पञ्चतयी |
+| paYcatayI | f | tayap (SK470) | [paYcan, tayap, strI_abs]; ṅīp → पञ्चतयी |
 | yAdfSI | f | kañ (SK470, reuses kaY) | [yad, su, in_compound(dfS), kaY, strI_abs]; ṅīp → यादृशी |
 | gArgI | f | yañ (SK471 + SK472) | [garga, yaY_t, strI_abs]; ṅīp then 6.4.150 ya-lopa → गार्गी |
 | vEdyI | f | SK472 negative (?tadDita_ya guard) | [vidyA, aR_t, strI_abs]; base-internal 'y' (विद्या→वैद्य) NOT elided → वैद्यी (य retained: वैद्यी/वैद्य्यौ), not वैदी |
@@ -1011,8 +1011,8 @@ saṁjñā/direction + fired sutras); `-a` (the existing trailing-avasāna optio
 | trilokI | f | Dvigu samāsa (SK479) — exercises new ?dvigu tag | [as_purva_pada(tri), luk_sup, in_context(in_compound(loka), "dvigu"), strI_abs]; ?dvigu propagates through join_objects() (paninian_object.py allowlist, analogous to ?bahuvrIhi) → SK479 ṅīp → त्रिलोकी; gen pl त्रिलोकीनाम् (l blocks 8.4.1 ṇatva) |
 | tryanIkA | f | Dvigu samāsa, ?ajAdi_in_Dvigu uttara-pada → ?dvigu **overridden** (4.1.4.2) | [as_purva_pada(tri), luk_sup, in_context(in_compound(anIka), "dvigu"), strI_abs]; ?ajAdi_in_Dvigu propagates from anIka via samāsa-gated `_propagate(last, ["ajAdi", "ajAdi_in_Dvigu"])`; 4.1.4.2 overrides SK479 → ṭāp → त्र्यनीका (ramā-type). Gen pl त्र्यनीकानाम् — y blocks ṇatva |
 | triPalA | f | Dvigu samāsa with ?ajAdi_in_Dvigu (Vasu's exact example) | [as_purva_pada(tri), luk_sup, in_context(in_compound(Pala), "dvigu"), strI_abs]; same mechanism as tryanIkA → त्रिफला. Gen pl त्रिफलानाम् — l blocks ṇatva |
-| paYcASvI | f | SK479 ṅīp on samāhāra-Dvigu of aśva (Vasu/SK on SK480) | [as_purva_pada(paYca), luk_sup, in_context(in_compound(aSva), "dvigu"), strI_abs]; aśva has ?ajAdi (gaṇa item 5) but NOT ?ajAdi_in_Dvigu — so 4.1.4.2 doesn't fire and SK479 ṅīp wins → पञ्चाश्वी. Gen pl पञ्चाश्वीनाम् — no r/ṛ/ṣ in stem, no ṇatva |
-| paYcASvA | f | SK480 Dvigu+tadDita-luk non-parimāṇa → ṭāp | [as_purva_pada(paYca), luk_sup, in_context(in_compound(aSva), "dvigu"), luk_tadDita, strI_abs] → पञ्चाश्वा via SK480 niṣedha (note: 4.1.4.2 also doesn't fire here since aSva lacks ?ajAdi_in_Dvigu, so SK480 is the sole path) |
+| paYcASvI | f | SK479 ṅīp on samāhāra-Dvigu of aśva (Vasu/SK on SK480) | [as_purva_pada(paYcan), luk_sup, in_context(in_compound(aSva), "dvigu"), strI_abs]; aśva has ?ajAdi (gaṇa item 5) but NOT ?ajAdi_in_Dvigu — so 4.1.4.2 doesn't fire and SK479 ṅīp wins → पञ्चाश्वी. Gen pl पञ्चाश्वीनाम् — no r/ṛ/ṣ in stem, no ṇatva |
+| paYcASvA | f | SK480 Dvigu+tadDita-luk non-parimāṇa → ṭāp | [as_purva_pada(paYcan), luk_sup, in_context(in_compound(aSva), "dvigu"), luk_tadDita, strI_abs] → पञ्चाश्वा via SK480 niṣedha (note: 4.1.4.2 also doesn't fire here since aSva lacks ?ajAdi_in_Dvigu, so SK480 is the sole path) |
 | dvibistA | f | SK480 bistāḍi arm | [as_purva_pada(dvi), luk_sup, in_context(in_compound(bista), "dvigu"), luk_tadDita, strI_abs]; ?bistAdi tag on bista → SK480 second arm fires → ṭāp → द्विबिस्ता |
 | dvyAcitA | f | SK480 bistāḍi arm (napum uttara-pada, yan sandhi) | [as_purva_pada(dvi), luk_sup, in_context(in_compound(Acita), "dvigu"), luk_tadDita, strI_abs]; dvi+A → dvyA (yan sandhi) → द्व्याचिता |
 | dvikambalyA | f | SK480 bistāḍi arm | [as_purva_pada(dvi), luk_sup, in_context(in_compound(kambalya), "dvigu"), luk_tadDita, strI_abs] → द्विकम्बल्या |

@@ -74,7 +74,7 @@ from sanskrit_parser.generator.pratipadika import (     # noqa: E402
     # SK463 ka-pratyaya stem (asuwapaH demo) + raw pieces (bahuvrIhi propagation)
     parivrAjaka, pari, vrAja,
     # SK470/471 taddhita-ṅīp test bases
-    indra, utsa, paYca, garga,
+    indra, utsa, garga,
     vidyA, kuru, car, suparRA, akza, lavaRa,
     # SK476 (lohitādi) ṣpha test base
     lohita,
@@ -243,7 +243,7 @@ _bahuparivrAjaka_strI_cpd = [as_purva_pada(bahu), as_purva_pada(pari), luk_sup,
 # SK470/471 (4.1.15/16) taddhita-ṅīp demos — a-final taddhita stems → ṅīp (nadī-type)
 _aindra_strI_cpd = [indra, aR_t, strI_abs]            # SK470 aṇ → ऐन्द्री
 _autsa_strI_cpd  = [utsa, aY_t, strI_abs]             # SK470 añ → औत्सी
-_paYcatayI_cpd   = [paYca, tayap, strI_abs]           # SK470 tayap → पञ्चतयी
+_paYcatayI_cpd   = [paYcan, tayap, strI_abs]          # SK470 tayap → पञ्चतयी (पञ्चन्→पञ्च)
 _yAdfSI_cpd      = [yad, su, in_compound(dfS), kaY, strI_abs]  # SK470 kañ → यादृशी
 _gArgI_cpd       = [garga, yaY_t, strI_abs]           # SK471+SK472 yañ → गार्गी
 _kurucarI_cpd    = [as_purva_pada(kuru), luk_sup, in_compound(car), wac, strI_abs]  # SK470 ṭiṭ → कुरुचरी
