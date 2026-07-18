@@ -761,8 +761,9 @@ samasa_bv_tests = [
     },
     {
         # पञ्चाङ्गुलयो यस्य दारु = पञ्चाङ्गुलम् (SK853/5.4.114 अङ्गुलेर्दारुणि षच्; दारु sense, n.).
+        # पञ्चन् (the number stem) → पञ्च: its final न् drops (8.2.7) once the pūrva sup luks.
         "label": "B3-paYcANgulam-SK853-5.4.114",
-        "purva": {"stem": "paYca", "vacana": 1, "vibhakti": 1},
+        "purva": {"stem": "paYcan", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "aNguli", "vacana": 1, "vibhakti": 1, "tags": ["dAru"]},
         "referent_linga": "napum",
         "fired": ["2.2.24", "5.4.114", "1.2.43"],
