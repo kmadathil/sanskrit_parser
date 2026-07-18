@@ -797,7 +797,7 @@ tAmra  = Pratipadika("tAmra", "pum")     # copper (SK514 counter ताम्र
 vidyamAna = Pratipadika("vidyamAna", "pum")  # existing (SK513 विद्यमाननासिका pūrva)
 mati = Pratipadika("mati", "strI")
 Bakti = Pratipadika("Bakti", "strI")   # भक्ति f. (short-i, like mati) — हरये रोचते भक्तिः (SK571; bhakti = kartṛ → prathamā भक्तिः)
-lakzmI = Pratipadika("lakzmI", "strI")  # No NI
+lakzmI = Pratipadika("lakzmI", "strI", other_tags=["uras_praBfti"])  # No NI; उरःप्रभृति (5.4.151)
 strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 kumArI =  Pratipadika("kumArI", "strI", other_tags=["NI"])
@@ -837,9 +837,12 @@ uttara_dik = Pratipadika("uttara", "pum", other_tags=["dikSabda", "sarvanAma"])
 dakziRa_dik = Pratipadika("dakziRa", "pum", other_tags=["dikSabda", "sarvanAma"])
 # ── Bahuvrīhi B3 (bahuvrihi_plan.md): samāsānta कप् (SK889/5.4.151, SK891/5.4.154). The
 # affix is inserted by the generalized _insert_samasanta (?samasanta_kap → kap).
+# उरःप्रभृति gaṇa (5.4.151 कप्): उरस्, सर्पिस्, पयस्, लक्ष्मी (tagged ?uras_praBfti here);
+# the ekavacanānta members पुंस्/अनड्वाह्/नौ are gaṇa members not yet added as stems.
 uras  = Pratipadika("uras",  "napum", other_tags=["uras_praBfti"])  # उरस् (chest, s-final) — व्यूढोरस्कः
 vyUQa = Pratipadika("vyUQa", "pum")   # व्यूढ (broad) — व्यूढोरस्क pūrva
 # samāsānta ṣac/ap/ic uttaras (SK852/5.4.113, SK854/5.4.115, SK855/5.4.117, SK867/5.4.128).
+aNguli = Pratipadika("aNguli", "strI")   # अङ्गुलि (finger, i-stem) — पञ्चाङ्गुलम् (ṣac; i-lopa 6.4.148)
 mUrDan = Pratipadika("mUrDan", "pum")    # मूर्धन् (head, n-stem) — द्विमूर्धः (ṣac; न-lopa 6.4.144)
 loman  = Pratipadika("loman",  "napum")  # लोमन् (hair, n-stem) — अन्तर्लोमः (ap; न-lopa 6.4.144)
 daRqa  = Pratipadika("daRqa",  "pum")    # दण्ड (stick) — द्विदण्डि (ic; a-lopa 6.4.148)
@@ -862,7 +865,7 @@ qatara = Pratipadika("qatara", "napum", other_tags=["qatarAdi", "sarvanAma"])
 qatama = Pratipadika("qatama", "napum", other_tags=["qatarAdi", "sarvanAma"])
 vAri = Pratipadika("vAri", "napum", other_tags=["bahvAdi"])  # bahvādi #9 (SK503) → वारिः / वारी
 mahat_n = Pratipadika("mahat", "napum", other_tags=["mahat"])
-payas = Pratipadika("payas", "napum")   # पयस् n. "water, milk" — SK152 test
+payas = Pratipadika("payas", "napum", other_tags=["uras_praBfti"])   # पयस् n. "water, milk" — SK152 test; उरःप्रभृति (5.4.151)
 yaSas = Pratipadika("yaSas", "napum")  # यशस् n. "fame, glory" — SK152 test
 namas = Pratipadika("namas", "napum", other_tags=["avyaya", "gati", "svarAdi"])   # नमस् n. "obeisance" — SK154 (gati by 1.4.74); svarAdi per SK447
 puras = Pratipadika("puras", "napum", other_tags=["avyaya"])   # पुरस् adv. "in front" — गति assigned by the real rule SK768/1.4.67 पुरोऽव्ययम् (not intrinsic); SK154 पुरस्कृतम्
@@ -871,7 +874,7 @@ agra = Pratipadika("agra", "napum")  # अग्र n. "front, tip" — SK87/SK8
 odana = Pratipadika("odana", "napum")  # ओदन n. "rice, food" — SK87/SK88 test
 Gfta = Pratipadika("Gfta", "napum")  # घृत n. "clarified butter" (ghee)
 Danus  = Pratipadika("Danus",  "napum", other_tags=["AdeSa_s"])
-sarpis = Pratipadika("sarpis", "napum", other_tags=["AdeSa_s"])  # ghee (i+s-stem); SK153
+sarpis = Pratipadika("sarpis", "napum", other_tags=["AdeSa_s", "uras_praBfti"])  # ghee (i+s-stem); SK153; उरःप्रभृति (5.4.151, प्रियसर्पिष्कः)
 yajus  = Pratipadika("yajus",  "napum", other_tags=["AdeSa_s"])  # Veda (u+s-stem); SK153
 SrIpA = Pratipadika("SrIpA", "napum", other_tags=["DAtu", "kvip"])
 asTi = Pratipadika("asTi", "napum")

@@ -676,36 +676,75 @@ samasa_bv_tests = [
 
     # ── B3 samāsānta कप् (SK891/5.4.154 optional, SK889/5.4.151 uras, SK893/5.4.155) ──
     # The कप् affix is inserted by the generalized _insert_samasanta (?samasanta_kap →
-    # kap). 5.4.154 is gated on the composer intent ?Seza_kap (śeṣa-kap is speaker-
-    # optional, not wanted on every bahuvrīhi).
+    # kap). 5.4.154's विभाषा is modelled as a VIVAKṢĀ (not an engine fork): कप् is added
+    # exactly when the composer marks the uttara ?kap_vivakzA — बहुयशस्कम् WITH the tag,
+    # बहुयशः WITHOUT it. (Neuter referent — a masc s-stem would need the 6.4.14 dīrgha
+    # बहुयशाः, a separate declension gap.)
     {
-        # बहु यशो यस्य = बहुयशस्कम् / बहुयशः (SK891/5.4.154 optional कप्; neuter referent —
-        # a masc s-stem would need the 6.4.14 dīrgha बहुयशाः, a separate declension gap).
+        # बहु यशो यस्य + ?kap_vivakzA = बहुयशस्कम् (SK891/5.4.154 कप्).
         "label": "B3-bahuyaSaskam-SK891-5.4.154",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
-        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1, "tags": ["Seza_kap"]},
+        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
         "referent_linga": "napum",
         "fired": ["2.2.24", "5.4.154", "1.2.43"],
-        "surfaces": ["बहुयशस्कम्", "बहुयशः"],
+        "surface": "बहुयशस्कम्",
     },
     {
-        # SK893/5.4.155 न संज्ञायाम् — a NAME takes no kap: बहुयशः only (kap blocked).
-        "label": "B3-bahuyaSaH-saMjYA-SK893-5.4.155",
+        # बहु यशो यस्य, NO ?kap_vivakzA = बहुयशः (5.4.154 does not fire — no कप्).
+        "label": "B3-bahuyaSaH-noKap-SK891-5.4.154",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
-        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1,
-                   "tags": ["Seza_kap", "saMjYA"]},
+        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1},
         "referent_linga": "napum",
-        "fired": ["2.2.24", "5.4.155", "1.2.43"],
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.154"],
         "surface": "बहुयशः",
     },
     {
-        # व्यूढमुरो यस्य = व्यूढोरस्कः (SK889/5.4.151 उरःप्रभृतिभ्यः कप्, nitya).
+        # SK893/5.4.155 न संज्ञायाम् — even WITH ?kap_vivakzA a NAME takes no kap: बहुयशः.
+        "label": "B3-bahuyaSaH-saMjYA-SK893-5.4.155",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1,
+                   "tags": ["kap_vivakzA", "saMjYA"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.155", "1.2.43"],
+        "not_fired": ["5.4.154"],
+        "surface": "बहुयशः",
+    },
+    {
+        # व्यूढमुरो यस्य = व्यूढोरस्कः (SK889/5.4.151 उरःप्रभृतिभ्यः कप्, nitya — उरस्).
         "label": "B3-vyUQoraskaH-SK889-5.4.151",
         "purva": {"stem": "vyUQa", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "uras", "vacana": 1, "vibhakti": 1},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.151", "1.2.43"],
         "surface": "व्यूढोरस्कः",
+    },
+    {
+        # प्रियं सर्पिर्यस्य = प्रियसर्पिष्कः (SK889/5.4.151 उरःप्रभृति gaṇa member सर्पिस्; स्→ष्).
+        "label": "B3-priyasarpizkaH-SK889-5.4.151",
+        "purva": {"stem": "priya", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "sarpis", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.151", "1.2.43"],
+        "surface": "प्रियसर्पिष्कः",
+    },
+    {
+        # बह्व्यः कुमार्यो यस्य = बहुकुमारीकः (SK833/5.4.153 नद्यृतश्च कप्; nadī ?NI uttara).
+        "label": "B3-bahukumArIkaH-SK833-5.4.153",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kumArI", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "surface": "बहुकुमारीकः",
+    },
+    {
+        # बह्व्यो मातरो यस्य = बहुमातृकः (SK833/5.4.153 नद्यृतश्च कप्; ऋ-final uttara).
+        "label": "B3-bahumAtfkaH-SK833-5.4.153",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "mAtf", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "surface": "बहुमातृकः",
     },
 
     # ── B3 samāsānta ṣac / ap / ic (SK852/5.4.113, SK854/5.4.115, SK855/5.4.117,
@@ -719,6 +758,15 @@ samasa_bv_tests = [
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.113", "1.2.43"],
         "surface": "दीर्घसक्थः",
+    },
+    {
+        # पञ्चाङ्गुलयो यस्य दारु = पञ्चाङ्गुलम् (SK853/5.4.114 अङ्गुलेर्दारुणि षच्; दारु sense, n.).
+        "label": "B3-paYcANgulam-SK853-5.4.114",
+        "purva": {"stem": "paYca", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "aNguli", "vacana": 1, "vibhakti": 1, "tags": ["dAru"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.114", "1.2.43"],
+        "surface": "पञ्चाङ्गुलम्",
     },
     {
         # द्वौ मूर्धानौ यस्य = द्विमूर्धः (SK854/5.4.115 ṣa; न-lopa 6.4.144).

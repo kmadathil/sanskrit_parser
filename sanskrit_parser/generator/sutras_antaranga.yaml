@@ -11071,20 +11071,19 @@
 # B3 work — see generator_status.md.
 # ════════════════════════════════════════════════════════════════════════════
 
-# SK891/5.4.154 शेषाद्विभाषा — after a residual bahuvrīhi (śeṣa), कप् is OPTIONALLY added
-# → बहुयशस्कः / बहुयशाः. Sets ?samasanta_kap; _insert_samasanta inserts kap. Optional
-# (vibhāṣā → forks). Gated on the composer intent ?Seza_kap (the kap is speaker-optional,
-# and śeṣa-kap is not wanted on every bahuvrīhi); the prohibition 5.4.155 (saṁjñā)
-# overrides it. Pre-pass -1 (like the avyayībhāva 5.4.109 optional samāsānta).
+# SK891/5.4.154 शेषाद्विभाषा — after a residual bahuvrīhi (śeṣa), कप् is added. The
+# विभाषा (optionality) is modelled as a VIVAKṢĀ, not an engine fork: कप् is added exactly
+# when the speaker intends it (?kap_vivakzA on the uttara) → बहुयशस्कम् WITH the tag,
+# बहुयशः WITHOUT it. Sets ?samasanta_kap; _insert_samasanta inserts kap. The prohibition
+# 5.4.155 (saṁjñā) overrides it. Pre-pass -1.
 - sutra: शेषाद्विभाषा
   id: 5.4.154
   bahiranga: -1
-  optional: true
   condition:
     rp:
       - and
       - "?bahuvrIhi"
-      - "?Seza_kap"
+      - "?kap_vivakzA"
       - "?!samasanta_kap"
       - "?!samasanta_TaC"
   update:
@@ -11104,9 +11103,9 @@
   update:
     orp: [+samasanta_kap]
 
-# SK893/5.4.155 न संज्ञायाम् — कप् is NOT added when the bahuvrīhi is a NAME (?saMjYA):
-# विश्वे देवा अस्य = विश्वदेवः (a name), no kap. Apavāda to 5.4.154 (śeṣa kap); fires a
-# no-op ?samasanta_niziDDa marker so the kap fork is suppressed for the saṁjñā case.
+# SK893/5.4.155 न संज्ञायाम् — कप् is NOT added when the bahuvrīhi is a NAME (?saMjYA),
+# even under ?kap_vivakzA: विश्वे देवा अस्य = विश्वदेवः (a name), no kap. Apavāda to 5.4.154;
+# fires a no-op ?samasanta_niziDDa marker so no kap is inserted for the saṁjñā case.
 - sutra: न संज्ञायाम्
   id: 5.4.155
   bahiranga: -1
@@ -11115,7 +11114,7 @@
     rp:
       - and
       - "?bahuvrIhi"
-      - "?Seza_kap"
+      - "?kap_vivakzA"
       - "?saMjYA"
       - "?!samasanta_niziDDa"
   update:
@@ -11137,6 +11136,22 @@
       - - or
         - "=sakTi"
         - "=akzi"
+      - "?!samasanta_Sac"
+  update:
+    orp: [+samasanta_Sac]
+
+# SK853/5.4.114 अङ्गुलेर्दारुणि — an अङ्गुलि-final bahuvrīhi in the दारु (wood) sense (?dAru)
+# → षच् → पञ्चाङ्गुलं दारु = पञ्चाङ्गुलम् (i-lopa 6.4.148; napuṁsaka, दारु is n.). Sets
+# ?samasanta_Sac. (Only in a bahuvrīhi + दारु sense — द्व्यङ्गुला यष्टिः stays without षच्.)
+- sutra: अङ्गुलेर्दारुणि
+  id: 5.4.114
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=aNguli"
+      - "?dAru"
       - "?!samasanta_Sac"
   update:
     orp: [+samasanta_Sac]
@@ -11332,3 +11347,22 @@
   xform:
     rc: str("")
     r: str("kakud")
+
+# SK833/5.4.153 नद्यृतश्च — कप् is added to a bahuvrīhi whose uttara is a नदी-word (ī/ū
+# nadī-class, ?NI) or is ऋ-final (?svasrAdi family): बहुकुमारीकः, बहुनदीकः, बहुमातृकः.
+# Sets ?samasanta_kap (nitya). SK834/7.4.13 केऽणः (ह्रस्व before क) + SK835/7.4.14 न कपि
+# (blocks it under कप्) net to NO CHANGE for कप्, so the ई/ऋ is retained without those
+# two rules. (पुंवद्भावः on a fem pūrva → the B1 6.3.34 path.)
+- sutra: नद्यृतश्च
+  id: 5.4.153
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "?NI"
+        - "?svasrAdi"
+      - "?!samasanta_kap"
+  update:
+    orp: [+samasanta_kap]

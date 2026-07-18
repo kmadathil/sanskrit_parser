@@ -21,9 +21,16 @@ ends with a self-contained *Session prompt*.
 > **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
 > every affix family that declines cleanly; the rest deferred on known engine gaps (see
 > §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 39 cases; full generator suite 8188 green. The
-> Phases (§3) keep the original forward-looking Session prompts as a historical record —
+> `test/test_samasa_bahuvrihi.py` = 44 cases; full generator suite green. The Phases (§3)
+> keep the original forward-looking Session prompts as a historical record —
 > **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
+>
+> **Review round (2026-07-11):** 5.4.154 विभाषा remodelled as a **vivakṣā** (`?kap_vivakzA`,
+> not an engine fork); the CLI `-k` accepts a **`?tag` token** (e.g. `?kap_vivakzA`) so kap
+> is assertable from the CLI; **5.4.153 नद्यृतश्च** + **5.4.114 अङ्गुलेर्दारुणि** added (5.4.114
+> was the one gap a completeness audit found); the **उरःप्रभृति gaṇa** filled
+> (उरस्/सर्पिस्/पयस्/लक्ष्मी). **Completeness audit: every SK829–900 sūtra is now accounted —
+> implemented, or in an explicit `generator_status.md` Skipped row.**
 
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
@@ -181,7 +188,7 @@ sweep prove exocentricity.
 | **B0** ✅ | SK829/830 fused | referent-gender lock folded into 2.2.24; `?bahuvrIhi_vivakza` intent; uttara not viBakti-gated; fem needs `strI_abs` |
 | **B1** ✅ | 6.3.34 + 6.3.37/38/40/41 | saṁjñā-marker model (like tatpuruṣa 6.3.42); composer supplies the masc form; **the vigraha-femininity of the uttara is carried by a stable `?uttara_strI` tag** (its native `?strI` is overwritten by the B0 referent override); inherently-fem ā-stem uttaras modelled as an a-stem BASE (jaNGa/BArya) + `strI_abs`. Deferred: 6.3.35/36 (affix-context), 6.3.39 (taddhita-vṛddhi) |
 | **B2** ✅ | 2.2.28 saha + 6.3.82/83; 2.2.26 diś | saha is indeclinable → its own formation rule (2.2.24 needs `?viBakti_1`); tags the saha pūrva `?bahuvrIhi_saha` so **6.3.82 (not the avyayībhāva 6.3.81) handles saha→sa** — 6.3.81 gained a `?!bahuvrIhi_saha` guard. saha needs a sup present (`has_viBakti`) for 6.3.82's `rp ?sup`. **Deviation from plan:** 2.2.25 (saṅkhyā→ḍac), 2.2.27 (sarūpa→ic), 2.2.35–37 (word order) deferred — see below |
-| **B3** ✅ (families) | kap 5.4.151/154/155; ṣac 5.4.113/115; ap 5.4.117; ic 5.4.128 | **generalized `_SAMASANTA_AFFIXES`** is the enabler. 5.4.154 gated on composer `?Seza_kap` (else it kap-ifies every bahuvrīhi). Cases use a **neuter referent** where the masc s-stem 6.4.14 dīrgha would be needed (बहुयशस्कम्/बहुयशः, not बहुयशाः) |
+| **B3** ✅ (families) | kap 5.4.151/153/154/155; ṣac 5.4.113/114/115; ap 5.4.117; ic 5.4.128 | **generalized `_SAMASANTA_AFFIXES`** is the enabler. 5.4.154's विभाषा is a **vivakṣā** (`?kap_vivakzA`, non-optional — बहुयशस्कम् with / बहुयशः without), not an engine fork. 5.4.151 उरःप्रभृति gaṇa filled (उरस्/सर्पिस्/पयस्/लक्ष्मी → प्रियसर्पिष्कः …); 5.4.153 नद्यृतश्च (बहुकुमारीकः/बहुमातृकः), 5.4.114 अङ्गुलेर्दारुणि (पञ्चाङ्गुलम्) added in review. Cases use a **neuter referent** where the masc s-stem 6.4.14 dīrgha would be needed (बहुयशः, not बहुयशाः) |
 | **B4** ✅ (families) | jñu 5.4.129/130; anaṅ 5.4.132; anic 5.4.124; gandha→id 5.4.135; pāda 5.4.140; kakud 5.4.146; hṛd 5.4.150 | pre-pass uttara-substitution (`rc→""`, `r→"<stem>"`, mirroring tatpuruṣa 6.3.46). **Tractability boundary discovered** — see below |
 | **B-UI** ✅ | CLI + composer API + frontend | `prepare_bahuvrihi`/`_apply_bahuvrihi` share the B0 tag contract; `referent_linga=""` is backward-compatible (avyayībhāva/tatpuruṣa unaffected). **Deviation:** the plan said "no engine changes" — true; but the UI needed a new `referent_linga` request field + `_apply_bahuvrihi` helper, not just presets |
 

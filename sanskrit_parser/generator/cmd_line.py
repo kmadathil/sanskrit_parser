@@ -315,6 +315,8 @@ class CustomActionKaraka(Action):
     has_viBakti on the member — the pūrva's case in a tatpuruṣa vigraha, e.g.
     `-k rAjan 1 v6` (ṣaṣṭhī rājan) for राजपुरुषः. With --samasa the pūrva sup
     then luks (2.4.71) and the compound declines in the uttara's gender (2.4.26).
+    A `?tag` token sets that tag literally on the member (e.g. `-k yaSas 1 ?kap_vivakzA`
+    → the 5.4.154 samāsānta कप् intent, giving बहुयशस्कम् in a bahuvrīhi).
     A pUrva/para (or yoga_pUrva/yoga_para) token sets the yoga-word governance
     DIRECTION tag yoga_pUrva/yoga_para — used when this noun is itself a non-kp
     yoga-word (anya/itara/a dik-word in 2.3.29, etc.): pūrva = governs the
@@ -350,6 +352,8 @@ class CustomActionKaraka(Action):
                 vibhakti = int(tok[8:])
             elif tok.startswith("semantic_"):
                 sems.append(tok)
+            elif tok.startswith("?"):     # ?tag → set an arbitrary tag literally
+                obj.setTag(tok[1:])       # e.g. ?kap_vivakzA (5.4.154 samāsānta कप् intent)
             else:
                 sems.append("semantic_" + tok)
         obj.setTag(f"vacana_{vacana}")

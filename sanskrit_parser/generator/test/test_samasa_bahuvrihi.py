@@ -105,6 +105,9 @@ def test_samasa_bahuvrihi(case):
     for aps in case["fired"]:
         assert aps in fired, \
             f"{case['label']}: {aps} missing from pre-pass trace {sorted(fired)}"
+    for aps in case.get("not_fired", []):
+        assert aps not in fired, \
+            f"{case['label']}: {aps} unexpectedly fired (trace {sorted(fired)})"
 
     # ── Level 3: surface (full pipeline) ──
     p.execute()
@@ -190,3 +193,22 @@ def test_cli_bahuvrihi(stems, linga, want):
     got = _surface([Adya, *words, avasAna])   # run_karaka assembly (sandhi=True)
     assert got == {_to_slp1(s) for s in want}, \
         f"CLI {stems} referent {linga}: {got} != {want}"
+
+
+def test_cli_kap_via_tag_token():
+    """The full CLI path for kap (5.4.154): `-k bahu 1 -k yaSas 1 ?kap_vivakzA --samasa
+    --referent-linga napum` → बहुयशस्कम् (the ?tag token sets the samāsānta कप् intent);
+    without the token → बहुयशः. Exercises get_args (?-token parsing) + prepare_bahuvrihi."""
+    from sanskrit_parser.generator.cmd_line import get_args, prepare_bahuvrihi
+
+    def _run(argv):
+        args = get_args(argv)
+        for w in args.karaka_words:          # the --samasa loop
+            w.setTag("samAsa_vivakza")
+        words = prepare_bahuvrihi(args.karaka_words, args.referent_linga)
+        return _surface([Adya, *words, avasAna])
+
+    base = ["-k", "bahu", "1", "-k", "yaSas", "1"]
+    tail = ["--samasa", "--referent-linga", "napum"]
+    assert _run(base[:3] + base[3:] + ["?kap_vivakzA"] + tail) == {_to_slp1("बहुयशस्कम्")}
+    assert _run(base + tail) == {_to_slp1("बहुयशः")}
