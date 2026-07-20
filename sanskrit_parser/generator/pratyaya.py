@@ -267,6 +267,7 @@ kAmyac = Pratyaya("kAmya", its=["c"], other_tags=["svAdi", "tadDita", "satva_t"]
 Sac  = Pratyaya("a", its=["z", "c"], other_tags=["svAdi", "tadDita", "pum"])  # षच् (5.4.113/115)
 ap_s = Pratyaya("a", its=["p"],      other_tags=["svAdi", "tadDita", "pum"])  # अप् (5.4.116/117)
 ic_s = Pratyaya("i", its=["c"],      other_tags=["svAdi", "tadDita"])         # इच् (5.4.127/128)
+asic = Pratyaya("as", its=["c"],     other_tags=["svAdi", "tadDita", "pum"])  # असिच् (5.4.122)
 
 
 # suc - SK2086

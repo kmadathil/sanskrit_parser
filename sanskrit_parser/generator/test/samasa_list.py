@@ -863,6 +863,25 @@ samasa_bv_tests = [
         "surface": "कल्याणधर्मा",
     },
     {
+        # शोभना प्रजा यस्य = सुप्रजाः (SK862/5.4.122 नित्यमसिच्; प्रजा + असिच् → सुप्रजस् →
+        # nom sg masc सुप्रजाः via the widened 6.4.14 `-as` dīrgha). `-Ap` clear as usual.
+        "label": "B3-suprajAH-SK862-5.4.122",
+        "purva": {"stem": "su_pUrva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "prajA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.122", "1.2.43"],
+        "surface": "सुप्रजाः",
+    },
+    {
+        # शोभना मेधा यस्य = सुमेधाः (SK862/5.4.122 असिच्, मेधा arm).
+        "label": "B3-sumeDAH-SK862-5.4.122",
+        "purva": {"stem": "su_pUrva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "meDA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.122", "1.2.43"],
+        "surface": "सुमेधाः",
+    },
+    {
         # युवतिर्जाया यस्य = युवजानिः (SK872/5.4.134 जायाया निङ्; जाया→जानि). The rule's
         # `-Ap` clear is what gives the visarga — जाया's ?Ap would else elide the su.
         "label": "B4-yuvajAniH-SK872-5.4.134",

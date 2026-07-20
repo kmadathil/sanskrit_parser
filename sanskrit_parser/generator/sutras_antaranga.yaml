@@ -11408,3 +11408,28 @@
     r: str("nasa")
   update:
     orp: [-Ap, -strI]
+
+# SK862/5.4.122 नित्यमसिच् प्रजामेधयोः — after नञ्/दुस्/सु, a प्रजा- or मेधा-final bahuvrīhi
+# OBLIGATORILY takes असिच् (अस्): शोभना प्रजा यस्य = सुप्रजाः; सुमेधाः, दुर्मेधाः (अप्रजाः needs
+# the nañ-bahuvrīhi formation path). Sets ?samasanta_asic → `asic` in _SAMASANTA_AFFIXES.
+# The `-Ap, -strI` clear is the same fix as 5.4.134/5.4.119: प्रजा/मेधा are ā-stems whose
+# ?Ap would otherwise drive ā-stem su-elision on the अस्-final result. The nom sg masc
+# अस्-stem dīrgha (सुप्रजाः) comes from the widened 6.4.14 `-as` arm.
+- sutra: नित्यमसिच् प्रजामेधयोः
+  id: 5.4.122
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=su"
+      - "=dus"
+      - "=na"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "=prajA"
+        - "=meDA"
+      - "?!samasanta_asic"
+  update:
+    orp: [+samasanta_asic, -Ap, -strI]

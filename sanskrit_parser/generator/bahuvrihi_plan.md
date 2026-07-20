@@ -21,7 +21,7 @@ ends with a self-contained *Session prompt*.
 > **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
 > every affix family that declines cleanly; the rest deferred on known engine gaps (see
 > §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 47 cases; full generator suite green. The Phases (§3)
+> `test/test_samasa_bahuvrihi.py` = 49 cases; full generator suite green. The Phases (§3)
 > keep the original forward-looking Session prompts as a historical record —
 > **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
 >
@@ -38,8 +38,9 @@ ends with a self-contained *Session prompt*.
 > sup), so a one-line `update: orp: [-Ap, -strI]` landed **niṅ SK872/5.4.134 → युवजानिः** and
 > **अच् SK858/5.4.119 → उन्नसः**. (b) **6.4.14's `-as` arm was widened** beyond `+u` (guarded
 > `?!avyaya`/`?!nipAta`/`?!sarvanAma`), giving यशाः/मनाः/**बहुयशाः** — so SK891 is now the
-> canonical **बहुयशस्कः / बहुयशाः**. Remaining in these families: the अच् **ṇatva** cases
-> (SK856/5.4.118 द्रुणसः, प्रणसः via 8.4.3/28) and the **asic 5.4.122** affix rule.
+> canonical **बहुयशस्कः / बहुयशाः**. (c) **asic SK862/5.4.122** landed on the back of (b) → सुप्रजाः/सुमेधाः. Remaining in these
+> families: only the अच् **ṇatva** cases (SK856/5.4.118 द्रुणसः, प्रणसः via 8.4.3/28) and the
+> nañ arm of asic (अप्रजाः).
 
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
@@ -246,8 +247,9 @@ A pre-pass uttara-substitution rewrites the stem **string** but leaves the membe
   **Result:** यशाः, मनाः, and **बहुयशाः** — so the SK891 pair is now the canonical
   **बहुयशस्कः / बहुयशाः** (the tests no longer need the neuter-referent workaround).
   Unchanged: श्रेयान्, विद्वान्, **असौ**, तिरः, अधः, and all neuters (मनः/यशः).
-  This also unblocks **asic SK862/5.4.122** (अप्रजाः) on the declension side — only its
-  affix rule remains.
+  With that in place, **asic SK862/5.4.122 was also landed** (new `asic` Pratyaya +
+  `_SAMASANTA_AFFIXES` entry + the same `-Ap` clear) → **सुप्रजाः / सुमेधाः**; only its nañ
+  arm (अप्रजाः) still awaits the nañ-bahuvrīhi formation path.
 - **दतृ न्-declension** → **datṛ 5.4.141** (द्विदन्; engine currently gives द्विदत्).
 - **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
 - **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).
