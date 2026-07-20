@@ -18,12 +18,14 @@ samāsānta-affix cluster** (SK832–897 / 5.4.73–160, 7.4.13–15, 8.4.3/28, 
 `tatpuruza_plan.md` (T0–T5) and `karaka_plan.md` (K0–K7) structure. Each phase below
 ends with a self-contained *Session prompt*.
 
-> **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
-> every affix family that declines cleanly; the rest deferred on known engine gaps (see
-> §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 57 cases; full generator suite green. The Phases (§3)
-> keep the original forward-looking Session prompts as a historical record —
-> **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
+> **STATUS (as-built, last updated 2026-07-20): B0–B2 + B-UI complete; B3/B4 samāsānta
+> complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
+> ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
+> grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
+> `test/test_samasa_bahuvrihi.py` = 62 cases; full generator suite green (8211 passed).
+> The Phases (§3) keep the original forward-looking Session prompts as a historical
+> record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
+> gotchas).
 >
 > **Review round (2026-07-11):** 5.4.154 विभाषा remodelled as a **vivakṣā** (`?kap_vivakzA`,
 > not an engine fork); the CLI `-k` accepts a **`?tag` token** (e.g. `?kap_vivakzA`) so kap
@@ -46,10 +48,26 @@ ends with a self-contained *Session prompt*.
 > on **`?saMjYA`**, the sūtra's own condition. (e) **datṛ SK880/5.4.141** landed —
 > **द्विदन्/सुदन्/सुदती** — via an ऋ-**it** (`++f`), not a new declension.
 >
-> These families are COMPLETE. What remains prakaraṇa-wide: **केशाकेशि** (needs the deferred
-> 2.2.27 sarūpa formation + 6.3.137 + avyaya tagging — but NOT reduplication), **ḍac**
-> (accent-only), the **physical pūrva-nipāta** group (2.2.25/27/35–37), B1 6.3.35/36/39,
-> and — beyond this prakaraṇa — the **general** cross-member ṇatva gap (चोरभयेण) + **अगः**.
+> These families are COMPLETE.
+>
+> **Doc-audit + 2.2.25/5.4.133 round (2026-07-20):** three claims above were themselves
+> wrong and are retracted (detail in §2a "Remaining work" and §6's was/actual table):
+> **ḍac SK851/5.4.73 was never "accent-only"** — that read Vasu's remark about the
+> अबहुगणात् *exception* (उपबहवः) as if it applied to उपदशाः itself; **SK843/2.2.25 needs no
+> physical reorder** — the composer already supplies उप first; and **SK859/8.4.28's
+> `?nas_AdeSa` gate is faithful, not a placeholder** (both SK859 and Vasu gloss it as
+> नस्-specific). All three are now **landed**: SK843/2.2.25 + SK851/5.4.73 ḍac +
+> SK844/6.4.142 ति-lopa → **उपदशाः, आसन्नविंशाः, उपबहवः** (the अबहुगण exclusion). Separately,
+> **SK871/5.4.133 वा संज्ञायाम्** landed → **शतधन्वा / शतधनुः** (optional अनङ् in a saṁjñā,
+> via the pre-pass vibhāṣā fork already used elsewhere — no new engine step). **SK857/8.4.3
+> अगः was scoped and deliberately left unmodelled**, following the Mahābhāṣya's own
+> प्रत्याख्यान of the word (documented in the YAML and status row, not implemented).
+>
+> What remains prakaraṇa-wide: **केशाकेशि** (needs the deferred 2.2.27 sarūpa formation +
+> 6.3.137 + avyaya tagging — NOT reduplication), minor कप् (5.4.152/156/157/159/160 +
+> 7.4.13–15 + 6.4.146), अप् 5.4.116 (pūraṇī pl), the **physical pūrva-nipāta** group
+> (2.2.27/35–37, now that 2.2.25 is clear of it), B1 6.3.35/36/39, and — beyond this
+> prakaraṇa — the **general** cross-member ṇatva gap (चोरभयेण).
 
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
@@ -165,13 +183,16 @@ base first.
 
 ---
 
-## 2a. Implementation status (as-built, 2026-07-11)
+## 2a. Implementation status (as-built, last updated 2026-07-20)
 
 Built sequentially on `generator` (not parallel worktrees). Commits: B0 `00a9b11`,
 B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, B4-ext
-`901965e`, B3/B4-more `0327301`, B-UI `45f435b`. Tests: `test/test_samasa_bahuvrihi.py`
-(39 cases: structure/fired/surface + gender & vibhakti sweeps + CLI smoke), cases in
-`test/samasa_list.py :: samasa_bv_tests`. Full suite 8188 green.
+`901965e`, B3/B4-more `0327301`, B-UI `45f435b`, review round `c8ce779`, ā-stem +
+6.4.14 + asic + ṇatva `cc99fa2`→`9cd40e7`, datṛ + 8.4.3 `?saMjYA` gate `b1bd6bd`,
+5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
+`test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
+sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
+8211 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -206,7 +227,7 @@ sweep prove exocentricity.
 |---|---|---|
 | **B0** ✅ | SK829/830 fused | referent-gender lock folded into 2.2.24; `?bahuvrIhi_vivakza` intent; uttara not viBakti-gated; fem needs `strI_abs` |
 | **B1** ✅ | 6.3.34 + 6.3.37/38/40/41 | saṁjñā-marker model (like tatpuruṣa 6.3.42); composer supplies the masc form; **the vigraha-femininity of the uttara is carried by a stable `?uttara_strI` tag** (its native `?strI` is overwritten by the B0 referent override); inherently-fem ā-stem uttaras modelled as an a-stem BASE (jaNGa/BArya) + `strI_abs`. Deferred: 6.3.35/36 (affix-context), 6.3.39 (taddhita-vṛddhi) |
-| **B2** ✅ | 2.2.28 saha + 6.3.82/83; 2.2.26 diś | saha is indeclinable → its own formation rule (2.2.24 needs `?viBakti_1`); tags the saha pūrva `?bahuvrIhi_saha` so **6.3.82 (not the avyayībhāva 6.3.81) handles saha→sa** — 6.3.81 gained a `?!bahuvrIhi_saha` guard. saha needs a sup present (`has_viBakti`) for 6.3.82's `rp ?sup`. **Deviation from plan:** 2.2.25 (saṅkhyā→ḍac), 2.2.27 (sarūpa→ic), 2.2.35–37 (word order) deferred — see below |
+| **B2** ✅ | 2.2.28 saha + 6.3.82/83; 2.2.26 diś; 2.2.25 saṅkhyā (`4d0025f`) | saha is indeclinable → its own formation rule (2.2.24 needs `?viBakti_1`); tags the saha pūrva `?bahuvrIhi_saha` so **6.3.82 (not the avyayībhāva 6.3.81) handles saha→sa** — 6.3.81 gained a `?!bahuvrIhi_saha` guard. saha needs a sup present (`has_viBakti`) for 6.3.82's `rp ?sup`. 2.2.25 is likewise indeclinable-pūrva (उप/आसन्न/अदूर/अधिक/saṅkhyā), so it too gets its own formation rule; `?saMKyeya` is composer-supplied like `?vayas` for 5.4.141. **Deviation from plan:** 2.2.27 (sarūpa→ic), 2.2.35–37 (word order) still deferred — see below |
 | **B3** ✅ (families) | kap 5.4.151/153/154/155; ṣac 5.4.113/114/115; ap 5.4.117; ic 5.4.128 | **generalized `_SAMASANTA_AFFIXES`** is the enabler. 5.4.154's विभाषा is a **vivakṣā** (`?kap_vivakzA`, non-optional — बहुयशस्कम् with / बहुयशः without), not an engine fork. 5.4.151 उरःप्रभृति gaṇa filled (उरस्/सर्पिस्/पयस्/लक्ष्मी → प्रियसर्पिष्कः …); 5.4.153 नद्यृतश्च (बहुकुमारीकः/बहुमातृकः), 5.4.114 अङ्गुलेर्दारुणि (पञ्चाङ्गुलम्) added in review. Cases use a **neuter referent** where the masc s-stem 6.4.14 dīrgha would be needed (बहुयशः, not बहुयशाः) |
 | **B4** ✅ (families) | jñu 5.4.129/130; anaṅ 5.4.132; anic 5.4.124; gandha→id 5.4.135; pāda 5.4.140; kakud 5.4.146; hṛd 5.4.150 | pre-pass uttara-substitution (`rc→""`, `r→"<stem>"`, mirroring tatpuruṣa 6.3.46). **Tractability boundary discovered** — see below |
 | **B-UI** ✅ | CLI + composer API + frontend | `prepare_bahuvrihi`/`_apply_bahuvrihi` share the B0 tag contract; `referent_linga=""` is backward-compatible (avyayībhāva/tatpuruṣa unaffected). **Deviation:** the plan said "no engine changes" — true; but the UI needed a new `referent_linga` request field + `_apply_bahuvrihi` helper, not just presets |
@@ -340,15 +361,26 @@ the 4.3.129 nipātana does not cover.
   **सुदन्**. No new declension machinery was needed — 7.1.70 and 4.1.6 already existed.
   **Free corroboration:** the feminine **सुदती** falls out via **4.1.6 उगितश्च** (ugit→ṅīp),
   which only works if the ऋ-it analysis is right. `?vayas` is criterial (द्विदन्तः करी).
-- **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
-- **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).
-- **5.4.133** dhanus-saṁjñā fork शतधनुः — the nitya 5.4.132 still fires in the vibhāṣā
-  skip branch (needs 5.4.133 to override 5.4.132 in BOTH branches).
-- Minor कप् (5.4.152/153/156/157/159/160, 7.4.13–15), अप् 5.4.116 (pūraṇī pl), gandha
-  5.4.136/137 (same गन्धि surface as 5.4.135, needs सूप/पद्म stems + sense tags).
-- **Formation deferrals (physical reorder):** 2.2.25 saṅkhyā (→ḍac), 2.2.27 sarūpa (→ic),
-  2.2.35–37 word order — all need the vyadhikaraṇa-bahuvrīhi + physical **pūrva-nipāta
-  2.2.30** engine step (the same mechanism tatpuruṣa deferred); B1 6.3.35/36/39.
+- केशाकेशि (reciprocal ic 5.4.127) — the long-standing "needs reduplication" framing was
+  wrong: SK's vigraha केशेषु केशेषु supplies the same word twice, nothing is reduplicated
+  by rule. Needs SK846/2.2.27 sarūpa formation (a new lp==rp content check) + 6.3.137
+  अन्येषामपि दृश्यते (unimplemented — supplies the केश→केशा dīrgha) + avyaya tagging.
+- ḍac SK851/5.4.73 (उपदशाः) is accent-only — DONE (`4d0025f`), and "accent-only"
+  was itself a misreading of Vasu 54073, whose accent remark describes the अबहुगणात्
+  exception (उपबहवः, where डच् is not added), not उपदशाः. SK843/2.2.25 forms
+  the compound (its own rule, like 2.2.28 — the pūrva is indeclinable) and SK851/5.4.73
+  डच् (ḍit → 6.4.143 टेः drops daśan's ṭi) gives the surface → उपदशाः;
+  SK844/6.4.142 ti-lopa likewise landed → आसन्नविंशाः.
+- SK871/5.4.133 dhanus-saṁjñā fork शतधनुः — DONE (`4d0025f`). The vibhāṣā fork is
+  free from the existing pre-pass machinery (`_run_fixpoint` clones the skip branch);
+  5.4.132 just needed a matching `?!saMjYA` guard so exactly one of the pair fires →
+  शतधन्वा/शतधनुः.
+- Minor kap (5.4.152/156/157/159/160, 7.4.13–15), ap 5.4.116 (pūraṇī pl), gandha
+  5.4.136/137 (same गन्धि surface as 5.4.135, needs sūpa/padma stems + sense tags).
+- Formation deferrals (physical reorder): 2.2.27 sarūpa (→ic), 2.2.35–37 word order —
+  need the vyadhikaraṇa-bahuvrīhi + physical pūrva-nipāta 2.2.30 engine step (the same
+  mechanism tatpuruṣa deferred); B1 6.3.35/36/39. (2.2.25 no longer belongs here — it
+  needed no reorder, see above.)
 
 ---
 
@@ -447,7 +479,7 @@ test_samasa_bahuvrihi.py, labels dual-numbered SK-first per §0 (e.g.
 generator_status.md; defer the priyādi-gaṇa long tail with a Skipped row if not reached.
 ```
 
-### Phase B2 — Additional formation types + word order — ✅ DONE for saha + diś (`0cbac07`); 2.2.25/2.2.27/2.2.35–37 deferred (see §2a)
+### Phase B2 — Additional formation types + word order — ✅ DONE for saha + diś + saṅkhyā (`0cbac07`,`4d0025f`); 2.2.27/2.2.35–37 deferred (see §2a)
 
 - **SK843 / 2.2.25 संख्यया…**: indeclinable / āsanna / adūra / adhika + saṅkhyā →
   bahuvrīhi (उपदशाः "about ten"). Feeds ḍac in B3.
@@ -481,7 +513,7 @@ comments dual-numbered SK-first per §0 (e.g. "B2-saputraH-SK848-2.2.28"). Full 
 green. Update generator_status.md with the deferrals.
 ```
 
-### Phase B3 — Samāsānta: affix insertion — ✅ DONE for kap/ṣac/ap/ic (`04de0a1`,`3f54b6f`); mechanism generalized; रest deferred (see §2a)
+### Phase B3 — Samāsānta: affix insertion — ✅ DONE for kap/ṣac/ap/ic/ḍac (`04de0a1`,`3f54b6f`,`4d0025f`); mechanism generalized; rest deferred (see §2a)
 
 All bahuvrīhi samāsānta rules that **add** an affix, via a generalized
 `?samasanta_TaC`-style marker + `_insert_samasanta` (extend the marker to carry the
@@ -538,7 +570,7 @@ SK-first per §0 (e.g. "B3-bahuyaSaskaH-SK891-5.4.154"). Full suite green (watch
 avyayībhāva/tatpuruṣa samāsānta tests). Update generator_status.md.
 ```
 
-### Phase B4 — Samāsānta: ādeśa / lopa / nipātana — ✅ DONE for jñu/anaṅ/anic/gandha/pāda/kakud/hṛd (`3f54b6f`,`901965e`,`0327301`); ā→i/a-stem cases deferred (see §2a)
+### Phase B4 — Samāsānta: ādeśa / lopa / nipātana — ✅ DONE for jñu/anaṅ+5.4.133/niṅ/datṛ/anic/gandha/pāda/kakud/hṛd (`3f54b6f`,`901965e`,`0327301`,`049b424`,`b1bd6bd`,`4d0025f`); kakud 5.4.147–149 + gandha 5.4.136/137 + minor nipātanas deferred (see §2a)
 
 The samāsānta rules that **substitute or delete** part of the uttara stem (not
 affix-insertion). Implement as `bahiranga: -1` pre-pass uttara-substitution rules
@@ -668,7 +700,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (39 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (62 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped
@@ -700,13 +732,19 @@ a one-line tag problem, not the engine gap named. Cleared since first writing:
 needs is (a) SK846/2.2.27 sarūpa formation (a new **lp == rp content check**), (b) 5.4.127
 इच् (the `ic_s` affix already exists), (c) **6.3.137 अन्येषामपि दृश्यते** (unimplemented —
 supplies the केश→केशा dīrgha), and (d) avyaya tagging (ic is in the tiṣṭhadgu-prabhṛti gaṇa,
-so the form is invariant). the formation deferrals the formation deferrals (2.2.27 / 2.2.35–37)
-+ B1 6.3.35/36/39 need the **physical pūrva-nipāta (2.2.30)** / affix-context machinery;
-accent-gated SK 508/509 remain deferred; **general** cross-member ṇatva
-(चोरभयेण / त्रिभुवनम्) is untouched, and SK859/8.4.28's `?nas_AdeSa` gate is an
-acknowledged **scoped placeholder** (8.4.3 is now gated generally on `?saMjYA`).
+so the form is invariant). The formation deferrals (2.2.27 / 2.2.35–37; 2.2.25 no longer
+belongs in this group — see the table above) + B1 6.3.35/36/39 need the **physical
+pūrva-nipāta (2.2.30)** / affix-context machinery; accent-gated SK 508/509 remain
+deferred; **general** cross-member ṇatva (चोरभयेण / त्रिभुवनम्) is untouched. SK859/8.4.28's
+`?nas_AdeSa` gate is **faithful** (see the table above — the earlier "scoped placeholder"
+framing is retracted); the real gaps there are the **pronoun नस्** arm and **बहुलम्**
+optionality. SK857/8.4.3's **अगः** is **deliberately unmodelled**, following the
+Mahābhāṣya's प्रत्याख्यान of the word (see the dedicated §2a subsection above).
 
-**Methodological note:** four of the five cleared items above were deferred under a
-*plausible but wrong* engine diagnosis. When a family looks blocked on deep machinery,
-verify the blocker by minimal reproduction before recording it — the surface symptom of
-a stale tag closely mimics a missing engine capability.
+**Methodological note:** five of the six rows above (all but cross-compound ṇatva, which
+was correctly diagnosed and then unblocked) were deferred, or mis-described, under a
+*plausible but wrong* diagnosis. When a family looks blocked on deep machinery, verify
+the blocker by minimal reproduction before recording it — the surface symptom of a stale
+tag closely mimics a missing engine capability, and a textual claim ("accent-only",
+"scoped placeholder") deserves the same scrutiny as a code claim before it goes in a
+status doc.
