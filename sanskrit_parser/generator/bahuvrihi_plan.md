@@ -192,24 +192,48 @@ sweep prove exocentricity.
 | **B4** ✅ (families) | jñu 5.4.129/130; anaṅ 5.4.132; anic 5.4.124; gandha→id 5.4.135; pāda 5.4.140; kakud 5.4.146; hṛd 5.4.150 | pre-pass uttara-substitution (`rc→""`, `r→"<stem>"`, mirroring tatpuruṣa 6.3.46). **Tractability boundary discovered** — see below |
 | **B-UI** ✅ | CLI + composer API + frontend | `prepare_bahuvrihi`/`_apply_bahuvrihi` share the B0 tag contract; `referent_linga=""` is backward-compatible (avyayībhāva/tatpuruṣa unaffected). **Deviation:** the plan said "no engine changes" — true; but the UI needed a new `referent_linga` request field + `_apply_bahuvrihi` helper, not just presets |
 
-### The samāsānta-ādeśa tractability boundary (why the rest is deferred)
-A pre-pass uttara-substitution changes the stem but leaves the **already-inserted sup**
-(inserted before the pre-pass) in place. So:
-- **Works cleanly** — substitution to an **n-stem** (धनुस्→धन्वन्, धर्म→धर्मन्) or a
-  **consonant-final** stem (हृदय→हृद्, पाद→पाद्, ककुद→ककुद्): the existing `su` morpheme +
-  the main-scan class rules produce the right nom sg (सुधन्वा, कल्याणधर्मा, सुहृत्, द्विपात्;
-  8.4.56 वाऽवसाने gives the द्/त् pairs).
-- **Deferred (needs a sup re-insert)** — substitution that turns a **feminine ā-stem into
-  an i-/a-stem** (जाया→जानि niṅ 5.4.134, नासिका→नस अच् 5.4.118/119): the stale ā-stem sup
-  survives → the surface loses its nom-sg visarga (जानि/प्रनस); अच् additionally needs the
-  8.4.3/28 **ṇatva to fire across the compound** (प्रनस, not प्रणसः).
+### The samāsānta-ādeśa tractability boundary
+A pre-pass uttara-substitution rewrites the stem **string** but leaves the member's
+**stem-class tags** untouched. So:
+- **Works out of the box** — substitution to an **n-stem** (धनुस्→धन्वन्, धर्म→धर्मन्) or a
+  **consonant-final** stem (हृदय→हृद्, पाद→पाद्, ककुद→ककुद्): the source stems carry no
+  class tag that misdirects the sup, so the existing `su` + the main-scan class rules
+  give the right nom sg (सुधन्वा, कल्याणधर्मा, सुहृत्, द्विपात्; 8.4.56 वाऽवसाने gives the द्/त् pairs).
+- **Needs a one-line tag clear** — substitution *out of* a **feminine ā-stem**
+  (जाया→जानि niṅ 5.4.134, नासिका→नस अच् 5.4.118/119): the source carries **`?Ap`**, which
+  survives the substitution and drives ā-stem nom-sg su-elision → the surface loses its
+  visarga (जानि, प्रनस). Adding `update: orp: [-Ap, -strI]` to the rule fixes it
+  (**verified: युवजानिः**) — see *Remaining work*. Independently, अच् still needs the
+  8.4.3/28 **ṇatva across the compound** for द्रुणसः/प्रणसः.
 
-### Remaining work — each needs a small ENGINE step, not more YAML
-- **Sup re-insertion after a class-changing substitution** (a `_swap_sups`-style post-pass
-  keyed on a `?resup` marker the ādeśa sets) → unlocks **niṅ 5.4.134** and the **अच्
-  नासिका→नस् family (5.4.118–121)** together (+ compound ṇatva for अच्).
-- **6.4.14 dīrgha under the gender-override** → unlocks **asic 5.4.122** (अप्रजाः) and the
-  masc s-stem form बहुयशाः.
+### Remaining work
+> Two of these were mis-diagnosed in the first pass; both root causes have now been
+> verified experimentally and are restated correctly below.
+
+- **Stale stem-class tags after an ādeśa — a ONE-LINE YAML fix, not an engine step.**
+  *(Supersedes the earlier "sup re-insertion via a `?resup` post-pass" note, which was
+  wrong: sup morphemes (su/au/jas…) are class-neutral, so re-inserting `su` changes
+  nothing.)* **Root cause (verified):** a pre-pass uttara-substitution rewrites the stem
+  *string* (`rc→""`, `r→"<new>"`) but leaves the **old stem's class tags** on the member.
+  Both `जाया` and `नासिका` carry **`?Ap`** (the ṭāp ā-stem marker), and `?Ap` drives
+  ā-stem nom-sg su-elision — so the substituted `जानि` / `नस` lose their visarga
+  (जानि, प्रनस). *Proof:* the very same a-stem `अम्बर` yields पीताम्बर**ः** normally but
+  पीताम्बर (no visarga) with `?Ap` forced onto it.
+  **Fix:** add `update: orp: [-Ap, -strI]` to the ādeśa rule, alongside its `xform`.
+  **Verified working:** niṅ **SK872/5.4.134** with that clear yields the canonical
+  **युवजानिः** (and प्रियजानिः) — it also fixed the युवन् न्/ñ cascade. The same clear should
+  unblock the **अच् नासिका→नस् family (5.4.118–121)**; the 8.4.3/28 **ṇatva across the
+  compound** (द्रुणसः/प्रणसः) remains a genuinely separate question.
+- **6.4.14's `-as` arm is `+u`-only — a general as-stem declension gap, unrelated to
+  bahuvrīhi or the gender-override.** *(Supersedes "6.4.14 dīrgha under the
+  gender-override".)* **Root cause (verified):** the rule's as-arm condition requires
+  `+u` (a u-it marker), so it fires only for u-it-formed stems (matup / ktavatu /
+  **īyasun**) and never for an underived अस्-final noun. A plain masc `यशस् + su` gives
+  **यशः, not यशाः, even standalone** (`yaSas.its == []`) — the gender-override is
+  satisfied and irrelevant. **Fix:** widen the `-as` arm to any non-dhātu अस्-final stem
+  (relax `+u`), which would unlock **बहुयशाः** and **asic SK862/5.4.122 अप्रजाः**. This is a
+  *general* declension change (it also affects सुमनाः etc.), so it needs its own
+  regression pass — the one item here that is a real engine change.
 - **दतृ न्-declension** → **datṛ 5.4.141** (द्विदन्; engine currently gives द्विदत्).
 - **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
 - **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).
