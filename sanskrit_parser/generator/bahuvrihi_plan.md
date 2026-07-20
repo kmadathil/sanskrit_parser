@@ -251,10 +251,19 @@ The working design turns on **propagating a tag into the pada** (Tier-1 allowlis
   नस्-specific `?saMjYA_nas` marker; that produced the right answer for द्रुणसः but by proxy,
   via a condition the sūtra does not have, and would have needed a fresh marker for every
   further saṁjñā case such as खरणसः.)
-- **SK859/8.4.28** is gated on 5.4.119's **`?nas_AdeSa`** marker. This one is still a
-  *scoped placeholder*, not the intended design: 8.4.28 is likewise general (any न after an
-  upasarga-conditioned nimitta, बहुलम्), so the faithful gate is an **upasarga pūrva**, not a
-  नस् marker. बहुलम् gives some license, but it should be revisited.
+- **SK859/8.4.28** is gated on 5.4.119's **`?nas_AdeSa`** marker — and this is **faithful,
+  not a placeholder.** (An earlier version of this section claimed the "correct" gate was a
+  general **upasarga pūrva**; that was wrong, and reading the sources settles it.) 8.4.28 is
+  नस्-specific in *both*: SK859 glosses it "उपसर्गस्थान्निमित्तात्परस्य **नसो नस्य** णः
+  स्याद्बहुलम्", and Vasu likewise — "the न **of नस्** … after an उपसर्ग having a cause of
+  change". What is genuinely unmodelled is narrower than a gate change:
+  **(a)** the **pronoun नस्** (the अस्मद् substitute, 8.1.21) — Vasu at 8.4.27 notes that in
+  8.4.28 "**both नस् are taken**" (प्रणो राजा, प्रणः शूद्रः); we cover only the
+  नासिका-substitute of 5.4.119, and the pronoun reaches ṇatva by a different pathway (it is
+  not a samāsa uttara), so it is not a condition tweak. **(b)** **बहुलम् optionality** —
+  प्र नो मुञ्चतम् shows non-application; we fire unconditionally.
+  Textual note: Vasu records Pāṇini's own sūtra as **उपसर्गादनोत्परः**, and SK858
+  independently notes the Bhāṣyakāra split it ("उपसर्गादनोत्पर इति तद्भङ्क्त्वा").
 
 **Independent corroboration — the शूर्पणखा / शूर्पनखी minimal pair.** Generalizing 8.4.3 to
 `?saMjYA` was validated by two *pre-existing* stems in the suite (added long before this
@@ -275,10 +284,21 @@ corrected when it landed. That a general `?saMjYA` gate flips exactly the saṁj
 a pair the suite already contained — and leaves the non-saṁjñā one alone — is strong
 evidence the condition is the right one.
 
+**अगः — deliberately NOT modelled, following the Mahābhāṣya.** अगः blocks ṇatva when ग
+intervenes, and the restriction *is* reachable in our engine (ग is ku, and
+`paribhasha.awkupvaNnum` admits the whole ku-varga under 8.4.2), so ऋचामयनम् would otherwise
+come out ऋगय**ण**म्. But SK857 records the Bhāṣya's rejection of the word:
+"अणृगयनादिभ्यः 1452 इति निपातनाण्णत्वाभावमाश्रित्य **अग इति प्रत्याख्यातं भाष्ये**" — ऋगयनम्'s
+lack of ṇatva already follows from the **निपातन at 4.3.129 अण् ऋगयनादिभ्यः** (SK1452), whose
+gaṇa lists ऋगयन first. ऋगयन is the **only** example either source cites, and it is
+independently handled, so modelling अगः would buy no coverage while adding a shared-helper
+hazard: the guard could not live in `ratva_string` (shared by 8.4.1/8.4.2/8.4.22, whereas
+अगः restricts only 8.4.3) and would need a new **lp+rp-spanning** helper, since the ratva
+cause is in the pūrva and the न in the uttara. Revisit only if a real अगः case appears that
+the 4.3.129 nipātana does not cover.
+
 **Still open:** the *general* cross-member ṇatva gap (tatpuruṣa **चोरभयेण**, and the
-त्रिभुवनम् restriction in non-saṁjñā compounds) is untouched by this lever. And **अगः** (no
-ṇatva when ग intervenes — ऋक्+अयनम् → ऋगयनम्) is unmodelled; it grows more relevant now that
-8.4.3 is gated generally on `?saMjYA` rather than on a single marker.
+त्रिभुवनम् restriction in non-saṁjñā compounds) is untouched by this lever.
 
 ### Remaining work
 > Two of these were mis-diagnosed in the first pass; both root causes have now been
@@ -671,6 +691,8 @@ a one-line tag problem, not the engine gap named. Cleared since first writing:
 | asic SK862/5.4.122 + masc बहुयशाः — "needs **6.4.14 dīrgha under the gender-override**" | Wrong. 6.4.14's `-as` arm was narrowly restricted to `+u` (Īyasun) | ✅ arm widened with `?!avyaya`/`?!nipAta`/`?!sarvanAma` guards → यशाः/मनाः/बहुयशाः, अप्रजाः |
 | datṛ SK880/5.4.141 — "needs the **दतृ न्-declension**" | Wrong. It is an **it-marker** problem, not a declension one: दतृ is उगित्, so 7.1.70 नुम् supplies the न् | ✅ `update: orp: [++f]` → द्विदन्, and सुदती free via 4.1.6 |
 | cross-compound ṇatva (SK857/8.4.3, SK859/8.4.28) | Arm A of 8.4.1/8.4.2 blocked by `?merged_pada` | ✅ `?samasta_Ratva` lever → arm B → द्रुणसः, प्रणसः |
+| ḍac SK851/5.4.73 + SK843/2.2.25 — "**accent-only**", and separately "needs the physical reorder" | Both wrong. Vasu 54073's "the difference here is in the accent" describes the **अबहुगणात् exception** (उपबहवः/उपगणाः, where ḍac is *not* added), not उपदशाः; and 2.2.25 needs no reorder, the composer already supplies उप first | ✅ उपदशाः, आसन्नविंशाः, उपबहवः |
+| SK859/8.4.28 — "scoped placeholder, faithful gate is an upasarga pūrva" | Wrong. **Both** SK859 and Vasu gloss 8.4.28 as नस्-specific ("नसो नस्य" / "the न **of नस्**"). The gate was already faithful | ✅ doc retraction; the real gaps are the pronoun नस् and बहुलम् |
 
 **Still open:** reciprocal ic SK866/5.4.127 (केशाकेशि) — note the long-standing "needs
 **reduplication**" framing is **also wrong**: SK gives the vigraha as केशेषु केशेषु, i.e. the
@@ -678,8 +700,7 @@ a one-line tag problem, not the engine gap named. Cleared since first writing:
 needs is (a) SK846/2.2.27 sarūpa formation (a new **lp == rp content check**), (b) 5.4.127
 इच् (the `ic_s` affix already exists), (c) **6.3.137 अन्येषामपि दृश्यते** (unimplemented —
 supplies the केश→केशा dīrgha), and (d) avyaya tagging (ic is in the tiṣṭhadgu-prabhṛti gaṇa,
-so the form is invariant). ḍac
-SK851/5.4.73 is **accent-only**; the formation deferrals (2.2.25 / 2.2.27 / 2.2.35–37)
+so the form is invariant). the formation deferrals the formation deferrals (2.2.27 / 2.2.35–37)
 + B1 6.3.35/36/39 need the **physical pūrva-nipāta (2.2.30)** / affix-context machinery;
 accent-gated SK 508/509 remain deferred; **general** cross-member ṇatva
 (चोरभयेण / त्रिभुवनम्) is untouched, and SK859/8.4.28's `?nas_AdeSa` gate is an

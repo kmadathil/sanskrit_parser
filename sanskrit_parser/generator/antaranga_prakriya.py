@@ -17,7 +17,7 @@ from decimal import Decimal
 from indic_transliteration import sanscript
 from sanskrit_parser.generator.paninian_object import PaninianObject, _SLP1_VOWELS
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
-from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac, kap, Sac, ap_s, ic_s, asic
+from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac, kap, Sac, ap_s, ic_s, asic, qac
 from sanskrit_parser.generator.sutra import Sutra
 
 from copy import deepcopy, copy
@@ -741,7 +741,8 @@ class AntarangaPrakriya(PrakriyaBase):
     _SAMASANTA_AFFIXES = {"samasanta_TaC": wac, "samasanta_kap": kap,
                           "samasanta_Sac": Sac, "samasanta_ap": ap_s,
                           "samasanta_ic": ic_s,
-                          "samasanta_asic": asic}
+                          "samasanta_asic": asic,
+                          "samasanta_qac": qac}
 
     def _insert_samasanta(self, inputs):
         """Insert the samāsānta affix after any uttara tagged with a ?samasanta_*

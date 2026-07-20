@@ -101,6 +101,7 @@ snAta    = Pratipadika("snAta",   "pum",   other_tags=["kta"])   # स्ना�
 anulipta = Pratipadika("anulipta","pum",   other_tags=["kta"])   # अनुलिप्त — स्नातानुलिप्तः uttara
 priya    = Pratipadika("priya",   "pum")     # प्रिय — कल्याणप्रियः uttara (6.3.42 puṃvad)
 kalyARa  = Pratipadika("kalyARa", "pum")     # कल्याण — the puṃvat (masc) form of कल्याणी (6.3.42)
+dfQa     = Pratipadika("dfQa", "pum")        # दृढ — pūrva-pada of दृढधन्वा (SK870/5.4.132, non-saṁjñā control for SK871/5.4.133)
 # (भुवन for त्रिभुवनम् is not added — that case is deferred: cross-member ṇatva. The
 # samāhāra-dvigu napuṁsaka path is exercised by पञ्चगवम् + त्रिलोकम् via existing stems.)
 # ── Bahuvrīhi B0 (bahuvrihi_plan.md): the EXOCENTRIC compound declines in an EXTERNAL
@@ -735,6 +736,8 @@ paYcan = Pratipadika("paYcan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 saptan = Pratipadika("saptan", "pum", other_tags=["saMKyA", "nityabahuvacana"])
 navan  = Pratipadika("navan",  "pum", other_tags=["saMKyA", "nityabahuvacana"])
 daSan  = Pratipadika("daSan",  "pum", other_tags=["saMKyA", "nityabahuvacana"])
+viMSati = Pratipadika("viMSati", "strI", other_tags=["saMKyA"])   # विंशति — SK844/6.4.142 ति-lopa under a ḍit (आसन्नविंशाः)
+Asanna  = Pratipadika("Asanna", "pum")   # आसन्न "near" — SK843/2.2.25 pūrva (आसन्नविंशाः)
 # aṣṭan (8): tagged "azwan" so SK371/SK372 can target it specifically
 azwan  = Pratipadika("azwan",  "pum", other_tags=["saMKyA", "nityabahuvacana", "azwan"])
 tri_s = Pratipadika("tri", "strI", other_tags=["saMKyA", "nityabahuvacana"])

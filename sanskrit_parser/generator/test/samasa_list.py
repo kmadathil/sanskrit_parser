@@ -664,6 +664,43 @@ samasa_bv_tests = [
         "surface": "सहपुत्राय",
     },
     {
+        # दशानां समीपे ये सन्ति ते = उपदशाः (SK843/2.2.25 formation + SK851/5.4.73 डच्).
+        # "nine or eleven". डच् is ḍit → 6.4.143 टेः drops दश**न्**'s ṭi → दश → उपदशाः.
+        # दशन् is ?nityabahuvacana, which supplies the plural.
+        "label": "B2-upadaSAH-SK843-2.2.25",
+        "purva": {"avyaya": "upa_avyaya"},
+        "uttara": {"stem": "daSan", "vibhakti": 1, "vacana": 3, "tags": ["saMKyeya"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.25", "5.4.73"],
+        "surface": "उपदशाः",
+    },
+    {
+        # विंशतेरासन्नाः = आसन्नविंशाः (SK844/6.4.142 ति-lopa under the ḍit डच्).
+        # 6.4.143 alone would give *विंशत् (ṭi = the final इ only); 6.4.142 drops the whole ति.
+        "label": "B2-AsannaviMSAH-SK844-6.4.142",
+        "purva": {"stem": "Asanna", "vibhakti": 1},
+        "uttara": {"stem": "viMSati", "vibhakti": 1, "vacana": 3, "tags": ["saMKyeya"]},
+        "referent_linga": "pum",
+        # 6.4.142 is a MAIN-SCAN rule, so it is not in the pre-pass trace; the
+        # surface विंश (not *विंशत्) is what proves it fired.
+        "fired": ["2.2.25", "5.4.73"],
+        "surface": "आसन्नविंशाः",
+    },
+    {
+        # अबहुगणात् किम् — बहु/गण are saṅkhyā (1.1.23 बहुगणवतुडति संख्या), so 2.2.25 DOES
+        # form the compound, but 5.4.73 explicitly excludes them from डच्: उपबहवः (u-stem
+        # declension intact, no डच्). Vasu 54073: "the difference here is in the accent" —
+        # THIS is the case that remark describes, not उपदशाः.
+        "label": "B2-upabahavaH-SK851-5.4.73-abahugaRAt",
+        "purva": {"avyaya": "upa_avyaya"},
+        "uttara": {"stem": "bahu", "vibhakti": 1, "vacana": 3,
+                   "tags": ["saMKyA", "saMKyeya"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.25"],
+        "not_fired": ["5.4.73"],
+        "surface": "उपबहवः",
+    },
+    {
         # दक्षिणस्याः पूर्वस्याश्च दिशोरन्तरालम् = दक्षिणपूर्वा (SK845/2.2.26; fem diś referent).
         "label": "B2-dakziRapUrvA-SK845-2.2.26",
         "purva": {"stem": "dakziRa_dik", "vacana": 1, "vibhakti": 1},
@@ -895,6 +932,28 @@ samasa_bv_tests = [
         "surface": "सुधन्वा",
     },
     {
+        # शतं धनूंषि यस्य = शतधन्वा / शतधनुः — SK871/5.4.133 वा संज्ञायाम् makes 5.4.132's
+        # अनङ् OPTIONAL in a SAṀJÑĀ, so both surfaces are correct (Vasu 54133). The un-applied
+        # branch keeps धनुस् → nom sg शतधनुः; the applied branch gives the n-stem शतधन्वा.
+        "label": "B4-SataDanvA-SK871-5.4.133",
+        "purva": {"stem": "Sata", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Danus", "vacana": 1, "vibhakti": 1, "tags": ["saMjYA"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "surfaces": ["शतधन्वा", "शतधनुः"],
+    },
+    {
+        # वयसि किम् — WITHOUT ?saMjYA the अनङ् is compulsory (5.4.132), so there is no fork
+        # and 5.4.133 must NOT fire: दृढं धनुर्यस्य = दृढधन्वा only.
+        "label": "B4-dfQaDanvA-SK870-5.4.132-not-saMjYA",
+        "purva": {"stem": "dfQa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Danus", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.132", "1.2.43"],
+        "not_fired": ["5.4.133"],
+        "surface": "दृढधन्वा",
+    },
+    {
         # कल्याणो धर्मोऽस्य = कल्याणधर्मा (SK863/5.4.124 अनिच्, धर्म→धर्मन् n-stem → धर्मा).
         "label": "B4-kalyARaDarmA-SK863-5.4.124",
         "purva": {"stem": "kalyARa", "vacana": 1, "vibhakti": 1},
@@ -976,8 +1035,8 @@ samasa_bv_tests = [
     },
     {
         # द्रुरिव नासिकाऽस्य = द्रुणसः — SK856/5.4.118 (नासिका→नस in a SAṀJÑĀ) + SK857/8.4.3
-        # पूर्वपदात्संज्ञायामगः cross-compound ṇatva (द्रु's र → the ण). The saṁjñā path is kept
-        # disjoint from the upasarga path via ?saMjYA_nas (vs ?nas_AdeSa for 8.4.28).
+        # पूर्वपदात्संज्ञायामगः cross-compound ṇatva (द्रु's र → the ण). 8.4.3 gates on the
+        # compound's own ?saMjYA; 8.4.28's upasarga path stays disjoint via ?nas_AdeSa.
         "label": "B3-druRasaH-SK856-5.4.118",
         "purva": {"stem": "dru", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "nAsikA", "vacana": 1, "vibhakti": 1, "tags": ["saMjYA"]},

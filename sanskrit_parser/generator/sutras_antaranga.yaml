@@ -10978,6 +10978,76 @@
 # pūrva-nipāta 2.2.30, the deferred reorder mechanism).
 # ════════════════════════════════════════════════════════════════════════════
 
+# SK843/2.2.25 संख्ययाऽव्ययासन्नादूराधिकसंख्याः संख्येये — an avyaya (उप "near"), or
+# आसन्न/अदूर/अधिक, or a saṅkhyā, compounds WITH a saṅkhyā when the sense is संख्येय (a
+# counted thing); the result is a bahuvrīhi: दशानां समीपे ये सन्ति ते = उपदशाः ("nine or
+# eleven"). Like 2.2.28, the pūrva is indeclinable (no ?viBakti_1), so SK830/2.2.24 cannot
+# form it — hence this separate formation rule.
+# ?saMKyeya is composer-supplied (the सङ्ख्येये condition), exactly as ?vayas is for
+# SK880/5.4.141: without it पञ्च ब्राह्मणाः is not a compound at all (Vasu 22025).
+# It rides on the uttara so SK851/5.4.73 can read it after the merge.
+- sutra: संख्ययाऽव्ययासन्नादूराधिकसंख्याः संख्येये
+  id: 2.2.25
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - - or
+        - "?nipAta"
+        - "=Asanna"
+        - "=adUra"
+        - "=aDika"
+        - "?saMKyA"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?saMKyA"
+      - "?saMKyeya"
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
+
+# SK851/5.4.73 बहुव्रीहौ संख्येये डजबहुगणात् — a saṅkhyeya bahuvrīhi takes डच्, EXCEPT when
+# it ends in बहु or गण (अबहुगणात्: उपबहवः, उपगणाः — there the difference is only in accent).
+# डच् is ḍit, so 6.4.143 टेः drops the ṭi of दश**न्** → दश; उपदश + jas → उपदशाः. (दशन् is
+# ?nityabahuvacana, which is what makes the plural fall out.) NOT an accent-only rule —
+# Vasu 54073's "the difference here is in the accent" describes the अबहुगण EXCEPTION, i.e.
+# the case where डच् is NOT added, not उपदशाः.
+- sutra: बहुव्रीहौ संख्येये डजबहुगणात्
+  id: 5.4.73
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?saMKyeya"
+      - "=!bahu"
+      - "=!gaRa"
+      - "?!samasanta_qac"
+  update:
+    orp: +samasanta_qac
+
+# SK844/6.4.142 ति विंशतेर्डिति — the ति of विंशति (a भ stem) is elided before a ḍit affix:
+# विंशति + डच् → विंश → आसन्नविंशाः ("near twenty" = nineteen or twenty-one).
+# This is NOT subsumed by 6.4.143 टेः, which shares the ḍit trigger: ṭi (1.1.64 अचोऽन्त्यादि
+# टि) of विंशति is just the final इ, so 6.4.143 alone would give *विंशत्. 6.4.142 drops the
+# whole ति — hence the separate lexical rule, and it must outrank 6.4.143 here.
+- sutra: ति विंशतेर्डिति
+  id: 6.4.142
+  overrides: 6.4.143
+  condition:
+    lp:
+      - and
+      - "=viMSati"
+      - "?Ba"
+    rp: +q
+  xform:
+    lc: str("")
+    l: str("viMS")
+
 # SK848/2.2.28 तेन सहेति तुल्ययोगे — सह (with) in tulyayoga (equal association) with a
 # noun forms a bahuvrīhi: पुत्रेण सह (वर्तते) = सपुत्रः / सहपुत्रः. सह is an indeclinable
 # pūrva (no ?viBakti_1), so the general SK830/2.2.24 does not fire — this rule forms it.
@@ -11308,6 +11378,7 @@
 # SK870/5.4.132 धनुषश्च — a धनुस्-final bahuvrīhi takes अनङ् (धनुस् → धन्वन्, n-stem):
 # शोभनं धनुर्यस्य = सुधन्वा (शार्ङ्गधन्वा). Pre-pass uttara-substitution धनुस्→धन्वन्; the
 # n-stem then declines to nom sg धन्वा.
+# ?!saMjYA: obligatory only OUTSIDE a saṁjñā — inside one SK871/5.4.133 makes it optional.
 - sutra: धनुषश्च
   id: 5.4.132
   bahiranga: -1
@@ -11316,6 +11387,28 @@
       - and
       - "?bahuvrIhi"
       - "=Danus"
+      - "?!saMjYA"
+  xform:
+    rc: str("")
+    r: str("Danvan")
+
+# SK871/5.4.133 वा संज्ञायाम् — the अनङ् of 5.4.132 is OPTIONAL when the bahuvrīhi is a
+# SAṀJÑĀ (a name): शतधन्वा / शतधनुः, दृढधन्वा / दृढधनुः. Vasu 54133: "the substitution of
+# अनङ् does not optionally take place when the बहुव्रीहि समास is a name … this declares an
+# option, where the last sūtra had made the substitution compulsory."
+# Same xform as 5.4.132, but gated ?saMjYA + optional (the pre-pass vibhāṣā fork in
+# antaranga_prakriya._run_fixpoint clones the un-applied branch → both surfaces). 5.4.132
+# carries the matching ?!saMjYA so exactly one of the two rules is live per compound.
+- sutra: वा संज्ञायाम्
+  id: 5.4.133
+  bahiranga: -1
+  optional: true
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=Danus"
+      - "?saMjYA"
   xform:
     rc: str("")
     r: str("Danvan")
@@ -11439,6 +11532,19 @@
 # compound is ?merged_pada, which arm A of 8.4.1/8.4.2 excludes); this rule ENABLES it by
 # setting ?samasta_Ratva on the uttara, which join_objects turns into ?samasta_Ratva_pada
 # on the compound → arm B of 8.4.1/8.4.2 fires. Same shape as SK307/8.4.12.
+#
+# The ?nas_AdeSa gate is FAITHFUL, not a placeholder (an earlier comment here claimed the
+# "correct" gate was a general upasarga pūrva — that was wrong). 8.4.28 is नस्-specific in
+# both sources: SK859 glosses it "उपसर्गस्थान्निमित्तात्परस्य **नसो नस्य** णः स्याद्बहुलम्",
+# and Vasu likewise ("the न OF नस् … after an उपसर्ग having a cause of change").
+# What IS genuinely unmodelled here, and is narrower than a gate change:
+#   (a) the PRONOUN नस् (the अस्मद् substitute of 8.1.21) — Vasu at 8.4.27 notes that in
+#       8.4.28 "both नस् are taken", giving प्रणो राजा / प्रणः शूद्रः. We cover only the
+#       नासिका-substitute नस् of 5.4.119. The pronoun is a sarvanāma substitute, not a
+#       samāsa uttara, so it arrives by a different pathway — not a condition tweak.
+#   (b) बहुलम् optionality — प्र नो मुञ्चतम् shows non-application; we fire unconditionally.
+# Textual note: Vasu records that Pāṇini's own sūtra was उपसर्गादनोत्परः, and SK858
+# independently notes the Bhāṣyakāra split it ("उपसर्गादनोत्पर इति तद्भङ्क्त्वा").
 - sutra: उपसर्गाद्बहुलम्
   id: 8.4.28
   condition:
@@ -11477,8 +11583,25 @@
 # becomes ण (not when ग intervenes): द्रुणसः, खरणसः. Enables the cross-compound ṇatva by
 # setting ?samasta_Ratva on the uttara (→ ?samasta_Ratva_pada, arm B of 8.4.1/8.4.2), the
 # same lever as SK307/8.4.12. Gated on ?saMjYA — the sūtra's OWN condition, and the reason
-# त्रिभुवनम् keeps its न (it is not a name), rather than a नस्-specific marker. (अगः — no ṇatva
-# when ग intervenes, ऋगयनम् — is NOT modelled; it becomes relevant as this gate generalises.)
+# त्रिभुवनम् keeps its न (it is not a name), rather than a नस्-specific marker.
+#
+# अगः IS DELIBERATELY NOT MODELLED — we follow the Mahābhāṣya, which discards the word.
+# अगः would block ṇatva when ग intervenes; the intervention is otherwise permitted because
+# ग is ku, and paribhasha.py's awkupvaNnum (8.4.2 अट्कुप्वाङ्नुम्व्यवाये) admits the whole
+# ku-varga. So the restriction IS reachable here: ऋचामयनम् → ऋगयनम्, not ऋगयणम्.
+# But SK857 records the Bhāṣya's rejection of it:
+#     "अणृगयनादिभ्यः 1452 इति निपातनाण्णत्वाभावमाश्रित्य अग इति प्रत्याख्यातं भाष्ये"
+# i.e. ऋगयनम्'s lack of ṇatva already follows from the निपातन at 4.3.129 अण् ऋगयनादिभ्यः
+# (SK1452), which lists ऋगयन as its first member — so अगः is redundant and Patañjali
+# discards it. ऋगयन is the ONLY example either source cites, and it is independently
+# handled, so modelling अगः here would add a shared-helper hazard for no coverage:
+# the guard could NOT live in paribhasha.ratva_string (that helper is shared by
+# 8.4.1/8.4.2/8.4.22, and अगः restricts only 8.4.3) and would need a separate lp+rp-spanning
+# helper, since the ratva cause sits in the pūrva and the न in the uttara.
+# Revisit only if a real अगः case appears that the 4.3.129 nipātana does not cover.
+# Vasu's other examples all work under the present gate: द्रुणसः, खरणसः, वार्द्ध्रीणसः,
+# शूर्पणखा (Vasu cites it here, referring to 5.4.118 and 4.1.58); negative — चर्मनासिकः
+# (not a saṁjñā → no ṇatva), as with त्रिभुवनम्.
 - sutra: पूर्वपदात्संज्ञायामगः
   id: 8.4.3
   condition:
