@@ -25,6 +25,7 @@ from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna, strI_abs
 from sanskrit_parser.generator import pratipadika as _pratipadika
+from sanskrit_parser.generator import avyaya as _avyaya
 
 from conftest import sutra_list
 from samasa_list import samasa_bv_tests
@@ -34,10 +35,14 @@ _LINGAS = ("pum", "strI", "napum")
 
 
 def _build_member(spec, *, referent_linga=None):
-    """A bahuvrīhi member: a stem (pratipadika.py) in the prathamā (vigraha), with
-    the bahuvrīhi intent tags. On the uttara, referent_linga overrides the native
-    gender to the referent's liṅga (anyapadārtha) and records ?referent_<linga>."""
-    p = deepcopy(getattr(_pratipadika, spec["stem"]))
+    """A bahuvrīhi member: a stem (pratipadika.py) — or an avyaya (avyaya.py), e.g. the
+    nañ — in the prathamā (vigraha), with the bahuvrīhi intent tags. On the uttara,
+    referent_linga overrides the native gender to the referent's liṅga (anyapadārtha)
+    and records ?referent_<linga>."""
+    if "avyaya" in spec:
+        p = deepcopy(getattr(_avyaya, spec["avyaya"]))
+    else:
+        p = deepcopy(getattr(_pratipadika, spec["stem"]))
     if spec.get("vacana"):
         p.setTag(f"vacana_{spec['vacana']}")
     if spec.get("vibhakti"):

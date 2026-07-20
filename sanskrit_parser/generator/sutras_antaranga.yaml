@@ -11407,7 +11407,7 @@
     rc: str("")
     r: str("nasa")
   update:
-    orp: [-Ap, -strI]
+    orp: [-Ap, -strI, +nas_AdeSa]   # ?nas_AdeSa marks the नस् for the 8.4.28 ṇatva
 
 # SK862/5.4.122 नित्यमसिच् प्रजामेधयोः — after नञ्/दुस्/सु, a प्रजा- or मेधा-final bahuvrīhi
 # OBLIGATORILY takes असिच् (अस्): शोभना प्रजा यस्य = सुप्रजाः; सुमेधाः, दुर्मेधाः (अप्रजाः needs
@@ -11423,7 +11423,7 @@
       - or
       - "=su"
       - "=dus"
-      - "=na"
+      - "?naY"          # by TAG, not "=na": 6.3.73 rewrites the nañ pūrva to "a" first
     rp:
       - and
       - "?bahuvrIhi"
@@ -11433,3 +11433,60 @@
       - "?!samasanta_asic"
   update:
     orp: [+samasanta_asic, -Ap, -strI]
+
+# SK859/8.4.28 उपसर्गाद्बहुलम् — after an upasarga, the न of the नस् (नासिका) samāsānta
+# becomes ण (bahulam): प्रणसः. Cross-compound ṇatva is blocked by default (the merged
+# compound is ?merged_pada, which arm A of 8.4.1/8.4.2 excludes); this rule ENABLES it by
+# setting ?samasta_Ratva on the uttara, which join_objects turns into ?samasta_Ratva_pada
+# on the compound → arm B of 8.4.1/8.4.2 fires. Same shape as SK307/8.4.12.
+- sutra: उपसर्गाद्बहुलम्
+  id: 8.4.28
+  condition:
+    lp: $$lp_has_ratva_cause
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?nas_AdeSa"       # ONLY the नस् substitute of 5.4.119 — keeps this cross-compound
+      - $$rp_has_ratva_effect   # ṇatva out of every other compound (त्रिभुवनम् stays न)
+  update:
+    orp: +samasta_Ratva
+
+# SK856/5.4.118 अञ् नासिकायाः संज्ञायां नसं चास्थूलात् — a नासिका-final bahuvrīhi that is a
+# SAṀJÑĀ takes अच्, and नासिका → नस्: द्रुरिव नासिकाऽस्य = द्रुणसः (the ण by SK857/8.4.3).
+# Same नासिका→नस substitution + `-Ap` clear as 5.4.119, but gated on ?saMjYA instead of an
+# upasarga pūrva, and it marks ?saMjYA_nas (not ?nas_AdeSa) so the ṇatva is attributed to
+# 8.4.3, keeping the two ṇatva paths disjoint. (अस्थूलात् — the स्थूल exclusion — is not
+# modelled; no स्थूल stem exists yet.)
+- sutra: अञ् नासिकायाः संज्ञायां नसं चास्थूलात्
+  id: 5.4.118
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=nAsikA"
+      - "?saMjYA"
+  xform:
+    rc: str("")
+    r: str("nasa")
+  update:
+    orp: [-Ap, -strI, +saMjYA_nas]
+
+# SK857/8.4.3 पूर्वपदात्संज्ञायामगः — in a SAṀJÑĀ, the न after a pūrva-pada ṛ/ṣ/r nimitta
+# becomes ण (not when ग intervenes): द्रुणसः, खरणसः. Enables the cross-compound ṇatva by
+# setting ?samasta_Ratva on the uttara (→ ?samasta_Ratva_pada, arm B of 8.4.1/8.4.2), the
+# same lever as SK307/8.4.12. Keyed on ?saMjYA_nas so it stays confined to the 5.4.118
+# नस् — a general pūrvapada ṇatva would wrongly hit त्रिभुवनम् etc. (अगः not modelled.)
+- sutra: पूर्वपदात्संज्ञायामगः
+  id: 8.4.3
+  condition:
+    lp: $$lp_has_ratva_cause
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?saMjYA_nas"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva

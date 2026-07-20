@@ -882,6 +882,26 @@ samasa_bv_tests = [
         "surface": "सुमेधाः",
     },
     {
+        # अविद्यमाना प्रजा यस्य = अप्रजाः — the NAÑ arm of SK862/5.4.122. The nañ pūrva
+        # carries an intrinsic ?naY, so 6.3.73 नलोपो नञः turns न→अ before the consonant
+        # of प्रजा; 5.4.122 gates on ?naY (NOT "=na") because 6.3.73 rewrites the pūrva first.
+        "label": "B3-aprajAH-naY-SK862-5.4.122",
+        "purva": {"avyaya": "naY", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "prajA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.122", "6.3.73", "1.2.43"],
+        "surface": "अप्रजाः",
+    },
+    {
+        # अविद्यमाना मेधा यस्य = अमेधाः (nañ arm, मेधा).
+        "label": "B3-ameDAH-naY-SK862-5.4.122",
+        "purva": {"avyaya": "naY", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "meDA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.122", "6.3.73", "1.2.43"],
+        "surface": "अमेधाः",
+    },
+    {
         # युवतिर्जाया यस्य = युवजानिः (SK872/5.4.134 जायाया निङ्; जाया→जानि). The rule's
         # `-Ap` clear is what gives the visarga — जाया's ?Ap would else elide the su.
         "label": "B4-yuvajAniH-SK872-5.4.134",
@@ -893,13 +913,36 @@ samasa_bv_tests = [
     },
     {
         # उन्नता नासिकाऽस्य = उन्नसः (SK858/5.4.119 उपसर्गाच्च अच्; नासिका→नस). उद्नसः is the
-        # other fork of 8.4.45 यरोऽनुनासिके (वा). प्रणसः needs SK859/8.4.28 ṇatva — deferred.
+        # other fork of 8.4.45 यरोऽनुनासिके (वा). उद् has no ṛ/ṣ/r, so no ṇatva.
         "label": "B3-unnasaH-SK858-5.4.119",
         "purva": {"stem": "ud", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "nAsikA", "vacana": 1, "vibhakti": 1},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.119", "1.2.43"],
         "surfaces": ["उन्नसः", "उद्नसः"],
+    },
+    {
+        # प्रणता नासिकाऽस्य = प्रणसः — SK859/8.4.28 उपसर्गाद्बहुलम् CROSS-COMPOUND ṇatva: प्र's
+        # र ṇatva-ises the न of the नस् across the pūrva/uttara boundary. 5.4.119 marks the
+        # substitute ?nas_AdeSa (propagated through the (uttara|sup) merge), and 8.4.28 keys
+        # on it to set ?samasta_Ratva → ?samasta_Ratva_pada → arm B of 8.4.1/8.4.2.
+        "label": "B3-praRasaH-SK859-8.4.28",
+        "purva": {"stem": "pra", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nAsikA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.119", "1.2.43"],
+        "surface": "प्रणसः",
+    },
+    {
+        # द्रुरिव नासिकाऽस्य = द्रुणसः — SK856/5.4.118 (नासिका→नस in a SAṀJÑĀ) + SK857/8.4.3
+        # पूर्वपदात्संज्ञायामगः cross-compound ṇatva (द्रु's र → the ण). The saṁjñā path is kept
+        # disjoint from the upasarga path via ?saMjYA_nas (vs ?nas_AdeSa for 8.4.28).
+        "label": "B3-druRasaH-SK856-5.4.118",
+        "purva": {"stem": "dru", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nAsikA", "vacana": 1, "vibhakti": 1, "tags": ["saMjYA"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.118", "1.2.43"],
+        "surface": "द्रुणसः",
     },
     {
         # अजातककुत् type = प्राप्तककुत् / प्राप्तककुद् (SK884/5.4.146 ककुद final-lopa; 8.4.56).

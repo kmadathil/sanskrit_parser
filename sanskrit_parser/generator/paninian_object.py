@@ -223,7 +223,11 @@ class PaninianObject(SanskritObject):
         # karaNa/dik: pūrva-pada role tags read by SK506/507 (?karaNa) and SK515
         # (?dik) at the strī window's llp — must survive the pūrva-pada+luk_sup
         # merge so the (uttara | strI_abs) window's left-neighbour still carries them.
-        _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik"])
+        # ?nas_AdeSa: the नस् substitute of SK858/5.4.119 (नासिका→नस्). It must survive the
+        # (uttara | sup) merge into a pada so SK859/8.4.28 can key the cross-compound ṇatva
+        # on it (प्रणसः) WITHOUT opening ṇatva to every ṛ/ṣ/r-pūrva compound (त्रिभुवनम्).
+        _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik",
+                           "nas_AdeSa", "saMjYA_nas"])
         # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
         # through every merge so a kṛt/taddhita/strī-derived noun keeps its
         # semantic/kāraka/vibhakti view until its sup attaches. The guard tags

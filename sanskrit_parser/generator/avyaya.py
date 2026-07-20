@@ -40,7 +40,7 @@ avas      = Pratipadika("avas",      "pum", other_tags=["svarAdi"])  # अवस
 samayA    = Pratipadika("samayA",    "pum", other_tags=["svarAdi"])  # समया "near"
 nikazA    = Pratipadika("nikazA",    "pum", other_tags=["svarAdi"])  # निकषा "near/close by"
 vfTA      = Pratipadika("vfTA",      "pum", other_tags=["svarAdi"])  # वृथा "in vain"
-naY       = Pratipadika("na",        "pum", other_tags=["svarAdi"])  # नञ् "not" (compound pūrva न; surface na, ञ् is इत्)
+naY       = Pratipadika("na",        "pum", other_tags=["svarAdi", "naY"])  # नञ् "not" (compound pūrva न; surface na, ञ् is इत्). Intrinsic ?naY so a nañ BAHUVRĪHI also gets 6.3.73 न→अ (2.2.6 sets it for tatpuruṣa; 6.3.73 needs ?samAsaPurva + rp ?samAsa, so this is inert outside a compound)
 hetO      = Pratipadika("hetO",      "pum", other_tags=["svarAdi"])  # हेतौ "by reason of"
 idDA      = Pratipadika("idDA",      "pum", other_tags=["svarAdi"])  # इद्धा "truly"
 adDA      = Pratipadika("adDA",      "pum", other_tags=["svarAdi"])  # अद्धा "evidently"

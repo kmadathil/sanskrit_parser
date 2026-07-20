@@ -21,7 +21,7 @@ ends with a self-contained *Session prompt*.
 > **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
 > every affix family that declines cleanly; the rest deferred on known engine gaps (see
 > §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 49 cases; full generator suite green. The Phases (§3)
+> `test/test_samasa_bahuvrihi.py` = 53 cases; full generator suite green. The Phases (§3)
 > keep the original forward-looking Session prompts as a historical record —
 > **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
 >
@@ -216,6 +216,30 @@ A pre-pass uttara-substitution rewrites the stem **string** but leaves the membe
   now implemented — **युवजानिः** (5.4.134) and **उन्नसः** (5.4.119). Independently, अच् still
   needs the 8.4.3/28 **ṇatva across the compound** for द्रुणसः/प्रणसः (5.4.118 saṁjñā arm).
 
+### Cross-compound ṇatva (8.4.3 / 8.4.28) — ✅ LANDED
+ṇatva across the pūrva/uttara boundary is **blocked by default**: the merged compound is
+`?merged_pada`, which arm A of 8.4.1/8.4.2 excludes. The engine's existing lever (from
+SK307/8.4.12) is to set **`?samasta_Ratva`** on the uttara, which `join_objects` turns into
+**`?samasta_Ratva_pada`** on the compound → **arm B** of 8.4.1/8.4.2 fires. Two new rules use
+that lever:
+- **SK859/8.4.28 उपसर्गाद्बहुलम्** → **प्रणसः** (उन्नसः unaffected — उद् has no ṛ/ṣ/r).
+- **SK857/8.4.3 पूर्वपदात्संज्ञायामगः** → **द्रुणसः** (with the new SK856/5.4.118 saṁjñā arm).
+
+**The gating is the whole difficulty.** A general "pūrvapada ṇatva" rule would wrongly give
+*त्रिभुवणम्*. Two attempts failed before the right one:
+1. gating `lp` on `?samAsaPurva`, then on `?nipAta` — both fail, because at the window where
+   the rule fires (`rp` is a `?pada`) the lp no longer carries them;
+2. gating `rp` on a plain marker tag — fails, because `join_objects` propagates tags through
+   an **allowlist**, so an arbitrary tag is dropped at the (uttara | sup) merge.
+
+The working design: 5.4.119 marks its substitute **`?nas_AdeSa`** and 5.4.118 marks
+**`?saMjYA_nas`**; both are added to the Tier-1 propagation allowlist in
+`paninian_object.py` so they survive into the pada; each ṇatva rule keys on its own marker.
+That confines cross-compound ṇatva to exactly the नस् cases and keeps the two sūtras
+disjoint. **Note:** the *general* cross-member ṇatva gap (tatpuruṣa चोरभयेण, and the
+त्रिभुवनम् restriction) is untouched — it needs the real 8.4.3 अगः/saṁjñā modelling, not this
+marker-scoped lever.
+
 ### Remaining work
 > Two of these were mis-diagnosed in the first pass; both root causes have now been
 > verified experimentally and are restated correctly below.
@@ -231,9 +255,8 @@ A pre-pass uttara-substitution rewrites the stem **string** but leaves the membe
   पीताम्बर (no visarga) with `?Ap` forced onto it.
   **Fix:** add `update: orp: [-Ap, -strI]` to the ādeśa rule, alongside its `xform`.
   **Landed:** niṅ **SK872/5.4.134** → **युवजानिः** (it also fixed the युवन् न्/ñ cascade), and
-  अच् **SK858/5.4.119** → **उन्नसः** (उद्नसः is the other 8.4.45 वा fork). What remains of the
-  अच् family is only the **saṁjñā arm SK856/5.4.118** (द्रुणसः) and **प्रणसः**, both of which
-  need the 8.4.3/28 **ṇatva across the compound** — verified NOT firing (प्रनसः).
+  अच् **SK858/5.4.119** → **उन्नसः**. The अच् family is now **complete**: the cross-compound
+  ṇatva also landed (below), giving **प्रणसः** and **द्रुणसः**.
 - **6.4.14's `-as` arm was `+u`-only — WIDENED. ✅ APPLIED.** *(Supersedes "6.4.14 dīrgha
   under the gender-override"; the gender-override was never the issue.)* **Root cause
   (verified):** the arm required `+u` (a u-it marker), so it fired only for u-it stems
