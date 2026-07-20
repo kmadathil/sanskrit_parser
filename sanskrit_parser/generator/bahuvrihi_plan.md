@@ -32,11 +32,14 @@ ends with a self-contained *Session prompt*.
 > (उरस्/सर्पिस्/पयस्/लक्ष्मी). **Completeness audit: every SK829–900 sūtra is now accounted —
 > implemented, or in an explicit `generator_status.md` Skipped row.**
 >
-> **ā-stem ādeśa round (2026-07-11):** the two "deferred" bullets in §2a were
-> **mis-diagnosed** and are corrected there. The real cause was a stale **`?Ap`** tag
-> surviving an ādeśa (not a stale sup), so a one-line `update: orp: [-Ap, -strI]` landed
-> **niṅ SK872/5.4.134 → युवजानिः** and **अच् SK858/5.4.119 → उन्नसः**. Only the अच् **ṇatva**
-> cases (SK856/5.4.118 द्रुणसः, प्रणसः via 8.4.3/28) remain in that family.
+> **ā-stem ādeśa + 6.4.14 round (2026-07-11):** the two "deferred" bullets in §2a were
+> **mis-diagnosed** and are corrected there; BOTH fixes have now landed. (a) The real cause
+> of the ādeśa breakage was a stale **`?Ap`** tag surviving the substitution (not a stale
+> sup), so a one-line `update: orp: [-Ap, -strI]` landed **niṅ SK872/5.4.134 → युवजानिः** and
+> **अच् SK858/5.4.119 → उन्नसः**. (b) **6.4.14's `-as` arm was widened** beyond `+u` (guarded
+> `?!avyaya`/`?!nipAta`/`?!sarvanAma`), giving यशाः/मनाः/**बहुयशाः** — so SK891 is now the
+> canonical **बहुयशस्कः / बहुयशाः**. Remaining in these families: the अच् **ṇatva** cases
+> (SK856/5.4.118 द्रुणसः, प्रणसः via 8.4.3/28) and the **asic 5.4.122** affix rule.
 
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
@@ -230,16 +233,21 @@ A pre-pass uttara-substitution rewrites the stem **string** but leaves the membe
   अच् **SK858/5.4.119** → **उन्नसः** (उद्नसः is the other 8.4.45 वा fork). What remains of the
   अच् family is only the **saṁjñā arm SK856/5.4.118** (द्रुणसः) and **प्रणसः**, both of which
   need the 8.4.3/28 **ṇatva across the compound** — verified NOT firing (प्रनसः).
-- **6.4.14's `-as` arm is `+u`-only — a general as-stem declension gap, unrelated to
-  bahuvrīhi or the gender-override.** *(Supersedes "6.4.14 dīrgha under the
-  gender-override".)* **Root cause (verified):** the rule's as-arm condition requires
-  `+u` (a u-it marker), so it fires only for u-it-formed stems (matup / ktavatu /
-  **īyasun**) and never for an underived अस्-final noun. A plain masc `यशस् + su` gives
-  **यशः, not यशाः, even standalone** (`yaSas.its == []`) — the gender-override is
-  satisfied and irrelevant. **Fix:** widen the `-as` arm to any non-dhātu अस्-final stem
-  (relax `+u`), which would unlock **बहुयशाः** and **asic SK862/5.4.122 अप्रजाः**. This is a
-  *general* declension change (it also affects सुमनाः etc.), so it needs its own
-  regression pass — the one item here that is a real engine change.
+- **6.4.14's `-as` arm was `+u`-only — WIDENED. ✅ APPLIED.** *(Supersedes "6.4.14 dīrgha
+  under the gender-override"; the gender-override was never the issue.)* **Root cause
+  (verified):** the arm required `+u` (a u-it marker), so it fired only for u-it stems
+  (matup / ktavatu / **īyasun**) and never for an underived अस्-final noun — a plain masc
+  `यशस् + su` gave **यशः, not यशाः, even standalone** (`yaSas.its == []`).
+  **Fix applied:** drop `+u` from the `-as` arm (the sūtra is अत्वसन्तस्य — *any* अस्-ending
+  non-dhātu), keeping `?pum` + `?su` + `?!sambudDi` (अस्-stems lengthen only in nom sg:
+  वेधाः but वेधसौ/वेधसः). **Guards added** — `?!avyaya`, `?!nipAta`, `?!sarvanAma` — because
+  relaxing `+u` would otherwise catch the as-final *non-declining/pronominal* stems
+  तिरस्/अधस् and, critically, **अदस्** (असौ has its own rules).
+  **Result:** यशाः, मनाः, and **बहुयशाः** — so the SK891 pair is now the canonical
+  **बहुयशस्कः / बहुयशाः** (the tests no longer need the neuter-referent workaround).
+  Unchanged: श्रेयान्, विद्वान्, **असौ**, तिरः, अधः, and all neuters (मनः/यशः).
+  This also unblocks **asic SK862/5.4.122** (अप्रजाः) on the declension side — only its
+  affix rule remains.
 - **दतृ न्-declension** → **datṛ 5.4.141** (द्विदन्; engine currently gives द्विदत्).
 - **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
 - **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).

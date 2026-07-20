@@ -677,38 +677,39 @@ samasa_bv_tests = [
     # ── B3 samāsānta कप् (SK891/5.4.154 optional, SK889/5.4.151 uras, SK893/5.4.155) ──
     # The कप् affix is inserted by the generalized _insert_samasanta (?samasanta_kap →
     # kap). 5.4.154's विभाषा is modelled as a VIVAKṢĀ (not an engine fork): कप् is added
-    # exactly when the composer marks the uttara ?kap_vivakzA — बहुयशस्कम् WITH the tag,
-    # बहुयशः WITHOUT it. (Neuter referent — a masc s-stem would need the 6.4.14 dīrgha
-    # बहुयशाः, a separate declension gap.)
+    # exactly when the composer marks the uttara ?kap_vivakzA — बहुयशस्कः WITH the tag,
+    # बहुयशाः WITHOUT it (the canonical SK891 pair; the masc s-stem dīrgha now works, see
+    # the 6.4.14 `-as` arm relaxation).
     {
-        # बहु यशो यस्य + ?kap_vivakzA = बहुयशस्कम् (SK891/5.4.154 कप्).
-        "label": "B3-bahuyaSaskam-SK891-5.4.154",
+        # बहूनि यशांसि यस्य + ?kap_vivakzA = बहुयशस्कः (SK891/5.4.154 कप्).
+        "label": "B3-bahuyaSaskaH-SK891-5.4.154",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
-        "referent_linga": "napum",
+        "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.154", "1.2.43"],
-        "surface": "बहुयशस्कम्",
+        "surface": "बहुयशस्कः",
     },
     {
-        # बहु यशो यस्य, NO ?kap_vivakzA = बहुयशः (5.4.154 does not fire — no कप्).
-        "label": "B3-bahuyaSaH-noKap-SK891-5.4.154",
+        # बहूनि यशांसि यस्य, NO ?kap_vivakzA = बहुयशाः (5.4.154 does not fire — no कप्;
+        # the 6.4.14 upadhā-dīrgha gives the masc as-stem nom sg).
+        "label": "B3-bahuyaSAH-noKap-SK891-5.4.154",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1},
-        "referent_linga": "napum",
+        "referent_linga": "pum",
         "fired": ["2.2.24", "1.2.43"],
         "not_fired": ["5.4.154"],
-        "surface": "बहुयशः",
+        "surface": "बहुयशाः",
     },
     {
-        # SK893/5.4.155 न संज्ञायाम् — even WITH ?kap_vivakzA a NAME takes no kap: बहुयशः.
-        "label": "B3-bahuyaSaH-saMjYA-SK893-5.4.155",
+        # SK893/5.4.155 न संज्ञायाम् — even WITH ?kap_vivakzA a NAME takes no kap: बहुयशाः.
+        "label": "B3-bahuyaSAH-saMjYA-SK893-5.4.155",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "yaSas", "vacana": 1, "vibhakti": 1,
                    "tags": ["kap_vivakzA", "saMjYA"]},
-        "referent_linga": "napum",
+        "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.155", "1.2.43"],
         "not_fired": ["5.4.154"],
-        "surface": "बहुयशः",
+        "surface": "बहुयशाः",
     },
     {
         # व्यूढमुरो यस्य = व्यूढोरस्कः (SK889/5.4.151 उरःप्रभृतिभ्यः कप्, nitya — उरस्).

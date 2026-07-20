@@ -2525,11 +2525,13 @@
         - and
         - ?su
         - ?!sambudDi
-    - lp:                     # -as (u-it non-dhātu): Iyasun (śreyas etc.) — masculine only
-        - and
-        - ?!DAtu
-        - +u
-        - ?pum
+    - lp:                     # -as non-dhātu: ANY as-final stem (not just the u-it Iyasun)
+        - and                 # — सुमनाः, वेधाः, बहुयशाः as well as श्रेयान्/विद्वान्.
+        - ?!DAtu              # The `+u` restriction was too narrow: the sūtra is
+        - ?pum                # अत्वसन्तस्य (any अस्-ending non-dhātu), so an underived
+        - ?!avyaya            # अस्-noun must lengthen too. Guards exclude the as-final
+        - ?!nipAta            # NON-declining/pronominal stems that must NOT lengthen:
+        - ?!sarvanAma         # tiras/adhas (avyaya, nipāta) and adas (असौ, own rules).
       l: s
       ll: a
       rp:
