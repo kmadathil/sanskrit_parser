@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 62 cases; full generator suite green (8211 passed).
+> `test/test_samasa_bahuvrihi.py` = 74 cases; full generator suite green (8223 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8211 green.
+8223 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -375,8 +375,23 @@ the 4.3.129 nipātana does not cover.
   free from the existing pre-pass machinery (`_run_fixpoint` clones the skip branch);
   5.4.132 just needed a matching `?!saMjYA` guard so exactly one of the pair fires →
   शतधन्वा/शतधनुः.
-- Minor kap (5.4.152/156/157/159/160, 7.4.13–15), ap 5.4.116 (pūraṇī pl), gandha
-  5.4.136/137 (same गन्धि surface as 5.4.135, needs sūpa/padma stems + sense tags).
+- Minor kap (5.4.152/156/157/159/160, 7.4.13-15) - DONE (2026-07-20).
+  5.4.152 inaH striyAm (बहुदण्डिका, via B0's ?referent_strI), 5.4.156 IyasaH (बहुश्रेयान्),
+  5.4.157 vandite BrAtuH (सुभ्राता / मूर्खभ्रातृकः), 5.4.159 nAqItantryoH svAnge, 5.4.160
+  nizpravARiH (निष्प्रवाणिः), 7.4.15 AponyatarasyAm (बहुमालाकः/बहुमालकः).
+  7.4.13/7.4.14 deliberately NOT implemented - a net no-op for kap (7.4.13 absent; 1.2.48,
+  which 7.4.14 would also block, is gated on ?pum_abs and cannot reach the kap path).
+  Each prohibition was checked for being load-bearing by minimal reproduction FIRST, and
+  two are NOT: 5.4.156's 5.4.153 arm (SreyasI's ngip is added in the main scan, so the
+  pre-pass never sees ?NI) and 5.4.159's tantrI arm (no ?NI -> never in 5.4.153's scope).
+  Both are documented as vacuous rather than presented as doing work.
+  5.4.153's RtaH arm had to be WIDENED to a true r-final test ($$is_ftanta) before 5.4.157
+  could mean anything - ?svasrAdi is the FEMININE gana and missed BrAtf.
+  NB 6.4.146 orguNaH belongs to the ic/kesakesi cluster, NOT kap: it is ?Ba-gated and kap
+  begins with a consonant, so 1.4.18 yaci Bam never makes the stem ?Ba before it; SK847's
+  own example बाहूबाहवि is an ic form. (Already implemented generically.)
+- ap 5.4.116 (puraNI pl), gandha 5.4.136/137 (same गन्धि surface as 5.4.135, needs
+  sUpa/padma stems + sense tags).
 - Formation deferrals (physical reorder): 2.2.27 sarūpa (→ic), 2.2.35–37 word order —
   need the vyadhikaraṇa-bahuvrīhi + physical pūrva-nipāta 2.2.30 engine step (the same
   mechanism tatpuruṣa deferred); B1 6.3.35/36/39. (2.2.25 no longer belongs here — it
@@ -700,7 +715,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (62 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (74 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

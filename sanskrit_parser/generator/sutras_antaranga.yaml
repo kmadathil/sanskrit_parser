@@ -11192,6 +11192,155 @@
   update:
     orp: [+samasanta_niziDDa]
 
+# SK894/5.4.156 ईयसश्च — कप् is NOT added when the uttara ends in ईयसुन् (the comparative):
+# बहवः श्रेयांसोऽस्य = बहुश्रेयान् (not *बहुश्रेयस्कः). Same no-op ?samasanta_niziDDa shape as
+# 5.4.155. VERIFIED load-bearing: without this rule, बहु+श्रेयस् under ?kap_vivakzA gives
+# *बहुश्रेयस्कः via 5.4.154 (minimal reproduction, 2026-07-20).
+# `overrides: [5.4.153, 5.4.154]` follows the sūtra ("this debars all the previous rules",
+# Vasu 54156) — but note only the 5.4.154 arm is currently REACHABLE. The 5.4.153 arm would
+# cover the feminine बहुश्रेयसी, and 5.4.153 is nitya for a ?NI uttara; however श्रेयसी's ṅīp
+# is supplied by 4.1.6 in the MAIN SCAN, so at this pre-pass window the uttara is still bare
+# श्रेयस् with no ?NI and 5.4.153 never fires. बहुश्रेयसी therefore already comes out right
+# without this rule. Listing 5.4.153 keeps the rule correct if the pre-pass ever learns
+# about derived ṅīp; it is not doing work today.
+- sutra: ईयसश्च
+  id: 5.4.156
+  bahiranga: -1
+  overrides: [5.4.153, 5.4.154]
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?Iyasun"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_niziDDa]
+
+# SK890/5.4.152 इनः स्त्रियाम् — कप् is NITYA after an इन्-final uttara when the referent is
+# FEMININE: बहवो दण्डिनोऽस्यां शालायां = बहुदण्डिका शाला. The referent-gender check rides the
+# B0 anyapadārtha machinery (?referent_strI), which is exactly what स्त्रियाम् needs.
+# Vasu 54152: "Why when denoting a feminine? Observe बहुदण्डी राजा" — for a masc referent
+# there is no NITYA kap (बहुदण्डिकः is available only optionally via 5.4.154's vivakṣā),
+# hence the ?referent_strI gate rather than an unconditional इन् rule.
+# The इन्-final stem is registered directly (?in_anta on दण्डिन्) rather than derived by a
+# matvarthīya इनि affix — no मतुप्/इनि machinery exists in the generator yet, and the
+# compound only needs the stem: 6.4.144 नस्तद्धिते drops the न् before कप् (दण्डिन्+क → दण्डिक),
+# then the fem referent's ṭāp gives बहुदण्डिका.
+- sutra: इनः स्त्रियाम्
+  id: 5.4.152
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?in_anta"
+      - "?referent_strI"
+      - "?!samasanta_kap"
+  update:
+    orp: [+samasanta_kap]
+
+# SK895/5.4.157 वन्दिते भ्रातुः — कप् is NOT added after a भ्रातृ-final bahuvrīhi when the
+# sense is वन्दित ("praised, respected"): शोभनो भ्राताऽस्य = सुभ्राता. Outside that sense कप्
+# applies normally via 5.4.153's ऋतः arm: मूर्खभ्रातृकः, दुष्टभ्रातृकः (Vasu 54157).
+# ?vandita is a composer-supplied sense tag, like ?vayas (5.4.141) and ?saMKyeya (2.2.25).
+# This rule is only meaningful because 5.4.153's ऋतः arm was widened to true ṛ-final
+# (see there): with the old ?svasrAdi proxy, भ्रातृ never took कप् and there was nothing
+# to prohibit — VERIFIED both ways by minimal reproduction, 2026-07-20.
+- sutra: वन्दिते भ्रातुः
+  id: 5.4.157
+  bahiranga: -1
+  overrides: 5.4.153
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=BrAtf"
+      - "?vandita"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_niziDDa]
+
+# SK896/5.4.159 नाडीतन्त्र्योः स्वाङ्गे — कप् is NOT added after नाडी / तन्त्री when they denote
+# a BODY PART (svāṅga): बहुनाडिः कायः, बहुतन्त्रीर्ग्रीवा. Outside that sense कप् applies
+# normally: बहुनाडीकः स्तम्भः, बहुतन्त्रीका वीणा. Both stems are ?NI-or-ī-final, so 5.4.153
+# नद्यृतश्च is what this debars (hence `overrides: 5.4.153`); the ?svAnga tag is the sense gate
+# and already exists in the generator (used by the SK510–515 strī block).
+# NB नाडी's svāṅga form is बहुनाडि: with a SHORT i — Vasu derives that from 1.2.48
+# गोस्त्रियोरुपसर्जनस्य (upasarjana shortening of a strī-affix ī). 1.2.48 is gated on ?pum_abs
+# here and cannot reach this path, so we do NOT assert बहुनाडिः. तन्त्री is unaffected either
+# way — its ī is an unādi affix, not a strī-pratyaya, so it is never shortened (बहुतन्त्रीः),
+# and that IS asserted. See the 5.4.159 rows in generator_status.md.
+- sutra: नाडीतन्त्र्योः स्वाङ्गे
+  id: 5.4.159
+  bahiranga: -1
+  overrides: 5.4.153
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "=nAqI"
+        - "=tantrI"
+      - "?svAnga"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_niziDDa]
+
+# SK897/5.4.160 निष्प्रवाणिश्च — निष्प्रवाणि is a NIPĀTANA: निर्गता प्रवाण्यस्य = निष्प्रवाणिः पटः
+# ("a cloth fresh from the loom, its shuttle not yet withdrawn"). प्रवाणी is a नदी word, so
+# 5.4.153 would give *निष्प्रवाणीकः; SK897 states the कबभाव (कबभावोऽत्र निपात्यते).
+# The rule therefore does two things: blocks कप्, and substitutes प्रवाणी → प्रवाणि.
+# HONESTY NOTE on the short इ: strictly only the कबभाव is nipātita. The ī→i is upasarjana
+# shortening by 1.2.48 गोस्त्रियोरुपसर्जनस्य (Vasu makes exactly that argument for the parallel
+# बहुनाडिः). 1.2.48 is gated on ?pum_abs in this engine and cannot reach the samāsa path, so
+# the shortening is folded into this nipātana to get the attested surface. It is the SAME
+# underlying gap as 5.4.159's बहुनाडिः — which is why that one is NOT asserted (there is no
+# nipātana to hide it behind). If 1.2.48's gate is widened, drop the xform here and the
+# 5.4.159 नाडी case becomes assertable.
+# `-NI, -strI` is the standard tag-clear after a class-changing substitution (cf. 5.4.134):
+# the stale ?NI would otherwise drive nadī declension on what is now an i-stem.
+- sutra: निष्प्रवाणिश्च
+  id: 5.4.160
+  bahiranga: -1
+  overrides: 5.4.153
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=pravARI"
+      - "?!samasanta_niziDDa"
+  xform:
+    rc: str("")
+    r: str("pravARi")
+  update:
+    orp: [+samasanta_niziDDa, -NI, -strI]
+
+# SK892/7.4.15 आपोऽन्यतरस्याम् — an आबन्त (ā-final) uttara OPTIONALLY shortens before कप्:
+# बहुमालाकः / बहुमालकः. This is an exception carved out of SK835/7.4.14 न कपि, which
+# otherwise protects the ā (SK834/7.4.13 केऽणः would have shortened it before क).
+# Neither 7.4.13 nor 7.4.14 is implemented, and they are a NET NO-OP for कप् anyway (see the
+# 5.4.153 comment); the ā is retained by default here simply because nothing shortens it —
+# VERIFIED: बहु+पाचिका under ?kap_vivakzA gives बहुपाचिकाकः, ā intact. So 7.4.15 is the one
+# member of the 7.4.13–15 trio with a real surface effect, and it stands alone.
+# NB 1.2.48 गोस्त्रियोरुपसर्जनस्य (which Vasu says 7.4.14 also blocks) is gated on ?pum_abs in
+# this engine and so cannot reach the कप् path either; if that gate is ever widened (there is
+# a FIXME on it), 7.4.14 becomes load-bearing and must be added alongside this rule.
+- sutra: आपोऽन्यतरस्याम्
+  id: 7.4.15
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?aNga"
+      - "?Ap"
+    l: A
+    rp:
+      - and
+      - "?tadDita"
+      - "?ka_pratyaya"
+  xform:
+    l: hrasva(l)
+
 # ── B3 samāsānta ṣac / ap / ic (bahuvrihi_plan.md) — more affix families via the
 # generalized _insert_samasanta (?samasanta_Sac→Sac, _ap→ap_s, _ic→ic_s). The affix
 # adds a/i after the uttara; 6.4.144 (न-lopa) / 6.4.148 (a/i-lopa) fire on the stem.
@@ -11452,13 +11601,30 @@
   id: 5.4.153
   bahiranga: -1
   condition:
-    rp:
-      - and
-      - "?bahuvrIhi"
-      - - or
+    # Arm A — नदी: a ?NI (ṅīp/ṅīṣ) uttara. बहुकुमारीकः.
+    - rp:
+        - and
+        - "?bahuvrIhi"
         - "?NI"
+        - "?!samasanta_kap"
+    # Arm B — ऋतः: ANY ṛ-final uttara, tested on the final char. The rule previously used
+    # ?svasrAdi as a proxy, but स्वस्रादि is the FEMININE ṛ-kinship gaṇa (मातृ/स्वसृ/दुहितृ…),
+    # so masculine ṛ-stems were silently missed — बहु+पितृ gave बहुपिता, no कप् (verified by
+    # minimal reproduction, 2026-07-20). ऋतः in the sūtra is unrestricted, and SK895/5.4.157
+    # वन्दिते भ्रातुः presupposes this arm reaching भ्रातृ (its counterexample मूर्खभ्रातृकः IS a
+    # कप् form). ?svasrAdi is retained in arm C only for stems whose canonical form does not
+    # end in a literal 'f'. (NB `r:` here would match the uttara's FIRST char — the member
+    # window is a sandhi window, cf. 6.3.73's `r: _hal` — hence the $$ helper.)
+    - rp:
+        - and
+        - "?bahuvrIhi"
+        - "$$is_ftanta"
+        - "?!samasanta_kap"
+    - rp:
+        - and
+        - "?bahuvrIhi"
         - "?svasrAdi"
-      - "?!samasanta_kap"
+        - "?!samasanta_kap"
   update:
     orp: [+samasanta_kap]
 

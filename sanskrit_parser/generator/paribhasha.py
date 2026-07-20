@@ -396,6 +396,23 @@ def is_ekac(s):
     return vowel_count == 1
 
 
+def is_ftanta(x):
+    """True if the element ends in ऋ (SLP1 'f') — the ऋतः arm of SK833/5.4.153 नद्यृतश्च.
+
+    A tag-based test is not enough here: the generator's ?svasrAdi is the FEMININE
+    स्वस्रादि gaṇa (मातृ/स्वसृ/दुहितृ/ननान्दृ/यातृ/तिस्/चतस्), so masculine ṛ-stems such as
+    पितृ and भ्रातृ were silently excluded even though ऋतः in the sūtra is unrestricted.
+    SK895/5.4.157 वन्दिते भ्रातुः presupposes भ्रातृ being in कप्'s scope (its counterexample
+    मूर्खभ्रातृकः IS a कप् form), so this predicate is what makes that prohibition meaningful.
+
+    NOTE the window convention: in a (lp|rp) member window `r:` matches the FIRST char of
+    the uttara (cf. 6.3.73's `r: _hal`), so there is no condition key for "right element is
+    ṛ-FINAL" — hence this helper.
+    """
+    s = x.canonical() if hasattr(x, "canonical") else str(x)
+    return bool(s) and s[-1] == "f"
+
+
 def lp_has_ratva_cause(lp):
     """Return True if lp contains a ratva cause (r, ṛ=f, ṣ=z) with ONLY vyavāya
     characters (aṭkupvāṅnum) to its right.

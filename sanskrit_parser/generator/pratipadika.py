@@ -805,6 +805,20 @@ strI = Pratipadika("strI", "strI", other_tags=["NI", "strI_p"])
 SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 kumArI =  Pratipadika("kumArI", "strI", other_tags=["NI"])
 
+# ── Minor कप् cluster (bahuvrihi_plan.md B3 tail: SK890/894–897, SK892) ────────────
+mAlA   = Pratipadika("mAlA",   "strI", other_tags=["Ap"])    # माला — SK892/7.4.15 optional ā-hrasva before कप् (बहुमालाकः/बहुमालकः)
+BrAtf  = Pratipadika("BrAtf",  "pum")                        # भ्रातृ (masc ṛ-stem, like पितृ) — SK895/5.4.157 वन्दिते
+mUrKa  = Pratipadika("mUrKa",  "pum")                        # मूर्ख "foolish" — the non-वन्दित pūrva (मूर्खभ्रातृकः)
+nAqI   = Pratipadika("nAqI",   "strI", other_tags=["NI"])   # नाडी (ṅīp after jāti) — SK896/5.4.159
+# ?svAnga is NOT baked into these two: SK896 contrasts the SAME word in both senses
+# (बहुनाडिः कायः svāṅga vs बहुनाडीकः स्तम्भः not), so the composer supplies it.
+# तन्त्री's ī is the UNĀDI affix ī (uṇ III.158), NOT a strī-pratyaya — hence no ?NI, and
+# Vasu notes it is therefore not shortened as an upasarjana (बहुतन्त्रीः keeps the long ī).
+tantrI = Pratipadika("tantrI", "strI")                               # तन्त्री "artery" — SK896/5.4.159
+daRqin = Pratipadika("daRqin", "pum",  other_tags=["in_anta"])        # दण्डिन् — SK890/5.4.152 इनः स्त्रियाम् (बहुदण्डिका)
+# प्रवाणी "weaver's shuttle" (प्र+वे, ल्युट्) — SK897/5.4.160 निष्प्रवाणिश्च nipātana.
+pravARI = Pratipadika("pravARI", "strI", other_tags=["NI"])
+
 # to test
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])

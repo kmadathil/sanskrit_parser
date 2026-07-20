@@ -776,6 +776,138 @@ samasa_bv_tests = [
         "surface": "बहुकुमारीकः",
     },
     {
+        # SK833/5.4.153's ऋतः arm WIDENED to true ṛ-final (was the ?svasrAdi proxy, which is
+        # the FEMININE स्वस्रादि gaṇa and so missed masc ṛ-stems): बहुपितृकः. Regression guard.
+        "label": "B3-bahupitfkaH-SK833-5.4.153-ftanta",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pitf", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "surface": "बहुपितृकः",
+    },
+    {
+        # SK894/5.4.156 ईयसश्च — कप् blocked after an ईयसुन् uttara: बहुश्रेयान्, NOT *बहुश्रेयस्कः.
+        # Load-bearing: with ?kap_vivakzA and without 5.4.156, 5.4.154 gives *बहुश्रेयस्कः.
+        "label": "B3-bahuSreyAn-SK894-5.4.156",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Sreyas", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.156", "1.2.43"],
+        "not_fired": ["5.4.154"],
+        "surface": "बहुश्रेयान्",
+    },
+    {
+        # The FEMININE बहुश्रेयसी. NOTE this passes even WITHOUT 5.4.156: श्रेयसी's ṅīp comes
+        # from 4.1.6 in the MAIN SCAN, so at the pre-pass window the uttara is bare श्रेयस्
+        # with no ?NI and 5.4.153 never fires. Kept as a guard on that timing.
+        "label": "B3-bahuSreyasI-SK894-5.4.156-strI",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Sreyas", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.153"],
+        "surface": "बहुश्रेयसी",
+    },
+    {
+        # SK890/5.4.152 इनः स्त्रियाम् — NITYA कप् after an इन् uttara when the referent is
+        # FEMININE: बहवो दण्डिनोऽस्यां शालायां = बहुदण्डिका (6.4.144 drops the न्, then ṭāp).
+        "label": "B3-bahudaRqikA-SK890-5.4.152",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "daRqin", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "5.4.152", "1.2.43"],
+        "surface": "बहुदण्डिका",
+    },
+    {
+        # स्त्रियाम् किम् — for a MASC referent there is no nitya कप्: बहुदण्डी राजा (Vasu 54152).
+        "label": "B3-bahudaRqI-SK890-5.4.152-pum",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "daRqin", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.152"],
+        "surface": "बहुदण्डी",
+    },
+    {
+        # SK895/5.4.157 वन्दिते भ्रातुः — कप् blocked for भ्रातृ in the "praised" sense: सुभ्राता.
+        "label": "B3-suBrAtA-SK895-5.4.157",
+        "purva": {"stem": "su_pUrva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BrAtf", "vacana": 1, "vibhakti": 1, "tags": ["vandita"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.157", "1.2.43"],
+        "not_fired": ["5.4.153"],
+        "surface": "सुभ्राता",
+    },
+    {
+        # वन्दिते किम् — outside that sense कप् applies via 5.4.153's ऋतः arm: मूर्खभ्रातृकः
+        # (Vasu 54157). This pair is why 5.4.153 had to be widened to true ṛ-final.
+        "label": "B3-mUrKaBrAtfkaH-SK895-5.4.157-noVandita",
+        "purva": {"stem": "mUrKa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "BrAtf", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "not_fired": ["5.4.157"],
+        "surface": "मूर्खभ्रातृकः",
+    },
+    {
+        # SK896/5.4.159 नाडीतन्त्र्योः स्वाङ्गे — कप् blocked for नाडी in the BODY-PART sense.
+        # NB the attested form is बहुनाडिः with a SHORT इ (1.2.48 upasarjana shortening);
+        # 1.2.48 is gated on ?pum_abs here and cannot reach this path, so we assert only that
+        # कप् is blocked, not the vowel length. See the 5.4.159 rows in generator_status.md.
+        "label": "B3-bahunAqI-SK896-5.4.159-svAnga",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nAqI", "vacana": 1, "vibhakti": 1, "tags": ["svAnga"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.159", "1.2.43"],
+        "not_fired": ["5.4.153"],
+        "surface": "बहुनाडी",
+    },
+    {
+        # स्वाङ्गे किम् — outside the body-part sense कप् applies: बहुनाडीकः स्तम्भः (Vasu 54159).
+        "label": "B3-bahunAqIkaH-SK896-5.4.159-asvAnga",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nAqI", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "not_fired": ["5.4.159"],
+        "surface": "बहुनाडीकः",
+    },
+    {
+        # तन्त्री in the svāṅga sense: बहुतन्त्रीः (Vasu's बहुतन्त्रीर्ग्रीवा). The long ī is CORRECT
+        # here — तन्त्री's ī is an unādi affix, not a strī-pratyaya, so it is never shortened.
+        # NB 5.4.159 fires but is VACUOUS for तन्त्री: lacking ?NI it was never in 5.4.153's
+        # scope anyway (5.4.153 keys on the ṅīp/ṅīṣ affix, not the नदी saṁjñā of 1.4.3).
+        "label": "B3-bahutantrIH-SK896-5.4.159-tantrI",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "tantrI", "vacana": 1, "vibhakti": 1, "tags": ["svAnga"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.159", "1.2.43"],
+        "surface": "बहुतन्त्रीः",
+    },
+    {
+        # SK897/5.4.160 निष्प्रवाणिश्च — nipātana: निर्गता प्रवाण्यस्य = निष्प्रवाणिः पटः.
+        # Blocks कप् (कबभावोऽत्र निपात्यते) and substitutes प्रवाणी→प्रवाणि; the निष् is sandhi.
+        "label": "B3-nizpravARiH-SK897-5.4.160",
+        "purva": {"stem": "nis", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pravARI", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.160", "1.2.43"],
+        "not_fired": ["5.4.153"],
+        "surface": "निष्प्रवाणिः",
+    },
+    {
+        # SK892/7.4.15 आपोऽन्यतरस्याम् — an आबन्त uttara OPTIONALLY shortens before कप्:
+        # बहुमालाकः / बहुमालकः. The only member of the 7.4.13–15 trio with a surface effect.
+        "label": "B3-bahumAlAkaH-SK892-7.4.15",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "mAlA", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.154", "1.2.43"],
+        "surfaces": ["बहुमालाकः", "बहुमालकः"],
+    },
+    {
         # बह्व्यो मातरो यस्य = बहुमातृकः (SK833/5.4.153 नद्यृतश्च कप्; ऋ-final uttara).
         "label": "B3-bahumAtfkaH-SK833-5.4.153",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
