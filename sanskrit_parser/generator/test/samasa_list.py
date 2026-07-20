@@ -845,6 +845,47 @@ samasa_bv_tests = [
         "surfaces": ["द्विपात्", "द्विपाद्"],
     },
     {
+        # द्वौ दन्तौ यस्य = द्विदन् (SK880/5.4.141 वयसि दन्तस्य दतृ). दतृ = दत् + ऋ-IT: the rule
+        # sets ++f, making the stem उगित्, so SK361/7.1.70 inserts नुम् (दत्→दन्त्) and the
+        # nom sg su drops by 8.2.23 → द्विदन्. A saṅkhyā pūrva carries NO vacana.
+        "label": "B4-dvidan-SK880-5.4.141",
+        "purva": {"stem": "dvi", "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1, "tags": ["vayas"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.141", "1.2.43"],
+        "surface": "द्विदन्",
+    },
+    {
+        # शोभना दन्ता अस्य = सुदन् (SK880/5.4.141, सु arm).
+        "label": "B4-sudan-SK880-5.4.141",
+        "purva": {"stem": "su_pUrva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1, "tags": ["vayas"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.141", "1.2.43"],
+        "surface": "सुदन्",
+    },
+    {
+        # सुदती — the FEMININE of सुदन्. It falls out for free: the ऋ-it makes दत् उगित्, and
+        # 4.1.6 उगितश्च gives ṅīp → दती. (Independent confirmation that दतृ is दत्+ऋ-it.)
+        "label": "B4-sudatI-SK880-5.4.141-strI",
+        "purva": {"stem": "su_pUrva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1, "tags": ["vayas"]},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "5.4.141", "1.2.43"],
+        "surface": "सुदती",
+    },
+    {
+        # वयसि किम् — WITHOUT the age sense दन्त stays: द्विदन्तः (करी). 5.4.141 must NOT fire.
+        "label": "B4-dvidantaH-noVayas-SK880-5.4.141",
+        "purva": {"stem": "dvi", "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.141"],
+        "surface": "द्विदन्तः",
+    },
+    {
         # शोभनं धनुर्यस्य = सुधन्वा (SK870/5.4.132 धनुस्→धन्वन् अनङ्, n-stem → धन्वा).
         "label": "B4-suDanvA-SK870-5.4.132",
         "purva": {"stem": "su_pUrva", "vibhakti": 1},

@@ -11455,9 +11455,9 @@
 # SK856/5.4.118 अञ् नासिकायाः संज्ञायां नसं चास्थूलात् — a नासिका-final bahuvrīhi that is a
 # SAṀJÑĀ takes अच्, and नासिका → नस्: द्रुरिव नासिकाऽस्य = द्रुणसः (the ण by SK857/8.4.3).
 # Same नासिका→नस substitution + `-Ap` clear as 5.4.119, but gated on ?saMjYA instead of an
-# upasarga pūrva, and it marks ?saMjYA_nas (not ?nas_AdeSa) so the ṇatva is attributed to
-# 8.4.3, keeping the two ṇatva paths disjoint. (अस्थूलात् — the स्थूल exclusion — is not
-# modelled; no स्थूल stem exists yet.)
+# upasarga pūrva. It sets no ṇatva marker of its own: SK857/8.4.3 gates on the compound's
+# ?saMjYA — the sūtra's ACTUAL condition — which the composer already supplies here.
+# (अस्थूलात् — the स्थूल exclusion — is not modelled; no स्थूल stem exists yet.)
 - sutra: अञ् नासिकायाः संज्ञायां नसं चास्थूलात्
   id: 5.4.118
   bahiranga: -1
@@ -11471,13 +11471,14 @@
     rc: str("")
     r: str("nasa")
   update:
-    orp: [-Ap, -strI, +saMjYA_nas]
+    orp: [-Ap, -strI]
 
 # SK857/8.4.3 पूर्वपदात्संज्ञायामगः — in a SAṀJÑĀ, the न after a pūrva-pada ṛ/ṣ/r nimitta
 # becomes ण (not when ग intervenes): द्रुणसः, खरणसः. Enables the cross-compound ṇatva by
 # setting ?samasta_Ratva on the uttara (→ ?samasta_Ratva_pada, arm B of 8.4.1/8.4.2), the
-# same lever as SK307/8.4.12. Keyed on ?saMjYA_nas so it stays confined to the 5.4.118
-# नस् — a general pūrvapada ṇatva would wrongly hit त्रिभुवनम् etc. (अगः not modelled.)
+# same lever as SK307/8.4.12. Gated on ?saMjYA — the sūtra's OWN condition, and the reason
+# त्रिभुवनम् keeps its न (it is not a name), rather than a नस्-specific marker. (अगः — no ṇatva
+# when ग intervenes, ऋगयनम् — is NOT modelled; it becomes relevant as this gate generalises.)
 - sutra: पूर्वपदात्संज्ञायामगः
   id: 8.4.3
   condition:
@@ -11486,7 +11487,32 @@
       - and
       - "?samAsa"
       - "?pada"
-      - "?saMjYA_nas"
+      - "?saMjYA"
       - $$rp_has_ratva_effect
   update:
     orp: +samasta_Ratva
+
+# SK880/5.4.141 वयसि दन्तस्य दतृ — after a saṅkhyā or सु pūrva, दन्त final in a bahuvrīhi
+# → दतृ, in the वयस् (age) sense: द्वौ दन्तौ यस्य = द्विदन्; सुदन्. दतृ is दत् + an ऋ-IT, so the
+# rule substitutes the string AND sets ++f: the ṛ-it makes the stem उगित्, so SK361/7.1.70
+# उगिदचां सर्वनामस्थानेऽधातोः inserts नुम् before the sarvanāmasthāna su → दन्त् → 8.2.23
+# saṁyogānta-lopa → द्विदन्. The feminine falls out free via 4.1.6 उगितश्च (ṅīp) → सुदती.
+# वयसि is criterial: WITHOUT the age sense दन्त stays (द्विदन्तः करी), hence the ?vayas gate.
+- sutra: वयसि दन्तस्य दतृ
+  id: 5.4.141
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "?saMKyA"
+      - "=su"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=danta"
+      - "?vayas"
+  xform:
+    rc: str("")
+    r: str("dat")
+  update:
+    orp: [++f]

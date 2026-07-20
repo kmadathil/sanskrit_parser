@@ -21,7 +21,7 @@ ends with a self-contained *Session prompt*.
 > **STATUS (as-built, 2026-07-11): B0–B2 + B-UI complete; B3/B4 samāsānta complete for
 > every affix family that declines cleanly; the rest deferred on known engine gaps (see
 > §2a).** Implemented across commits `00a9b11`→`45f435b` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 53 cases; full generator suite green. The Phases (§3)
+> `test/test_samasa_bahuvrihi.py` = 57 cases; full generator suite green. The Phases (§3)
 > keep the original forward-looking Session prompts as a historical record —
 > **§2a is the authoritative as-built account** (real mechanisms, deviations, gotchas).
 >
@@ -38,9 +38,18 @@ ends with a self-contained *Session prompt*.
 > sup), so a one-line `update: orp: [-Ap, -strI]` landed **niṅ SK872/5.4.134 → युवजानिः** and
 > **अच् SK858/5.4.119 → उन्नसः**. (b) **6.4.14's `-as` arm was widened** beyond `+u` (guarded
 > `?!avyaya`/`?!nipAta`/`?!sarvanAma`), giving यशाः/मनाः/**बहुयशाः** — so SK891 is now the
-> canonical **बहुयशस्कः / बहुयशाः**. (c) **asic SK862/5.4.122** landed on the back of (b) → सुप्रजाः/सुमेधाः. Remaining in these
-> families: only the अच् **ṇatva** cases (SK856/5.4.118 द्रुणसः, प्रणसः via 8.4.3/28) and the
-> nañ arm of asic (अप्रजाः).
+> canonical **बहुयशस्कः / बहुयशाः**. (c) **asic SK862/5.4.122** landed on the back of (b) →
+> सुप्रजाः/सुमेधाः, **incl. its nañ arm** अप्रजाः/अमेधाः (intrinsic `?naY` on the nañ stem, and
+> 5.4.122 gates on that tag rather than the literal `=na`, since 6.3.73 rewrites the pūrva
+> to "a" first). (d) **Cross-compound ṇatva** landed — SK859/8.4.28 **प्रणसः** and
+> SK857/8.4.3 + SK856/5.4.118 **द्रुणसः** — see the dedicated §2a subsection; 8.4.3 is gated
+> on **`?saMjYA`**, the sūtra's own condition. (e) **datṛ SK880/5.4.141** landed —
+> **द्विदन्/सुदन्/सुदती** — via an ऋ-**it** (`++f`), not a new declension.
+>
+> These families are COMPLETE. What remains prakaraṇa-wide: **केशाकेशि** (needs the deferred
+> 2.2.27 sarūpa formation + 6.3.137 + avyaya tagging — but NOT reduplication), **ḍac**
+> (accent-only), the **physical pūrva-nipāta** group (2.2.25/27/35–37), B1 6.3.35/36/39,
+> and — beyond this prakaraṇa — the **general** cross-member ṇatva gap (चोरभयेण) + **अगः**.
 
 **Outcome:** a user can compose a bahuvrīhi (e.g. पीताम्बरः, प्राप्तोदको ग्रामः, उपदशाः,
 सपुत्रः, बहुयशस्कः) and the generator derives the surface form — crucially, the
@@ -232,13 +241,44 @@ that lever:
 2. gating `rp` on a plain marker tag — fails, because `join_objects` propagates tags through
    an **allowlist**, so an arbitrary tag is dropped at the (uttara | sup) merge.
 
-The working design: 5.4.119 marks its substitute **`?nas_AdeSa`** and 5.4.118 marks
-**`?saMjYA_nas`**; both are added to the Tier-1 propagation allowlist in
-`paninian_object.py` so they survive into the pada; each ṇatva rule keys on its own marker.
-That confines cross-compound ṇatva to exactly the नस् cases and keeps the two sūtras
-disjoint. **Note:** the *general* cross-member ṇatva gap (tatpuruṣa चोरभयेण, and the
-त्रिभुवनम् restriction) is untouched — it needs the real 8.4.3 अगः/saṁjñā modelling, not this
-marker-scoped lever.
+The working design turns on **propagating a tag into the pada** (Tier-1 allowlist in
+`paninian_object.py`), then keying each ṇatva rule on it:
+
+- **SK857/8.4.3** is gated on **`?saMjYA` — the sūtra's OWN condition.** This is the
+  accurate model: 8.4.3 conditions on *संज्ञायाम्* (the compound being a NAME), not on नस्.
+  It is also the right reason **त्रिभुवनम् keeps its न** — *because it is not a name*, which is
+  precisely the restriction 8.4.3 exists to state. (An earlier version gated on a
+  नस्-specific `?saMjYA_nas` marker; that produced the right answer for द्रुणसः but by proxy,
+  via a condition the sūtra does not have, and would have needed a fresh marker for every
+  further saṁjñā case such as खरणसः.)
+- **SK859/8.4.28** is gated on 5.4.119's **`?nas_AdeSa`** marker. This one is still a
+  *scoped placeholder*, not the intended design: 8.4.28 is likewise general (any न after an
+  upasarga-conditioned nimitta, बहुलम्), so the faithful gate is an **upasarga pūrva**, not a
+  नस् marker. बहुलम् gives some license, but it should be revisited.
+
+**Independent corroboration — the शूर्पणखा / शूर्पनखी minimal pair.** Generalizing 8.4.3 to
+`?saMjYA` was validated by two *pre-existing* stems in the suite (added long before this
+work, for SK514/4.1.58 and SK307), which differ in **exactly one** respect — the
+`saMjYA` tag, i.e. 8.4.3's own condition:
+
+| Stem | Built as | Has `saMjYA`? | Result |
+|---|---|---|---|
+| `SUrpaRaKA` | `[…, in_context(in_compound(naKa), "saMjYA"), strI_abs]` | **yes** | शूर्प**ण**खा — 8.4.3 fires ✅ |
+| `SUrpanaKI` | `[…, in_compound(naKI)]` | **no** | शूर्प**न**खी — 8.4.3 correctly does NOT fire ✅ |
+
+`SUrpanaKI` is explicitly commented in the fixtures as an **SK307 negative test** ("Ratva
+must NOT fire"); it passed untouched when the gate landed. `SUrpaRaKA`'s 24 vibhakti
+fixtures, by contrast, had encoded the un-ṇatva-ised शूर्प**न**खा — **contradicting both its
+own stem key and its `generator_status.md` row, which already read शूर्पणखा**. The fixtures
+were simply frozen at what the engine could produce before 8.4.3 existed; they were
+corrected when it landed. That a general `?saMjYA` gate flips exactly the saṁjñā member of
+a pair the suite already contained — and leaves the non-saṁjñā one alone — is strong
+evidence the condition is the right one.
+
+**Still open:** the *general* cross-member ṇatva gap (tatpuruṣa **चोरभयेण**, and the
+त्रिभुवनम् restriction in non-saṁjñā compounds) is untouched by this lever. And **अगः** (no
+ṇatva when ग intervenes — ऋक्+अयनम् → ऋगयनम्) is unmodelled; it grows more relevant now that
+8.4.3 is gated generally on `?saMjYA` rather than on a single marker.
 
 ### Remaining work
 > Two of these were mis-diagnosed in the first pass; both root causes have now been
@@ -273,7 +313,13 @@ marker-scoped lever.
   With that in place, **asic SK862/5.4.122 was also landed** (new `asic` Pratyaya +
   `_SAMASANTA_AFFIXES` entry + the same `-Ap` clear) → **सुप्रजाः / सुमेधाः**; only its nañ
   arm (अप्रजाः) still awaits the nañ-bahuvrīhi formation path.
-- **दतृ न्-declension** → **datṛ 5.4.141** (द्विदन्; engine currently gives द्विदत्).
+- ~~**दतृ न्-declension** → datṛ 5.4.141~~ — **✅ DONE, and the "n-declension" framing was
+  wrong.** दतृ is simply **दत् + an ऋ-IT**. The rule substitutes the string *and* sets
+  `update: orp: [++f]` (the DSL's setIt, as SK360 does for मघवत्); the ṛ-it makes the stem
+  उगित्, so **7.1.70** inserts नुम् (दत्→दन्त्) and the nom sg su drops by 8.2.23 → **द्विदन्**,
+  **सुदन्**. No new declension machinery was needed — 7.1.70 and 4.1.6 already existed.
+  **Free corroboration:** the feminine **सुदती** falls out via **4.1.6 उगितश्च** (ugit→ṅīp),
+  which only works if the ऋ-it analysis is right. `?vayas` is criterial (द्विदन्तः करी).
 - **Reduplication** → **reciprocal ic 5.4.127** (केशाकेशि, pairs with 2.2.27).
 - **ḍac 5.4.73** (उपदशाः) is accent-only — no visible surface to verify (with 2.2.25).
 - **5.4.133** dhanus-saṁjñā fork शतधनुः — the nitya 5.4.132 still fires in the vibhāṣā
@@ -614,12 +660,32 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 this doc's prose/tables, every `sutras_antaranga.yaml` `# <N>:` block comment, every
 `test/samasa_list.py` case `label`, and the `generator_status.md` rows — ✅ upheld.
 
-**Deferred (all recorded in `generator_status.md`, each with its engine blocker — see
-§2a for detail):** the ā-stem→i/a-stem samāsānta ādeśas (niṅ 5.4.134, अच् नासिका→नस्
-5.4.118–121) need **sup re-insertion after a class-changing substitution** (+ compound
-ṇatva for अच्); asic 5.4.122 + the masc बहुयशाः need **6.4.14 dīrgha under the
-gender-override**; datṛ 5.4.141 needs the **दतृ न्-declension**; reciprocal ic 5.4.127
-needs **reduplication**; ḍac 5.4.73 is **accent-only**; the formation deferrals
-(2.2.25/2.2.27/2.2.35–37) + B1 6.3.35/36/39 need the **physical pūrva-nipāta (2.2.30)**
-/ affix-context machinery; accent-gated SK 508/509 remain deferred. **None require more
-YAML — each is a small, well-scoped engine step.**
+**Deferred — CURRENT list (all recorded in `generator_status.md`, each with its engine
+blocker; see §2a for detail).** Most of the original deferral list has since **landed**,
+and in several cases the *stated blocker was itself a mis-diagnosis* — the real cause was
+a one-line tag problem, not the engine gap named. Cleared since first writing:
+
+| Was deferred as | Actual cause | Status |
+|---|---|---|
+| niṅ SK872/5.4.134, अच् SK856–858/5.4.118–119 — "needs **sup re-insertion** after a class-changing substitution" | Wrong. The substitution left a stale **`?Ap`/`?strI`** on the rewritten stem, which drove ā-stem su-elision | ✅ one-line `update: orp: [-Ap, -strI]` → युवजानिः, उन्नसः |
+| asic SK862/5.4.122 + masc बहुयशाः — "needs **6.4.14 dīrgha under the gender-override**" | Wrong. 6.4.14's `-as` arm was narrowly restricted to `+u` (Īyasun) | ✅ arm widened with `?!avyaya`/`?!nipAta`/`?!sarvanAma` guards → यशाः/मनाः/बहुयशाः, अप्रजाः |
+| datṛ SK880/5.4.141 — "needs the **दतृ न्-declension**" | Wrong. It is an **it-marker** problem, not a declension one: दतृ is उगित्, so 7.1.70 नुम् supplies the न् | ✅ `update: orp: [++f]` → द्विदन्, and सुदती free via 4.1.6 |
+| cross-compound ṇatva (SK857/8.4.3, SK859/8.4.28) | Arm A of 8.4.1/8.4.2 blocked by `?merged_pada` | ✅ `?samasta_Ratva` lever → arm B → द्रुणसः, प्रणसः |
+
+**Still open:** reciprocal ic SK866/5.4.127 (केशाकेशि) — note the long-standing "needs
+**reduplication**" framing is **also wrong**: SK gives the vigraha as केशेषु केशेषु, i.e. the
+*composer supplies the same word twice*; nothing is reduplicated by rule. What it actually
+needs is (a) SK846/2.2.27 sarūpa formation (a new **lp == rp content check**), (b) 5.4.127
+इच् (the `ic_s` affix already exists), (c) **6.3.137 अन्येषामपि दृश्यते** (unimplemented —
+supplies the केश→केशा dīrgha), and (d) avyaya tagging (ic is in the tiṣṭhadgu-prabhṛti gaṇa,
+so the form is invariant). ḍac
+SK851/5.4.73 is **accent-only**; the formation deferrals (2.2.25 / 2.2.27 / 2.2.35–37)
++ B1 6.3.35/36/39 need the **physical pūrva-nipāta (2.2.30)** / affix-context machinery;
+accent-gated SK 508/509 remain deferred; **general** cross-member ṇatva
+(चोरभयेण / त्रिभुवनम्) is untouched, and SK859/8.4.28's `?nas_AdeSa` gate is an
+acknowledged **scoped placeholder** (8.4.3 is now gated generally on `?saMjYA`).
+
+**Methodological note:** four of the five cleared items above were deferred under a
+*plausible but wrong* engine diagnosis. When a family looks blocked on deep machinery,
+verify the blocker by minimal reproduction before recording it — the surface symptom of
+a stale tag closely mimics a missing engine capability.

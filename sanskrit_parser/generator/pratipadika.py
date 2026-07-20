@@ -842,6 +842,7 @@ dakziRa_dik = Pratipadika("dakziRa", "pum", other_tags=["dikSabda", "sarvanAma"]
 uras  = Pratipadika("uras",  "napum", other_tags=["uras_praBfti"])  # उरस् (chest, s-final) — व्यूढोरस्कः
 vyUQa = Pratipadika("vyUQa", "pum")   # व्यूढ (broad) — व्यूढोरस्क pūrva
 # samāsānta ṣac/ap/ic uttaras (SK852/5.4.113, SK854/5.4.115, SK855/5.4.117, SK867/5.4.128).
+danta  = Pratipadika("danta",  "pum")   # दन्त (tooth) — द्विदन् (SK880/5.4.141 दन्त→दतृ)
 dru    = Pratipadika("dru",    "napum")  # द्रु (tree/wood) — द्रुणसः (SK856/5.4.118 + 8.4.3)
 aNguli = Pratipadika("aNguli", "strI")   # अङ्गुलि (finger, i-stem) — पञ्चाङ्गुलम् (ṣac; i-lopa 6.4.148)
 mUrDan = Pratipadika("mUrDan", "pum")    # मूर्धन् (head, n-stem) — द्विमूर्धः (ṣac; न-lopa 6.4.144)
