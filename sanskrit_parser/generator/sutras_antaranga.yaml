@@ -11366,3 +11366,43 @@
       - "?!samasanta_kap"
   update:
     orp: [+samasanta_kap]
+
+# SK872/5.4.134 जायाया निङ् — the final of जाया final in a bahuvrīhi → निङ् (नि): युवतिर्जाया
+# यस्य = युवजानिः. Pre-pass uttara-substitution जाया→जानि. The `-Ap, -strI` clear is
+# ESSENTIAL: जाया carries ?Ap (the ṭāp ā-stem marker), which would otherwise drive ā-stem
+# nom-sg su-elision on the substituted i-stem → जानि without its visarga.
+- sutra: जायाया निङ्
+  id: 5.4.134
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=jAyA"
+  xform:
+    rc: str("")
+    r: str("jAni")
+  update:
+    orp: [-Ap, -strI]
+
+# SK858/5.4.119 उपसर्गाच्च — an उपसर्ग + नासिका final in a bahuvrīhi takes अच्, and नासिका is
+# replaced by नस्: उन्नता नासिकाऽस्य = उन्नसः; प्रणसः (the ण by SK859/8.4.28 उपसर्गाद्बहुलम्).
+# Pre-pass uttara-substitution नासिका→नस (नस्+अच् = the a-stem नस), with the same `-Ap`
+# clear as 5.4.134 (नासिका is ?Ap too).
+- sutra: उपसर्गाच्च
+  id: 5.4.119
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=pra"
+      - "=ud"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=nAsikA"
+  xform:
+    rc: str("")
+    r: str("nasa")
+  update:
+    orp: [-Ap, -strI]

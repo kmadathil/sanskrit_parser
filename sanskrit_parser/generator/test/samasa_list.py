@@ -862,6 +862,26 @@ samasa_bv_tests = [
         "surface": "कल्याणधर्मा",
     },
     {
+        # युवतिर्जाया यस्य = युवजानिः (SK872/5.4.134 जायाया निङ्; जाया→जानि). The rule's
+        # `-Ap` clear is what gives the visarga — जाया's ?Ap would else elide the su.
+        "label": "B4-yuvajAniH-SK872-5.4.134",
+        "purva": {"stem": "yuvan", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "jAyA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.134", "1.2.43"],
+        "surface": "युवजानिः",
+    },
+    {
+        # उन्नता नासिकाऽस्य = उन्नसः (SK858/5.4.119 उपसर्गाच्च अच्; नासिका→नस). उद्नसः is the
+        # other fork of 8.4.45 यरोऽनुनासिके (वा). प्रणसः needs SK859/8.4.28 ṇatva — deferred.
+        "label": "B3-unnasaH-SK858-5.4.119",
+        "purva": {"stem": "ud", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nAsikA", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.119", "1.2.43"],
+        "surfaces": ["उन्नसः", "उद्नसः"],
+    },
+    {
         # अजातककुत् type = प्राप्तककुत् / प्राप्तककुद् (SK884/5.4.146 ककुद final-lopa; 8.4.56).
         "label": "B4-prAptakakut-SK884-5.4.146",
         "purva": {"stem": "prApta", "vacana": 1, "vibhakti": 1},
