@@ -10883,6 +10883,11 @@
       - and
       - "?bahuvrIhi"
       - "?uttara_strI"
+      - "?!pUraRI"       # अपूरणी: no puṁvadbhāva before an ORDINAL uttara — कल्याणी पञ्चमी
+                         # यासाम् = कल्याणीपञ्चमाः (कल्याणी stays fem, NOT *कल्याणपञ्चमाः). The
+                         # sūtra name is ...स्त्रियाम्**अपूरणी**प्रियादिषु; this arm was missing.
+                         # (?!priyAdi on the pūrva covers the प्रियादि half.) The पूरणी uttara
+                         # itself takes अप् by SK832/5.4.116.
   update:
     olp: [+puMvadBAva]
 
@@ -11395,6 +11400,31 @@
   update:
     orp: [+samasanta_Sac]
 
+# SK832/5.4.116 अप्पूरणीप्रमाण्योः — अप् is added to a bahuvrīhi whose uttara is a feminine
+# ORDINAL (पूरणी, ?pUraRI: पञ्चमी "fifth") or the word प्रमाणी ("authority/measure"):
+# कल्याणी पञ्चमी यासां रात्रीणां = कल्याणीपञ्चमा रात्रयः; स्त्री प्रमाणी यस्य = स्त्रीप्रमाणः.
+# अप् = `a` (ap_s). The uttara's ई drops before it by 6.4.148 यस्येति (पञ्चमी→पञ्चम, प्रमाणी→
+# प्रमाण), then the referent gender governs (fem रात्रि → ṭāp → पञ्चमा). Sets ?samasanta_ap.
+# `overrides: 5.4.153`: a पूरणी/प्रमाणी is ?NI, so 5.4.153 नद्यृतश्च (कप्) would otherwise also
+# grab it — 5.4.116 is the more specific अप् and wins (both are samāsānta, this keeps only
+# one affix marker on the uttara).
+# NOT modelled: the वार्तिक प्रधानपूरण्यामेव (अप् only when the ordinal is PRADHĀNA — the
+# principal counted thing); we always apply it for a ?pUraRI uttara. See status doc.
+- sutra: अप्पूरणीप्रमाण्योः
+  id: 5.4.116
+  bahiranga: -1
+  overrides: 5.4.153
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "?pUraRI"
+        - "=pramARI"
+      - "?!samasanta_ap"
+  update:
+    orp: [+samasanta_ap]
+
 # SK855/5.4.117 अन्तर्बहिर्भ्यां च लोम्नः — अन्तर्/बहिस् + लोमन् → अप् → अन्तर्लोमः,
 # बहिर्लोमः (न-lopa 6.4.144). Sets ?samasanta_ap.
 - sutra: अन्तर्बहिर्भ्यां च लोम्नः
@@ -11473,16 +11503,64 @@
     rc: str("")
     r: str("jYu")
 
-# SK874/5.4.135 गन्धस्येदुत्पूतिसुसुरभिभ्यः — the final of गन्ध (final in a bahuvrīhi after
-# सु etc.) → इत् (i): सुरभिर्गन्धो यस्य = सुगन्धिः. Pre-pass uttara-substitution गन्ध→गन्धि.
+# SK874/5.4.135 गन्धस्येदुत्पूतिसुसुरभिभ्यः — the final अ of गन्ध → इ (इत् antādeśa) when the
+# pūrva is one of उत् / पूति / सु / सुरभि, in a bahuvrīhi: सुगन्धिः, सुरभिगन्धिः, उद्गन्धिः,
+# पूतिगन्धिः. Pre-pass uttara-substitution गन्ध→गन्धि.
+# NARROWED (2026-07-21) to the sūtra's own pūrva list — it previously matched ANY =gandha
+# pūrva, which (a) wrongly substituted for तीव्र etc. (तीव्रगन्धा वातः keeps गन्ध — Vasu's
+# "why after these only?") and (b) grabbed the SK875/5.4.136 (अल्प) and SK876/5.4.137
+# (उपमान) cases, making those two rules unreachable. The list gate is what lets them fire.
+# NOT modelled: the एकान्तग्रहण vārtika (गन्ध must be the QUALITY, not the substance) —
+# सुगन्धि पुष्पम् (quality) vs सुगन्ध आपणिकः "a perfumer" (substance, no इ). We always take the
+# quality reading; the substance reading would need a composer sense guard. See status doc.
 - sutra: गन्धस्येदुत्पूतिसुसुरभिभ्यः
   id: 5.4.135
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=ud"
+      - "=pUti"
+      - "=su"
+      - "=suraBi"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=ganDa"
+  xform:
+    rc: str("")
+    r: str("ganDi")
+
+# SK875/5.4.136 अल्पाख्यायाम् — the same गन्ध → गन्धि when गन्ध means अल्प ("a little"),
+# after ANY pūrva: सूपोऽल्पोऽस्मिन् = सूपगन्धि भोजनम्, घृतगन्धि, क्षीरगन्धि. Here गन्ध is a
+# synonym of अल्प. ?alpa is a composer-supplied SENSE tag on the गन्ध uttara (like ?vayas
+# for 5.4.141, ?saMKyeya for 2.2.25): the surface is identical to 5.4.135, but the license
+# is the sense, not the pūrva — so घृत/सूप/क्षीर (not in 5.4.135's list) take गन्धि only here.
+- sutra: अल्पाख्यायाम्
+  id: 5.4.136
   bahiranga: -1
   condition:
     rp:
       - and
       - "?bahuvrIhi"
-      - "=gandha"
+      - "=ganDa"
+      - "?alpa"
+  xform:
+    rc: str("")
+    r: str("ganDi")
+
+# SK876/5.4.137 उपमानाच्च — the same गन्ध → गन्धि when the pūrva is an उपमान (a standard of
+# comparison), i.e. "smells LIKE the pūrva": पद्मस्येव गन्धोऽस्य = पद्मगन्धिः, उत्पलगन्धिः,
+# करीषगन्धिः. ?upamAna is a composer-supplied tag on the pūrva (cf. ?Uru_upamAna for करभोरूः).
+- sutra: उपमानाच्च
+  id: 5.4.137
+  bahiranga: -1
+  condition:
+    lp: "?upamAna"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=ganDa"
   xform:
     rc: str("")
     r: str("ganDi")

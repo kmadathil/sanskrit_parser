@@ -987,13 +987,80 @@ samasa_bv_tests = [
         "surfaces": ["ऊर्ध्वज्ञुः", "ऊर्ध्वजानुः"],
     },
     {
-        # सुरभिर्गन्धो यस्य = सुगन्धिः (SK874/5.4.135 गन्ध final → इत्).
+        # सुरभिर्गन्धो यस्य = सुगन्धिः (SK874/5.4.135 गन्ध final → इत्). 5.4.135 is now NARROWED to
+        # its own pūrva list {उत्/पूति/सु/सुरभि}; the un-substituted control is घृतगन्ध below.
         "label": "B4-sugandhiH-SK874-5.4.135",
         "purva": {"stem": "su_pUrva", "vibhakti": 1},
         "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.135", "1.2.43"],
         "surface": "सुगन्धिः",
+    },
+    {
+        # सुरभिर्गन्धो यस्य = सुरभिगन्धिः (SK874/5.4.135, another pūrva-list member).
+        "label": "B4-suraBigandhiH-SK874-5.4.135",
+        "purva": {"stem": "suraBi", "vibhakti": 1},
+        "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.135", "1.2.43"],
+        "surface": "सुरभिगन्धिः",
+    },
+    {
+        # "why after THESE only?" (Vasu) — a pūrva OUTSIDE the list, with no अल्प/उपमान sense,
+        # keeps गन्ध: घृतगन्धम् (neut). 5.4.135/136/137 must all NOT fire. This is the case
+        # the old over-broad =gandha rule got wrong (it gave *घृतगन्धि).
+        "label": "B4-GftagandhaM-noSubst-SK874-5.4.135",
+        "purva": {"stem": "Gfta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.135", "5.4.136", "5.4.137"],
+        "surface": "घृतगन्धम्",
+    },
+    {
+        # SK875/5.4.136 अल्पाख्यायाम् — गन्ध = अल्प ("a little"): सूपोऽल्पोऽस्मिन् = सूपगन्धि भोजनम्.
+        # ?alpa (composer sense tag) licenses the इ for a pūrva NOT in 5.4.135's list.
+        "label": "B4-sUpagandhi-SK875-5.4.136",
+        "purva": {"stem": "sUpa", "vibhakti": 1},
+        "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1, "tags": ["alpa"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.24", "5.4.136", "1.2.43"],
+        "not_fired": ["5.4.135"],
+        "surface": "सूपगन्धि",
+    },
+    {
+        # SK876/5.4.137 उपमानाच्च — the pūrva is an उपमान: पद्मस्येव गन्धोऽस्य = पद्मगन्धिः.
+        "label": "B4-padmagandhiH-SK876-5.4.137",
+        "purva": {"stem": "padma", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "gandha", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.137", "1.2.43"],
+        "not_fired": ["5.4.135"],
+        "surface": "पद्मगन्धिः",
+    },
+    {
+        # SK832/5.4.116 अप्पूरणीप्रमाण्योः — प्रमाणी arm: स्त्री प्रमाणी यस्य = स्त्रीप्रमाणः
+        # (प्रमाणी + अप् → प्रमाण; masc referent). स्त्री has no bhāṣitapuṁska so no puṁvadbhāva.
+        "label": "B3-strIpramARaH-SK832-5.4.116",
+        "purva": {"stem": "strI_pUrva", "vibhakti": 1},
+        "uttara": {"stem": "pramARI", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.116", "1.2.43"],
+        "surface": "स्त्रीप्रमाणः",
+    },
+    {
+        # SK832/5.4.116 पूरणी arm: कल्याणी पञ्चमी यासां रात्रीणां = कल्याणीपञ्चमाः (fem pl referent).
+        # पञ्चमी (?pUraRI) + अप् → पञ्चम, ṭāp → पञ्चमा. NOTE the pūrva कल्याणी is ?puMvat but
+        # 6.3.34 must NOT puṁvadbhāva it — अपूरणी (no puṁvadbhāva before an ordinal uttara),
+        # so कल्याणी keeps its ī. That अपूरणी guard was added to 6.3.34 for this.
+        "label": "B3-kalyARIpaYcamAH-SK832-5.4.116-apUraRI",
+        "purva": {"stem": "kalyARI", "vacana": 1, "vibhakti": 1, "tags": ["puMvat"]},
+        "uttara": {"stem": "paYcamI", "vacana": 3, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "5.4.116", "1.2.43"],
+        "not_fired": ["6.3.34", "5.4.153"],
+        "surface": "कल्याणीपञ्चमाः",
     },
     {
         # शोभनं हृदयं यस्य = सुहृत् / सुहृद् (SK888/5.4.150 हृदय→हृद्; द्→त्/द् वाऽवसाने 8.4.56).

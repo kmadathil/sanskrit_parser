@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 74 cases; full generator suite green (8223 passed).
+> `test/test_samasa_bahuvrihi.py` = 80 cases; full generator suite green (8229 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8223 green.
+8229 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -390,8 +390,15 @@ the 4.3.129 nipātana does not cover.
   NB 6.4.146 orguNaH belongs to the ic/kesakesi cluster, NOT kap: it is ?Ba-gated and kap
   begins with a consonant, so 1.4.18 yaci Bam never makes the stem ?Ba before it; SK847's
   own example बाहूबाहवि is an ic form. (Already implemented generically.)
-- ap 5.4.116 (puraNI pl), gandha 5.4.136/137 (same गन्धि surface as 5.4.135, needs
-  sUpa/padma stems + sense tags).
+- ap 5.4.116 (पूरणी/प्रमाणी) + gandha 5.4.135/136/137 - DONE (2026-07-21).
+  5.4.116 अप्पूरणीप्रमाण्योः: स्त्रीप्रमाणः, कल्याणीपञ्चमाः (overrides 5.4.153 since a पूरणी is ?NI).
+  gandha->i split three ways: 5.4.135 pUrva-list {ud/pUti/su/suraBi} (सुगन्धिः), 5.4.136 अल्प
+  sense (सूपगन्धि, ?alpa tag), 5.4.137 upamAna pUrva (पद्मगन्धिः, ?upamAna tag).
+  Two engine fixes fell out: (a) 5.4.135 was over-broad (matched ANY =gandha, wrongly gave
+  *तीव्रगन्धि and hid 5.4.136/137) - NARROWED to its list; (b) 6.3.34 lacked its own अपूरणी
+  guard (no puMvadbhava before an ordinal uttara) - added ?!pUraRI, so कल्याणी stays fem in
+  कल्याणीपञ्चमाः. Also corrected the gandha stem's SLP1 (gandha->ganDa). Zero regressions.
+  NOT modelled: the एकान्तग्रहण vArtika (गन्ध = quality vs substance) and प्रधानपूरण्यामेव.
 - Formation deferrals (physical reorder): 2.2.27 sarūpa (→ic), 2.2.35–37 word order —
   need the vyadhikaraṇa-bahuvrīhi + physical pūrva-nipāta 2.2.30 engine step (the same
   mechanism tatpuruṣa deferred); B1 6.3.35/36/39. (2.2.25 no longer belongs here — it
@@ -715,7 +722,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (74 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (80 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

@@ -819,6 +819,14 @@ daRqin = Pratipadika("daRqin", "pum",  other_tags=["in_anta"])        # दण�
 # प्रवाणी "weaver's shuttle" (प्र+वे, ल्युट्) — SK897/5.4.160 निष्प्रवाणिश्च nipātana.
 pravARI = Pratipadika("pravARI", "strI", other_tags=["NI"])
 
+# ── ap 5.4.116 + gandha 5.4.136/137 (bahuvrihi_plan.md B3 tail) ───────────────────
+strI_pUrva = Pratipadika("strI", "strI")                     # स्त्री (pūrva; no bhāṣitapuṁska → no 6.3.34) — SK832/5.4.116 (स्त्रीप्रमाणः)
+pramARI = Pratipadika("pramARI", "strI", other_tags=["NI"])   # प्रमाणी "authority/measure" — SK832/5.4.116 (स्त्रीप्रमाणः)
+paYcamI = Pratipadika("paYcamI", "strI", other_tags=["NI", "pUraRI"])  # पञ्चमी "fifth" (fem ordinal) — SK832/5.4.116 (कल्याणीपञ्चमा)
+suraBi  = Pratipadika("suraBi",  "pum")                       # सुरभि "fragrant" — SK874/5.4.135 pūrva (सुरभिगन्धिः)
+sUpa    = Pratipadika("sUpa",    "pum")                       # सूप "broth" — SK875/5.4.136 अल्प example (सूपगन्धि)
+padma   = Pratipadika("padma",   "napum", other_tags=["upamAna"])  # पद्म "lotus" — SK876/5.4.137 upamāna pūrva (पद्मगन्धिः)
+
 # to test
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
@@ -867,7 +875,7 @@ loman  = Pratipadika("loman",  "napum")  # लोमन् (hair, n-stem) — �
 daRqa  = Pratipadika("daRqa",  "pum")    # दण्ड (stick) — द्विदण्डि (ic; a-lopa 6.4.148)
 # B4 samāsānta ādeśa uttaras.
 UrDva  = Pratipadika("UrDva",  "pum")    # ऊर्ध्व (upward) — ऊर्ध्वज्ञुः pūrva (SK869/5.4.130)
-gandha = Pratipadika("gandha", "pum")    # गन्ध (smell) — सुगन्धिः (SK874/5.4.135 गन्ध final → i)
+gandha = Pratipadika("ganDa", "pum")     # गन्ध (smell) — सुगन्धिः (SK874/5.4.135 गन्ध final → i). Canonical "ganDa" (proper SLP1, ध=D); was "gandha", which only mattered once 5.4.135 was narrowed and the un-substituted गन्ध became reachable
 hfdaya = Pratipadika("hfdaya", "napum")  # हृदय (heart) — सुहृत् (SK888/5.4.150 हृदय→हृद्)
 prajA  = Pratipadika("prajA",  "strI", other_tags=["Ap"])  # प्रजा — सुप्रजाः (SK862/5.4.122 असिच्)
 meDA   = Pratipadika("meDA",   "strI", other_tags=["Ap"])  # मेधा — सुमेधाः (SK862/5.4.122 असिच्)
