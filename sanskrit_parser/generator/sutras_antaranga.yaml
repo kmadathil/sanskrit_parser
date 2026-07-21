@@ -11352,16 +11352,32 @@
 
 # SK852/5.4.113 सक्थ्यक्ष्णोः स्वाङ्गात्षच् — a svāṅga सक्थि / अक्षि final in a bahuvrīhi →
 # षच् → दीर्घसक्थः, जलजाक्षः (i-lopa 6.4.148: सक्थि+अ → सक्थ). Sets ?samasanta_Sac.
+# `?svAnga` GUARD ADDED (2026-07-21) — the sūtra's own स्वाङ्गात्, previously unmodelled
+# though this comment already claimed it. It is criterial and sense-based (the same word both
+# ways, so composer-supplied, as for 5.4.159's नाडी): स्वाङ्गात् किम् — दीर्घसक्थि शकटम् (a
+# cart's "legs" are not body parts → no षच्), स्थूलाक्षा वेणुयष्टिः. Without it 5.4.113 was
+# nitya on every सक्थि and pre-empted SK861/5.4.121's vibhāṣā, so असक्थिः could never form.
 - sutra: सक्थ्यक्ष्णोः स्वाङ्गात्षच्
   id: 5.4.113
   bahiranga: -1
   condition:
+    # नञ्/दुस्/सु are excluded here because SK861/5.4.121 is their APAVĀDA (optional अच् on
+    # हलि/सक्थि). This must be a positive guard, not `overrides: 5.4.113` on 5.4.121: 5.4.113
+    # is nitya and fires in an earlier fixpoint iteration than the optional rule's vibhāṣā
+    # fork, so the override never gets a chance and असक्थिः could not form. सक्थि in असक्थः IS
+    # a svāṅga, so the two rules genuinely compete — this is not a theoretical clash.
+    lp:
+      - and
+      - "?!naY"
+      - "=!dus"
+      - "=!su"
     rp:
       - and
       - "?bahuvrIhi"
       - - or
         - "=sakTi"
         - "=akzi"
+      - "?svAnga"
       - "?!samasanta_Sac"
   update:
     orp: [+samasanta_Sac]
@@ -11669,6 +11685,257 @@
   xform:
     rc: str("")
     r: str("kakud")
+
+# SK885/5.4.147 त्रिककुत्पर्वते — त्रि + ककुद is stated ready-made as the NAME OF A MOUNTAIN:
+# त्रीणि ककुदान्यस्य = त्रिककुत् (a particular parvata). Outside that saṁjñā the compound keeps
+# its ककुद (त्रिककुदोऽन्यः). Same final-lopa as 5.4.146; `?parvata` is a composer sense tag.
+# `overrides: 5.4.146` is NOT needed — 5.4.146's ककुद-lopa is unconditional on the uttara, so
+# both would give the same string; this rule exists to attribute the form to its own sūtra and
+# to carry the पर्वत restriction (see the not_fired control in the tests).
+- sutra: त्रिककुत्पर्वते
+  id: 5.4.147
+  bahiranga: -1
+  overrides: 5.4.146
+  condition:
+    lp: "=tri"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=kakuda"
+      - "?parvata"
+  xform:
+    rc: str("")
+    r: str("kakud")
+
+# SK886/5.4.148 उद्विभ्यां काकुदस्य — after उद् / वि, काकुद ("palate", तालु) loses its final:
+# उत्काकुत्, विकाकुत्. (काकुद is a DIFFERENT word from ककुद "hump" — 5.4.146/147.)
+- sutra: उद्विभ्यां काकुदस्य
+  id: 5.4.148
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=ud"
+      - "=vi"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=kAkuda"
+  xform:
+    rc: str("")
+    r: str("kAkud")
+
+# SK887/5.4.149 पूर्णाद्विभाषा — after पूर्ण the काकुद-lopa is OPTIONAL: पूर्णकाकुत् / पूर्णकाकुदः.
+# The vibhāṣā fork comes free from the pre-pass (_run_fixpoint clones the un-applied branch),
+# as for 5.4.133.
+- sutra: पूर्णाद्विभाषा
+  id: 5.4.149
+  bahiranga: -1
+  optional: true
+  condition:
+    lp: "=pUrRa"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=kAkuda"
+  xform:
+    rc: str("")
+    r: str("kAkud")
+
+# SK877/5.4.138 पादस्य लोपोऽहस्त्यादिभ्यः — after an UPAMĀNA (but not a हस्त्यादि word), पाद
+# final in a bahuvrīhi loses its final: व्याघ्रस्येव पादावस्य = व्याघ्रपात् (8.4.56 gives त्/द्).
+# अहस्त्यादिभ्यः: हस्तिपादः, कुसूलपादः keep पाद — modelled with `?!hastyAdi` on the pūrva.
+# Same lopa as SK879/5.4.140 (द्विपात्), different licence (upamāna vs saṅkhyā/सु pūrva).
+# `?upamAna` is the same composer tag 5.4.137 uses.
+- sutra: पादस्य लोपोऽहस्त्यादिभ्यः
+  id: 5.4.138
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?upamAna"
+      - "?!hastyAdi"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=pAda"
+  xform:
+    rc: str("")
+    r: str("pAd")
+
+# SK878/5.4.139 कुम्भपदीषु च — in the कुम्भपदी-ādi words the पाद-lopa AND ṅīp are both
+# nipātita, in the FEMININE: कुम्भपदी. स्त्रियाम् किम् — the masculine keeps पाद (कुम्भपादः).
+# The SK cross-refers "पादः पत् (414)", i.e. the substitute is पद् (short a), not पाद् — so
+# this rule substitutes पद् where 5.4.138/5.4.140 give पाद्. The ई is supplied by the ṅīp the
+# sūtra nipātanas; we get it from the fem referent's strI_abs over the consonant-final पद्.
+- sutra: कुम्भपदीषु च
+  id: 5.4.139
+  bahiranga: -1
+  overrides: [5.4.138, 5.4.140, 5.4.153]
+  condition:
+    lp: "=kumBa"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=pAda"
+      - "?referent_strI"
+  xform:
+    rc: str("")
+    r: str("padI")
+  update:
+    orp: [+NI]     # the nipātita ṅīp — makes the su drop (कुम्भपदी, not *कुम्भपदीः)
+
+# SK881/5.4.143 स्त्रियां संज्ञायाम् — दन्त → दतृ in a FEMININE SAṀJÑĀ: अयोदती, फालदती.
+# संज्ञायां किम् — a non-name keeps दन्त (समदन्ती). Same दतृ mechanism as SK880/5.4.141
+# (`++f` → the ऋ-it makes the stem उगित् → 7.1.70 नुम्; the fem ī then comes from 4.1.6
+# उगितश्च, exactly as for सुदती), but licensed by the saṁjñā + feminine rather than by ?vayas.
+- sutra: स्त्रियां संज्ञायाम्
+  id: 5.4.143
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=danta"
+      - "?saMjYA"
+      - "?referent_strI"
+  xform:
+    rc: str("")
+    r: str("dat")
+  update:
+    orp: [++f]
+
+# SK882/5.4.144 विभाषा श्यावारोकाभ्याम् — after श्याव / अरोक the दतृ is OPTIONAL:
+# श्यावदन् / श्यावदन्तः, अरोकदन् / अरोकदन्तः.
+- sutra: विभाषा श्यावारोकाभ्याम्
+  id: 5.4.144
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - or
+      - "=SyAva"
+      - "=aroka"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=danta"
+  xform:
+    rc: str("")
+    r: str("dat")
+  update:
+    orp: [++f]
+
+# SK883/5.4.145 अग्रान्तशुद्धशुभ्रवृषवराहेभ्यश्च — likewise OPTIONAL दतृ after an अग्र-final
+# word, or शुद्ध / शुभ्र / वृष / वराह: कुड्मलाग्रदन् / कुड्मलाग्रदन्तः, वृषदन् / वृषदन्तः.
+# (The अग्रान्त arm needs an अग्र-final pūrva; only the lexical arm is exercised in tests.)
+- sutra: अग्रान्तशुद्धशुभ्रवृषवराहेभ्यश्च
+  id: 5.4.145
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - or
+      - "=Sudda"
+      - "=SuBra"
+      - "=vfza"
+      - "=varAha"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=danta"
+  xform:
+    rc: str("")
+    r: str("dat")
+  update:
+    orp: [++f]
+
+# SK864/5.4.125 जम्भा सुहरिततृणसोमेभ्यः — after सु / हरित / तृण / सोम, जम्भ ("tooth, jaw")
+# is stated ready-made WITH its samāsānta already applied (जम्भेति कृतसमासान्तं निपात्यते):
+# शोभनो जम्भोऽस्य = सुजम्भा, हरितजम्भा, तृणजम्भा, सोमजम्भा. स्वादिभ्यः किम् — outside the list
+# the compound keeps जम्भ (पतितजम्भः). Modelled as जम्भ → जम्भन् (an-stem), whose nom sg is
+# जम्भा — the same shape as SK870/5.4.132 धनुस्→धन्वन् → सुधन्वा.
+- sutra: जम्भा सुहरिततृणसोमेभ्यः
+  id: 5.4.125
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=su"
+      - "=harita"
+      - "=tfRa"
+      - "=soma"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=jamBa"
+  xform:
+    rc: str("")
+    r: str("jamBan")
+
+# SK865/5.4.126 दक्षिणेर्मा लुब्धयोगे — दक्षिणे ईर्मं (व्रणं) यस्य = दक्षिणेर्मा मृगः, "a deer
+# wounded on the right side" (व्याधेन कृतव्रणः — hence लुब्धयोगे, "in connection with a hunter").
+# Nipātana; like 5.4.125 the samāsānta is stated as done → an-stem ईर्मन्, nom sg दक्षिणेर्मा.
+# The ए of दक्षिणेर्मा is ordinary guṇa sandhi (दक्षिण + ईर्म), not part of the nipātana.
+# `?lubDayoga` is a composer sense tag.
+- sutra: दक्षिणेर्मा लुब्धयोगे
+  id: 5.4.126
+  bahiranga: -1
+  condition:
+    lp: "=dakziRa"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=Irma"
+      - "?lubDayoga"
+  xform:
+    rc: str("")
+    r: str("Irman")
+
+# SK860/5.4.120 सुप्रातसुश्वसुदिवशारिकुक्षचतुरश्रैणीपदाजपदप्रोष्ठपदाः — a NIPĀTANA LIST of
+# ready-made अच्-final bahuvrīhis: सुप्रातः, सुश्वः, सुदिवः, शारिकुक्षः, चतुरश्रः, एणीपदः,
+# अजपदः, प्रोष्ठपदः. Sets ?samasanta_ac (the new अच् affix): the uttara's final इ then drops
+# by 6.4.148 यस्येति, exactly as for षच् on सक्थि (5.4.113) — अश्रि + अ → अश्र → चतुरश्रः.
+# ONLY the अश्रि/कुक्षि members are modelled: the पाद members (एणीपद/अजपद/प्रोष्ठपद) need the
+# पाद→पद substitute of 5.4.139, and प्रातर्/श्वस्/दिव are heterogeneous consonant-final
+# nipātanas. Recorded in generator_status.md rather than half-implemented.
+- sutra: सुप्रातसुश्वसुदिवशारिकुक्षचतुरश्रैणीपदाजपदप्रोष्ठपदाः
+  id: 5.4.120
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "=aSri"
+        - "=kukzi"
+      - "?!samasanta_ac"
+  update:
+    orp: [+samasanta_ac]
+
+# SK861/5.4.121 नञ्दुःसुभ्यो हलिसक्थ्योरन्यतरस्याम् — after नञ् / दुस् / सु, the words हलि and
+# सक्थि OPTIONALLY take अच्: अहलः / अहलिः, असक्थः / असक्थिः; likewise दुःसक्थः, सुसक्थः.
+# (शक्ति is a पाठान्तर: अशक्तः / अशक्तिः.) The अच् drops the stem's इ by 6.4.148, so the
+# fork is सक्थ vs सक्थि. Optional → the pre-pass vibhāṣā fork gives both.
+- sutra: नञ्दुःसुभ्यो हलिसक्थ्योरन्यतरस्याम्
+  id: 5.4.121
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - or
+      - "?naY"
+      - "=dus"
+      - "=su"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - - or
+        - "=hali"
+        - "=sakTi"
+      - "?!samasanta_ac"
+  update:
+    orp: [+samasanta_ac]
 
 # SK833/5.4.153 नद्यृतश्च — कप् is added to a bahuvrīhi whose uttara is a नदी-word (ī/ū
 # nadī-class, ?NI) or is ऋ-final (?svasrAdi family): बहुकुमारीकः, बहुनदीकः, बहुमातृकः.

@@ -268,6 +268,7 @@ Sac  = Pratyaya("a", its=["z", "c"], other_tags=["svAdi", "tadDita", "pum"])  # 
 ap_s = Pratyaya("a", its=["p"],      other_tags=["svAdi", "tadDita", "pum"])  # अप् (5.4.116/117)
 ic_s = Pratyaya("i", its=["c"],      other_tags=["svAdi", "tadDita"])         # इच् (5.4.127/128)
 asic = Pratyaya("as", its=["c"],     other_tags=["svAdi", "tadDita", "pum"])  # असिच् (5.4.122)
+ac_s = Pratyaya("a",  its=["c"],     other_tags=["svAdi", "tadDita"])         # अच् (5.4.120/121)
 qac  = Pratyaya("a",  its=["q", "c"], other_tags=["svAdi", "tadDita"])       # डच् (5.4.73) — ḍit → 6.4.143 ṭi-lopa (दशन्→दश)
 
 

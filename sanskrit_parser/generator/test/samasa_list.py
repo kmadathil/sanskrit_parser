@@ -924,7 +924,7 @@ samasa_bv_tests = [
         # दीर्घे सक्थिनी यस्य = दीर्घसक्थः (SK852/5.4.113 ṣac; i-lopa 6.4.148).
         "label": "B3-dIrGasakTaH-SK852-5.4.113",
         "purva": {"stem": "dIrGa", "vacana": 1, "vibhakti": 1},
-        "uttara": {"stem": "sakTi", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "sakTi", "vacana": 1, "vibhakti": 1, "tags": ["svAnga"]},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.113", "1.2.43"],
         "surface": "दीर्घसक्थः",
@@ -1242,6 +1242,147 @@ samasa_bv_tests = [
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.118", "1.2.43"],
         "surface": "द्रुणसः",
+    },
+    {
+        # SK877/5.4.138 पादस्य लोपोऽहस्त्यादिभ्यः — after an UPAMĀNA, पाद loses its final:
+        # व्याघ्रस्येव पादावस्य = व्याघ्रपात् / व्याघ्रपाद् (8.4.56 वाऽवसाने).
+        "label": "B4-vyAGrapAt-SK877-5.4.138",
+        "purva": {"stem": "vyAGra", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pAda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.138", "1.2.43"],
+        "surfaces": ["व्याघ्रपात्", "व्याघ्रपाद्"],
+    },
+    {
+        # अहस्त्यादिभ्यः किम् — a हस्त्यादि upamāna keeps पाद: हस्तिपादः (Vasu/SK counter).
+        "label": "B4-hastipAdaH-SK877-5.4.138-hastyAdi",
+        "purva": {"stem": "hastin", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pAda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.138"],
+        "surface": "हस्तिपादः",
+    },
+    {
+        # SK878/5.4.139 कुम्भपदीषु च — पाद-lopa AND ṅīp are BOTH nipātita, in the feminine:
+        # कुम्भपदी. The substitute is पद् (short a: "पादः पत्"), not पाद् as in 5.4.138/140.
+        "label": "B4-kumBapadI-SK878-5.4.139",
+        "purva": {"stem": "kumBa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pAda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "fired": ["2.2.24", "5.4.139", "1.2.43"],
+        "not_fired": ["5.4.153"],
+        "surface": "कुम्भपदी",
+    },
+    {
+        # स्त्रियाम् किम् — the masculine keeps पाद: कुम्भपादः.
+        "label": "B4-kumBapAdaH-SK878-5.4.139-pum",
+        "purva": {"stem": "kumBa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "pAda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["5.4.139"],
+        "surface": "कुम्भपादः",
+    },
+    {
+        # SK881/5.4.143 स्त्रियां संज्ञायाम् — दन्त → दतृ in a FEMININE SAṀJÑĀ: फालदती.
+        # Same ऋ-it mechanism as 5.4.141; the ī comes free from 4.1.6 (as for सुदती).
+        "label": "B4-PAladatI-SK881-5.4.143",
+        "purva": {"stem": "PAla", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1, "tags": ["saMjYA"]},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "5.4.143", "1.2.43"],
+        "surface": "फालदती",
+    },
+    {
+        # SK882/5.4.144 विभाषा श्यावारोकाभ्याम् — OPTIONAL दतृ: श्यावदन् / श्यावदन्तः.
+        "label": "B4-SyAvadan-SK882-5.4.144",
+        "purva": {"stem": "SyAva", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.144", "1.2.43"],
+        "surfaces": ["श्यावदन्", "श्यावदन्तः"],
+    },
+    {
+        # SK883/5.4.145 अग्रान्तशुद्धशुभ्रवृषवराहेभ्यश्च — OPTIONAL दतृ: वृषदन् / वृषदन्तः.
+        "label": "B4-vfzadan-SK883-5.4.145",
+        "purva": {"stem": "vfza", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "danta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.145", "1.2.43"],
+        "surfaces": ["वृषदन्", "वृषदन्तः"],
+    },
+    {
+        # SK885/5.4.147 त्रिककुत्पर्वते — त्रि + ककुद as the NAME OF A MOUNTAIN: त्रिककुत्.
+        "label": "B4-trikakut-SK885-5.4.147",
+        "purva": {"stem": "tri", "vibhakti": 1},
+        "uttara": {"stem": "kakuda", "vacana": 1, "vibhakti": 1, "tags": ["parvata"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.147", "1.2.43"],
+        "surfaces": ["त्रिककुत्", "त्रिककुद्"],
+    },
+    {
+        # SK886/5.4.148 उद्विभ्यां काकुदस्य — काकुद ("palate") loses its final after उद्/वि:
+        # उत्काकुत्. (काकुद is a different word from ककुद "hump", 5.4.146/147.)
+        "label": "B4-utkAkut-SK886-5.4.148",
+        "purva": {"stem": "ud", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kAkuda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.148", "1.2.43"],
+        "surfaces": ["उत्काकुत्", "उत्काकुद्"],
+    },
+    {
+        # SK887/5.4.149 पूर्णाद्विभाषा — OPTIONAL after पूर्ण: पूर्णकाकुत् / पूर्णकाकुदः.
+        # Three surfaces: the lopa branch gives the 8.4.56 त्/द् pair, the skip branch पूर्णकाकुदः.
+        "label": "B4-pUrRakAkut-SK887-5.4.149",
+        "purva": {"stem": "pUrRa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kAkuda", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.149", "1.2.43"],
+        "surfaces": ["पूर्णकाकुत्", "पूर्णकाकुद्", "पूर्णकाकुदः"],
+    },
+    {
+        # SK864/5.4.125 जम्भा सुहरिततृणसोमेभ्यः — जम्भ stated with its samāsānta already done
+        # (कृतसमासान्तं निपात्यते) → an-stem जम्भन्, nom sg सुजम्भा (shape of सुधन्वा, 5.4.132).
+        "label": "B4-sujamBA-SK864-5.4.125",
+        "purva": {"stem": "su_pUrva", "vibhakti": 1},
+        "uttara": {"stem": "jamBa", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.125", "1.2.43"],
+        "surface": "सुजम्भा",
+    },
+    {
+        # SK865/5.4.126 दक्षिणेर्मा लुब्धयोगे — दक्षिणे ईर्मं (व्रणं) यस्य = दक्षिणेर्मा मृगः,
+        # "a deer wounded on the right" (व्याधेन कृतव्रणः). The ए is ordinary guṇa sandhi.
+        "label": "B4-dakziRermA-SK865-5.4.126",
+        "purva": {"stem": "dakziRa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Irma", "vacana": 1, "vibhakti": 1, "tags": ["lubDayoga"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.126", "1.2.43"],
+        "surface": "दक्षिणेर्मा",
+    },
+    {
+        # SK860/5.4.120 — the अच् nipātana list: चतस्रोऽश्रयोऽस्य = चतुरश्रः (अश्रि + अच्,
+        # i-lopa by 6.4.148, exactly as षच् on सक्थि).
+        "label": "B3-caturaSraH-SK860-5.4.120",
+        "purva": {"stem": "catur", "vibhakti": 1},
+        "uttara": {"stem": "aSri", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.120", "1.2.43"],
+        "surface": "चतुरश्रः",
+    },
+    {
+        # SK861/5.4.121 नञ्दुःसुभ्यो हलिसक्थ्योरन्यतरस्याम् — OPTIONAL अच् after नञ्/दुस्/सु:
+        # असक्थः / असक्थिः. सक्थि here IS a svāṅga, so 5.4.113 (nitya षच्) genuinely competes —
+        # it carries an explicit नञ्/दुस्/सु exclusion so this vibhāṣā can fork.
+        "label": "B3-asakTaH-SK861-5.4.121",
+        "purva": {"avyaya": "naY", "vibhakti": 1},
+        "uttara": {"stem": "sakTi", "vacana": 1, "vibhakti": 1, "tags": ["svAnga"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.121", "1.2.43"],
+        "not_fired": ["5.4.113"],
+        "surfaces": ["असक्थः", "असक्थिः"],
     },
     {
         # अजातककुत् type = प्राप्तककुत् / प्राप्तककुद् (SK884/5.4.146 ककुद final-lopa; 8.4.56).

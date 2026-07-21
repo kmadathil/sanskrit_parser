@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 80 cases; full generator suite green (8229 passed).
+> `test/test_samasa_bahuvrihi.py` = 94 cases; full generator suite green (8243 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -183,7 +183,7 @@ base first.
 
 ---
 
-## 2a. Implementation status (as-built, last updated 2026-07-20)
+## 2a. Implementation status (as-built, last updated 2026-07-21)
 
 Built sequentially on `generator` (not parallel worktrees). Commits: B0 `00a9b11`,
 B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, B4-ext
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8229 green.
+8243 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -321,88 +321,141 @@ the 4.3.129 nipātana does not cover.
 **Still open:** the *general* cross-member ṇatva gap (tatpuruṣa **चोरभयेण**, and the
 त्रिभुवनम् restriction in non-saṁjñā compounds) is untouched by this lever.
 
-### Remaining work
-> Two of these were mis-diagnosed in the first pass; both root causes have now been
-> verified experimentally and are restated correctly below.
+### Landed after the initial phases (rounds 2+)
 
-- **Stale stem-class tags after an ādeśa — a ONE-LINE YAML fix, not an engine step. ✅ APPLIED.**
-  *(Supersedes the earlier "sup re-insertion via a `?resup` post-pass" note, which was
-  wrong: sup morphemes (su/au/jas…) are class-neutral, so re-inserting `su` changes
-  nothing.)* **Root cause (verified):** a pre-pass uttara-substitution rewrites the stem
-  *string* (`rc→""`, `r→"<new>"`) but leaves the **old stem's class tags** on the member.
-  Both `जाया` and `नासिका` carry **`?Ap`** (the ṭāp ā-stem marker), and `?Ap` drives
-  ā-stem nom-sg su-elision — so the substituted `जानि` / `नस` lose their visarga
-  (जानि, प्रनस). *Proof:* the very same a-stem `अम्बर` yields पीताम्बर**ः** normally but
-  पीताम्बर (no visarga) with `?Ap` forced onto it.
-  **Fix:** add `update: orp: [-Ap, -strI]` to the ādeśa rule, alongside its `xform`.
-  **Landed:** niṅ **SK872/5.4.134** → **युवजानिः** (it also fixed the युवन् न्/ñ cascade), and
-  अच् **SK858/5.4.119** → **उन्नसः**. The अच् family is now **complete**: the cross-compound
-  ṇatva also landed (below), giving **प्रणसः** and **द्रुणसः**.
-- **6.4.14's `-as` arm was `+u`-only — WIDENED. ✅ APPLIED.** *(Supersedes "6.4.14 dīrgha
-  under the gender-override"; the gender-override was never the issue.)* **Root cause
-  (verified):** the arm required `+u` (a u-it marker), so it fired only for u-it stems
-  (matup / ktavatu / **īyasun**) and never for an underived अस्-final noun — a plain masc
-  `यशस् + su` gave **यशः, not यशाः, even standalone** (`yaSas.its == []`).
-  **Fix applied:** drop `+u` from the `-as` arm (the sūtra is अत्वसन्तस्य — *any* अस्-ending
-  non-dhātu), keeping `?pum` + `?su` + `?!sambudDi` (अस्-stems lengthen only in nom sg:
-  वेधाः but वेधसौ/वेधसः). **Guards added** — `?!avyaya`, `?!nipAta`, `?!sarvanAma` — because
-  relaxing `+u` would otherwise catch the as-final *non-declining/pronominal* stems
-  तिरस्/अधस् and, critically, **अदस्** (असौ has its own rules).
-  **Result:** यशाः, मनाः, and **बहुयशाः** — so the SK891 pair is now the canonical
-  **बहुयशस्कः / बहुयशाः** (the tests no longer need the neuter-referent workaround).
-  Unchanged: श्रेयान्, विद्वान्, **असौ**, तिरः, अधः, and all neuters (मनः/यशः).
-  With that in place, **asic SK862/5.4.122 was also landed** (new `asic` Pratyaya +
-  `_SAMASANTA_AFFIXES` entry + the same `-Ap` clear) → **सुप्रजाः / सुमेधाः**; only its nañ
-  arm (अप्रजाः) still awaits the nañ-bahuvrīhi formation path.
-- ~~**दतृ न्-declension** → datṛ 5.4.141~~ — **✅ DONE, and the "n-declension" framing was
-  wrong.** दतृ is simply **दत् + an ऋ-IT**. The rule substitutes the string *and* sets
-  `update: orp: [++f]` (the DSL's setIt, as SK360 does for मघवत्); the ṛ-it makes the stem
-  उगित्, so **7.1.70** inserts नुम् (दत्→दन्त्) and the nom sg su drops by 8.2.23 → **द्विदन्**,
-  **सुदन्**. No new declension machinery was needed — 7.1.70 and 4.1.6 already existed.
-  **Free corroboration:** the feminine **सुदती** falls out via **4.1.6 उगितश्च** (ugit→ṅīp),
-  which only works if the ऋ-it analysis is right. `?vayas` is criterial (द्विदन्तः करी).
-- केशाकेशि (reciprocal ic 5.4.127) — the long-standing "needs reduplication" framing was
-  wrong: SK's vigraha केशेषु केशेषु supplies the same word twice, nothing is reduplicated
-  by rule. Needs SK846/2.2.27 sarūpa formation (a new lp==rp content check) + 6.3.137
-  अन्येषामपि दृश्यते (unimplemented — supplies the केश→केशा dīrgha) + avyaya tagging.
-- ḍac SK851/5.4.73 (उपदशाः) is accent-only — DONE (`4d0025f`), and "accent-only"
-  was itself a misreading of Vasu 54073, whose accent remark describes the अबहुगणात्
-  exception (उपबहवः, where डच् is not added), not उपदशाः. SK843/2.2.25 forms
-  the compound (its own rule, like 2.2.28 — the pūrva is indeclinable) and SK851/5.4.73
-  डच् (ḍit → 6.4.143 टेः drops daśan's ṭi) gives the surface → उपदशाः;
-  SK844/6.4.142 ti-lopa likewise landed → आसन्नविंशाः.
-- SK871/5.4.133 dhanus-saṁjñā fork शतधनुः — DONE (`4d0025f`). The vibhāṣā fork is
-  free from the existing pre-pass machinery (`_run_fixpoint` clones the skip branch);
-  5.4.132 just needed a matching `?!saMjYA` guard so exactly one of the pair fires →
-  शतधन्वा/शतधनुः.
-- Minor kap (5.4.152/156/157/159/160, 7.4.13-15) - DONE (2026-07-20).
-  5.4.152 inaH striyAm (बहुदण्डिका, via B0's ?referent_strI), 5.4.156 IyasaH (बहुश्रेयान्),
-  5.4.157 vandite BrAtuH (सुभ्राता / मूर्खभ्रातृकः), 5.4.159 nAqItantryoH svAnge, 5.4.160
-  nizpravARiH (निष्प्रवाणिः), 7.4.15 AponyatarasyAm (बहुमालाकः/बहुमालकः).
-  7.4.13/7.4.14 deliberately NOT implemented - a net no-op for kap (7.4.13 absent; 1.2.48,
-  which 7.4.14 would also block, is gated on ?pum_abs and cannot reach the kap path).
-  Each prohibition was checked for being load-bearing by minimal reproduction FIRST, and
-  two are NOT: 5.4.156's 5.4.153 arm (SreyasI's ngip is added in the main scan, so the
-  pre-pass never sees ?NI) and 5.4.159's tantrI arm (no ?NI -> never in 5.4.153's scope).
-  Both are documented as vacuous rather than presented as doing work.
-  5.4.153's RtaH arm had to be WIDENED to a true r-final test ($$is_ftanta) before 5.4.157
-  could mean anything - ?svasrAdi is the FEMININE gana and missed BrAtf.
-  NB 6.4.146 orguNaH belongs to the ic/kesakesi cluster, NOT kap: it is ?Ba-gated and kap
-  begins with a consonant, so 1.4.18 yaci Bam never makes the stem ?Ba before it; SK847's
-  own example बाहूबाहवि is an ic form. (Already implemented generically.)
-- ap 5.4.116 (पूरणी/प्रमाणी) + gandha 5.4.135/136/137 - DONE (2026-07-21).
-  5.4.116 अप्पूरणीप्रमाण्योः: स्त्रीप्रमाणः, कल्याणीपञ्चमाः (overrides 5.4.153 since a पूरणी is ?NI).
-  gandha->i split three ways: 5.4.135 pUrva-list {ud/pUti/su/suraBi} (सुगन्धिः), 5.4.136 अल्प
-  sense (सूपगन्धि, ?alpa tag), 5.4.137 upamAna pUrva (पद्मगन्धिः, ?upamAna tag).
-  Two engine fixes fell out: (a) 5.4.135 was over-broad (matched ANY =gandha, wrongly gave
-  *तीव्रगन्धि and hid 5.4.136/137) - NARROWED to its list; (b) 6.3.34 lacked its own अपूरणी
-  guard (no puMvadbhava before an ordinal uttara) - added ?!pUraRI, so कल्याणी stays fem in
-  कल्याणीपञ्चमाः. Also corrected the gandha stem's SLP1 (gandha->ganDa). Zero regressions.
-  NOT modelled: the एकान्तग्रहण vArtika (गन्ध = quality vs substance) and प्रधानपूरण्यामेव.
-- Formation deferrals (physical reorder): 2.2.27 sarūpa (→ic), 2.2.35–37 word order —
-  need the vyadhikaraṇa-bahuvrīhi + physical pūrva-nipāta 2.2.30 engine step (the same
-  mechanism tatpuruṣa deferred); B1 6.3.35/36/39. (2.2.25 no longer belongs here — it
-  needed no reorder, see above.)
+> Everything below post-dates the B0–B-UI phase commits. It is kept because in most cases
+> the *original deferral reason was wrong*, and the correction is the reusable lesson.
+> A running theme: **verify a blocker by minimal reproduction before recording it** — a
+> stale tag, an over-broad rule, or a mis-read commentary all mimic a missing engine
+> capability. Five of the first six items here were deferred under a wrong diagnosis.
+
+**Round 2 — ā-stem ādeśas + 6.4.14 + asic + cross-compound ṇatva (`cc99fa2`→`9cd40e7`)**
+- **Stale stem-class tags after an ādeśa — a ONE-LINE YAML fix, not an engine step.**
+  *(Supersedes "sup re-insertion via a `?resup` post-pass", which was wrong: sup morphemes
+  are class-neutral, so re-inserting `su` changes nothing.)* A pre-pass uttara-substitution
+  rewrites the stem *string* but leaves the **old stem's class tags**. जाया/नासिका carry
+  **`?Ap`**, which drives ā-stem nom-sg su-elision, so जानि/नस lost their visarga.
+  *Proof:* the a-stem अम्बर yields पीताम्बर**ः** normally but पीताम्बर with `?Ap` forced on.
+  **Fix:** `update: orp: [-Ap, -strI]` beside the `xform` → **युवजानिः**, **उन्नसः**.
+- **6.4.14's `-as` arm was `+u`-only — WIDENED.** *(Supersedes "6.4.14 dīrgha under the
+  gender-override"; the gender-override was never the issue.)* The arm required a u-it, so
+  it never fired for an underived अस्-final noun — plain masc `यशस् + su` gave यशः **even
+  standalone**. Dropped `+u` (the sūtra is अत्वसन्तस्य), guarded `?!avyaya`/`?!nipAta`/
+  `?!sarvanAma` to protect तिरस्/अधस्/**अदस्** → यशाः, मनाः, **बहुयशाः**; SK891 became the
+  canonical **बहुयशस्कः / बहुयशाः**. On the back of it, **asic SK862/5.4.122** landed
+  (सुप्रजाः/सुमेधाः, later incl. the nañ arm अप्रजाः).
+- **Cross-compound ṇatva** (SK857/8.4.3, SK859/8.4.28) — correctly diagnosed
+  (`?merged_pada` blocks arm A) and unblocked with the `?samasta_Ratva` lever → **द्रुणसः**,
+  **प्रणसः**. See the dedicated subsection above.
+
+**Round 3 — datṛ + the 8.4.3 `?saMjYA` gate (`b1bd6bd`)**
+- ~~दतृ न्-declension~~ — **the "n-declension" framing was wrong.** दतृ is **दत् + an ऋ-IT**:
+  `update: orp: [++f]` makes the stem उगित्, so the *existing* 7.1.70 supplies नुम् and
+  8.2.23 drops the su → **द्विदन्**, **सुदन्**. **Free corroboration:** the feminine **सुदती**
+  falls out via 4.1.6 उगितश्च, which only works if the ऋ-it analysis is right.
+- **8.4.3 generalised to its own `?saMjYA`** (was a नस्-specific proxy). Validated by a
+  pre-existing **शूर्पणखा / शूर्पनखी** minimal pair differing *only* in that tag; Vasu cites
+  शूर्पणखा under 8.4.3 itself. 24 fixtures had frozen the pre-8.4.3 output and were corrected.
+
+**Round 4 — 5.4.133 + the saṅkhyā/ḍac cluster + doc audit (`4d0025f`)**
+- **SK871/5.4.133** dhanus-saṁjñā fork → **शतधन्वा / शतधनुः**. The vibhāṣā fork is free from
+  the existing pre-pass (`_run_fixpoint` clones the skip branch); 5.4.132 only needed a
+  matching `?!saMjYA` guard.
+- **ḍac SK851/5.4.73 was never "accent-only"** — that misread Vasu 54073, whose accent remark
+  describes the **अबहुगणात् exception** (उपबहवः, where ḍac is *not* added). And **SK843/2.2.25
+  never needed the physical reorder** (the composer already supplies उप first). Both landed:
+  **उपदशाः**, **आसन्नविंशाः**, **उपबहवः**. 6.4.142 is not subsumed by 6.4.143 (ṭi of विंशति is
+  only the final इ → *आसन्नविंशताः*), verified by disabling it.
+- **SK859/8.4.28's `?nas_AdeSa` gate is faithful, not a placeholder** — both SK859 and Vasu
+  gloss 8.4.28 as नस्-specific. Retracted; the real gaps are the pronoun नस् arm and बहुलम्.
+
+**Round 5 — minor kap (`336d0ca`)**
+- 5.4.152 (**बहुदण्डिका**, via B0's `?referent_strI`), 5.4.156 (**बहुश्रेयान्**), 5.4.157
+  (**सुभ्राता / मूर्खभ्रातृकः**), 5.4.159, 5.4.160 (**निष्प्रवाणिः**), 7.4.15 (**बहुमालाकः/बहुमालकः**).
+- **5.4.153's ऋतः arm had to be WIDENED first** — it tested `?svasrAdi`, the *feminine*
+  स्वस्रादि gaṇa, so masc पितृ/भ्रातृ were silently missed and 5.4.157 had nothing to prohibit.
+  Now a true ṛ-final test (`$$is_ftanta`). **Window gotcha:** in a `(lp|rp)` member window
+  `r:` matches the uttara's **first** char (cf. 6.3.73 `r: _hal`), so "X-final" needs a `$$`
+  helper.
+- **Two prohibition arms are VACUOUS** and documented as such: 5.4.156's 5.4.153 arm (श्रेयसी's
+  ṅīp is added in the *main scan*, so the pre-pass never sees `?NI`) and 5.4.159's तन्त्री arm.
+- **6.4.146 ओर्गुणः is NOT a kap rule** — `?Ba`-gated, and kap is consonant-initial, so 1.4.18
+  यचि भम् never makes the stem `?Ba` before it. SK847's example बाहूबाहवि is an **इच्** form.
+
+**Round 6 — ap 5.4.116 + the gandha cluster (`897ee5b`)**
+- 5.4.116 → **स्त्रीप्रमाणः**, **कल्याणीपञ्चमाः**; गन्ध→इ split three ways: 5.4.135 pūrva-list,
+  5.4.136 अल्प sense, 5.4.137 upamāna pūrva.
+- **5.4.135 was OVER-BROAD** (matched ANY `=gandha`): it wrongly gave *तीव्रगन्धि **and**
+  starved 5.4.136/137 — once it rewrites गन्ध→गन्धि the later rules can no longer match.
+  **Lesson: a too-broad substitution rule silently starves the more specific rules below it.**
+- **6.3.34 lacked its own अपूरणी guard** (the sūtra name ends ...स्त्रियाम्**अपूरणी**प्रियादिषु):
+  no puṁvadbhāva before an ordinal uttara. Added `?!pUraRI`.
+- The `gandha` stem's canonical was `"gandha"`, not SLP1 `"ganDa"` — invisible until the
+  un-substituted गन्ध became reachable. **When narrowing a substitution rule, check the
+  newly-reachable un-substituted stem is stored in valid SLP1.**
+
+**Round 7 — samāsānta ādeśa/nipātana tail, "group A" (this round)**
+- **pāda:** SK877/5.4.138 (**व्याघ्रपात्**, upamāna; हस्तिपादः is the हस्त्यादि counter),
+  SK878/5.4.139 (**कुम्भपदी** — the sūtra nipātanas *both* the lopa and the ṅīp, and the
+  substitute is पद् not पाद्; masc कुम्भपादः is the स्त्रियाम् counter).
+- **danta:** SK881/5.4.143 (**फालदती**), SK882/5.4.144 (**श्यावदन्/श्यावदन्तः**), SK883/5.4.145
+  (**वृषदन्/वृषदन्तः**) — all reuse 5.4.141's ऋ-it, the last two as vibhāṣā forks.
+- **kakud:** SK885/5.4.147 (**त्रिककुत्**, `?parvata`), SK886/5.4.148 (**उत्काकुत्** — काकुद
+  "palate" is a *different word* from ककुद "hump"), SK887/5.4.149 (**पूर्णकाकुत्/पूर्णकाकुदः**).
+- **nipātana:** SK864/5.4.125 (**सुजम्भा**), SK865/5.4.126 (**दक्षिणेर्मा**) — both stated
+  कृतसमासान्त, modelled as an-stems (the सुधन्वा shape).
+- **अच्:** new `ac_s` affix + `?samasanta_ac`; SK860/5.4.120 (**चतुरश्रः**), SK861/5.4.121
+  (**असक्थः/असक्थिः**).
+- **5.4.113 lacked its own स्वाङ्गात् guard** (its comment already claimed it). Added `?svAnga`
+  — criterial and sense-based (स्वाङ्गात् किम्: दीर्घसक्थि शकटम्). It also had to gain an explicit
+  नञ्/दुस्/सु exclusion, because **`overrides:` cannot reach across a vibhāṣā fork**: 5.4.113
+  is nitya and fires in an earlier fixpoint iteration than the optional 5.4.121, so
+  `overrides: 5.4.113` never got a chance and असक्थिः could not form. सक्थि in असक्थः *is* a
+  svāṅga, so the clash is real, not theoretical. **Lesson: when an apavāda competes with a
+  nitya rule across an optional fork, encode the exclusion positively in the nitya rule.**
+
+### Remaining work
+
+**A. Formation deferrals — all blocked on ONE shared engine step (physical pūrva-nipāta,
+2.2.30).** This is the highest-leverage item left: tatpuruṣa deferred the same mechanism.
+- SK898–900 / 2.2.35–37 (word order), the B0 physical reorder.
+
+**B. केशाकेशि cluster — the only genuinely new mechanism left.**
+- SK846/2.2.27 needs a **new lp == rp content check** (sarūpa); then SK866/5.4.127 इच्
+  (`ic_s` already exists), **6.3.137 अन्येषामपि दृश्यते** (unimplemented — supplies the
+  केश→केशा dīrgha), and avyaya tagging (ic is tiṣṭhadgu-prabhṛti → invariant).
+- It also **unlocks 6.4.146 ओर्गुणः / बाहूबाहवि**, already implemented but unreachable.
+- NOT reduplication — SK's vigraha केशेषु केशेषु supplies the word twice.
+
+**C. B1 puṁvadbhāva remainder — needs affix-context machinery.**
+- SK836/6.3.35 (tasil-ādi), SK837/6.3.36 (kyaṅ/mānin), SK840/6.3.39 (taddhita-vṛddhi).
+
+**D. Partially modelled (rules landed, arms outstanding).**
+- **SK860/5.4.120**: only the अश्रि/कुक्षि members. The पाद members (एणीपद/अजपद/प्रोष्ठपद) need
+  5.4.139's पाद→पद substitute; प्रातर्/श्वस्/दिव are heterogeneous consonant-final nipātanas.
+- **SK883/5.4.145**: the अग्रान्त arm (कुड्मलाग्रदन्) is unexercised — needs an अग्र-final pūrva.
+- **SK859/8.4.28**: the **pronoun नस्** arm (प्रणो राजा — Vasu at 8.4.27 notes 8.4.28 takes
+  *both* नस्) and **बहुलम्** optionality.
+
+**E. Deliberately NOT implemented — decisions, not gaps.**
+- SK829/2.2.23 — adhikāra, fused into 2.2.24.
+- SK834/7.4.13 + SK835/7.4.14 — a **net no-op for कप्**. If 1.2.48's `?pum_abs` FIXME is ever
+  widened, 7.4.14 becomes load-bearing and must be added.
+- **SK873/6.1.66 लोपो व्योर्वलि** — listed in the original B4 scope but **neither implemented
+  nor needed**: 5.4.134 substitutes जाया→जानि directly and the composer supplies युवन्, so
+  युवजानिः derives without it.
+- **8.4.3's अगः** — follows the Mahābhāṣya's own प्रत्याख्यान (ऋगयनम्'s lack of ṇatva already
+  comes from the निपातन at 4.3.129).
+- Accent-gated SK508/509.
+
+**F. Latent gaps (not SK-numbered) — worth fixing, each unlocks something.**
+- **1.2.48 is gated `?pum_abs`** (with a FIXME) so upasarjana shortening cannot reach the
+  samāsa path → बहुनाडिः's short इ is unassertable, and 7.4.14 stays vacuous.
+- **5.4.153's नदी arm keys on `?NI`** (the ṅīp/ṅīṣ *affix*) rather than the नदी saṁjñā of
+  1.4.3, so an ī-final fem whose ī is not a strī-pratyaya (तन्त्री) is out of scope.
+- **General cross-member ṇatva** (tatpuruṣa चोरभयेण) is untouched by the `?samasta_Ratva` lever.
+- Unmodelled vārtikas: एकान्तग्रहण (गन्ध quality vs substance), 5.4.116's प्रधानपूरण्यामेव.
+
 
 ---
 
@@ -535,7 +588,7 @@ comments dual-numbered SK-first per §0 (e.g. "B2-saputraH-SK848-2.2.28"). Full 
 green. Update generator_status.md with the deferrals.
 ```
 
-### Phase B3 — Samāsānta: affix insertion — ✅ DONE for kap/ṣac/ap/ic/ḍac (`04de0a1`,`3f54b6f`,`4d0025f`); mechanism generalized; rest deferred (see §2a)
+### Phase B3 — Samāsānta: affix insertion — ✅ COMPLETE for kap/ṣac/ap/ic/ḍac/asic/ac (`04de0a1`,`3f54b6f`,`4d0025f`,`336d0ca`,`897ee5b`, + अच् this round); mechanism generalized (see §2a)
 
 All bahuvrīhi samāsānta rules that **add** an affix, via a generalized
 `?samasanta_TaC`-style marker + `_insert_samasanta` (extend the marker to carry the
@@ -592,7 +645,7 @@ SK-first per §0 (e.g. "B3-bahuyaSaskaH-SK891-5.4.154"). Full suite green (watch
 avyayībhāva/tatpuruṣa samāsānta tests). Update generator_status.md.
 ```
 
-### Phase B4 — Samāsānta: ādeśa / lopa / nipātana — ✅ DONE for jñu/anaṅ+5.4.133/niṅ/datṛ/anic/gandha/pāda/kakud/hṛd (`3f54b6f`,`901965e`,`0327301`,`049b424`,`b1bd6bd`,`4d0025f`); kakud 5.4.147–149 + gandha 5.4.136/137 + minor nipātanas deferred (see §2a)
+### Phase B4 — Samāsānta: ādeśa / lopa / nipātana — ✅ COMPLETE (`3f54b6f`,`901965e`,`0327301`,`049b424`,`b1bd6bd`,`4d0025f`,`897ee5b`, + the group-A tail this round). Every B4 sūtra is implemented; see §2a "Remaining work" §D for the partially-modelled arms
 
 The samāsānta rules that **substitute or delete** part of the uttara stem (not
 affix-insertion). Implement as `bahiranga: -1` pre-pass uttara-substitution rules
@@ -722,7 +775,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (80 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (94 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

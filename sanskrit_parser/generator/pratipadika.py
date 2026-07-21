@@ -827,6 +827,20 @@ suraBi  = Pratipadika("suraBi",  "pum")                       # सुरभि 
 sUpa    = Pratipadika("sUpa",    "pum")                       # सूप "broth" — SK875/5.4.136 अल्प example (सूपगन्धि)
 padma   = Pratipadika("padma",   "napum", other_tags=["upamAna"])  # पद्म "lotus" — SK876/5.4.137 upamāna pūrva (पद्मगन्धिः)
 
+# ── B4 samāsānta ādeśa/nipātana tail (bahuvrihi_plan.md §2a group A) ──────────────
+vyAGra = Pratipadika("vyAGra", "pum", other_tags=["upamAna"])   # व्याघ्र "tiger" (upamāna) — SK877/5.4.138 व्याघ्रपात्
+hastin = Pratipadika("hastin", "pum", other_tags=["upamAna", "hastyAdi"])  # हस्तिन् — the हस्त्यादि EXCLUSION of 5.4.138 (हस्तिपादः keeps पाद)
+kumBa  = Pratipadika("kumBa",  "pum")    # कुम्भ "pot" — SK878/5.4.139 कुम्भपदी
+PAla   = Pratipadika("PAla",   "pum")    # फाल "ploughshare" — SK881/5.4.143 फालदती
+SyAva  = Pratipadika("SyAva",  "pum")    # श्याव "brown" — SK882/5.4.144 श्यावदन्/श्यावदन्तः
+vfza   = Pratipadika("vfza",   "pum")    # वृष "bull" — SK883/5.4.145 वृषदन्/वृषदन्तः
+kAkuda = Pratipadika("kAkuda", "napum")  # काकुद "palate" (तालु) — SK886/5.4.148 उत्काकुत्
+pUrRa  = Pratipadika("pUrRa",  "pum")    # पूर्ण "full" — SK887/5.4.149 पूर्णकाकुत्/पूर्णकाकुदः
+jamBa  = Pratipadika("jamBa",  "pum")    # जम्भ "tooth/jaw" — SK864/5.4.125 सुजम्भा
+Irma   = Pratipadika("Irma",   "napum")  # ईर्म "wound" (व्रण) — SK865/5.4.126 दक्षिणेर्मा
+dakziRa = Pratipadika("dakziRa", "pum")  # दक्षिण "right(-hand)" — SK865/5.4.126 pūrva
+aSri   = Pratipadika("aSri",   "strI")   # अश्रि "corner" — SK860/5.4.120 चतुरश्रः (अच् nipātana list)
+
 # to test
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
