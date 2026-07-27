@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 100 cases; full generator suite green (8249 passed).
+> `test/test_samasa_bahuvrihi.py` = 101 cases; full generator suite green (8309 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8249 green.
+8309 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -436,19 +436,32 @@ the 4.3.129 nipātana does not cover.
 - **Deferred, deliberately:** (a) 2.2.35's **saptamī / vyadhikaraṇa arm** (कण्ठेकालः) — it is a
   vyadhikaraṇa bahuvrīhi with **aluk** (कण्ठे keeps its locative), and 2.2.24 requires both
   members `?viBakti_1`; the sūtra is itself the jñāpaka that vyadhikaraṇa bahuvrīhis exist, so
-  that formation path is a separate build. Only the viśeṣaṇa arm is modelled. (b) **fem
+  that formation path is a separate build. Only the viśeṣaṇa arm is modelled (नीलकण्ठः, and चित्रगुः once 1.2.48 was fixed — see below). (b) **fem
   referent under reorder** — the referent's `strI_abs` (ṭāp) is a trailing list element that
   the reorder bundles with the old uttara, so कृत्य+कृत+strI → कृताकृत्यः not कृतकृत्या; the
   canonical examples (कृतकृत्यः, नीलकण्ठः, आहिताग्निः) are all masc, so this is synthetic.
   (c) the सर्वनाम/संख्या and वा प्रियस्य vārtikas of 2.2.35; the जातिकालसुखादि (niṣṭhā-last)
   vārtika of 2.2.36.
+- **Follow-up: चित्रगुः now derives properly (SK656/1.2.48 गोस्त्रियोरुपसर्जनस्य).** I had
+  sidestepped it with नीलकण्ठः because गो gave *चित्रगौः. 1.2.48 was gated `?pum_abs`
+  (puṁvadbhāva only); added a **compound-upasarjana arm** — a गो / ṅī / āp final member of a
+  BAHUVRĪHI shortens before its sup (गो→गु, नाडी→नाडि). 1.2.43 tags only the pūrva
+  `?upasarjana`, so the uttara is detected by `?bahuvrIhi` (equally upasarjana by 2.2.24's
+  प्रथमानिर्दिष्ट). Guards, each a real vārtika/rule: **`?!ka_pratyaya`** on the following affix
+  = 7.4.14 न कपि inlined (बहुकुमारीकः/बहुमालाकः keep their long vowel under कप्);
+  **`?!Iyasun`** = ईयसो बहुव्रीहौ पुंवत् (बहुश्रेयसी stays long); a **positive `?referent_pum`/
+  `?referent_napum`** gate so only the MEMBER's own ī/ā shortens, never the fem referent's
+  ṭāp/ṅīp over an a-stem base (दीर्घजङ्घा/सुदती/बहुदण्डिका keep it — a positive gate because a
+  कप्+ṭāp merge can strip `?referent_strI`, so `?!referent_strI` would fail open). On
+  shortening it clears `?NI`/`?strI` so नाडि declines like अग्नि → **बहुनाडिः** (was the
+  deferred बहुनाडी). तन्त्री (बहुतन्त्रीः) is naturally excluded — its ī is unādi, not `?NI`/`?Ap`.
 
 ### Remaining work
 
 **A. Formation deferrals — ✅ physical pūrva-nipāta LANDED (round 8, see below).**
-- SK898–900 / 2.2.35–37 (word order) done via the dvandva M2 reorder sweep. The vyadhikaraṇa
-  arm of 2.2.35 (कण्ठेकालः, saptamī + aluk) and the fem-referent-under-reorder edge remain —
-  see round 8.
+- SK898–900 / 2.2.35–37 (word order) done via the dvandva M2 reorder sweep; चित्रगुः also
+  now derives (1.2.48 compound-upasarjana arm). The vyadhikaraṇa arm of 2.2.35 (कण्ठेकालः,
+  saptamī + aluk) and the fem-referent-under-reorder edge remain — see round 8.
 
 **B. केशाकेशि cluster — the only genuinely new mechanism left.**
 - SK846/2.2.27 needs a **new lp == rp content check** (sarūpa); then SK866/5.4.127 इच्
@@ -805,7 +818,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (100 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (101 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

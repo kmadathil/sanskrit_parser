@@ -988,16 +988,17 @@ samasa_bv_tests = [
     },
     {
         # SK896/5.4.159 नाडीतन्त्र्योः स्वाङ्गे — कप् blocked for नाडी in the BODY-PART sense.
-        # NB the attested form is बहुनाडिः with a SHORT इ (1.2.48 upasarjana shortening);
-        # 1.2.48 is gated on ?pum_abs here and cannot reach this path, so we assert only that
-        # कप् is blocked, not the vowel length. See the 5.4.159 rows in generator_status.md.
-        "label": "B3-bahunAqI-SK896-5.4.159-svAnga",
+        # बहुनाडिः कायः — 5.4.159 blocks कप्, and SK656/1.2.48 गोस्त्रियोरुपसर्जनस्य shortens the
+        # upasarjana नाडी → नाडि (short इ), so it declines like अग्नि → बहुनाडिः. (Earlier this
+        # asserted बहुनाडी because 1.2.48 was gated ?pum_abs; the compound-upasarjana arm now
+        # reaches it.) तन्त्री below stays long — its ī is unādi, not ?NI.
+        "label": "B3-bahunAqiH-SK896-5.4.159-svAnga",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "nAqI", "vacana": 1, "vibhakti": 1, "tags": ["svAnga"]},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.159", "1.2.43"],
         "not_fired": ["5.4.153"],
-        "surface": "बहुनाडी",
+        "surface": "बहुनाडिः",
     },
     {
         # स्वाङ्गे किम् — outside the body-part sense कप् applies: बहुनाडीकः स्तम्भः (Vasu 54159).
@@ -1544,6 +1545,17 @@ samasa_bv_tests = [
         "fired": ["2.2.24", "1.2.43"],
         "not_fired": ["2.2.35"],
         "surface": "नीलकण्ठः",
+    },
+    {
+        # SK898/2.2.35 + SK656/1.2.48 together — चित्रा गावो यस्य = चित्रगुः. चित्र (viśeṣaṇa)
+        # leads by 2.2.35; the upasarjana गो shortens to गु by 1.2.48 गोस्त्रियोरुपसर्जनस्य →
+        # चित्रगुः (not *चित्रगौः). Input REVERSED (गो, चित्र) exercises the reorder too.
+        "label": "B2-citraguH-SK898-2.2.35-go",
+        "purva": {"stem": "go", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "citra", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.35", "2.2.24", "1.2.43"],
+        "surface": "चित्रगुः",
     },
     {
         # SK899/2.2.36 निष्ठा — the niṣṭhā कृत leads: कृतं कृत्यं येन = कृतकृत्यः.

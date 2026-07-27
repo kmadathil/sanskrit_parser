@@ -6817,8 +6817,22 @@
   xform:
       l: hrasva(l)
 
-# FIXME - implement upasarjana instead of pum_abs
-# 656: गोस्त्रियोरुपसर्जनस्य (1-2-48)
+# 656: गोस्त्रियोरुपसर्जनस्य (1-2-48) — an UPASARJANA गो-word, or a strī-pratyaya-ending word
+# (ṅī ?NI / āp ?Ap), is shortened (hrasva).
+# Arms 1–3 (rp ?pum_abs): the puṁvadbhāva context (the FIXME "upasarjana instead of pum_abs"
+# is only partly addressed — puṁvadbhāva remains proxied by ?pum_abs).
+# Arm 4 (NEW, 2026-07-21): the COMPOUND-UPASARJANA context this sūtra's उपसर्जनस्य actually
+# names — a गो/ṅī/āp final member of a BAHUVRĪHI shortens before its sup: चित्रा गावो यस्य =
+# चित्रगुः (गो→गु), बह्व्यो नाड्योऽस्य = बहुनाडिः (नाडी→नाडि). (1.2.43 tags only the PŪRVA
+# ?upasarjana, so the uttara is detected by ?bahuvrIhi, which by 2.2.24's प्रथमानिर्दिष्ट is
+# equally upasarjana.) GUARDS:
+#   ?!ka_pratyaya on the following affix = SK835/7.4.14 न कपि, inline: कप् blocks the hrasva,
+#     so बहुकुमारीकः / बहुमालाकः keep their long vowel (माला's optional shortening is 7.4.15's).
+#   ?!Iyasun = the वार्तिक ईयसो बहुव्रीहौ पुंवत् — an īyas-stem bahuvrīhi is treated masculine,
+#     so बहुश्रेयसी keeps its ī (Vasu 54156: "by 1.2.48 the ī ought to shorten, but is not").
+#   ?!referent_strI = shorten only the MEMBER's intrinsic ī/ā (नाडी→नाडि, गो→गु), never the
+#     anyapadārtha ṭāp/ṅīp the fem referent adds over an a-stem base (दीर्घजङ्घा, सुदती keep it).
+# तन्त्री (बहुतन्त्रीः) is naturally excluded — its ī is an unādi affix, not ?NI/?Ap.
 - sutra: गोस्त्रियोरुपसर्जनस्य
   domain: prakfti
   bahiranga: 1
@@ -6839,8 +6853,29 @@
        - ?aNga
        - ?go_p
       rp: ?pum_abs
+    - lp:
+       - and
+       - ?aNga
+       - ?bahuvrIhi
+       - ?!Iyasun
+       - - or                # POSITIVE non-strī referent: shorten only the MEMBER's own ī/ā
+         - ?referent_pum      # (नाडी→नाडि, गो→गु), NOT the anyapadārtha ṭāp/ṅीp the fem referent
+         - ?referent_napum    # adds over an a-stem base. A positive gate (not ?!referent_strI)
+                              # because a कप्+ṭāp merge (बहुदण्डिका) can STRIP the referent tag —
+                              # then ?!referent_strI would wrongly pass, but this fails closed.
+       - - or
+         - ?NI
+         - ?Ap
+         - "=go"
+      rp:
+       - and
+       - ?sup
+       - ?!ka_pratyaya
   xform:
       l: hrasva(l)
+  update:
+      olp: [-NI, -strI]   # the shortened गो/नाडि is no longer a nadī/strī-ī, so it declines
+                          # like agni (बहुनाडिः, visarga) — not like nadī (which drops the su).
 
 
 # 266: यू स्त्र्याख्यौ नदी (1-4-3) 
