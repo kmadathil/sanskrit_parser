@@ -1470,7 +1470,12 @@ viBakti["ahan"] = [
 # dvya-han (m.) — [dvi, luk_sup, in_compound(ahan), wac] for SK238 testing.
 # SK238 (6.3.110): ahan preceded by numeral (dvi) → optionally restores ahani before ṅit.
 # Forms: dvyahna (a ending), except Ni where: dvyahne, dvyahni, dvyahani.
-prAtipadika["dvyahna"] = [as_purva_pada(dvi), luk_sup, in_compound(ahan), wac]  # noqa: F405
+# The compound is MASCULINE by SK814/2.4.29 रात्राह्नाहाः पुंसि (an ahan-final tatpuruṣa is
+# puṁs). This manually-built stem bypasses the samāsa pre-pass where 2.4.29 would fire, so
+# the pum is set explicitly on the wac copy here — NOT on the wac affix itself, which is
+# gender-neutral (an avyayībhāva/dvigu/dvandva samāsānta is napuṁsaka, e.g. उपराजम्).
+prAtipadika["dvyahna"] = [as_purva_pada(dvi), luk_sup, in_compound(ahan),  # noqa: F405
+                          in_context(wac, "pum")]  # noqa: F405
 viBakti["dvyahna"] = [
     ['द्व्यह्नः', 'द्व्यह्नौ', 'द्व्यह्नाः'],
     ['द्व्यह्नम्', 'द्व्यह्नौ', 'द्व्यह्नान्'],

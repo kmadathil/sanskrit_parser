@@ -239,7 +239,7 @@ UW = Pratyaya("U", its=["W"], other_tags=["samprasAraRam","UW"])
 # wac (टच्): samāsānta affix. Tagged tadDita (समासान्त affixes are taddhita) so the
 # krt/tadDita-gated setIt loop in join_objects propagates its ṭ-it (w) to the merged
 # stem — enabling SK470's ṭiṭ (+w) arm (kurucarī etc.).
-wac = Pratyaya("a", its=["w", "c"], other_tags=["svAdi", "tadDita", "wac", "pum"])
+wac = Pratyaya("a", its=["w", "c"], other_tags=["svAdi", "tadDita", "wac"])
 
 
 

@@ -194,8 +194,15 @@ def _split_sutras(sutra_list):
         return cached[1]
     karaka_sutras = [s for s in sutra_list
                      if getattr(s, "bahiranga", 9) == -2]
+    # Samāsa pre-pass rules (bahiranga == -1) split into two buckets: the member-
+    # ORDERING rules (2.2.30–37, ?purvanipata) run first in SWEEP 1 and physically
+    # reorder; the rest (saṁjñā / vidhi) run in SWEEP 2, the window fixpoint.
     samasa_sutras = [s for s in sutra_list
-                     if getattr(s, "bahiranga", 9) == -1]
+                     if getattr(s, "bahiranga", 9) == -1
+                     and not getattr(s, "purvanipata", False)]
+    purvanipata_sutras = [s for s in sutra_list
+                          if getattr(s, "bahiranga", 9) == -1
+                          and getattr(s, "purvanipata", False)]
     main_sutras = [s for s in sutra_list
                    if getattr(s, "bahiranga", 9) > -1]
     purvapara_aps = [s.aps for s in sutra_list
@@ -207,7 +214,7 @@ def _split_sutras(sutra_list):
                 and _cond_has_both_l_and_r(getattr(s, "_cond_dict", None))):
             ekadesha_block_aps.append(s.aps)
             _seen.add(s.aps)
-    split = (karaka_sutras, samasa_sutras, main_sutras,
+    split = (karaka_sutras, samasa_sutras, purvanipata_sutras, main_sutras,
              purvapara_aps, ekadesha_block_aps)
     _sutra_split_cache[id(sutra_list)] = (sutra_list, split)
     return split
@@ -264,8 +271,9 @@ class AntarangaPrakriya(PrakriyaBase):
         # cannot fill both slots). This is pre-merge-scoped (join_objects
         # resets disabled_sutras) and safe for the consonant-`r` members,
         # which cannot match the vowel substitute anyway.
-        (self._karaka_sutras, self._samasa_sutras, self._main_sutras,
-         self._purvapara_aps, self._ekadesha_block_aps) = _split_sutras(sutra_list)
+        (self._karaka_sutras, self._samasa_sutras, self._purvanipata_sutras,
+         self._main_sutras, self._purvapara_aps,
+         self._ekadesha_block_aps) = _split_sutras(sutra_list)
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update
@@ -601,11 +609,21 @@ class AntarangaPrakriya(PrakriyaBase):
     def _samasa_prepass_branch(self, inputs):
         def _flagged(o):
             return (o.hasTag("samAsa_vivakza")
+                    or o.hasTag("ekaSeza_vivakza")
                     or any(t.startswith("semantic_") for t in o.tags))
 
         def _avasana_between(i, j):
             return any(_isScalar(inputs[k]) and inputs[k].hasTag("avasAna")
                        for k in range(i + 1, j))
+
+        # SWEEP 1 — pūrva-nipāta (2.2.30, physical reorder). Runs the ?purvanipata
+        # ordering rules (2.2.31–37) over the member windows and physically moves the
+        # member each rule tags ?pUrvanipAta to the front of its window, BEFORE the
+        # saṁjñā/vidhi rules run (SWEEP 2). Two disjoint rule sets with the reorder
+        # strictly between them → no rule ever fires on a stale order. No-op when no
+        # ?purvanipata rule fires (every existing avyayībhāva/tatpuruṣa/bahuvrīhi case).
+        if self._purvanipata_sutras:
+            self._purvanipata_sweep(inputs, _flagged, _avasana_between)
 
         members = [ix for ix in range(len(inputs))
                    if self._is_samasa_member(inputs[ix])]
@@ -622,16 +640,119 @@ class AntarangaPrakriya(PrakriyaBase):
             for br in branches:
                 nxt.extend(self._samasa_window_fixpoint(br, a, b))
             branches = nxt
-        # Per-branch post-fixpoint steps: commit the deferred napuṁsaka
-        # (samasa_napum → napum) BEFORE the main scan, swap any consumed internal
-        # vibhakti, insert the samāsānta affix, then group the members into a
-        # hierarchical sub-prakriya so the compound resolves as one samasta_pada.
+        # Per-branch post-fixpoint steps: elide the ekaśeṣa-luk members (1.2.64 ff.),
+        # commit the deferred napuṁsaka (samasa_napum → napum) BEFORE the main scan, swap
+        # any consumed internal vibhakti (incl. the ekaśeṣa survivor's derived vacana),
+        # insert the samāsānta affix, then group the members into a hierarchical
+        # sub-prakriya so the compound resolves as one samasta_pada.
         for br in branches:
+            self._commit_ekasesa(br)
             self._commit_samasa_napum(br)
             self._swap_sups(br)
             self._insert_samasanta(br)
             self._nest_samasa_members(br)
         return branches
+
+    def _commit_ekasesa(self, inputs):
+        """SK188/1.2.64 ekaśeṣa — physically DELETE each member tagged ?ekaSeza_lupta and
+        its trailing pratyayas (the inserted sup). The survivor (?ekaSeza_Sizyate), whose
+        vacana has already climbed to the count of the elided set (1.4.22/1.4.21 fire on
+        the survivor too), then declines ALONE (राम+राम → रामौ; three → रामाः).
+
+        Ekaśeṣa is not a compound — the survivor is a single pada, so _nest_samasa_members
+        (keyed on ?samAsaPurva/?samAsa) leaves it flat, correctly. Deletes right-to-left so
+        the collected spans stay valid."""
+        spans = []
+        ix = 0
+        while ix < len(inputs):
+            o = inputs[ix]
+            if (_isScalar(o) and self._is_samasa_member(o)
+                    and o.hasTag("ekaSeza_lupta")):
+                end = ix + 1
+                while (end < len(inputs) and _isScalar(inputs[end])
+                       and inputs[end].hasTag("pratyaya")):
+                    end += 1
+                spans.append((ix, end))
+                ix = end
+            else:
+                ix += 1
+        for a, b in reversed(spans):
+            del inputs.v[a:b]
+
+    def _purvanipata_sweep(self, inputs, _flagged, _avasana_between):
+        """SWEEP 1 of the samāsa pre-pass — physical pūrva-nipāta (2.2.30).
+
+        A single left-to-right bubble pass over adjacent member windows. At each
+        window (a, b) the highest-priority triggered ?purvanipata rule (2.2.31–37,
+        tried in aps-order — lower id = more specific = stronger, so 2.2.32 beats
+        2.2.34) tags the member that must come first ?pUrvanipAta; when that member
+        is the uttara (b), _commit_purvanipata swaps the two member-units so it lands
+        first. The rules gate on the composer intent (?dvandva_vivakza etc.), NOT the
+        formed saṁjñā — SWEEP 2 has not run yet, so ?dvandva does not exist here.
+
+        The bubble pass is exact for the 2-member compounds these examples use
+        (हरिहरौ / ईशकृष्णौ / शिवकेशवौ from reversed input); n-ary pūrva-nipāta is
+        approximate (a full topological order is not attempted). Reorder-only: the
+        rules write ?pUrvanipAta and nothing else, so SWEEP 2 sees a clean order."""
+        ordered = sorted(self._purvanipata_sutras, key=lambda s: s._aps_num)
+        i = 0
+        while i < len(inputs):
+            if not self._is_samasa_member(inputs[i]):
+                i += 1
+                continue
+            # the next member to the right, no avasāna between
+            b = next((j for j in range(i + 1, len(inputs))
+                      if self._is_samasa_member(inputs[j])), None)
+            if b is None or _avasana_between(i, b):
+                i += 1
+                continue
+            if not (_flagged(inputs[i]) or _flagged(inputs[b])):
+                i += 1
+                continue
+            lp, rp = inputs[i], inputs[b]
+            ctx = (inputs[i - 1] if i - 1 >= 0 else None,
+                   inputs[b + 1] if b + 1 < len(inputs) else None)
+            fired = None
+            for s in ordered:
+                if s.isTriggered(lp, rp, context=ctx):
+                    r = s.operate(lp, rp)
+                    r = s.update(lp, rp, *r)
+                    inputs.replace_at(i, r[0])
+                    inputs.replace_at(b, r[1])
+                    fired = s
+                    break
+            if fired is not None and self._commit_purvanipata(inputs, i, b):
+                logger.debug(f"Pūrva-nipāta [{fired.aps}] @({i},{b}): reordered")
+                self.karaka_log.append({"index": i, "fired": [fired.aps],
+                                        "tags": sorted(inputs[i].tags),
+                                        "samasa": True})
+            i += 1
+
+    def _commit_purvanipata(self, inputs, a, b):
+        """If the uttara member (b) is tagged ?pUrvanipAta, physically move its
+        member-unit (the member + its trailing pratyayas — inserted sups etc.) in
+        front of the pūrva member-unit (a). Returns True if a move happened.
+
+        unit(a) = inputs[a:b] (member a + its sups, up to member b);
+        unit(b) = inputs[b:b_end] (member b + its sups). New order = unit(b)+unit(a).
+        The ?pUrvanipAta tag is cleared either way (a tagged pūrva already leading
+        needs no move). a/b are contiguous member indices from the sweep."""
+        rp = inputs[b]
+        if not (_isScalar(rp) and rp.hasTag("pUrvanipAta")):
+            # a lp tagged pUrvanipAta is already leading — clear and keep order
+            lp = inputs[a]
+            if _isScalar(lp) and lp.hasTag("pUrvanipAta"):
+                lp.deleteTag("pUrvanipAta")
+            return False
+        rp.deleteTag("pUrvanipAta")
+        b_end = b + 1
+        while (b_end < len(inputs) and _isScalar(inputs[b_end])
+               and inputs[b_end].hasTag("pratyaya")):
+            b_end += 1
+        unit_b = list(inputs.v[b:b_end])
+        unit_a = list(inputs.v[a:b])
+        inputs.v[a:b_end] = unit_b + unit_a
+        return True
 
     def _nest_samasa_members(self, inputs):
         """Wrap each contiguous compound-member span (the members + their inserted
@@ -686,11 +807,11 @@ class AntarangaPrakriya(PrakriyaBase):
             if _isScalar(o) and o.hasTag("samasa_napum"):
                 o.deleteTag("samasa_napum")
                 o.setTag("napum")
-                # Lock the samāsa-assigned gender so a later samāsānta affix
-                # (wac, which hard-codes ?pum for the 2.4.29 rātrāhnāhāḥ puṃsi
-                # ahar-case) cannot override it at the (uttara | wac) merge —
-                # a samāhāra dvigu (2.4.1) or avyayībhāva (2.4.18) stays napuṁsaka
-                # (पञ्चगवम्, not पञ्चगवः). join_objects honours ?samasa_liNga_locked.
+                # Lock the samāsa-assigned napuṁsaka so a member's NATIVE gender does
+                # not resurface at a later merge — a समाहार dvigu पञ्चगो has a masc
+                # uttara (गो), yet 2.4.1 makes the aggregate napuṁsaka (पञ्चगवम्, not
+                # पञ्चगवः); the lock keeps it napum through the (गो | wac samāsānta)
+                # and (पञ्च | गो) merges. join_objects honours ?samasa_liNga_locked.
                 o.setTag("samasa_liNga_locked")
                 for g in ("pum", "strI"):
                     if o.hasTag(g):

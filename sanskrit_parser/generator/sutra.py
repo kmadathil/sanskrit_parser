@@ -8,6 +8,7 @@ from decimal import Decimal
 from copy import deepcopy
 from sanskrit_parser.generator.paninian_object import PaninianObject
 
+import inspect
 import logging
 logger = logging.getLogger(__name__)
 
@@ -80,7 +81,7 @@ class Sutra(object):
 class LRSutra(Sutra):
     def __init__(self, name, aps, cond, xform, insert=None, domain=None,
                  update=None, optional=False, bahiranga=99, overrides=None,
-                 purvapara=False):
+                 purvapara=False, purvanipata=False):
         '''
         Sutra Class that expects a left and right input
         '''
@@ -94,6 +95,11 @@ class LRSutra(Sutra):
         # 6.1.85 antādivat: True for the single-substitute (ekādeśa) rules of
         # the 6.1.84 (ekaḥ pūrvaparayoḥ) adhikāra. See AntarangaPrakriya._exec.
         self.purvapara = purvapara
+        # 2.2.30 pūrva-nipāta: True for the member-ORDERING samāsa rules (2.2.31–37).
+        # These run in the samāsa pre-pass's SWEEP 1 (before the saṁjñā rules), tag the
+        # member that must go first ?pUrvanipAta, and _commit_purvanipata physically
+        # reorders. Carved out of _samasa_sutras by _split_sutras.
+        self.purvanipata = purvanipata
 
     def inAdhikara(self, context):
         return self.adhikara(context)
@@ -136,7 +142,15 @@ class LRSutra(Sutra):
         def _single(sk, var_name):
             k = env[var_name]
             if sk[0] == "_":       r = _isInPratyahara(sk[1:], k)
-            elif sk[:2] == "$$":   r = eval(f"{sk[2:]}(k)", _cond_globals, {"k": k})
+            elif sk[:2] == "$$":
+                # Parity with process_yaml._exec_cond: an env-aware helper (declaring a
+                # 2nd parameter) is called (k, env) so it can read neighbour padas /
+                # the other window slot (env['lp']/env['rp']); 1-arg helpers get (k).
+                _fn = _cond_globals.get(sk[2:])
+                if _fn is not None and len(inspect.signature(_fn).parameters) >= 2:
+                    r = _fn(k, env)
+                else:
+                    r = eval(f"{sk[2:]}(k)", _cond_globals, {"k": k})
             elif sk[0] == "$":     r = _isSavarna(env[sk[1:]], k)
             elif sk[:2] == "=!":   r = (sk[2:] != k.canonical())
             elif sk[0] == "=":     r = (sk[1:] == k.canonical())

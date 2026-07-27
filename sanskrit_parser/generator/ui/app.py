@@ -1355,8 +1355,33 @@ def _apply_bahuvrihi(members, referent_linga):
     return referent_linga == "strI"
 
 
+def _apply_dvandva(members, samahara=False):
+    """Tag built samāsa members as a DVANDVA (samasa_completion_plan.md D0/D1). Same
+    contract as cmd_line.prepare_dvandva: ?dvandva_vivakza + a default prathamā viBakti_1
+    on each member; the itaretara vacana is DERIVED from the member count. samahara=True →
+    a समाहार (napuṁsaka ekavacana, 2.4.17), tagged ?samAhAra on the uttara."""
+    for w in members:
+        w.setTag("dvandva_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+    if samahara and members:
+        members[-1].setTag("samAhAra")
+
+
+def _apply_ekasesa(members):
+    """Tag built samāsa members as an EKAŚEṢA (samasa_completion_plan.md E0) — several
+    sarūpa padas collapse to one, in the summed vacana. Same contract as
+    cmd_line.prepare_ekasesa: ?ekaSeza_vivakza + a default prathamā viBakti_1."""
+    for w in members:
+        w.setTag("ekaSeza_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+
+
 def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False,
-               referent_linga=None):
+               referent_linga=None, samasa_type=None, samahara=False):
     """Build the tagged vākya, run the engine, and read back per-word kāraka/
     vibhakti, the vibhāṣā branch sentences, the fired kāraka-sutra trace, and the
     phonological (non-kāraka) sutra steps (with optional per-step tags/eval).
@@ -1393,11 +1418,16 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False,
     # Bahuvrīhi (referent_linga set): tag the samāsa members exocentric and, for a fem
     # referent, append strI_abs (ṭāp) after the uttara (before the trailing avasāna) so
     # an a-stem uttara feminises (पीताम्बर → पीताम्बरा). Same contract as the CLI.
-    if referent_linga:
+    if referent_linga or samasa_type in ("dvandva", "ekasesa"):
         members = [o for o in pl if getattr(o, "hasTag", None)
                    and o.hasTag("samAsa_vivakza") and o.hasTag("prAtipadika")]
-        if members and _apply_bahuvrihi(members, referent_linga):
-            pl.insert(len(pl) - 1, deepcopy(strI_abs))
+        if referent_linga:
+            if members and _apply_bahuvrihi(members, referent_linga):
+                pl.insert(len(pl) - 1, deepcopy(strI_abs))
+        elif samasa_type == "dvandva":
+            _apply_dvandva(members, samahara)
+        elif samasa_type == "ekasesa":
+            _apply_ekasesa(members)
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl), capture_eval=want_eval)
     p.execute()
 
@@ -1438,7 +1468,7 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False,
 
     _SAMASA_ROLE = ("samAsa", "samAsaPurva", "upasarjana",
                     "avyayIBAva", "bahuvrIhi", "dvigu",
-                    "tatpuruza", "karmaDAraya")
+                    "tatpuruza", "karmaDAraya", "dvandva", "ekaSeza_Sizyate")
 
     # Per-spec samāsa role tags: read from the final pre-pass branch by member
     # order (the samāsa pre-pass logs POST-sup-insertion indices, which don't
@@ -1491,7 +1521,8 @@ def run_karaka(sentence, enc, want_tags=False, want_eval=False, sandhi=False,
             continue
         ctype = sorted({t for si in grp for t in samasa_by_spec.get(si, [])
                         if t in ("avyayIBAva", "bahuvrIhi", "dvigu",
-                                 "tatpuruza", "karmaDAraya")})
+                                 "tatpuruza", "karmaDAraya", "dvandva",
+                                 "ekaSeza_Sizyate")})
         compounds.append({
             "members": [_spec_label(sentence[si], enc) for si in grp],
             "type":    ctype,
@@ -1768,6 +1799,11 @@ def api_karaka():
     referent_linga = body.get("referent_linga") or None
     if referent_linga not in (None, "pum", "strI", "napum"):
         return jsonify({"error": f"Bad referent_linga {referent_linga!r}"}), 400
+    # Dvandva / ekaśeṣa composition (samasa_completion_plan.md); samahara → aggregate.
+    samasa_type = body.get("samasa_type") or None
+    if samasa_type not in (None, "dvandva", "ekasesa"):
+        return jsonify({"error": f"Bad samasa_type {samasa_type!r}"}), 400
+    samahara = bool(body.get("samahara", False))
 
     if not sentence:
         return jsonify({"error": "Empty sentence"}), 400
@@ -1775,7 +1811,8 @@ def api_karaka():
     enc = ENCODING_MAP.get(enc_name, sanscript.DEVANAGARI)
     try:
         result = run_karaka(sentence, enc, want_tags=want_tags, want_eval=want_eval,
-                            sandhi=want_sandhi, referent_linga=referent_linga)
+                            sandhi=want_sandhi, referent_linga=referent_linga,
+                            samasa_type=samasa_type, samahara=samahara)
     except (KeyError, ValueError) as exc:
         return jsonify({"error": f"Sentence error: {exc}"}), 400
     except Exception as exc:  # noqa: BLE001

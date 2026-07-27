@@ -345,15 +345,15 @@ samasa_tp_tests = [
         "surface": "सुखापेतः",
     },
     {
-        # स्तोकात् मुक्तः → स्तोकमुक्तः. NOTE: the classical aluk form स्तोकान्मुक्तः (the
-        # pañcamī is RETAINED via 6.3.2 पञ्चम्याः स्तोकादिभ्यः) is not modelled — this
-        # rule luks the pūrva sup like the others, so the surface is स्तोकमुक्तः. The
-        # aluk exception is deferred (recorded in generator_status.md).
-        "label": "T1-stokamuktaH-SK701-2.1.39",
+        # स्तोकात् मुक्तः → स्तोकान्मुक्तः (ALUK, A0). SK959/6.3.2 पञ्चम्याः स्तोकादिभ्यः RETAINS
+        # the स्तोक pañcamī (?aluk → 2.4.71 does not luk it), so स्तोकात् survives INTO the
+        # compound → स्तोकान्मुक्त (त्→न् before म, 8.4.45; स्तोकाद्मुक्तः the jaśtva variant).
+        # This n-final pada junction proves the M4 aluk mechanism. (Was deferred as स्तोकमुक्तः.)
+        "label": "A0-stokAnmuktaH-SK959-6.3.2",
         "purva": {"stem": "stoka", "vacana": 1, "vibhakti": 5, "vivakza": True},
         "uttara": {"stem": "mukta", "vacana": 1, "vivakza": True},
-        "fired": ["2.1.39", "1.2.43", "2.4.26"],
-        "surface": "स्तोकमुक्तः",
+        "fired": ["2.1.39", "6.3.2", "1.2.43", "2.4.26"],
+        "surfaces": ["स्तोकान्मुक्तः", "स्तोकाद्मुक्तः"],
     },
     {
         "label": "T1-svargasidDaH-SK718-2.1.41",        # स्वर्गे सिद्धः → स्वर्गसिद्धः (saptamī, siddha-gaṇa)
@@ -552,6 +552,141 @@ samasa_tp_tests = [
         "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
         "fired": ["2.1.57", "1.2.42", "2.2.38", "2.4.26"],
         "surface": "कडारपुरुषः",
+    },
+
+    # ── S0: sarvasamāsānta अच् (samasa_completion_plan.md) — the s-stem family. Each is a
+    # tatpuruṣa whose s-final napuṁsaka uttara takes अच् (?samasanta_TaC) → an a-stem; the
+    # napuṁsaka carries through by paravalliṅga (2.4.26) since wac is gender-neutral →
+    # napum nom sg अम् (ब्रह्मवर्चसम्).
+    {
+        # ब्रह्मणो वर्चः → ब्रह्मवर्चसम् (ṣaṣṭhī). SK946/5.4.78 ब्रह्महस्तिभ्यां वर्चसः.
+        "label": "S0-brahmavarcasam-SK946-5.4.78",
+        "purva": {"stem": "brahman", "vacana": 1, "vibhakti": 6, "vivakza": True},
+        "uttara": {"stem": "varcas", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.8", "5.4.78", "1.2.43", "2.4.26"],
+        "surface": "ब्रह्मवर्चसम्",
+    },
+    {
+        # अन्धं तमः → अन्धतमसम् (karmadhāraya). SK947/5.4.79 अवसमन्धेभ्यस्तमसः (अन्ध arm).
+        "label": "S0-anDatamasam-SK947-5.4.79",
+        "purva": {"stem": "anDa", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "tamas", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "5.4.79", "2.4.26"],
+        "surface": "अन्धतमसम्",
+    },
+    {
+        # तप्तं रहः → तप्तरहसम् (karmadhāraya). SK949/5.4.81 अन्ववतप्ताद्रहसः (तप्त arm).
+        "label": "S0-taptarahasam-SK949-5.4.81",
+        "purva": {"stem": "tapta", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "rahas", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.57", "1.2.42", "5.4.81", "2.4.26"],
+        "surface": "तप्तरहसम्",
+    },
+
+    # ── S1: the 5.4.77 nipātana gaṇa — the उक्षन् karmadhāraya trio (SK groups them:
+    # "ततस्त्रयः कर्मधारयाः । जातोक्षः । महोक्षः । वृद्धोक्षः"). उक्षन्+अच् → उक्ष (a-stem),
+    # then a+u → o (guṇa) → …ओक्षः. One rule 5.4.77 (gaṇa tag ?nipAta_5477).
+    {
+        # जातश्चासावुक्षा च → जातोक्षः (karmadhāraya; young ox). SK945/5.4.77 nipātana.
+        "label": "S1-jAtokzaH-SK945-5.4.77",
+        "purva": {"stem": "jAta", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "ukzan", "vacana": 1, "vivakza": True, "tags": ["nipAta_5477"]},
+        "fired": ["2.1.57", "1.2.42", "5.4.77", "2.4.26"],
+        "surface": "जातोक्षः",
+    },
+    {
+        # महांश्चासावुक्षा च → महोक्षः (karmadhāraya; महत्→महा by 6.3.46). SK945/5.4.77.
+        "label": "S1-mahokzaH-SK945-5.4.77",
+        "purva": {"stem": "mahat", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "ukzan", "vacana": 1, "vivakza": True, "tags": ["nipAta_5477"]},
+        "fired": ["2.1.57", "1.2.42", "6.3.46", "5.4.77", "2.4.26"],
+        "surface": "महोक्षः",
+    },
+    {
+        # वृद्धश्चासावुक्षा च → वृद्धोक्षः (karmadhāraya; full-grown ox). SK945/5.4.77.
+        "label": "S1-vfdDokzaH-SK945-5.4.77",
+        "purva": {"stem": "vfdDa", "vacana": 1, "vibhakti": 1, "vivakza": True,
+                  "tags": ["viSezaRa"]},
+        "uttara": {"stem": "ukzan", "vacana": 1, "vivakza": True, "tags": ["nipAta_5477"]},
+        "fired": ["2.1.57", "1.2.42", "5.4.77", "2.4.26"],
+        "surface": "वृद्धोक्षः",
+    },
+
+    # ── S2: samāsānta PROHIBITIONS (SK954–957/5.4.69–72) — block the affix ──
+    {
+        # न राजा → अराजा. SK956/5.4.71 नञस्तत्पुरुषात्: a नञ्-tatpuruṣa takes NO samāsānta,
+        # so राजन् keeps its declension (nom sg राजा) — 5.4.91's ṭac (which would give
+        # *अराजः) is blocked. Contrast the landed परमराजः, which DOES take ṭac.
+        "label": "S2-arAjA-SK956-5.4.71",
+        "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "rAjan", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.6", "5.4.71", "6.3.73", "2.4.26"],
+        "surface": "अराजा",
+    },
+    {
+        # न पन्थाः → अपथम् / अपन्थाः. SK957/5.4.72 पथो विभाषा: a नञ्पूर्व पथिन् OPTIONALLY takes
+        # अच् — अपथम् (with अच् → अपथ, napuṁsaka by SK815/2.4.30 अपथं नपुंसकम्, a standing
+        # deferral now cleared) OR अपन्थाः (without → पथिन् declension). VIBHĀṢĀ fork.
+        "label": "S2-apaTam-SK957-5.4.72",
+        "purva": {"avyaya": "naY", "sem": "semantic_1", "vivakza": True},
+        "uttara": {"stem": "paTin", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.6", "5.4.72", "2.4.30", "6.3.73", "2.4.26"],
+        "surfaces": ["अपथम्", "अपन्थाः"],
+    },
+
+    # ── A0: aluk (the M4 mechanism) — the pūrva's vigraha sup is RETAINED (?aluk → 2.4.71
+    # does not luk it), so the case-ending survives into the compound. Three junction types.
+    {
+        # ओजसा कृतम् → ओजसाकृतम् (TṚTĪYĀ aluk, s-stem). SK960/6.3.3 ओजःसहोऽम्भस्तमसस्तृतीयायाः:
+        # the ओजस् instrumental (ओजसा) is retained. Forms via 2.1.32 (tṛtīyā + kṛta).
+        "label": "A0-ojasAkftam-SK960-6.3.3",
+        "purva": {"stem": "ojas", "vacana": 1, "vibhakti": 3, "vivakza": True},
+        "uttara": {"stem": "kfta", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.32", "6.3.3", "1.2.43", "2.4.26"],
+        "surface": "ओजसाकृतम्",
+    },
+    {
+        # आत्मने पदम् → आत्मनेपदम् (CATURTHĪ aluk, e-final). SK964/6.3.7 वैयाकरणाख्यायां
+        # चतुर्थ्याः: the आत्मन् dative (आत्मने) is retained in this grammarians' term. Forms
+        # via 2.1.36 (caturthī-tp; पद tagged ?tadarTa_gaRa for the yogavibhāga caturthī).
+        "label": "A0-Atmanepadam-SK964-6.3.7",
+        "purva": {"stem": "Atman", "vacana": 1, "vibhakti": 4, "vivakza": True},
+        "uttara": {"stem": "pada", "vacana": 1, "vivakza": True, "tags": ["tadarTa_gaRa"]},
+        "fired": ["2.1.36", "6.3.7", "1.2.43", "2.4.26"],
+        "surface": "आत्मनेपदम्",
+    },
+    {
+        # हस्ते बन्धः → हस्तेबन्धः / हस्तबन्धः (SAPTAMĪ aluk, A1). SK971/6.3.13 बन्धे च विभाषा:
+        # OPTIONAL aluk before बन्ध → हस्ते retained (हस्तेबन्धः) OR luked (हस्तबन्धः). Forms
+        # via 2.1.41 (सिद्ध…बन्ध arm). VIBHĀṢĀ fork.
+        "label": "A1-hastebanDaH-SK971-6.3.13",
+        "purva": {"stem": "hasta", "vacana": 1, "vibhakti": 7, "vivakza": True},
+        "uttara": {"stem": "banDa", "vacana": 1, "vivakza": True},
+        "fired": ["2.1.41", "6.3.13", "1.2.43", "2.4.26"],
+        "surfaces": ["हस्तेबन्धः", "हस्तबन्धः"],
+    },
+    {
+        # चौरस्य कुलम् → चौरस्यकुलम् (ṢAṢṬHĪ aluk, A2). SK979/6.3.21 षष्ठ्या आक्रोशे: in the
+        # आक्रोश (abuse) sense the ṣaṣṭhī is retained (चौरस्य). Forms via 2.2.8 (ṣaṣṭhī-tp).
+        "label": "A2-cOrasyakulam-SK979-6.3.21",
+        "purva": {"stem": "cOra", "vacana": 1, "vibhakti": 6, "vivakza": True,
+                  "tags": ["AkroSa"]},
+        "uttara": {"stem": "kula", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.8", "6.3.21", "1.2.43", "2.4.26"],
+        "surface": "चौरस्यकुलम्",
+    },
+    {
+        # चौरस्य कुलम् (NON-ākrośa) → चौरकुलम् — the negative control: without the आक्रोश sense
+        # 6.3.21 does NOT fire, so the ṣaṣṭhī luks (2.4.71) as usual.
+        "label": "A2-cOrakulam-SK979-6.3.21-neg",
+        "purva": {"stem": "cOra", "vacana": 1, "vibhakti": 6, "vivakza": True},
+        "uttara": {"stem": "kula", "vacana": 1, "vivakza": True},
+        "fired": ["2.2.8", "1.2.43", "2.4.26"],
+        "surface": "चौरकुलम्",
     },
 ]
 
@@ -1392,5 +1527,277 @@ samasa_bv_tests = [
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.146", "1.2.43"],
         "surfaces": ["प्राप्तककुत्", "प्राप्तककुद्"],
+    },
+]
+
+
+# ── Dvandva-samāsa D0 (samasa_completion_plan.md) — driver test_samasa_dvandva.py ──
+# Each case is a list of `members` (each {"stem": …, optional "vibhakti"/"vacana"/"tags"});
+# the driver tags every member ?dvandva_vivakza + viBakti_1/vacana_1 and asserts member
+# roles, the fired pre-pass ids, and the surface. The vacana is DERIVED (2 → dual via
+# 1.4.22, 3 → plural via 1.4.21), NOT supplied.
+samasa_dv_tests = [
+    {
+        # धवश्च खदिरश्च → धवखदिरौ "dhava-and-khadira" (dual, two masc a-stem trees). The
+        # canonical itaretara dvandva; the DUAL is derived by 1.4.22 (both members sg).
+        "label": "D0-DavaKadirO-SK901-2.2.29",
+        "members": [{"stem": "Dava"}, {"stem": "Kadira"}],
+        "fired": ["2.2.29", "1.4.22", "1.2.43"],
+        "surface": "धवखदिरौ",
+    },
+    {
+        # धवश्च खदिरश्च पलाशश्च → धवखदिरपलाशाः (three members → PLURAL). The vacana climbs
+        # 1→2 (window 1, 1.4.22) →3 (window 2, 1.4.21); proves n-ary + derived bahuvacana.
+        "label": "D0-DavaKadirapalASAH-SK901-2.2.29",
+        "members": [{"stem": "Dava"}, {"stem": "Kadira"}, {"stem": "palASa"}],
+        "fired": ["2.2.29", "1.4.22", "1.4.21", "1.2.43"],
+        "surface": "धवखदिरपलाशाः",
+    },
+    {
+        # दधि च पयश्च → दधिपयसी (itaretara DUAL of two napuṁsaka substances; no samāhāra
+        # rule fires here — 2.4.14 न दधिपयआदीनि's prohibition of ekavat is vacuous until
+        # 2.4.6 जातिरप्राणिनाम् is implemented). Declines paravalliṅga in पयस् (napum) dual.
+        "label": "D0-daDipayasI-SK901-2.2.29",
+        "members": [{"stem": "daDi"}, {"stem": "payas"}],
+        "fired": ["2.2.29", "1.4.22", "1.2.43"],
+        "surface": "दधिपयसी",
+    },
+
+    # ── D1 samāhāra ekavadbhāva (SK906–920/2.4.2–16) + 2.4.17 स नपुंसकम् + 5.4.106 ṭac ──
+    # A समाहार dvandva is EKAVACANA (2.4.2 ff.) + NAPUṀSAKA (2.4.17) → napum sg.
+    {
+        # पाणिश्च पादश्च → पाणिपादम् (napuṁsaka sg). प्राण्यङ्ग (body parts) are ONLY samāhāra
+        # (2.4.2); 2.4.17 स नपुंसकम् then makes it neuter → 7.1.24 अतोऽम् → पाणिपादम्.
+        "label": "D1-pARipAdam-SK906-2.4.2",
+        "members": [{"stem": "pARi", "tags": ["prANyaNga"]},
+                    {"stem": "pAda", "tags": ["prANyaNga"]}],
+        "fired": ["2.2.29", "2.4.2", "2.4.17", "1.2.43"],
+        "not_fired": ["1.4.22"],
+        "surface": "पाणिपादम्",
+    },
+    {
+        # यूका च लिक्षा च → यूकालिक्षम् (kṣudrajantu, 2.4.8 → samāhāra napum sg).
+        "label": "D1-yUkAlikzam-SK912-2.4.8",
+        "members": [{"stem": "yUkA", "tags": ["kzudrajantu"]},
+                    {"stem": "likzA", "tags": ["kzudrajantu"]}],
+        "fired": ["2.2.29", "2.4.8", "2.4.17", "1.2.43"],
+        "surface": "यूकालिक्षम्",
+    },
+    {
+        # अहिश्च नकुलश्च → अहिनकुलम् (śāśvatika-virodha, 2.4.9 → samāhāra napum sg).
+        "label": "D1-ahinakulam-SK913-2.4.9",
+        "members": [{"stem": "ahi", "tags": ["nityaviroDa"]},
+                    {"stem": "nakula", "tags": ["nityaviroDa"]}],
+        "fired": ["2.2.29", "2.4.9", "2.4.17", "1.2.43"],
+        "surface": "अहिनकुलम्",
+    },
+    {
+        # प्लक्षाश्च न्यग्रोधाश्च → प्लक्षन्यग्रोधम् (samāhāra, 2.4.12) OR प्लक्षन्यग्रोधाः (itaretara
+        # plural — jāti members supplied plural). VIBHĀṢĀ → the pre-pass forks both.
+        "label": "D1-plakzanyagroDam-SK916-2.4.12",
+        "members": [{"stem": "plakza", "vacana": 3, "tags": ["vfkzAdi"]},
+                    {"stem": "nyagroDa", "vacana": 3, "tags": ["vfkzAdi"]}],
+        "fired": ["2.2.29", "2.4.12", "2.4.17", "1.2.43"],
+        "surfaces": ["प्लक्षन्यग्रोधम्", "प्लक्षन्यग्रोधाः"],
+    },
+    {
+        # वाक् च त्वक् च → वाक्त्वचम् (composer-declared समाहार; 5.4.106 द्वन्द्वाच्चुदषहान्तात्
+        # adds टच् → an a-stem, वाच्→वाक् 8.2.30/8.4.55, napum nom sg अम्).
+        "label": "D1-vAktvacam-SK930-5.4.106",
+        "members": [{"stem": "vAc", "samahara": True},
+                    {"stem": "tvac", "samahara": True}],
+        "fired": ["2.2.29", "2.4.17", "5.4.106", "1.2.43"],
+        "surface": "वाक्त्वचम्",
+    },
+    {
+        # अश्वश्च वडवा च → अश्ववडवौ (masc DUAL). 2.4.27 पूर्ववदश्ववडवौ makes the compound take
+        # the PŪRVA's gender (masc, अश्व), NOT paravalliṅga (वडवा fem) — so it declines as an
+        # a-stem masc dual, not the fem ā-stem अश्ववडवे.
+        "label": "D1-aSvavaqavO-SK813-2.4.27",
+        "members": [{"stem": "aSva", "tags": ["aSvavaqava"]},
+                    {"stem": "vaqavA", "tags": ["aSvavaqava"]}],
+        "fired": ["2.2.29", "2.4.27", "1.4.22", "1.2.43"],
+        "not_fired": ["2.4.17"],
+        "surface": "अश्ववडवौ",
+    },
+
+    # ── D2 pūrva-nipāta (SK903–905/2.2.32–34) — the PHYSICAL reorder (M2, the 2.2.30
+    # engine step). Every case feeds REVERSED input to prove the members are moved; the
+    # sweep tags the uttara ?pUrvanipAta and _commit_purvanipata swaps the member-units. ──
+    {
+        # हर + हरि (reversed) → हरिहरौ. SK903/2.2.32 द्वन्द्वे घि: हरि (short-i, ghi) must be
+        # pūrva, so it is moved ahead of हर. The `fired` trace carries 2.2.32 (the reorder).
+        "label": "D2-hariharO-SK903-2.2.32",
+        "members": [{"stem": "hara"}, {"stem": "hari"}],
+        "fired": ["2.2.32", "2.2.29", "1.4.22", "1.2.43"],
+        "surface": "हरिहरौ",
+    },
+    {
+        # हरि + हर (ALREADY correct order) → हरिहरौ, and 2.2.32 does NOT fire (no move needed
+        # when the ghi member already leads). Proves the reorder is not gratuitous.
+        "label": "D2-hariharO-noreorder-SK903-2.2.32",
+        "members": [{"stem": "hari"}, {"stem": "hara"}],
+        "fired": ["2.2.29", "1.4.22", "1.2.43"],
+        "not_fired": ["2.2.32"],
+        "surface": "हरिहरौ",
+    },
+    {
+        # कृष्ण + ईश (reversed) → ईशकृष्णौ. SK904/2.2.33 अजाद्यदन्तम्: ईश (vowel-initial,
+        # a-final) must be pūrva. Neither is ghi, so 2.2.32 yields to 2.2.33.
+        "label": "D2-ISakfzRO-SK904-2.2.33",
+        "members": [{"stem": "kfzRa"}, {"stem": "ISa"}],
+        "fired": ["2.2.33", "2.2.29", "1.4.22", "1.2.43"],
+        "not_fired": ["2.2.32", "2.2.34"],
+        "surface": "ईशकृष्णौ",
+    },
+    {
+        # केशव + शिव (reversed) → शिवकेशवौ. SK905/2.2.34 अल्पाच्तरम्: शिव (2 vowels) has fewer
+        # ac than केशव (3), so it goes first. The most general pūrva-nipāta (no ghi/ajādy here).
+        "label": "D2-SivakeSavO-SK905-2.2.34",
+        "members": [{"stem": "keSava"}, {"stem": "Siva"}],
+        "fired": ["2.2.34", "2.2.29", "1.4.22", "1.2.43"],
+        "not_fired": ["2.2.32", "2.2.33"],
+        "surface": "शिवकेशवौ",
+    },
+
+    # ── D3 dvandva ādeśas (SK921–929/6.3.25–32) — pre-pass pūrva-substitution ──
+    {
+        # मातृ + पितृ → मातापितरौ. SK921/6.3.25 आनङ्: the विद्या/योनि-सम्बन्ध ऋ-final pūrva's
+        # ऋ → आ (मातृ→माता); the uttara पितृ declines as an ऋ-stem (dual पितरौ).
+        "label": "D3-mAtApitarO-SK921-6.3.25",
+        "members": [{"stem": "mAtf", "tags": ["vidyAyoni"]},
+                    {"stem": "pitf", "tags": ["vidyAyoni"]}],
+        "fired": ["2.2.29", "6.3.25", "1.4.22", "1.2.43"],
+        "surface": "मातापितरौ",
+    },
+    {
+        # होतृ + पोतृ → होतापोतारौ (two priests; होतृ→होता, uttara पोतृ takes vṛddhi in the dual).
+        "label": "D3-hotApotArO-SK921-6.3.25",
+        "members": [{"stem": "hotf", "tags": ["vidyAyoni"]},
+                    {"stem": "potf", "tags": ["vidyAyoni"]}],
+        "fired": ["2.2.29", "6.3.25", "1.4.22", "1.2.43"],
+        "surface": "होतापोतारौ",
+    },
+    {
+        # पितृ + पुत्र → पितापुत्रौ (mixed ऋ-stem + a-stem uttara; only the pūrva ऋ→आ).
+        "label": "D3-pitAputrO-SK921-6.3.25",
+        "members": [{"stem": "pitf", "tags": ["vidyAyoni"]},
+                    {"stem": "putra", "tags": ["vidyAyoni"]}],
+        "fired": ["2.2.29", "6.3.25", "1.4.22", "1.2.43"],
+        "surface": "पितापुत्रौ",
+    },
+    {
+        # मित्र + वरुण → मित्रावरुणौ. SK922/6.3.26 देवताद्वन्द्वे च आनङ् (मित्र a-stem → मित्रा).
+        "label": "D3-mitrAvaruRO-SK922-6.3.26",
+        "members": [{"stem": "mitra", "tags": ["devatA"]},
+                    {"stem": "varuRa", "tags": ["devatA"]}],
+        "fired": ["2.2.29", "6.3.26", "1.4.22", "1.2.43"],
+        "surface": "मित्रावरुणौ",
+    },
+    {
+        # अग्नि + वरुण → अग्नीवरुणौ. SK923/6.3.27 ईदग्नेः: अग्नि's इ→ई before वरुण (apavāda to
+        # 6.3.26). (The सोम arm अग्नीषोमौ additionally needs 8.3.82 ṣatva — deferred.)
+        "label": "D3-agnIvaruRO-SK923-6.3.27",
+        "members": [{"stem": "agni", "tags": ["devatA"]},
+                    {"stem": "varuRa", "tags": ["devatA"]}],
+        "fired": ["2.2.29", "6.3.27", "1.4.22", "1.2.43"],
+        "not_fired": ["6.3.26"],
+        "surface": "अग्नीवरुणौ",
+    },
+    {
+        # दिव् + पृथिवी → द्यावापृथिव्यौ. SK926/6.3.29 दिवो द्यावा (whole-stem दिव्→द्यावा,
+        # apavāda to 6.3.26); the uttara पृथिवी (nadī) declines → पृथिव्यौ (nom du).
+        "label": "D3-dyAvApfTivyO-SK926-6.3.29",
+        "members": [{"stem": "div", "tags": ["devatA"]},
+                    {"stem": "pfTivI", "tags": ["devatA"]}],
+        "fired": ["2.2.29", "6.3.29", "1.4.22", "1.2.43"],
+        "not_fired": ["6.3.26"],
+        "surface": "द्यावापृथिव्यौ",
+    },
+
+    # ── S1: a 5.4.77 nipātana that is a DVANDVA — वाच् च मनश्च → वाङ्मनसे. The dvandva takes
+    # the nipātana अच् (?nipAta_5477 on मनस्) → मनस+अ = मनस (a-stem) → napum dual वाङ्मनसे
+    # (वाग्मनसे is the valid optional-anunāsika variant, 8.4.45 यरोऽनुनासिके … वा).
+    {
+        "label": "S1-vANmanase-SK945-5.4.77",
+        "members": [{"stem": "vAc"}, {"stem": "manas", "tags": ["nipAta_5477"]}],
+        "fired": ["2.2.29", "5.4.77", "1.4.22", "1.2.43"],
+        "surfaces": ["वाङ्मनसे", "वाग्मनसे"],
+    },
+]
+
+
+# ── Ekaśeṣa E0/E1 (samasa_completion_plan.md) — driver test_ekasesa.py ──
+# Each case is a `members` list; the driver tags every member ?ekaSeza_vivakza and asserts
+# exactly ONE survivor after elision. In E1 the survivor is the LAST member (rp), so the
+# rp-survives machinery is uniform. Vacana is DERIVED (2 members → dual, ≥3 → plural).
+ekasesa_tests = [
+    {
+        # राम + राम → रामौ (dual). SK188/1.2.64 सरूपाणामेकशेष: two same-form padas in one
+        # vibhakti collapse to one; the survivor is dual.
+        "label": "E0-rAmO-SK188-1.2.64",
+        "members": [{"stem": "rAma"}, {"stem": "rAma"}],
+        "fired": ["1.2.64", "1.4.22"],
+        "surface": "रामौ",
+    },
+    {
+        # राम ×3 → रामाः (plural). The survivor's vacana climbs 1→2 (window 1) →3 (window 2).
+        "label": "E0-rAmAH-SK188-1.2.64",
+        "members": [{"stem": "rAma"}, {"stem": "rAma"}, {"stem": "rAma"}],
+        "fired": ["1.2.64", "1.4.22", "1.4.21"],
+        "surface": "रामाः",
+    },
+
+    # ── E1 ekaśeṣa vidhis (SK931–939/1.2.65–73): a specific member survives ──
+    {
+        # हंसी + हंस → हंसौ. SK933/1.2.67 पुमान् स्त्रिया: the MASCULINE survives over its
+        # same-base feminine (?tallakzaRa — हंसी = हंस+ṅīp). The fem is elided.
+        "label": "E1-haMsO-SK933-1.2.67",
+        "members": [{"stem": "haMsI", "tags": ["tallakzaRa"]},
+                    {"stem": "haMsa", "tags": ["tallakzaRa"]}],
+        "fired": ["1.2.67", "1.4.22"],
+        "surface": "हंसौ",
+    },
+    {
+        # स्वसृ + भ्रातृ → भ्रातरौ. SK934/1.2.68: भ्रातृ survives over स्वसृ (different lexemes,
+        # so 1.2.67's tallakṣaṇa does NOT apply — 1.2.68 specially licenses the pair).
+        "label": "E1-BrAtarO-SK934-1.2.68",
+        "members": [{"stem": "svasf"}, {"stem": "BrAtf"}],
+        "fired": ["1.2.68", "1.4.22"],
+        "not_fired": ["1.2.67"],
+        "surface": "भ्रातरौ",
+    },
+    {
+        # दुहितृ + पुत्र → पुत्रौ. SK934/1.2.68: पुत्र survives over दुहितृ.
+        "label": "E1-putrO-SK934-1.2.68",
+        "members": [{"stem": "duhitf"}, {"stem": "putra"}],
+        "fired": ["1.2.68", "1.4.22"],
+        "surface": "पुत्रौ",
+    },
+    {
+        # मातृ + पितृ → पितरौ. SK936/1.2.70 पिता मात्रा: पितृ survives (the ekaśeṣa arm; the
+        # dvandva alternative मातापितरौ is D3's 6.3.25, a different intent).
+        "label": "E1-pitarO-SK936-1.2.70",
+        "members": [{"stem": "mAtf"}, {"stem": "pitf"}],
+        "fired": ["1.2.70", "1.4.22"],
+        "not_fired": ["1.2.67"],
+        "surface": "पितरौ",
+    },
+    {
+        # राम + तद् (सः) → तौ. SK938/1.2.72 त्यदादीनि सर्वैः: the pronoun (?tyadAdi) survives.
+        "label": "E1-tO-SK938-1.2.72",
+        "members": [{"stem": "rAma"}, {"stem": "tad"}],
+        "fired": ["1.2.72", "1.4.22"],
+        "surface": "तौ",
+    },
+    {
+        # अज + अजा → अजे (fem). SK939/1.2.73 ग्राम्यपशुसङ्घेषु स्त्री: for domestic animals the
+        # FEMININE survives (apavāda to 1.2.67, which it overrides even when both tags apply).
+        "label": "E1-aje-SK939-1.2.73",
+        "members": [{"stem": "aja", "tags": ["grAmyapaSu", "tallakzaRa"]},
+                    {"stem": "ajA", "tags": ["grAmyapaSu", "tallakzaRa"]}],
+        "fired": ["1.2.73", "1.4.22"],
+        "not_fired": ["1.2.67"],
+        "surface": "अजे",
     },
 ]

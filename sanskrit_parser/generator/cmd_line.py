@@ -80,6 +80,36 @@ def prepare_bahuvrihi(words, referent_linga):
     return words
 
 
+def prepare_dvandva(words, samahara=False):
+    """Tag the --samasa members as a DVANDVA (samasa_completion_plan.md D0/D1). The
+    itaretara dvandva's vacana is DERIVED — the sum of the members (धव + खदिर → द्विवचन
+    धवखदिरौ; three → बहुवचन). Marks each member ?dvandva_vivakza + a default prathamā
+    vigraha viBakti_1. With samahara=True it is a समाहार (aggregate): 2.4.17 स नपुंसकम्
+    makes it napuṁsaka ekavacana (वाक् च त्वक् च = वाक्त्वचम्); ?samAhAra is set on the
+    uttara (as the composer supplies it for a heterogeneous pair)."""
+    for w in words:
+        w.setTag("dvandva_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+    if samahara:
+        words[-1].setTag("samAhAra")
+    return words
+
+
+def prepare_ekasesa(words):
+    """Tag the --samasa members as an EKAŚEṢA (samasa_completion_plan.md E0). Several
+    sarūpa (same-form) padas in one vibhakti collapse to a SINGLE surviving pada, which
+    takes the summed vacana (राम + राम → रामौ; three → रामाः). Marks each member
+    ?ekaSeza_vivakza + a default prathamā viBakti_1."""
+    for w in words:
+        w.setTag("ekaSeza_vivakza")
+        if not w.hasTag("has_viBakti"):
+            w.setTag("viBakti_1")
+            w.setTag("has_viBakti")
+    return words
+
+
 def run_karaka(words, prakriya, sutra_list, sandhi=False, verbose=False, tag_display=False):
     # A single Adya marks sentence start (added once). By default each word is
     # followed by its own avasAna (isolated per-word forms, no inter-word
@@ -514,6 +544,19 @@ def get_args(argv=None):
                              "sets the referent liṅga on the uttara (strI appends ṭāp via strI_abs). "
                              "e.g. -k pIta 1 -k ambara 1 --samasa --referent-linga pum → पीताम्बरः; "
                              "--referent-linga strI → पीताम्बरा; napum → पीताम्बरम्.")
+    parser.add_argument("--dvandva", action="store_true",
+                        help="Compose the --samasa members as a DVANDVA (चार्थे द्वन्द्वः, "
+                             "SK901/2.2.29): the itaretara vacana is DERIVED from the member "
+                             "count. e.g. -k Dava 1 -k Kadira 1 --samasa --dvandva → धवखदिरौ; "
+                             "a third member → धवखदिरपलाशाः (plural).")
+    parser.add_argument("--samahara", action="store_true",
+                        help="With --dvandva: form a समाहार (aggregate) dvandva — napuṁsaka "
+                             "ekavacana (2.4.17 स नपुंसकम्). e.g. -k pARi 1 -k pAda 1 --samasa "
+                             "--dvandva --samahara → पाणिपादम्.")
+    parser.add_argument("--ekasesa", action="store_true",
+                        help="Compose the --samasa members as an EKAŚEṢA (सरूपाणामेकशेष, "
+                             "SK188/1.2.64): several same-form padas collapse to one, in the "
+                             "summed vacana. e.g. -k rAma 1 -k rAma 1 --samasa --ekasesa → रामौ.")
     parser.add_argument('-o', nargs="?", dest="inputs", action=CustomAction, help="Open bracket")  # Open Brace
     parser.add_argument('-c', nargs="?", dest="inputs", action=CustomAction, help="Close bracket")
     parser.add_argument('-a', nargs="?", dest="inputs", action=CustomAction, help="Avasana")
@@ -557,6 +600,11 @@ def cmd_line():
             if getattr(args, "referent_linga", None):
                 args.karaka_words = prepare_bahuvrihi(args.karaka_words,
                                                       args.referent_linga)
+            elif getattr(args, "dvandva", False):
+                args.karaka_words = prepare_dvandva(
+                    args.karaka_words, getattr(args, "samahara", False))
+            elif getattr(args, "ekasesa", False):
+                args.karaka_words = prepare_ekasesa(args.karaka_words)
         run_karaka(args.karaka_words, args.prakriya, sutra_list,
                    sandhi=sandhi, verbose=args.verbose,
                    tag_display=args.tag_display)

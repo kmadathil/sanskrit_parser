@@ -162,6 +162,15 @@
           <option value="strI">strī (f.)</option>
           <option value="napum">napuṁ (n.)</option>
         </select></label>
+      <label class="sem-opt" style="font-size:.82rem;">
+        <span><b>dvandva / ekaśeṣa</b> — coordinate the samāsa members:</span>
+        <select id="opt-samasa-type" style="margin-left:.4rem;">
+          <option value="">— (none) —</option>
+          <option value="dvandva">dvandva (द्वन्द्व — derived vacana: धवखदिरौ)</option>
+          <option value="ekasesa">ekaśeṣa (एकशेष — same-form → one: रामौ)</option>
+        </select>
+        <label style="margin-left:.4rem;"><input type="checkbox" id="opt-samahara">
+          <span>samāhāra (aggregate → napuṁsaka sg: पाणिपादम्)</span></label></label>
     </div>
 
     <button class="btn btn-primary" style="width:100%;" onclick="derive()">Derive →</button>
@@ -349,12 +358,14 @@ async function derive() {
   const ev   = document.getElementById('opt-eval').checked;
   const sandhi = document.getElementById('opt-sandhi').checked;
   const referent_linga = document.getElementById('opt-referent-linga').value;
+  const samasa_type = document.getElementById('opt-samasa-type').value;
+  const samahara = document.getElementById('opt-samahara').checked;
   const res = document.getElementById('results');
   res.innerHTML = '<div class="spin">Deriving…</div>';
   try {
     const r = await fetch('/api/karaka', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev, sandhi, referent_linga }) });
+      body: JSON.stringify({ sentence, encoding: enc, tags, eval: ev, sandhi, referent_linga, samasa_type, samahara }) });
     const data = await r.json();
     if (!r.ok || data.error) { res.innerHTML = `<div class="err">${data.error||'Error'}</div>`; return; }
     data.sandhi = sandhi;

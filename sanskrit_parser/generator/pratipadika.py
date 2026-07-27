@@ -1177,3 +1177,62 @@ GAtuka = Pratipadika("GAtuka", "pum",  other_tags=["kft", "kft_aSazWI"])  # घ�
 gAmin  = Pratipadika("gAmin",  "pum",  other_tags=["kft", "kft_aSazWI"])  # गामिन् m. (ṇini, future/ādhamarṇya) "goer" — SK628 prohibition व्रजं गामी
 sevya  = Pratipadika("sevya",  "pum",  other_tags=["kftya"])           # सेव्य m. (yat/kṛtya) "to-be-served" — SK629 मया/मम वा सेव्यो हरिः (kftya only, NOT kft — 2.3.71 owns it, not 2.3.65)
 # ──────────────────────────────────────────────────────────────────────────────────────
+
+# ── Dvandva-samāsa D0 (samasa_completion_plan.md): the itaretara dvandva declines in
+# the LAST member's gender (2.4.26) with a DERIVED vacana (the sum of the members —
+# धव + खदिर → dual धवखदिरौ; three → plural). Plain a-stem trees, natural dvandva pairs.
+Dava   = Pratipadika("Dava",   "pum")   # धव m. (a tree) — धवखदिरौ (SK901/2.2.29)
+Kadira = Pratipadika("Kadira", "pum")   # खदिर m. (Acacia) — धवखदिरौ (SK901/2.2.29)
+palASa = Pratipadika("palASa", "pum")   # पलाश m. (Butea tree) — धवखदिरपलाशाः (3-member → plural)
+
+# ── Dvandva-samāsa D1 (samasa_completion_plan.md): samāhāra ekavadbhāva (2.4.2 ff.) →
+# napuṁsaka ekavacana (पाणिपादम्), the vibhāṣā fork (प्लक्षन्यग्रोधम्/…ाः), 5.4.106 ṭac
+# (वाक्त्वचम्), and 2.4.27 pūrva-gender (अश्ववडवौ). The samāhāra CLASS tag (prāṇyaṅga,
+# vṛkṣādi, …) is composer/test-supplied per case, so the stems stay clean.
+pARi   = Pratipadika("pARi",   "pum")   # पाणि m. "hand" (prāṇyaṅga) — पाणिपादम् (SK906/2.4.2)
+vaqavA = Pratipadika("vaqavA", "strI", other_tags=["Ap"])  # वडवा f. "mare" — अश्ववडवौ (SK813/2.4.27, pūrva-gender)
+plakza   = Pratipadika("plakza",   "pum")   # प्लक्ष m. (wave-leaved fig) — प्लक्षन्यग्रोधम् (SK916/2.4.12 vṛkṣa vibhāṣā)
+nyagroDa = Pratipadika("nyagroDa", "pum")   # न्यग्रोध m. (banyan) — प्लक्षन्यग्रोधम्/प्लक्षन्यग्रोधाः
+vAc  = Pratipadika("vAc",  "strI", other_tags=["cudazaha_anta"])  # वाच् f. "speech" (च-final) — वाक्त्वचम् (SK930/5.4.106)
+tvac = Pratipadika("tvac", "strI", other_tags=["cudazaha_anta"])  # त्वच् f. "skin" (च-final) — वाक्त्वचम्
+yUkA   = Pratipadika("yUkA",   "strI", other_tags=["Ap"])   # यूका f. "louse" (kṣudrajantu) — यूकालिक्षम् (SK912/2.4.8)
+likzA  = Pratipadika("likzA",  "strI", other_tags=["Ap"])   # लिक्षा f. "nit" (kṣudrajantu) — यूकालिक्षम्
+nakula = Pratipadika("nakula", "pum")   # नकुल m. "mongoose" (śāśvatika-virodha with अहि) — अहिनकुलम् (SK913/2.4.9)
+
+# ── Dvandva-samāsa D2 (samasa_completion_plan.md): pūrva-nipāta (2.2.32/33/34) — the
+# member-ordering rules. Tested with REVERSED input to prove the physical reorder.
+hara   = Pratipadika("hara",   "pum")   # हर m. (Śiva) — हरिहरौ (SK903/2.2.32: हरि=ghi first)
+ISa    = Pratipadika("ISa",    "pum")   # ईश m. (a lord) — ईशकृष्णौ (SK904/2.2.33: ईश ajādyadanta first)
+Siva   = Pratipadika("Siva",   "pum")   # शिव m. — शिवकेशवौ (SK905/2.2.34: शिव fewer-ac first)
+keSava = Pratipadika("keSava", "pum")   # केशव m. (Viṣṇu) — शिवकेशवौ
+
+# ── Dvandva-samāsa D3 (samasa_completion_plan.md): the dvandva ādeśas (6.3.25–32, 8.3.82).
+# The devatā (deity) stems carry ?devatA so the devatā-dvandva rules fire; मातृ/पितृ/होतृ/
+# पोतृ (already defined) get ?vidyAyoni from the test for 6.3.25.
+mitra = Pratipadika("mitra", "pum")   # मित्र m. (the deity Mitra) — मित्रावरुणौ (SK922/6.3.26)
+soma  = Pratipadika("soma",  "pum")   # सोम m. (the deity Soma) — अग्नीषोमौ (SK923/6.3.27 + SK924/8.3.82)
+pfTivI = Pratipadika("pfTivI", "strI", other_tags=["nadI"])   # पृथिवी f. "earth" (ī-stem/nadī) — द्यावापृथिव्यौ (SK926/6.3.29)
+
+# ── Ekaśeṣa E1 (samasa_completion_plan.md): heterogeneous pairs where ONE member survives.
+haMsa = Pratipadika("haMsa", "pum")                    # हंस m. "goose" — हंसौ (SK933/1.2.67, masc survives)
+haMsI = Pratipadika("haMsI", "strI", other_tags=["NIp"])  # हंसी f. "goose" (हंस + ṅīp) — elided by 1.2.67
+ajA   = Pratipadika("ajA",   "strI", other_tags=["Ap"])   # अजा f. "she-goat" — अजाः (SK939/1.2.73, fem survives in a herd)
+
+# ── Sarvasamāsānta S0 (samasa_completion_plan.md): compounds taking the अच् samāsānta.
+brahman = Pratipadika("brahman", "napum")   # ब्रह्मन् n. — ब्रह्मवर्चसम् (SK946/5.4.78)
+varcas  = Pratipadika("varcas",  "napum", other_tags=["AdeSa_s"])   # वर्चस् n. "lustre" (s-final) — ब्रह्मवर्चसम्
+tamas   = Pratipadika("tamas",   "napum", other_tags=["AdeSa_s"])   # तमस् n. "darkness" (s-final) — अन्धतमसम् (SK947/5.4.79)
+anDa    = Pratipadika("anDa",    "pum",   other_tags=["viSezaRa"])  # अन्ध "blind/thick" (viśeṣaṇa) — अन्धतमसम् (karmadhāraya)
+rahas   = Pratipadika("rahas",   "napum", other_tags=["AdeSa_s"])   # रहस् n. "solitude" (s-final) — तप्तरहसम् (SK949/5.4.81)
+tapta   = Pratipadika("tapta",   "pum",   other_tags=["viSezaRa"])  # तप्त "heated" (viśeṣaṇa) — तप्तरहसम् (karmadhāraya)
+# ── Sarvasamāsānta S1: the 5.4.77 nipātana gaṇa (representative members). The SK groups
+# जातोक्षः/महोक्षः/वृद्धोक्षः as three karmadhārayas with उक्षन्; वाङ्मनसे is a dvandva.
+ukzan   = Pratipadika("ukzan",   "pum",   other_tags=["naptrAdi"])  # उक्षन् m. "ox" (n-stem) — महोक्षः (SK945/5.4.77 nipātana)
+jAta    = Pratipadika("jAta",    "pum",   other_tags=["viSezaRa"])  # जात "young" (viśeṣaṇa) — जातोक्षः
+vfdDa   = Pratipadika("vfdDa",   "pum",   other_tags=["viSezaRa"])  # वृद्ध "old/full-grown" (viśeṣaṇa) — वृद्धोक्षः
+
+# ── Aluk-samāsa A0/A1/A2 (samasa_completion_plan.md): the pūrva keeps its vigraha sup.
+ojas    = Pratipadika("ojas",    "napum", other_tags=["AdeSa_s"])   # ओजस् n. "strength" (s-final) — ओजसाकृतम् (SK960/6.3.3, tṛtīyā aluk)
+Atman   = Pratipadika("Atman",   "pum")   # आत्मन् m. "self" (n-stem) — आत्मनेपदम् (SK964/6.3.7, caturthī aluk)
+hasta   = Pratipadika("hasta",   "pum")   # हस्त m. "hand" — हस्तेबन्धः/हस्तबन्धः (SK971/6.3.13, saptamī aluk)
+banDa   = Pratipadika("banDa",   "pum",   other_tags=["siDDa_gaRa"])  # बन्ध m. "binding" (2.1.41 saptamī-tp) — हस्तबन्धः

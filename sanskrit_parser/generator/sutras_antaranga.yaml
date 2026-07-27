@@ -9844,7 +9844,11 @@
   id: 2.4.71
   bahiranga: 2
   condition:
-    lp: "?samAsaPurva"
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?!aluk"          # ALUK (SK958/6.3.1 ff.): a pūrva tagged ?aluk KEEPS its vigraha
+                          # sup (स्तोकान्मुक्तः, आत्मनेपदम्), so the luk is suppressed for it.
     rp: "?sup"
   update:
     orp: =luk_sup
@@ -9904,7 +9908,10 @@
 # ~line 154), so the uttara declines in its own gender with no change here. This
 # pre-pass saṁjñā records that paravalliṅga licenses the compound gender (?paravalliNga
 # marker) — it documents the rule firing and gives the T-liṅga exceptions
-# (2.4.19/29/30/31 napuṁsaka/puṁvad overrides) a clean saṁjñā to override.
+# (2.4.19/29/30/31 napuṁsaka/puṁvad overrides) a clean saṁjñā to override. The sūtra
+# names BOTH द्वन्द्व and तत्पुरुष, so the rp condition admits ?dvandva too (the itaretara
+# dvandva declines paravalliṅga — रामकृष्णौ takes कृष्ण's masc; SK813/2.4.27 पूर्ववदश्ववडवौ
+# is the dvandva-side override, mirroring the tatpuruṣa 2.4.29/30/31 overrides).
 - sutra: परवल्लिङ्गं द्वन्द्वतत्पुरुषयोः
   id: 2.4.26
   domain: saMjYA
@@ -9912,7 +9919,9 @@
   condition:
     rp:
       - and
-      - "?tatpuruza"
+      - - or
+        - "?tatpuruza"
+        - "?dvandva"
       - "?!paravalliNga"
   update:
     orp: [+paravalliNga]
@@ -10701,6 +10710,7 @@
       - "?tatpuruza"
       - "?rAjan"
       - "?!samasanta_TaC"
+      - "?!samasanta_niziDDa"    # SK956/5.4.71 नञस्तत्पुरुषात् blocks ṭac after a nañ-tp → अराजा
   update:
     orp: [+samasanta_TaC]
 
@@ -10733,8 +10743,8 @@
 # पुण्यरात्रः, पूर्व + रात्रि = पूर्वरात्रः. Rule-driven via the proven ?samasanta_TaC +
 # _insert_samasanta path — रात्रि is i-final, so रात्रि + wac → रात्र (इ-lopa by 6.4.148
 # यस्येति च, exactly like giri → उपगिरम्); the अच्/टच् distinction is accent-only, not
-# modelled. The wac's ?pum + SK814/2.4.29 रात्राह्नाहाः पुंसि make the compound masc →
-# पुण्यरात्रः declines as the राम a-stem. Pūrva gated to the {puṇya/sarva/saṅkhyā/ahan}
+# modelled. SK814/2.4.29 रात्राह्नाहाः पुंसि makes the compound masc (रात्रि is i-fem, wac is
+# gender-neutral) → पुण्यरात्रः declines as the राम a-stem. Pūrva gated to the {puṇya/sarva/saṅkhyā/ahan}
 # set. (द्विरात्रः — a संख्या pūrva → समाहार dvigu — is DEFERRED: 2.4.1 napuṁsaka vs 2.4.29
 # masc priority is a separate carve-out; पुण्य avoids the dvigu.)
 - sutra: अहस्सर्वैकदेशसंख्यातपुण्याच्च रात्रेः
@@ -12150,3 +12160,819 @@
     r: str("dat")
   update:
     orp: [++f]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — द्वन्द्वसमासः (SK 901–930) — samasa_completion_plan.md, Phase D0.
+#
+# A dvandva coordinates two-or-more prathamānta padas in the "and" sense (चार्थे).
+# Unlike tatpuruṣa/bahuvrīhi, its vacana is DERIVED — the itaretara dvandva denotes
+# all its members together, so its number is their SUM (धव + खदिर → dvivacana
+# धवखदिरौ; three → bahuvacana). It declines paravalliṅga (2.4.26, widened above) in
+# the LAST member's gender. Both members are upasarjana (1.2.43); neither is pradhāna.
+#
+# Reuses the samāsa pre-pass spine wholesale: 2.2.29 forms the compound (member roles),
+# then 1.4.22/1.4.21 bump the uttara's vacana via the existing ?swap_viBakti +
+# _swap_sups lever (the uttara's already-inserted su is replaced by au/jas for the new
+# vacana). n-ary is free — _samasa_prepass_branch walks adjacent (pūrva|uttara) windows,
+# so a chain राम|कृष्ण|गोविन्द forms at each window and the vacana climbs 1→2→3.
+# The pūrva sup luks (2.4.71); the uttara sup (now the derived vacana) is retained.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 901/2.2.29: चार्थे द्वन्द्वः — two (or more) subantas in the समुच्चय/इतरेतरयोग/समाहार
+# ("and") sense form a dvandva. Both members are prathamā (?viBakti_1) in the vigraha
+# (धवश्च खदिरश्च); gated on the composer's ?dvandva_vivakza intent (a dvandva has NO
+# lexical/uttara-class discriminator — any set of coordinated words — exactly like the
+# bahuvrīhi ?bahuvrIhi_vivakza). pūrva → +samAsaPurva (+upasarjana via 1.2.43), uttara →
+# +samAsa +dvandva. The lp guard is ?!samAsaPurva (NOT ?!samAsa): in a chain the middle
+# member is already ?samAsa (as the previous window's uttara) yet must still become the
+# next window's pūrva — so राम|कृष्ण|गोविन्द keeps compounding.
+- sutra: चार्थे द्वन्द्वः
+  id: 2.2.29
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viBakti_1"
+      - "?dvandva_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?prAtipadika"
+      - "?dvandva_vivakza"
+      - "?!samAsa"
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +dvandva]
+
+# 1.4.22 द्व्येकयोर्द्विवचनैकवचने (DERIVED vacana, dvivacana arm; scoped to the dvandva
+# window AND the ekaśeṣa survivor — vacana is otherwise composer-supplied). When both
+# window members are singular (the first join of a chain, or the whole of a 2-member
+# dvandva / ekaśeṣa), the compound/survivor is DUAL: set the uttara ?vacana_2 +
+# ?swap_viBakti so _swap_sups replaces its su with au. Fires only after 2.2.29 (?dvandva)
+# or 1.2.64 (?ekaSeza_Sizyate). ?!samAhAra: a समाहार dvandva is always ekavacana (2.4.2 ff.).
+- sutra: द्व्येकयोर्द्विवचनैकवचने
+  id: 1.4.22
+  bahiranga: -1
+  condition:
+    lp: "?vacana_1"
+    rp:
+      - and
+      - - or
+        - "?dvandva"
+        - "?ekaSeza_Sizyate"
+      - "?vacana_1"
+      - "?!samAhAra"
+  update:
+    orp: [-vacana_1, +vacana_2, +swap_viBakti]
+
+# 1.4.21 बहुषु बहुवचनम् (DERIVED vacana, bahuvacana arm). When the pūrva side is already
+# plural-or-dual (a chain that has climbed past the first window — lp is ?!vacana_1), the
+# next uttara joins to make the whole PLURAL: set ?vacana_3 + ?swap_viBakti (su → jas).
+# So राम(1)|कृष्ण(1)→द्वि at window 1, then कृष्ण(2)|गोविन्द(1)→बहु at window 2 → रामकृष्णगोविन्दाः.
+# Same widened gate — the ekaśeṣa survivor of a ≥3 set climbs to bahuvacana (राम+राम+राम →
+# रामाः). (लुप्त members carry ?vacana_2 as an lp here, which is fine: they are elided.)
+- sutra: बहुषु बहुवचनम्
+  id: 1.4.21
+  bahiranga: -1
+  condition:
+    lp: "?!vacana_1"
+    rp:
+      - and
+      - - or
+        - "?dvandva"
+        - "?ekaSeza_Sizyate"
+      - "?vacana_1"
+      - "?!samAhAra"
+  update:
+    orp: [-vacana_1, +vacana_3, +swap_viBakti]
+
+# ── Dvandva Phase D1 (samasa_completion_plan.md): SAMĀHĀRA (aggregate) dvandva.
+# A समाहार dvandva denotes the group as a single whole, so it is EKAVACANA (एकवत्) and —
+# by 2.4.17 स नपुंसकम् (fused here, exactly as 2.4.1 fuses it for the समाहार dvigu) —
+# NAPUṀSAKA. Membership is a lexical class the composer supplies (प्राण्यङ्ग / क्षुद्रजन्तु /
+# शाश्वतिकविरोध / वृक्षादि / …). Each rule sets +samAhAra (the saṁjñā) + +samasa_napum (the
+# deferred napuṁsaka marker → real ?napum via _commit_samasa_napum, with the gender lock)
+# and OVERRIDES the itaretara-vacana rules 1.4.21/1.4.22 (so the number stays ekavacana,
+# not the itaretara sum). The uttara sup (su, vacana_1) is retained; 7.1.24 अतोऽम् then
+# gives the napuṁsaka nom sg अम् → पाणिपादम्.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 906/2.4.2: द्वन्द्वश्च प्राणितूर्यसेनाङ्गानाम् — a dvandva of प्राण्यङ्ग (body parts),
+# तूर्य (instruments) or सेनाङ्ग (army divisions) is ONLY समाहार (एकवत्): पाणिश्च पादश्च =
+# पाणिपादम् (napuṁsaka sg). The class tag (?prANyaNga / ?tUrya / ?senANga) is supplied on
+# the members; the rule fires on the formed ?dvandva uttara.
+- sutra: द्वन्द्वश्च प्राणितूर्यसेनाङ्गानाम्
+  id: 2.4.2
+  domain: saMjYA
+  bahiranga: -1
+  overrides: [1.4.21, 1.4.22]
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?!samAhAra"
+      - - or
+        - "?prANyaNga"
+        - "?tUrya"
+        - "?senANga"
+  update:
+    orp: [+samAhAra, -vacana_2, -vacana_3, +vacana_1, +swap_viBakti]
+
+# 912/2.4.8: क्षुद्रजन्तवः — a dvandva of small creatures (?kzudrajantu) is समाहार:
+# यूका च लिक्षा च = यूकालिक्षम् (napuṁsaka sg). Same mechanism as 2.4.2.
+- sutra: क्षुद्रजन्तवः
+  id: 2.4.8
+  domain: saMjYA
+  bahiranga: -1
+  overrides: [1.4.21, 1.4.22]
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?kzudrajantu"
+      - "?!samAhAra"
+  update:
+    orp: [+samAhAra, -vacana_2, -vacana_3, +vacana_1, +swap_viBakti]
+
+# 913/2.4.9: येषां च विरोधः शाश्वतिकः — a dvandva of natural (perpetual) enemies
+# (?nityaviroDa) is समाहार: अहिश्च नकुलश्च = अहिनकुलम् (napuṁsaka sg). Same mechanism.
+- sutra: येषां च विरोधः शाश्वतिकः
+  id: 2.4.9
+  domain: saMjYA
+  bahiranga: -1
+  overrides: [1.4.21, 1.4.22]
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?nityaviroDa"
+      - "?!samAhAra"
+  update:
+    orp: [+samAhAra, -vacana_2, -vacana_3, +vacana_1, +swap_viBakti]
+
+# 916/2.4.12: विभाषा वृक्षमृगतृणधान्यव्यञ्जनपशुशकुन्यश्ववडवपूर्वापराधरोत्तराणाम् — a dvandva
+# of वृक्ष / मृग / तृण / धान्य / व्यञ्जन / पशु / शकुनि (+ aśvavaḍava / pūrvāpara / adharottara)
+# is OPTIONALLY समाहार: प्लक्षश्च न्यग्रोधश्च = प्लक्षन्यग्रोधम् (samāhāra napuṁsaka sg) OR
+# प्लक्षन्यग्रोधाः (itaretara plural). VIBHĀṢĀ → the pre-pass forks (the skip branch keeps
+# the itaretara plural via 1.4.21). Class tag ?vfkzAdi.
+- sutra: विभाषा वृक्षमृगतृणधान्यव्यञ्जनपशुशकुन्यश्ववडवपूर्वापराधरोत्तराणाम्
+  id: 2.4.12
+  domain: saMjYA
+  bahiranga: -1
+  optional: true
+  overrides: [1.4.21, 1.4.22]
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?vfkzAdi"
+      - "?!samAhAra"
+  update:
+    orp: [+samAhAra, -vacana_2, -vacana_3, +vacana_1, +swap_viBakti]
+
+# 821/2.4.17: स नपुंसकम् — a समाहार (aggregate) is NAPUṀSAKA. The general rule that gives
+# the samāhāra dvandva (and samāhāra dvigu, though the dvigu takes its napum from 2.4.1)
+# its neuter gender: any ?samAhAra dvandva → +samasa_napum (→ real ?napum + the gender
+# lock via _commit_samasa_napum). Fires AFTER the ekavat rules 2.4.2 ff. set ?samAhAra,
+# OR on a composer-declared समाहार intent (the समाहार sense of चार्थ, 2.2.29 — e.g. वाच् +
+# त्वच् → वाक्त्वचम्, a heterogeneous pair the speaker aggregates). Gated ?dvandva so it
+# leaves the dvigu (?tatpuruza, 2.4.1) and avyayībhāva (?avyayIBAva, 2.4.18) untouched.
+- sutra: स नपुंसकम्
+  id: 2.4.17
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?samAhAra"
+      - "?!samasa_napum"
+  update:
+    orp: [+samasa_napum]
+
+# 930/5.4.106: द्वन्द्वाच्चुदषहान्तात्समाहारे — a समाहार dvandva ending in चु (च-varga) / द /
+# ष / ह takes the समासान्त टच् (ṬaC/wac, अ): वाक् च त्वक् च = वाक्त्वचम् (वाच्+त्वच्+अ → an
+# a-stem; the pūrva वाच् → वाक् by 8.2.30/8.4.55, then napuṁsaka nom sg अम् via 7.1.24).
+# Rule-driven via the proven ?samasanta_TaC + _insert_samasanta path. The चु/द/ष/ह-final
+# condition is a stem tag ?cudazaha_anta (the DSL `r` slot is the FIRST char, not the
+# last). समाहारे किम् — an itaretara dvandva (प्रावृट्शरदौ) takes NO ṭac; hence the
+# ?samAhAra gate.
+- sutra: द्वन्द्वाच्चुदषहान्तात्समाहारे
+  id: 5.4.106
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?dvandva"
+      - "?samAhAra"
+      - "?cudazaha_anta"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 813/2.4.27: पूर्ववदश्ववडवौ — the dvandva अश्व + वडवा takes the PŪRVA's gender (पूर्ववत् =
+# masc, like अश्व), NOT paravalliṅga (which 2.4.26 would give as वडवा's feminine): अश्वश्च
+# वडवा च = अश्ववडवौ (masc dual). A dvandva-side gender override, mirroring the tatpuruṣa
+# 2.4.29 रात्राह्नाहाः पुंसि: set +pum, drop the native ?strI/?napum on the pūrva-most
+# stem, lock (?samasa_liNga_locked, honoured by join_objects). ?!samAhAra so it does not
+# clobber a समाहार (which is napuṁsaka by 2.4.17). Lexical pair — gated ?aSvavaqava.
+- sutra: पूर्ववदश्ववडवौ
+  id: 2.4.27
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?aSvavaqava"
+      - "?!samasa_liNga_locked"
+    rp:
+      - and
+      - "?dvandva"
+      - "?!samAhAra"
+  update:
+    olp: [+pum, -strI, -napum, +samasa_liNga_locked]
+    # पूर्ववत् makes the compound masculine, so the uttara वडवा (a ṭāp ā-stem) sheds its
+    # feminine strī-pratyaya markers — else the stale ?Ap/?strI drive the fem ā-stem
+    # declension (अश्ववडवे) despite the pum lock (the same ?Ap trap the bahuvrīhi
+    # ādeśas hit). Cleared → the a-stem masc dual अश्ववडवौ.
+    orp: [-Ap, -strI]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — द्वन्द्वसमासः, Phase D2 (samasa_completion_plan.md): PŪRVA-NIPĀTA
+# (SK902–905 / 2.2.31–34) — the member-ORDERING rules. These decide WHICH member is
+# pūrva; they carry `purvanipata: true`, so _split_sutras routes them to SWEEP 1 of the
+# samāsa pre-pass (before the saṁjñā rules). Each tags the member that must go first
+# ?pUrvanipAta; _commit_purvanipata physically moves it (the deferred 2.2.30 उपसर्जनं
+# पूर्वम्, finally realized). Priority is by aps-order in the sweep (lower id = more
+# specific = stronger): 2.2.32 (ghi) > 2.2.33 (ajādyadanta) > 2.2.34 (alpāctara).
+#
+# Gated on the composer intent ?dvandva_vivakza, NOT the formed ?dvandva — SWEEP 2 (the
+# saṁjñā 2.2.29) has not run yet, so the saṁjñā does not exist at reorder time. Each rule
+# fires only when the UTTARA (rp) should precede: the $$rp_is_purva_* helpers compare the
+# two window members (a plain tag test cannot). SK902/2.2.31 राजदन्तादिषु परम् is DEFERRED
+# (a lexical ākṛtigaṇa spanning compound types, not dvandva-specific — Skipped row).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 903/2.2.32: द्वन्द्वे घि — in a dvandva the घि-word (short i/u-final, per 1.4.7) is pūrva:
+# हरिश्च हरश्च = हरिहरौ. Fires when the uttara is ghi and the pūrva is not → move the uttara
+# first. (?Gi is re-derived by $$rp_is_purva_ghi; it is not set in the pre-pass.)
+- sutra: द्वन्द्वे घि
+  id: 2.2.32
+  bahiranga: -1
+  purvanipata: true
+  condition:
+    lp:
+      - and
+      - "?dvandva_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?dvandva_vivakza"
+      - $$rp_is_purva_ghi
+  update:
+    orp: [+pUrvanipAta]
+
+# 904/2.2.33: अजाद्यदन्तम् — a vowel-initial AND a-final (अच्-आदि अत्-अन्त) member is pūrva
+# in a dvandva: ईशश्च कृष्णश्च = ईशकृष्णौ. Fires when the uttara qualifies and the pūrva does
+# not. Weaker than 2.2.32 (a ghi wins first), stronger than 2.2.34.
+- sutra: अजाद्यदन्तम्
+  id: 2.2.33
+  bahiranga: -1
+  purvanipata: true
+  condition:
+    lp:
+      - and
+      - "?dvandva_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?dvandva_vivakza"
+      - $$rp_is_purva_ajady
+  update:
+    orp: [+pUrvanipAta]
+
+# 905/2.2.34: अल्पाच्तरम् — the member with FEWER vowels (अच्) is pūrva: शिवश्च केशवश्च =
+# शिवकेशवौ (शिव has 2 ac, केशव 3). The most GENERAL pūrva-nipāta rule (the default when no
+# stronger rule applies). Fires when the uttara has strictly fewer vowels than the pūrva.
+- sutra: अल्पाच्तरम्
+  id: 2.2.34
+  bahiranga: -1
+  purvanipata: true
+  condition:
+    lp:
+      - and
+      - "?dvandva_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?dvandva_vivakza"
+      - $$rp_is_purva_alpac
+  update:
+    orp: [+pUrvanipAta]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — द्वन्द्वसमासः, Phase D3 (samasa_completion_plan.md): the dvandva
+# ĀDEŚAS (SK921–929 / 6.3.25–32, 8.3.82) — pre-pass PŪRVA-substitution rules (the
+# bahuvrīhi B4 / tatpuruṣa 6.3.46 shape), plus the main-scan ṣatva 8.3.82. They rewrite
+# the PŪRVA member's stem before the uttarapada; the uttara keeps its own declension.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 921/6.3.25: आनङ् ऋतो द्वन्द्वे — a विद्या/योनि-सम्बन्ध ऋ-final pūrva in a dvandva takes
+# आनङ् (its final ऋ → आ) before the uttarapada: मातृ+पितृ = मातापितरौ, होतृ+पोतृ =
+# होतापोतारौ, पितृ+पुत्र = पितापुत्रौ. Pre-pass substitution on the pūrva (l → आ); the
+# uttara declines as its own ऋ-/a-stem. ?vidyAyoni (knowledge/kinship relation) is
+# composer-supplied; $$is_ftanta gates the ऋ-final pūrva (and blocks re-firing — माता
+# is no longer ऋ-final).
+- sutra: आनङ् ऋतो द्वन्द्वे
+  id: 6.3.25
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?vidyAyoni"
+      - $$is_ftanta
+    rp: "?dvandva"
+  xform:
+    l: str("A")
+
+# 922/6.3.26: देवताद्वन्द्वे च — in a DEVATĀ (deity) dvandva, the pūrva takes आनङ् (final →
+# आ) before the uttarapada: मित्र+वरुण = मित्रावरुणौ (मित्र → मित्रा). ?devatA (composer-
+# supplied) on both members. Not restricted to ऋ-final (unlike 6.3.25) — मित्र is an
+# a-stem, its final अ → आ. 6.3.27 (ईत् for अग्नि) is its apavāda (overrides below).
+- sutra: देवताद्वन्द्वे च
+  id: 6.3.26
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?devatA"
+      - "=!agni"
+      - "=!div"
+    rp:
+      - and
+      - "?dvandva"
+      - "?devatA"
+  xform:
+    l: str("A")
+
+# 923/6.3.27: ईदग्नेः सोमवरुणयोः — अग्नि before सोम / वरुण in a devatā-dvandva takes ईत्
+# (its इ → ई): अग्नि+सोम = अग्नीषोमौ, अग्नि+वरुण = अग्नीवरुणौ. Apavāda to 6.3.26 (which
+# would wrongly give आनङ् → अग्ना). Pre-pass substitution l → ई; the ष of अग्नीषोमौ is
+# 8.3.82 (main scan).
+- sutra: ईदग्नेः सोमवरुणयोः
+  id: 6.3.27
+  bahiranga: -1
+  overrides: 6.3.26
+  condition:
+    lp:
+      - and
+      - "=agni"
+      - "?samAsaPurva"
+      - "?devatA"
+    rp:
+      - and
+      - "?dvandva"
+      - - or
+        - "=soma"
+        - "=varuRa"
+  xform:
+    l: str("I")
+
+# 926/6.3.29: दिवो द्यावा — दिव् (heaven) → द्यावा in a devatā-dvandva before the
+# uttarapada: दिव्+पृथिवी = द्यावापृथिव्यौ. Whole-stem substitution (like महत्→महा). The
+# uttara पृथिवी (nadī) declines → पृथिव्यौ (nom du). दिवस्पृथिव्यौ (6.3.30, the दिवस्
+# alternative) is deferred (Skipped row).
+- sutra: दिवो द्यावा
+  id: 6.3.29
+  bahiranga: -1
+  overrides: 6.3.26
+  condition:
+    lp:
+      - and
+      - "=div"
+      - "?samAsaPurva"
+      - "?devatA"
+    rp: "?dvandva"
+  xform:
+    lc: str("")
+    l: str("dyAvA")
+
+# 929/6.3.32 मातरपितरावुदीचाम् (मातृ → मातर्, the optional Northern मातरपितरौ) is DEFERRED
+# (Skipped row): the substitution मातृ → मातर् leaves an r-final pūrva whose junction with
+# पितृ mis-fires to a visarga (मातःपितरौ) — the pūrva r → visarga (8.3.15) where मातरपितरौ
+# wants र retained. The optional माता form (6.3.25) is the one that surfaces.
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासप्रकरणम् — एकशेषसमासः (SK 188 + 931–939) — samasa_completion_plan.md, Phase E0/E1.
+#
+# Ekaśeṣa: several sarūpa (same-form) padas in one vibhakti collapse to ONE, which takes
+# the summed vacana (राम + राम → रामौ; three → रामाः). Not a compound — one pada survives
+# and declines alone. The pre-pass TAGS the members (pūrva → ?ekaSeza_lupta, uttara →
+# ?ekaSeza_Sizyate); _commit_ekasesa physically deletes the लुप्त members after the window
+# fixpoint (M3). The survivor's vacana climbs via the widened 1.4.22/1.4.21. Gated on the
+# composer intent ?ekaSeza_vivakza (disjoint from ?dvandva_vivakza).
+# ════════════════════════════════════════════════════════════════════════════
+
+# 188/1.2.64: सरूपाणामेकशेष एकविभक्तौ — of several SAME-FORM (सरूप) words in ONE vibhakti,
+# ONE remains: रामश्च रामश्च = रामौ. The pūrva is elided (?ekaSeza_lupta), the uttara
+# survives (?ekaSeza_Sizyate); in a chain the survivor is the last (the left member of
+# each window is luk'd). $$sarUpa checks lp≡rp content. The survivor's vacana is DERIVED
+# by 1.4.22/1.4.21 (widened to fire on ?ekaSeza_Sizyate).
+- sutra: सरूपाणामेकशेष एकविभक्तौ
+  id: 1.2.64
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - $$sarUpa
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# ── Ekaśeṣa E1 vidhis (SK931–939 / 1.2.65–73): heterogeneous pairs where a SPECIFIC
+# member survives. All share 1.2.64's update (olp +ekaSeza_lupta, orp +ekaSeza_Sizyate)
+# with the survivor as the UTTARA (rp), so the widened 1.4.22/1.4.21 derive its vacana.
+# The gotra/yuvan pair 1.2.65/66 and the vṛddhi pair 1.2.71 + the optional-ekavat 1.2.69
+# are DEFERRED (Skipped rows) — they need gotra derivation / श्वाशुर vṛddhi / an ekavat
+# vacana mode not in the itaretara-sum model.
+
+# 933/1.2.67: पुमान् स्त्रिया — a MASCULINE survives over a corresponding feminine of the
+# SAME base (tallakṣaṇa — तल्लक्षण एव विशेषः): हंसी + हंस = हंसौ (हंसी = हंस + ṅīp). The
+# fem pūrva (lp ?strI) is elided; the masc uttara (rp ?pum) survives. ?tallakzaRa (composer-
+# supplied) is criterial — WITHOUT it 1.2.67 would wrongly collapse any masc/fem pair
+# (भ्रातृ+स्वसृ, मातृ+पितृ), which are DIFFERENT lexemes handled by 1.2.68/1.2.70.
+- sutra: पुमान् स्त्रिया
+  id: 1.2.67
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?strI"
+      - "?tallakzaRa"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?pum"
+      - "?tallakzaRa"
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# 934/1.2.68: भ्रातृपुत्रौ स्वसृदुहितृभ्याम् — भ्रातृ survives over स्वसृ, पुत्र over दुहितृ:
+# स्वसृ+भ्रातृ = भ्रातरौ, दुहितृ+पुत्र = पुत्रौ. The sister/daughter (lp) is elided.
+- sutra: भ्रातृपुत्रौ स्वसृदुहितृभ्याम्
+  id: 1.2.68
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - - or
+        - "=svasf"
+        - "=duhitf"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - - or
+        - "=BrAtf"
+        - "=putra"
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# 936/1.2.70: पिता मात्रा — पितृ optionally survives over मातृ (the ekaśeṣa arm): मातृ+पितृ
+# = पितरौ. (The dvandva alternative मातापितरौ is reached via ?dvandva_vivakza, D3's 6.3.25;
+# here only the ekaśeṣa पितरौ, the "पिता वा शिष्यते" reading.)
+- sutra: पिता मात्रा
+  id: 1.2.70
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "=mAtf"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "=pitf"
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# 938/1.2.72: त्यदादीनि सर्वैर्नित्यम् — a त्यद्-ādi (pronoun, ?tyadAdi) survives over any
+# other word (नित्यम्): राम + तद् (सः) = तौ. The non-pronoun (lp) is elided.
+- sutra: त्यदादीनि सर्वैर्नित्यम्
+  id: 1.2.72
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?!tyadAdi"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?tyadAdi"
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# 939/1.2.73: ग्राम्यपशुसङ्घेष्वतरुणेषु स्त्री — for domestic animals (a herd), the FEMININE
+# survives (APAVĀDA to 1.2.67): अज + अजा = अजे (fem). ?grAmyapaSu (composer-supplied);
+# the masc pūrva (lp) is elided, the fem uttara (rp) survives. Overrides 1.2.67.
+- sutra: ग्राम्यपशुसङ्घेष्वतरुणेषु स्त्री
+  id: 1.2.73
+  bahiranga: -1
+  overrides: 1.2.67
+  condition:
+    lp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?pum"
+      - "?grAmyapaSu"
+      - "?!ekaSeza_lupta"
+    rp:
+      - and
+      - "?ekaSeza_vivakza"
+      - "?strI"
+      - "?grAmyapaSu"
+  update:
+    olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
+    orp: [+ekaSeza_Sizyate]
+
+# ════════════════════════════════════════════════════════════════════════════
+# सर्वसमासान्तप्रकरणम् (SK 940–957) — samasa_completion_plan.md, Phase S0/S1/S2.
+# The samāsānta affixes that apply ACROSS compound types (tatpuruṣa / bahuvrīhi /
+# avyayībhāva / dvandva). Almost all are the अच् (= wac, अ) inserted by the existing
+# ?samasanta_TaC + _insert_samasanta path — one rule per qualifying uttara-class.
+# ════════════════════════════════════════════════════════════════════════════
+
+# NB SK944/5.4.76 अक्ष्णोऽदर्शनात् (गवाक्षः) is DEFERRED: गो+अक्षि+अच् does yield गवाक्षः, but
+# the go-stem's optional-sandhi rules (6.1.122–124 विभाषा गोः / अवङ् / इन्द्रे च) also
+# over-generate गोक्षः / गोऽक्षः at the same junction — a pre-existing go-sandhi artifact,
+# not specific to this affix. Revisit with the go-compound family.
+
+# 946/5.4.78: ब्रह्महस्तिभ्यां वर्चसः — a वर्चस्-final tatpuruṣa after ब्रह्मन् / हस्तिन् takes
+# अच् → ब्रह्मणो वर्चः = ब्रह्मवर्चसम् (ब्रह्म+वर्चस्+अ → an a-stem, napuṁsaka nom sg अम्;
+# 8.2.7 न-lopa on ब्रह्मन्→ब्रह्म). Rule-driven ?samasanta_TaC.
+- sutra: ब्रह्महस्तिभ्यां वर्चसः
+  id: 5.4.78
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - - or
+        - "=brahman"
+        - "=hastin"
+    rp:
+      - and
+      - "?samAsa"
+      - "=varcas"
+      - "?!samasanta_TaC"
+  update:
+    # napuṁsaka comes from paravalliṅga (2.4.26): वर्चस् is n., wac is gender-neutral, so the
+    # (वर्चस् | wac) merge keeps napum → अम् → ब्रह्मवर्चसम्. No gender lock needed.
+    orp: [+samasanta_TaC]
+
+# 947/5.4.79: अवसमन्धेभ्यस्तमसः — a तमस्-final compound after अव / सम् / अन्ध takes अच् →
+# अन्धं तमः = अन्धतमसम् (thick darkness; अन्ध+तमस्+अ → an a-stem, napum am by paravalliṅga —
+# तमस् is n. and wac is gender-neutral). The अव/सम् arms are avyayībhāva, deferred.
+- sutra: अवसमन्धेभ्यस्तमसः
+  id: 5.4.79
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "=anDa"
+    rp:
+      - and
+      - "?samAsa"
+      - "=tamas"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 949/5.4.81: अन्ववतप्ताद्रहसः — a रहस्-final compound after अनु / अव / तप्त takes अच् →
+# तप्तं रहः = तप्तरहसम् (तप्त+रहस्+अ → a-stem, napum am by paravalliṅga — रहस् is n., wac is
+# gender-neutral). The अनु/अव arms are avyayībhāva, deferred.
+- sutra: अन्ववतप्ताद्रहसः
+  id: 5.4.81
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "=tapta"
+    rp:
+      - and
+      - "?samAsa"
+      - "=rahas"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# 945/5.4.77: अचतुरविचतुर…गोष्ठश्वाः — a 25-item NIPĀTANA gaṇa (अजन्ता निपात्यन्ते): each
+# listed compound (across types — bahuvrīhi/dvandva/karmadhāraya/tatpuruṣa/avyayībhāva/
+# dvigu) is fixed as an अ-ending (a-stem) via अच्. Modelled as one rule gated on a
+# composer-supplied gaṇa tag ?nipAta_5477 on the qualifying uttara → ?samasanta_TaC →
+# _insert_samasanta inserts wac. E.g. वाच् च मनश्च = वाङ्मनसे (dvandva; मनस्+अ → मनस a-stem,
+# napum dual). The list is long and lexical; a representative subset is implemented, the
+# rest deferred (Skipped row) — the mechanism is one and the same.
+- sutra: अचतुरविचतुरसुचतुरस्त्रीपुंसधेन्वनडुहर्क्सामवाङ्मनसाक्षिभ्रुवदारगवोर्वष्ठीवपदष्ठीवनक्तन्दिवरात्रिन्दिवाहर्दिवसरजसनिःश्रेयसपुरुषायुषद्व्यायुषत्र्यायुषर्ग्यजुषजातोक्षमहोमहोक्षवृद्धोक्षोपशुनगोष्ठश्वाः
+  id: 5.4.77
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?samAsa"
+      - "?nipAta_5477"
+      - "?!samasanta_TaC"
+  update:
+    orp: [+samasanta_TaC]
+
+# ── Sarvasamāsānta PROHIBITIONS (SK954–957 / 5.4.69–72), Phase S2. These BLOCK a
+# samāsānta that would otherwise apply — modelled by setting ?samasanta_niziDDa on the
+# uttara (the guard the affix rules already honour, e.g. 5.4.91/153/155/159/160). They
+# are regression-critical: they must not touch the compounds that legitimately take an
+# affix (परमराजः still gets ṭac). ════════════════════════════════════════════════════
+
+# 956/5.4.71: नञस्तत्पुरुषात् — NO samāsānta after a नञ्-tatpuruṣa: न राजा = अराजा (राजन्
+# keeps its न्-declension, nom sg राजा), न सखा = असखा. Blocks 5.4.91 (टच्) — sets
+# ?samasanta_niziDDa on the नञ्-tp uttara + overrides 5.4.91. पथिन् is the 5.4.72 exception
+# (नञ्+पथिन् is optional), so it is excluded here (?!paTin). तत्पुरुषात् किम् — a non-tp
+# (धुरं शकटम्) is untouched.
+- sutra: नञस्तत्पुरुषात्
+  id: 5.4.71
+  bahiranga: -1
+  overrides: 5.4.91
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?naY"
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?!paTin"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_niziDDa]
+
+# 957/5.4.72: पथो विभाषा — a नञ्पूर्व पथिन् OPTIONALLY takes the samāsānta अच्: न पन्थाः =
+# अपथम् (with अच् → अपथ a-stem, napuṁsaka by 2.4.30) OR अपन्थाः (without → पथिन् declension,
+# पन्थाः). VIBHĀṢĀ → the pre-pass forks. Exception to 5.4.71's blanket nañ-tp block
+# (which excludes पथिन् via ?!paTin). तत्पुरुषादित्येव — a non-tp पथिन् is untouched.
+- sutra: पथो विभाषा
+  id: 5.4.72
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?naY"
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?paTin"
+      - "?!samasanta_TaC"
+      - "?!samasanta_niziDDa"
+  update:
+    orp: [+samasanta_TaC]
+
+# 815/2.4.30: अपथं नपुंसकम् — a पथिन्-final tatpuruṣa that has taken the अच् (5.4.72) is
+# NAPUṀSAKA → अपथम् (overriding पथिन्'s native masc + 2.4.26). Sets the deferred napuṁsaka
+# marker (→ ?napum + lock via _commit_samasa_napum), gated on ?samasanta_TaC so ONLY the
+# अच्-fork (अपथ) is neuter; the no-अच् fork stays masc (अपन्थाः). Clears a standing
+# tatpuruṣa T-liṅga deferral.
+- sutra: अपथं नपुंसकम्
+  id: 2.4.30
+  domain: saMjYA
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?tatpuruza"
+      - "?paTin"
+      - "?samasanta_TaC"
+      - "?!samasa_napum"
+  update:
+    orp: [+samasa_napum]
+
+# ════════════════════════════════════════════════════════════════════════════
+# अलुक्समासप्रकरणम् (SK 958–984) — samasa_completion_plan.md, Phase A0/A1/A2.
+# ALUK: the pūrva member's vigraha sup is normally luk'd (2.4.71); these rules SUPPRESS
+# that luk for specific pūrvas, so the case-ending survives INTO the compound
+# (स्तोकान्मुक्तः, आत्मनेपदम्, मातुःष्वसा). The whole prakaraṇa is one carve-out: an aluk
+# rule tags the pūrva ?aluk, and 2.4.71 (guarded ?!aluk above) then leaves its sup.
+# The retained sup makes the pūrva a FULL PADA inside the compound, so the junction is
+# pada-boundary sandhi (स्तोकात्+मुक्त → स्तोकान्मुक्त; आत्मने+पद). SK958/6.3.1 अलुगुत्तरपदे
+# is the adhikāra (उत्तरपदे — "before the uttarapada"), folded into each rule as ?aluk.
+# ════════════════════════════════════════════════════════════════════════════
+
+# 959/6.3.2: पञ्चम्याः स्तोकादिभ्यः — the PAÑCAMĪ of स्तोक/अन्तिक/दूर/कृच्छ्र (?stoka_gaRa)
+# has ALUK before the uttarapada: स्तोकान्मुक्तः, अन्तिकादागतः, दूरादागतः. Tags the स्तोक
+# pañcamī pūrva ?aluk → 2.4.71 leaves its ṅasi (आत्) → स्तोकात्+मुक्त → स्तोकान्मुक्त
+# (त्→न् before म by 8.4.45). Fires after 2.1.39 forms the compound.
+- sutra: पञ्चम्याः स्तोकादिभ्यः
+  id: 6.3.2
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?stoka_gaRa"
+      - "?viBakti_5"
+      - "?!aluk"
+    rp: "?samAsa"
+  update:
+    olp: [+aluk]
+
+# 960/6.3.3: ओजःसहोऽम्भस्तमसस्तृतीयायाः — the TṚTĪYĀ of ओजस्/सहस्/अम्भस्/तमस् has aluk:
+# ओजसा कृतम् = ओजसाकृतम् (ओजस् tṛtīyā sg ओजसा survives). Tags the ओजस् tṛtīyā pūrva ?aluk.
+- sutra: ओजःसहोऽम्भस्तमसस्तृतीयायाः
+  id: 6.3.3
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - - or
+        - "=ojas"
+        - "=sahas"
+        - "=amBas"
+        - "=tamas"
+      - "?viBakti_3"
+      - "?!aluk"
+    rp: "?samAsa"
+  update:
+    olp: [+aluk]
+
+# 964/6.3.7: वैयाकरणाख्यायां चतुर्थ्याः — the CATURTHĪ of आत्मन् (आत्मन इत्येव, from 6.3.6)
+# has aluk in a grammarians' term: आत्मने पदम् = आत्मनेपदम् (आत्मन् caturthī sg आत्मने
+# survives → आत्मने+पद, e-final pada junction). The generator derives its own metalanguage.
+- sutra: वैयाकरणाख्यायां चतुर्थ्याः
+  id: 6.3.7
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "=Atman"
+      - "?viBakti_4"
+      - "?!aluk"
+    rp: "?samAsa"
+  update:
+    olp: [+aluk]
+
+# 979/6.3.21: षष्ठ्या आक्रोशे — a ṢAṢṬHĪ pūrva has aluk in the आक्रोश (abuse) sense:
+# चौरस्य कुलम् = चौरस्यकुलम् (a thief's family, said in reproach; चौरस्य retained). Contrast
+# ब्राह्मणकुलम् (non-ākrośa → the ṣaṣṭhī luks). ?AkroSa is composer-supplied.
+- sutra: षष्ठ्या आक्रोशे
+  id: 6.3.21
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?viBakti_6"
+      - "?AkroSa"
+      - "?!aluk"
+    rp: "?samAsa"
+  update:
+    olp: [+aluk]
+
+# 971/6.3.13: बन्धे च विभाषा — a हलदन्त saptamī before बन्ध OPTIONALLY has aluk: हस्ते बन्धः
+# = हस्तेबन्धः / हस्तबन्धः. VIBHĀṢĀ → the pre-pass forks (aluk retains हस्ते; no-aluk luks →
+# हस्तबन्धः). Fires after 2.1.41 (सिद्ध…बन्ध arm) forms the saptamī-tatpuruṣa.
+- sutra: बन्धे च विभाषा
+  id: 6.3.13
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?viBakti_7"
+      - "?!aluk"
+    rp:
+      - and
+      - "?samAsa"
+      - "=banDa"
+  update:
+    olp: [+aluk]

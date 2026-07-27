@@ -413,6 +413,66 @@ def is_ftanta(x):
     return bool(s) and s[-1] == "f"
 
 
+# ── Pūrva-nipāta (2.2.30–37) member-ordering predicates (samasa_completion_plan.md D2) ──
+# env-aware ($$fn(k, env)) helpers for the ?purvanipata sweep: k is the uttara (rp), and
+# env['lp'] the pūrva. Each returns True when the uttara should come FIRST (so the sweep
+# tags it ?pUrvanipAta and swaps the members). They compare the two window members, so
+# they cannot be a plain tag test.
+_SLP1_AC = set("aAiIuUfFxXeEoO")   # the ac (vowels)
+
+
+def _canon(o):
+    return o.canonical() if hasattr(o, "canonical") else str(o)
+
+
+def _is_ghi_stem(o):
+    """Re-derive the घि saṁjñā (1.4.7 शेषो घ्यसखि) IN THE PRE-PASS. ?Gi is unreadable here:
+    1.4.7 is a bahiranga:0 main-scan rule firing at the (stem | sup) window, so no member
+    carries ?Gi during the samāsa pre-pass. A ghi stem is short-i/u-final, not sakhi, not
+    a strī/nadī. SK903/2.2.32 द्वन्द्वे घि needs this."""
+    s = _canon(o)
+    if not s or s[-1] not in ("i", "u"):
+        return False
+    if hasattr(o, "hasTag") and (o.hasTag("saKi") or o.hasTag("strI")):
+        return False
+    return True
+
+
+def _is_ajady_adanta(o):
+    """अजाद्यदन्त (SK904/2.2.33): vowel-initial (अच्-आदि) AND a-final (अत्-अन्त)."""
+    s = _canon(o)
+    return bool(s) and s[0] in _SLP1_AC and s[-1] == "a"
+
+
+def _count_ac(o):
+    return sum(1 for ch in _canon(o) if ch in _SLP1_AC)
+
+
+def rp_is_purva_ghi(k, env):
+    """SK903/2.2.32 द्वन्द्वे घि — the ghi member goes first. True when the uttara (rp) is
+    ghi and the pūrva (lp) is not, so rp must move to the front (हरिहरौ from हर+हरि)."""
+    return _is_ghi_stem(k) and not _is_ghi_stem(env["lp"])
+
+
+def rp_is_purva_ajady(k, env):
+    """SK904/2.2.33 अजाद्यदन्तम् — the vowel-initial a-final member goes first. True when
+    the uttara qualifies and the pūrva does not (ईशकृष्णौ from कृष्ण+ईश)."""
+    return _is_ajady_adanta(k) and not _is_ajady_adanta(env["lp"])
+
+
+def rp_is_purva_alpac(k, env):
+    """SK905/2.2.34 अल्पाच्तरम् — the member with FEWER vowels (अच्) goes first. True when
+    the uttara has strictly fewer vowels than the pūrva (शिवकेशवौ from केशव+शिव)."""
+    return _count_ac(k) < _count_ac(env["lp"])
+
+
+def sarUpa(k, env):
+    """सरूप — the two window members have the SAME form (same stem string): राम + राम.
+    SK188/1.2.64 सरूपाणामेकशेष (ekaśeṣa) and the bahuvrīhi SK846/2.2.27 सरूपे both need it.
+    k is the uttara (rp), env['lp'] the pūrva; a content check no tag can express."""
+    return _canon(k) != "" and _canon(k) == _canon(env["lp"])
+
+
 def lp_has_ratva_cause(lp):
     """Return True if lp contains a ratva cause (r, ṛ=f, ṣ=z) with ONLY vyavāya
     characters (aṭkupvāṅnum) to its right.
