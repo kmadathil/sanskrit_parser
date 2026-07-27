@@ -37,6 +37,8 @@ def enable_console_logger(level=logging.INFO,
     console.setFormatter(formatter)
     # add the handler to the root logger
     logger.addHandler(console)
+    if logger.level == logging.NOTSET or level < logger.level:
+        logger.setLevel(level)
 
 
 def enable_file_logger(log_file_name='SanskritParser.log',
@@ -56,6 +58,9 @@ def enable_file_logger(log_file_name='SanskritParser.log',
     fh.setLevel(level)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
+    if logger.level == logging.NOTSET or level < logger.level:
+        logger.setLevel(level)
+
 
 
 __version__ = '0.2.6'
