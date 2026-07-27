@@ -12471,6 +12471,87 @@
   update:
     orp: [+pUrvanipAta]
 
+# ── Bahuvrīhi word-order (physical pūrva-nipāta) SK898–900 / 2.2.35–37 ────────────
+# These reuse the M2 mechanism the dvandva prakaraṇa built: `purvanipata: true` routes
+# them to SWEEP 1, they tag the member that must come FIRST ?pUrvanipAta, and
+# _commit_purvanipata physically moves it. They gate on the intent ?bahuvrIhi_vivakza (the
+# saṁjñā does not exist yet in SWEEP 1). Unlike the dvandva rules 2.2.32–34, the criterion
+# here is an INTRINSIC member property (niṣṭhā / viśeṣaṇa), so a plain tag test suffices —
+# no $$rp_is_purva_* comparison helper. Each fires when the UTTARA (rp) has the property and
+# the pūrva does not, so the uttara moves to the front; if the pūrva already has it, the rule
+# does not fire and the input order (already correct) is kept.
+
+# SK898/2.2.35 सप्तमीविशेषणे बहुव्रीहौ — a saptamī-anta OR a viśeṣaṇa (qualifier) goes first:
+# चित्रा गावो यस्य = चित्रगुः (चित्र, a viśeṣaṇa, leads). `?viSezaRa` is composer-supplied (the
+# same tag pratipadika.py already documents for kta-pūrva viśeṣaṇa roles).
+# ONLY the viśeṣaṇa arm is modelled. The saptamī arm (कण्ठेकालः) is a VYADHIKARAṆA bahuvrīhi
+# with ALUK (कण्ठे keeps its locative) — 2.2.24 requires both members ?viBakti_1, and this
+# sūtra is itself the jñāpaka that vyadhikaraṇa bahuvrīhis exist (अत एव ज्ञापकात्…); that
+# formation path is a separate build. The sarvanāma/saṅkhyā vārtikas (सर्वश्वेतः, द्विशुक्लः)
+# and वा प्रियस्य are likewise deferred. Recorded in generator_status.md.
+- sutra: सप्तमीविशेषणे बहुव्रीहौ
+  id: 2.2.35
+  bahiranga: -1
+  purvanipata: true
+  condition:
+    lp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+      - "?!viSezaRa"
+    rp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?viSezaRa"
+  update:
+    orp: [+pUrvanipAta]
+
+# SK899/2.2.36 निष्ठा — a निष्ठा-anta (क्त/क्तवतु, ?kta) member goes first: कृतं कृत्यं येन =
+# कृतकृत्यः (कृत, the niṣṭhā, leads). Obligatory — hence NOT optional — except in the
+# āhitāgni-ādi gaṇa, where 2.2.37 makes it optional; so this rule carries ?!AhitAgnyAdi and
+# 2.2.37 handles that set. (Also the jātikāla-sukhādi vārtika — निष्ठा goes LAST there,
+# सारङ्गजग्धी / मासजाता — is deferred; those words are not tagged ?kta for this purpose.)
+- sutra: निष्ठा
+  id: 2.2.36
+  bahiranga: -1
+  purvanipata: true
+  condition:
+    lp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+      - "?!kta"
+    rp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?kta"
+      - "?!AhitAgnyAdi"
+  update:
+    orp: [+pUrvanipAta]
+
+# SK900/2.2.37 वाहिताग्न्यादिषु — in the āhitāgni-ādi ĀKṚTIGAṆA the niṣṭhā is OPTIONALLY
+# first: आहिताग्निः / अग्न्याहितः. A vibhāṣā carve-out from 2.2.36 (वा) — `optional: true`
+# gives both branches: the applied branch moves the niṣṭhā first (आहिताग्निः), the skip
+# branch keeps the input order (अग्न्याहितः when the input is अग्नि, आहित). `?AhitAgnyAdi`
+# is a composer tag on the niṣṭhā member (the gaṇa is open/ākṛti, so membership is lexical).
+- sutra: वाहिताग्न्यादिषु
+  id: 2.2.37
+  bahiranga: -1
+  purvanipata: true
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?bahuvrIhi_vivakza"
+      - "?kta"
+      - "?AhitAgnyAdi"
+  update:
+    orp: [+pUrvanipAta]
+
 # ════════════════════════════════════════════════════════════════════════════
 # समासप्रकरणम् — द्वन्द्वसमासः, Phase D3 (samasa_completion_plan.md): the dvandva
 # ĀDEŚAS (SK921–929 / 6.3.25–32, 8.3.82) — pre-pass PŪRVA-substitution rules (the

@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 94 cases; full generator suite green (8243 passed).
+> `test/test_samasa_bahuvrihi.py` = 100 cases; full generator suite green (8249 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8243 green.
+8249 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -414,11 +414,41 @@ the 4.3.129 nipātana does not cover.
   svāṅga, so the clash is real, not theoretical. **Lesson: when an apavāda competes with a
   nitya rule across an optional fork, encode the exclusion positively in the nitya rule.**
 
+**Round 8 — physical pūrva-nipāta SK898–900 / 2.2.35–37 (this round)**
+- **Reused the dvandva M2 mechanism wholesale** — `purvanipata: true` routes a rule to
+  SWEEP 1, it tags the member that must lead `?pUrvanipAta`, `_commit_purvanipata` moves it.
+  Unlike the dvandva rules 2.2.32–34 (which need `$$rp_is_purva_*` comparison helpers), the
+  criterion here is an **intrinsic member property** (niṣṭhā `?kta` / viśeṣaṇa `?viSezaRa`),
+  so a plain tag test suffices. SK899/2.2.36 → **कृतकृत्यः** (from reversed कृत्य+कृत),
+  SK898/2.2.35 → **नीलकण्ठः** (from कण्ठ+नील), SK900/2.2.37 → **आहिताग्निः / अग्न्याहितः**.
+- **The anyapadārtha lock had to be taught to follow the reorder.** The referent gender/case/
+  number live on the *uttara*; a pūrva-nipāta makes a different member the uttara, so
+  `_commit_purvanipata` now transfers `?referent_*` + the liṅga + viBakti/vacana from the old
+  uttara to the new one. Without it कृत्य+कृत reordered to कृतकृत्य**म्** (कृत्य's native neuter)
+  instead of the masc referent's कृतकृत्यः. **Gate on `?referent_*`, not `?samasa_liNga_locked`**
+  — the latter is set later, in the fixpoint, and is absent during SWEEP 1.
+- **The sweep learned to vibhāṣā-fork for 2.2.37 (वा).** SWEEP 1 previously mutated one
+  `inputs` in place (the dvandva orderings are all obligatory). An `optional: true` ordering
+  rule now returns a fork flag; the caller re-runs the sweep on a pristine copy with
+  `skip_optional=True` (obligatory reorders still apply, the vibhāṣā one does not) → both
+  आहिताग्निः and अग्न्याहितः. 2.2.36 carries `?!AhitAgnyAdi` so the āhitāgni-ādi set is 2.2.37's
+  alone. Dvandva reorder (हरिहरौ etc.) verified unaffected.
+- **Deferred, deliberately:** (a) 2.2.35's **saptamī / vyadhikaraṇa arm** (कण्ठेकालः) — it is a
+  vyadhikaraṇa bahuvrīhi with **aluk** (कण्ठे keeps its locative), and 2.2.24 requires both
+  members `?viBakti_1`; the sūtra is itself the jñāpaka that vyadhikaraṇa bahuvrīhis exist, so
+  that formation path is a separate build. Only the viśeṣaṇa arm is modelled. (b) **fem
+  referent under reorder** — the referent's `strI_abs` (ṭāp) is a trailing list element that
+  the reorder bundles with the old uttara, so कृत्य+कृत+strI → कृताकृत्यः not कृतकृत्या; the
+  canonical examples (कृतकृत्यः, नीलकण्ठः, आहिताग्निः) are all masc, so this is synthetic.
+  (c) the सर्वनाम/संख्या and वा प्रियस्य vārtikas of 2.2.35; the जातिकालसुखादि (niṣṭhā-last)
+  vārtika of 2.2.36.
+
 ### Remaining work
 
-**A. Formation deferrals — all blocked on ONE shared engine step (physical pūrva-nipāta,
-2.2.30).** This is the highest-leverage item left: tatpuruṣa deferred the same mechanism.
-- SK898–900 / 2.2.35–37 (word order), the B0 physical reorder.
+**A. Formation deferrals — ✅ physical pūrva-nipāta LANDED (round 8, see below).**
+- SK898–900 / 2.2.35–37 (word order) done via the dvandva M2 reorder sweep. The vyadhikaraṇa
+  arm of 2.2.35 (कण्ठेकालः, saptamī + aluk) and the fem-referent-under-reorder edge remain —
+  see round 8.
 
 **B. केशाकेशि cluster — the only genuinely new mechanism left.**
 - SK846/2.2.27 needs a **new lp == rp content check** (sarūpa); then SK866/5.4.127 इच्
@@ -554,7 +584,7 @@ test_samasa_bahuvrihi.py, labels dual-numbered SK-first per §0 (e.g.
 generator_status.md; defer the priyādi-gaṇa long tail with a Skipped row if not reached.
 ```
 
-### Phase B2 — Additional formation types + word order — ✅ DONE for saha + diś + saṅkhyā (`0cbac07`,`4d0025f`); 2.2.27/2.2.35–37 deferred (see §2a)
+### Phase B2 — Additional formation types + word order — ✅ COMPLETE for saha + diś + saṅkhyā + **word order 2.2.35–37** (`0cbac07`,`4d0025f`, + reorder this round); 2.2.27 (sarūpa, → केशाकेशि) deferred (see §2a)
 
 - **SK843 / 2.2.25 संख्यया…**: indeclinable / āsanna / adūra / adhika + saṅkhyā →
   bahuvrīhi (उपदशाः "about ten"). Feeds ḍac in B3.
@@ -775,7 +805,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (94 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (100 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

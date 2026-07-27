@@ -622,9 +622,29 @@ class AntarangaPrakriya(PrakriyaBase):
         # saṁjñā/vidhi rules run (SWEEP 2). Two disjoint rule sets with the reorder
         # strictly between them → no rule ever fires on a stale order. No-op when no
         # ?purvanipata rule fires (every existing avyayībhāva/tatpuruṣa/bahuvrīhi case).
+        pre_branches = [inputs]
         if self._purvanipata_sutras:
-            self._purvanipata_sweep(inputs, _flagged, _avasana_between)
+            pristine = deepcopy(inputs)
+            forked = self._purvanipata_sweep(inputs, _flagged, _avasana_between)
+            if forked:
+                # An OPTIONAL ordering rule (2.2.37 वा) fired → vibhāṣā. `inputs` is the
+                # applied (reordered) branch; the skip branch re-runs the sweep with the
+                # optional rules disabled, so any obligatory reorders (2.2.32–36) still
+                # apply but the optional one does not → the input order is kept there.
+                self._purvanipata_sweep(pristine, _flagged, _avasana_between,
+                                        skip_optional=True)
+                pre_branches = [inputs, pristine]
 
+        all_branches = []
+        for inputs in pre_branches:
+            all_branches.extend(
+                self._samasa_prepass_after_reorder(inputs, _flagged, _avasana_between))
+        return all_branches
+
+    def _samasa_prepass_after_reorder(self, inputs, _flagged, _avasana_between):
+        """The samāsa pre-pass body that runs AFTER SWEEP 1 (physical reorder): the -1
+        window fixpoint (SWEEP 2) + per-branch post-steps. Factored out so the reorder can
+        fork into multiple `inputs` branches (2.2.37 vibhāṣā) and each is processed here."""
         members = [ix for ix in range(len(inputs))
                    if self._is_samasa_member(inputs[ix])]
         # Apply -1 rules to each adjacent (pūrva | uttara) member pair that is a
@@ -679,8 +699,13 @@ class AntarangaPrakriya(PrakriyaBase):
         for a, b in reversed(spans):
             del inputs.v[a:b]
 
-    def _purvanipata_sweep(self, inputs, _flagged, _avasana_between):
+    def _purvanipata_sweep(self, inputs, _flagged, _avasana_between,
+                           skip_optional=False):
         """SWEEP 1 of the samāsa pre-pass — physical pūrva-nipāta (2.2.30).
+
+        Returns True if an OPTIONAL ordering rule (2.2.37 वा) fired — the caller then also
+        builds a skip branch (this same sweep with skip_optional=True). skip_optional omits
+        the optional rules, so the obligatory reorders still apply but the vibhāṣā does not.
 
         A single left-to-right bubble pass over adjacent member windows. At each
         window (a, b) the highest-priority triggered ?purvanipata rule (2.2.31–37,
@@ -694,7 +719,9 @@ class AntarangaPrakriya(PrakriyaBase):
         (हरिहरौ / ईशकृष्णौ / शिवकेशवौ from reversed input); n-ary pūrva-nipāta is
         approximate (a full topological order is not attempted). Reorder-only: the
         rules write ?pUrvanipAta and nothing else, so SWEEP 2 sees a clean order."""
-        ordered = sorted(self._purvanipata_sutras, key=lambda s: s._aps_num)
+        ordered = [s for s in sorted(self._purvanipata_sutras, key=lambda s: s._aps_num)
+                   if not (skip_optional and getattr(s, "optional", False))]
+        forked = False
         i = 0
         while i < len(inputs):
             if not self._is_samasa_member(inputs[i]):
@@ -720,6 +747,8 @@ class AntarangaPrakriya(PrakriyaBase):
                     inputs.replace_at(i, r[0])
                     inputs.replace_at(b, r[1])
                     fired = s
+                    if getattr(s, "optional", False):
+                        forked = True
                     break
             if fired is not None and self._commit_purvanipata(inputs, i, b):
                 logger.debug(f"Pūrva-nipāta [{fired.aps}] @({i},{b}): reordered")
@@ -727,6 +756,7 @@ class AntarangaPrakriya(PrakriyaBase):
                                         "tags": sorted(inputs[i].tags),
                                         "samasa": True})
             i += 1
+        return forked
 
     def _commit_purvanipata(self, inputs, a, b):
         """If the uttara member (b) is tagged ?pUrvanipAta, physically move its
@@ -745,6 +775,26 @@ class AntarangaPrakriya(PrakriyaBase):
                 lp.deleteTag("pUrvanipAta")
             return False
         rp.deleteTag("pUrvanipAta")
+        # Bahuvrīhi anyapadārtha lock follows the reorder. The referent gender/case/number
+        # live on the UTTARA (join_objects propagates the last member's liṅga). A pūrva-nipāta
+        # moves a different member to the front, so the OLD uttara (rp) becomes a pūrva (its
+        # sup luks) and the OLD pūrva (lp) becomes the new uttara — the lock must move with the
+        # role. Without this, कृत्य+कृत reordered by 2.2.36 declines in कृत्य's native gender
+        # (कृतकृत्यम्) instead of the masc referent's (कृतकृत्यः). No-op for dvandva (no lock).
+        lp = inputs[a]
+        # Gate on ?referent_* — the COMPOSER-supplied anyapadārtha marker, present now in
+        # SWEEP 1. (?samasa_liNga_locked is set later, by the B0 referent rule in the
+        # fixpoint, so it is not yet available here.)
+        if _isScalar(lp) and any(t.startswith("referent_") for t in rp.tags):
+            _MOVE = ("samasa_liNga_locked", "pum", "strI", "napum", "uttara_strI")
+            for t in list(lp.tags):
+                if t in ("pum", "strI", "napum") or t.startswith(("referent_", "viBakti_", "vacana_")):
+                    lp.deleteTag(t)
+            for t in list(rp.tags):
+                if t in _MOVE or t.startswith(("referent_", "viBakti_", "vacana_")):
+                    lp.setTag(t)
+                    rp.deleteTag(t)
+            rp.setTag("viBakti_1")   # the old uttara is now a pūrva → prathamā vigraha, sup luks
         b_end = b + 1
         while (b_end < len(inputs) and _isScalar(inputs[b_end])
                and inputs[b_end].hasTag("pratyaya")):

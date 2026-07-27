@@ -1519,6 +1519,76 @@ samasa_bv_tests = [
         "not_fired": ["5.4.113"],
         "surfaces": ["असक्थः", "असक्थिः"],
     },
+    # ── Physical pūrva-nipāta (word order) SK898–900 / 2.2.35–37 ───────────────────
+    # These reuse the dvandva M2 reorder sweep. Input is given in the "wrong" (vigraha)
+    # order; the ?purvanipata rule physically moves the mandated member to the FRONT. The
+    # referent-gender lock follows the reorder (_commit_purvanipata), so the compound still
+    # declines in the referent's liṅga. The natural-order twin proves the rule is a no-op
+    # when the input is already correct.
+    {
+        # SK898/2.2.35 सप्तमीविशेषणे — the viśeṣaṇa नील leads: नीलः कण्ठो यस्य = नीलकण्ठः.
+        # Input REVERSED (कण्ठ, नील) → the sweep moves नील first.
+        "label": "B2-nIlakaRWaH-SK898-2.2.35-reorder",
+        "purva": {"stem": "kaRWa", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "nIla_vis", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.35", "2.2.24", "1.2.43"],
+        "surface": "नीलकण्ठः",
+    },
+    {
+        # Natural order (नील, कण्ठ) — 2.2.35 must NOT fire; order already correct.
+        "label": "B2-nIlakaRWaH-SK898-2.2.35-natural",
+        "purva": {"stem": "nIla_vis", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kaRWa", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["2.2.35"],
+        "surface": "नीलकण्ठः",
+    },
+    {
+        # SK899/2.2.36 निष्ठा — the niṣṭhā कृत leads: कृतं कृत्यं येन = कृतकृत्यः.
+        # Input REVERSED (कृत्य, कृत) → the sweep moves कृत first; the masc referent lock
+        # follows the reorder onto कृत्य (the new uttara), so it is कृतकृत्यः, not *कृतकृत्यम्.
+        "label": "B2-kftakftyaH-SK899-2.2.36-reorder",
+        "purva": {"stem": "kftya", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kfta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.36", "2.2.24", "1.2.43"],
+        "surface": "कृतकृत्यः",
+    },
+    {
+        # napum referent on the same reorder — कृतकृत्यम् (proves the gender-transfer is
+        # liṅga-agnostic, and needs no strI_abs).
+        "label": "B2-kftakftyam-SK899-2.2.36-napum",
+        "purva": {"stem": "kftya", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kfta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "napum",
+        "fired": ["2.2.36", "2.2.24", "1.2.43"],
+        "surface": "कृतकृत्यम्",
+    },
+    {
+        # Natural order (कृत, कृत्य) — 2.2.36 no-op.
+        "label": "B2-kftakftyaH-SK899-2.2.36-natural",
+        "purva": {"stem": "kfta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kftya", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["2.2.36"],
+        "surface": "कृतकृत्यः",
+    },
+    {
+        # SK900/2.2.37 वाहिताग्न्यादिषु — the niṣṭhā आहित is OPTIONALLY first in the
+        # āhitāgni-ādi ākṛtigaṇa: आहिताग्निः / अग्न्याहितः. The sweep vibhāṣā-forks (the
+        # applied branch reorders आहित first, the skip branch keeps input अग्नि, आहित).
+        # 2.2.36 must NOT fire here (āhita is ?AhitAgnyAdi, its exception).
+        "label": "B2-AhitAgniH-SK900-2.2.37-vibhasha",
+        "purva": {"stem": "agni", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "Ahita", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.37", "2.2.24", "1.2.43"],
+        "not_fired": ["2.2.36"],
+        "surfaces": ["आहिताग्निः", "अग्न्याहितः"],
+    },
     {
         # अजातककुत् type = प्राप्तककुत् / प्राप्तककुद् (SK884/5.4.146 ककुद final-lopa; 8.4.56).
         "label": "B4-prAptakakut-SK884-5.4.146",

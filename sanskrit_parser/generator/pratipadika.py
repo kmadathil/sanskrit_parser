@@ -841,6 +841,13 @@ Irma   = Pratipadika("Irma",   "napum")  # ईर्म "wound" (व्रण) �
 dakziRa = Pratipadika("dakziRa", "pum")  # दक्षिण "right(-hand)" — SK865/5.4.126 pūrva
 aSri   = Pratipadika("aSri",   "strI")   # अश्रि "corner" — SK860/5.4.120 चतुरश्रः (अच् nipātana list)
 
+# ── Physical pūrva-nipāta group SK898–900 / 2.2.35–37 (bahuvrihi_plan.md §2a rem. A) ──
+kftya  = Pratipadika("kftya",  "napum")   # कृत्य "duty" — SK899/2.2.36 कृतकृत्यः (कृत is the niṣṭhā)
+citra  = Pratipadika("citra",  "pum",  other_tags=["viSezaRa"])   # चित्र "variegated" (a viśeṣaṇa) — SK898/2.2.35 चित्रगुः
+kaRWa  = Pratipadika("kaRWa",  "pum")   # कण्ठ "neck" — SK898/2.2.35 नीलकण्ठः uttara (clean a-stem)
+nIla_vis = Pratipadika("nIla", "pum", other_tags=["viSezaRa"])   # नील "blue" as a viśeṣaṇa — नीलकण्ठः (separate from the ?jAnapadAdi नील)
+Ahita  = Pratipadika("Ahita",  "pum",  other_tags=["kta", "AhitAgnyAdi"])  # आहित "placed" (niṣṭhā, āhitāgni-ādi) — SK900/2.2.37 आहिताग्निः/अग्न्याहितः
+
 # to test
 Denu = Pratipadika("Denu", "strI")
 suBrU = Pratipadika("suBrU", "strI", other_tags=["BrU"])
