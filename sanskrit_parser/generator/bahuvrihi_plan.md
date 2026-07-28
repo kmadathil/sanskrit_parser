@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 106 cases; full generator suite green (8314 passed).
+> `test/test_samasa_bahuvrihi.py` = 110 cases; full generator suite green (8318 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8314 green.
+8318 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -508,6 +508,32 @@ the 4.3.129 nipātana does not cover.
     word कण्ठ), with क्वचिन्न exceptions (वहेगडुः). Would suppress arm B via a `?!gaqvAdi`
     guard, the same shape as 2.2.36's `?!AhitAgnyAdi`.
 
+**Round 11 — the केशाकेशि cluster (this round)**
+- **SK846/2.2.27 तत्र तेनेदमिति सरूपे + SK866/5.4.127 इच् + 6.3.137 dīrgha**, all landed:
+  **केशाकेशि** (saptamī / ग्रहण sense), **दण्डादण्डि** (tṛtīyā / प्रहरण), **मुष्टीमुष्टि**, **बाहूबाहवि**.
+- **The `$$sarUpa` lp≡rp check already existed** — written for the ekaśeṣa 1.2.64, and its
+  docstring already named 2.2.27 as an intended consumer. My scope had called it "a NEW
+  content check"; it was not. No clash with ekaśeṣa: that gates on `?ekaSeza_vivakza`, this on
+  `?bahuvrIhi_vivakza` + the composer's `?karmavyatihAra`.
+- **Confirms the earlier correction: NO reduplication is involved.** SK's own vigraha is
+  केशेषु केशेषु — the composer supplies the same word twice.
+- **Invariance** comes from SK846's own note (तिष्ठद्गुप्रभृतिषु इच्प्रत्ययस्य पाठात्
+  अव्ययीभावत्वम् अव्ययत्वं च): 5.4.127 sets `+avyaya`, and the existing 2.4.82 अव्ययादाप्सुपः
+  luks the sup → केशाकेशि, not *केशाकेशिः.
+- **6.3.137 had to be a PRE-PASS rule.** As a main-scan rule its `rp: ?samAsa` could never
+  match: in the main scan the pūrva's own sup sits between the members, so the window is
+  (केश | su). The pre-pass window is member-to-member. Scoped to `?karmavyatihAra` — a blanket
+  pūrva-pada dīrgha (the sūtra is दृश्यते, "is seen") would be far too destructive; the general
+  cases (पूरुषः, नारकः) and the श्वन् vārtika are NOT modelled.
+- **1.2.47 ह्रस्वो नपुंसके needed a `?!samAsaPurva` guard.** It was re-shortening the pūrva
+  that 6.3.137 had just lengthened — but only when that pūrva happened to be **napuṁsaka**, so
+  दण्डादण्डि (masc दण्ड) worked while केशाकेशि silently did not. प्रातिपदिकस्य means the stem
+  TAKING THE SUP, not an internal compound member. A good reminder that a rule can be
+  half-working for a reason that has nothing to do with the rule under test.
+- **This unlocked SK847/6.4.146 ओर्गुणः → बाहूबाहवि**, exactly as predicted: 6.4.146 was already
+  implemented but unreachable, being `?Ba`-gated while कप् is consonant-initial (1.4.18 यचि भम्
+  never made a stem `?Ba` before it). The vowel-initial इच् is what finally reaches it.
+
 ### Remaining work
 
 **A. Formation deferrals — ✅ physical pūrva-nipāta LANDED (round 8, see below).**
@@ -517,12 +543,9 @@ the 4.3.129 nipātana does not cover.
   only the **2.2.35 vārtikas** — सर्वनाम/संख्या (+ its 3 follow-ons), वा प्रियस्य, and the
   गड्वादि counter-exception; each is scoped in round 10.
 
-**B. केशाकेशि cluster — the only genuinely new mechanism left.**
-- SK846/2.2.27 needs a **new lp == rp content check** (sarūpa); then SK866/5.4.127 इच्
-  (`ic_s` already exists), **6.3.137 अन्येषामपि दृश्यते** (unimplemented — supplies the
-  केश→केशा dīrgha), and avyaya tagging (ic is tiṣṭhadgu-prabhṛti → invariant).
-- It also **unlocks 6.4.146 ओर्गुणः / बाहूबाहवि**, already implemented but unreachable.
-- NOT reduplication — SK's vigraha केशेषु केशेषु supplies the word twice.
+**B. केशाकेशि cluster — ✅ DONE (round 11).** 2.2.27 + 5.4.127 इच् + 6.3.137 dīrgha →
+केशाकेशि / दण्डादण्डि / मुष्टीमुष्टि, and it unlocked 6.4.146 ओर्गुणः → **बाहूबाहवि** as predicted.
+The `$$sarUpa` check turned out to already exist (written for ekaśeṣa 1.2.64).
 
 **C. B1 puṁvadbhāva remainder — needs affix-context machinery.**
 - SK836/6.3.35 (tasil-ādi), SK837/6.3.36 (kyaṅ/mānin), SK840/6.3.39 (taddhita-vṛddhi).
@@ -872,7 +895,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (106 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (110 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped

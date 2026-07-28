@@ -1520,6 +1520,53 @@ samasa_bv_tests = [
         "not_fired": ["5.4.113"],
         "surfaces": ["असक्थः", "असक्थिः"],
     },
+    # ── केशाकेशि cluster: SK846/2.2.27 + SK866/5.4.127 इच् + 6.3.137 dīrgha ──────────
+    # Two SARŪPA words, both saptamī (ग्रहण "seizing") or both tṛtīyā (प्रहरण "striking"),
+    # in the कर्मव्यतिहार (reciprocity) sense. The composer supplies the SAME word twice —
+    # nothing is reduplicated by rule (SK's vigraha is केशेषु केशेषु). The compound is an
+    # AVYAYA (इच् is in the tiṣṭhadgu-prabhṛti gaṇa), so it is invariant — no visarga.
+    {
+        # केशेषु केशेषु गृहीत्वेदं युद्धं प्रवृत्तम् = केशाकेशि (saptamī / grahaṇa sense).
+        "label": "B2-keSAkeSi-SK846-2.2.27",
+        "purva": {"stem": "keSa", "vacana": 3, "vibhakti": 7, "tags": ["karmavyatihAra"]},
+        "uttara": {"stem": "keSa", "vacana": 3, "vibhakti": 7, "tags": ["karmavyatihAra"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.27", "5.4.127", "6.3.137"],
+        "surface": "केशाकेशि",
+    },
+    {
+        # दण्डैर्दण्डैश्च प्रहृत्येदं युद्धं प्रवृत्तम् = दण्डादण्डि (tṛtīyā / praharaṇa sense).
+        "label": "B2-daRqAdaRqi-SK846-2.2.27-tftIyA",
+        "purva": {"stem": "daRqa", "vacana": 3, "vibhakti": 3, "tags": ["karmavyatihAra"]},
+        "uttara": {"stem": "daRqa", "vacana": 3, "vibhakti": 3, "tags": ["karmavyatihAra"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.27", "5.4.127", "6.3.137"],
+        "surface": "दण्डादण्डि",
+    },
+    {
+        # मुष्टीमुष्टि — an i-stem, so 6.3.137's dīrgha shows as इ→ई (it lengthens whatever the
+        # pūrva's final vowel is, not just a→ā).
+        "label": "B2-muzwImuzwi-SK846-2.2.27-istem",
+        "purva": {"stem": "muzwi", "vacana": 3, "vibhakti": 3, "tags": ["karmavyatihAra"]},
+        "uttara": {"stem": "muzwi", "vacana": 3, "vibhakti": 3, "tags": ["karmavyatihAra"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.27", "5.4.127", "6.3.137"],
+        "surface": "मुष्टीमुष्टि",
+    },
+    {
+        # बाहूबाहवि — SK847/6.4.146 ओर्गुणः (u-final bha stem takes guṇa before a taddhita):
+        # बाहु + इच् → बाहवि, with the 6.3.137 dīrgha on the pūrva → बाहू. 6.4.146 was already
+        # implemented but UNREACHABLE — it is ?Ba-gated, and कप् is consonant-initial so
+        # 1.4.18 यचि भम् never made a stem ?Ba before it; the vowel-initial इच् is what
+        # finally reaches it. (6.4.146 is a MAIN-SCAN rule, so it is not in the pre-pass
+        # trace — the guṇa in बाह**वि** is the proof it fired.)
+        "label": "B2-bAhUbAhavi-SK847-6.4.146",
+        "purva": {"stem": "bAhu", "vacana": 3, "vibhakti": 7, "tags": ["karmavyatihAra"]},
+        "uttara": {"stem": "bAhu", "vacana": 3, "vibhakti": 7, "tags": ["karmavyatihAra"]},
+        "referent_linga": "napum",
+        "fired": ["2.2.27", "5.4.127", "6.3.137"],
+        "surface": "बाहूबाहवि",
+    },
     # ── Physical pūrva-nipāta (word order) SK898–900 / 2.2.35–37 ───────────────────
     # These reuse the dvandva M2 reorder sweep. Input is given in the "wrong" (vigraha)
     # order; the ?purvanipata rule physically moves the mandated member to the FRONT. The

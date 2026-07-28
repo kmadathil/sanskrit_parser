@@ -894,6 +894,8 @@ aNguli = Pratipadika("aNguli", "strI")   # अङ्गुलि (finger, i-stem
 mUrDan = Pratipadika("mUrDan", "pum")    # मूर्धन् (head, n-stem) — द्विमूर्धः (ṣac; न-lopa 6.4.144)
 loman  = Pratipadika("loman",  "napum")  # लोमन् (hair, n-stem) — अन्तर्लोमः (ap; न-lopa 6.4.144)
 daRqa  = Pratipadika("daRqa",  "pum")    # दण्ड (stick) — द्विदण्डि (ic; a-lopa 6.4.148)
+muzwi  = Pratipadika("muzwi",  "pum")    # मुष्टि (fist) — मुष्टीमुष्टि (SK846/2.2.27; i-stem, shows the 6.3.137 dīrgha as i→ī)
+bAhu   = Pratipadika("bAhu",   "pum")    # बाहु (arm) — बाहूबाहवि (SK847/6.4.146 ओर्गुणः under the इच्)
 # B4 samāsānta ādeśa uttaras.
 UrDva  = Pratipadika("UrDva",  "pum")    # ऊर्ध्व (upward) — ऊर्ध्वज्ञुः pūrva (SK869/5.4.130)
 gandha = Pratipadika("ganDa", "pum")     # गन्ध (smell) — सुगन्धिः (SK874/5.4.135 गन्ध final → i). Canonical "ganDa" (proper SLP1, ध=D); was "gandha", which only mattered once 5.4.135 was narrowed and the un-substituted गन्ध became reachable

@@ -4302,6 +4302,27 @@
   xform:
     lc: lc[:-1]       # delete 'a': pratyac → pratyc
 
+# 3539/6.3.137: अन्येषामपि दृश्यते — "the lengthening is SEEN in others too": the final of the
+# PŪRVA-PADA is lengthened. A दृश्यते rule (attested usage, not a closed condition), so it is
+# SCOPED HERE to the कर्मव्यतिहार compound of SK846/2.2.27, where it is criterial:
+#   केश+केशि → केशाकेशि · दण्ड+दण्डि → दण्डादण्डि · मुष्टि+मुष्टि → मुष्टीमुष्टि (i→ī, so it is a
+#   dīrgha of whatever the final vowel is, not an a→ā rule).
+# NOT modelled: the general अन्येषामपि cases (पूरुषः, नारकः, जलासाद्) and the श्वन् vārtika
+# (श्वादन्तः, श्वापदः …) — a blanket pūrva-pada dīrgha would be far too destructive.
+- sutra: अन्येषामपि दृश्यते
+  id: 6.3.137
+  bahiranga: -1   # PRE-PASS: the member window is (pūrva | uttara) directly. In the main scan
+                  # the pūrva's own sup sits between them — the window is (केश | su) — so an
+                  # `rp: ?samAsa` condition could never match there.
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?karmavyatihAra"
+    rp: "?samAsa"
+  xform:
+    l: dirgha(l)
+
 # 417: चौ (6-3-138)
 # Before añc reduced to 'c' (ñ and a both elided), lengthen the preceding member's final vowel.
 # Fires at (prefix | c_result) window after SK416; c_result is añcatir with ?aYc, starts with 'c'.
@@ -6812,6 +6833,10 @@
        - and
        - ?aNga
        - ?napum
+       - ?!samAsaPurva   # प्रातिपदिकस्य = the stem TAKING THE SUP, not an internal compound
+                         # member. Without this, a pūrva lengthened by 6.3.137 (केशा of
+                         # केशाकेशि) was immediately re-shortened whenever it happened to be
+                         # napuṁsaka — दण्डादण्डि (masc दण्ड) worked, केशाकेशि did not.
     - lp: anga
       rp: ?napum_abs
   xform:
@@ -11524,6 +11549,71 @@
       - "?!samasanta_ap"
   update:
     orp: [+samasanta_ap]
+
+# ── केशाकेशि cluster: SK846/2.2.27 formation + SK866/5.4.127 इच् + SK6.3.137 dīrgha ────
+# SK846/2.2.27 तत्र तेनेदमिति सरूपे — two SARŪPA (same-form) words, both SAPTAMĪ (the ग्रहण
+# "seizing" sense — केशेषु केशेषु गृहीत्वा) or both TṚTĪYĀ (the प्रहरण "striking" sense —
+# दण्डैर्दण्डैश्च प्रहृत्य), compound in the sense "THIS FIGHT took place thereby/therein",
+# denoting कर्मव्यतिहार (reciprocity of action). The result is a bahuvrīhi.
+#   केशेषु केशेषु … = केशाकेशि · दण्डैर्दण्डैः … = दण्डादण्डि · मुष्टीमुष्टि · मुसलामुसलि
+# The composer supplies the SAME word twice — nothing is reduplicated by rule (an earlier
+# note in bahuvrihi_plan.md wrongly called this "needs reduplication"; SK's own vigraha is
+# केशेषु केशेषु). `$$sarUpa` (paribhasha.py) is the lp≡rp content check, shared with the
+# ekaśeṣa 1.2.64 — no clash, since that gates on ?ekaSeza_vivakza and this on
+# ?bahuvrIhi_vivakza + the composer's ?karmavyatihAra sense.
+# The vibhakti itself is NOT rewritten: both members keep their saptamī/tṛtīyā, and the
+# pūrva's sup luks by 2.4.71 as usual, so the surface pūrva is the bare stem.
+- sutra: तत्र तेनेदमिति सरूपे
+  id: 2.2.27
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?viBakti_7"
+        - "?karmavyatihAra"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+      rp:
+        - and
+        - "?viBakti_7"
+        - "?karmavyatihAra"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsa"
+        - $$sarUpa
+    - lp:
+        - and
+        - "?viBakti_3"
+        - "?karmavyatihAra"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+      rp:
+        - and
+        - "?viBakti_3"
+        - "?karmavyatihAra"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsa"
+        - $$sarUpa
+  update:
+    olp: [+samAsaPurva]
+    orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
+
+# SK866/5.4.127 इच् कर्मव्यतिहारे — a कर्मव्यतिहार bahuvrīhi (formed by 2.2.27 above) takes
+# the samāsānta इच्: केशाकेशि, मुसलामुसलि. Sets ?samasanta_ic (the `ic_s` affix, shared with
+# 5.4.128); the uttara's final drops before the इ by 6.4.148 यस्येति (केश+इ → केशि).
+# ALSO sets ?avyaya: SK846 notes "तिष्ठद्गुप्रभृतिष्विच्प्रत्ययस्य पाठात् अव्ययीभावत्वम्
+# अव्ययत्वं च" — इच् is read in the तिष्ठद्गुप्रभृति gaṇa, so the compound is an avyaya and
+# INVARIANT. 2.4.82 अव्ययादाप्सुपः then luks its sup → केशाकेशि, not *केशाकेशिः.
+- sutra: इच् कर्मव्यतिहारे
+  id: 5.4.127
+  bahiranga: -1
+  condition:
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "?karmavyatihAra"
+      - "?!samasanta_ic"
+  update:
+    orp: [+samasanta_ic, +avyaya]
 
 # SK867/5.4.128 द्विदण्ड्यादिभ्यश्च — a dvidaṇḍi-ādi bahuvrīhi (a weapon "with two
 # sticks") → इच् → द्विदण्डि (a-lopa 6.4.148: दण्ड+इ → दण्डि). Sets ?samasanta_ic.
