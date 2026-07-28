@@ -543,15 +543,19 @@ samasa_tp_tests = [
     },
     {
         # SK751/2.2.38 कडाराः कर्मधारये — a kaḍāra-gaṇa viśeṣaṇa (कडार "brown", ?kaqAra)
-        # OPTIONALLY leads a karmadhāraya (an-yatarasyām). Modelled as a saṁjñā tag
-        # (+kaqAra_pUrva); the physical reordering (2.2.30) is deferred, so the surface
-        # is the input-order karmadhāraya कडारपुरुषः. Proves 2.2.38 fires (was untested).
+        # OPTIONALLY leads a karmadhāraya (an-yatarasyām, वā). Now realized as a
+        # physical pūrva-nipāta (2.2.30) via the M2 mechanism: 2.2.38 (purvanipata,
+        # SWEEP 1, optional) FORKS — the skip branch keeps the viśeṣaṇa-first order
+        # कडारपुरुषः (2.1.57 arm A), the applied branch moves the viśeṣya to the front →
+        # पुरुषकडारः (2.1.57 arm B forms the karmadhāraya with kaḍāra as uttara). Both
+        # decline paravalliṅga (2.4.26). vibhakti_1 on the input pūrva = the vigraha /
+        # nominative case (nom sweep only — the karmadhāraya case machinery keys viBakti_1).
         "label": "T2-kaqArapuruSaH-SK751-2.2.38",
         "purva": {"stem": "kaqAra", "vacana": 1, "vibhakti": 1, "vivakza": True,
                   "tags": ["viSezaRa"]},
         "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
         "fired": ["2.1.57", "1.2.42", "2.2.38", "2.4.26"],
-        "surface": "कडारपुरुषः",
+        "surfaces": ["कडारपुरुषः", "पुरुषकडारः"],
     },
 
     # ── S0: sarvasamāsānta अच् (samasa_completion_plan.md) — the s-stem family. Each is a

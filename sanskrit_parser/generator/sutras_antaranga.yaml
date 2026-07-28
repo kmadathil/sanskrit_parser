@@ -10384,20 +10384,42 @@
 # नीलम् उत्पलम् = नीलोत्पलम्, कृष्णः सर्पः = कृष्णसर्पः. The pūrva sup luks (2.4.71); the
 # uttara declines paravalliṅga (2.4.26) → नीलोत्पलम् (napuṁsaka), कृष्णसर्पः (masc).
 # Sets +samAnADikaraRa so 1.2.42 names it karmadhāraya.
+#
+# Arm B (kaḍāra reordered): normally 2.1.57 puts the विशेषण first, but SK751/2.2.38
+# कडाराः कर्मधारये OPTIONALLY makes a kaḍāra-gaṇa viśeṣaṇa the UTTARA (पुरुषकडारः). In
+# that branch the physical pūrva-nipāta (2.2.38, SWEEP 1) has already moved the
+# viśeṣya to the front, so 2.1.57 must form the karmadhāraya with the viśeṣaṇa as
+# uttara: lp = the viśeṣya (a non-viśeṣaṇa prathamānta), rp = the kaḍāra viśeṣaṇa.
+# Scoped by ?kaqAra so it fires ONLY for the reordered kaḍāra case (the skip branch
+# keeps the viśeṣaṇa-first order and uses arm A).
 - sutra: विशेषणं विशेष्येण बहुलम्
   id: 2.1.57
   bahiranga: -1
   condition:
-    lp:
-      - and
-      - "?viBakti_1"
-      - "?viSezaRa"
-      - "?samAsa_vivakza"
-      - "?!samAsaPurva"
-    rp:
-      - and
-      - "?prAtipadika"
-      - "?!samAsa"
+    # Arm A — विशेषण pūrva (the default): नीलोत्पलम्, कृष्णसर्पः, कडारपुरुषः.
+    - lp:
+        - and
+        - "?viBakti_1"
+        - "?viSezaRa"
+        - "?samAsa_vivakza"
+        - "?!samAsaPurva"
+      rp:
+        - and
+        - "?prAtipadika"
+        - "?!samAsa"
+    # Arm B — kaḍāra viśeṣaṇa as UTTARA (2.2.38 reordered branch): पुरुषकडारः.
+    - lp:
+        - and
+        - "?prAtipadika"
+        - "?samAsa_vivakza"
+        - "?!viSezaRa"
+        - "?!samAsaPurva"
+        - "?!samAsa"
+      rp:
+        - and
+        - "?viSezaRa"
+        - "?kaqAra"
+        - "?!samAsa"
   update:
     olp: [+samAsaPurva]
     orp: [+samAsa, +tatpuruza, +samAnADikaraRa]
@@ -10464,24 +10486,37 @@
   update:
     olp: [+puMvadBAva]
 
-# 751/2.2.38: कडाराः कर्मधारये — the kaḍāra-gaṇa (?kaqAra) words are OPTIONALLY the
-# pūrva of a karmadhāraya (an-yatarasyām: either member may lead). Modelled as a
-# saṁjñā tag on the pūrva; the optional reordering (2.2.30 physical nipāta) stays
-# deferred, so only the input-order compound surfaces. (Recorded in status.)
+# 751/2.2.38: कडाराः कर्मधारये — the kaḍāra-gaṇa (?kaqAra, complexion words like
+# कडार "brown") are OPTIONALLY the pūrva of a karmadhāraya (an-yatarasyām, वā):
+# कडारजैमिनिः / जैमिनिकडारः. The विशेषण kaḍāra is the pūrva by 2.1.57's default; THIS
+# rule provides the OPTION for it to be the uttara instead. Now realized as a
+# physical pūrva-nipāta (2.2.30) via the M2 mechanism the dvandva/bahuvrīhi
+# prakaraṇas built: `purvanipata: true` routes it to SWEEP 1 (before the saṁjñā
+# rules) and `optional: true` forks. It tags the OTHER member (the viśeṣya, rp)
+# ?pUrvanipAta, so _commit_purvanipata moves it to the front → the applied branch is
+# पुरुषकडारः (viśeṣya first), the skip branch keeps कडारपुरुषः (2.1.57 arm A's
+# viśeṣaṇa-first default). In the reordered branch 2.1.57 arm B forms the
+# karmadhāraya with kaḍāra as the uttara. Gated on the intent ?samAsa_vivakza +
+# intrinsic ?kaqAra — the ?karmaDAraya saṁjñā does NOT exist yet in SWEEP 1.
+# (Was a deferred saṁjñā placeholder ?kaqAra_pUrva; the reorder is now built.)
 - sutra: कडाराः कर्मधारये
   id: 2.2.38
-  domain: saMjYA
   bahiranga: -1
+  purvanipata: true
   optional: true
   condition:
     lp:
       - and
-      - "?samAsaPurva"
+      - "?samAsa_vivakza"
       - "?kaqAra"
-      - "?!kaqAra_pUrva"
-    rp: "?karmaDAraya"
+      - "?!samAsaPurva"
+    rp:
+      - and
+      - "?samAsa_vivakza"
+      - "?!kaqAra"
+      - "?!samAsaPurva"
   update:
-    olp: [+kaqAra_pUrva]
+    orp: [+pUrvanipAta]
 
 # ── dvigu (SK 727–731 / 2.1.52, 2.4.1, 5.4.92) ───────────────────────────────
 # SK730/2.1.52: संख्यापूर्वो द्विगुः — a saṅkhyā-pūrva (?saMKyA) tatpuruṣa is a DVIGU.
