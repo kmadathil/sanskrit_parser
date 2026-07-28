@@ -812,13 +812,30 @@ class AntarangaPrakriya(PrakriyaBase):
                 lp.setTag("viBakti_1")   # the promoted member is the prathamā one
             else:
                 rp.setTag("viBakti_1")   # old uttara → pūrva, prathamā vigraha, sup luks
+        # Collect member b's trailing pratyayas. Its inserted SUP travels with it (the
+        # vyadhikaraṇa कण्ठे must keep its saptamī sup), but the referent's strI_abs does NOT:
+        # that is the COMPOUND's feminine marker (the ṭāp/ṅīp feminising the whole a-stem
+        # compound), so it belongs to whichever member ends up LAST. Note the last member's
+        # sup sits AFTER strI_abs, so the two are non-contiguous — hence the split walk.
         b_end = b + 1
+        trail, strI_el = [], None
         while (b_end < len(inputs) and _isScalar(inputs[b_end])
                and inputs[b_end].hasTag("pratyaya")):
+            if inputs[b_end].hasTag("strI_abs"):
+                strI_el = inputs[b_end]
+            else:
+                trail.append(inputs[b_end])
             b_end += 1
-        unit_b = list(inputs.v[b:b_end])
+        unit_b = [inputs[b]] + trail
         unit_a = list(inputs.v[a:b])
-        inputs.v[a:b_end] = unit_b + unit_a
+        moved = unit_b + unit_a
+        if strI_el is not None:
+            # re-anchor the strī affix directly after the NEW last member's stem, before
+            # that member's sup — the shape the natural (un-reordered) order produces:
+            # [कृत, sup, कृत्य, strI_abs, sup]. Without this the ā stranded between the
+            # members (*कृताकृत्यः) or the ṭāp failed to attach at all (*कृतकृत्यः).
+            moved.insert(len(unit_b) + 1, strI_el)
+        inputs.v[a:b_end] = moved
         return True
 
     def _nest_samasa_members(self, inputs):

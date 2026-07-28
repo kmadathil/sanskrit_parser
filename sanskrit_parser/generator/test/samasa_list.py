@@ -1616,6 +1616,30 @@ samasa_bv_tests = [
         "surface": "कृतकृत्यम्",
     },
     {
+        # FEM referent UNDER REORDER — कृतकृत्या. The referent's strI_abs is the COMPOUND's
+        # ṭāp, not a member's affix, so the reorder must leave it anchored to whichever member
+        # ends up LAST (the last member's sup sits after it, so the two are non-contiguous).
+        # Previously this stranded the ā between the members (*कृताकृत्यः).
+        "label": "B2-kftakftyA-SK899-2.2.36-strI-reorder",
+        "purva": {"stem": "kftya", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kfta", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.36", "2.2.24", "1.2.43"],
+        "surface": "कृतकृत्या",
+    },
+    {
+        # Natural-order fem control — no reorder, same surface.
+        "label": "B2-kftakftyA-SK899-2.2.36-strI-natural",
+        "purva": {"stem": "kfta", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kftya", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "strI",
+        "uttara_strI_abs": True,
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["2.2.36"],
+        "surface": "कृतकृत्या",
+    },
+    {
         # Natural order (कृत, कृत्य) — 2.2.36 no-op.
         "label": "B2-kftakftyaH-SK899-2.2.36-natural",
         "purva": {"stem": "kfta", "vacana": 1, "vibhakti": 1},

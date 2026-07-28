@@ -22,7 +22,7 @@ ends with a self-contained *Session prompt*.
 > complete for every affix family that declines cleanly, plus SK843/2.2.25 + SK851/5.4.73
 > ḍac + SK871/5.4.133; the rest deferred on known engine gaps or scoped-out on textual
 > grounds (see §2a).** Implemented across commits `00a9b11`→`4d0025f` on `generator`;
-> `test/test_samasa_bahuvrihi.py` = 104 cases; full generator suite green (8312 passed).
+> `test/test_samasa_bahuvrihi.py` = 106 cases; full generator suite green (8314 passed).
 > The Phases (§3) keep the original forward-looking Session prompts as a historical
 > record — **§2a is the authoritative as-built account** (real mechanisms, deviations,
 > gotchas).
@@ -192,7 +192,7 @@ B1 `b8690af`, B2 `0cbac07`, B3-kap `04de0a1`, B3-ṣac/ap/ic+B4-jñu `3f54b6f`, 
 5.4.133 + 2.2.25/5.4.73/6.4.142 + doc audit `4d0025f`. Tests:
 `test/test_samasa_bahuvrihi.py` (62 cases: structure/fired/surface + gender & vibhakti
 sweeps + CLI smoke), cases in `test/samasa_list.py :: samasa_bv_tests`. Full suite
-8312 green.
+8314 green.
 
 ### Files touched (the whole prakaraṇa)
 - `sutras_antaranga.yaml` — the bahuvrīhi rule blocks (B0–B4), all `bahiranga: -1`
@@ -480,12 +480,42 @@ the 4.3.129 nipātana does not cover.
 - Verified negative: without `?saMjYA` the aluk does not apply and the sup luks → कण्ठकालः,
   proving the aluk (not the formation) is what retains the locative.
 
+**Round 10 — fem-referent-under-reorder fix + the 2.2.35 vārtikas scoped (this round)**
+- **Fixed:** a fem referent COMBINED with a reorder gave *कृताकृत्यः. The composer's `strI_abs`
+  is the **compound's** ṭāp (it feminises the whole a-stem compound), not a member's own affix,
+  but `_commit_purvanipata`'s trailing-pratyaya walk swept it into the moving unit, stranding
+  the ā between the members. Complication found while fixing: the last member's **sup sits
+  AFTER strI_abs**, so the two are non-contiguous — a plain "stop at strI_abs" guard fixed the
+  stranding but orphaned the sup (*कृतकृत्यः, ṭāp never attached). The walk now **splits** the
+  trail: sups travel with their member (the vyadhikaraṇa कण्ठे needs its saptamī sup), and
+  strI_abs is re-anchored directly after the new last member's stem — reproducing exactly the
+  shape the natural order yields, `[कृत, sup, कृत्य, strI_abs, sup]` → **कृतकृत्या**.
+- **Deferred, with scope (all vārtikas under SK898/2.2.35):**
+  - **सर्वनामसंख्ययोरुपसंख्यानम्** — a sarvanāma or saṅkhyā ALSO takes pūrva-nipāta:
+    सर्वश्वेतः, द्विशुक्लः. Comes with three conflict-resolving follow-ons:
+    **मिथोऽनयोः समासे संख्या पूर्वम्** (saṅkhyā beats sarvanāma when they compound with each
+    other — द्व्यन्यः), **संख्याया अल्पीयस्याः** (of two numerals the SMALLER leads — द्वित्राः),
+    and **द्वन्द्वेऽपि** (same in a dvandva — द्वादश). The `?sarvanAma`/`?saMKyA` tags and the
+    सर्व/अन्य stems exist; what is new is a **numeric-value comparison helper** for अल्पीयसी
+    (द्वि < त्रि) — the dvandva `$$rp_is_purva_alpac` vowel-count helpers are the precedent.
+    Missing stems: श्वेत, शुक्ल. Largest of the three.
+  - **वा प्रियस्य** — प्रिय OPTIONALLY leads: गुडप्रियः / प्रियगुडः. **Cheapest**: it is the
+    2.2.37 shape (`optional: true` + the `skip_optional` fork) with a `=priya` gate; both
+    गुड and प्रिय stems exist, and 6.3.34 already carries a `?!priyAdi` guard, so the class is
+    known to the system.
+  - **गड्वादेः परा सप्तमी** — a COUNTER-EXCEPTION to the saptamī arm landed in round 9: after a
+    गडु-ādi word the saptamī goes **LAST**, reversing 2.2.35 (गडुकण्ठः — note it uses the very
+    word कण्ठ), with क्वचिन्न exceptions (वहेगडुः). Would suppress arm B via a `?!gaqvAdi`
+    guard, the same shape as 2.2.36's `?!AhitAgnyAdi`.
+
 ### Remaining work
 
 **A. Formation deferrals — ✅ physical pūrva-nipāta LANDED (round 8, see below).**
 - SK898–900 / 2.2.35–37 (word order) done via the dvandva M2 reorder sweep; चित्रगुः (1.2.48
-  compound-upasarjana arm) and **कण्ठेकालः (the vyadhikaraṇa/saptamī arm + 6.3.9 aluk, round 9)**
-  both derive. Only the **fem-referent-under-reorder** edge remains — see round 8.
+  compound-upasarjana arm), **कण्ठेकालः** (vyadhikaraṇa/saptamī arm + 6.3.9 aluk, round 9) and
+  the **fem-referent-under-reorder** case (कृतकृत्या, round 10) all derive. What remains here is
+  only the **2.2.35 vārtikas** — सर्वनाम/संख्या (+ its 3 follow-ons), वा प्रियस्य, and the
+  गड्वादि counter-exception; each is scoped in round 10.
 
 **B. केशाकेशि cluster — the only genuinely new mechanism left.**
 - SK846/2.2.27 needs a **new lp == rp content check** (sarūpa); then SK866/5.4.127 इच्
@@ -842,7 +872,7 @@ Quick slice while iterating: `pytest test_samasa_bahuvrihi.py`.
 - ✅ **Generalized `_SAMASANTA_AFFIXES` map** (`antaranga_prakriya.py`) so
   `_insert_samasanta` handles all bahuvrīhi affix families (kap/ṣac/ap/ic added; the
   ādeśa families use pre-pass uttara-substitution instead).
-- ✅ `test/test_samasa_bahuvrihi.py` (104 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
+- ✅ `test/test_samasa_bahuvrihi.py` (106 cases) + `samasa_bv_tests` in `test/samasa_list.py`.
 - ✅ CLI `--referent-linga` (`prepare_bahuvrihi`) + composer API `referent_linga`
   (`_apply_bahuvrihi`) + `karaka.html` referent-liṅga dropdown.
 - ✅ `generator_status.md` updates (Implemented rows for every landed sūtra; grouped
