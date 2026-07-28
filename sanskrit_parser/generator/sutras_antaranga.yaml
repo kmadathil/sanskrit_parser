@@ -10879,16 +10879,37 @@
   id: 2.2.24
   bahiranga: -1
   condition:
-    lp:
-      - and
-      - "?viBakti_1"
-      - "?bahuvrIhi_vivakza"
-      - "?!samAsaPurva"
-    rp:
-      - and
-      - "?prAtipadika"
-      - "?bahuvrIhi_vivakza"
-      - "?!samAsa"
+    # Arm A — SAMĀNĀDHIKARAṆA (the normal case): both members prathamā.
+    - lp:
+        - and
+        - "?viBakti_1"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+      rp:
+        - and
+        - "?prAtipadika"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsa"
+    # Arm B — VYADHIKARAṆA: a SAPTAMĪ pūrva (कण्ठे कालो यस्य = कण्ठेकालः). The members are in
+    # DIFFERENT cases, which arm A's ?viBakti_1 excludes. Licensed by SK898/2.2.35 itself:
+    # its mention of a सप्तम्यन्त member is the JÑĀPAKA that vyadhikaraṇa bahuvrīhis exist —
+    # "अत एव ज्ञापकाद्व्यधिकरणपदो बहुव्रीहिः" (SK898). The saptamī is retained by the aluk of
+    # SK967/6.3.9 (below), so the pūrva surfaces as कण्ठे, not कण्ठ.
+    # `?vyaDikaraRa` is composer-supplied and NOT redundant with ?viBakti_7: the composer also
+    # puts the REFERENT's external case on the uttara, so a bahuvrīhi merely DECLINED in the
+    # locative (पीताम्बरे) carries ?viBakti_7 too. Only this marker distinguishes a member's own
+    # vigraha saptamī from the compound's external case.
+    - lp:
+        - and
+        - "?viBakti_7"
+        - "?vyaDikaraRa"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+      rp:
+        - and
+        - "?prAtipadika"
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsa"
   update:
     olp: [+samAsaPurva]
     orp: [+samAsa, +bahuvrIhi, +samasa_liNga_locked]
@@ -12529,15 +12550,28 @@
   bahiranga: -1
   purvanipata: true
   condition:
-    lp:
-      - and
-      - "?bahuvrIhi_vivakza"
-      - "?!samAsaPurva"
-      - "?!viSezaRa"
-    rp:
-      - and
-      - "?bahuvrIhi_vivakza"
-      - "?viSezaRa"
+    # Arm A — विशेषण: the qualifier leads (नीलकण्ठः, चित्रगुः).
+    - lp:
+        - and
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+        - "?!viSezaRa"
+      rp:
+        - and
+        - "?bahuvrIhi_vivakza"
+        - "?viSezaRa"
+    # Arm B — सप्तम्यन्त: the locative member leads (कण्ठे कालो यस्य = कण्ठेकालः). This is the
+    # arm whose very existence is the jñāpaka for the vyadhikaraṇa bahuvrīhi (see 2.2.24 arm B).
+    - lp:
+        - and
+        - "?bahuvrIhi_vivakza"
+        - "?!samAsaPurva"
+        - "?!vyaDikaraRa"
+      rp:
+        - and
+        - "?bahuvrIhi_vivakza"
+        - "?viBakti_7"
+        - "?vyaDikaraRa"
   update:
     orp: [+pUrvanipAta]
 
@@ -13070,6 +13104,35 @@
       - "?AkroSa"
       - "?!aluk"
     rp: "?samAsa"
+  update:
+    olp: [+aluk]
+
+# 967/6.3.9: हलदन्तात्सप्तम्याः संज्ञायाम् — a saptamī pūrva that is HAL-final or A-final
+# (हलदन्त = हल् + अदन्त) has ALUK in a SAṀJÑĀ: कण्ठे कालो यस्य = कण्ठेकालः (Śiva), उरसिलोमा.
+# Nitya (contrast SK971/6.3.13 बन्धे च विभाषा below, which is the वा continuation of THIS
+# sūtra's context — हलदन्तात् सप्तम्याः carries over there by अनुवृत्ति).
+# `?saMjYA` is composer-supplied (same convention as SK857/8.4.3). Two arms for हलदन्त:
+# `l: a` (अदन्त — कण्ठ) and `l: _hal` (consonant-final — उरस्); `l:` is the pūrva's LAST char.
+- sutra: हलदन्तात्सप्तम्याः संज्ञायाम्
+  id: 6.3.9
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?viBakti_7"
+        - "?saMjYA"
+        - "?!aluk"
+      l: a
+      rp: "?samAsa"
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?viBakti_7"
+        - "?saMjYA"
+        - "?!aluk"
+      l: _hal
+      rp: "?samAsa"
   update:
     olp: [+aluk]
 

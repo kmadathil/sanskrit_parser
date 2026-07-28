@@ -787,14 +787,31 @@ class AntarangaPrakriya(PrakriyaBase):
         # fixpoint, so it is not yet available here.)
         if _isScalar(lp) and any(t.startswith("referent_") for t in rp.tags):
             _MOVE = ("samasa_liNga_locked", "pum", "strI", "napum", "uttara_strI")
+            # VYADHIKARAṆA guard: if the demoted member carries a non-prathamā VIGRAHA case
+            # (a saptamī pūrva — कण्ठे कालो यस्य, SK898/2.2.35 arm B), that case is the member's
+            # own and must SURVIVE the demotion, since SK967/6.3.9's aluk then retains it
+            # (कण्ठेकालः). Only the samānādhikaraṇa case (both members prathamā) may have its
+            # viBakti rewritten. Without this the forced viBakti_1 below stripped कण्ठे's
+            # saptamī and 6.3.9 could no longer fire → कण्ठकालः.
+            vyadhikarana = any(t.startswith("viBakti_") and t != "viBakti_1"
+                               for t in rp.tags)
+            _mv = _MOVE if vyadhikarana else _MOVE + ("__case__",)
             for t in list(lp.tags):
-                if t in ("pum", "strI", "napum") or t.startswith(("referent_", "viBakti_", "vacana_")):
+                if t in ("pum", "strI", "napum") or t.startswith("referent_") or (
+                        not vyadhikarana and t.startswith(("viBakti_", "vacana_"))):
                     lp.deleteTag(t)
             for t in list(rp.tags):
-                if t in _MOVE or t.startswith(("referent_", "viBakti_", "vacana_")):
+                move = t in _mv or t.startswith("referent_") or (
+                    t.startswith("vacana_")) or (
+                    not vyadhikarana and t.startswith("viBakti_"))
+                if move:
                     lp.setTag(t)
-                    rp.deleteTag(t)
-            rp.setTag("viBakti_1")   # the old uttara is now a pūrva → prathamā vigraha, sup luks
+                    if not (vyadhikarana and t.startswith("viBakti_")):
+                        rp.deleteTag(t)
+            if vyadhikarana:
+                lp.setTag("viBakti_1")   # the promoted member is the prathamā one
+            else:
+                rp.setTag("viBakti_1")   # old uttara → pūrva, prathamā vigraha, sup luks
         b_end = b + 1
         while (b_end < len(inputs) and _isScalar(inputs[b_end])
                and inputs[b_end].hasTag("pratyaya")):

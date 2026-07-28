@@ -1547,6 +1547,43 @@ samasa_bv_tests = [
         "surface": "नीलकण्ठः",
     },
     {
+        # SK898/2.2.35 arm B (सप्तम्यन्त) + SK967/6.3.9 ALUK — the VYADHIKARAṆA bahuvrīhi:
+        # कण्ठे कालो यस्य = कण्ठेकालः (Śiva). The members are in DIFFERENT cases (कण्ठे saptamī,
+        # काल prathamā), which 2.2.24's normal arm excludes; 2.2.35's own mention of a
+        # सप्तम्यन्त member is the jñāpaka licensing it. 6.3.9 हलदन्तात्सप्तम्याः संज्ञायाम् keeps
+        # the locative (aluk), so the pūrva surfaces as कण्ठे, not कण्ठ.
+        "label": "B2-kaRWekAlaH-SK898-2.2.35-vyaDikaraRa",
+        "purva": {"stem": "kaRWa", "vacana": 1, "vibhakti": 7,
+                  "tags": ["saMjYA", "vyaDikaraRa"]},
+        "uttara": {"stem": "kAla", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.9", "1.2.43"],
+        "surface": "कण्ठेकालः",
+    },
+    {
+        # Same, input REVERSED (काल, कण्ठे) — 2.2.35 arm B physically moves the saptamī member
+        # first. The reorder must PRESERVE कण्ठे's viBakti_7 (its own vigraha case) so 6.3.9 can
+        # still fire; the samānādhikaraṇa path instead rewrites the demoted member to prathamā.
+        "label": "B2-kaRWekAlaH-SK898-2.2.35-reorder",
+        "purva": {"stem": "kAla", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kaRWa", "vacana": 1, "vibhakti": 7,
+                   "tags": ["saMjYA", "vyaDikaraRa"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.35", "2.2.24", "6.3.9", "1.2.43"],
+        "surface": "कण्ठेकालः",
+    },
+    {
+        # संज्ञायाम् किम् — without the saṁjñā, 6.3.9's aluk does not apply and the saptamī
+        # luks by 2.4.71 → कण्ठकालः. Proves the aluk is doing the work, not the formation.
+        "label": "B2-kaRWakAlaH-SK967-6.3.9-noSaMjYA",
+        "purva": {"stem": "kaRWa", "vacana": 1, "vibhakti": 7, "tags": ["vyaDikaraRa"]},
+        "uttara": {"stem": "kAla", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "1.2.43"],
+        "not_fired": ["6.3.9"],
+        "surface": "कण्ठकालः",
+    },
+    {
         # SK898/2.2.35 + SK656/1.2.48 together — चित्रा गावो यस्य = चित्रगुः. चित्र (viśeṣaṇa)
         # leads by 2.2.35; the upasarjana गो shortens to गु by 1.2.48 गोस्त्रियोरुपसर्जनस्य →
         # चित्रगुः (not *चित्रगौः). Input REVERSED (गो, चित्र) exercises the reorder too.
