@@ -75,6 +75,13 @@ yat_t = Pratyaya("ya", its=["t"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
 # affix, whatever the gender of what it is built on (अजा f. → अजत्वम्, रोहिणी f. → रोहिणित्वम्).
 # join_objects carries it through the merge, so 7.1.24 अतोऽम् supplies अम् in the nom sg.
 tva_t = Pratyaya("tva", other_tags=["svAdi", "tadDita", "tva", "napum"])
+# मतुप् — the possessive taddhita of 5.2.94 तदस्यास्त्यस्मिन्निति मतुप्. Needed by
+# SK1041–1042/6.3.119–120, which lengthen a बह्वच् / शरādi pūrva before it (अमरावती, शरावती).
+# u-it, so 4.1.6 उगितश्च supplies the feminine ङीप् for free — the same route datṛ took in the
+# bahuvrīhi B4 work. Like tva_t and yat_t the affix is supplied as an input element; 5.2.94
+# itself belongs to the taddhita prakaraṇa. The pre-formed DImat/gomat/himavat stems above are
+# untouched. The म् → व् alternation is 8.2.9, in sutras_antaranga.yaml.
+matup = Pratyaya("mat", its=["u", "p"], other_tags=["svAdi", "tadDita", "matup"])
 zyaY_t = Pratyaya("ya", its=["z", "Y"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
 # yaY_t (yañ): SK471 (4.1.16 यञश्च) → ṅīp (needs the yañ-specific ?yaY tag); SK472
 # elides its ya via ?tadDita_ya. Both tags propagate to the merged stem.

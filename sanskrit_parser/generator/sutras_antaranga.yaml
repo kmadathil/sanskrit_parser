@@ -14206,3 +14206,413 @@
       - "?krt"
   xform:
     l: l+str("m")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X4 (samasa_asraya_plan.md): uttarapada-conditioned
+# PŪRVA DĪRGHA (6.3.114–130), the mirror image of X2's hrasva.
+#
+# SK1035/6.3.114 संहितायाम् is the adhikāra governing this whole run ("अधिकारोऽयम्" — SK's
+# entire comment on it); it has no independent effect and so no rule block.
+#
+# PLACEMENT NOTE. Unlike X1/X2 these are MAIN-SCAN rules, following the landed 6.3.128
+# विश्वस्य वसुराटोः: by the time the main scan reaches the junction, 2.4.71 has luk'd the
+# pūrva's sup, so the window really is (pūrva | uttara) and `l: dirgha(l)` applies to the
+# pūrva's final vowel. Every rule here is gated on a SPECIFIC uttarapada (कर्ण, वन, गिरि,
+# मतुप्, वह, काश, नर, मित्र …) or a specific pūrva, which is what keeps them from repeating
+# X2's 6.3.61 problem — a length rule with only a vowel-class condition roams destructively.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1036/6.3.115: कर्णे लक्षणस्याऽविष्टाष्टपञ्चमणिभिन्नच्छिन्नच्छिद्रस्रुवस्वस्तिकस्य — a
+# LAKṢAṆA (brand/mark) word lengthens before कर्ण: द्विगुणा कर्णा यस्य = द्विगुणाकर्णः.
+# लक्षणस्य किम् — शोभनकर्णः (शोभन is not a mark). अविष्टादीनां किम् — the ten excluded words
+# विष्ट/अष्ट/पञ्च/मणि/भिन्न/छिन्न/छिद्र/स्रुव/स्वस्तिक keep their short vowel (मणिकर्णः,
+# पञ्चकर्णः). `?lakzaRa` is composer-supplied; the exclusion is a literal `=!` list.
+- sutra: कर्णे लक्षणस्याऽविष्टाष्टपञ्चमणिभिन्नच्छिन्नच्छिद्रस्रुवस्वस्तिकस्य
+  id: 6.3.115
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?lakzaRa"
+      - "=!vizwa"
+      - "=!azwan"
+      - "=!paYcan"
+      - "=!maRi"
+      - "=!Binna"
+      - "=!Cinna"
+      - "=!Cidra"
+      - "=!sruva"
+      - "=!svastika"
+    rp:
+      - and
+      - "?samAsa"
+      - "=karRa"
+  xform:
+    l: dirgha(l)
+
+# SK1038/6.3.117: वनगिर्योः संज्ञायां कोटरकिंशुलुकादीनाम् — in a SAṀJÑĀ, a कोटरādi word
+# lengthens before वन and a किंशुलुकādi word before गिरि: कोटरावणम्, किंशुलुकागिरिः. Two arms,
+# one per pair — the two lists are not interchangeable. (कोटरावणम्'s ण् is SK1039/8.4.4, a
+# phase X6 rule; until X6 lands this surfaces as कोटरावनम्.)
+- sutra: वनगिर्योः संज्ञायां कोटरकिंशुलुकादीनाम्
+  id: 6.3.117
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?saMjYA"
+        - "=kowara"
+      rp:
+        - and
+        - "?samAsa"
+        - "=vana"
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?saMjYA"
+        - "=kiMSuluka"
+      rp:
+        - and
+        - "?samAsa"
+        - "=giri"
+  xform:
+    l: dirgha(l)
+
+# SK1041/6.3.119: मतौ बह्वचोऽनजिरादीनाम् — before मतुप्, a BAHVAC (three-or-more-vowel)
+# pūrva that is NOT अजिरādi lengthens, in a saṁjñā: अमर + मतुप् + ङीप् = अमरावती.
+# अनजिरादीनां किम् — अजिरवती; बह्वचः किम् — व्रीहिमती (व्रीहि has only two vowels);
+# संज्ञायामित्येव — वलयवती. `$$bahvac` already exists (written for 4.1.56).
+- sutra: मतौ बह्वचोऽनजिरादीनाम्
+  id: 6.3.119
+  condition:
+    lp:
+      - and
+      - "?saMjYA"
+      - "?!ajirAdi"
+      - $$bahvac
+    rp:
+      - and
+      - "?tadDita"
+      - "?matup"
+  xform:
+    l: dirgha(l)
+
+# SK1042/6.3.120: शरादीनां च — the ŚARĀDI words also lengthen before मतुप्: शरावती. Its own
+# sūtra because शर is only DVYAC, so 6.3.119's बह्वच् could never reach it.
+- sutra: शरादीनां च
+  id: 6.3.120
+  condition:
+    lp:
+      - and
+      - "?saMjYA"
+      - "?SarAdi"
+    rp:
+      - and
+      - "?tadDita"
+      - "?matup"
+  xform:
+    l: dirgha(l)
+
+# SK1043/6.3.121: इको वहेऽपीलोः — an इक्-final pūrva lengthens before वह, except पीलु:
+# ऋषि + वह = ऋषीवहम्. इकः किम् — पिण्डवहम् (a-final); अपीलोः किम् — पीलुवहम्. Safe with a bare
+# `l: _ik` gate, unlike X2's 6.3.61, because the uttara is pinned to वह.
+- sutra: इको वहेऽपीलोः
+  id: 6.3.121
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?!pIlvAdi"
+    l: _ik
+    rp:
+      - and
+      - "?samAsa"
+      - "=vaha"
+  xform:
+    l: dirgha(l)
+
+# SK1044/6.3.122: उपसर्गस्य घञ्यमनुष्ये बहुलम् — an UPASARGA lengthens BAHULAM (→
+# `optional: true`) before a घञ्-formation, but not when a human is denoted: परि + पाक =
+# परीपाकः / परिपाकः. अमनुष्ये किम् — निषादः (a tribe, so `?manuzya` blocks it).
+- sutra: उपसर्गस्य घञ्यमनुष्ये बहुलम्
+  id: 6.3.122
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?prAdi"
+    rp:
+      - and
+      - "?samAsa"
+      - "?GaY"
+      - "?!manuzya"
+  xform:
+    l: dirgha(l)
+
+# SK1045/6.3.123: इकः काशे — an इक्-final UPASARGA lengthens before काश: वि/नि + काश =
+# वीकाशः, नीकाशः. इकः किम् — प्रकाशः (प्र is a-final, so the `l: _ik` gate excludes it).
+- sutra: इकः काशे
+  id: 6.3.123
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?prAdi"
+    l: _ik
+    rp:
+      - and
+      - "?samAsa"
+      - "=kASa"
+  xform:
+    l: dirgha(l)
+
+# SK1046/6.3.125: अष्टनः संज्ञायाम् — अष्टन् lengthens before an uttarapada in a SAṀJÑĀ:
+# अष्टा + पद = अष्टापदम्. संज्ञायां किम् — अष्टपुत्रः. The pūrva reaching this window is the
+# न्-less अष्ट (अष्टन् loses its न् in the compound), so `l: dirgha(l)` lengthens its अ.
+- sutra: अष्टनः संज्ञायाम्
+  id: 6.3.125
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?azwan"
+      - "?saMjYA"
+    rp: "?samAsa"
+  xform:
+    lc: lc[:-1]+dirgha(lc[-1])
+
+# SK1047/6.3.127: चितेः कपि — चिति lengthens before the कप् samāsānta: एका चितिर्यस्य =
+# एकचितीकः. The कप् is 5.4.154's, requested via `?kap_vivakzA` on the uttara.
+- sutra: चितेः कपि
+  id: 6.3.127
+  condition:
+    lp:
+      - and
+      - "=citi"
+      - "?samAsa"
+    rp:
+      - and
+      - "?tadDita"
+      - "?ka_pratyaya"
+  xform:
+    l: dirgha(l)
+
+# SK1048/6.3.129: नरे संज्ञायाम् — विश्व lengthens before नर in a saṁjñā: विश्वानरः.
+# SK1049/6.3.130: मित्रे चर्षौ — and before मित्र when a ṚṢI is meant: विश्वामित्रः.
+# ऋषौ किम् — विश्वमित्रो माणवकः (a boy, not the sage). Both are the landed 6.3.128
+# विश्वस्य वसुराटोः rule with a different uttarapada, hence the identical shape.
+- sutra: नरे संज्ञायाम्
+  id: 6.3.129
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viSva"
+      - "?saMjYA"
+    rp:
+      - and
+      - "?samAsa"
+      - "=nara"
+  xform:
+    l: dirgha(l)
+
+- sutra: मित्रे चर्षौ
+  id: 6.3.130
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?viSva"
+      - "?fzivAcaka"    # "a ṛṣi is denoted" — a composer SENSE tag. Named ?fzivAcaka rather
+                        # than ?fzi so it is not misread as keying on the ऋषि STEM that
+                        # phase X4 also added (for 6.3.121's ऋषीवहम्).
+    rp:
+      - and
+      - "?samAsa"
+      - "=mitra"
+  xform:
+    l: dirgha(l)
+
+# ── 8.2.9, the मतुप् म् → व् alternation (needed by 6.3.119/120's surfaces) ─────
+# SK/8.2.9 मादुपधायाश्च मतोर्वोऽयवादिभ्यः — मतुप्'s म् becomes व् after a stem ending in म् or
+# in अवर्ण. The five SK examples of 6.3.119/120 pin the condition exactly: अमर / शर / अजिर /
+# वलय (all a-final) take व — अमरावती, शरावती, अजिरवती, वलयवती — while व्रीहि (i-final) keeps
+# म्: व्रीहिमती. Placed here because 6.3.119/120 are its only consumers so far; the
+# pre-formed DImat/gomat/himavat stems bypass it.
+- sutra: मादुपधायाश्च मतोर्वोऽयवादिभ्यः
+  id: 8.2.9
+  condition:
+    l:
+      - a
+      - A
+      - m
+    rp:
+      - and
+      - "?tadDita"
+      - "?matup"
+    r: m
+  xform:
+    r: str("v")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X5 (samasa_asraya_plan.md): junction ṢATVA (8.3.80–100) —
+# the uttarapada's INITIAL स् → ष् under a named pūrva.
+#
+# Mechanism N2, and it needs no engine work: these are MAIN-SCAN rules at the compound
+# junction using `xform: r: str("z")`, the exact shape of the landed 8.3.59 आदेशप्रत्यययोः
+# (`:1491`) but with a lexical `lp:` gate instead of its pratyaya gate. `r` is the uttara's
+# FIRST char (`sutra.py:279`), which is what makes an initial-consonant rule expressible at
+# all. इण्कोः continues by anuvṛtti through this whole run, so each rule also checks
+# `l: [_iR, ku]` — the pūrva's final must be an iṇ vowel or a ku-class stop.
+#
+# ṢṬUTVA then follows for free from the landed 8.4.41 ष्टुना ष्टुः: ज्योतिस् + स्तोम → ज्योतिष्
+# + स्तोम → ज्योतिष्टोम, the त् retroflexing to ट् after the fresh ष्.
+#
+# Each `असमासे तु` counter-example in SK is a negative-control test case (अङ्गुलेः सङ्गः,
+# भीरोः स्थानम्, ज्योतिषः स्तोमः) — the ṣatva is specifically a SAMĀSA rule, which is what the
+# `?samAsa` gate on the uttara encodes.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1019/8.3.80: समासेऽङ्गुलेः सङ्गः — the स् of सङ्ग becomes mūrdhanya after अङ्गुलि in a
+# compound: अङ्गुलिषङ्गः. समासे किम् — अङ्गुलेः सङ्गः (two separate padas, no ṣatva).
+- sutra: समासेऽङ्गुलेः सङ्गः
+  id: 8.3.80
+  bahiranga: -1
+  condition:
+    lp: "=aNguli"
+    l:
+      - _iR
+      - ku
+    rp:
+      - and
+      - "?samAsa"
+      - "=saNga"
+    r: s
+  xform:
+    r: str("z")
+
+# SK1020/8.3.81: भीरोः स्थानम् — the स् of स्थान becomes mūrdhanya after भीरु in a compound:
+# भीरुष्ठानम् (and 8.4.41 ष्टुना ष्टुः then makes the थ् → ठ्). असमासे तु भीरोः स्थानम्.
+- sutra: भीरोः स्थानम्
+  id: 8.3.81
+  bahiranga: -1
+  condition:
+    lp: "=BIru"
+    l:
+      - _iR
+      - ku
+    rp:
+      - and
+      - "?samAsa"
+      - "=sTAna"
+    r: s
+  # ṢṬUTVA IS FOLDED IN, deliberately. The landed 8.4.41 ष्टुना ष्टुः is a JUNCTION rule
+  # (`l: [z, wu]` / `r: [s, tu]`), so it can only retroflex across an l|r boundary. Here the
+  # fresh ष् and the थ्/त् it must act on both end up INSIDE the uttara element (स्थान → ष्थान),
+  # where no junction exists and 8.4.41 can never see them. So the xform calls 8.4.41's own
+  # `zwutva` helper on the next char — one extra call site for the same helper, not duplicated
+  # logic. Without it the surface is *भीरुष्थानम् / *ज्योतिष्ष्तोमः.
+  xform:
+    r: str("z")
+    rc: zwutva(rc[0])+rc[1:]
+
+# SK1021/8.3.83: ज्योतिरायुषः स्तोमः — the स् of स्तोम becomes mūrdhanya after ज्योतिस् / आयुस्
+# in a compound: ज्योतिष्टोमः, आयुष्टोमः (ट् by 8.4.41). समासे किम् — ज्योतिषः स्तोमः. The pūrva's
+# own final स् has already become ष् by the landed visarga/ṣatva path, so `l` here is ष्, an
+# iṇ-koḥ member's substitute — hence the `l:` check is satisfied via the ru/ṣ route.
+- sutra: ज्योतिरायुषः स्तोमः
+  id: 8.3.83
+  bahiranga: -1
+  condition:
+    lp:
+      - or
+      - "=jyotis"
+      - "=Ayus"
+    rp:
+      - and
+      - "?samAsa"
+      - "=stoma"
+    r: s
+  # ṢṬUTVA IS FOLDED IN, deliberately. The landed 8.4.41 ष्टुना ष्टुः is a JUNCTION rule
+  # (`l: [z, wu]` / `r: [s, tu]`), so it can only retroflex across an l|r boundary. Here the
+  # fresh ष् and the थ्/त् it must act on both end up INSIDE the uttara element (स्थान → ष्थान),
+  # where no junction exists and 8.4.41 can never see them. So the xform calls 8.4.41's own
+  # `zwutva` helper on the next char — one extra call site for the same helper, not duplicated
+  # logic. Without it the surface is *भीरुष्थानम् / *ज्योतिष्ष्तोमः.
+  xform:
+    r: str("z")
+    rc: zwutva(rc[0])+rc[1:]
+
+# SK1022/8.3.98: सुषामादिषु च — the सुषामादि list takes mūrdhanya: शोभनं साम यस्य = सुषामा,
+# सुषन्धिः. An आकृतिगण in SK; the two members it names are gated literally here.
+- sutra: सुषामादिषु च
+  id: 8.3.98
+  bahiranga: -1
+  condition:
+    lp: "=su"
+    l:
+      - _iR
+      - ku
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=sAman"
+        - "=sanDi"
+    r: s
+  xform:
+    r: str("z")
+
+# SK1023/8.3.99: एति संज्ञायामगात् — the स् of a सेना-type uttara becomes mūrdhanya in a
+# SAṀJÑĀ, when the pūrva does not end in ग्: हरिषेणः. एति किम् — हरिसक्थम् (not एति = सेना);
+# संज्ञायां किम् — पृथुसेनः (not a name); अगकारात् किम् — विष्वक्सेनः (pūrva ends in क्/ग्);
+# इण्कोरित्येव — सर्वसेनः (सर्व's अ is neither iṇ nor ku). The अगात् condition is the `l: =!g`
+# check; इण्कोः is the `l: [_iR, ku]` list.
+- sutra: एति संज्ञायामगात्
+  id: 8.3.99
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?saMjYA"
+      - "?!nakzatra"    # नक्षत्राद्वा (8.3.100) carves the nakṣatras out of this NITYA scope;
+                        # without it 8.3.99 re-supplies the ṣatva in 8.3.100's skip branch and
+                        # रोहिणीसेना could never surface.
+    l:
+      - _iR
+      - ku
+    rp:
+      - and
+      - "?samAsa"
+      - "=senA"
+    r: s
+  xform:
+    r: str("z")
+
+# SK1024/8.3.100: नक्षत्राद्वा — after a NAKṢATRA name the same ṣatva is OPTIONAL:
+# रोहिणीषेणः / रोहिणीसेनः. अगकारात् किम् — शतभिषक्सेनः. आकृतिगणोऽयम्. `?nakzatra` is
+# composer-supplied (रोहिणी is a lunar mansion as well as an ordinary feminine name).
+- sutra: नक्षत्राद्वा
+  id: 8.3.100
+  bahiranga: -1
+  optional: true
+  overrides: 8.3.99
+  condition:
+    lp: "?nakzatra"
+    l:
+      - _iR
+      - ku
+    rp:
+      - and
+      - "?samAsa"
+      - "=senA"
+    r: s
+  xform:
+    r: str("z")

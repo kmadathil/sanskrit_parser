@@ -11,8 +11,8 @@ formation's saṁjñā rule needs:
   "karmaDAraya" — karmadhāraya  (SK/2.1.57):      pūrva viBakti_1 + ?viSezaRa + vivakṣā
   "ku"          — prādi/ku-tatpuruṣa (SK761/2.2.18, NITYA): pūrva carries only a
                   semantic sense — no vivakṣā (that is what makes it nitya)
-  "saha_bv"     — saha-bahuvrīhi (SK848/2.2.28): both members ?bahuvrIhi_vivakza,
-                  pūrva viBakti_1, referent liṅga on the uttara
+  "bahuvrIhi"   — a bahuvrīhi (SK830/2.2.24, SK848/2.2.28): both members
+                  ?bahuvrIhi_vivakza, pūrva viBakti_1, referent liṅga on the uttara
 
 Three assertion levels per case (samasa_asraya_list.py :: samasa_asraya_tests):
   1. structure : the pre-pass gave the members their roles (?samAsaPurva / ?samAsa)
@@ -45,7 +45,7 @@ _FORMATION = {
     "zazWI":       (["samAsa_vivakza"], ["samAsa_vivakza"]),
     "karmaDAraya": (["samAsa_vivakza", "viSezaRa"], ["samAsa_vivakza"]),
     "ku":          ([], []),
-    "saha_bv":     (["samAsa_vivakza", "bahuvrIhi_vivakza"],
+    "bahuvrIhi":   (["samAsa_vivakza", "bahuvrIhi_vivakza"],
                     ["samAsa_vivakza", "bahuvrIhi_vivakza"]),
     # NOT a compound: a bare stem + a taddhita affix. SK1002/6.3.64 त्वे च is an
     # affix rule, not an uttarapada rule (अजा + त्व = अजत्वम्), so there is no second
@@ -53,7 +53,7 @@ _FORMATION = {
     "affix":       ([], []),
 }
 # type → default vigraha vibhakti of the pūrva (a spec's own "vibhakti" wins)
-_PURVA_VIBHAKTI = {"zazWI": 6, "karmaDAraya": 1, "ku": None, "saha_bv": 1,
+_PURVA_VIBHAKTI = {"zazWI": 6, "karmaDAraya": 1, "ku": None, "bahuvrIhi": 1,
                    "affix": None}
 
 
@@ -110,6 +110,13 @@ def _build_members(case):
         out.append(_build_one(case["uttara"], utags, referent_linga=ref))
     if case.get("uttara_affix"):
         out.append(deepcopy(getattr(_pratyaya, case["uttara_affix"])))
+    if ref == "strI" or case.get("strI_abs"):
+        # The feminine affix. For a strī REFERENT it is the ṭāp that feminises an a-stem
+        # uttara — the same strI_abs element cmd_line.prepare_bahuvrihi appends (सराक्षसीक →
+        # सराक्षसीका). `strI_abs: True` requests it directly, which the मतुप् cases need:
+        # 4.1.6 उगितश्च turns it into ṅīp after the u-it मतुप् (अमर + मतुप् + ङीप् = अमरावती).
+        # Must precede the sup — the strī affix sits between the stem and its ending.
+        out.append(deepcopy(_pratyaya.strI_abs))
     if case.get("sup"):
         # An explicit sup, as the plain vibhakti drivers supply (conftest.py:164). Needed by
         # type "affix": AntarangaPrakriya's automatic sup insertion lives inside the kāraka
@@ -117,10 +124,6 @@ def _build_members(case):
         # bare stem+taddhita derivation has. `sup: [N, M]` = vibhakti N, vacana M.
         n, m = case["sup"]
         out.append(deepcopy(_pratyaya.sups[n - 1][m - 1]))
-    if ref == "strI":
-        # A strī referent needs the ṭāp so an a-stem uttara feminises — the same
-        # strI_abs element cmd_line.prepare_bahuvrihi appends (सराक्षसीक → सराक्षसीका).
-        out.append(deepcopy(_pratyaya.strI_abs))
     return out
 
 

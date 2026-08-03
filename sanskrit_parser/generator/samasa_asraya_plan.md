@@ -54,15 +54,18 @@ notes)*; ब्राह्मणिगोत्रम्, ग्रामणि
 | **X1** pūrvapada ādeśa | 30 | **DONE** — 28 implemented, 2 Skipped | `b3847ca`, 45 cases, suite 8363 green |
 | **X2** pūrva hrasva (ङी/आप्) + `tva` | 8 | **DONE** — 6 implemented, 2 Skipped | 18 cases; adds `tva_t`, `$$ik_dIrGa_anekAc` |
 | **X3** मुम् | 2 | **DONE** — 2 implemented | 5 cases; no new machinery beyond the append xform |
-| X4 pūrva dīrgha + `matup` | 14 | pending | — |
-| X5 samāsa ṣatva | 6 | pending | — |
+| **X4** pūrva dīrgha + `matup` | 14 | **DONE** — 12 implemented, 2 Skipped | 26 cases; adds `matup` + 8.2.9 |
+| **X5** samāsa ṣatva | 6 | **DONE** — 6 implemented | 10 cases; N2 needed no engine work |
 | X6 samāsa ṇatva | 9 | pending | — |
 | X7 पृषोदरादि + suṭ nipātanas | 15 | pending | — |
 | X8 ष्यङ् सम्प्रसारणम् | 3 | pending | — |
 | X9 prakaraṇa audit + status | — | pending | — |
-| | **87** | **36 done / 51 to go** | |
+| | **87** | **54 done / 33 to go** | |
 
-**Machinery status:** **N1 (मुम्) built in X3** — and it needed no engine work at all, just the
+**Machinery status:** **N2 built in X5 and N3 completed in X4** — N2 needed no engine work,
+just `xform: r: str("z")` at the pre-pass junction (`r` is the uttara's first char); N3's
+`matup` landed with 8.2.9 मतोर्वः, and the five SK examples of 6.3.119/120 pinned that
+sūtra's condition exactly as the plan predicted. **N1 (मुम्) built in X3** — and it needed no engine work at all, just the
 append xform `l: l+str("m")`, since 1.1.47 मिदचोऽन्त्यात्परः coincides with appending for a
 vowel-final pūrva. **N3's `tva` built in X2** (`tva_t` in `pratyaya.py`), plus one new
 paribhāṣā helper the plan did not anticipate, `$$ik_dIrGa_anekAc`. Still to build: N2
@@ -99,7 +102,7 @@ most likely source of lost time, so the rule is:
 |---|---|---|---|
 | `bahiranga: -1` (samāsa pre-pass) | **(pūrva \| uttara)** | SK926/6.3.29 दिवो द्यावा, `sutras_antaranga.yaml:12823` | The rule reads the **uttara's identity** and must land before sup-luk / declension. **Default for this prakaraṇa.** |
 | `bahiranga: 1` (main scan, pre-luk) | (pūrva \| its own sup) | SK849/6.3.82 वोपसर्जनस्य, `:11209` | The rule needs no uttara information (सह → स in a bahuvrīhi). **Cannot be used here** for uttara-keyed rules — the uttara is not in the window. |
-| main scan, default bahiranga | (pūrva \| uttara), post-luk | 6.3.128 विश्वस्य वसुराटोः, `:745` | Pure phonological tweak at the junction after 2.4.71 has luk'd the pūrva's sup (`l: dirgha(l)`). |
+| main scan, default bahiranga | (pūrva \| uttara+**sup**) | 6.3.128 विश्वस्य वसुराटोः, `:745` | **Only when the uttara is identified by a TAG.** By the time the main scan reaches this junction the uttara has merged with its sup, so `rp: =X` and `r: <char>` no longer match — 6.3.128 works solely because it keys on `?vasupada`/`?rAj`. X4 and X5 both learned this the hard way; all 17 of their compound rules moved to `bahiranga: -1`. |
 
 The xform vocabulary is already sufficient (`sutra.py:273-311`): `l`/`lc` = last char /
 rest of the pūrva, `r`/`rc` = **first** char / rest of the uttara. Whole-stem
@@ -294,7 +297,31 @@ SK1007/6.3.70 कारे सत्यागदस्य → **सत्यङ�
 (अस्तुङ्कारः, धेनुम्भव्या, लोकम्पृणः, तिमिङ्गिलः, उष्णङ्करणम् …) goes in as one Skipped row
 unless a stem happens to be free.
 
-### X4 — uttarapada-conditioned pūrva dīrgha (14 sūtras) + the मतुप् affix — PENDING
+### X4 — uttarapada-conditioned pūrva dīrgha (14 sūtras) + the मतुप् affix — **DONE (2026-08-03)**
+
+12 implemented + 2 Skipped (6.3.116 क्विबन्त, 6.3.118 वलच्). 26 cases. Findings:
+
+- **§1's placement table was WRONG in its most load-bearing row, and this phase found out.**
+  All nine compound-dīrgha rules were written main-scan per the plan, following 6.3.128 — and
+  *none of them fired*. Cause: at the main-scan junction the uttara has already merged with
+  its sup, so `rp: =nara` / `r: s` can never match a literal. 6.3.128 works only because it
+  keys on a TAG (`?vasupada`). **Rule of thumb: content-keyed → pre-pass; tag-keyed → either.**
+  The table is corrected above.
+- **X2's 6.3.61 problem did NOT recur, and the reason is worth stating**: every X4 rule is
+  pinned to a specific uttarapada (कर्ण, वन, गिरि, मतुप्, वह, काश, नर, मित्र) or a specific pūrva.
+  6.3.121 इको वहे can therefore use a bare `l: _ik` gate safely, where 6.3.61 could not.
+  A length rule is dangerous only when its condition is a vowel class *and nothing else*.
+- **A rule on an n-final pūrva needs the `lc`-form xform.** 6.3.125 अष्टनः: at pre-pass time
+  the pūrva is still अष्टन्, so `l: dirgha(l)` lengthens the न् (a no-op). Use
+  `lc: lc[:-1]+dirgha(lc[-1])` — 6.4.8's shape — and let 8.2.7's न्-lopa strip the न्.
+- **मतुप् came out exactly right**, and the plan's reading of 8.2.9 was confirmed by the data:
+  a-final अमर/शर/अजिर/वलय → व, i-final व्रीहि → म. One gotcha: the it-marker is `["u", "p"]`,
+  not `["u~", "p"]` — `u~` is the anunāsika marker सु uses, and with it the u-it never
+  registered, so 4.1.6 उगितश्च gave no ङीप् and 6.4.14 no upadhā-dīrgha.
+- Per-instance tagging is the right tool for a shared pūrva: `?prAdi` goes on the test's परि,
+  not on the base stem, which `ui/app.py` and the अक्षपरि avyayībhāva also use.
+
+Original scope, for reference:
 
 | SK | A | Form | Note |
 |---|---|---|---|
@@ -314,7 +341,31 @@ unless a stem happens to be free.
 **Mechanism:** main-scan `xform: l: dirgha(l)`, template 6.3.128. Start with X4's
 6.3.129/130 pair to validate the placement before the harder members.
 
-### X5 — samāsa ṣatva (6 sūtras) — PENDING
+### X5 — samāsa ṣatva (6 sūtras) — **DONE (2026-08-03)**
+
+All 6 implemented, 10 cases, no engine work — N2 is just `xform: r: str("z")` at the pre-pass
+junction, since `r` is the uttara's FIRST char (`sutra.py:279`). Findings:
+
+- **ṢṬUTVA had to be folded into 8.3.81 and 8.3.83.** The plan assumed 8.4.41 ष्टुना ष्टुः would
+  supply it for free; it cannot. 8.4.41 is a JUNCTION rule, and the fresh ष् and the थ्/त् it
+  must act on both end up inside the uttara element (स्थान → ष्थान), where there is no
+  junction. The xform therefore calls 8.4.41's own `zwutva` helper on the next char — one
+  extra call site for the same helper, not duplicated logic. Without it: *भीरुष्थानम्.
+  **A general fix would be an element-internal variant of 8.4.41**, worth considering if a
+  later phase hits the same wall.
+- **A वा that competes with a NITYA needs the nitya carved out.** 8.3.100 नक्षत्राद्वा is optional,
+  but 8.3.99 is nitya and re-supplied the ṣatva in 8.3.100's skip branch, so रोहिणीसेना could
+  never surface. Fixed by `?!nakzatra` on 8.3.99. `overrides:` alone does not help — it governs
+  the case where both are triggered, not the skip branch.
+- **ज्योतिष्टोमः is partial and it is not this phase's fault.** The ष्ट is correct; the pūrva's own
+  final sibilant survives too (ज्योतिःष्टोमः / ज्योतिष्ष्टोमः) because visarga-LOPA before शर् +
+  stop — a vārtika on 8.3.36 — is unimplemented. Adding it would touch every visarga-before-
+  श्च/ष्ट/स्त in the suite, so it stays a recorded gap.
+- SK's masc हरिषेणः / सुषामा: सुषामा works (n-stem bahuvrīhi, masc referent); हरिषेणः would need
+  the ṭāp-lopa a masculine name-compound triggers on an ā-stem uttara, so सेना stays feminine
+  and the case asserts हरिषेणा. The ṣatva is what is under test and is unaffected.
+
+Original scope, for reference:
 
 SK1019/8.3.80 **अङ्गुलिषङ्गः** · SK1020/8.3.81 **भीरुष्ठानम्** · SK1021/8.3.83
 **ज्योतिष्टोमः, आयुष्टोमः** · SK1022/8.3.98 **सुषामा, सुषन्धिः** · SK1023/8.3.99

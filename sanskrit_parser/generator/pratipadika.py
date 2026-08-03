@@ -1331,3 +1331,57 @@ agada = Pratipadika("agada", "pum")     # अगद m. "medicine" — अगद�
 # चर m. "goer" — a pre-formed कृदन्त (चर् + अच्). ?krt is SK1008/6.3.72's own कृति condition;
 # the tag name matches the one the kṛt pratyayas carry in pratyaya.py (krt, not kft).
 cara  = Pratipadika("cara",  "pum", other_tags=["krt"])
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X4 (samasa_asraya_plan.md): the uttarapada-conditioned
+# PŪRVA DĪRGHA rules (6.3.114–130). karRa, azwan, pada, viSva, nara, mitra, vana,
+# giri, paYcan, pAka all already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── 6.3.115 कर्णे लक्षणस्य: a लक्षण (brand/mark) word lengthens before कर्ण.
+dviguRa = Pratipadika("dviguRa", "pum", other_tags=["lakzaRa"])  # द्विगुण — द्विगुणाकर्णः (SK1036)
+SoBana  = Pratipadika("SoBana",  "pum")   # शोभन "handsome" — the लक्षणस्य NEGATIVE (शोभनकर्णः)
+maRi    = Pratipadika("maRi",    "pum", other_tags=["lakzaRa"])  # मणि — an अविष्टादि EXCLUSION (मणिकर्णः)
+
+# ── 6.3.117 वनगिर्योः संज्ञायाम्: कोटरādi lengthen before वन, किंशुलुकādi before गिरि.
+kowara     = Pratipadika("kowara",     "napum")  # कोटर — कोटरावणम् (SK1038)
+kiMSuluka  = Pratipadika("kiMSuluka",  "pum")    # किंशुलुक — किंशुलुकागिरिः (SK1038)
+
+# ── 6.3.119/120 मतौ: a बह्वच् non-अजिरādi pūrva, and the शरādi, lengthen before मतुप्.
+amara  = Pratipadika("amara",  "pum")   # अमर — अमरावती (SK1041, bahvac: a-m-a-r-a = 3 vowels)
+ajira  = Pratipadika("ajira",  "napum", other_tags=["ajirAdi"])  # अजिर — the अनजिरādi NEGATIVE (अजिरवती)
+vrIhi  = Pratipadika("vrIhi",  "pum")   # व्रीहि — the बह्वचः NEGATIVE (व्रीहिमती; only 2 vowels)
+valaya = Pratipadika("valaya", "napum")  # वलय — the संज्ञायाम् NEGATIVE (वलयवती)
+Sara   = Pratipadika("Sara",   "pum", other_tags=["SarAdi"])  # शर — शरावती (SK1042; only 2 vowels, hence its own sūtra)
+
+# ── 6.3.121 इको वहे: an इक्-final pūrva lengthens before वह, except पीलु.
+fzi   = Pratipadika("fzi",   "pum")     # ऋषि — ऋषीवहम् (SK1043)
+vaha  = Pratipadika("vaha",  "napum")   # वह n. "carrying" — the uttara of 6.3.121
+piRqa = Pratipadika("piRqa", "pum")     # पिण्ड — the इकः NEGATIVE (पिण्डवहम्, a-final)
+pIlu  = Pratipadika("pIlu",  "pum", other_tags=["pIlvAdi"])  # पीलु — the अपीलोः EXCLUSION (पीलुवहम्)
+
+# ── 6.3.122/123: an upasarga lengthens before a घञ्-formation (not of a human), and an
+# इक्-final upasarga lengthens before काश. पाक above gains ?GaY per-instance in the test.
+nizAda = Pratipadika("nizAda", "pum", other_tags=["manuzya"])  # निषाद — the अमनुष्ये NEGATIVE (SK1044)
+kASa   = Pratipadika("kASa",   "pum")   # काश m. "appearance" — नीकाशः / वीकाशः (SK1045)
+vi     = Pratipadika("vi",     "pum", other_tags=["nipAta", "prAdi"])  # वि — वीकाशः
+ni     = Pratipadika("ni",     "pum", other_tags=["nipAta", "prAdi"])  # नि — नीकाशः
+
+# ── 6.3.127 चितेः कपि: चिति lengthens before कप्.
+citi = Pratipadika("citi", "strI")   # चिति f. "layer" — एकचितीकः (SK1047)
+eka  = Pratipadika("eka",  "pum", other_tags=["saMKyA", "sarvanAma"])  # एक — the pūrva of एकचितीकः
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X5: the junction ṢATVA rules (8.3.80–100) — the
+# uttarapada's INITIAL स् → ष् under a named pūrva. aNguli, hari, jyotis, rohiRI
+# already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+BIru  = Pratipadika("BIru",  "pum")     # भीरु "timid" — भीरुष्ठानम् (SK1020/8.3.81)
+pfTu  = Pratipadika("pfTu",  "pum")     # पृथु "broad" — the संज्ञायाम् NEGATIVE of 8.3.99 (पृथुसेना)
+saNga = Pratipadika("saNga", "pum")     # सङ्ग m. "contact" — अङ्गुलिषङ्गः (SK1019/8.3.80)
+sTAna = Pratipadika("sTAna", "napum")   # स्थान n. "place" — भीरुष्ठानम्
+Ayus  = Pratipadika("Ayus",  "napum", other_tags=["AdeSa_s"])  # आयुस् n. (s-final) — आयुष्टोमः (SK1021/8.3.83)
+stoma = Pratipadika("stoma", "pum")     # स्तोम m. "praise" — ज्योतिष्टोमः / आयुष्टोमः
+sAman = Pratipadika("sAman", "napum")   # सामन् n. "chant" — सुषामा (SK1022/8.3.98)
+sanDi = Pratipadika("sanDi", "pum")     # सन्धि m. — सुषन्धिः (SK1022/8.3.98)
+senA  = Pratipadika("senA",  "strI", other_tags=["Ap"])  # सेना f. "army" — हरिषेणः (SK1023/8.3.99)

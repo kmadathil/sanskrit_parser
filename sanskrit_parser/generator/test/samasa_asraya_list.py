@@ -5,7 +5,7 @@ Driver: test_samasa_asraya.py. Case shape:
 
     {
         "label":   "X1-<form>-SK<n>-<a.b.c>",   # dual sutra numbering (mandatory)
-        "type":    "zazWI" | "karmaDAraya" | "ku" | "saha_bv",   # the formation used
+        "type":    "zazWI" | "karmaDAraya" | "ku" | "bahuvrIhi" | "affix",
         "purva":   {"stem": ..., "vibhakti": ..., "tags": [...], "sem": ...},
         "uttara":  {"stem": ..., "vacana": ..., "tags": [...]},
         "fired":   [<Ashtadhyayi ids that must appear in the pre-pass trace>],
@@ -308,7 +308,7 @@ samasa_asraya_tests = [
     {
         # सपलाशम् — a place name, so ?saMjYA. Neuter referent.
         "label": "X1-sapalASam-SK1009-6.3.78",
-        "type": "saha_bv",
+        "type": "bahuvrIhi",
         "referent_linga": "napum",
         "purva": {"stem": "saha", "tags": ["saMjYA"]},
         "uttara": {"stem": "palASa", "vacana": 1},
@@ -322,7 +322,7 @@ samasa_asraya_tests = [
         # 6.3.82 is `bahiranga: 1` (main scan), so it is absent from the PRE-PASS trace
         # this level asserts on — its effect shows up at level 3, in the two surfaces.
         "label": "X1-sahapalASam-negative-SK1009-6.3.78",
-        "type": "saha_bv",
+        "type": "bahuvrIhi",
         "referent_linga": "napum",
         "purva": {"stem": "saha"},
         "uttara": {"stem": "palASa", "vacana": 1},
@@ -334,7 +334,7 @@ samasa_asraya_tests = [
         # समुहूर्तं ज्योतिषमधीते — the ग्रन्थान्त sense (he studies astronomy up to the
         # muhūrta chapter). ?granTAntADika covers both of 6.3.79's senses.
         "label": "X1-samuhUrtam-SK1010-6.3.79",
-        "type": "saha_bv",
+        "type": "bahuvrIhi",
         "referent_linga": "napum",
         "purva": {"stem": "saha", "tags": ["granTAntADika"]},
         "uttara": {"stem": "muhUrta", "vacana": 1},
@@ -346,7 +346,7 @@ samasa_asraya_tests = [
         # सराक्षसीका निशा — the rākṣasī is अनुपाख्य (inferred, not seen). Feminine referent
         # (निशा), so the driver appends the ṭāp; the कप् is SK/5.4.154's ?kap_vivakzA.
         "label": "X1-sarAkzasIkA-SK1011-6.3.80",
-        "type": "saha_bv",
+        "type": "bahuvrIhi",
         "referent_linga": "strI",
         "purva": {"stem": "saha", "tags": ["anupAKya"]},
         "uttara": {"stem": "rAkzasI", "vacana": 1, "tags": ["kap_vivakzA"]},
@@ -769,5 +769,418 @@ samasa_asraya_tests = [
         "fired": ["2.2.8"],
         "not_fired": ["6.3.72"],
         "surface": "रात्रिपुत्रः",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X4 — uttarapada-conditioned PŪRVA DĪRGHA (SK1035–1049 / 6.3.114–130).
+    #
+    # The mirror of X2's hrasva, and the mirror of its danger too — except that every
+    # rule here is pinned to a SPECIFIC uttarapada (कर्ण, वन, गिरि, मतुप्, वह, काश, नर,
+    # मित्र) or a specific pūrva, which is exactly what keeps them from repeating
+    # 6.3.61's damage. SK1035/6.3.114 संहितायाम् is the adhikāra ("अधिकारोऽयम्" is SK's
+    # whole comment) and has no rule block.
+    #
+    # Several cases override the uttara's liṅga to masc: SK's own forms are
+    # द्विगुणाकर्णः / परीपाकः (things with such ears; a ripening), but कर्ण and पाक are
+    # both lexically neuter and 2.4.26 परवल्लिङ्गम् takes the compound's gender from the
+    # uttara.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # द्विगुणा कर्णा यस्य = द्विगुणाकर्णः — a लक्षण (mark) word lengthens before कर्ण.
+        "label": "X4-dviguRAkarRaH-SK1036-6.3.115",
+        "type": "karmaDAraya",
+        "purva": {"stem": "dviguRa"},
+        "uttara": {"stem": "karRa", "vacana": 1, "linga": "pum"},
+        "fired": ["2.1.57", "6.3.115"],
+        "surface": "द्विगुणाकर्णः",
+    },
+    {
+        # लक्षणस्य किम् — शोभन is not a mark, so no dīrgha: शोभनकर्णः.
+        "label": "X4-SoBanakarRaH-negative-SK1036-6.3.115",
+        "type": "karmaDAraya",
+        "purva": {"stem": "SoBana"},
+        "uttara": {"stem": "karRa", "vacana": 1, "linga": "pum"},
+        "fired": ["2.1.57"],
+        "not_fired": ["6.3.115"],
+        "surface": "शोभनकर्णः",
+    },
+    {
+        # अविष्टादीनां किम् — मणि IS a लक्षण but is one of the ten words the sūtra
+        # explicitly excludes, so it keeps its short vowel: मणिकर्णः.
+        "label": "X4-maRikarRaH-negative-SK1036-6.3.115",
+        "type": "karmaDAraya",
+        "purva": {"stem": "maRi"},
+        "uttara": {"stem": "karRa", "vacana": 1, "linga": "pum"},
+        "fired": ["2.1.57"],
+        "not_fired": ["6.3.115"],
+        "surface": "मणिकर्णः",
+    },
+    {
+        # कोटरādi + वन in a saṁjñā → कोटरा॰. SK's form is कोटरा**वण**म्: the ण् is
+        # SK1039/8.4.4, a phase X6 rule, so until X6 lands this surfaces कोटरावनम्.
+        # The dīrgha under test here is unaffected either way.
+        "label": "X4-kowarAvanam-SK1038-6.3.117",
+        "type": "zazWI",
+        "purva": {"stem": "kowara", "tags": ["saMjYA"]},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8", "6.3.117"],
+        "surface": "कोटरावनम्",
+    },
+    {
+        # किंशुलुकādi + गिरि in a saṁjñā → किंशुलुकागिरिः. The second of 6.3.117's two
+        # ordered pairs (the lists are not interchangeable, hence two arms).
+        "label": "X4-kiMSulukAgiriH-SK1038-6.3.117",
+        "type": "zazWI",
+        "purva": {"stem": "kiMSuluka", "tags": ["saMjYA"]},
+        "uttara": {"stem": "giri", "vacana": 1},
+        "fired": ["2.2.8", "6.3.117"],
+        "surface": "किंशुलुकागिरिः",
+    },
+    {
+        # अमरावती — a बह्वच् pūrva lengthens before मतुप्. NOT a compound: stem + affix,
+        # so main-scan and absent from the pre-pass trace. The feminine ई is free from
+        # 4.1.6 उगितश्च (मतुप् is u-it), and the व of ॰वती is 8.2.9 मादुपधायाश्च मतोर्वः.
+        "label": "X4-amarAvatI-SK1041-6.3.119",
+        "type": "affix",
+        "purva": {"stem": "amara", "tags": ["saMjYA"]},
+        "uttara_affix": "matup",
+        "strI_abs": True,
+        "sup": [1, 1],
+        "fired": [],
+        "surface": "अमरावती",
+    },
+    {
+        # शरावती — the शरādi get their own sūtra because शर is only DVYAC, so 6.3.119's
+        # बह्वच् could never reach it.
+        "label": "X4-SarAvatI-SK1042-6.3.120",
+        "type": "affix",
+        "purva": {"stem": "Sara", "tags": ["saMjYA"]},
+        "uttara_affix": "matup",
+        "strI_abs": True,
+        "sup": [1, 1],
+        "fired": [],
+        "surface": "शरावती",
+    },
+    {
+        # अनजिरादीनां किम् — अजिर is बह्वच् but अजिरādi, so excluded: अजिरवती.
+        "label": "X4-ajiravatI-negative-SK1041-6.3.119",
+        "type": "affix",
+        "purva": {"stem": "ajira", "tags": ["saMjYA"]},
+        "uttara_affix": "matup",
+        "strI_abs": True,
+        "sup": [1, 1],
+        "fired": [],
+        "surface": "अजिरवती",
+    },
+    {
+        # बह्वचः किम् — व्रीहि has only two vowels: व्रीहिमती. Note the म् SURVIVES here —
+        # 8.2.9 turns मतुप्'s म् into व् only after म् or अवर्ण, and व्रीहि is i-final. So
+        # this one case tests both 6.3.119's बह्वच् condition and 8.2.9's.
+        "label": "X4-vrIhimatI-negative-SK1041-6.3.119",
+        "type": "affix",
+        "purva": {"stem": "vrIhi", "tags": ["saMjYA"]},
+        "uttara_affix": "matup",
+        "strI_abs": True,
+        "sup": [1, 1],
+        "fired": [],
+        "surface": "व्रीहिमती",
+    },
+    {
+        # संज्ञायामित्येव — वलय is बह्वच् and not अजिरādi, but this is no name: वलयवती.
+        "label": "X4-valayavatI-negative-SK1041-6.3.119",
+        "type": "affix",
+        "purva": {"stem": "valaya"},
+        "uttara_affix": "matup",
+        "strI_abs": True,
+        "sup": [1, 1],
+        "fired": [],
+        "surface": "वलयवती",
+    },
+    {
+        # ऋषीवहम् — an इक्-final pūrva lengthens before वह. A bare `l: _ik` gate is safe
+        # here, unlike X2's 6.3.61, because the uttara is pinned to वह.
+        "label": "X4-fzIvaham-SK1043-6.3.121",
+        "type": "zazWI",
+        "purva": {"stem": "fzi"},
+        "uttara": {"stem": "vaha", "vacana": 1},
+        "fired": ["2.2.8", "6.3.121"],
+        "surface": "ऋषीवहम्",
+    },
+    {
+        # इकः किम् — पिण्ड is a-final: पिण्डवहम्.
+        "label": "X4-piRqavaham-negative-SK1043-6.3.121",
+        "type": "zazWI",
+        "purva": {"stem": "piRqa"},
+        "uttara": {"stem": "vaha", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.121"],
+        "surface": "पिण्डवहम्",
+    },
+    {
+        # अपीलोः किम् — पीलु IS इक्-final but is the sūtra's own exception: पीलुवहम्.
+        "label": "X4-pIluvaham-negative-SK1043-6.3.121",
+        "type": "zazWI",
+        "purva": {"stem": "pIlu"},
+        "uttara": {"stem": "vaha", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.121"],
+        "surface": "पीलुवहम्",
+    },
+    {
+        # बहुलम् → optional: परीपाकः / परिपाकः. ?prAdi is set PER-INSTANCE on this pari
+        # rather than on the shared stem — the repo's convention for exactly this (cf.
+        # ?pAkAdi on śaṅkukarṇa); the bare `pari` stem is used elsewhere (ui/app.py's
+        # बहुपरिव्राजक, the अक्षपरि avyayībhāva) and tagging it ?prAdi would let 2.2.18
+        # कुगतिप्रादयः reach those.
+        "label": "X4-parIpAkaH-SK1044-6.3.122",
+        "type": "zazWI",
+        "purva": {"stem": "pari", "tags": ["prAdi"]},
+        "uttara": {"stem": "pAka", "vacana": 1, "linga": "pum", "tags": ["GaY"]},
+        "fired": ["2.2.18", "6.3.122"],
+        "surfaces": ["परीपाकः", "परिपाकः"],
+    },
+    {
+        # अमनुष्ये किम् — निषाद denotes a person, so no dīrgha: परिनिषादः.
+        "label": "X4-parinizAdaH-negative-SK1044-6.3.122",
+        "type": "zazWI",
+        "purva": {"stem": "pari", "tags": ["prAdi"]},
+        "uttara": {"stem": "nizAda", "vacana": 1, "tags": ["GaY"]},
+        "fired": ["2.2.18"],
+        "not_fired": ["6.3.122"],
+        "surface": "परिनिषादः",
+    },
+    {
+        # नीकाशः — an इक्-final upasarga lengthens before काश.
+        "label": "X4-nIkASaH-SK1045-6.3.123",
+        "type": "zazWI",
+        "purva": {"stem": "ni"},
+        "uttara": {"stem": "kASa", "vacana": 1},
+        "fired": ["2.2.18", "6.3.123"],
+        "surface": "नीकाशः",
+    },
+    {
+        # वीकाशः — the other upasarga SK names.
+        "label": "X4-vIkASaH-SK1045-6.3.123",
+        "type": "zazWI",
+        "purva": {"stem": "vi"},
+        "uttara": {"stem": "kASa", "vacana": 1},
+        "fired": ["2.2.18", "6.3.123"],
+        "surface": "वीकाशः",
+    },
+    {
+        # इकः किम् — प्र is a-final, not इक्: प्रकाशः.
+        "label": "X4-prakASaH-negative-SK1045-6.3.123",
+        "type": "zazWI",
+        "purva": {"stem": "pra"},
+        "uttara": {"stem": "kASa", "vacana": 1},
+        "fired": ["2.2.18"],
+        "not_fired": ["6.3.123"],
+        "surface": "प्रकाशः",
+    },
+    {
+        # अष्टापदम् — अष्टन् lengthens before an uttarapada in a saṁjñā. The xform is the
+        # `lc`-form (6.4.8's shape), not `l: dirgha(l)`: at pre-pass time the pūrva is
+        # still न्-final, so lengthening its LAST char would be a no-op on the न्. The
+        # vowel before the न् is lengthened instead and 8.2.7's न्-lopa then strips it:
+        # azwan → azwAn → अष्टा + पद.
+        "label": "X4-azwApadam-SK1046-6.3.125",
+        "type": "zazWI",
+        "purva": {"stem": "azwan", "tags": ["saMjYA"]},
+        "uttara": {"stem": "pada", "vacana": 1},
+        "fired": ["2.2.8", "6.3.125"],
+        "surface": "अष्टापदम्",
+    },
+    {
+        # संज्ञायां किम् — अष्टपुत्रः is no name, so the अष्ट keeps its short अ.
+        "label": "X4-azwaputraH-negative-SK1046-6.3.125",
+        "type": "zazWI",
+        "purva": {"stem": "azwan"},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.125"],
+        "surface": "अष्टपुत्रः",
+    },
+    {
+        # एका चितिर्यस्य = एकचितीकः — चिति lengthens before the कप् samāsānta. An
+        # affix-context rule, so main-scan: `bahiranga: -1` would put the window at
+        # (एक | चिति), where _insert_samasanta has not yet added the कप् at all.
+        "label": "X4-ekacitIkaH-SK1047-6.3.127",
+        "type": "bahuvrIhi",
+        "referent_linga": "pum",
+        "purva": {"stem": "eka"},
+        "uttara": {"stem": "citi", "vacana": 1, "tags": ["kap_vivakzA"]},
+        "fired": ["2.2.24", "5.4.154"],
+        "surface": "एकचितीकः",
+    },
+    {
+        # कपि किम् — without the कप् vivakṣā there is nothing for 6.3.127 to act before:
+        # एकचितिः.
+        "label": "X4-ekacitiH-negative-SK1047-6.3.127",
+        "type": "bahuvrIhi",
+        "referent_linga": "pum",
+        "purva": {"stem": "eka"},
+        "uttara": {"stem": "citi", "vacana": 1},
+        "fired": ["2.2.24"],
+        "not_fired": ["5.4.154"],
+        "surface": "एकचितिः",
+    },
+    {
+        # विश्वानरः — विश्व lengthens before नर in a saṁjñā. This and 6.3.130 are the
+        # landed 6.3.128 विश्वस्य वसुराटोः rule with a different uttarapada.
+        "label": "X4-viSvAnaraH-SK1048-6.3.129",
+        "type": "karmaDAraya",
+        "purva": {"stem": "viSva", "tags": ["saMjYA"]},
+        "uttara": {"stem": "nara", "vacana": 1},
+        "fired": ["2.1.57", "6.3.129"],
+        "surface": "विश्वानरः",
+    },
+    {
+        # विश्वामित्रः — and before मित्र when a ṚṢI is meant.
+        "label": "X4-viSvAmitraH-SK1049-6.3.130",
+        "type": "karmaDAraya",
+        "purva": {"stem": "viSva", "tags": ["fzivAcaka"]},
+        "uttara": {"stem": "mitra", "vacana": 1},
+        "fired": ["2.1.57", "6.3.130"],
+        "surface": "विश्वामित्रः",
+    },
+    {
+        # ऋषौ किम् — विश्वमित्रो माणवकः, a boy of that name rather than the sage.
+        "label": "X4-viSvamitraH-negative-SK1049-6.3.130",
+        "type": "karmaDAraya",
+        "purva": {"stem": "viSva"},
+        "uttara": {"stem": "mitra", "vacana": 1},
+        "fired": ["2.1.57"],
+        "not_fired": ["6.3.130"],
+        "surface": "विश्वमित्रः",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X5 — junction ṢATVA (SK1019–1024 / 8.3.80–100): the uttarapada's INITIAL स् → ष्
+    # under a named pūrva. `r` is the uttara's FIRST char, which is what makes an
+    # initial-consonant rule expressible; इण्कोः continues by anuvṛtti, so each rule
+    # also checks `l: [_iR, ku]`.
+    #
+    # These are `bahiranga: -1` pre-pass rules for the same reason X4's are: at
+    # main-scan time the uttara has merged with its sup, so neither `rp: =saNga` nor
+    # `r: s` can match any more.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # अङ्गुलिषङ्गः — 8.3.80's whole content is that this is a SAMĀSA rule; समासे किम्
+        # is अङ्गुलेः सङ्गः, two separate padas, which the ?samAsa gate excludes.
+        "label": "X5-aNgulizaNgaH-SK1019-8.3.80",
+        "type": "zazWI",
+        "purva": {"stem": "aNguli"},
+        "uttara": {"stem": "saNga", "vacana": 1},
+        "fired": ["2.2.8", "8.3.80"],
+        "surface": "अङ्गुलिषङ्गः",
+    },
+    {
+        # अङ्गुलेः किम् — the rule names अङ्गुलि specifically, so another iṇ-final pūrva
+        # before सङ्ग gets no ṣatva: हरिसङ्गः.
+        "label": "X5-harisaNgaH-negative-SK1019-8.3.80",
+        "type": "zazWI",
+        "purva": {"stem": "hari"},
+        "uttara": {"stem": "saNga", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["8.3.80"],
+        "surface": "हरिसङ्गः",
+    },
+    {
+        # भीरुष्ठानम् — and the थ् retroflexes to ठ्. That ṣṭutva is FOLDED INTO this rule:
+        # the landed 8.4.41 ष्टुना ष्टुः is a junction rule, and here the fresh ष् and the
+        # थ् are both inside the uttara element (स्थान → ष्थान) where no junction exists.
+        # The xform calls 8.4.41's own `zwutva` helper on the next char.
+        "label": "X5-BIruzWAnam-SK1020-8.3.81",
+        "type": "zazWI",
+        "purva": {"stem": "BIru"},
+        "uttara": {"stem": "sTAna", "vacana": 1},
+        "fired": ["2.2.8", "8.3.81"],
+        "surface": "भीरुष्ठानम्",
+    },
+    {
+        # ज्योतिस् + स्तोम → the ṣatva + folded ṣṭutov give ष्टोम. SK's form is
+        # ज्योति**ष्टो**मः with ONE ष्; the generator keeps the pūrva's own final sibilant as
+        # well (ज्योतिःष्टोमः / ज्योतिष्ष्टोमः) because the visarga-LOPA before शर् + stop is a
+        # vārtika on 8.3.36 that is not implemented — a PRE-EXISTING gap, not something
+        # 8.3.83 introduces. The ṣatva under test is visible in the ष्ट either way.
+        "label": "X5-jyotizwomaH-SK1021-8.3.83",
+        "type": "zazWI",
+        "purva": {"stem": "jyotis"},
+        "uttara": {"stem": "stoma", "vacana": 1},
+        "fired": ["2.2.8", "8.3.83"],
+        "surfaces": ["ज्योतिःष्टोमः", "ज्योतिष्ष्टोमः"],
+    },
+    {
+        # आयुष्टोमः — 8.3.83's second pūrva, same residual-visarga note.
+        "label": "X5-AyuzwomaH-SK1021-8.3.83",
+        "type": "zazWI",
+        "purva": {"stem": "Ayus"},
+        "uttara": {"stem": "stoma", "vacana": 1},
+        "fired": ["2.2.8", "8.3.83"],
+        "surfaces": ["आयुःष्टोमः", "आयुष्ष्टोमः"],
+    },
+    {
+        # शोभनं साम यस्य = सुषामा — SK's headline example for 8.3.98. A bahuvrīhi with a
+        # masc referent, so the n-stem सामन् declines सुषामा in the nom sg.
+        "label": "X5-suzAmA-SK1022-8.3.98",
+        "type": "bahuvrIhi",
+        "referent_linga": "pum",
+        "purva": {"stem": "su_pUrva"},
+        "uttara": {"stem": "sAman", "vacana": 1},
+        "fired": ["2.2.24", "8.3.98"],
+        "surface": "सुषामा",
+    },
+    {
+        # सुषन्धिः — the other सुषामादि member SK names.
+        "label": "X5-suzanDiH-SK1022-8.3.98",
+        "type": "zazWI",
+        "purva": {"stem": "su_pUrva", "sem": "semantic_1"},
+        "uttara": {"stem": "sanDi", "vacana": 1},
+        "fired": ["8.3.98"],
+        "surface": "सुषन्धिः",
+    },
+    {
+        # हरिषेणा — the ṣatva of a सेना uttara in a saṁjñā. SK's form is हरिषेणः (masc):
+        # that needs the ṭāp-lopa a masculine name-compound triggers on an ā-stem uttara,
+        # which is outside this rule; सेना stays feminine here. The ṣatva is unaffected.
+        "label": "X5-harizeRA-SK1023-8.3.99",
+        "type": "zazWI",
+        "purva": {"stem": "hari", "tags": ["saMjYA"]},
+        "uttara": {"stem": "senA", "vacana": 1},
+        "fired": ["2.2.8", "8.3.99"],
+        "surface": "हरिषेणा",
+    },
+    {
+        # संज्ञायां किम् — पृथुसेना is no name, so no ṣatva.
+        "label": "X5-pfTusenA-negative-SK1023-8.3.99",
+        "type": "zazWI",
+        "purva": {"stem": "pfTu"},
+        "uttara": {"stem": "senA", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["8.3.99"],
+        "surface": "पृथुसेना",
+    },
+    {
+        # इण्कोरित्येव — सर्व ends in अ, which is neither an iṇ vowel nor a ku-class stop,
+        # so the ṣatva cannot apply even in a saṁjñā: सर्वसेना (SK's सर्वसेनः).
+        "label": "X5-sarvasenA-negative-SK1023-8.3.99-iRkoH",
+        "type": "zazWI",
+        "purva": {"stem": "sarva", "tags": ["saMjYA"]},
+        "uttara": {"stem": "senA", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["8.3.99"],
+        "surface": "सर्वसेना",
+    },
+    {
+        # नक्षत्राद्वा — after a nakṣatra the ṣatva is OPTIONAL: रोहिणीषेणा / रोहिणीसेना.
+        # 8.3.99 carries `?!nakzatra` so it cannot re-supply the ṣatva in the skip branch,
+        # which is what lets the non-ṣatva form surface at all. Each branch also forks on
+        # X2's SK1001/6.3.63 (रोहिणी is a saṁjñā → optional ṅī-hrasva), hence four forms.
+        "label": "X5-rohiRIzeRA-SK1024-8.3.100",
+        "type": "zazWI",
+        "purva": {"stem": "rohiRI", "tags": ["saMjYA", "nakzatra"]},
+        "uttara": {"stem": "senA", "vacana": 1},
+        "fired": ["2.2.8", "8.3.100"],
+        "surfaces": ["रोहिणीषेणा", "रोहिणीसेना", "रोहिणिषेणा", "रोहिणिसेना"],
     },
 ]
