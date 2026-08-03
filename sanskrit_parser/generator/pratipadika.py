@@ -620,7 +620,10 @@ Avawya = Pratipadika("Avawya", "pum", other_tags=["AvawI"])  # → āvaṭyā
 
 # in-stems (iN suffix: possessive adjectives ending in -in)
 # 6.4.12 blocks 6.4.8 before O/jas/am/Ow; 6.4.13 re-enables for su (nom sg)
-hastin = Pratipadika("hastin", "pum")
+# hastin (the other in-stem of this pair) is defined further down, WITH its
+# ?upamAna + ?hastyAdi tags — see the SK877/5.4.138 entry. It used to be declared
+# here untagged as well; that declaration was dead (rebound below before any
+# consumer read it) and has been removed.
 yogin = Pratipadika("yogin", "pum")
 
 # paTin-group: SK365 (7.1.85) ā before su; SK366 (7.1.86) i→a before sarvanAmasTAna;
