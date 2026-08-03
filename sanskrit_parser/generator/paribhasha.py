@@ -382,6 +382,21 @@ def has_ratva_non_at(s):
     return False
 
 
+def ik_dIrGa_anekAc(s):
+    """SK999/6.3.61 इको ह्रस्वोऽङ्यो गालवस्य — the pūrva ends in a LONG इक् (ī / ū / ṝ / ḹ) and
+    is ANEKĀC (more than one vowel).
+
+    LONG, because hrasva of an already-short vowel is a no-op — gating on the bare इक्
+    pratyāhāra would make the rule fire, and (being a vibhāṣā) FORK the derivation, on every
+    i/u-final pūrva in the language (हरि, गिरि, अङ्गुलि …) for no change in surface.
+
+    ANEKĀC, because the sūtra's own vārtika इयङुवङ्भाविनामव्ययानां च न exempts the monosyllabic
+    iyaṅ/uvaṅ stems: श्री → श्रीमदः, भ्रू → भ्रूभङ्गः keep their long vowel."""
+    if not s or s[-1] not in "IUFX":
+        return False
+    return sum(1 for c in s if isInPratyahara("ac", c)) > 1
+
+
 def is_ekac(s):
     """Return True if s contains exactly one vowel (ekāc = monosyllabic stem)."""
     if not s:

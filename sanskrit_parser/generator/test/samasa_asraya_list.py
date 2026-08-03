@@ -514,4 +514,260 @@ samasa_asraya_tests = [
         "fired": ["2.1.57", "6.3.100"],
         "surfaces": ["अन्यदर्थः", "अन्यार्थः"],
     },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X2 — PŪRVAPADA HRASVA of a ङी / आप् pūrva (SK985–1006 / 6.3.43–65).
+    #
+    # Same lever as X1, opposite operation: `l: hrasva(l)` instead of a whole-stem
+    # rewrite. The ङी/आप् distinction rides on the existing ?NI / ?Ap stem tags.
+    # Formed as ṣaṣṭhī-tatpuruṣas, except SK1002/6.3.64 which is not a compound at
+    # all (see its case). SK986/6.3.44 + SK987/6.3.45 are Skipped rows — every
+    # example SK gives for them is a तरप् (affix) context.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # ब्राह्मणी + गोत्र = ब्राह्मणिगोत्रम्. Three conditions all hold: ब्राह्मणी is ङी-final
+        # (?NI), भाषितपुंस्क (?puMvat — it has the masc ब्राह्मण), and अनेकाच्.
+        "label": "X2-brAhmaRigotram-SK985-6.3.43",
+        "type": "zazWI",
+        "purva": {"stem": "brAhmaRI"},
+        "uttara": {"stem": "gotra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.43"],
+        "surface": "ब्राह्मणिगोत्रम्",
+    },
+    {
+        # ब्राह्मणिब्रुवः — the ब्रुव member of the same list.
+        "label": "X2-brAhmaRibruvaH-SK985-6.3.43",
+        "type": "zazWI",
+        "purva": {"stem": "brAhmaRI"},
+        "uttara": {"stem": "bruva", "vacana": 1},
+        "fired": ["2.2.8", "6.3.43"],
+        "surface": "ब्राह्मणिब्रुवः",
+    },
+    {
+        # ब्राह्मणिमतः — the मत member. (मत/हत are ordinary a-stems, so these two arms
+        # cost nothing beyond the alternation.)
+        "label": "X2-brAhmaRimataH-SK985-6.3.43",
+        "type": "zazWI",
+        "purva": {"stem": "brAhmaRI"},
+        "uttara": {"stem": "mata", "vacana": 1},
+        "fired": ["2.2.8", "6.3.43"],
+        "surface": "ब्राह्मणिमतः",
+    },
+    {
+        # चेलडादिषु किम् — पुत्र is in none of 6.3.43's lists, so the ङी stays long:
+        # ब्राह्मणीपुत्रः. Also a negative control on 6.3.61, which cannot reach a
+        # ङी-final pūrva (अङ्यः).
+        "label": "X2-brAhmaRIputraH-negative-SK985-6.3.43",
+        "type": "zazWI",
+        "purva": {"stem": "brAhmaRI"},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.43", "6.3.61"],
+        "surface": "ब्राह्मणीपुत्रः",
+    },
+    {
+        # अन्यतरस्याम् — ग्रामणिपुत्रः / ग्रामणीपुत्रः. ग्रामणी is इक्-final (ī) but NOT
+        # ङी-formed — it is a क्विप् derivation (ग्रामं नयति), so 6.3.61 reaches it.
+        "label": "X2-grAmaRiputraH-SK999-6.3.61",
+        "type": "zazWI",
+        "purva": {"stem": "grAmaRI", "tags": ["gAlava_hrasva"]},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.61"],
+        "surfaces": ["ग्रामणिपुत्रः", "ग्रामणीपुत्रः"],
+    },
+    {
+        # अङ्यः किम् — गौरी IS ङी-formed, so 6.3.61 is blocked: गौरीपुत्रः stays long.
+        # (SK's own example is गौरीपतिः.)
+        "label": "X2-gOrIputraH-negative-SK999-6.3.61",
+        "type": "zazWI",
+        "purva": {"stem": "gOrI", "tags": ["gAlava_hrasva"]},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.61"],
+        "surface": "गौरीपुत्रः",
+    },
+    {
+        # A SHORT इक् final has no hrasva, so 6.3.61 must not fire on हरि — otherwise this
+        # vibhāṣā would fork every i-final pūrva in the language for no change in surface.
+        # This is what `$$ik_dIrGa_anekAc` guards (see paribhasha.py).
+        "label": "X2-hariputraH-negative-SK999-6.3.61-hrasva",
+        "type": "zazWI",
+        "purva": {"stem": "hari", "tags": ["gAlava_hrasva"]},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.61"],
+        "surface": "हरिपुत्रः",
+    },
+    {
+        # The sūtra's own vārtika इयङुवङ्भाविनामव्ययानां च न — श्री is monosyllabic (एकाच्), so
+        # it keeps its ī: श्रीपुत्रः (SK's example is श्रीमदः). The अनेकाच् half of the helper.
+        "label": "X2-SrIputraH-negative-SK999-6.3.61-ekAc",
+        "type": "zazWI",
+        "purva": {"stem": "SrI", "tags": ["gAlava_hrasva"]},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.61"],
+        "surface": "श्रीपुत्रः",
+    },
+    {
+        # एकक्षीरम् — एका → एक before an uttarapada. NITYA (no अन्यतरस्याम् in 6.3.62), so a
+        # single surface. The taddhita arm (एकरूप्यम्) is not modelled.
+        "label": "X2-ekakzIram-SK1000-6.3.62",
+        "type": "zazWI",
+        "purva": {"stem": "ekA"},
+        "uttara": {"stem": "kzIra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.62"],
+        "surface": "एकक्षीरम्",
+    },
+    {
+        # बहुलम् → optional. रेवती (a NAME, so ?saMjYA) + पुत्र = रेवतिपुत्रः / रेवतीपुत्रः.
+        # The ङी arm of 6.3.63.
+        "label": "X2-revatiputraH-SK1001-6.3.63",
+        "type": "zazWI",
+        "purva": {"stem": "revatI", "tags": ["saMjYA"]},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.63"],
+        "surfaces": ["रेवतिपुत्रः", "रेवतीपुत्रः"],
+    },
+    {
+        # The आप् arm of 6.3.63: अजा + क्षीर = अजक्षीरम् / अजाक्षीरम्.
+        "label": "X2-ajakzIram-SK1001-6.3.63",
+        "type": "zazWI",
+        "purva": {"stem": "ajA", "tags": ["saMjYA"]},
+        "uttara": {"stem": "kzIra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.63"],
+        "surfaces": ["अजक्षीरम्", "अजाक्षीरम्"],
+    },
+    {
+        # संज्ञाछन्दसोः किम् — without ?saMjYA or ?Candas, 6.3.63 is silent: अजाक्षीरम्.
+        "label": "X2-ajAkzIram-negative-SK1001-6.3.63",
+        "type": "zazWI",
+        "purva": {"stem": "ajA"},
+        "uttara": {"stem": "kzIra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.63"],
+        "surface": "अजाक्षीरम्",
+    },
+    {
+        # अजत्वम् / अजात्वम् — NOT a compound: this is stem + the त्व taddhita, so the rule is
+        # a MAIN-SCAN rule at the (अजा | त्व) window and is therefore absent from the
+        # pre-pass trace (hence `fired: []`, as for 6.3.82 in X1). The sup is supplied
+        # explicitly because automatic sup insertion lives in the kāraka pre-pass, which a
+        # bare stem+taddhita derivation never enters. ?napum rides on the AFFIX — a
+        # त्व-derivative is neuter whatever it is built on.
+        "label": "X2-ajatvam-SK1002-6.3.64",
+        "type": "affix",
+        "purva": {"stem": "ajA"},
+        "uttara_affix": "tva_t",
+        "sup": [1, 1],
+        "fired": [],
+        "surfaces": ["अजत्वम्", "अजात्वम्"],
+    },
+    {
+        # The ङी arm of 6.3.64: रोहिणी + त्व = रोहिणित्वम् / रोहिणीत्वम्.
+        "label": "X2-rohiRitvam-SK1002-6.3.64",
+        "type": "affix",
+        "purva": {"stem": "rohiRI"},
+        "uttara_affix": "tva_t",
+        "sup": [1, 1],
+        "fired": [],
+        "surfaces": ["रोहिणित्वम्", "रोहिणीत्वम्"],
+    },
+    {
+        # 6.3.65's first ordered pair (क्रमात्): इष्टका–चित → इष्टकचितम्.
+        "label": "X2-izwakacitam-SK1006-6.3.65",
+        "type": "zazWI",
+        "purva": {"stem": "izwakA"},
+        "uttara": {"stem": "cita", "vacana": 1},
+        "fired": ["2.2.8", "6.3.65"],
+        "surface": "इष्टकचितम्",
+    },
+    {
+        # Second pair: इषीका–तूल → इषीकतूलम्.
+        "label": "X2-izIkatUlam-SK1006-6.3.65",
+        "type": "zazWI",
+        "purva": {"stem": "izIkA"},
+        "uttara": {"stem": "tUla", "vacana": 1},
+        "fired": ["2.2.8", "6.3.65"],
+        "surface": "इषीकतूलम्",
+    },
+    {
+        # Third pair: माला–भारिन् → मालभारि (भारिन् is an in-stem, napuṁsaka nom sg).
+        "label": "X2-mAlaBAri-SK1006-6.3.65",
+        "type": "zazWI",
+        "purva": {"stem": "mAlA"},
+        "uttara": {"stem": "BArin", "vacana": 1},
+        "fired": ["2.2.8", "6.3.65"],
+        "surface": "मालभारि",
+    },
+    {
+        # क्रमात् is load-bearing: the pairs are ORDERED, so इष्टका before तूल gets no hrasva
+        # (इष्टकातूलम्). A single `or` over both lists would wrongly license *इष्टकतूलम् —
+        # which is why 6.3.65 is written as three separate arms.
+        "label": "X2-izwakAtUlam-negative-SK1006-6.3.65",
+        "type": "zazWI",
+        "purva": {"stem": "izwakA"},
+        "uttara": {"stem": "tUla", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.65"],
+        "surface": "इष्टकातूलम्",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X3 — the मुम् AUGMENT (SK1007–1008 / 6.3.70, 6.3.72).
+    #
+    # मुम् is मित्, so 1.1.47 मिदचोऽन्त्यात्परः puts it after the pūrva's last vowel — an
+    # append, for these vowel-final pūrvas. Every surface below carries an extra fork
+    # from 8.4.59 वा पदान्तस्य, which makes the parasavarṇa of 8.4.58 optional at a pada
+    # boundary: so the anusvāra spelling stands beside SK's class-nasal one.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # सत्यङ्कारः — मुम् gives सत्यम्, then 8.3.23 मोऽनुस्वारः + 8.4.58 परसवर्णः give ङ्.
+        # सत्यंकारः is 8.4.59's non-parasavarṇa branch.
+        "label": "X3-satyaNkAraH-SK1007-6.3.70",
+        "type": "zazWI",
+        "purva": {"stem": "satya"},
+        "uttara": {"stem": "kAra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.70"],
+        "surfaces": ["सत्यङ्कारः", "सत्यंकारः"],
+    },
+    {
+        # अगदङ्कारः — 6.3.70's second pūrva.
+        "label": "X3-agadaNkAraH-SK1007-6.3.70",
+        "type": "zazWI",
+        "purva": {"stem": "agada"},
+        "uttara": {"stem": "kAra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.70"],
+        "surfaces": ["अगदङ्कारः", "अगदंकारः"],
+    },
+    {
+        # कारे किम् — before anything but कार, सत्य takes no मुम्: सत्यक्षीरम्.
+        "label": "X3-satyakzIram-negative-SK1007-6.3.70",
+        "type": "zazWI",
+        "purva": {"stem": "satya"},
+        "uttara": {"stem": "kzIra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.70"],
+        "surface": "सत्यक्षीरम्",
+    },
+    {
+        # विभाषा — रात्रिञ्चरः / रात्रिचरः (SK's two forms), plus रात्रिंचरः from 8.4.59.
+        # चर carries ?krt, which is the sūtra's own कृति condition.
+        "label": "X3-rAtriYcaraH-SK1008-6.3.72",
+        "type": "zazWI",
+        "purva": {"stem": "rAtri"},
+        "uttara": {"stem": "cara", "vacana": 1},
+        "fired": ["2.2.8", "6.3.72"],
+        "surfaces": ["रात्रिञ्चरः", "रात्रिंचरः", "रात्रिचरः"],
+    },
+    {
+        # कृति किम् — पुत्र is not a कृदन्त, so no मुम्: रात्रिपुत्रः.
+        "label": "X3-rAtriputraH-negative-SK1008-6.3.72",
+        "type": "zazWI",
+        "purva": {"stem": "rAtri"},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.3.72"],
+        "surface": "रात्रिपुत्रः",
+    },
 ]

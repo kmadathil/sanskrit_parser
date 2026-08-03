@@ -66,6 +66,15 @@ ati_upasarga = Pratyaya("ati", other_tags=["nipAta", "upasarga", "pada"])
 # SK472 (6.4.150 हलस्तद्धितस्य) elides only this taddhita ya-kāra before ṅīp ī — NOT a
 # base-internal 'y' (e.g. विद्या+अण् → वैद्य, where the ya is from the base, gives वैद्यी).
 yat_t = Pratyaya("ya", its=["t"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
+# त्व — the bhāva taddhita of 5.1.119 तस्य भावस्त्वतलौ (त्व arm; तल् not modelled). Needed by
+# SK1002/6.3.64 त्वे च, which optionally shortens a ङी/आप् pūrva before it (अजत्वम् / अजात्वम्).
+# Supplied as an input element, exactly as yat_t is — 5.1.119 itself belongs to the taddhita
+# prakaraṇa and is not implemented here. No it-markers.
+#
+# ?napum sits on the AFFIX, not on a base stem: a त्व-derivative is neuter by virtue of the
+# affix, whatever the gender of what it is built on (अजा f. → अजत्वम्, रोहिणी f. → रोहिणित्वम्).
+# join_objects carries it through the merge, so 7.1.24 अतोऽम् supplies अम् in the nom sg.
+tva_t = Pratyaya("tva", other_tags=["svAdi", "tadDita", "tva", "napum"])
 zyaY_t = Pratyaya("ya", its=["z", "Y"], other_tags=["svAdi", "tadDita", "tadDita_ya"])
 # yaY_t (yañ): SK471 (4.1.16 यञश्च) → ṅīp (needs the yañ-specific ?yaY tag); SK472
 # elides its ya via ?tadDita_ya. Both tags propagate to the merged stem.

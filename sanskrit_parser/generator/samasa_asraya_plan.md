@@ -38,7 +38,8 @@ does not fire") and the त्रिभुवनम् note at `test/samasa_list
 
 **Outcome:** हृल्लेखः, पदाजिः, उदमेघः, सपलाशम्, सज्योतिः, सदृशः, ईदृशः / कीदृशः, अन्यद्रागः,
 कदश्वः / काक्षः / कवोष्णम् *(all of the above landed in X1; कापथम् needs 5.4.74 — see the X1
-notes)*; ब्राह्मणिचेली, अजत्वम् / अजात्वम्, इष्टकचितम्; सत्यङ्कारः, रात्रिंचरः;
+notes)*; ब्राह्मणिगोत्रम्, ग्रामणिपुत्रः, एकक्षीरम्, रेवतिपुत्रः, अजत्वम् / अजात्वम्, इष्टकचितम्,
+मालभारि; सत्यङ्कारः, रात्रिञ्चरः *(X2 + X3 landed; ब्राह्मणिचेली would need the चेलट् affix)*;
 द्विगुणाकर्णः, कोटरावणम्, अमरावती, ऋषीवहम्, नीकाशः, अष्टापदम्, विश्वानरः, विश्वामित्रः;
 अङ्गुलिषङ्गः, भीरुष्ठानम्, ज्योतिष्टोमः, सुषामा, हरिषेणः; प्रवणम्, क्षीरपाणाः, **माषवापेण /
 चोरभयेण**; पृषोदरम्, गोष्पदम्, आस्पदम्, आश्चर्यम्, मस्करः, कारस्करः, पारस्करः;
@@ -51,22 +52,29 @@ notes)*; ब्राह्मणिचेली, अजत्वम् / अज
 | Phase | Sūtras | Status | Landed as |
 |---|---|---|---|
 | **X1** pūrvapada ādeśa | 30 | **DONE** — 28 implemented, 2 Skipped | `b3847ca`, 45 cases, suite 8363 green |
-| X2 pūrva hrasva (ङी/आप्) + `tva` | 8 | pending | — |
-| X3 मुम् | 2 | pending | — |
+| **X2** pūrva hrasva (ङी/आप्) + `tva` | 8 | **DONE** — 6 implemented, 2 Skipped | 18 cases; adds `tva_t`, `$$ik_dIrGa_anekAc` |
+| **X3** मुम् | 2 | **DONE** — 2 implemented | 5 cases; no new machinery beyond the append xform |
 | X4 pūrva dīrgha + `matup` | 14 | pending | — |
 | X5 samāsa ṣatva | 6 | pending | — |
 | X6 samāsa ṇatva | 9 | pending | — |
 | X7 पृषोदरादि + suṭ nipātanas | 15 | pending | — |
 | X8 ष्यङ् सम्प्रसारणम् | 3 | pending | — |
 | X9 prakaraṇa audit + status | — | pending | — |
-| | **87** | **28 done / 59 to go** | |
+| | **87** | **36 done / 51 to go** | |
 
-**Machinery status:** none of N1–N3 is built yet — X1 needed none of them, since every
-pūrva-ādeśa rule is the existing SK926/6.3.29 pre-pass shape. N1 (मुम्) arrives with X3,
-N2 (junction ṣatva) with X5, N3 (`tva`, `matup`) with X2 and X4 respectively.
+**Machinery status:** **N1 (मुम्) built in X3** — and it needed no engine work at all, just the
+append xform `l: l+str("m")`, since 1.1.47 मिदचोऽन्त्यात्परः coincides with appending for a
+vowel-final pūrva. **N3's `tva` built in X2** (`tva_t` in `pratyaya.py`), plus one new
+paribhāṣā helper the plan did not anticipate, `$$ik_dIrGa_anekAc`. Still to build: N2
+(junction ṣatva, X5) and N3's `matup` (X4).
 
-**Recorded deferrals opened by X1** (each also a `generator_status.md` Skipped row):
-6.3.53 (यत् + the तदर्थ/अतदर्थ sense distinction), 6.3.55 (needs the शस् taddhita 5.4.43).
+**Recorded deferrals so far** (each also a `generator_status.md` Skipped row): X1 — 6.3.53
+(यत् + the तदर्थ/अतदर्थ sense distinction), 6.3.55 (needs the शस् taddhita 5.4.43). X2 —
+6.3.44/6.3.45 (every SK example is a तरप् context), and 6.3.61's GENERAL इगन्त form: the
+rule is implemented but scoped to an opt-in `?gAlava_hrasva`, because unscoped it undoes
+other rules' deliberate dīrghas (6.3.137's केशाकेशि, 6.3.27's अग्नीवरुणौ), breaks its own
+अव्ययानाम् vārtika on ऊरीकृतम्, and reaches ङीष्-feminines because `?NI` tagging is
+incomplete lexicon-wide. X3 — 6.3.70's vārtika tail (अस्तुङ्कारः, तिमिङ्गिलः, …).
 
 ---
 
@@ -210,7 +218,38 @@ surface form and the variable name** — duplicate definitions silently shadow a
 **Skipped rows:** the vārtikas (उत्तरपदस्य च for क्षीरोदः, त्रौ च for कत्त्रयः, दृक्षे च for
 सदृक्षः/ईदृक्षः) — implement only where the uttara stem is already cheap.
 
-### X2 — pūrvapada hrasva of ङी/आप् (8 sūtras) + the त्व affix — PENDING
+### X2 — pūrvapada hrasva of ङी/आप् (8 sūtras) + the त्व affix — **DONE (2026-08-03)**
+
+6 implemented + 2 Skipped (6.3.44/6.3.45 — affix contexts). 18 cases. Findings for X4–X8:
+
+- **The `?NI` tagging in `pratipadika.py` is incomplete, and it matters.** ब्राह्मणी was missing
+  `?NI` although it is a ङीप् formation (4.1.15); सुकेशी carries only `?svAnga_I`. Any rule
+  whose condition is ङ्यन्त or अङ्यन्त therefore cannot trust `?NI` / `?!NI` lexicon-wide. This
+  is the same root cause as the standing 5.4.153 नदी-arm note in generator_status.md.
+- **A hrasva/dīrgha rule can UNDO another rule's deliberate work, and that is worse than
+  noise.** 6.3.61, written to its literal condition, shortened back 6.3.137's criterial dīrgha
+  (केशाकेशि, मुष्टीमुष्टि, बाहूबाहवि) and 6.3.27's ई (अग्नीवरुणौ). The engine offers no help here:
+  the other rule fires first, is then disabled at the window, and 6.3.61 becomes newly
+  triggered on its output — so `overrides:` cannot express the interaction. It was scoped to an
+  opt-in `?gAlava_hrasva` marker instead, exactly as 6.3.137 itself was scoped, and the general
+  form recorded as the deferral. **X4's 14 dīrgha rules are the mirror image of this — expect
+  the same collisions and check against the केशाकेशि / अग्नीवरुणौ / ऊरीकृतम् cases specifically.**
+- **A vibhāṣā whose xform is a no-op still forks.** Gating 6.3.61 on the bare `_ik` pratyāhāra
+  made it fire on every short-i-final pūrva in the language, doubling outputs with identical
+  surfaces. Hence `$$ik_dIrGa_anekAc` (`paribhasha.py`): require a LONG vowel, so hrasva
+  actually changes something. The same trap applies to any optional length rule.
+- **An affix-context rule is a MAIN-SCAN rule, not a pre-pass rule.** 6.3.64 त्वे च operates on
+  stem + त्व with no compound at all; `bahiranga: -1` plus `?samAsaPurva` would have made it
+  dead. It is therefore absent from the pre-pass trace (`fired: []`, as 6.3.82 is in X1).
+- **Gender belongs on the affix when the affix determines it.** `tva_t` carries `?napum`, so
+  अजा f. → अजत्वम् and रोहिणी f. → रोहिणित्वम् both come out right without touching either stem.
+- **Ordered lists (क्रमात्) need one arm per pair.** 6.3.65 pairs इष्टका–चित, इषीका–तूल,
+  माला–भारिन् respectively; a single `or` over both sides would license *इष्टकतूलम्.
+- **New driver hooks:** `type: "affix"` (bare stem + affix, structure assertions skipped) and
+  `sup: [N, M]` (an explicit sup — automatic insertion lives in the kāraka pre-pass, which is
+  skip-guarded on `semantic_*`/`?samAsa_vivakza`, neither of which a stem+taddhita input has).
+
+Original scope, for reference:
 
 | SK | A | Form |
 |---|---|---|
@@ -236,7 +275,19 @@ negative-control test so ब्राह्मणिचेली does not become
 New stems: चेली, ब्रुव, गोत्र, ग्रामणी, एका, रेवती, अजा, रोहिणी, इष्टका, इषीका, माला, चित, तूल,
 भारिन्, क्षीर, पुत्र.
 
-### X3 — मुम् (2 sūtras) — PENDING
+### X3 — मुम् (2 sūtras) — **DONE (2026-08-03)**
+
+Both implemented, 5 cases, **no new machinery** — N1 turned out to need nothing beyond the
+append xform `l: l+str("m")`, because मुम् is मित् and 1.1.47 मिदचोऽन्त्यात्परः (insert after the
+last vowel) coincides with appending for a vowel-final pūrva. A consonant-final pūrva would
+need the real after-the-last-vowel insertion; none arises in these two sūtras.
+
+The nasal's surface is entirely landed sandhi's work, and it brings a fork with it: 8.3.23
+मोऽनुस्वारः + 8.4.58 परसवर्णः give SK's सत्यङ्कारः / रात्रिञ्चरः, but 8.4.59 वा पदान्तस्य makes that
+parasavarṇa optional at a pada boundary, so every form has an anusvāra twin (सत्यंकारः,
+रात्रिंचरः). Not a defect — just expect the extra surface when asserting on मुम् forms.
+
+Original scope, for reference:
 
 SK1007/6.3.70 कारे सत्यागदस्य → **सत्यङ्कारः**, अगदङ्कारः; SK1008/6.3.72 रात्रेः कृति विभाषा
 (`optional: true`) → **रात्रिंचरः / रात्रिचरः**. Mechanism N1. The long vārtika tail

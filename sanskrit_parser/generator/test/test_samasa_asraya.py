@@ -47,9 +47,14 @@ _FORMATION = {
     "ku":          ([], []),
     "saha_bv":     (["samAsa_vivakza", "bahuvrIhi_vivakza"],
                     ["samAsa_vivakza", "bahuvrIhi_vivakza"]),
+    # NOT a compound: a bare stem + a taddhita affix. SK1002/6.3.64 त्वे च is an
+    # affix rule, not an uttarapada rule (अजा + त्व = अजत्वम्), so there is no second
+    # member and no samāsa — the structure assertions are skipped for this type.
+    "affix":       ([], []),
 }
 # type → default vigraha vibhakti of the pūrva (a spec's own "vibhakti" wins)
-_PURVA_VIBHAKTI = {"zazWI": 6, "karmaDAraya": 1, "ku": None, "saha_bv": 1}
+_PURVA_VIBHAKTI = {"zazWI": 6, "karmaDAraya": 1, "ku": None, "saha_bv": 1,
+                   "affix": None}
 
 
 def _set_linga(p, linga):
@@ -100,10 +105,18 @@ def _build_members(case):
     ref = case.get("referent_linga")
     purva = _build_one(case["purva"], ptags,
                        vibhakti=_PURVA_VIBHAKTI[case["type"]])
-    uttara = _build_one(case["uttara"], utags, referent_linga=ref)
-    out = [purva, uttara]
+    out = [purva]
+    if "uttara" in case:
+        out.append(_build_one(case["uttara"], utags, referent_linga=ref))
     if case.get("uttara_affix"):
         out.append(deepcopy(getattr(_pratyaya, case["uttara_affix"])))
+    if case.get("sup"):
+        # An explicit sup, as the plain vibhakti drivers supply (conftest.py:164). Needed by
+        # type "affix": AntarangaPrakriya's automatic sup insertion lives inside the kāraka
+        # pre-pass, which is skip-guarded on semantic_*/?samAsa_vivakza — neither of which a
+        # bare stem+taddhita derivation has. `sup: [N, M]` = vibhakti N, vacana M.
+        n, m = case["sup"]
+        out.append(deepcopy(_pratyaya.sups[n - 1][m - 1]))
     if ref == "strI":
         # A strī referent needs the ṭāp so an a-stem uttara feminises — the same
         # strI_abs element cmd_line.prepare_bahuvrihi appends (सराक्षसीक → सराक्षसीका).
@@ -122,17 +135,19 @@ def test_samasa_asraya(case):
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
     # ── Level 1: structure (pre-pass member roles; flatten the nested sub-list) ──
-    branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
-    flat = []
-    for o in branch:
-        flat.extend(o if isinstance(o, list) else [o])
-    members = [o for o in flat
-               if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
-    assert len(members) == 2, f"{case['label']}: expected 2 members, got {members}"
-    assert members[0].hasTag("samAsaPurva"), \
-        f"{case['label']}: pūrva {members[0]} missing ?samAsaPurva ({sorted(members[0].tags)})"
-    assert members[1].hasTag("samAsa"), \
-        f"{case['label']}: uttara {members[1]} missing ?samAsa ({sorted(members[1].tags)})"
+    # Skipped for type "affix" — there is no compound, so no roles to check.
+    if case["type"] != "affix":
+        branch = (getattr(p, "_karaka_branches", None) or [p.inputs])[0]
+        flat = []
+        for o in branch:
+            flat.extend(o if isinstance(o, list) else [o])
+        members = [o for o in flat
+                   if o.canonical() and o.hasTag("prAtipadika") and not o.hasTag("sup")]
+        assert len(members) == 2, f"{case['label']}: expected 2 members, got {members}"
+        assert members[0].hasTag("samAsaPurva"), \
+            f"{case['label']}: pūrva {members[0]} missing ?samAsaPurva ({sorted(members[0].tags)})"
+        assert members[1].hasTag("samAsa"), \
+            f"{case['label']}: uttara {members[1]} missing ?samAsa ({sorted(members[1].tags)})"
 
     # ── Level 2: fired-sutra trace (pre-pass rules) ──
     fired = {aps for e in p.karaka_log for aps in e["fired"]}

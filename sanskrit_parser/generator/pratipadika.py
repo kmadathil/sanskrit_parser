@@ -126,7 +126,9 @@ jaNGa    = Pratipadika("jaNGa",   "pum")     # जङ्घ- base of जङ्�
 BArya    = Pratipadika("BArya",   "pum")     # भार्य- base of भार्या (wife) — X-भार्यः prohibition uttara
 # Feminine pūrvas that BLOCK puṁvadbhāva (6.3.37/38/40/41): supplied in their fem form
 # + a blocker-class tag; the pūrva sup luks (2.4.71) so the ī/ā-stem surface is retained.
-brAhmaRI = Pratipadika("brAhmaRI", "strI", other_tags=["puMvat", "jAti"])     # ब्राह्मणी — 6.3.41 jāti
+# ब्राह्मणी (ब्राह्मण + ङीप् by 4.1.15) — 6.3.41 jāti. ?NI is SK985/6.3.43's own ङ्यः
+# condition; the tag was missing until phase X2 needed it (see samasa_asraya_plan.md).
+brAhmaRI = Pratipadika("brAhmaRI", "strI", other_tags=["NI", "puMvat", "jAti"])
 dattA    = Pratipadika("dattA",   "strI", other_tags=["puMvat", "saMjYA"])    # दत्ता (name) — 6.3.38
 pAcikA   = Pratipadika("pAcikA",  "strI", other_tags=["puMvat", "kopaDa"])    # पाचिका (k-penult) — 6.3.37
 sukeSI   = Pratipadika("sukeSI",  "strI", other_tags=["puMvat", "svAnga_I"])  # सुकेशी (svāṅga ī) — 6.3.40
@@ -1297,3 +1299,35 @@ dfSa        = Pratipadika("dfSa",        "pum")    # दृश m. "looking" (a-s
 
 # ── अन्य + दुक् (SK1025–1026 / 6.3.99–100). अन्य is defined above (?qatarAdi ?sarvanAma).
 rAga = Pratipadika("rAga", "pum")   # राग m. "passion" — अन्यद्रागः (SK1025/6.3.99)
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X2 (samasa_asraya_plan.md): the ङी/आप् PŪRVA-HRASVA
+# rules (6.3.43–65). The pūrvas here are feminine ī/ā-stems whose final vowel the
+# rule shortens; mAlA, kzIra, putra, mata, hata, ajA, gotra already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+
+bruva = Pratipadika("bruva", "pum")     # ब्रुव m. "so-called" (ब्रू + अच्) — ब्राह्मणिब्रुवा (SK985/6.3.43)
+gotra = Pratipadika("gotra", "napum")   # गोत्र n. "lineage" — ब्राह्मणिगोत्रम् (SK985/6.3.43); also in SK1013/6.3.85's twelve
+# ग्रामणी m. "village headman" (ग्रामं नयति, क्विप्-formed ī-final) — the इक्-final NON-ङी
+# pūrva of SK999/6.3.61; modelled exactly like senAnI above.
+grAmaRI = Pratipadika("grAmaRI", "pum", other_tags=["DAtu", "kvip"])
+gOrI = Pratipadika("gOrI", "strI", other_tags=["NI"])   # गौरी f. — the अङ्यः NEGATIVE of 6.3.61 (गौरीपतिः)
+ekA = Pratipadika("ekA", "strI", other_tags=["Ap"])     # एका f. "one" — एकक्षीरम् (SK1000/6.3.62)
+revatI = Pratipadika("revatI", "strI", other_tags=["NI"])   # रेवती f. (a name) — रेवतिपुत्रः (SK1001/6.3.63)
+rohiRI = Pratipadika("rohiRI", "strI", other_tags=["NI"])   # रोहिणी f. — रोहिणित्वम् / रोहिणीत्वम् (SK1002/6.3.64)
+# 6.3.65's three ordered pairs (क्रमात्): इष्टका–चित, इषीका–तूल, माला–भारिन्.
+izwakA = Pratipadika("izwakA", "strI", other_tags=["Ap"])   # इष्टका f. "brick" — इष्टकचितम्
+izIkA  = Pratipadika("izIkA",  "strI", other_tags=["Ap"])   # इषीका f. "reed" — इषीकतूलम्
+cita   = Pratipadika("cita",   "napum")   # चित n. "pile" — इष्टकचितम्
+tUla   = Pratipadika("tUla",   "napum")   # तूल n. "tuft" — इषीकतूलम्
+BArin  = Pratipadika("BArin",  "napum")   # भारिन् n. "bearing" (in-stem) — मालभारि
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X3: the मुम् augment (6.3.70, 6.3.72). कार and रात्रि
+# already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+satya = Pratipadika("satya", "napum")   # सत्य n. "truth" — सत्यङ्कारः (SK1007/6.3.70)
+agada = Pratipadika("agada", "pum")     # अगद m. "medicine" — अगदङ्कारः (SK1007/6.3.70)
+# चर m. "goer" — a pre-formed कृदन्त (चर् + अच्). ?krt is SK1008/6.3.72's own कृति condition;
+# the tag name matches the one the kṛt pratyayas carry in pratyaya.py (krt, not kft).
+cara  = Pratipadika("cara",  "pum", other_tags=["krt"])

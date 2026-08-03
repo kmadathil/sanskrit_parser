@@ -13954,3 +13954,255 @@
       - "=arTa"
   xform:
     l: l+str("d")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X2 (samasa_asraya_plan.md): PŪRVAPADA HRASVA of a
+# ङी / आप् (feminine ī / ā) pūrva.
+#
+# Same lever as X1, opposite operation: instead of replacing the pūrva wholesale, these
+# rules SHORTEN its final vowel — `xform: l: hrasva(l)` on the `bahiranga: -1` pre-pass
+# (pūrva | uttara) window. The ङी/आप् distinction is carried by the existing `?NI` / `?Ap`
+# stem tags. SK986/6.3.44 and SK987/6.3.45 are Skipped rows: every example SK gives for
+# them is a तरप् (affix) context, and the घ/रूप/कल्प affixes are not modelled.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK985/6.3.43: घरूपकल्पचेलड्ब्रुवगोत्रमतहतेषु ङ्योऽनेकाचो ह्रस्वः — a ङी-final pūrva that is
+# ANEKĀC (more than one vowel) and stands on a BHĀṢITAPUṀSKA stem (one with a masculine
+# counterpart) shortens before चेलट् / ब्रुव / गोत्र / मत / हत — and before the affixes घ
+# (तरप्/तमप्) / रूप / कल्प, which are not modelled here. ब्राह्मणी + गोत्र = ब्राह्मणिगोत्रम्,
+# ब्राह्मणिब्रुवा, ब्राह्मणिमतम्, ब्राह्मणिहतम्.
+#
+# ङ्यः किम् — दत्तातरा (दत्ता has टाप्, not ङीप्): the `?NI` gate. भाषितपुंस्कात् किम् —
+# आमलकीतरा, कुवलीतरा (no masc counterpart): the `?puMvat` gate, the same tag the
+# puṁvadbhāva set (6.3.34 ff.) uses for exactly this property. अनेकाच् via
+# `$$anekAc_asaMyogapUrva`.
+#
+# `overrides: 6.3.34` records SK's own note घरूप इति वक्ष्यमाणो ह्रस्वः परत्वात्पुंवद्भावं बाधते —
+# the hrasva defeats puṁvadbhāva by paratva. The two can only collide in a bahuvrīhi with a
+# feminine uttara (6.3.34's own context); in the ṣaṣṭhī-tatpuruṣa the tests use, 6.3.34
+# cannot fire at all, so the override is a correctness declaration rather than a tested path.
+- sutra: घरूपकल्पचेलड्ब्रुवगोत्रमतहतेषु ङ्योऽनेकाचो ह्रस्वः
+  id: 6.3.43
+  bahiranga: -1
+  overrides: 6.3.34
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?NI"
+      - "?puMvat"
+      - $$anekAc_asaMyogapUrva
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=celI"
+        - "=bruva"
+        - "=gotra"
+        - "=mata"
+        - "=hata"
+  xform:
+    l: hrasva(l)
+
+# SK999/6.3.61: इको ह्रस्वोऽङ्यो गालवस्य — an इक्-final (i/u/ṛ/ḷ, here ī) pūrva that is NOT
+# ङी-formed (अङ्यः) OPTIONALLY shortens before any uttarapada: ग्रामणी + पुत्र =
+# ग्रामणिपुत्रः / ग्रामणीपुत्रः. गालवग्रहणं पूजार्थम्, and अन्यतरस्याम् carries over from 6.3.59 →
+# `optional: true`. इकः किम् — रमापतिः (रमा is ā-final, not इक्); अङ्यः किम् — गौरीपतिः (गौरी
+# IS ङी-formed → the `?!NI` guard).
+#
+# The इक् condition is `$$ik_dIrGa_anekAc`, not the bare `_ik` pratyāhāra, for two reasons
+# the helper's docstring records: a SHORT इक् final has no hrasva, so `_ik` would make this
+# vibhāṣā fork the derivation on every i/u-final pūrva in the language (हरि, गिरि, अङ्गुलि …)
+# with no change in surface; and the sūtra's own vārtika इयङुवङ्भाविनामव्ययानां च न exempts the
+# monosyllabic iyaṅ/uvaṅ stems (श्रीमदः, भ्रूभङ्गः), which अनेकाच् expresses.
+# SCOPED, deliberately, to a composer marker `?gAlava_hrasva` — the same treatment 6.3.137
+# अन्येषामपि दृश्यते gets a few hundred lines above, and for the same reason. Turned loose on
+# every इगन्त अङ्यन्त pūrva this rule is *destructive*, because a long ī/ū in a compound pūrva
+# is very often one another rule has just supplied on purpose:
+#   · SK846/2.2.27's reciprocity compound is LENGTHENED by 6.3.137 precisely to give
+#     केशाकेशि / मुष्टीमुष्टि / बाहूबाहवि — 6.3.61 shortened it straight back;
+#   · SK923/6.3.27 ईदग्नेः substitutes अग्नि → अग्नी for अग्नीवरुणौ — likewise undone;
+#   · ऊरीकृतम् also came out as ऊरिकृतम्, against the sūtra's own vārtika
+#     इयङुवङ्भाविनामव्ययानां च न (ऊरी is an ऊर्यādi avyaya);
+#   · सुकेशीभार्यः also came out as सुकेशिभार्यः, because `?NI` tagging is INCOMPLETE across
+#     pratipadika.py — सुकेशी carries only ?svAnga_I, and ब्राह्मणी was missing ?NI until this
+#     phase added it — so `?!NI` cannot be trusted to express अङ्यः lexicon-wide.
+# The suppressed forms are not merely extra: they defeat rules whose whole purpose is that
+# vowel. And the sūtra earns little generality in exchange — it is a वा attributed to ONE
+# grammarian (गालवस्य, which SK notes is पूजार्थम्) with a single example. So the marker is
+# opt-in, `$$ik_dIrGa_anekAc` still enforces the vowel/syllable conditions, and the general
+# इगन्त form is recorded as the deferral (see generator_status.md).
+- sutra: इको ह्रस्वोऽङ्यो गालवस्य
+  id: 6.3.61
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - "?gAlava_hrasva"
+      - "?!NI"
+      - $$ik_dIrGa_anekAc
+    rp: "?samAsa"
+  xform:
+    l: hrasva(l)
+
+# SK1000/6.3.62: एक तद्धिते च — एका shortens to एक before a taddhita AND before an
+# uttarapada: एकस्या आगतम् = एकरूप्यम् (taddhita, not modelled), एकक्षीरम् (uttarapada).
+# Nitya — no अन्यतरस्याम् here.
+- sutra: एक तद्धिते च
+  id: 6.3.62
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ekA"
+      - "?samAsaPurva"
+    rp: "?samAsa"
+  xform:
+    l: hrasva(l)
+
+# SK1001/6.3.63: ङ्यापोः संज्ञाछन्दसोर्बहुलम् — a ङी- or आप्-final pūrva shortens BAHULAM
+# ("variously", modelled as `optional: true`) in a SAṀJÑĀ or in CHANDAS: रेवती + पुत्र =
+# रेवतिपुत्रः (a name), अजा + क्षीर = अजक्षीरम्. Two arms so each gate pairs with its own
+# vowel class; `?saMjYA` / `?Candas` are composer-supplied as elsewhere.
+- sutra: ङ्यापोः संज्ञाछन्दसोर्बहुलम्
+  id: 6.3.63
+  bahiranga: -1
+  optional: true
+  condition:
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?NI"
+        - - or
+          - "?saMjYA"
+          - "?Candas"
+      rp: "?samAsa"
+    - lp:
+        - and
+        - "?samAsaPurva"
+        - "?Ap"
+        - - or
+          - "?saMjYA"
+          - "?Candas"
+      rp: "?samAsa"
+  xform:
+    l: hrasva(l)
+
+# SK1002/6.3.64: त्वे च — before the त्व affix a ङी/आप् pūrva OPTIONALLY shortens: अजा + त्व =
+# अजत्वम् / अजात्वम्, रोहिणी + त्व = रोहिणित्वम् / रोहिणीत्वम्.
+#
+# NOT a compound rule — this is stem + taddhita, so it is a MAIN-SCAN rule at the
+# (stem | त्व) window, not a `bahiranga: -1` pre-pass rule like the rest of X2. There is no
+# uttarapada and no samāsa: gating on `?samAsaPurva` here would make it dead. Two arms
+# (ङी / आप्), as 6.3.63 has.
+- sutra: त्वे च
+  id: 6.3.64
+  optional: true
+  condition:
+    - lp: "?NI"
+      rp:
+        - and
+        - "?tadDita"
+        - "?tva"
+    - lp: "?Ap"
+      rp:
+        - and
+        - "?tadDita"
+        - "?tva"
+  xform:
+    l: hrasva(l)
+
+# SK1006/6.3.65: इष्टकेषीकामालानां चिततूलभारिषु — इष्टका / इषीका / माला shorten before,
+# क्रमात् (respectively), चित / तूल / भारिन्: इष्टकचितम्, इषीकतूलम्, मालभारि. Three arms, one
+# per ordered pair — a single `or` over both lists would wrongly license इष्टकतूलम्.
+# तदन्तानां च (पक्वेष्टकचितम्, मुञ्जेषीकतूलम्, उत्पलमालभारि — pūrvas ENDING in these words) is a
+# tadanta-vidhi and is not modelled; the literal `=` gates the bare stems.
+- sutra: इष्टकेषीकामालानां चिततूलभारिषु
+  id: 6.3.65
+  bahiranga: -1
+  condition:
+    - lp:
+        - and
+        - "=izwakA"
+        - "?samAsaPurva"
+      rp:
+        - and
+        - "?samAsa"
+        - "=cita"
+    - lp:
+        - and
+        - "=izIkA"
+        - "?samAsaPurva"
+      rp:
+        - and
+        - "?samAsa"
+        - "=tUla"
+    - lp:
+        - and
+        - "=mAlA"
+        - "?samAsaPurva"
+      rp:
+        - and
+        - "?samAsa"
+        - "=BArin"
+  xform:
+    l: hrasva(l)
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X3 (samasa_asraya_plan.md): the मुम् AUGMENT (6.3.70, 6.3.72).
+#
+# The third X-phase operation on a pūrva: not a substitution and not a length change, but an
+# ĀGAMA. मुम् is मित्, so by 1.1.47 मिदचोऽन्त्यात्परः it is inserted after the pūrva's LAST
+# VOWEL — which for these two vowel-final pūrvas (सत्य, अगद, रात्रि) coincides with appending,
+# hence the plain `l: l+str("m")`. A pūrva ending in a consonant would need the true
+# after-the-last-vowel insertion; none arises here.
+#
+# The nasal's surface form is then entirely the landed sandhi's work: 8.3.23 मोऽनुस्वारः turns
+# the pada-final म् into anusvāra and 8.4.58 अनुस्वारस्य ययि परसवर्णः gives it the following
+# consonant's class — सत्यम् + कार → सत्यङ्कारः. Since 8.4.59 वा पदान्तस्य makes that
+# parasavarṇa optional at a pada boundary, रात्रि + चर surfaces both as रात्रिञ्चरः (SK's own
+# spelling) and रात्रिंचरः.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1007/6.3.70: कारे सत्यागदस्य — सत्य and अगद take मुम् before कार: सत्यङ्कारः, अगदङ्कारः.
+# NITYA. SK appends a long tail of vārtikas extending the same मुम् to other pairs
+# (अस्तुङ्कारः, धेनुम्भव्या, लोकम्पृणः, अनभ्याशमित्यः, भ्राष्ट्रमिन्धः, तिमिङ्गिलः, उष्णङ्करणम्); those
+# are one stem-pair each and are recorded as a Skipped row rather than guessed at.
+- sutra: कारे सत्यागदस्य
+  id: 6.3.70
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samAsaPurva"
+      - - or
+        - "=satya"
+        - "=agada"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kAra"
+  xform:
+    l: l+str("m")
+
+# SK1008/6.3.72: रात्रेः कृति विभाषा — रात्रि OPTIONALLY takes मुम् before a KṚT-formation:
+# रात्रिञ्चरः / रात्रिचरः, रात्रिमटः / रात्र्यटः. `?krt` on the uttara is the sūtra's own कृति
+# condition. SK's note अखिदर्थमिदं सूत्रम् — before a खित् affix the मुम् is NITYA by
+# 6.3.67 अरुर्द्विषदजन्तस्य मुम् (रात्रिम्मन्यः), which is outside this prakaraṇa's range.
+- sutra: रात्रेः कृति विभाषा
+  id: 6.3.72
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=rAtri"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?krt"
+  xform:
+    l: l+str("m")
