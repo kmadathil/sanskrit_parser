@@ -9,8 +9,9 @@ ekaśeṣa, sarvasamāsānta and aluk (SK188, 901–984, `samasa_completion_plan
 as out of scope. This plan picks it up. It is the next prakaraṇa in SK order and the
 last one before the taddhita section (SK1072 / 4.1.82 समर्थानां प्रथमाद्वा).
 
-All 87 sūtras are unimplemented — a grep of `id:` across the three YAMLs returns zero
-hits for every Ashtadhyayi id in the range.
+At the time of writing, all 87 sūtras were unimplemented — a grep of `id:` across the
+three YAMLs returned zero hits for every Ashtadhyayi id in the range. See the Status
+table below for what has landed since.
 
 **What the prakaraṇa is.** Having formed the compound, Pāṇini now mutates its
 *members*: the pūrvapada shortens, lengthens, or is replaced outright depending on
@@ -35,12 +36,37 @@ does not fire") and the त्रिभुवनम् note at `test/samasa_list
    it has one.
 3. **Sequential on `generator`**, one phase at a time — as the D/E/S/A phases were done.
 
-**Outcome:** हृल्लेखः, पदातिः, उदमेघः, सपलाशम्, सज्योतिः, सदृशः, ईदृशः / कीदृशः, अन्यदाशीः,
-कदश्वः / कापथम् / कवोष्णम्; ब्राह्मणिचेली, अजत्वम् / अजात्वम्, इष्टकचितम्; सत्यङ्कारः, रात्रिंचरः;
+**Outcome:** हृल्लेखः, पदाजिः, उदमेघः, सपलाशम्, सज्योतिः, सदृशः, ईदृशः / कीदृशः, अन्यद्रागः,
+कदश्वः / काक्षः / कवोष्णम् *(all of the above landed in X1; कापथम् needs 5.4.74 — see the X1
+notes)*; ब्राह्मणिचेली, अजत्वम् / अजात्वम्, इष्टकचितम्; सत्यङ्कारः, रात्रिंचरः;
 द्विगुणाकर्णः, कोटरावणम्, अमरावती, ऋषीवहम्, नीकाशः, अष्टापदम्, विश्वानरः, विश्वामित्रः;
 अङ्गुलिषङ्गः, भीरुष्ठानम्, ज्योतिष्टोमः, सुषामा, हरिषेणः; प्रवणम्, क्षीरपाणाः, **माषवापेण /
 चोरभयेण**; पृषोदरम्, गोष्पदम्, आस्पदम्, आश्चर्यम्, मस्करः, कारस्करः, पारस्करः;
 कारीषगन्धीपुत्रः.
+
+---
+
+## Status (last updated 2026-08-03)
+
+| Phase | Sūtras | Status | Landed as |
+|---|---|---|---|
+| **X1** pūrvapada ādeśa | 30 | **DONE** — 28 implemented, 2 Skipped | `b3847ca`, 45 cases, suite 8363 green |
+| X2 pūrva hrasva (ङी/आप्) + `tva` | 8 | pending | — |
+| X3 मुम् | 2 | pending | — |
+| X4 pūrva dīrgha + `matup` | 14 | pending | — |
+| X5 samāsa ṣatva | 6 | pending | — |
+| X6 samāsa ṇatva | 9 | pending | — |
+| X7 पृषोदरादि + suṭ nipātanas | 15 | pending | — |
+| X8 ष्यङ् सम्प्रसारणम् | 3 | pending | — |
+| X9 prakaraṇa audit + status | — | pending | — |
+| | **87** | **28 done / 59 to go** | |
+
+**Machinery status:** none of N1–N3 is built yet — X1 needed none of them, since every
+pūrva-ādeśa rule is the existing SK926/6.3.29 pre-pass shape. N1 (मुम्) arrives with X3,
+N2 (junction ṣatva) with X5, N3 (`tva`, `matup`) with X2 and X4 respectively.
+
+**Recorded deferrals opened by X1** (each also a `generator_status.md` Skipped row):
+6.3.53 (यत् + the तदर्थ/अतदर्थ sense distinction), 6.3.55 (needs the शस् taddhita 5.4.43).
 
 ---
 
@@ -184,7 +210,7 @@ surface form and the variable name** — duplicate definitions silently shadow a
 **Skipped rows:** the vārtikas (उत्तरपदस्य च for क्षीरोदः, त्रौ च for कत्त्रयः, दृक्षे च for
 सदृक्षः/ईदृक्षः) — implement only where the uttara stem is already cheap.
 
-### X2 — pūrvapada hrasva of ङी/आप् (8 sūtras) + the त्व affix
+### X2 — pūrvapada hrasva of ङी/आप् (8 sūtras) + the त्व affix — PENDING
 
 | SK | A | Form |
 |---|---|---|
@@ -210,14 +236,14 @@ negative-control test so ब्राह्मणिचेली does not become
 New stems: चेली, ब्रुव, गोत्र, ग्रामणी, एका, रेवती, अजा, रोहिणी, इष्टका, इषीका, माला, चित, तूल,
 भारिन्, क्षीर, पुत्र.
 
-### X3 — मुम् (2 sūtras)
+### X3 — मुम् (2 sūtras) — PENDING
 
 SK1007/6.3.70 कारे सत्यागदस्य → **सत्यङ्कारः**, अगदङ्कारः; SK1008/6.3.72 रात्रेः कृति विभाषा
 (`optional: true`) → **रात्रिंचरः / रात्रिचरः**. Mechanism N1. The long vārtika tail
 (अस्तुङ्कारः, धेनुम्भव्या, लोकम्पृणः, तिमिङ्गिलः, उष्णङ्करणम् …) goes in as one Skipped row
 unless a stem happens to be free.
 
-### X4 — uttarapada-conditioned pūrva dīrgha (14 sūtras) + the मतुप् affix
+### X4 — uttarapada-conditioned pūrva dīrgha (14 sūtras) + the मतुप् affix — PENDING
 
 | SK | A | Form | Note |
 |---|---|---|---|
@@ -237,7 +263,7 @@ unless a stem happens to be free.
 **Mechanism:** main-scan `xform: l: dirgha(l)`, template 6.3.128. Start with X4's
 6.3.129/130 pair to validate the placement before the harder members.
 
-### X5 — samāsa ṣatva (6 sūtras)
+### X5 — samāsa ṣatva (6 sūtras) — PENDING
 
 SK1019/8.3.80 **अङ्गुलिषङ्गः** · SK1020/8.3.81 **भीरुष्ठानम्** · SK1021/8.3.83
 **ज्योतिष्टोमः, आयुष्टोमः** · SK1022/8.3.98 **सुषामा, सुषन्धिः** · SK1023/8.3.99
@@ -250,7 +276,7 @@ in SK becomes a negative-control test case (अङ्गुलेः सङ्�
 `aNguli` exists (`:893`), `hari` (`:60`); new: भीरु, सङ्ग, स्थान, ज्योतिस्, आयुस्, स्तोम, सामन्,
 सन्धि, सेना.
 
-### X6 — samāsa ṇatva (9 sūtras) — closes the standing gap
+### X6 — samāsa ṇatva (9 sūtras) — closes the standing gap — PENDING
 
 | SK | A | Form |
 |---|---|---|
@@ -280,7 +306,7 @@ new tests. Flip `test/samasa_list.py:418-431` (त्रिभुवनम्) a
 existing 8.4.3-marker plumbing (`?nas_AdeSa` / `?saMjYA_nas` in the `join_objects` Tier-1
 allowlist) still behaves.
 
-### X7 — पृषोदरादि + the suṭ nipātanas (15 sūtras)
+### X7 — पृषोदरादि + the suṭ nipātanas (15 sūtras) — PENDING
 
 SK1034/6.3.109 पृषोदरादीनि यथोपदिष्टम् → पृषोदरम्, बलाहकः, हंसः, सिंहः, दूडाशः, बृसी;
 SK1058–1071 / 6.1.143–157 → कुस्तुम्बुरूणि, अपरस्पराः, गोष्पदम्, आस्पदम्, आश्चर्यम्, अवस्करः,
@@ -294,7 +320,7 @@ not one per member, with the members supplied as tagged stems. Two rules total
 own `?saMjYA` / sense gates and the SK negative controls (गोपदम्, आपदम्, आचर्यम्, अवकरः,
 विकिरः, प्रतिकशः, प्रकण्वः, मकरः, कातीरम्, कारकरः). Cheapest phase per sūtra.
 
-### X8 — ष्यङ् सम्प्रसारणम् (3 sūtras)
+### X8 — ष्यङ् सम्प्रसारणम् (3 sūtras) — PENDING
 
 SK1003/6.1.13 ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे + SK1004/6.3.139 सम्प्रसारणस्य (दीर्घः) +
 SK1005/6.1.14 बन्धुनि बहुव्रीहौ → **कारीषगन्धीपुत्रः, कारीषगन्धीपतिः, कारीषगन्धीबन्धु**;
@@ -306,7 +332,7 @@ Needs a ष्यङ्-formed feminine stem (`kArIzaganDyA` / `kaumudaganDyA`) 
 stem *class*. If the ष्यङ् derivation proves expensive, the fallback is the landed 6.3.42
 puṁvadbhāva precedent: composer supplies the stem, the rule fires as a documented saṁjñā.
 
-### X9 — Prakaraṇa audit + status
+### X9 — Prakaraṇa audit + status — PENDING
 
 Per the prakaraṇa-audit convention: enumerate SK985–1071, cross-reference every
 Ashtadhyayi `id:` present in the YAMLs against the range, and confirm **every one of the
@@ -323,20 +349,25 @@ Confirm during X9 rather than planning work for it.
 
 ## 4. Files touched
 
-| File | Change |
-|---|---|
-| `sanskrit_parser/generator/sutras_antaranga.yaml` | ~70 new rule blocks, one prakaraṇa banner per phase (mirror the D/E/S/A banners at `:12750`) |
-| `sanskrit_parser/generator/pratipadika.py` | ~60 new stems, grouped and commented per phase; **grep for dupes first** |
-| `sanskrit_parser/generator/pratyaya.py` | `tva`, `matup` (N3) |
-| `sanskrit_parser/generator/test/samasa_asraya_list.py` | **new** — `samasa_asraya_tests`, ~100 cases. `samasa_list.py` is already 1997 lines with five lists; a sixth belongs in its own module |
-| `sanskrit_parser/generator/test/test_samasa_asraya.py` | **new** driver, modelled on `test_samasa_tatpurusha.py` — three assertion levels (member structure / fired-sutra trace / surface), plus `no_natva`-style negative-control cases |
-| `sanskrit_parser/generator/test/samasa_list.py` | flip the त्रिभुवनम् deferral at `:418-431` (phase X6) |
-| `sanskrit_parser/generator/generator_status.md` | 87 rows + Skipped rows; counts; Last/Next |
-| `sanskrit_parser/generator/samasa_asraya_plan.md` | **new** — this plan, committed alongside (as `samasa_completion_plan.md` and `bahuvrihi_plan.md` were) |
+| File | Change | X1 status |
+|---|---|---|
+| `sanskrit_parser/generator/sutras_antaranga.yaml` | ~70 new rule blocks, one prakaraṇa banner per phase (mirror the D/E/S/A banners at `:12750`) | 30 rules + the prakaraṇa banner added at the file tail |
+| `sanskrit_parser/generator/pratipadika.py` | ~60 new stems, grouped and commented per phase; **grep for dupes first** | 21 stems added in one commented X1 block |
+| `sanskrit_parser/generator/pratyaya.py` | `tva`, `matup` (N3) | untouched (arrives with X2/X4) |
+| `sanskrit_parser/generator/test/samasa_asraya_list.py` | **new** — `samasa_asraya_tests`, ~100 cases. `samasa_list.py` is already 1997 lines with five lists; a sixth belongs in its own module | created, 45 cases |
+| `sanskrit_parser/generator/test/test_samasa_asraya.py` | **new** driver, modelled on `test_samasa_tatpurusha.py` — three assertion levels (member structure / fired-sutra trace / surface), plus negative-control cases via `not_fired` | created |
+| `sanskrit_parser/generator/test/samasa_list.py` | flip the त्रिभुवनम् deferral at `:418-431` (phase X6) | not yet; X1 instead updated `T4-kupuruSaH` to its two forms |
+| `sanskrit_parser/generator/generator_status.md` | 87 rows + Skipped rows; counts; Last/Next | 10 grouped rows (28 sūtras) + 2 Skipped rows; counts and Last/Next updated |
+| `sanskrit_parser/generator/samasa_asraya_plan.md` | **new** — this plan, committed alongside (as `samasa_completion_plan.md` and `bahuvrihi_plan.md` were) | committed with X1 (`b3847ca`) |
 
 The test driver is generic over compound type: unlike the existing per-samāsa-type
-drivers, these rules apply to tatpuruṣa, bahuvrīhi and dvandva alike, so the case dict
-carries a `samasa_type` field selecting which vivakṣā tags the builder sets.
+drivers, these rules apply to tatpuruṣa, bahuvrīhi and dvandva alike. **As built, the
+field is named `type`** (not `samasa_type`), and it selects the formation the case rides
+on — `zazWI` / `karmaDAraya` / `ku` / `saha_bv`, each mapped to the intent tags that
+formation's saṁjñā rule needs. Two further hooks were added in X1 and are available to
+later phases: `uttara_affix` (attach a taddhita after the uttara, in the slot
+`_insert_samasanta` uses) and a member spec's `linga` (override the stem's lexical
+gender, needed where a sūtra's example is a derivative — सतीर्थ्यः masc from neuter तीर्थ).
 
 ---
 
@@ -348,18 +379,32 @@ Per phase:
 cd /Users/karthik/personal_projects/sanskrit_parser/sanskrit_parser/generator/test && PYTHONPATH=/Users/karthik/personal_projects/sanskrit_parser /Users/karthik/venvs/sanskrit/bin/pytest -n 8 --dist worksteal
 ```
 
-Expect ~8,300 items in ≈7.5 min at `-n 8`. Green before moving to the next phase; the
-per-phase slice (`pytest test_samasa_asraya.py`) runs in seconds for iteration.
+Expect ~8,300 items in ≈7.5 min at `-n 8` (8363 after X1; it stretches to ~19 min if you
+run CLI probes concurrently — they compete for the same 8 cores). Green before moving to
+the next phase; the per-phase slice (`pytest test_samasa_asraya.py`) runs in ~10s.
 
-CLI spot-checks (one per mechanism family, run from the repo root with `sourceme`):
+CLI spot-checks — **use `scripts/sanskrit_generator`**, one per mechanism family, from the
+repo root. (`python -m sanskrit_parser.generator.cmd_line` does not invoke the entry
+point; and `-k` takes ONE stem per flag, so each member needs its own `-k`.)
 
 ```bash
-python -m sanskrit_parser.generator.cmd_line -u hfdaya -m leKa --samasa
+PYTHONPATH=$PWD python scripts/sanskrit_generator -k hfdaya 1 v6 -k leKa 1 --samasa
 ```
 
 ```bash
-python -m sanskrit_parser.generator.cmd_line -u aNguli -m saNga --samasa
+PYTHONPATH=$PWD python scripts/sanskrit_generator -k ku 1 kutsita -k aSva 1 --samasa
 ```
+
+Three composer inputs the test driver supplies implicitly and the CLI does not — check
+these before concluding a rule is broken:
+- a **karmadhāraya** needs `?viSezaRa` on the pūrva (`-k samAna 1 ?viSezaRa -k jyotis 1`
+  → सज्योतिः; without it the members merely sandhi → समानोज्योतिः);
+- the **saha bahuvrīhi** needs `--referent-linga <pum|strI|napum>`;
+- a **कु / prādi pūrva** needs a **semantic sense** token (`-k ku 1 kutsita -k aSva 1`
+  → कदश्वः, versus कतश्वः without it — the sense is what keeps the pūrva a `?pada`, so
+  8.2.39 jaśtva can apply; the standing `semantic_*` → `?pada` gotcha).
+
+Note zsh does not word-split unquoted `$args` — use `${=args}` when looping.
 
 Extra gates:
 - **X6 only:** run the full suite and diff surface outputs against the pre-phase run —
