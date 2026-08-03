@@ -1,0 +1,371 @@
+# समासाश्रयविधिप्रकरणम् (SK 985–1071) — implementation plan
+
+## Context
+
+The generator has finished the entire **samāsa section**: avyayībhāva (SK647–683),
+tatpuruṣa (SK684–828), bahuvrīhi (SK829–900), and — as of 2026-07-23 — dvandva,
+ekaśeṣa, sarvasamāsānta and aluk (SK188, 901–984, `samasa_completion_plan.md`).
+`samasa_completion_plan.md:18` explicitly parked **समासाश्रयविधिप्रकरणम् (SK985–1071)**
+as out of scope. This plan picks it up. It is the next prakaraṇa in SK order and the
+last one before the taddhita section (SK1072 / 4.1.82 समर्थानां प्रथमाद्वा).
+
+All 87 sūtras are unimplemented — a grep of `id:` across the three YAMLs returns zero
+hits for every Ashtadhyayi id in the range.
+
+**What the prakaraṇa is.** Having formed the compound, Pāṇini now mutates its
+*members*: the pūrvapada shortens, lengthens, or is replaced outright depending on
+what the uttarapada is; the uttarapada's initial `s` becomes `ṣ` and its `n` becomes
+`ṇ` under a pūrvapada trigger; and a tail of frozen suṭ-nipātana forms is licensed.
+Eight mechanism families, six of which reuse levers that already exist.
+
+**Why now, beyond order.** SK1055 / 8.4.11 प्रातिपदिकान्तनुम्विभक्तिषु च is precisely the
+sūtra behind the generator's longest-standing ṇatva deferral — `generator_status.md:838`
+("a pūrva-only र/ष trigger reaching the uttara's न-bearing sup (चोरात् भयम् → चोरभयेण)
+does not fire") and the त्रिभुवनम् note at `test/samasa_list.py:423`. Phase X6 closes it.
+
+**Decisions taken (user, this session):**
+1. **8.4.11 is implemented as nitya**, not as the SK's वा. Modelling the वा literally
+   would fork every landed compound whose only r/ṣ sits in the pūrva (राजपुरुषेण →
+   also राजपुरुषेन) and would require rewriting the tatpuruṣa/bahuvrīhi/dvandva vibhakti
+   sweeps. The unmodelled वा is recorded as a documented deviation + a Skipped row.
+2. **Affix depth:** build **त्व** and **मतुप्** as live pratyayas (cheap, reusable, and
+   they unlock SK1002/6.3.64 and SK1041–1042/6.3.119–120). Every other affix-only arm
+   (घ = तरप्/तमप्, रूपप्, कल्पप्, वलच्, क्विप्-anta) gets an explicit **Skipped row** naming
+   the missing affix; the sūtra's uttarapada (compound) arm is still implemented where
+   it has one.
+3. **Sequential on `generator`**, one phase at a time — as the D/E/S/A phases were done.
+
+**Outcome:** हृल्लेखः, पदातिः, उदमेघः, सपलाशम्, सज्योतिः, सदृशः, ईदृशः / कीदृशः, अन्यदाशीः,
+कदश्वः / कापथम् / कवोष्णम्; ब्राह्मणिचेली, अजत्वम् / अजात्वम्, इष्टकचितम्; सत्यङ्कारः, रात्रिंचरः;
+द्विगुणाकर्णः, कोटरावणम्, अमरावती, ऋषीवहम्, नीकाशः, अष्टापदम्, विश्वानरः, विश्वामित्रः;
+अङ्गुलिषङ्गः, भीरुष्ठानम्, ज्योतिष्टोमः, सुषामा, हरिषेणः; प्रवणम्, क्षीरपाणाः, **माषवापेण /
+चोरभयेण**; पृषोदरम्, गोष्पदम्, आस्पदम्, आश्चर्यम्, मस्करः, कारस्करः, पारस्करः;
+कारीषगन्धीपुत्रः.
+
+---
+
+## 0. Numbering convention (MANDATORY)
+
+Per the standing dual-numbering rule, **every sūtra reference carries BOTH its SK
+number and its Ashtadhyayi id, SK-first** (`SK1055 / 8.4.11`) in all four places: this
+doc; the `# <N>:` block comment of each rule in `sutras_antaranga.yaml` (the `id:`
+field stays the bare Ashtadhyayi id); every test-case `label`
+(e.g. `"X6-mAzavApeRa-SK1055-8.4.11"`); and the `generator_status.md` rows.
+`"fired"` lists hold Ashtadhyayi ids — `karaka_log` records those.
+
+---
+
+## 1. Placement: which window does a rule fire at?
+
+This prakaraṇa is almost entirely "change the pūrva, conditioned on the uttara", and
+the generator already has **three** placements for that. Choosing wrong is the single
+most likely source of lost time, so the rule is:
+
+| Placement | Window seen | Template in repo | Use when |
+|---|---|---|---|
+| `bahiranga: -1` (samāsa pre-pass) | **(pūrva \| uttara)** | SK926/6.3.29 दिवो द्यावा, `sutras_antaranga.yaml:12823` | The rule reads the **uttara's identity** and must land before sup-luk / declension. **Default for this prakaraṇa.** |
+| `bahiranga: 1` (main scan, pre-luk) | (pūrva \| its own sup) | SK849/6.3.82 वोपसर्जनस्य, `:11209` | The rule needs no uttara information (सह → स in a bahuvrīhi). **Cannot be used here** for uttara-keyed rules — the uttara is not in the window. |
+| main scan, default bahiranga | (pūrva \| uttara), post-luk | 6.3.128 विश्वस्य वसुराटोः, `:745` | Pure phonological tweak at the junction after 2.4.71 has luk'd the pūrva's sup (`l: dirgha(l)`). |
+
+The xform vocabulary is already sufficient (`sutra.py:273-311`): `l`/`lc` = last char /
+rest of the pūrva, `r`/`rc` = **first** char / rest of the uttara. Whole-stem
+substitution is `lc: str("")` + `l: str("newstem")` (SK888/5.4.150 uses the mirror form
+on the uttara, `:11778`). Helpers `dirgha`, `hrasva`, `samprasaranam`, `is_ekac`,
+`bahvac`, `anekAc_asaMyogapUrva` all live in `paribhasha.py`.
+
+**Known trap** (from the केशाकेशि work): a main-scan rule can find the window is
+(pūrva | *sup*) rather than (pūrva | uttara) if 2.4.71 has not yet run — 6.3.137 had to
+be moved to the pre-pass for exactly this. When a main-scan placement misfires, move
+the rule to `bahiranga: -1` before debugging anything else.
+
+---
+
+## 2. New machinery (only three items)
+
+**(N1) मुम् augment on the pūrva** *(phase X3)* — SK1007/6.3.70 and SK1008/6.3.72 append
+`m` to the pūrva (सत्य + कार → सत्यङ्कारः, रात्रि + चर → रात्रिंचरः). Realised as a pre-pass
+xform `lc: lc+l`, `l: str("m")`; the ङ्/ं then come free from the landed 8.3.23
+मोऽनुस्वारः + 8.4.58 अनुस्वारस्य ययि परसवर्णः. No engine change.
+
+**(N2) Junction ṣatva lever** *(phase X5)* — the uttara's **initial** `s` → `ṣ` under a
+named pūrva. This is a plain main-scan rule at the compound junction using
+`xform: r: str("z")` — the exact shape of the landed 8.3.59 आदेशप्रत्यययोः
+(`sutras_antaranga.yaml:1491`), only with a lexical `lp:` gate instead of the
+pratyaya gate. No engine change; ṣṭutva (ज्योतिष्टोमः) then follows from 8.4.41.
+
+**(N3) Two live taddhitas** *(phases X2, X4)* — `tva` (SK1002/6.3.64) and `matup`
+(SK1041–1042/6.3.119–120), added to `pratyaya.py`:
+- `tva = Pratyaya("tva", other_tags=["svAdi", "tadDita"])` + SK/5.1.119 तस्य भावस्त्वतलौ
+  (त्व arm only; तल् deferred). त्व-anta is napuṁsaka.
+- `matup = Pratyaya("mat", its=["u~", "p"], other_tags=["svAdi", "tadDita"])` + 5.2.94
+  तदस्यास्त्यस्मिन्निति मतुप् + **8.2.9 मादुपधायाश्च मतोर्वोऽयवादिभ्यः** (म् → व् after an
+  अवर्ण-final / म्-final stem). The five SK examples pin the condition exactly:
+  अमर/शर/अजिर/वलय (a-final) → **व**; व्रीहि (i-final) → **म**. Feminine ङीप् comes free
+  from the landed 4.1.6 उगितश्च (मतुप् is u-it) — same route as datṛ in the B4 work.
+  The existing pre-formed `DImat`/`gomat`/`himavat` stems stay as they are.
+
+Everything else reuses: the pre-pass pūrva-substitution (6.3.29), the main-scan dīrgha
+(6.3.128), the `?samasta_Ratva` → `?samasta_Ratva_pada` → 8.4.1/8.4.2-arm-B ṇatva lever
+(SK307/8.4.12, `:1074`), and the single-gated-nipātana-gaṇa rule pattern (SK/5.4.77).
+
+---
+
+## 3. Phases
+
+Sequential on `generator`. Each phase = yaml rules + stems + tests + status rows, green
+suite before the next starts.
+
+### X1 — pūrvapada ādeśa keyed on the uttarapada (30 sūtras) — **DONE (2026-08-03)**
+
+28 implemented + 2 Skipped (6.3.53 यत्, 6.3.55 शस् — affix contexts). 45 test cases in
+`test/samasa_asraya_list.py`, driver `test/test_samasa_asraya.py`. **No engine change was
+needed** — every rule is the SK926/6.3.29 pre-pass shape. Findings that carry into X2–X8:
+
+- **Placement §1 held exactly as predicted.** All 28 rules work at `bahiranga: -1` on the
+  (pūrva | uttara) window, first try. Nothing needed a main-scan placement.
+- **A pre-pass rule pre-empts a main-scan rule structurally, with no `overrides:`.** The
+  nitya सह→स rules (6.3.78/79/80) substitute in the pre-pass, so 6.3.82's main-scan
+  `=saha` gate simply fails afterwards — no fork, no priority declaration. Expect to reuse
+  this wherever a new nitya rule shadows a landed optional one.
+- **Read SK for the substitute's final phoneme.** 6.3.52 supplies the ADANTA पद (SK says
+  so: "पद इत्यदन्त आदेशः") but 6.3.54 ff. supply पत् — that one अ is the whole difference
+  between पदाजिः and *पदजिः. X4's dīrgha rules have the same exposure.
+- **Positional pratyāhāra gates work**: `r: _hal` + `rr: _ac` expresses 6.3.59's एकहलादि
+  directly (कुम्भ passes, स्थाली fails). Useful for X4/X5's phonological conditions.
+- **A "विवक्षिते" condition in the sūtra is licence for a composer tag.** 6.3.87/88's
+  यादौ प्रत्यये विवक्षिते → `?tadDita_ya_para`, alongside the physically present यत्.
+- **New driver capabilities** other phases can reuse: `type` selects the formation
+  (`zazWI`/`karmaDAraya`/`ku`/`saha_bv`), `uttara_affix` attaches a taddhita after the
+  uttara, and a member spec's `linga` overrides the stem's lexical gender (needed where a
+  sūtra's example is a derivative — सतीर्थ्यः masc from neuter तीर्थ).
+- **CLI parity verified, and it needs three composer inputs the test driver supplies
+  implicitly** — worth knowing before debugging an X2+ rule that "does not fire" from the
+  CLI: a karmadhāraya needs `?viSezaRa` on the pūrva (`-k samAna 1 ?viSezaRa -k jyotis 1`
+  → सज्योतिः); the सह bahuvrīhi needs `--referent-linga`; and a कु/prādi pūrva needs a
+  **semantic sense** token (`-k ku 1 kutsita -k aSva 1` → कदश्वः, versus कतश्वः without it —
+  the sense is what keeps the pūrva a `?pada` so 8.2.39 jaśtva can apply, the standing
+  `semantic_*` → `?pada` gotcha). Note zsh does not word-split unquoted `$args`; use `${=args}`.
+- **One landed expectation changed:** `samasa_list.py`'s `T4-kupuruSaH` now expects
+  कुपुरुषः / कापुरुषः (SK1032/6.3.106's vibhāṣā). Predicted in the plan; no other regressions.
+- **Divergences from SK, each traced to an already-deferred sūtra, not to X1:** कापन्थाः
+  for कापथम् (needs 5.4.74's अच्); उदवाहनम् for उदवाहनः (वाहन is lexically neuter and
+  2.4.26 takes the uttara's gender); पद्हतिः alongside पद्धतिः and सोदर्य्यः alongside
+  सोदर्यः (8.4.62 and 8.4.46 are landed *optional* rules).
+
+Original scope, for reference:
+
+
+| SK | A | Substitution | Canonical form |
+|---|---|---|---|
+| 988–989 | 6.3.50, 6.3.51 | हृदय → हृद् (51 optional) | हृल्लेखः; हृच्छोकः / हृदयशोकः |
+| 990–994 | 6.3.52–56 | पाद → पद् (56 optional) | पदाजिः, पदातिः, पद्धतिः, पच्छः, पद्घोषः / पादघोषः |
+| 995–998 | 6.3.57–60 | उदक → उद (59 optional) | उदमेघः, उदधिः, उदकुम्भः / उदककुम्भः, उदमन्थः |
+| 1009–1011 | 6.3.78–80 | सह → स | सपलाशम्, समुहूर्तम्, सराक्षसीका |
+| 1012–1016 | 6.3.84–88 | समान → स (88 optional) | सज्योतिः, सब्रह्मचारी, सतीर्थ्यः, सोदर्यः / समानोदर्यः |
+| 1017–1018 | 6.3.89, 6.3.90 | समान → स; इदम् → ईश्, किम् → की | सदृक्, सदृशः; ईदृक्, ईदृशः, कीदृक्, कीदृशः |
+| 1025–1026 | 6.3.99, 6.3.100 | अन्य + दुक् (आगम) | अन्यदाशीः, अन्यदुत्सुकः; अन्यदर्थः / अन्यार्थः |
+| 1027–1033 | 6.3.101–107 | कु → कत्/कद्/का/कव | कदश्वः, कद्रथः, कत्तृणम्, कापथम्, काजलम्, कापुरुषः / कुपुरुषः, कवोष्णम् / कोष्णम् / कदुष्णम् |
+
+**Mechanism:** one `bahiranga: -1` rule per sūtra, `lc: str("")` + `l: str("...")` (or
+`l: str("d")`-style augment for दुक्), gated `lp: [and, "?samAsaPurva", "=<stem>"]` and
+`rp: [and, "?samAsa", <uttara test>]`. Optional sūtras carry `optional: true` and fork.
+
+**Why this goes first:** the pūrva stems all exist already — `hfdaya` (`pratipadika.py:902`),
+`pAda` (`:216`), `udaka` (`:115`), `saha` (`:987`), `samAna` (`:325`), `anya` (`:874`),
+`idam` (`:1031`), `kim` (`:1030`), `ku` (`:978`) — and `ku` already forms a working
+tatpuruṣa through the landed SK761/2.2.18 कुगतिप्रादयः (कुपुरुषः is a live test case,
+`test/samasa_list.py:475`). Cost is dominated by **new uttarapada stems**
+(लेख, शोक, रोग, अजि, अति, हति, घोष, मेघ, धि, कुम्भ, मन्थ, पलाश, मुहूर्त, ज्योतिस्, तीर्थ, उदर,
+दृश्, अश्व, रथ, तृण, पथिन्, जल, उष्ण, पुरुष, आशिस् …). Add them once, here; later phases
+reuse them. **Before adding any stem, grep `pratipadika.py` and `avyaya.py` for both the
+surface form and the variable name** — duplicate definitions silently shadow at import
+(standing gotcha).
+
+**Skipped rows:** the vārtikas (उत्तरपदस्य च for क्षीरोदः, त्रौ च for कत्त्रयः, दृक्षे च for
+सदृक्षः/ईदृक्षः) — implement only where the uttara stem is already cheap.
+
+### X2 — pūrvapada hrasva of ङी/आप् (8 sūtras) + the त्व affix
+
+| SK | A | Form |
+|---|---|---|
+| 985 | 6.3.43 | ब्राह्मणिचेली, ब्राह्मणिगोत्र (uttarapada arms); घ/रूप/कल्प arms → **Skipped** |
+| 986 | 6.3.44 | ब्रह्मबन्धुतरा / ब्रह्मबन्धूतरा → **Skipped** (तरप्) |
+| 987 | 6.3.45 | विदुषितरा → **Skipped** (तरप्) |
+| 999 | 6.3.61 | ग्रामणिपुत्रः / ग्रामणीपुत्रः (optional) |
+| 1000 | 6.3.62 | एकक्षीरम् (uttarapada arm); एकरूप्यम् taddhita arm → **Skipped** |
+| 1001 | 6.3.63 | रेवतिपुत्रः, अजक्षीरम् (बहुलम् → `optional: true`) |
+| 1002 | 6.3.64 | अजत्वम् / अजात्वम्, रोहिणित्वम् / रोहिणीत्वम् — **needs `tva` (N3)** |
+| 1006 | 6.3.65 | इष्टकचितम्, इषीकतूलम्, मालभारि |
+
+**Mechanism:** `bahiranga: -1`, `xform: l: hrasva(l)`, gated on the pūrva's `?NI` (the
+existing ङी tag on `nadI`, `kumArI`, `brAhmaRI` …) or `?Ap`, plus `$$anekAc_*`/`$$is_ekac`
+for the अनेकाच् condition and `?puMvat` for भाषितपुंस्कात्.
+
+**Interaction to watch:** SK985/6.3.43's own SK note says the hrasva **overrides**
+puṁvadbhāva by paratva (`घरूप - इति वक्ष्यमाणो ह्रस्वः परत्वात्पुंवद्भावं बाधते`). The
+puṁvadbhāva set (6.3.34/37/38/40/41/42/46) is landed at `sutras_antaranga.yaml:10998 ff.`
+and gates on `?puMvat` — the same tag `brAhmaRI` carries. Add explicit `overrides:` and a
+negative-control test so ब्राह्मणिचेली does not become *ब्राह्मणचेली.
+
+New stems: चेली, ब्रुव, गोत्र, ग्रामणी, एका, रेवती, अजा, रोहिणी, इष्टका, इषीका, माला, चित, तूल,
+भारिन्, क्षीर, पुत्र.
+
+### X3 — मुम् (2 sūtras)
+
+SK1007/6.3.70 कारे सत्यागदस्य → **सत्यङ्कारः**, अगदङ्कारः; SK1008/6.3.72 रात्रेः कृति विभाषा
+(`optional: true`) → **रात्रिंचरः / रात्रिचरः**. Mechanism N1. The long vārtika tail
+(अस्तुङ्कारः, धेनुम्भव्या, लोकम्पृणः, तिमिङ्गिलः, उष्णङ्करणम् …) goes in as one Skipped row
+unless a stem happens to be free.
+
+### X4 — uttarapada-conditioned pūrva dīrgha (14 sūtras) + the मतुप् affix
+
+| SK | A | Form | Note |
+|---|---|---|---|
+| 1035 | 6.3.114 | संहितायाम् | adhikāra — a documentation row, no rule |
+| 1036 | 6.3.115 | द्विगुणाकर्णः | `?lakzaRa` composer tag; अविष्टाष्ट… exclusion list as negative controls (`karRa` exists, `:773`) |
+| 1037 | 6.3.116 | उपानत्, प्रावृट् | **Skipped** — क्विप्-anta derivations |
+| 1038 | 6.3.117 | कोटरावणम्, किंशुलुकागिरिः | `?saMjYA`-gated; **feeds X6's 8.4.4** (`vana` `:139`, `giri` `:173` exist) |
+| 1040 | 6.3.118 | कृषीवलः | **Skipped** — वलच् |
+| 1041–1042 | 6.3.119, 6.3.120 | अमरावती, शरावती | **needs `matup` (N3)**; negative controls अजिरवती / व्रीहिमती / वलयवती |
+| 1043 | 6.3.121 | ऋषीवहम् | `$$is_ik`-style गate; negative पिण्डवहम्, पीलुवहम् |
+| 1044 | 6.3.122 | परीपाकः / परिपाकः | `GaY` pratyaya exists (`pratyaya.py:40`); बहुलम् → optional; negative निषादः |
+| 1045 | 6.3.123 | नीकाशः, वीकाशः | negative प्रकाशः |
+| 1046 | 6.3.125 | अष्टापदम् | `azwan` exists (`:742`); `?saMjYA`; negative अष्टपुत्रः |
+| 1047 | 6.3.127 | एकचितीकः | कप्-context; reuse `kap` (`pratyaya.py:257`) |
+| 1048–1049 | 6.3.129, 6.3.130 | विश्वानरः, विश्वामित्रः | **cheapest in the plan** — literally the landed 6.3.128 rule (`:745`) with `rp: =nara` / `=mitra`; `viSva` (`:1104`), `nara` (`:603`), `mitra` (`:1221`) all exist |
+
+**Mechanism:** main-scan `xform: l: dirgha(l)`, template 6.3.128. Start with X4's
+6.3.129/130 pair to validate the placement before the harder members.
+
+### X5 — samāsa ṣatva (6 sūtras)
+
+SK1019/8.3.80 **अङ्गुलिषङ्गः** · SK1020/8.3.81 **भीरुष्ठानम्** · SK1021/8.3.83
+**ज्योतिष्टोमः, आयुष्टोमः** · SK1022/8.3.98 **सुषामा, सुषन्धिः** · SK1023/8.3.99
+**हरिषेणः** (`?saMjYA`, अगात् — negative विष्वक्सेनः, पृथुसेनः, सर्वसेनः) ·
+SK1024/8.3.100 **रोहिणीषेणः / रोहिणीसेनः** (`optional: true`).
+
+**Mechanism N2.** Every rule is `lp: <lexical gate>` + `l: [_iR, ku]` (the इण्कोः
+condition, still live by anuvṛtti) + `r: s` → `r: str("z")`. Each `असमासे` counter-example
+in SK becomes a negative-control test case (अङ्गुलेः सङ्गः, भीरोः स्थानम्, ज्योतिषः स्तोमः).
+`aNguli` exists (`:893`), `hari` (`:60`); new: भीरु, सङ्ग, स्थान, ज्योतिस्, आयुस्, स्तोम, सामन्,
+सन्धि, सेना.
+
+### X6 — samāsa ṇatva (9 sūtras) — closes the standing gap
+
+| SK | A | Form |
+|---|---|---|
+| 1039 | 8.4.4 | पुरगावणम्, कोटरावणम्, अग्रेवणम् (needs X4's 6.3.117 dīrgha); negative असिपत्रवनम् |
+| 1050 | 8.4.5 | प्रवणम्, निर्वणम्, कार्ष्यवणम् (असंज्ञायामपि) |
+| 1051 | 8.4.6 | दूर्वावणम् / दूर्वावनम् (`optional: true`); वārtika द्व्यच्त्र्यज्भ्यामेव → negative देवदारुवनम् |
+| 1052 | 8.4.8 | इक्षुवाहणम्; negative इन्द्रवाहनम् (`?AhitA` composer tag) |
+| 1053 | 8.4.9 | क्षीरपाणाः, सुरापाणाः (देशे) |
+| 1054 | 8.4.10 | क्षीरपाणम् / क्षीरपानम् (`optional: true`, भावकरणयोः) |
+| **1055** | **8.4.11** | **माषवापिणौ, व्रीहिवापाणि, माषवापेण; क्षीरपेण; and the standing चोरभयेण / त्रिभुवनम् family** |
+| 1056 | 8.4.13 | हरिकामिणौ, हरिकामाणि, हरिकामेण (कवर्गवति उत्तरपदे) |
+| 1057 | 8.4.38 | माषकुम्भवापेन (prohibition across a pada); वārtika अतद्धित → आर्द्रगोमयेण |
+
+**Mechanism:** each rule sets `+samasta_Ratva` on the uttara — the exact `update:` of the
+landed SK307/8.4.12 एकाजुत्तरपदे णः (`sutras_antaranga.yaml:1074`). The propagated
+`?samasta_Ratva_pada` then drives **arm B** of 8.4.1 / 8.4.2 (`:1033`, `:1056`); arm A is
+blocked by `?merged_pada`, which is exactly why the pūrva-only trigger currently fails.
+
+**8.4.11 is implemented nitya** (decision 1). Its three arms are प्रातिपदिकान्त / नुम् /
+विभक्ति; the विभक्ति arm is the one that produces चोरभयेण. Two guards from SK1055 must go
+in: the vārtika **उत्तरपदं यत्प्रातिपदिकं तदन्तस्यैव णत्वम्** (negative गर्गभगिनी) and
+**युवादेर्न** (negative रम्ययूना, परिपक्वानि). A Skipped row records the unmodelled वा.
+
+**Regression duty for this phase:** re-run the whole suite and diff outputs, not just the
+new tests. Flip `test/samasa_list.py:418-431` (त्रिभुवनम्) and the
+`generator_status.md:838` deferral row from Deferred to Implemented, and re-check the
+existing 8.4.3-marker plumbing (`?nas_AdeSa` / `?saMjYA_nas` in the `join_objects` Tier-1
+allowlist) still behaves.
+
+### X7 — पृषोदरादि + the suṭ nipātanas (15 sūtras)
+
+SK1034/6.3.109 पृषोदरादीनि यथोपदिष्टम् → पृषोदरम्, बलाहकः, हंसः, सिंहः, दूडाशः, बृसी;
+SK1058–1071 / 6.1.143–157 → कुस्तुम्बुरूणि, अपरस्पराः, गोष्पदम्, आस्पदम्, आश्चर्यम्, अवस्करः,
+अपस्करः, विष्किरः / विकिरः, प्रतिष्कशः, प्रस्कण्वः, हरिश्चन्द्रः, मस्करः / मस्करी, कास्तीरम्,
+अजस्तुन्दम्, कारस्करः, पारस्करः, तस्करः, बृहस्पतिः, प्रायश्चित्तम्.
+
+**Mechanism:** the landed 5.4.77 precedent — **one `?nipAta_<id>`-gated rule per gaṇa**,
+not one per member, with the members supplied as tagged stems. Two rules total
+(पृषोदरादि; the सुट्-nipātana set), plus the individually-conditioned ones
+(6.1.145 सेवितासेवितप्रमाणेषु, 6.1.147 अनित्ये, 6.1.150 वा) as their own rules with their
+own `?saMjYA` / sense gates and the SK negative controls (गोपदम्, आपदम्, आचर्यम्, अवकरः,
+विकिरः, प्रतिकशः, प्रकण्वः, मकरः, कातीरम्, कारकरः). Cheapest phase per sūtra.
+
+### X8 — ष्यङ् सम्प्रसारणम् (3 sūtras)
+
+SK1003/6.1.13 ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे + SK1004/6.3.139 सम्प्रसारणस्य (दीर्घः) +
+SK1005/6.1.14 बन्धुनि बहुव्रीहौ → **कारीषगन्धीपुत्रः, कारीषगन्धीपतिः, कारीषगन्धीबन्धु**;
+negatives कारीषगन्ध्याबन्धुः, अतिकारीषगन्ध्यापुत्रः.
+
+Needs a ष्यङ्-formed feminine stem (`kArIzaganDyA` / `kaumudaganDyA`) and the existing
+`samprasaranam` helper (`paribhasha.py:46`). 6.3.139 is a pre-pass `l: dirgha(l)` on the
+`?samprasAraRa` residue. Left last because it is the only phase needing a genuinely new
+stem *class*. If the ष्यङ् derivation proves expensive, the fallback is the landed 6.3.42
+puṁvadbhāva precedent: composer supplies the stem, the rule fires as a documented saṁjñā.
+
+### X9 — Prakaraṇa audit + status
+
+Per the prakaraṇa-audit convention: enumerate SK985–1071, cross-reference every
+Ashtadhyayi `id:` present in the YAMLs against the range, and confirm **every one of the
+87 is either an Implemented row or an explicit Skipped row** — target 0 unaccounted, as
+tatpuruṣa (SK684–828) achieved. Update `generator_status.md` counts, and replace (do not
+stack) the Last/Next lines, keeping them to 1–3 sentences.
+
+**No UI phase is expected.** The composer already accepts arbitrary `?tag` tokens through
+`cmd_line.py`'s `-k/--karaka` action, which is how `?saMjYA`, `?lakzaRa`, `?AhitA` etc.
+will be supplied; `-m`/`-u`/`-B`/`-D` already build the compounds these rules mutate.
+Confirm during X9 rather than planning work for it.
+
+---
+
+## 4. Files touched
+
+| File | Change |
+|---|---|
+| `sanskrit_parser/generator/sutras_antaranga.yaml` | ~70 new rule blocks, one prakaraṇa banner per phase (mirror the D/E/S/A banners at `:12750`) |
+| `sanskrit_parser/generator/pratipadika.py` | ~60 new stems, grouped and commented per phase; **grep for dupes first** |
+| `sanskrit_parser/generator/pratyaya.py` | `tva`, `matup` (N3) |
+| `sanskrit_parser/generator/test/samasa_asraya_list.py` | **new** — `samasa_asraya_tests`, ~100 cases. `samasa_list.py` is already 1997 lines with five lists; a sixth belongs in its own module |
+| `sanskrit_parser/generator/test/test_samasa_asraya.py` | **new** driver, modelled on `test_samasa_tatpurusha.py` — three assertion levels (member structure / fired-sutra trace / surface), plus `no_natva`-style negative-control cases |
+| `sanskrit_parser/generator/test/samasa_list.py` | flip the त्रिभुवनम् deferral at `:418-431` (phase X6) |
+| `sanskrit_parser/generator/generator_status.md` | 87 rows + Skipped rows; counts; Last/Next |
+| `sanskrit_parser/generator/samasa_asraya_plan.md` | **new** — this plan, committed alongside (as `samasa_completion_plan.md` and `bahuvrihi_plan.md` were) |
+
+The test driver is generic over compound type: unlike the existing per-samāsa-type
+drivers, these rules apply to tatpuruṣa, bahuvrīhi and dvandva alike, so the case dict
+carries a `samasa_type` field selecting which vivakṣā tags the builder sets.
+
+---
+
+## 5. Verification
+
+Per phase:
+
+```bash
+cd /Users/karthik/personal_projects/sanskrit_parser/sanskrit_parser/generator/test && PYTHONPATH=/Users/karthik/personal_projects/sanskrit_parser /Users/karthik/venvs/sanskrit/bin/pytest -n 8 --dist worksteal
+```
+
+Expect ~8,300 items in ≈7.5 min at `-n 8`. Green before moving to the next phase; the
+per-phase slice (`pytest test_samasa_asraya.py`) runs in seconds for iteration.
+
+CLI spot-checks (one per mechanism family, run from the repo root with `sourceme`):
+
+```bash
+python -m sanskrit_parser.generator.cmd_line -u hfdaya -m leKa --samasa
+```
+
+```bash
+python -m sanskrit_parser.generator.cmd_line -u aNguli -m saNga --samasa
+```
+
+Extra gates:
+- **X6 only:** run the full suite and diff surface outputs against the pre-phase run —
+  8.4.11 touches every compound with a pūrva r/ṣ, so a silent extra/changed form
+  elsewhere is the failure mode to look for.
+- **Placement debugging:** when a rule does not fire, dump the window first
+  (`--verbose --tag-display`) before editing the condition — the (pūrva | sup) vs
+  (pūrva | uttara) confusion of §1 accounts for most misfires in this family.
+- `flake8` (max line length 150, `setup.cfg`) on the touched Python files.

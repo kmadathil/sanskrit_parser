@@ -471,11 +471,15 @@ samasa_tp_tests = [
         "surface": "प्राचार्यः",
     },
     {
-        "label": "T4-kupuruSaH-SK761-2.2.18",       # कु + पुरुष → कुपुरुषः (ku)
+        # कु + पुरुष → कुपुरुषः / कापुरुषः. The second form arrived with the X1
+        # samāsāśrayavidhi phase: SK1032/6.3.106 विभाषा पुरुषे optionally rewrites the
+        # कु pūrva to का, so this compound now forks. (See samasa_asraya_list.py ::
+        # X1-kApuruzaH-SK1032-6.3.106, which asserts the same pair from the other side.)
+        "label": "T4-kupuruSaH-SK761-2.2.18",
         "purva": {"stem": "ku", "sem": "semantic_1", "vivakza": True},
         "uttara": {"stem": "puruza", "vacana": 1, "vivakza": True},
         "fired": ["2.2.18", "1.2.43", "2.4.26"],
-        "surface": "कुपुरुषः",
+        "surfaces": ["कुपुरुषः", "कापुरुषः"],
     },
     {
         "label": "T4-atimAlaH-SK761-2.2.18",  # अति + माल → अतिमालः (prādi)

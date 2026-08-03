@@ -1245,3 +1245,52 @@ ojas    = Pratipadika("ojas",    "napum", other_tags=["AdeSa_s"])   # ओजस�
 Atman   = Pratipadika("Atman",   "pum")   # आत्मन् m. "self" (n-stem) — आत्मनेपदम् (SK964/6.3.7, caturthī aluk)
 hasta   = Pratipadika("hasta",   "pum")   # हस्त m. "hand" — हस्तेबन्धः/हस्तबन्धः (SK971/6.3.13, saptamī aluk)
 banDa   = Pratipadika("banDa",   "pum",   other_tags=["siDDa_gaRa"])  # बन्ध m. "binding" (2.1.41 saptamī-tp) — हस्तबन्धः
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X1 (samasa_asraya_plan.md): the uttarapada stems the
+# pūrva-ādeśa rules (6.3.50–6.3.107) key on. Each is the SK's own example word for
+# its sūtra; the pūrva stems these rules REWRITE (hfdaya, pAda, udaka, saha, samAna,
+# anya, idam, kim, ku) all already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── कु → कत्/का/कव (SK1027–1033 / 6.3.101–107). कु itself is defined above (?ku,
+# ?nipAta) and already forms the tatpuruṣa through SK761/2.2.18 कुगतिप्रादयः.
+raTa = Pratipadika("raTa", "pum")     # रथ m. "chariot" — कद्रथः (SK1028/6.3.102)
+vada = Pratipadika("vada", "pum")     # वद m. "speaker" — कद्वदः (SK1028/6.3.102)
+jala = Pratipadika("jala", "napum")   # जल n. "water" — काजलम् (SK1031/6.3.105, ईषदर्थे)
+uzRa = Pratipadika("uzRa", "napum")   # उष्ण n. "heat" — कवोष्णम् / कोष्णम् (SK1033/6.3.107)
+
+# ── हृदय → हृद् (SK988–989 / 6.3.50–51). हृदय is defined above (it already feeds
+# SK888/5.4.150 सुहृत्); हृद् is produced by the rule, not stored.
+leKa = Pratipadika("leKa", "pum")     # लेख m. "scratching" — हृल्लेखः (SK988/6.3.50)
+roga = Pratipadika("roga", "pum")     # रोग m. "disease" — हृद्रोगः / हृदयरोगः (SK989/6.3.51)
+
+# ── पाद → पद् (SK990–994 / 6.3.52–56). पाद is defined above (?pAdAdi).
+aji   = Pratipadika("aji",   "pum")   # अजि m. "goer" (अज् + इण्) — पदाजिः (SK990/6.3.52)
+hati  = Pratipadika("hati",  "strI")  # हति f. "striking" — पद्धतिः (SK992/6.3.54)
+kAzin = Pratipadika("kAzin", "pum")   # काषिन् m. "rubbing" (in-stem) — पत्काषी (SK992/6.3.54)
+Goza  = Pratipadika("Goza",  "pum")   # घोष m. "noise" — पद्घोषः / पादघोषः (SK994/6.3.56)
+
+# ── उदक → उद (SK995–998 / 6.3.57–60). उदक is defined above.
+meGa    = Pratipadika("meGa",    "pum")   # मेघ m. "cloud" — उदमेघः (SK995/6.3.57, संज्ञायाम्)
+Di      = Pratipadika("Di",      "pum")   # धि m. "receptacle" — उदधिः (SK996/6.3.58)
+vAhana  = Pratipadika("vAhana",  "napum")  # वाहन n. "vehicle" — उदवाहनम् (SK996/6.3.58); also 8.4.8 (X6)
+parvata = Pratipadika("parvata", "pum")   # पर्वत m. "mountain" — उदकपर्वतः (SK997/6.3.59 negative)
+manTa   = Pratipadika("manTa",   "pum")   # मन्थ m. "stirred drink" — उदमन्थः (SK998/6.3.60)
+
+# ── सह → स (SK1009–1011 / 6.3.78–80). सह is defined above (?nipAta ?saha); it forms the
+# tulyayoga bahuvrīhi through SK848/2.2.28, whose optional saha→sa (SK849/6.3.82) these
+# NITYA rules pre-empt — they fire in the pre-pass, so 6.3.82 no longer sees a =saha lp.
+rAkzasI = Pratipadika("rAkzasI", "strI", other_tags=["NI"])   # राक्षसी f. — सराक्षसीका निशा (SK1011/6.3.80)
+
+# ── समान → स (SK1012–1017 / 6.3.84–89). समान is defined above (?keval_Adi).
+garBa       = Pratipadika("garBa",       "pum")    # गर्भ m. "womb" — सगर्भ्यः (SK1012/6.3.84, छन्दसि)
+jyotis      = Pratipadika("jyotis",      "napum", other_tags=["AdeSa_s"])  # ज्योतिस् n. "light" (s-final) — सज्योतिः (SK1013/6.3.85)
+janapada    = Pratipadika("janapada",    "pum")    # जनपद m. "country" — सजनपदः (SK1013/6.3.85)
+brahmacArin = Pratipadika("brahmacArin", "pum")    # ब्रह्मचारिन् m. (in-stem) — सब्रह्मचारी (SK1014/6.3.86)
+tIrTa       = Pratipadika("tIrTa",       "napum")  # तीर्थ n. "teacher/ford" — सतीर्थ्यः (SK1015/6.3.87)
+udara       = Pratipadika("udara",       "napum")  # उदर n. "belly" — सोदर्यः (SK1016/6.3.88)
+dfSa        = Pratipadika("dfSa",        "pum")    # दृश m. "looking" (a-stem) — सदृशः, ईदृशः (SK1017/6.3.89)
+
+# ── अन्य + दुक् (SK1025–1026 / 6.3.99–100). अन्य is defined above (?qatarAdi ?sarvanAma).
+rAga = Pratipadika("rAga", "pum")   # राग m. "passion" — अन्यद्रागः (SK1025/6.3.99)

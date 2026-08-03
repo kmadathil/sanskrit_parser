@@ -13280,3 +13280,677 @@
       - "=banDa"
   update:
     olp: [+aluk]
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् (SK 985–1071) — Phase X1 (samasa_asraya_plan.md): PŪRVAPADA
+# ĀDEŚA keyed on the uttarapada.
+#
+# Having formed the compound, Pāṇini rewrites its PŪRVA member depending on what the
+# uttarapada is: हृदय→हृद्, पाद→पद्, उदक→उद, सह→स, समान→स, इदम्→ई / किम्→की, अन्य+दुक्,
+# कु→कत्/का/कव. Every rule here is a `bahiranga: -1` samāsa-pre-pass rule firing at the
+# (pūrva | uttara) member window — the SK926/6.3.29 दिवो द्यावा shape (`lc: str("")` +
+# `l: str("…")`). The pre-pass, not the main scan, because the rule reads the UTTARA's
+# identity: the main-scan (pūrva | its own sup) window of SK660/6.3.81 (saha→sa) cannot
+# see the uttara at all, and a post-luk main-scan placement would race 2.4.71.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── कु → कत् / का / कव (SK1027–1033 / 6.3.101–107) ───────────────────────────
+# कु ("bad, slight") already forms a NITYA tatpuruṣa via SK761/2.2.18 कुगतिप्रादयः
+# (कुपुरुषः), so these rules simply rewrite the कु pūrva in that landed compound. The
+# substitute is कत् in 6.3.101–103 — SK's कदश्वः / कद्रथः spell the SANDHI output of
+# कत् (pada-final त् → द् by 8.2.39 झलां जशोऽन्ते); कत्तृणम् keeps त् (त् is not झश्).
+
+# SK1027/6.3.101: कोः कत्तत्पुरुषेऽचि — कु → कत् in a TATPURUṢA before a vowel-initial
+# (अच्) uttarapada: कुत्सितोऽश्वः = कदश्वः, कदन्नम्. तत्पुरुषे किम् — कूष्ट्रो राजा (a
+# bahuvrīhi keeps कु). `r: _ac` is the uttara's FIRST char.
+- sutra: कोः कत्तत्पुरुषेऽचि
+  id: 6.3.101
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?tatpuruza"
+    r: _ac
+  xform:
+    lc: str("")
+    l: str("kat")
+
+# SK1028/6.3.102: रथवदयोश्च — कु → कत् before रथ / वद too (कत् by अनुवृत्ति from 6.3.101;
+# अचि does NOT carry over — रथ/वद are consonant-initial): कद्रथः, कद्वदः. The द् is again
+# 8.2.39 jaśtva (त् before the हश् र्/व्).
+- sutra: रथवदयोश्च
+  id: 6.3.102
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?tatpuruza"
+      - - or
+        - "=raTa"
+        - "=vada"
+  xform:
+    lc: str("")
+    l: str("kat")
+
+# SK1029/6.3.103: तृणे च जातौ — कु → कत् before तृण when a JĀTI (species) is meant:
+# कत्तृणम् (a kind of grass). ?jAti is composer-supplied on the uttara (as elsewhere).
+# No jaśtva here — त् before त् is not झश्, so the त् survives.
+- sutra: तृणे च जातौ
+  id: 6.3.103
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?tatpuruza"
+      - "=tfRa"
+      - "?jAti"
+  xform:
+    lc: str("")
+    l: str("kat")
+
+# SK1030/6.3.104: का पथ्यक्षयोः — कु → का before पथिन् / अक्ष: कापथम्, काक्षः. अक्ष is
+# vowel-initial, so this must OVERRIDE 6.3.101 (which would give *कदक्षः) — परत्वात्.
+- sutra: का पथ्यक्षयोः
+  id: 6.3.104
+  bahiranga: -1
+  overrides: 6.3.101
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=paTin"
+        - "=akza"
+  xform:
+    lc: str("")
+    l: str("kA")
+
+# SK1031/6.3.105: ईषदर्थे — कु → का when कु means ईषत् ("a little"): ईषज्जलं = काजलम्,
+# काम्लः. SK's note अजादावपि परत्वात्कादेशः — the का wins over 6.3.101's कत् even before a
+# vowel, so this OVERRIDES 6.3.101. ?IzadarTa is the composer-supplied sense.
+- sutra: ईषदर्थे
+  id: 6.3.105
+  bahiranga: -1
+  overrides: 6.3.101
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+      - "?IzadarTa"
+    rp: "?samAsa"
+  xform:
+    lc: str("")
+    l: str("kA")
+
+# SK1032/6.3.106: विभाषा पुरुषे — कु → का OPTIONALLY before पुरुष: कापुरुषः / कुपुरुषः.
+# SK: अप्राप्तविभाषेयम् — this vibhāṣā exists for the KUTSITA sense only; in the ईषत् sense
+# 6.3.105 is nitya (ईषत्पुरुषः = कापुरुषः only), hence the ?!IzadarTa guard.
+- sutra: विभाषा पुरुषे
+  id: 6.3.106
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+      - "?!IzadarTa"
+    rp:
+      - and
+      - "?samAsa"
+      - "=puruza"
+  xform:
+    lc: str("")
+    l: str("kA")
+
+# SK1033/6.3.107: कवं चोष्णे — before उष्ण, कु OPTIONALLY → कव (and, by the च, → का):
+# कवोष्णम् / कोष्णम् (का + उष्ण → को by 6.1.87 आद्गुणः). The कव fork is this rule; the का fork
+# is 6.3.105 in the ईषत् sense, which this rule must OVERRIDE to get its own branch in.
+- sutra: कवं चोष्णे
+  id: 6.3.107
+  bahiranga: -1
+  optional: true
+  overrides: [6.3.101, 6.3.105]
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "=uzRa"
+  xform:
+    lc: str("")
+    l: str("kava")
+
+# ── हृदय → हृद् (SK988–989 / 6.3.50–51) ──────────────────────────────────────
+# These are ṣaṣṭhī-tatpuruṣas (SK702/2.2.8) in the generator: हृदयस्य लेखः = हृल्लेखः.
+# हृद् is consonant-final, so the junction sandhi does the rest — द् + ल् → ल् (8.4.60
+# तोर्लि) gives हृल्लेख, and the pūrva keeps its pada-hood so 8.2.39 jaśtva applies
+# elsewhere (हृद्रोगः).
+
+# SK988/6.3.50: हृदयस्य हृल्लेखयदण्लासेषु — हृदय → हृद् before लेख and लास (and before
+# the affixes यत् / अण्, which are not modelled here — see the Skipped row). हृदयं
+# लिखतीति = हृल्लेखः; हृल्लासः. SK's own note is that लेख-grahaṇa proves
+# उत्तरपदाधिकारे तदन्तविधिर्नास्ति — the uttara must BE लेख, not merely end in it (घञि तु
+# हृदयलेखः), which is exactly what the literal `=leKa` gate encodes.
+- sutra: हृदयस्य हृल्लेखयदण्लासेषु
+  id: 6.3.50
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=hfdaya"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=leKa"
+        - "=lAsa"
+  xform:
+    lc: str("")
+    l: str("hfd")
+
+# SK989/6.3.51: वा शोकष्यञ्रोगेषु — हृदय → हृद् OPTIONALLY before शोक and रोग (and the
+# ष्यञ् affix, not modelled): हृद्रोगः / हृदयरोगः, हृच्छोकः / हृदयशोकः. SK notes the
+# प्रपञ्चार्थ status of the rule (हृद् is independently a word), but the vibhāṣā is real.
+- sutra: वा शोकष्यञ्रोगेषु
+  id: 6.3.51
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=hfdaya"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=Soka"
+        - "=roga"
+  xform:
+    lc: str("")
+    l: str("hfd")
+
+# ── पाद → पद् (SK990–994 / 6.3.52–56) ────────────────────────────────────────
+# TWO DIFFERENT SUBSTITUTES, and SK is careful about it: 6.3.52 supplies the ADANTA पद
+# ("पद इत्यदन्त आदेशः"), whose final अ merges with the following vowel — पद + अजि → पदाजिः
+# (6.1.101 अकः सवर्णे दीर्घः). From 6.3.53 on the substitute is the consonant-final पत्
+# ("पादस्य पत्"), which then jaśtva's to पद् before a हश् — पत् + घोष → पद्घोषः (8.2.39).
+# Formed here as a ṣaṣṭhī-tatpuruṣa. SK993/6.3.55 ऋचः शे is a Skipped row (शस् taddhita).
+
+# SK990/6.3.52: पादस्य पदाज्यातिगोपहतेषु — पाद → पद (ADANTA) before अजि / अति / ग / उपहत:
+# पादाभ्यामजतीति = पदाजिः, पदातिः, पदगः, पदोपहतः. (अजि/अति are the इण्-formations of
+# अज्यतिभ्यां पादे च; only अजि is stocked as a stem — the others are one entry each.)
+- sutra: पादस्य पदाज्यातिगोपहतेषु
+  id: 6.3.52
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=pAda"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=aji"
+        - "=ati"
+        - "=ga"
+        - "=upahata"
+  xform:
+    lc: str("")
+    l: str("pada")
+
+# SK992/6.3.54: हिमकाषिहतिषु च — पाद → पत् before हिम / काषिन् / हति: पद्धिमम्, पत्काषी,
+# पद्धतिः. (SK991/6.3.53 पद्यत्यतदर्थे, the यत् arm, is a Skipped row — affix context.)
+- sutra: हिमकाषिहतिषु च
+  id: 6.3.54
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=pAda"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=hima"
+        - "=kAzin"
+        - "=hati"
+  xform:
+    lc: str("")
+    l: str("pat")
+
+# SK994/6.3.56: वा घोषमिश्रशब्देषु — पाद → पत् OPTIONALLY before घोष / मिश्र / शब्द:
+# पद्घोषः / पादघोषः, पन्मिश्रः / पादमिश्रः, पच्छब्दः / पादशब्दः.
+- sutra: वा घोषमिश्रशब्देषु
+  id: 6.3.56
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=pAda"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=Goza"
+        - "=miSra"
+        - "=Sabda"
+  xform:
+    lc: str("")
+    l: str("pat")
+
+# ── उदक → उद (SK995–998 / 6.3.57–60) ─────────────────────────────────────────
+
+# SK995/6.3.57: उदकस्योदः संज्ञायाम् — उदक → उद in a SAṀJÑĀ: उदमेघः. `?saMjYA` is
+# composer-supplied (the same convention as SK967/6.3.9 and SK857/8.4.3).
+- sutra: उदकस्योदः संज्ञायाम्
+  id: 6.3.57
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=udaka"
+      - "?samAsaPurva"
+      - "?saMjYA"
+    rp: "?samAsa"
+  xform:
+    lc: str("")
+    l: str("uda")
+
+# SK996/6.3.58: पेषंवासवाहनधिषु च — उदक → उद before पेषं / वास / वाहन / धि, saṁjñā or not:
+# उदपेषं पिनष्टि, उदवासः, उदवाहनः, उदधिर्घटः. (समुद्रे तु पूर्वेण सिद्धम् — समुद्र is a saṁjñā
+# and so already covered by 6.3.57.)
+- sutra: पेषंवासवाहनधिषु च
+  id: 6.3.58
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=udaka"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=pezam"
+        - "=vAsa"
+        - "=vAhana"
+        - "=Di"
+  xform:
+    lc: str("")
+    l: str("uda")
+
+# SK997/6.3.59: एकहलादौ पूरयितव्येऽन्यतरस्याम् — उदक → उद OPTIONALLY when the uttarapada
+# begins with a SINGLE consonant (एकहलादि) and denotes something TO BE FILLED
+# (पूरयितव्य): उदकुम्भः / उदककुम्भः. एकेति किम् — उदकस्थाली (स्थाली opens स्थ्, two hal, so no
+# hrasva); पूरयितव्येति किम् — उदकपर्वतः. एकहलादि is checked positionally: `r` (the uttara's
+# first char) is हल् and `rr` (its second) is अच्.
+- sutra: एकहलादौ पूरयितव्येऽन्यतरस्याम्
+  id: 6.3.59
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=udaka"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pUrayitavya"
+    r: _hal
+    rr: _ac
+  xform:
+    lc: str("")
+    l: str("uda")
+
+# SK998/6.3.60: मन्थौदनसक्तुबिन्दुवज्रभारहारवीवधगाहेषु च — उदक → उद before this nine-word
+# list; the च carries अन्यतरस्याम् over from 6.3.59, so it is OPTIONAL: उदमन्थः /
+# उदकमन्थः, उदौदनः / उदकौदनः.
+- sutra: मन्थौदनसक्तुबिन्दुवज्रभारहारवीवधगाहेषु च
+  id: 6.3.60
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=udaka"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=manTa"
+        - "=Odana"
+        - "=saktu"
+        - "=bindu"
+        - "=vajra"
+        - "=BAra"
+        - "=hAra"
+        - "=vIvaDa"
+        - "=gAha"
+  xform:
+    lc: str("")
+    l: str("uda")
+
+# ── सह → स (SK1009–1011 / 6.3.78–80) ─────────────────────────────────────────
+# सह forms the tulyayoga bahuvrīhi via SK848/2.2.28, where SK849/6.3.82 वोपसर्जनस्य makes
+# saha → sa OPTIONAL (सपुत्रः / सहपुत्रः). The three rules here are NITYA in their own
+# contexts, and they pre-empt 6.3.82 structurally rather than by an `overrides:`: they
+# fire in the PRE-PASS, so by the time 6.3.82's main-scan (saha | sup) window is reached
+# the pūrva is already स and its `=saha` condition fails. Hence no spurious fork.
+
+# SK1009/6.3.78: सहस्य सः संज्ञायाम् — सह → स before an uttarapada, in a SAṀJÑĀ:
+# सपलाशम् (a place name). संज्ञायां किम् — सहयुध्वा (not a name, so 6.3.82's vibhāṣā, not
+# this rule, applies). `?saMjYA` composer-supplied.
+- sutra: सहस्य सः संज्ञायाम्
+  id: 6.3.78
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?samAsaPurva"
+      - "?saMjYA"
+    rp: "?samAsa"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1010/6.3.79: ग्रन्थान्ताधिके च — सह → स when a ग्रन्थान्त (end of a text-section) or an
+# अधिक (excess) is meant: समुहूर्तं ज्योतिषमधीते, सद्रोणा खारी. Composer-supplied sense
+# ?granTAntADika (the two senses share one tag — they share one sūtra and one effect).
+- sutra: ग्रन्थान्ताधिके च
+  id: 6.3.79
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?samAsaPurva"
+      - "?granTAntADika"
+    rp: "?samAsa"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1011/6.3.80: द्वितीये चानुपाख्ये — सह → स when the "second" thing is अनुपाख्य (inferred,
+# not directly perceived): सराक्षसीका निशा — the night in which a rākṣasī is inferred
+# rather than seen. Composer-supplied sense ?anupAKya.
+- sutra: द्वितीये चानुपाख्ये
+  id: 6.3.80
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=saha"
+      - "?samAsaPurva"
+      - "?anupAKya"
+    rp: "?samAsa"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# ── समान → स (SK1012–1017 / 6.3.84–89) ───────────────────────────────────────
+# Formed as a karmadhāraya (2.1.57, समान the विशेषण). The substitute is स throughout.
+
+# SK1012/6.3.84: समानस्य च्छन्दस्यमूर्धप्रभृत्यदर्केषु — समान → स in CHANDAS (Vedic), but NOT
+# before मूर्धन् / प्रभृति / उदर्क: अनु भ्राता सगर्भ्यः, सयूथ्यः, सनुत्यः. अमूर्धादिषु किम् —
+# समानमूर्धा, समानप्रभृतयः, समानोदर्काः. The SK's own examples all carry the यत् taddhita
+# (सगर्भ्यः = स + गर्भ + यत्); the substitution itself is what this rule contributes.
+- sutra: समानस्य च्छन्दस्यमूर्धप्रभृत्यदर्केषु
+  id: 6.3.84
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+      - "?Candas"
+    rp:
+      - and
+      - "?samAsa"
+      - "=!mUrDan"
+      - "=!praBfti"
+      - "=!udarka"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1013/6.3.85: ज्योतिर्जनपदरात्रिनाभिनामगोत्ररूपस्थानवर्णवयोवचनबन्धुषु — समान → स before
+# these TWELVE uttarapadas (no chandas restriction): सज्योतिः, सजनपदः, सनाभिः, सगोत्रः,
+# सरूपः, सवर्णः, सवयाः, सबन्धुः …
+- sutra: ज्योतिर्जनपदरात्रिनाभिनामगोत्ररूपस्थानवर्णवयोवचनबन्धुषु
+  id: 6.3.85
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=jyotis"
+        - "=janapada"
+        - "=rAtri"
+        - "=nABi"
+        - "=nAman"
+        - "=gotra"
+        - "=rUpa"
+        - "=sTAna"
+        - "=varRa"
+        - "=vayas"
+        - "=vacana"
+        - "=banDu"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1014/6.3.86: चरणे ब्रह्मचारिणि — समान → स before ब्रह्मचारिन्, when the sameness is one
+# of चरण (Vedic school/branch): समानः (चरणः) सः = सब्रह्मचारी. Composer-supplied ?caraRa.
+- sutra: चरणे ब्रह्मचारिणि
+  id: 6.3.86
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+      - "?caraRa"
+    rp:
+      - and
+      - "?samAsa"
+      - "=brahmacArin"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1015/6.3.87: तीर्थे ये — समान → स before तीर्थ when a य-initial affix (यत्) is intended:
+# समानतीर्थे वासी = सतीर्थ्यः ("fellow student"). The यादि affix is part of the sūtra's own
+# condition (ये), so the rule is gated on a following ?tadDita_ya.
+- sutra: तीर्थे ये
+  id: 6.3.87
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "=tIrTa"
+      - "?tadDita_ya_para"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1016/6.3.88: विभाषोदरे — समान → स OPTIONALLY before उदर, again with a य-initial affix
+# intended (यादौ प्रत्यये विवक्षिते इत्येव): सोदर्यः / समानोदर्यः.
+- sutra: विभाषोदरे
+  id: 6.3.88
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "=udara"
+      - "?tadDita_ya_para"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1017/6.3.89: दृग्दृशवतुषु — समान → स before दृश् / दृश / वतु: सदृक्, सदृशः. (The वतु
+# example belongs to 6.3.90, which continues this list — वतुरुत्तरार्थः.)
+- sutra: दृग्दृशवतुषु
+  id: 6.3.89
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=samAna"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=dfS"
+        - "=dfSa"
+        - "=vatu"
+  xform:
+    lc: str("")
+    l: str("sa")
+
+# SK1018/6.3.90: इदंकिमोरीश्की — before the same दृश्/दृश/वतु, इदम् → ईश् and किम् → की:
+# ईदृक्, ईदृशः, कीदृक्, कीदृशः. ईश् is a शित् substitute, so by 1.1.55 अनेकाल्शित्सर्वस्य it
+# replaces the WHOLE of इदम् (→ ई), not just its last phoneme; की likewise replaces किम्.
+# The two substitutes differ, and one xform block cannot branch, so the sūtra is split
+# into two rules — `6.3.90` (इदमः ईश्) and `6.3.90.1` (किमः की) — with disjoint lp gates.
+- sutra: इदंकिमोरीश्की
+  id: 6.3.90
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=idam"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=dfS"
+        - "=dfSa"
+        - "=vatu"
+  xform:
+    lc: str("")
+    l: str("I")
+
+- sutra: इदंकिमोरीश्की
+  id: 6.3.90.1
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=kim"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=dfS"
+        - "=dfSa"
+        - "=vatu"
+  xform:
+    lc: str("")
+    l: str("kI")
+
+# ── अन्य + दुक् (SK1025–1026 / 6.3.99–100) ───────────────────────────────────
+# दुक् is an AUGMENT, not a substitution: क्-it, so by 1.1.46 आद्यन्तौ टकितौ it attaches at
+# the END of अन्य → अन्यद्. Hence `l: l+str("d")` (append) rather than the `lc: str("")`
+# whole-stem rewrite the other X1 rules use.
+
+# SK1025/6.3.99: अषष्ठ्यतृतीयास्थस्यान्यस्य दुगाशीराशास्थास्थितोत्सुकोतिकारकरागच्छेषु — अन्य
+# takes the दुक् augment before आशिस् / आशा / आस्था / आस्थित / उत्सुक / ऊति / कारक / राग / छ:
+# अन्यदाशीः, अन्यदास्था, अन्यदुत्सुकः, अन्यदूतिः, अन्यद्रागः. अषष्ठ्यतृतीयास्थस्य किम् — when
+# अन्य stands in the ṣaṣṭhī or tṛtīyā there is no दुक्: अन्यस्य/अन्येन आशीः = अन्याशीः. The
+# formation used here is the karmadhāraya (अन्या आशीः), whose pūrva is prathamā — the
+# ṣaṣṭhī/tṛtīyā exclusion is therefore expressed as the ?!viBakti_6/?!viBakti_3 guard.
+- sutra: अषष्ठ्यतृतीयास्थस्यान्यस्य दुगाशीराशास्थास्थितोत्सुकोतिकारकरागच्छेषु
+  id: 6.3.99
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=anya"
+      - "?samAsaPurva"
+      - "?!viBakti_6"
+      - "?!viBakti_3"
+    rp:
+      - and
+      - "?samAsa"
+      - - or
+        - "=ASis"
+        - "=ASA"
+        - "=AsTA"
+        - "=AsTita"
+        - "=utsuka"
+        - "=Uti"
+        - "=kAraka"
+        - "=rAga"
+  xform:
+    l: l+str("d")
+
+# SK1026/6.3.100: अर्थे विभाषा — before अर्थ the दुक् is OPTIONAL: अन्यदर्थः / अन्यार्थः.
+- sutra: अर्थे विभाषा
+  id: 6.3.100
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=anya"
+      - "?samAsaPurva"
+      - "?!viBakti_6"
+      - "?!viBakti_3"
+    rp:
+      - and
+      - "?samAsa"
+      - "=arTa"
+  xform:
+    l: l+str("d")
