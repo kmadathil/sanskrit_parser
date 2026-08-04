@@ -42,8 +42,10 @@ notes)*; ब्राह्मणिगोत्रम्, ग्रामणि
 मालभारि; सत्यङ्कारः, रात्रिञ्चरः *(X2 + X3 landed; ब्राह्मणिचेली would need the चेलट् affix)*;
 द्विगुणाकर्णः, कोटरावणम्, अमरावती, ऋषीवहम्, नीकाशः, अष्टापदम्, विश्वानरः, विश्वामित्रः;
 अङ्गुलिषङ्गः, भीरुष्ठानम्, ज्योतिष्टोमः, सुषामा, हरिषेणः; प्रवणम्, क्षीरपाणाः, **माषवापेण /
-चोरभयेण**; पृषोदरम्, गोष्पदम्, आस्पदम्, आश्चर्यम्, मस्करः, कारस्करः, पारस्करः;
-कारीषगन्धीपुत्रः.
+चोरभयेण**; पृषोदरम्, गोष्पदम्, आस्पदम्, आश्चर्यम्, कारस्करः, पारस्करः;
+कारीषगन्धीपुत्रः. *(This line originally also promised मस्करः — SK1068/6.1.154, which is NOT
+implemented and now has a Skipped row. The X9 audit caught the discrepancy; corrected here so
+the plan does not out-claim the code.)*
 
 ---
 
@@ -59,8 +61,8 @@ notes)*; ब्राह्मणिगोत्रम्, ग्रामणि
 | **X6** samāsa ṇatva | 9 | **DONE** — 8 implemented, 8.4.38 untested | 13 cases; **closes the चोरभयेण deferral**; 3 engine touches |
 | **X7** पृषोदरादि + suṭ nipātanas | 15 | **DONE** — 15 implemented | 18 cases; 15 rules, not 2 gaṇa rules |
 | **X8** ष्यङ् सम्प्रसारणम् | 3 | **DONE** — 3 implemented | 4 cases; two-step marker, no new machinery |
-| X9 prakaraṇa audit + status | — | pending | — |
-| | **87** | **80 done / 7 to go** (X9 audit only) | |
+| **X9** prakaraṇa audit + status | — | **DONE** — 0 unaccounted | `prakarana_audit.py`; found 2 real defects |
+| | **87** | **ALL 87 ACCOUNTED — prakaraṇa COMPLETE** | |
 
 **Machinery status: all three planned items are BUILT, and none needed engine work.**
 - **N1 (मुम्)**, X3 — just the append xform `l: l+str("m")`: मुम् is मित्, and 1.1.47
@@ -523,7 +525,33 @@ Needs a ष्यङ्-formed feminine stem (`kArIzaganDyA` / `kaumudaganDyA`) 
 stem *class*. If the ष्यङ् derivation proves expensive, the fallback is the landed 6.3.42
 puṁvadbhāva precedent: composer supplies the stem, the rule fires as a documented saṁjñā.
 
-### X9 — Prakaraṇa audit + status — PENDING
+### X9 — Prakaraṇa audit + status — **DONE (2026-08-03)** — PRAKARAṆA COMPLETE
+
+**87/87 accounted for: 79 with rules, 21 in Skipped rows, 0 unaccounted, 0 with neither.**
+Reproduce with `python -m sanskrit_parser.generator.prakarana_audit 985 1071`.
+
+The audit was written as a reusable tool rather than a one-off check, and it paid for itself on
+the first run by finding two defects that reading the doc had not:
+
+1. **SK1068/6.1.154 मस्करमस्करिणौ was silently skipped in X7.** I had judged it awkward (मकर is
+   अव्युत्पन्न, so there is no junction for the सुट्) and then simply not written it up. It now has
+   an explicit Skipped row saying so — which is the whole point of the convention.
+2. **X7's Implemented row used a `1058–1071` RANGE header**, which silently claimed 6.1.154 as
+   implemented. Replaced with an explicit list. **A range in the SK cell is convenient and
+   dangerous**; the tool's docstring records this.
+
+Also fixed for consistency: SK1035/6.3.114 संहितायाम् moved from an Implemented row to a
+**Skipped "Natural"** row, matching how 2.1.11 विभाषा and 5.4.68 समासान्ताः are treated — an
+adhikāra realized by its subordinate rules is not an implemented vidhi.
+
+Appearing in BOTH tables is normal and reported for information: 12 sūtras are implemented with
+an arm or vārtika deferred (6.3.61's general form, 8.4.11's वा, 6.1.157's vārtika tail …).
+
+**Beyond this prakaraṇa:** the same tool reports **17 unaccounted in tatpuruṣa (SK684–828)**
+against a recorded "0". Two were hand-verified as genuine — SK696/2.1.34 अन्नेन व्यञ्जनम् and
+SK705/2.2.11 have no rule in any YAML and no row anywhere in generator_status.md — so the
+recorded figure is stale, not the tool wrong. Out of scope here; flagged as a follow-up, along
+with auditing avyayībhāva, bahuvrīhi and the dvandva/ekaśeṣa/aluk ranges, which are unchecked.
 
 Per the prakaraṇa-audit convention: enumerate SK985–1071, cross-reference every
 Ashtadhyayi `id:` present in the YAMLs against the range, and confirm **every one of the
