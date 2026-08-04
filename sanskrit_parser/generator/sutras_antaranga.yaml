@@ -14919,3 +14919,413 @@
       - "?pada"
       - "?pada_vyavAya"
   xform: null
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X7 (samasa_asraya_plan.md): the सुट्-NIPĀTANA compounds
+# (SK1058–1071 / 6.1.143–157) and पृषोदरादि (SK1034 / 6.3.109).
+#
+# WHAT A NIPĀTANA IS HERE. सुट् is an स् āgama at the pūrva/uttara junction, and in these
+# compounds it is STIPULATED, not derived — there is no general rule that would supply it.
+# SK1060 is explicit for गोष्पदम्: "सुट् सस्य षत्वं च निपात्यते" — both the सुट् AND its ṣatva are
+# nipātita. So each rule prepends the augment to the uttara with `xform: r: str("s")+r` (the
+# idiom 7.1.? already uses for सर्वनाम + आम् → साम्), writing ष् directly only where SK says the
+# ṣatva too is stipulated. Where the स् meets a च्, श्चुत्व (8.4.40) supplies the श् for free —
+# आश्चर्यम्, हरिश्चन्द्रः.
+#
+# Each sūtra carries its OWN sense condition (जातिः, क्रियासातत्ये, सेवितासेवितप्रमाणेषु,
+# प्रतिष्ठायाम्, अनित्ये, वर्चस्के, रथाङ्गम्, शकुनौ, कशेः, ऋषी, वेणुपरिव्राजकयोः, नगरे, वृक्षः,
+# संज्ञायाम्), so they are NOT one gaṇa despite the plan's initial guess — each is a separate
+# rule with a composer-supplied sense gate, and every SK counter-example is a negative control
+# testing exactly that gate. All are `bahiranga: -1`: the augment lands at the (pūrva | uttara)
+# junction, where both members are still clean stems.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1058/6.1.143: कुस्तुम्बुरूणि जातिः — सुट् is nipātita when a JĀTI (the grain coriander) is
+# meant: कुस्तुम्बुरु = धान्याक. जातिः किम् — कुतुम्बुरूणि ("bad tinduka fruits"). SK notes
+# क्लीबत्वमतन्त्रम् (the neuter is not essential).
+- sutra: कुस्तुम्बुरूणि जातिः
+  id: 6.1.143
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ku"
+      - "?samAsaPurva"
+      - "?jAti"
+    rp:
+      - and
+      - "?samAsa"
+      - "=tumburu"
+  xform:
+    r: str("s")+r
+
+# SK1059/6.1.144: अपरस्पराः क्रियासातत्ये — सुट् when CONTINUITY OF ACTION is meant:
+# अपरस्पराः सार्था गच्छन्ति (the caravans go on unbroken). क्रियेति किम् — अपरपरा गच्छन्ति
+# (they go once only).
+- sutra: अपरस्पराः क्रियासातत्ये
+  id: 6.1.144
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=apara"
+      - "?samAsaPurva"
+      - "?kriyAsAtatya"
+    rp:
+      - and
+      - "?samAsa"
+      - "=para"
+  xform:
+    r: str("s")+r
+
+# SK1060/6.1.145: गोष्पदं सेवितासेवितप्रमाणेषु — सुट् AND its ṣatva are nipātita, in the
+# सेवित / असेवित / प्रमाण senses: गोष्पदः (a place cattle frequent), अगोष्पदान्यरण्यानि,
+# गोष्पदमात्रं क्षेत्रम्. सेवितेत्यादि किम् — गोः पदं गोपदम्. The ष् is written directly because
+# no rule would supply it: गो's ओ is not an iṇ vowel, so 8.3.59 cannot reach the स्.
+- sutra: गोष्पदं सेवितासेवितप्रमाणेषु
+  id: 6.1.145
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=go"
+      - "?samAsaPurva"
+      - "?sevitAsevitapramARa"
+    rp:
+      - and
+      - "?samAsa"
+      - "=pada"
+  xform:
+    r: str("z")+r
+
+# SK1061/6.1.146: आस्पदं प्रतिष्ठायाम् — सुट् when a PRATIṢṬHĀ (established position) is meant:
+# आत्मयापनाय स्थानम् = आस्पदम्. प्रेति किम् — आपदम् without it.
+- sutra: आस्पदं प्रतिष्ठायाम्
+  id: 6.1.146
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=A"
+      - "?samAsaPurva"
+      - "?pratizWA"
+    rp:
+      - and
+      - "?samAsa"
+      - "=pada"
+  xform:
+    r: str("s")+r
+
+# SK1062/6.1.147: आश्चर्यमनित्ये — सुट् in the ANITYA (wonderful, not-常) sense: आश्चर्यं यदि स
+# भुञ्जीत. अनित्ये किम् — आचर्यं कर्म शोभनम्. The श् is 8.4.40 श्चुत्व on the सुट् स् before च्,
+# supplied for free.
+- sutra: आश्चर्यमनित्ये
+  id: 6.1.147
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=A"
+      - "?samAsaPurva"
+      - "?anitya"
+    rp:
+      - and
+      - "?samAsa"
+      - "=carya"
+  # ŚCUTVA IS FOLDED IN (श् written directly instead of स्), and for the SAME reason the X5
+  # ṣṭutva fold exists: 8.4.40 स्तोः श्चुना श्चुः is a JUNCTION rule, but prepending the सुट् to
+  # the uttara puts the स् and the following च् INSIDE one element (चर्य → स्चर्य), where no
+  # junction exists. Appending to the PŪRVA instead would give a real junction — but the pūrva
+  # is a pada, so its final स् would then become a visarga by 8.3.15 खरवसानयोर्विसर्जनीयः, which
+  # is what breaks अवस्करः / कारस्करः. The clean fix is 8.3.81's: move to the main scan and use
+  # `xform: r: null` + `insert:`, so the सुट् becomes a separate nested element and 8.4.40 fires
+  # on its own. Not done here — it needs a self-named tag per uttara — and recorded in
+  # samasa_asraya_plan.md as the follow-up.
+  xform:
+    r: str("S")+r
+
+# SK1063/6.1.148: वर्चस्केऽवस्करः — सुट् when VARCASKA (excrement) is meant: अवकीर्यत इति
+# अवस्करः. वर्चस्के किम् — अवकरः (sweepings).
+- sutra: वर्चस्केऽवस्करः
+  id: 6.1.148
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=ava"
+      - "?samAsaPurva"
+      - "?varcaska"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kara"
+  xform:
+    r: str("s")+r
+
+# SK1064/6.1.149: अपस्करो रथाङ्गम् — सुट् when a RATHĀṄGA (part of a chariot) is meant:
+# अपस्करः. अपकरोऽन्यः — anything else is अपकरः.
+- sutra: अपस्करो रथाङ्गम्
+  id: 6.1.149
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=apa"
+      - "?samAsaPurva"
+      - "?raTAnga"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kara"
+  xform:
+    r: str("s")+r
+
+# SK1065/6.1.150: विष्किरः शकुनौ वा — सुट् (with nipātita ṣatva) OPTIONALLY when a ŚAKUNI
+# (bird) is meant: विष्किरः / पक्षे विकिरः. Unlike X6's marker-only vibhāṣās this one CAN fork —
+# it does its own xform, so the two branches differ immediately.
+- sutra: विष्किरः शकुनौ वा
+  id: 6.1.150
+  bahiranga: -1
+  optional: true
+  condition:
+    lp:
+      - and
+      - "=vi"
+      - "?samAsaPurva"
+      - "?Sakuni"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kira"
+  xform:
+    r: str("z")+r
+
+# SK1066/6.1.152: प्रतिष्कशश्च कशेः — सुट् and ṣatva nipātita for प्रति + कश् (√कश् गतिशासनयोः):
+# प्रतिष्कशः (a companion or forerunner). कशे किम् — प्रतिगतः कशां प्रतिकशोऽश्वः. SK notes the
+# dhātu is named only to restrict the upasarga to प्रति (धात्वन्तरोपसर्गान्न).
+- sutra: प्रतिष्कशश्च कशेः
+  id: 6.1.152
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=prati"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kaSa"
+  xform:
+    r: str("z")+r
+
+# SK1067/6.1.153: प्रस्कण्वहरिश्चन्द्रावृषी — सुट् in both, when the two ṚṢIS are meant:
+# प्रस्कण्वः, हरिश्चन्द्रः (the हरिश्चन्द्र-grahaṇa is अमन्त्रार्थम्). ऋषीति किम् — प्रकण्वो देशः,
+# हरिचन्द्रो माणवकः. हरिश्चन्द्र's श् is again 8.4.40 श्चुत्व on the सुट् before च्.
+- sutra: प्रस्कण्वहरिश्चन्द्रावृषी
+  id: 6.1.153
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=pra"
+      - "?samAsaPurva"
+      - "?fzi_saMjYA"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kaRva"
+  xform:
+    r: str("s")+r
+
+# SK1067/6.1.153 (the हरिश्चन्द्र arm) — SPLIT into its own rule because the two names need
+# different surface substitutes and one xform block cannot branch: प्रस्कण्व keeps the सुट् as स्
+# (before क्), while हरिश्चन्द्र shows it as श् by 8.4.40 श्चुत्व before च्. That ścutva is folded in
+# here for the reason given at 6.1.147 above — 8.4.40 is a junction rule and the prepended सुट्
+# lands inside the uttara element. The हरिश्चन्द्र-grahaṇa is अमन्त्रार्थम् (SK).
+- sutra: प्रस्कण्वहरिश्चन्द्रावृषी
+  id: 6.1.153.1
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=hari"
+      - "?samAsaPurva"
+      - "?fzi_saMjYA"
+    rp:
+      - and
+      - "?samAsa"
+      - "=candra"
+  xform:
+    r: str("S")+r
+
+# SK1069/6.1.155: कास्तीराजस्तुन्दे नगरे — सुट् in both, when a NAGARA (city) is named:
+# ईषत्तीरमस्यास्तीति कास्तीरम्, अजस्येव तुन्दमस्येति अजस्तुन्दम्. नगरे किम् — कातीरम्, अजतुन्दम्.
+- sutra: कास्तीराजस्तुन्दे नगरे
+  id: 6.1.155
+  bahiranga: -1
+  condition:
+    # `[or =ku =kA]`: SK derives कास्तीर's का from कु by SK1031/6.3.105 ईषदर्थे
+    # (ईषत्तीरमस्यास्तीति), which is also a `bahiranga: -1` rule — so within one pre-pass
+    # fixpoint this rule may see the pūrva either before or after that substitution.
+    - lp:
+        - and
+        - - or
+          - "=ku"
+          - "=kA"
+        - "?samAsaPurva"
+        - "?nagara"
+      rp:
+        - and
+        - "?samAsa"
+        - "=tIra"
+    - lp:
+        - and
+        - "=aja"
+        - "?samAsaPurva"
+        - "?nagara"
+      rp:
+        - and
+        - "?samAsa"
+        - "=tunda"
+  xform:
+    r: str("s")+r
+
+# SK1070/6.1.156: कारस्करो वृक्षः — सुट् when the TREE is meant: कारं करोतीति कारस्करो वृक्षः.
+# अन्यत्र कारकरः. (SK notes केचित्तु कस्कादिष्विदं पठन्ति — some read it in the kaskādi gaṇa.)
+- sutra: कारस्करो वृक्षः
+  id: 6.1.156
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=kAra"
+      - "?samAsaPurva"
+      - "?vfkza"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kara"
+  xform:
+    r: str("s")+r
+
+# SK1071/6.1.157: पारस्करप्रभृतीनि च संज्ञायाम् — the पारस्कर-prabhṛti set is nipātita WITH the
+# सुट् when a NAME is meant: पारस्करः, किष्किन्धा. आकृतिगणोऽयम्, so the list is open; पारस्कर is
+# the member stocked here. The vārtika tail (तस्करः, बृहस्पतिः, प्रायश्चित्तम्, वनस्पतिः — each
+# with its own तलोप or sense) is a Skipped row.
+- sutra: पारस्करप्रभृतीनि च संज्ञायाम्
+  id: 6.1.157
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=pAra"
+      - "?samAsaPurva"
+      - "?saMjYA"
+    rp:
+      - and
+      - "?samAsa"
+      - "=kara"
+  xform:
+    r: str("s")+r
+
+# SK1034/6.3.109: पृषोदरादीनि यथोपदिष्टम् — "the पृषोदर-type forms are correct AS THE LEARNED
+# HAVE UTTERED THEM", i.e. an आकृतिगण of irregulars licensed wholesale rather than derived. SK
+# classifies the kinds in a verse: वर्णागम (हंसः), वर्णविपर्यय (सिंहः), वर्णविकृति (गूढोत्मा),
+# वर्णनाश (पृषोदरम्). पृषत् + उदर = पृषोदरम् with the त् simply LOST — that तलोप is the whole
+# nipātana, so the rule performs it as a pūrva substitution and claims nothing more.
+# The vārtikas (दक्षिणतारम्/दक्षिणतीरम्; दूडाशः/दूणाशः/दूडभः/दूढ्यः; बृसी) are a Skipped row.
+- sutra: पृषोदरादीनि यथोपदिष्टम्
+  id: 6.3.109
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "=pfzat"
+      - "?samAsaPurva"
+    rp:
+      - and
+      - "?samAsa"
+      - "=udara"
+  xform:
+    lc: str("")
+    l: str("pfza")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X8 (samasa_asraya_plan.md): ष्यङ् SAṀPRASĀRAṆA
+# (SK1003–1005 / 6.1.13, 6.3.139, 6.1.14).
+#
+# A ष्यङ्-formed feminine (कारीषगन्ध + ष्यङ् = कारीषगन्ध्या) has its ष्यङ् य् SAṀPRASĀRAṆA'd to इ
+# before certain uttarapadas, and SK1004/6.3.139 then lengthens that इ → ई:
+#   कारीषगन्ध्यायाः पुत्रः  = कारीषगन्धीपुत्रः   (6.1.13, तत्पुरुष, before पुत्र / पति)
+#   कारीषगन्ध्या बन्धुरस्य = कारीषगन्धीबन्धु    (6.1.14, बहुव्रीहि, before बन्धु)
+# Two sūtras, two steps, both visible in the trace: 6.1.13 / 6.1.14 do the saṁprasāraṇa and mark
+# the residue `?samprasAraRa`; 6.3.139 reads that marker and lengthens. The ष्यङ्'s य् + आ
+# collapses to a single इ (once the य् is vocalised the आ has nothing to attach to), so the
+# substitution is expressed on the pūrva's last two characters and `-Ap` clears the ā-stem tag.
+#
+# SK1004's note व्यवस्थितविभाषया ह्रस्वो न records that the ङ्यापोः hrasva rules must NOT
+# re-shorten this fresh ī — and here they cannot: X2's 6.3.61 is scoped to `?gAlava_hrasva`, and
+# 6.3.43 / 6.3.63 need `?NI` / `?Ap`, neither of which survives on the saṁprasāraṇa residue.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1003/6.1.13: ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे — in a TATPURUṢA, before पुत्र or पति.
+# SK's counter-examples are about तदादिविधि: परमकारीषगन्धीपुत्रः applies (the ष्यङ् word is not the
+# upasarjana) but अतिकारीषगन्ध्यापुत्रः does not — that उपसर्जन restriction is not modelled.
+- sutra: ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे
+  id: 6.1.13
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?zyaN"
+      - "?samAsaPurva"
+      - "?!samprasAraRa"
+    rp:
+      - and
+      - "?samAsa"
+      - "?tatpuruza"
+      - - or
+        - "=putra"
+        - "=pati"
+  xform:
+    lc: lc[:-1]
+    l: str("i")
+  update:
+    olp: [+samprasAraRa, -Ap]
+
+# SK1005/6.1.14: बन्धुनि बहुव्रीहौ — the same saṁprasāraṇa before बन्धु, in a BAHUVRĪHI.
+# बहुव्रीहाविति किम् — कारीषगन्ध्याया बन्धुः = कारीषगन्ध्याबन्धुः (a ṣaṣṭhī-tatpuruṣa keeps the
+# ष्यङ्), which the negative control asserts. The मातज्/मातृक/मातृ vārtika is a Skipped row.
+- sutra: बन्धुनि बहुव्रीहौ
+  id: 6.1.14
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?zyaN"
+      - "?samAsaPurva"
+      - "?!samprasAraRa"
+    rp:
+      - and
+      - "?bahuvrIhi"
+      - "=banDu"
+  xform:
+    lc: lc[:-1]
+    l: str("i")
+  update:
+    olp: [+samprasAraRa, -Ap]
+
+# SK1004/6.3.139: सम्प्रसारणस्य (दीर्घः, by the 6.3.111 अधिकार) — a saṁprasāraṇa vowel is
+# lengthened before an uttarapada: कारीषगन्धि → कारीषगन्धी. Keyed on the `?samprasAraRa` marker
+# the two rules above set, so the two steps compose without either duplicating the other.
+- sutra: सम्प्रसारणस्य
+  id: 6.3.139
+  bahiranga: -1
+  condition:
+    lp:
+      - and
+      - "?samprasAraRa"
+      - "?samAsaPurva"
+    rp: "?samAsa"
+  xform:
+    l: dirgha(l)

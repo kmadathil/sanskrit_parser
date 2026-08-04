@@ -1338,4 +1338,239 @@ samasa_asraya_tests = [
         "fired": ["2.2.8"],
         "surface": "राजपुरुषेण",
     },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X7 — the सुट्-NIPĀTANA compounds (SK1058–1071 / 6.1.143–157) and पृषोदरादि
+    # (SK1034 / 6.3.109).
+    #
+    # सुट् is an स् āgama at the junction, STIPULATED rather than derived — SK1060 says so
+    # outright for गोष्पदम् ("सुट् सस्य षत्वं च निपात्यते": both the सुट् and its ṣatva). Each
+    # rule prepends it to the uttara; ष् is written directly only where SK stipulates the
+    # ṣatva too. Every sūtra has its OWN sense gate, so these are NOT one gaṇa — and each
+    # SK counter-example below tests exactly that gate.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # कुस्तुम्बुरु = धान्याक (coriander), a JĀTI. Neuter plural; SK notes क्लीबत्वमतन्त्रम्.
+        "label": "X7-kustumburURi-SK1058-6.1.143",
+        "type": "zazWI",
+        "purva": {"stem": "ku", "tags": ["jAti"]},
+        "uttara": {"stem": "tumburu", "vacana": 3},
+        "fired": ["2.2.18", "6.1.143"],
+        "surface": "कुस्तुम्बुरूणि",
+    },
+    {
+        # जातिः किम् — कुतुम्बुरूणि, "bad tinduka fruits": no jāti, no सुट्.
+        "label": "X7-kutumburURi-negative-SK1058-6.1.143",
+        "type": "zazWI",
+        "purva": {"stem": "ku"},
+        "uttara": {"stem": "tumburu", "vacana": 3},
+        "fired": ["2.2.18"],
+        "not_fired": ["6.1.143"],
+        "surface": "कुतुम्बुरूणि",
+    },
+    {
+        # अपरस्पराः सार्था गच्छन्ति — the caravans go on unbroken (क्रियासातत्य).
+        "label": "X7-aparasparAH-SK1059-6.1.144",
+        "type": "zazWI",
+        "purva": {"stem": "apara", "tags": ["kriyAsAtatya"]},
+        "uttara": {"stem": "para", "vacana": 3},
+        "fired": ["2.2.8", "6.1.144"],
+        "surface": "अपरस्पराः",
+    },
+    {
+        # गोष्पदम् — सुट् AND its ṣatva nipātita. The ष् is written directly because no rule
+        # would supply it: गो's ओ is not an iṇ vowel, so 8.3.59 cannot reach the स्.
+        "label": "X7-gozpadam-SK1060-6.1.145",
+        "type": "zazWI",
+        "purva": {"stem": "go", "tags": ["sevitAsevitapramARa"]},
+        "uttara": {"stem": "pada", "vacana": 1},
+        "fired": ["2.2.8", "6.1.145"],
+        "surface": "गोष्पदम्",
+    },
+    {
+        # सेवितेत्यादि किम् — गोः पदं गोपदम्.
+        "label": "X7-gopadam-negative-SK1060-6.1.145",
+        "type": "zazWI",
+        "purva": {"stem": "go"},
+        "uttara": {"stem": "pada", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.1.145"],
+        "surface": "गोपदम्",
+    },
+    {
+        # आत्मयापनाय स्थानम् = आस्पदम् (प्रतिष्ठा).
+        "label": "X7-Aspadam-SK1061-6.1.146",
+        "type": "zazWI",
+        "purva": {"stem": "A_pUrva", "tags": ["pratizWA"]},
+        "uttara": {"stem": "pada", "vacana": 1},
+        "fired": ["2.2.18", "6.1.146"],
+        "surface": "आस्पदम्",
+    },
+    {
+        # आश्चर्यं यदि स भुञ्जीत (अनित्य = wonderful). The श् is the सुट् स् after 8.4.40 श्चुत्व
+        # before च् — folded into the rule, since 8.4.40 is a junction rule and the prepended
+        # सुट् lands inside the uttara element (see the rule comment).
+        "label": "X7-AScaryam-SK1062-6.1.147",
+        "type": "zazWI",
+        "purva": {"stem": "A_pUrva", "tags": ["anitya"]},
+        "uttara": {"stem": "carya", "vacana": 1},
+        "fired": ["2.2.18", "6.1.147"],
+        "surface": "आश्चर्यम्",
+    },
+    {
+        # अवकीर्यत इति अवस्करः (वर्चस्क = excrement). वर्चस्के किम् — अवकरः.
+        "label": "X7-avaskaraH-SK1063-6.1.148",
+        "type": "zazWI",
+        "purva": {"stem": "ava", "tags": ["varcaska"]},
+        "uttara": {"stem": "kara", "vacana": 1},
+        "fired": ["2.2.18", "6.1.148"],
+        "surface": "अवस्करः",
+    },
+    {
+        # अपस्करो रथाङ्गम्; अपकरोऽन्यः.
+        "label": "X7-apaskaraH-SK1064-6.1.149",
+        "type": "zazWI",
+        "purva": {"stem": "apa", "tags": ["raTAnga"]},
+        "uttara": {"stem": "kara", "vacana": 1},
+        "fired": ["2.2.18", "6.1.149"],
+        "surface": "अपस्करः",
+    },
+    {
+        # विष्किरः शकुनौ वा → विष्किरः / पक्षे विकिरः. Unlike X6's marker-only vibhāṣās this one
+        # DOES fork, because it performs its own xform — the two branches differ immediately.
+        "label": "X7-vizkiraH-SK1065-6.1.150",
+        "type": "zazWI",
+        "purva": {"stem": "vi", "tags": ["Sakuni"]},
+        "uttara": {"stem": "kira", "vacana": 1},
+        "fired": ["2.2.18", "6.1.150"],
+        "surfaces": ["विष्किरः", "विकिरः"],
+    },
+    {
+        # प्रतिष्कशः — a companion or forerunner. कशे किम् — प्रतिकशोऽश्वः.
+        "label": "X7-pratizkaSaH-SK1066-6.1.152",
+        "type": "zazWI",
+        "purva": {"stem": "prati"},
+        "uttara": {"stem": "kaSa", "vacana": 1},
+        "fired": ["2.2.8", "6.1.152"],
+        "surface": "प्रतिष्कशः",
+    },
+    {
+        # प्रस्कण्वः — the ṛṣi. ऋषीति किम् — प्रकण्वो देशः.
+        "label": "X7-praskaRvaH-SK1067-6.1.153",
+        "type": "zazWI",
+        "purva": {"stem": "pra", "tags": ["fzi_saMjYA"]},
+        "uttara": {"stem": "kaRva", "vacana": 1},
+        "fired": ["2.2.18", "6.1.153"],
+        "surface": "प्रस्कण्वः",
+    },
+    {
+        # हरिश्चन्द्रः — the other ṛṣi of the same sūtra, SPLIT into rule 6.1.153.1 because its
+        # सुट् surfaces as श् (श्चुत्व before च्) where प्रस्कण्व's stays स्, and one xform block
+        # cannot branch. ऋषीति किम् — हरिचन्द्रो माणवकः.
+        "label": "X7-hariScandraH-SK1067-6.1.153",
+        "type": "zazWI",
+        "purva": {"stem": "hari", "tags": ["fzi_saMjYA"]},
+        "uttara": {"stem": "candra", "vacana": 1},
+        "fired": ["2.2.8", "6.1.153.1"],
+        "surface": "हरिश्चन्द्रः",
+    },
+    {
+        # कास्तीरम् — a city. Its का comes from कु by SK1031/6.3.105 ईषदर्थे
+        # (ईषत्तीरमस्यास्तीति), so BOTH rules fire in the same pre-pass fixpoint.
+        # नगरे किम् — कातीरम्.
+        "label": "X7-kAstIram-SK1069-6.1.155",
+        "type": "zazWI",
+        "purva": {"stem": "ku", "tags": ["nagara", "IzadarTa"]},
+        "uttara": {"stem": "tIra", "vacana": 1},
+        "fired": ["2.2.18", "6.3.105", "6.1.155"],
+        "surface": "कास्तीरम्",
+    },
+    {
+        # अजस्तुन्दम् — the other city of the same sūtra. नगरे किम् — अजतुन्दम्.
+        "label": "X7-ajastundam-SK1069-6.1.155",
+        "type": "zazWI",
+        "purva": {"stem": "aja", "tags": ["nagara"]},
+        "uttara": {"stem": "tunda", "vacana": 1},
+        "fired": ["2.2.8", "6.1.155"],
+        "surface": "अजस्तुन्दम्",
+    },
+    {
+        # कारं करोतीति कारस्करो वृक्षः. अन्यत्र कारकरः.
+        "label": "X7-kAraskaraH-SK1070-6.1.156",
+        "type": "zazWI",
+        "purva": {"stem": "kAra", "tags": ["vfkza"]},
+        "uttara": {"stem": "kara", "vacana": 1},
+        "fired": ["2.2.8", "6.1.156"],
+        "surface": "कारस्करः",
+    },
+    {
+        # पारस्करः — the प्रभृति member stocked from 6.1.157's आकृतिगण, in a saṁjñā.
+        "label": "X7-pAraskaraH-SK1071-6.1.157",
+        "type": "zazWI",
+        "purva": {"stem": "pAra", "tags": ["saMjYA"]},
+        "uttara": {"stem": "kara", "vacana": 1},
+        "fired": ["2.2.8", "6.1.157"],
+        "surface": "पारस्करः",
+    },
+    {
+        # पृषतः उदरं पृषोदरम् — SK1034/6.3.109's आकृतिगण of irregulars, licensed यथोपदिष्टम्
+        # ("as the learned have uttered them"). SK's verse classes this one as वर्णनाश: the त् of
+        # पृषत् is simply LOST, and that तलोप is the entire nipātana.
+        "label": "X7-pfzodaram-SK1034-6.3.109",
+        "type": "zazWI",
+        "purva": {"stem": "pfzat"},
+        "uttara": {"stem": "udara", "vacana": 1},
+        "fired": ["2.2.8", "6.3.109"],
+        "surface": "पृषोदरम्",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X8 — ष्यङ् SAṀPRASĀRAṆA (SK1003–1005 / 6.1.13, 6.3.139, 6.1.14).
+    #
+    # Two steps, both visible in the `fired` traces: 6.1.13 / 6.1.14 vocalise the ष्यङ् य् to
+    # इ and mark the residue `?samprasAraRa`; SK1004/6.3.139 reads that marker and lengthens
+    # it to ई. कारीषगन्ध्या → कारीषगन्धी.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # कारीषगन्ध्यायाः पुत्रः = कारीषगन्धीपुत्रः — 6.1.13's tatpuruṣa, before पुत्र.
+        "label": "X8-kArIzaganDIputraH-SK1003-6.1.13",
+        "type": "zazWI",
+        "purva": {"stem": "kArIzaganDyA"},
+        "uttara": {"stem": "putra", "vacana": 1},
+        "fired": ["2.2.8", "6.1.13", "6.3.139"],
+        "surface": "कारीषगन्धीपुत्रः",
+    },
+    {
+        # …and before पति, the sūtra's other uttarapada.
+        "label": "X8-kArIzaganDIpatiH-SK1003-6.1.13",
+        "type": "zazWI",
+        "purva": {"stem": "kArIzaganDyA"},
+        "uttara": {"stem": "pati", "vacana": 1},
+        "fired": ["2.2.8", "6.1.13", "6.3.139"],
+        "surface": "कारीषगन्धीपतिः",
+    },
+    {
+        # कारीषगन्ध्या बन्धुरस्य = कारीषगन्धीबन्धु — 6.1.14's bahuvrīhi, before बन्धु. SK's
+        # क्लीबनिर्देश (neuter citation) is why the referent liṅga is napum here.
+        # The anusvāra spelling is the engine's: न् before the झल् ध् becomes ṁ by 8.3.24
+        # नश्चापदान्तस्य झलि, which is the same phoneme sequence as SK's कारीषगन्धी.
+        "label": "X8-kArIzaganDIbanDu-SK1005-6.1.14",
+        "type": "bahuvrIhi",
+        "referent_linga": "napum",
+        "purva": {"stem": "kArIzaganDyA"},
+        "uttara": {"stem": "banDu", "vacana": 1},
+        "fired": ["2.2.24", "6.1.14", "6.3.139"],
+        "surface": "कारीषगंधीबन्धु",
+    },
+    {
+        # बहुव्रीहाविति किम् — कारीषगन्ध्याया बन्धुः = कारीषगन्ध्याबन्धुः: a ṣaṣṭhī-tatpuruṣa
+        # keeps the ष्यङ्, because 6.1.14 is bahuvrīhi-only and 6.1.13 does not list बन्धु.
+        "label": "X8-kArIzaganDyAbanDuH-negative-SK1005-6.1.14",
+        "type": "zazWI",
+        "purva": {"stem": "kArIzaganDyA"},
+        "uttara": {"stem": "banDu", "vacana": 1},
+        "fired": ["2.2.8"],
+        "not_fired": ["6.1.13", "6.1.14", "6.3.139"],
+        "surface": "कारीषगंध्याबन्धुः",
+    },
 ]

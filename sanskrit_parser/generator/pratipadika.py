@@ -1420,3 +1420,35 @@ pAna = Pratipadika("pAna", "napum", other_tags=["pAna"])   # पान n. — �
 # ── 8.4.11 प्रातिपदिकान्तनुम्विभक्तिषु च · 8.4.13 कुमति च · 8.4.38 पदव्यवायेऽपि
 vApa    = Pratipadika("vApa",    "pum")   # वाप m. "sowing" — माषवापेण (SK1055/8.4.11), माषकुम्भवापेन (8.4.38)
 BaginI  = Pratipadika("BaginI",  "strI", other_tags=["NI"])   # भगिनी — the उत्तरपदं यत्प्रातिपदिकम् vārtika NEGATIVE (गर्गभगिनी)
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X7 (samasa_asraya_plan.md): the सुट्-NIPĀTANA forms
+# (6.1.143–157) and पृषोदरादि (6.3.109). Each of these compounds is IRREGULAR by
+# stipulation — the सुट् (an स् āgama at the junction) is निपातित, not derived, and in
+# several of them so is its ṣatva ("सुट् सस्य षत्वं च निपात्यते", SK1060). go, pada,
+# kAra, aja, vi, prati, candra, hari, udara already exist above.
+# ════════════════════════════════════════════════════════════════════════════
+kara   = Pratipadika("kara",   "pum")     # कर — अवस्करः, अपस्करः, कारस्करः, पारस्करः
+carya  = Pratipadika("carya",  "napum")   # चर्य — आश्चर्यम् (SK1062/6.1.147)
+kira   = Pratipadika("kira",   "pum")     # किर — विष्किरः / विकिरः (SK1065/6.1.150)
+kaSa   = Pratipadika("kaSa",   "pum")     # कश — प्रतिष्कशः (SK1066/6.1.152)
+kaRva  = Pratipadika("kaRva",  "pum")     # कण्व — प्रस्कण्वः (SK1067/6.1.153)
+tIra   = Pratipadika("tIra",   "napum")   # तीर — कास्तीरम् (SK1069/6.1.155)
+tunda  = Pratipadika("tunda",  "napum")   # तुन्द — अजस्तुन्दम् (SK1069/6.1.155)
+tumburu = Pratipadika("tumburu", "napum") # तुम्बुरु — कुस्तुम्बुरूणि (SK1058/6.1.143)
+para   = Pratipadika("para",   "pum")     # पर — अपरस्पराः (SK1059/6.1.144)
+apara  = Pratipadika("apara",  "pum")     # अपर — the pūrva of अपरस्पराः
+ava    = Pratipadika("ava",    "pum", other_tags=["nipAta", "prAdi"])  # अव — अवस्करः
+apa    = Pratipadika("apa",    "pum", other_tags=["nipAta", "prAdi"])  # अप — अपस्करः
+pAra   = Pratipadika("pAra",   "napum")   # पार — पारस्करः (SK1071/6.1.157)
+A_pUrva = Pratipadika("A", "pum", other_tags=["nipAta", "prAdi"])  # आ (āṅ) — आस्पदम्, आश्चर्यम्
+# पृषत् — the pūrva of पृषोदरम् (SK1034/6.3.109); the त-lopa is part of the nipātana.
+pfzat  = Pratipadika("pfzat",  "pum")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X8: ष्यङ् सम्प्रसारणम् (6.1.13, 6.3.139, 6.1.14).
+# ════════════════════════════════════════════════════════════════════════════
+# कारीषगन्ध्या — a ष्यङ्-formed feminine (कारीषगन्ध + ष्यङ्). ?zyaN is what SK1003/6.1.13
+# keys on; the saṁprasāraṇa of that य् is the whole content of the sūtra.
+kArIzaganDyA = Pratipadika("kArIzaganDyA", "strI", other_tags=["zyaN", "Ap"])
+banDu = Pratipadika("banDu", "pum")   # बन्धु — कारीषगन्धीबन्धु (SK1005/6.1.14)

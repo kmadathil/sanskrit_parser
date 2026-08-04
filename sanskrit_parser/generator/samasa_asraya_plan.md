@@ -57,19 +57,22 @@ notes)*; ब्राह्मणिगोत्रम्, ग्रामणि
 | **X4** pūrva dīrgha + `matup` | 14 | **DONE** — 12 implemented, 2 Skipped | 26 cases; adds `matup` + 8.2.9 |
 | **X5** samāsa ṣatva | 6 | **DONE** — 6 implemented | 10 cases; N2 needed no engine work |
 | **X6** samāsa ṇatva | 9 | **DONE** — 8 implemented, 8.4.38 untested | 13 cases; **closes the चोरभयेण deferral**; 3 engine touches |
-| X7 पृषोदरादि + suṭ nipātanas | 15 | pending | — |
-| X8 ष्यङ् सम्प्रसारणम् | 3 | pending | — |
+| **X7** पृषोदरादि + suṭ nipātanas | 15 | **DONE** — 15 implemented | 18 cases; 15 rules, not 2 gaṇa rules |
+| **X8** ष्यङ् सम्प्रसारणम् | 3 | **DONE** — 3 implemented | 4 cases; two-step marker, no new machinery |
 | X9 prakaraṇa audit + status | — | pending | — |
-| | **87** | **62 done / 25 to go** | |
+| | **87** | **80 done / 7 to go** (X9 audit only) | |
 
-**Machinery status:** **N2 built in X5 and N3 completed in X4** — N2 needed no engine work,
-just `xform: r: str("z")` at the pre-pass junction (`r` is the uttara's first char); N3's
-`matup` landed with 8.2.9 मतोर्वः, and the five SK examples of 6.3.119/120 pinned that
-sūtra's condition exactly as the plan predicted. **N1 (मुम्) built in X3** — and it needed no engine work at all, just the
-append xform `l: l+str("m")`, since 1.1.47 मिदचोऽन्त्यात्परः coincides with appending for a
-vowel-final pūrva. **N3's `tva` built in X2** (`tva_t` in `pratyaya.py`), plus one new
-paribhāṣā helper the plan did not anticipate, `$$ik_dIrGa_anekAc`. Still to build: N2
-(junction ṣatva, X5) and N3's `matup` (X4).
+**Machinery status: all three planned items are BUILT, and none needed engine work.**
+- **N1 (मुम्)**, X3 — just the append xform `l: l+str("m")`: मुम् is मित्, and 1.1.47
+  मिदचोऽन्त्यात्परः coincides with appending for a vowel-final pūrva.
+- **N2 (junction ṣatva)**, X5 — just `xform: r: str("z")`, since `r` is the uttara's first char.
+- **N3 (two taddhitas)** — `tva_t` in X2, `matup` + 8.2.9 मतोर्वः in X4. The five SK examples of
+  6.3.119/120 pinned 8.2.9's condition exactly as this plan predicted.
+
+Three paribhāṣā helpers the plan did not anticipate: `$$ik_dIrGa_anekAc` (X2),
+`$$dvyac_tryac` and `$$has_kuvarga` (X6). The only real ENGINE changes came in X6, and all
+three were forced by a failure rather than planned: `samasta_Ratva` carried forward, five
+pūrva sense tags added to the `join_objects` Tier-1 allowlist, and six self-named stem tags.
 
 **Recorded deferrals so far** (each also a `generator_status.md` Skipped row): X1 — 6.3.53
 (यत् + the तदर्थ/अतदर्थ sense distinction), 6.3.55 (needs the शस् taddhita 5.4.43). X2 —
@@ -456,7 +459,28 @@ new tests. Flip `test/samasa_list.py:418-431` (त्रिभुवनम्) a
 existing 8.4.3-marker plumbing (`?nas_AdeSa` / `?saMjYA_nas` in the `join_objects` Tier-1
 allowlist) still behaves.
 
-### X7 — पृषोदरादि + the suṭ nipātanas (15 sūtras) — PENDING
+### X7 — पृषोदरादि + the suṭ nipātanas (15 sūtras) — **DONE (2026-08-03)**
+
+All 15 implemented, 18 cases. **This section's own plan was wrong about the shape of the work**:
+it predicted "one `?nipAta_<id>`-gated rule per gaṇa, two rules total". In fact each sūtra
+carries its OWN sense condition — जातिः, क्रियासातत्ये, सेवितासेवितप्रमाणेषु, प्रतिष्ठायाम्, अनित्ये,
+वर्चस्के, रथाङ्गम्, शकुनौ, कशेः, ऋषी, नगरे, वृक्षः, संज्ञायाम् — so they are not one gaṇa at all.
+15 separate rules whose *shape* is uniform but whose gates are not; every SK counter-example
+becomes a negative control on its own gate. Still the cheapest phase, for a different reason.
+
+- **सुट् is stipulated, not derived.** `xform: r: str("s")+r` prepends it; ष् is written directly
+  where SK stipulates the ṣatva too (गोष्पद — गो's ओ is not an iṇ vowel so 8.3.59 could never
+  reach the स्; also विष्किर, प्रतिष्कश).
+- **The ścutva fold recurred** (6.1.147 आश्चर्यम्, 6.1.153.1 हरिश्चन्द्रः) — 8.4.40 is a junction
+  rule and a prepended सुट् sits inside the uttara element. Appending to the pūrva would give a
+  real junction but the pūrva is a pada, so 8.3.15 would visarga-ise its स् and break
+  अवस्करः/कारस्करः. Folded, with 8.3.81's main-scan + `insert:` recorded as the clean follow-up.
+- **6.1.153 had to be split** into 6.1.153 + 6.1.153.1: प्रस्कण्व keeps स्, हरिश्चन्द्र shows श्,
+  and one xform block cannot branch — the same split 6.3.90 needed in X1.
+- **A vibhāṣā with its own xform DOES fork** (6.1.150 विष्किरः/विकिरः), which is the contrast
+  that confirms X6's finding about marker-only rules.
+
+Original scope, for reference:
 
 SK1034/6.3.109 पृषोदरादीनि यथोपदिष्टम् → पृषोदरम्, बलाहकः, हंसः, सिंहः, दूडाशः, बृसी;
 SK1058–1071 / 6.1.143–157 → कुस्तुम्बुरूणि, अपरस्पराः, गोष्पदम्, आस्पदम्, आश्चर्यम्, अवस्करः,
@@ -470,7 +494,24 @@ not one per member, with the members supplied as tagged stems. Two rules total
 own `?saMjYA` / sense gates and the SK negative controls (गोपदम्, आपदम्, आचर्यम्, अवकरः,
 विकिरः, प्रतिकशः, प्रकण्वः, मकरः, कातीरम्, कारकरः). Cheapest phase per sūtra.
 
-### X8 — ष्यङ् सम्प्रसारणम् (3 sūtras) — PENDING
+### X8 — ष्यङ् सम्प्रसारणम् (3 sūtras) — **DONE (2026-08-03)**
+
+All 3 implemented, 4 cases, no new machinery — and the phase came in cheaper than the plan
+feared ("the only phase needing a genuinely new stem class"; one stem sufficed, and the
+6.3.42-style composer fallback was not needed).
+
+- **Two sūtras, two steps, both in the trace:** 6.1.13/6.1.14 vocalise the ष्यङ् य् to इ and mark
+  the residue `?samprasAraRa`; 6.3.139 reads that marker and lengthens. Neither duplicates the
+  other, so the SK's own two-sūtra derivation is visible rather than collapsed.
+- **SK1004's व्यवस्थितविभाषया ह्रस्वो न holds for free.** That note warns the ङ्यापोः hrasva must
+  not re-shorten the fresh ī — and here it cannot: X2's 6.3.61 is scoped to `?gAlava_hrasva`, and
+  6.3.43/6.3.63 need `?NI`/`?Ap`, neither of which survives on the residue. A case where two
+  earlier scoping decisions paid off without being aimed at this.
+- कारीषगंधीबन्धु comes out with anusvāra where SK writes कारीषगन्धी — same phonemes (8.3.24
+  नश्चापदान्तस्य झलि before ध्). The tatpuruṣa path keeps न् for the identical pūrva, so this is a
+  pre-existing orthographic inconsistency, not something X8 introduced.
+
+Original scope, for reference:
 
 SK1003/6.1.13 ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे + SK1004/6.3.139 सम्प्रसारणस्य (दीर्घः) +
 SK1005/6.1.14 बन्धुनि बहुव्रीहौ → **कारीषगन्धीपुत्रः, कारीषगन्धीपतिः, कारीषगन्धीबन्धु**;
