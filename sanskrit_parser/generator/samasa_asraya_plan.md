@@ -56,11 +56,11 @@ notes)*; ब्राह्मणिगोत्रम्, ग्रामणि
 | **X3** मुम् | 2 | **DONE** — 2 implemented | 5 cases; no new machinery beyond the append xform |
 | **X4** pūrva dīrgha + `matup` | 14 | **DONE** — 12 implemented, 2 Skipped | 26 cases; adds `matup` + 8.2.9 |
 | **X5** samāsa ṣatva | 6 | **DONE** — 6 implemented | 10 cases; N2 needed no engine work |
-| X6 samāsa ṇatva | 9 | pending | — |
+| **X6** samāsa ṇatva | 9 | **DONE** — 8 implemented, 8.4.38 untested | 13 cases; **closes the चोरभयेण deferral**; 3 engine touches |
 | X7 पृषोदरादि + suṭ nipātanas | 15 | pending | — |
 | X8 ष्यङ् सम्प्रसारणम् | 3 | pending | — |
 | X9 prakaraṇa audit + status | — | pending | — |
-| | **87** | **54 done / 33 to go** | |
+| | **87** | **62 done / 25 to go** | |
 
 **Machinery status:** **N2 built in X5 and N3 completed in X4** — N2 needed no engine work,
 just `xform: r: str("z")` at the pre-pass junction (`r` is the uttara's first char); N3's
@@ -378,7 +378,55 @@ in SK becomes a negative-control test case (अङ्गुलेः सङ्�
 `aNguli` exists (`:893`), `hari` (`:60`); new: भीरु, सङ्ग, स्थान, ज्योतिस्, आयुस्, स्तोम, सामन्,
 सन्धि, सेना.
 
-### X6 — samāsa ṇatva (9 sūtras) — closes the standing gap — PENDING
+### X6 — samāsa ṇatva (9 sūtras) — closes the standing gap — **DONE (2026-08-03)**
+
+8 implemented + 8.4.38 written-but-untested. 13 cases. **चोरभयेण fires** — the
+`generator_status.md` 8.4.1 deferral is closed and its row struck through.
+
+**THE ONE LESSON OF X4–X6, stated once for X7 onward.** Information that exists before a merge
+is destroyed by an in-place xform, and three separate bugs in this prakaraṇa came from it:
+
+1. the uttara CONTENT match (X4/X5) — after (uttara | sup), `rp: =vana` cannot match, which is
+   why nine X4 rules and six X5 rules moved to the pre-pass, and why X6 uses **self-named stem
+   tags** (`?vana`, `?pAna`, `?vAhana`, `?sTAna`, `?stoma`) instead;
+2. **"where does the न् stand"** (8.4.11) — after the merge, वनम् and भयेन are the same kind of
+   string, so the rule had to fire one merge earlier, at (uttara | sup), reading the pūrva
+   through `llp`;
+3. **7.1.54's नुट्** — it rewrites आम् → नाम् *in place*, so the नुट् न् becomes indistinguishable
+   from a vibhakti न्; the `?!Am` guard restores the distinction.
+
+**Rule of thumb: when a condition is about PROVENANCE rather than shape, fire before the merge
+that erases the provenance.**
+
+Other findings:
+
+- **A marker-only rule cannot be `optional`.** The fork makes two branches, but a tag-only
+  effect leaves them surface-identical at the fork and `_deduplicate_hier_outputs` collapses
+  them. Verified by toggling the flag on 8.4.6/8.4.10 — identical output either way. Both are
+  therefore nitya, with the वा recorded as unmodelled. A rule with its own xform forks fine
+  (8.3.100 does). Fixing this generally means making the dedup tag-aware.
+- **Composer SENSE tags need the `join_objects` Tier-1 allowlist.** `?Ahita` / `?deSa` /
+  `?BAvakaraRa` / `?ozaDi` / `?vanaspati` were being dropped at the pūrva's saṁhitā merge while
+  `?saMjYA` in the same position survived — one omission made four sūtras fail at once. Found by
+  a **tag trace**, not by re-reading conditions; that trace was worth more than several rounds of
+  inference and is the tool to reach for first next time.
+- **`Sutra.operate` does NOT drop tags** — it deepcopies the object and only `.update()`s its
+  string. An earlier claim in this session to the contrary was wrong.
+
+**ṣṭutva refactor (the X5 debt): half repaid, deliberately.**
+
+- **8.3.81 is clean** — main-scan, `?sTAna`-gated, `xform: r: null` + `insert: r: str("z")`,
+  which is 8.4.41's own idiom. The insert makes ष् a separate nested element,
+  `need_hierarchy_at` spawns a sub-prakriya, and **8.4.41.1 supplies the ठ् of भीरुष्ठानम्
+  itself** — no folded `zwutva` call, and the ठ् is attributable to 8.4.41 in the trace.
+- **8.3.83 keeps the fold.** Both main-scan gates were tried: `=jyotis` matched only one branch
+  (the visarga rules have already turned ज्योतिस् → ज्योतिः / ज्योतिष्), and `?jyotis` matched none —
+  a debug trace shows 8.3.83 is never EVALUATED at any main-scan window, so the obstacle is
+  window reachability and the cause is **unestablished**. 8.3.81's pūrva भीरु is u-final and
+  untouched by the visarga rules, which is consistent with the s-final pūrva being the
+  difference. Recorded in the rule comment so a later attempt does not repeat the experiments.
+
+Original scope, for reference:
 
 | SK | A | Form |
 |---|---|---|

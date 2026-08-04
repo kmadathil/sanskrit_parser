@@ -382,6 +382,21 @@ def has_ratva_non_at(s):
     return False
 
 
+def has_kuvarga(s):
+    """SK1056/8.4.13 कुमति च — the uttarapada contains a KU-VARGA consonant (क् ख् ग् घ् ङ्).
+    कु is the first varga; `kutva`'s own target set is the canonical listing."""
+    return any(c in "kKgGN" for c in s)
+
+
+def dvyac_tryac(s):
+    """The द्व्यच्त्र्यज्भ्यामेव vārtika on SK1051/8.4.6 विभाषौषधिवनस्पतिभ्यः — the ओषधि/वनस्पति
+    pūrva must have exactly TWO or THREE vowels. दूर्वा (2) and शिरीष (3) qualify; देवदारु (4)
+    does not, which is the vārtika's own counter-example नेह देवदारुवनम्.
+
+    Written as a positive helper because the condition grammar has no `$$!` negation."""
+    return 2 <= sum(1 for c in s if isInPratyahara("ac", c)) <= 3
+
+
 def ik_dIrGa_anekAc(s):
     """SK999/6.3.61 इको ह्रस्वोऽङ्यो गालवस्य — the pūrva ends in a LONG इक् (ī / ū / ṝ / ḹ) and
     is ANEKĀC (more than one vowel).

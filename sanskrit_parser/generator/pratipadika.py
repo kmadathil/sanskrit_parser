@@ -138,7 +138,9 @@ SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (
 Sakti = Pratipadika("Sakti", "strI")  # शक्ति — यथाशक्ति (2.1.7, i-stem fem → luk)
 # S2 vibhāṣā-block uttara nouns
 samudra = Pratipadika("samudra", "pum")  # समुद्र — आसमुद्रम् (2.1.13, a-stem → am)
-vana = Pratipadika("vana", "napum")      # वन — अनुवनम् (2.1.15, a-stem → am)
+# ?vana is a self-named stem tag so phase X6's 8.4.4/5/6 can identify this uttarapada at a
+# main-scan window, where it has already merged with its sup (see the X6 block below).
+vana = Pratipadika("vana", "napum", other_tags=["vana"])   # वन — अनुवनम् (2.1.15, a-stem → am)
 muni = Pratipadika("muni", "pum")        # मुनि — द्विमुनि (2.1.19 vaṁśya, i-stem → luk)
 cakra = Pratipadika("cakra", "napum")    # चक्र — सचक्रम् (6.3.81 saha→sa, a-stem → am)
 # ── शरदादि / शरत्प्रभृति gaṇa (5.4.107: avyayībhāva TaC) — full gaṇa (SK, śarad…kiyat).
@@ -1279,7 +1281,9 @@ Goza  = Pratipadika("Goza",  "pum")   # घोष m. "noise" — पद्घो
 # ── उदक → उद (SK995–998 / 6.3.57–60). उदक is defined above.
 meGa    = Pratipadika("meGa",    "pum")   # मेघ m. "cloud" — उदमेघः (SK995/6.3.57, संज्ञायाम्)
 Di      = Pratipadika("Di",      "pum")   # धि m. "receptacle" — उदधिः (SK996/6.3.58)
-vAhana  = Pratipadika("vAhana",  "napum")  # वाहन n. "vehicle" — उदवाहनम् (SK996/6.3.58); also 8.4.8 (X6)
+# ?vAhana is a self-named stem tag (like ?vana / ?pAna) so SK1052/8.4.8 can identify this
+# uttarapada at its main-scan window, after the sup has merged.
+vAhana  = Pratipadika("vAhana",  "napum", other_tags=["vAhana"])  # वाहन n. — उदवाहनम् (6.3.58), इक्षुवाहणम् (8.4.8)
 parvata = Pratipadika("parvata", "pum")   # पर्वत m. "mountain" — उदकपर्वतः (SK997/6.3.59 negative)
 manTa   = Pratipadika("manTa",   "pum")   # मन्थ m. "stirred drink" — उदमन्थः (SK998/6.3.60)
 
@@ -1290,7 +1294,7 @@ rAkzasI = Pratipadika("rAkzasI", "strI", other_tags=["NI"])   # राक्ष�
 
 # ── समान → स (SK1012–1017 / 6.3.84–89). समान is defined above (?keval_Adi).
 garBa       = Pratipadika("garBa",       "pum")    # गर्भ m. "womb" — सगर्भ्यः (SK1012/6.3.84, छन्दसि)
-jyotis      = Pratipadika("jyotis",      "napum", other_tags=["AdeSa_s"])  # ज्योतिस् n. "light" (s-final) — सज्योतिः (SK1013/6.3.85)
+jyotis      = Pratipadika("jyotis",      "napum", other_tags=["AdeSa_s", "jyotis"])  # ज्योतिस् n. "light" (s-final) — सज्योतिः (SK1013/6.3.85)
 janapada    = Pratipadika("janapada",    "pum")    # जनपद m. "country" — सजनपदः (SK1013/6.3.85)
 brahmacArin = Pratipadika("brahmacArin", "pum")    # ब्रह्मचारिन् m. (in-stem) — सब्रह्मचारी (SK1014/6.3.86)
 tIrTa       = Pratipadika("tIrTa",       "napum")  # तीर्थ n. "teacher/ford" — सतीर्थ्यः (SK1015/6.3.87)
@@ -1379,9 +1383,40 @@ eka  = Pratipadika("eka",  "pum", other_tags=["saMKyA", "sarvanAma"])  # एक 
 BIru  = Pratipadika("BIru",  "pum")     # भीरु "timid" — भीरुष्ठानम् (SK1020/8.3.81)
 pfTu  = Pratipadika("pfTu",  "pum")     # पृथु "broad" — the संज्ञायाम् NEGATIVE of 8.3.99 (पृथुसेना)
 saNga = Pratipadika("saNga", "pum")     # सङ्ग m. "contact" — अङ्गुलिषङ्गः (SK1019/8.3.80)
-sTAna = Pratipadika("sTAna", "napum")   # स्थान n. "place" — भीरुष्ठानम्
-Ayus  = Pratipadika("Ayus",  "napum", other_tags=["AdeSa_s"])  # आयुस् n. (s-final) — आयुष्टोमः (SK1021/8.3.83)
-stoma = Pratipadika("stoma", "pum")     # स्तोम m. "praise" — ज्योतिष्टोमः / आयुष्टोमः
+sTAna = Pratipadika("sTAna", "napum", other_tags=["sTAna"])   # स्थान n. — भीरुष्ठानम् (?sTAna: main-scan id, see 8.3.81)
+Ayus  = Pratipadika("Ayus",  "napum", other_tags=["AdeSa_s", "Ayus"])  # आयुस् n. (s-final) — आयुष्टोमः (SK1021/8.3.83)
+stoma = Pratipadika("stoma", "pum", other_tags=["stoma"])     # स्तोम m. — ज्योतिष्टोमः (?stoma: main-scan id, see 8.3.83)
 sAman = Pratipadika("sAman", "napum")   # सामन् n. "chant" — सुषामा (SK1022/8.3.98)
 sanDi = Pratipadika("sanDi", "pum")     # सन्धि m. — सुषन्धिः (SK1022/8.3.98)
 senA  = Pratipadika("senA",  "strI", other_tags=["Ap"])  # सेना f. "army" — हरिषेणः (SK1023/8.3.99)
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम्, Phase X6 (samasa_asraya_plan.md): cross-member ṆATVA
+# (8.4.4–13, 8.4.38). antar, plakza, Kadira, indra, mAza, garga, kAma, cora, Baya,
+# kumBa, vana, kowara all already exist above.
+#
+# ?vana is a SELF-NAMED stem tag (the repo idiom — cf. ?viSva, ?puruza, ?azwan,
+# ?rAtri): 8.4.4/5/6 must identify the वन uttarapada at a MAIN-SCAN window, where it
+# has already merged with its sup, so a `=vana` content match is no longer possible.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── 8.4.4 वनं पुरगामिश्रकासिध्रकासारिकाकोटराग्रेभ्यः — वन's न् → ण् after these only.
+pura     = Pratipadika("pura",     "napum")   # पुर — पुरगावणम् (SK1039/8.4.4)
+asipatra = Pratipadika("asipatra", "napum")   # असिपत्र — the एभ्य एव NEGATIVE (असिपत्रवनम्)
+
+# ── 8.4.5 प्रनिरन्तःशरेक्षु… — असंज्ञायामपि, so even without a saṁjñā.
+ikzu   = Pratipadika("ikzu",   "pum")   # इक्षु "sugarcane" — इक्षुवणम्; also इक्षुवाहणम् (8.4.8)
+kArzya = Pratipadika("kArzya", "napum")  # कार्ष्य — कार्ष्यवणम् (SK's इह षात्परत्वाण्णत्वम्: the ष् is the cause)
+
+# ── 8.4.6 विभाषौषधिवनस्पतिभ्यः — optional after an ओषधि / वनस्पति word.
+dUrvA    = Pratipadika("dUrvA",    "strI", other_tags=["Ap", "ozaDi"])   # दूर्वा — दूर्वावणम् / दूर्वावनम्
+devadAru = Pratipadika("devadAru", "napum", other_tags=["vanaspati"])    # देवदारु — the द्व्यच्त्र्यच् vārtika NEGATIVE
+
+# ── 8.4.8 वाहनमाहितात् · 8.4.9/8.4.10 पानं देशे / वा भावकरणयोः
+# ?pAna is a self-named stem tag, like ?vana above and for the same reason: 8.4.9/8.4.10
+# identify this uttarapada at a main-scan window, after it has merged with its sup.
+pAna = Pratipadika("pAna", "napum", other_tags=["pAna"])   # पान n. — क्षीरपाणाः (8.4.9), क्षीरपाणम् (8.4.10)
+
+# ── 8.4.11 प्रातिपदिकान्तनुम्विभक्तिषु च · 8.4.13 कुमति च · 8.4.38 पदव्यवायेऽपि
+vApa    = Pratipadika("vApa",    "pum")   # वाप m. "sowing" — माषवापेण (SK1055/8.4.11), माषकुम्भवापेन (8.4.38)
+BaginI  = Pratipadika("BaginI",  "strI", other_tags=["NI"])   # भगिनी — the उत्तरपदं यत्प्रातिपदिकम् vārtika NEGATIVE (गर्गभगिनी)

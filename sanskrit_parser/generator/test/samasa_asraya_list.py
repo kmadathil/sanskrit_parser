@@ -816,15 +816,16 @@ samasa_asraya_tests = [
         "surface": "मणिकर्णः",
     },
     {
-        # कोटरādi + वन in a saṁjñā → कोटरा॰. SK's form is कोटरा**वण**म्: the ण् is
-        # SK1039/8.4.4, a phase X6 rule, so until X6 lands this surfaces कोटरावनम्.
-        # The dīrgha under test here is unaffected either way.
+        # कोटरādi + वन in a saṁjñā → कोटरावणम्. TWO sūtras compose here: 6.3.117 supplies the
+        # dīrgha (कोटर → कोटरा) and SK1039/8.4.4 the ṇatva (वन → वण) — which is exactly SK's own
+        # note on 8.4.4, इह कोटरान्ताः पञ्च दीर्घविधौ कोटरादयो बोध्याः ("the first five are taken
+        # in their dīrgha form"). This case read कोटरावनम् until phase X6 landed 8.4.4.
         "label": "X4-kowarAvanam-SK1038-6.3.117",
         "type": "zazWI",
         "purva": {"stem": "kowara", "tags": ["saMjYA"]},
         "uttara": {"stem": "vana", "vacana": 1},
         "fired": ["2.2.8", "6.3.117"],
-        "surface": "कोटरावनम्",
+        "surface": "कोटरावणम्",
     },
     {
         # किंशुलुकādi + गिरि in a saṁjñā → किंशुलुकागिरिः. The second of 6.3.117's two
@@ -1094,7 +1095,11 @@ samasa_asraya_tests = [
         "type": "zazWI",
         "purva": {"stem": "BIru"},
         "uttara": {"stem": "sTAna", "vacana": 1},
-        "fired": ["2.2.8", "8.3.81"],
+        # 8.3.81 is absent from the PRE-PASS trace because the X6 ṣṭutva refactor moved it to
+        # the MAIN SCAN — that is the whole point of the refactor (it needs `insert:`, which the
+        # pre-pass never calls). Its effect is asserted at level 3 instead, and the ठ् there is
+        # now 8.4.41's work rather than a folded `zwutva` call.
+        "fired": ["2.2.8"],
         "surface": "भीरुष्ठानम्",
     },
     {
@@ -1182,5 +1187,155 @@ samasa_asraya_tests = [
         "uttara": {"stem": "senA", "vacana": 1},
         "fired": ["2.2.8", "8.3.100"],
         "surfaces": ["रोहिणीषेणा", "रोहिणीसेना", "रोहिणिषेणा", "रोहिणिसेना"],
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # X6 — cross-member ṆATVA (SK1039, SK1050–1057 / 8.4.4–13, 8.4.38).
+    #
+    # Every rule here only SETS A MARKER — `?samasta_Ratva` on the uttara, the SK307/8.4.12
+    # lever. join_objects turns it into `?samasta_Ratva_pada`, which is arm B of 8.4.1/8.4.2;
+    # those two do the actual न् → ण्. Cross-compound ṇatva is blocked by default because the
+    # merged compound is `?merged_pada`, which arm A excludes.
+    #
+    # All are MAIN-SCAN, at the (pūrva | uttara-pada) window — so 8.4.4/5/6/8/9 identify their
+    # uttarapada by a SELF-NAMED STEM TAG (?vana, ?pAna, ?vAhana), never by content: by that
+    # window the uttara has merged with its sup. SK1055/8.4.11 is the exception and fires one
+    # merge earlier, at (uttara | sup); see its rule comment for why it has to.
+    # ══════════════════════════════════════════════════════════════════════════
+    {
+        # **THE STANDING GAP, CLOSED.** चोरात् भयम् = चोरभयम्, and in the instrumental
+        # चोरभयेण — the form generator_status.md's 8.4.1 row recorded as not firing. The
+        # nimitta is चोर's र्, in the PŪRVAPADA, and the न् is in the VIBHAKTI (ena).
+        "label": "X6-coraBayeRa-SK1055-8.4.11",
+        "type": "zazWI",
+        "purva": {"stem": "cora", "vibhakti": 5},
+        "uttara": {"stem": "Baya", "vacana": 1, "vibhakti": 3},
+        "fired": ["2.1.37"],
+        "surface": "चोरभयेण",
+    },
+    {
+        # SK's own vibhakti example: माषवापेण (माष's ष् is the nimitta).
+        "label": "X6-mAzavApeRa-SK1055-8.4.11",
+        "type": "zazWI",
+        "purva": {"stem": "mAza"},
+        "uttara": {"stem": "vApa", "vacana": 1, "vibhakti": 3},
+        "fired": ["2.2.8"],
+        "surface": "माषवापेण",
+    },
+    {
+        # उत्तरपदं यत्प्रातिपदिकं तदन्तस्यैव णत्वम् (vārtika) — गर्गभगिनी keeps its न्. भगिनी's न् is
+        # neither in a vibhakti (su is elided) nor the prātipadika's final (ई follows), so
+        # neither arm of 8.4.11 reaches it. This is the case that forced 8.4.11 to the
+        # (uttara | sup) window: at the later window the न् of भगिनी and the न् of भयेन are
+        # indistinguishable characters, and a blanket rule gave *गर्गभगिणी.
+        "label": "X6-gargaBaginI-negative-SK1055-8.4.11",
+        "type": "zazWI",
+        "purva": {"stem": "garga"},
+        "uttara": {"stem": "BaginI", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "गर्गभगिनी",
+    },
+    {
+        # कोटर + वन in a saṁjñā → कोटरावणम् (8.4.4's एभ्य एव list, composed with 6.3.117's
+        # dīrgha). Asserted from the X4 case above too; kept here for the ṇatva's own sake.
+        "label": "X6-kowarAvaRam-SK1039-8.4.4",
+        "type": "zazWI",
+        "purva": {"stem": "kowara", "tags": ["saMjYA"]},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8", "6.3.117"],
+        "surface": "कोटरावणम्",
+    },
+    {
+        # एभ्य एवेति किम् — असिपत्र is in neither 8.4.4's nor 8.4.5's list, so वन keeps its न्:
+        # असिपत्रवनम्. (असिपत्र HAS a ratva cause in its ष्, which is what makes this a real
+        # test of the एभ्य एव restriction rather than of the cause.)
+        "label": "X6-asipatravanam-negative-SK1039-8.4.4",
+        "type": "zazWI",
+        "purva": {"stem": "asipatra", "tags": ["saMjYA"]},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "असिपत्रवनम्",
+    },
+    {
+        # प्रवणम् — 8.4.5's असंज्ञायामपि: no saṁjñā needed after प्र.
+        "label": "X6-pravaRam-SK1050-8.4.5",
+        "type": "zazWI",
+        "purva": {"stem": "pra"},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.18"],   # प्र is prādi → the compound is SK761/2.2.18's, not 2.2.8's
+        "surface": "प्रवणम्",
+    },
+    {
+        # कार्ष्यवणम् — SK's इह षात्परत्वाण्णत्वम्: here the cause is the ष् of कार्ष्य, which
+        # `$$lp_has_ratva_cause` covers (it scans for r / ṛ / ṣ alike).
+        "label": "X6-kArzyavaRam-SK1050-8.4.5",
+        "type": "zazWI",
+        "purva": {"stem": "kArzya"},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "कार्ष्यवणम्",
+    },
+    {
+        # दूर्वावणम् — 8.4.6, after an ओषधि word. The sūtra is a विभाषा but is implemented
+        # NITYA: a marker-only rule cannot fork (both branches are surface-identical at the
+        # fork and get deduplicated — verified by toggling `optional`), so claiming the
+        # optionality would be a promise the engine does not keep. See its rule comment.
+        "label": "X6-dUrvAvaRam-SK1051-8.4.6",
+        "type": "zazWI",
+        "purva": {"stem": "dUrvA"},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "दूर्वावणम्",
+    },
+    {
+        # द्व्यच्त्र्यज्भ्यामेव (vārtika) — नेह देवदारुवनम्: देवदारु has four vowels, so it fails
+        # the `$$dvyac_tryac` gate even though it is a वनस्पति word with a ratva cause.
+        "label": "X6-devadAruvanam-negative-SK1051-8.4.6",
+        "type": "zazWI",
+        "purva": {"stem": "devadAru"},
+        "uttara": {"stem": "vana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "देवदारुवनम्",
+    },
+    {
+        # इक्षुवाहणम् — 8.4.8: वाहन's न् after a word denoting what is LOADED (आहित).
+        "label": "X6-ikzuvAhaRam-SK1052-8.4.8",
+        "type": "zazWI",
+        "purva": {"stem": "ikzu", "tags": ["Ahita"]},
+        "uttara": {"stem": "vAhana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "इक्षुवाहणम्",
+    },
+    {
+        # आहितात् किम् — इन्द्रवाहनम्: Indra OWNS the vehicle, he is not the load. This case
+        # is why `?Ahita` had to join the join_objects Tier-1 allowlist — a tag trace showed
+        # it entering the pūrva's saṁhitā merge and coming out dropped, while ?saMjYA in the
+        # same position survived, which is why कोटरावणम् worked and इक्षुवाहणम् did not.
+        "label": "X6-indravAhanam-negative-SK1052-8.4.8",
+        "type": "zazWI",
+        "purva": {"stem": "indra"},
+        "uttara": {"stem": "vAhana", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "इन्द्रवाहनम्",
+    },
+    {
+        # क्षीरपाणम् — 8.4.10, the भाव/करण sense. Also NITYA for the marker-only reason above.
+        "label": "X6-kzIrapARam-SK1054-8.4.10",
+        "type": "zazWI",
+        "purva": {"stem": "kzIra", "tags": ["BAvakaraRa"]},
+        "uttara": {"stem": "pAna", "vacana": 1},
+        "fired": ["2.2.8"],
+        "surface": "क्षीरपाणम्",
+    },
+    {
+        # REGRESSION GUARD for 8.4.11's generality: राजपुरुषेण already worked before X6 (via
+        # arm A after _nest_samasa_members) and must still give exactly one form. 8.4.11 being
+        # NITYA rather than वा is what keeps it from gaining a spurious *राजपुरुषेन.
+        "label": "X6-rAjapuruzeRa-regression-SK1055-8.4.11",
+        "type": "zazWI",
+        "purva": {"stem": "rAjan"},
+        "uttara": {"stem": "puruza", "vacana": 1, "vibhakti": 3},
+        "fired": ["2.2.8"],
+        "surface": "राजपुरुषेण",
     },
 ]

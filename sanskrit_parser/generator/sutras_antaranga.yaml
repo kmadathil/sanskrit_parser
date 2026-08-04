@@ -14502,7 +14502,6 @@
 # भीरुष्ठानम् (and 8.4.41 ष्टुना ष्टुः then makes the थ् → ठ्). असमासे तु भीरोः स्थानम्.
 - sutra: भीरोः स्थानम्
   id: 8.3.81
-  bahiranga: -1
   condition:
     lp: "=BIru"
     l:
@@ -14511,17 +14510,28 @@
     rp:
       - and
       - "?samAsa"
-      - "=sTAna"
+      - "?pada"
+      - "?sTAna"
     r: s
-  # ṢṬUTVA IS FOLDED IN, deliberately. The landed 8.4.41 ष्टुना ष्टुः is a JUNCTION rule
-  # (`l: [z, wu]` / `r: [s, tu]`), so it can only retroflex across an l|r boundary. Here the
-  # fresh ष् and the थ्/त् it must act on both end up INSIDE the uttara element (स्थान → ष्थान),
-  # where no junction exists and 8.4.41 can never see them. So the xform calls 8.4.41's own
-  # `zwutva` helper on the next char — one extra call site for the same helper, not duplicated
-  # logic. Without it the surface is *भीरुष्थानम् / *ज्योतिष्ष्तोमः.
+  # ṢṬUTVA IS NOT FOLDED IN — 8.4.41 does it, as it should. This rule was originally a
+  # `bahiranga: -1` pre-pass rule with `r: str("z")` plus a hand-rolled
+  # `rc: zwutva(rc[0])+rc[1:]`, because the landed 8.4.41 ष्टुना ष्टुः is a JUNCTION rule and the
+  # fresh ष् plus the थ्/त् it must act on both ended up INSIDE one element (स्थान → ष्थान),
+  # where no junction exists. The refactor removes that duplication:
+  #   · MAIN SCAN instead of the pre-pass, identifying the uttara by the self-named `?sTAna`
+  #     stem tag rather than by content — content matching is what forced the pre-pass
+  #     placement in the first place (the uttara has merged with its sup by now).
+  #   · `xform: r: null` + `insert: r: str("z")` instead of a plain substitution. This is
+  #     8.4.41's OWN idiom (`xform: l: null` + `insert: l: zwutva(l)`): the xform removes the
+  #     स्, and the insert re-adds ष् as a SEPARATE nested element, which `need_hierarchy_at`
+  #     (`prakriya.py:44`) turns into a sub-prakriya. That creates a genuine (ष् | थानम्)
+  #     junction, and 8.4.41.1 then fires there by itself.
+  # Net effect: one sūtra does one thing, and the ठ् of भीरुष्ठानम् is attributable to 8.4.41
+  # in the trace instead of being silently produced here.
   xform:
+    r: null
+  insert:
     r: str("z")
-    rc: zwutva(rc[0])+rc[1:]
 
 # SK1021/8.3.83: ज्योतिरायुषः स्तोमः — the स् of स्तोम becomes mūrdhanya after ज्योतिस् / आयुस्
 # in a compound: ज्योतिष्टोमः, आयुष्टोमः (ट् by 8.4.41). समासे किम् — ज्योतिषः स्तोमः. The pūrva's
@@ -14540,12 +14550,21 @@
       - "?samAsa"
       - "=stoma"
     r: s
-  # ṢṬUTVA IS FOLDED IN, deliberately. The landed 8.4.41 ष्टुना ष्टुः is a JUNCTION rule
-  # (`l: [z, wu]` / `r: [s, tu]`), so it can only retroflex across an l|r boundary. Here the
-  # fresh ष् and the थ्/त् it must act on both end up INSIDE the uttara element (स्थान → ष्थान),
-  # where no junction exists and 8.4.41 can never see them. So the xform calls 8.4.41's own
-  # `zwutva` helper on the next char — one extra call site for the same helper, not duplicated
-  # logic. Without it the surface is *भीरुष्थानम् / *ज्योतिष्ष्तोमः.
+  # THIS ONE KEEPS THE FOLDED ṢṬUTVA, unlike its neighbour 8.3.81, and the reason is NOT yet
+  # established — recorded here so the next attempt does not repeat the same two experiments.
+  # The refactor needs a MAIN-SCAN window (so `insert:` is called, giving 8.4.41 a real
+  # junction). Both gates were tried there and both failed, differently:
+  #   · `=jyotis` (content): matched in only ONE branch, because by then 8.2.66 ससजुषो रुः and
+  #     8.3.15 खरवसानयोर्विसर्जनीयः have turned ज्योतिस् into ज्योतिः / ज्योतिष् — so ज्योतिःस्तोमः
+  #     escaped the ṣatva entirely.
+  #   · `?jyotis` (a self-named stem tag): matched in NO branch. Note this is NOT tag loss —
+  #     `Sutra.operate` deepcopies the object and only `.update()`s its string, so tags DO
+  #     survive an xform. A debug trace shows 8.3.83 is never EVALUATED at any main-scan window
+  #     at all, so the obstacle is window reachability, not the condition. Unexplained.
+  # 8.3.81, whose pūrva भीरु is u-final and untouched by the visarga rules, refactors cleanly —
+  # which is consistent with the s-final pūrva being what makes this one different. So 8.3.83
+  # stays in the pre-pass, where ज्योतिस् is pristine, and calls 8.4.41's own `zwutva` helper for
+  # the ट् it cannot otherwise reach.
   xform:
     r: str("z")
     rc: zwutva(rc[0])+rc[1:]
@@ -14616,3 +14635,287 @@
     r: s
   xform:
     r: str("z")
+
+# ════════════════════════════════════════════════════════════════════════════
+# समासाश्रयविधिप्रकरणम् — Phase X6 (samasa_asraya_plan.md): cross-member ṆATVA
+# (SK1039, SK1050–1057 / 8.4.4–13, 8.4.38).
+#
+# THE LEVER, unchanged from SK307/8.4.12 एकाजुत्तरपदे णः (`:1074`): cross-compound ṇatva is
+# BLOCKED by default, because the merged compound is `?merged_pada` and arm A of 8.4.1/8.4.2
+# excludes it. A rule ENABLES it by setting `?samasta_Ratva` on the uttara; join_objects
+# (`paninian_object.py:209`) turns that into `?samasta_Ratva_pada` on the compound, which is
+# arm B's gate. So every rule here only sets a marker — 8.4.1/8.4.2 do the actual न् → ण्.
+#
+# All are MAIN-SCAN, following 8.4.12 and 8.4.28: the window is (pūrva | uttara-PADA), i.e.
+# after the uttara has merged with its own sup. That is why 8.4.4/5/6 gate on the self-named
+# `?vana` stem tag rather than `=vana` — the X4/X5 lesson about content matches.
+# ════════════════════════════════════════════════════════════════════════════
+
+# SK1039/8.4.4: वनं पुरगामिश्रकासिध्रकासारिकाकोटराग्रेभ्यः — वन's न् becomes ण् after पुर / गा /
+# मिश्रका / सिध्रका / सारिका / कोटर / अग्रे, AND ONLY after these (एभ्य एव … नान्येभ्यः):
+# पुरगावणम्, कोटरावणम्. एभ्य एवेति किम् — असिपत्रवनम्.
+#
+# SK's own note — इह कोटरान्ताः पञ्च दीर्घविधौ कोटरादयो बोध्याः — is that the first five are
+# taken in their DĪRGHA form, i.e. as already lengthened by SK1038/6.3.117 (phase X4). So the
+# X4 dīrgha and this ṇatva compose: कोटर + वन → कोटरा॰ (6.3.117) → कोटरावणम् (here).
+# The अग्रे arm needs the राजदन्तादि aluk saptamī and is not modelled.
+- sutra: वनं पुरगामिश्रकासिध्रकासारिकाकोटराग्रेभ्यः
+  id: 8.4.4
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - - or
+        - "=pura"
+        - "=gA"
+        - "=miSrakA"
+        - "=sidhrakA"
+        - "=sArikA"
+        - "=kowara"
+        - "=kowarA"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?vana"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1050/8.4.5: प्रनिरन्तःशरेक्षुप्लक्षाम्रकार्ष्यखदिरपीयूक्षाभ्योऽसंज्ञायामपि — after this second
+# list, वन takes ṇatva EVEN WITHOUT a saṁjñā (असंज्ञायामपि, contrasting 8.4.3's संज्ञायाम्):
+# प्रवणम्, निर्वणम्, कार्ष्यवणम्. SK notes of कार्ष्यवणम् — इह षात्परत्वाण्णत्वम् — that here the
+# cause is the ष्, which `$$lp_has_ratva_cause` already covers (it scans for r/ṛ/ṣ alike).
+- sutra: प्रनिरन्तःशरेक्षुप्लक्षाम्रकार्ष्यखदिरपीयूक्षाभ्योऽसंज्ञायामपि
+  id: 8.4.5
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - - or
+        - "=pra"
+        - "=nis"
+        - "=nir"
+        - "=antar"
+        - "=Sara"
+        - "=ikzu"
+        - "=plakza"
+        - "=Amra"
+        - "=kArzya"
+        - "=Kadira"
+        - "=pIyUkza"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?vana"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1051/8.4.6: विभाषौषधिवनस्पतिभ्यः — after an ओषधि (herb) or वनस्पति (tree) word the same
+# ṇatva is OPTIONAL: दूर्वावणम् / दूर्वावनम्, शिरीषवणम् / शिरीषवनम्. The vārtika
+# द्व्यच्त्र्यज्भ्यामेव restricts it to DVYAC/TRYAC pūrvas — नेह देवदारुवनम् — which is the
+# `$$dvyac_tryac` helper here (देवदारु has four vowels; दूर्वा two, शिरीष three).
+- sutra: विभाषौषधिवनस्पतिभ्यः
+  id: 8.4.6
+  # NOT `optional: true`, though the sūtra is a विभाषा / वा. A marker-only rule CANNOT fork:
+  # the engine's vibhāṣā fork makes two branches, but a rule whose whole effect is a tag leaves
+  # both branches surface-identical at that moment, so _deduplicate_hier_outputs collapses them
+  # and only the applying branch survives. Verified: adding or removing `optional: true` here
+  # changes nothing (दूर्वावणम् either way). Marking it optional would therefore be a claim the
+  # engine does not honour, so the वा is recorded as unmodelled instead — the same call already
+  # taken for 8.4.11's वा. Forking WOULD work if this rule did its own xform (cf. 8.3.100,
+  # which forks fine because it substitutes ष् directly).
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - - or
+        - "?ozaDi"
+        - "?vanaspati"
+      - $$dvyac_tryac
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?vana"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1052/8.4.8: वाहनमाहितात् — the न् of वाहन becomes ण् after a word denoting what is LOADED
+# onto it (आहित): इक्षुवाहणम्. आहितात् किम् — इन्द्रवाहनम् (Indra owns the vehicle, is not the
+# load). `?Ahita` is the composer-supplied sense. SK notes वहतेर्ल्युटि वृद्धिरिहैव सूत्रे
+# निपातनात् — वाहन's vṛddhi is a nipātana of this very sūtra, so the stem is stored formed.
+- sutra: वाहनमाहितात्
+  id: 8.4.8
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - "?Ahita"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?vAhana"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1053/8.4.9: पानं देशे — the न् of पान becomes ण् when a DEŚA (region, hence its people) is
+# meant: क्षीरं पानं येषां ते क्षीरपाणा उशीनराः, सुरापाणाः प्राच्याः. Note both SK examples are
+# PLURAL — the compound names a people. `?deSa` composer-supplied.
+- sutra: पानं देशे
+  id: 8.4.9
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - "?deSa"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?pAna"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1054/8.4.10: वा भावकरणयोः — पान again, in the BHĀVA (action) or KARAṆA (instrument) sense,
+# OPTIONALLY: क्षीरपाणम् / क्षीरपानम्. (The गिरिनद्यादीनां वा vārtika — गिरिणदी, चक्रणितम्बा — is a
+# separate ādi list and is not modelled.)
+- sutra: वा भावकरणयोः
+  id: 8.4.10
+  # NOT `optional: true`, though the sūtra is a विभाषा / वा. A marker-only rule CANNOT fork:
+  # the engine's vibhāṣā fork makes two branches, but a rule whose whole effect is a tag leaves
+  # both branches surface-identical at that moment, so _deduplicate_hier_outputs collapses them
+  # and only the applying branch survives. Verified: adding or removing `optional: true` here
+  # changes nothing (दूर्वावणम् either way). Marking it optional would therefore be a claim the
+  # engine does not honour, so the वा is recorded as unmodelled instead — the same call already
+  # taken for 8.4.11's वा. Forking WOULD work if this rule did its own xform (cf. 8.3.100,
+  # which forks fine because it substitutes ष् directly).
+  condition:
+    lp:
+      - and
+      - $$lp_has_ratva_cause
+      - "?BAvakaraRa"
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?pAna"
+      - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1055/8.4.11: प्रातिपदिकान्तनुम्विभक्तिषु च — with the nimitta in the PŪRVAPADA, a न्
+# standing at a prātipadika's END, in नुम्, or in a VIBHAKTI becomes ण्: माषवापिणौ
+# (prātipadikānta), व्रीहिवापाणि (num), माषवापेण (vibhakti); likewise क्षीरपाणि, क्षीरपेण.
+#
+# **THIS IS THE SŪTRA BEHIND THE GENERATOR'S LONGEST-STANDING ṆATVA DEFERRAL** — the
+# `generator_status.md` 8.4.1 row ("a pūrva-only र/ष trigger reaching the uttara's न-bearing
+# sup, चोरात् भयम् → चोरभयेण, does not fire") and the त्रिभुवनम् note in samasa_list.py. The
+# mechanism was always there (arm B of 8.4.1/8.4.2); the missing piece was a rule to set the
+# marker for the general case.
+#
+# IMPLEMENTED NITYA, not as the sūtra's वा (user decision, samasa_asraya_plan.md §Context):
+# modelling the optionality literally would fork every landed compound whose only r/ṣ sits in
+# the pūrva — राजपुरुषेण would gain *राजपुरुषेन. The unmodelled वा (SK's पक्षे माषवापिनौ) is a
+# Skipped row.
+#
+# WINDOW — this is the one rule of X6 that is NOT at the (pūrva | uttara-pada) window its
+# neighbours use, and the reason is the sūtra's own content. "एषु स्थितस्य नस्य" asks WHERE the
+# न् stands, and after the uttara merges with its sup that is unanswerable: in वनम् and भयेन
+# alike the न् is just a character in one string. Fired at (pūrva | uttara-pada), a rule can
+# only ask "is there a न् anywhere?" — which wrongly ṇatva-ises असिपत्रवनम्, देवदारुवनम्,
+# इन्द्रवाहनम् and गर्गभगिणी, all four of which are explicit counter-examples in SK.
+# So it fires at the **(uttara | sup)** window instead, where the two arms are separable:
+#   Arm A — VIBHAKTI: the न् is inside the SUP (`rp: ?sup` + the ratva-effect check). भयेन's
+#           ena qualifies; वनम्/वाहनम्'s am has no न्; भगिनी's su is elided. All three
+#           counter-examples fall out by construction rather than by a guard.
+#   Arm B — PRĀTIPADIKĀNTA: the uttara's stem itself ends in न् (`l: n`) → माषवापिणौ. वन ends
+#           in अ and भगिनी in ई, so neither is reached.
+# The pūrva is read through `llp` (the neighbour context), and the marker goes on the sup —
+# join_objects carries it to the uttara-pada and then to the compound (see its comment).
+# The नुम् arm (व्रीहिवापाणि) needs the नुम्-insertion context and is not modelled.
+#
+# `?!yuvAdi` is SK's युवादेर्न vārtika (नेह रम्ययूना, परिपक्वानि), which arm B would otherwise
+# reach — युवन् does end in न्.
+- sutra: प्रातिपदिकान्तनुम्विभक्तिषु च
+  id: 8.4.11
+  condition:
+    # Arm A — the न् is in the VIBHAKTI (चोरभयेण, माषवापेण, क्षीरपेण)
+    #
+    # `?!Am` excludes the आम् sup, and it is a FAITHFULNESS guard, not a workaround. In a
+    # genitive plural the न् is not the vibhakti's at all — it is the नुट् आगम of 7.1.54
+    # ह्रस्वनद्यापो नुट्, and 7.1.54's xform (`r: str("nA")`) rewrites आम् → नाम् IN PLACE, so
+    # afterwards that न् is indistinguishable from a vibhakti न्. 8.4.11 lists प्रातिपदिकान्त,
+    # **नुम्** and विभक्ति — नुट् is a different augment and is in none of the three. Without
+    # this guard the rule ṇatva-ised every gen-pl of a compound with a pūrvapada r/ṣ:
+    # ताम्रमुखीनाम् → *ताम्रमुखीणाम्, and likewise चन्द्रमुखी, शूर्पनखी, त्र्यनीका, त्रिहायना.
+    - llp: $$lp_has_ratva_cause
+      lp:
+        - and
+        - "?samAsa"
+        - "?!yuvAdi"
+      rp:
+        - and
+        - "?sup"
+        - "?!Am"
+        - $$rp_has_ratva_effect
+    # Arm B — the न् is the uttara prātipadika's OWN final (माषवापिणौ)
+    - llp: $$lp_has_ratva_cause
+      lp:
+        - and
+        - "?samAsa"
+        - "?!yuvAdi"
+      l: n
+      rp: "?sup"
+  update:
+    orp: +samasta_Ratva
+
+# SK1056/8.4.13: कुमति च — प्राग्वत् ("as before", i.e. 8.4.11's positions) when the uttarapada
+# contains a KU-VARGA consonant: हरिकामिणौ, हरिकामाणि, हरिकामेण. 8.4.11's arms already reach
+# these, so this rule adds no coverage of its own; it is stated separately because the sūtra
+# is, and is gated on the कवर्गवत् check so the prakaraṇa's accounting is honest.
+- sutra: कुमति च
+  id: 8.4.13
+  condition:
+    - llp: $$lp_has_ratva_cause
+      lp:
+        - and
+        - "?samAsa"
+        - "?!yuvAdi"
+        - $$has_kuvarga
+      rp:
+        - and
+        - "?sup"
+        - "?!Am"          # the नुट् exclusion — see 8.4.11 arm A above
+        - $$rp_has_ratva_effect
+  update:
+    orp: +samasta_Ratva
+
+# SK1057/8.4.38: पदव्यवायेऽपि — a PROHIBITION, continuing the निषेध of 8.4.37 पदान्तस्य:
+# "पदेन व्यवधानेऽपि णत्वं न स्यात्" — the ṇatva does NOT apply even when a whole PADA
+# intervenes between the nimitta and the न्: माषकुम्भवापेन (माष's ष् is separated from वाप's
+# ending by the pada कुम्भ), चतुरङ्गयोगेन.
+#
+# Modelled as an `overrides:` with a null xform — the engine's idiom for a niṣedha, exactly as
+# SK/8.4.22 हन्तेरत्पूर्वस्य does. It suppresses the marker rules above rather than 8.4.1/8.4.2
+# themselves, since in this compound the marker is what would have enabled arm B.
+# `?pada_vyavAya` marks a compound with an intervening third member (composer-supplied: the
+# member count is not visible at this window). The अतद्धित vārtika — आर्द्रगोमयेण, शुष्कगोमयेण,
+# where a taddhita DOES take the ṇatva — is not modelled (Skipped row).
+- sutra: पदव्यवायेऽपि
+  id: 8.4.38
+  overrides: [8.4.11, 8.4.13]
+  condition:
+    lp: $$lp_has_ratva_cause
+    rp:
+      - and
+      - "?samAsa"
+      - "?pada"
+      - "?pada_vyavAya"
+  xform: null

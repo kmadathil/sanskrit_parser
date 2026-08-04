@@ -206,8 +206,16 @@ class PaninianObject(SanskritObject):
                               "NIp_taddhita", "yaY", "tadDita_ya", "luk_tadDita"])
 
         # --- samasta_Ratva on uttara-pada → samasta_Ratva_pada on compound ---
+        # The tag is also CARRIED FORWARD, not just converted, because SK1055/8.4.11 sets it
+        # one merge earlier than SK307/8.4.12 does. 8.4.12 marks an uttara that is already a
+        # pada, so one conversion suffices; 8.4.11 has to fire at the (uttara | sup) window —
+        # that is the only point where "the न् is in the VIBHAKTI" is still knowable, since
+        # after the merge the sup's न् and a stem-internal न् are indistinguishable characters
+        # in one string. Its marker therefore rides the sup, and must survive that merge to
+        # reach the compound merge where arm B of 8.4.1/8.4.2 is finally gated.
         if last.hasTag("samasta_Ratva"):
             so.setTag("samasta_Ratva_pada")
+            so.setTag("samasta_Ratva")
 
         # ── Phase 3: Compound lifecycle ───────────────────────────────────────────
 
@@ -227,8 +235,18 @@ class PaninianObject(SanskritObject):
         # cross-compound ṇatva rules can key on them: SK857/8.4.3 पूर्वपदात्संज्ञायाम् gates on
         # ?saMjYA (the sūtra's own condition — a NAME), and SK859/8.4.28 उपसर्गाद्बहुलम् on the
         # ?nas_AdeSa marker of 5.4.119. Without propagation the tags die at the merge.
+        #
+        # The same applies to phase X6's four PŪRVAPADA SENSE tags, and for exactly the same
+        # reason: each is the composer-supplied condition of a cross-compound ṇatva rule that
+        # fires at the (pūrva-pada | uttara-pada) window, so it must outlive the pūrva's own
+        # sup merge. ?Ahita — SK1052/8.4.8 वाहनमाहितात् (इक्षुवाहणम्); ?deSa — SK1053/8.4.9
+        # पानं देशे (क्षीरपाणाः); ?BAvakaraRa — SK1054/8.4.10 वा भावकरणयोः; ?ozaDi / ?vanaspati —
+        # SK1051/8.4.6 विभाषौषधिवनस्पतिभ्यः (दूर्वावणम्). Diagnosed from a tag trace: ?Ahita went
+        # INTO the pūrva's saṁhitā merge and came out dropped, while ?saMjYA in the same
+        # position survived — which is why कोटरावणम् worked and इक्षुवाहणम् did not.
         _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik",
-                           "nas_AdeSa", "saMjYA"])
+                           "nas_AdeSa", "saMjYA",
+                           "Ahita", "deSa", "BAvakaraRa", "ozaDi", "vanaspati"])
         # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
         # through every merge so a kṛt/taddhita/strī-derived noun keeps its
         # semantic/kāraka/vibhakti view until its sup attaches. The guard tags
@@ -249,7 +267,11 @@ class PaninianObject(SanskritObject):
         # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
         # pada-pada boundaries
         if first.hasTag("aNga"):
-            _propagate(first, ["viSva"])
+            # ?vana joins ?viSva here for phase X6: SK1039/8.4.4, SK1050/8.4.5 and
+            # SK1051/8.4.6 identify the वन uttarapada at a MAIN-SCAN window, by which point
+            # वन has merged with its own sup (वनम्), so a `=vana` content match is no longer
+            # possible — the self-named stem tag has to ride through that merge instead.
+            _propagate(first, ["viSva", "vana", "pAna", "vAhana", "sTAna", "stoma"])
 
         # Tier 3 (tadDita-gated): compound-type tags and SK480/481/482 semantic
         # class tags ride forward only when the next element is a tadDita affix
