@@ -1106,25 +1106,29 @@ samasa_asraya_tests = [
         # ज्योतिस् + स्तोम → ष्टोम. The ṭ is **8.4.41.1's**, not folded into 8.3.83: the rule is
         # main-scan and insert-based, so the ष् becomes a separate nested element and 8.4.41.1
         # acts on the resulting junction (trace: `Prakriya: ztomas` → `8.4.41.1`). Hence 8.3.83
-        # is absent from the PRE-PASS trace. SK's form is ज्योति**ष्टो**मः with ONE ष्; the
-        # generator keeps the pūrva's own sibilant too (ज्योतिःष्टोमः / ज्योतिष्ष्टोमः) because the
-        # visarga-LOPA before शर् + stop is a vārtika on 8.3.36 that is unimplemented — a
-        # PRE-EXISTING gap, untouched by the refactor.
+        # is absent from the PRE-PASS trace.
+        #
+        # **SK's own ज्योतिष्टोमः is now produced**, via the newly added SK151 vārtika on 8.3.36
+        # (खर्परे शरि वा विसर्गलोपो वक्तव्यः, rule 8.3.36.1): the ष् of ष्टोम is a śar followed by the
+        # khar ट्, so the pūrva's visarga is optionally elided, leaving ONE ष्. All THREE forms
+        # appear because the vārtika is वा and SK says so explicitly —
+        # **पक्षे विसर्गे सत्वे च त्रैरूप्यम्**: lopa (ज्योतिष्टोमः), retained visarga (ज्योतिःष्टोमः),
+        # and satva (ज्योतिष्ष्टोमः).
         "label": "X5-jyotizwomaH-SK1021-8.3.83",
         "type": "zazWI",
         "purva": {"stem": "jyotis"},
         "uttara": {"stem": "stoma", "vacana": 1},
         "fired": ["2.2.8"],
-        "surfaces": ["ज्योतिःष्टोमः", "ज्योतिष्ष्टोमः"],
+        "surfaces": ["ज्योतिष्टोमः", "ज्योतिःष्टोमः", "ज्योतिष्ष्टोमः"],
     },
     {
-        # आयुष्टोमः — 8.3.83's second pūrva, same residual-visarga note.
+        # आयुष्टोमः — 8.3.83's second pūrva, same three-fold alternation.
         "label": "X5-AyuzwomaH-SK1021-8.3.83",
         "type": "zazWI",
         "purva": {"stem": "Ayus"},
         "uttara": {"stem": "stoma", "vacana": 1},
         "fired": ["2.2.8"],
-        "surfaces": ["आयुःष्टोमः", "आयुष्ष्टोमः"],
+        "surfaces": ["आयुष्टोमः", "आयुःष्टोमः", "आयुष्ष्टोमः"],
     },
     {
         # शोभनं साम यस्य = सुषामा — SK's headline example for 8.3.98. A bahuvrīhi with a

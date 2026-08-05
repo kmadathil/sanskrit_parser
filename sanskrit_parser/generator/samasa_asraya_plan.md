@@ -119,6 +119,16 @@ must be in the Tier-1 propagate list, and it was not. The (ज्योतिस
 rule is reachable — only the `lp` gate was failing. One list entry fixed it, exactly as `?Ahita`
 needed in X6.
 
+**4. ज्योतिष्टोमः completed — and the vārtika was not what this file said it was.** The note above
+claimed "visarga-LOPA before शर् + stop, a vārtika on 8.3.36". Checking SK151's own commentary
+gives it as **खर्परे शरि वा विसर्गलोपो वक्तव्यः** (रामस्थाता, हरिस्फुरति): the condition is खर्-para,
+which is WIDER than the stops (khar includes श्/ष्/स्), and SK closes with **पक्षे विसर्गे सत्वे च
+त्रैरूप्यम्** — so the residual visarga was never a defect, it is one of THREE attested forms.
+Implemented as rule `8.3.36.1` with `overrides: 8.3.34` only; overriding 8.3.36 as well gave two
+forms and lost the satva. Output: ज्योतिष्टोमः / ज्योतिःष्टोमः / ज्योतिष्ष्टोमः. Blast radius was
+scanned FIRST this time — exactly two expected surfaces in the suite matched the context, versus
+the five landed failures 8.4.11 caused in X6 by not checking.
+
 **The standing lesson, now four confirmations and one confidently wrong inference:** a tag is
 dropped at a merge unless it is in the right `join_objects` list. **Reach for a tag trace before
 reasoning about why a rule does not fire.** Twice a trace found in one pass what several rounds of

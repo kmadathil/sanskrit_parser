@@ -2000,6 +2000,38 @@
   xform:
      l: str("s")
 
+# SK151 vārtika on 8.3.36: **खर्परे शरि वा विसर्गलोपो वक्तव्यः** — "before a ŚAR that is itself
+# followed by a KHAR, the visarga is OPTIONALLY ELIDED". SK's own examples are रामस्थाता
+# (रामः + स्थाता) and हरिस्फुरति (हरिः + स्फुरति), and it closes the note with
+# **पक्षे विसर्गे सत्वे च त्रैरूप्यम्** — with the alternatives there are THREE forms: lopa (this
+# rule), retained visarga (8.3.36 not applying), and satva (8.3.34 / 8.3.36's own स्).
+#
+# Note the condition is खर्-para, NOT "stop"-para: khar is क् ख् च् छ् ट् ठ् त् थ् प् फ् श् ष् स्,
+# so a following śar also qualifies. Contrast 8.3.35 शर्परे विसर्जनीयः immediately above, whose
+# order is the mirror image — visarga + KHAR + śar (कः त्सरुः).
+#
+# What this unlocks: **ज्योतिष्टोमः**. SK1021/8.3.83 makes स्तोम's स् → ष् (giving ज्योतिः + ष्टोम),
+# and the ष् is a śar followed by the khar ट् — so this vārtika elides the pūrva's visarga and
+# leaves ONE ष्, which is SK's form. Without it the generator could only produce ज्योतिःष्टोमः /
+# ज्योतिष्ष्टोमः, recorded until now as a standing partial on 8.3.83.
+#
+# `overrides: 8.3.34` ONLY — deliberately not 8.3.36. The vārtika is an apavāda to the NITYA
+# satva of 8.3.34, exactly as 8.3.36 is (and 8.3.36 declares the same override). Overriding
+# 8.3.36 as well would suppress the satva branch and yield two forms, not SK's three: with
+# `[8.3.34, 8.3.36]` the output is ज्योतिःष्टोमः / ज्योतिष्टोमः, losing ज्योतिष्ष्टोमः. The three are
+# पक्षे alternatives, not a priority chain.
+- sutra: खर्परे शरि वा विसर्गलोपो वक्तव्यः
+  id: 8.3.36.1
+  overrides: 8.3.34
+  optional: True
+  condition:
+     l:  H
+     r: _Sar
+     rr: _Kar
+     lp: ?pada
+  xform:
+     l: null
+
 # FIXME: Ignoring updaDmanIya and jihvAmUlIya as they're not seen in practice
 # 142: कुप्वोः कपौ च (8-3-37)
 - sutra: कुप्वोः ≍क≍पौ च
@@ -14563,9 +14595,14 @@
   # (ज्योतिस् | स्तोमस्) window exists and the rule is reachable; only the lp gate was failing.
   # Adding ?jyotis/?Ayus to that list fixed it, exactly as ?Ahita needed in X6.
   #
-  # The surface is still ज्योतिःष्टोमः / ज्योतिष्ष्टोमः rather than SK's ज्योतिष्टोमः, because the
-  # visarga-LOPA before शर् + stop (a vārtika on 8.3.36) is unimplemented — a separate,
-  # pre-existing gap that this refactor does not touch and does not pretend to.
+  # SK's ज्योतिष्टोमः IS now produced, and all THREE of SK151's forms with it. The pūrva's visarga
+  # is elided by the SK151 vārtika on 8.3.36 — खर्परे शरि वा विसर्गलोपो वक्तव्यः, rule 8.3.36.1 —
+  # since the ष् this rule supplies is a śar followed by the khar ट्. SK closes that note with
+  # पक्षे विसर्गे सत्वे च त्रैरूप्यम्, so the alternation is expected: ज्योतिष्टोमः (lopa) /
+  # ज्योतिःष्टोमः (visarga) / ज्योतिष्ष्टोमः (satva).
+  # (An earlier version of this comment described the vārtika as "before शर् + stop". Wrong on
+  # both counts: the condition is खर्-para, which is wider than the stops and includes श्/ष्/स्,
+  # and the residual visarga was not a defect but one of the three attested forms.)
   xform:
     r: null
   insert:
