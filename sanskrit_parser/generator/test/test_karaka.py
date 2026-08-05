@@ -18,6 +18,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject, _is_karaka
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna
+from sanskrit_parser.generator import pratyaya as _pratyaya
 from sanskrit_parser.generator import pratipadika as _pratipadika
 from sanskrit_parser.generator import dhatu as _dhatu
 from sanskrit_parser.generator import avyaya as _avyaya
@@ -37,6 +38,10 @@ def _yoga_dir_tag(spec):
 
 
 def _build_word(spec):
+    """One sentence word, as a LIST of elements — a list because a LIVE-DERIVED feminine
+    is `[base, strI_abs]` (`strI_abs: True`), the ṭāp/ṅīp being a separate element rather
+    than baked into a stored stem (ni_ap_derivation_plan.md step D). The kāraka pre-pass
+    inserts the word's sup AFTER the strī affix, so the order stays stem | strī | sup."""
     if "stem" in spec:
         p = deepcopy(getattr(_pratipadika, spec["stem"]))
         p.setTag(f"vacana_{spec['vacana']}")
@@ -47,9 +52,11 @@ def _build_word(spec):
         yt = _yoga_dir_tag(spec)
         if yt is not None:
             p.setTag(yt)
-        return p
+        if spec.get("strI_abs"):
+            return [p, deepcopy(_pratyaya.strI_abs)]
+        return [p]
     if "verb" in spec:
-        return deepcopy(getattr(_dhatu, spec["verb"]))
+        return [deepcopy(getattr(_dhatu, spec["verb"]))]
     if "word" in spec:
         # Particles (avyaya). A karmapravacanīya particle carries its per-usage
         # sense tag at input (e.g. semantic_lakzaRa on anu) plus a governance-
@@ -70,7 +77,7 @@ def _build_word(spec):
             yt = _yoga_dir_tag(spec)
             if yt is not None:
                 p.setTag(yt)
-        return p
+        return [p]
     raise ValueError(f"Unknown word spec {spec}")
 
 
@@ -80,8 +87,8 @@ def test_karaka(case):
     pl = [Adya]
     word_ix = []
     for spec in case["sentence"]:
-        word_ix.append(len(pl))
-        pl.append(_build_word(spec))
+        word_ix.append(len(pl))          # the word's FIRST element — the stem
+        pl.extend(_build_word(spec))
         pl.append(avasAna)
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
     p.execute()

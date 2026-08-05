@@ -25,6 +25,7 @@ from indic_transliteration import sanscript
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna
+from sanskrit_parser.generator import pratyaya as _pratyaya
 from sanskrit_parser.generator import pratipadika as _pratipadika
 
 from conftest import sutra_list
@@ -32,9 +33,17 @@ from samasa_list import samasa_dv_tests
 
 
 def _build_member(spec):
-    """A dvandva member: a stem (pratipadika.py) in the prathamā (vigraha), with the
-    dvandva intent tags. Each member defaults to viBakti_1 / vacana_1 unless overridden
-    (the uttara's viBakti carries the compound's external case for the vibhakti sweep)."""
+    """A dvandva member, as a LIST of elements: a stem (pratipadika.py) in the prathamā
+    (vigraha) with the dvandva intent tags, optionally followed by `strI_abs` when the
+    member is a LIVE-DERIVED feminine (`strI_abs: True` — यूक + ṭāp instead of a stored
+    यूका, ni_ap_derivation_plan.md step D).
+
+    A list rather than a single object because the strī affix is a separate element. The
+    pre-pass tolerates it: its member windows are computed over member INDICES
+    (_samasa_prepass_after_reorder), so an intervening pratyaya does not break the pair.
+
+    Each member defaults to viBakti_1 / vacana_1 unless overridden (the uttara's viBakti
+    carries the compound's external case for the vibhakti sweep)."""
     p = deepcopy(getattr(_pratipadika, spec["stem"]))
     p.setTag(f"vacana_{spec.get('vacana', 1)}")
     p.setTag(f"viBakti_{spec.get('vibhakti', 1)}")
@@ -45,7 +54,9 @@ def _build_member(spec):
         p.setTag("samAhAra")
     for t in spec.get("tags", []):    # samāhāra CLASS tag (prāṇyaṅga / vṛkṣādi / …)
         p.setTag(t)
-    return p
+    if spec.get("strI_abs"):
+        return [p, deepcopy(_pratyaya.strI_abs)]
+    return [p]
 
 
 def _to_slp1(deva):
@@ -61,7 +72,7 @@ def _surface(pl):
 
 @pytest.mark.parametrize("case", samasa_dv_tests, ids=[c["label"] for c in samasa_dv_tests])
 def test_samasa_dvandva(case):
-    members = [_build_member(m) for m in case["members"]]
+    members = [e for m in case["members"] for e in _build_member(m)]
     pl = [Adya, *members, avasAna]
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
@@ -113,7 +124,7 @@ _VACANA_SWEEP = [
 @pytest.mark.parametrize("stems,want", _VACANA_SWEEP,
                          ids=[f"{'-'.join(s)}" for s, _ in _VACANA_SWEEP])
 def test_dvandva_vacana_sweep(stems, want):
-    members = [_build_member({"stem": s}) for s in stems]
+    members = [e for s in stems for e in _build_member({"stem": s})]
     got = _surface([Adya, *members, avasAna])
     assert got == {_to_slp1(s) for s in want}, \
         f"dvandva vacana ({len(stems)} members): {got} != {want}"
@@ -137,7 +148,7 @@ _VIBHAKTI_SWEEP = {
 def test_dvandva_vibhakti_sweep(vib_n):
     m1 = _build_member({"stem": "Dava"})
     m2 = _build_member({"stem": "Kadira", "vibhakti": vib_n})
-    got = _surface([Adya, m1, m2, avasAna])
+    got = _surface([Adya, *m1, *m2, avasAna])
     expected = {_to_slp1(s) for s in _VIBHAKTI_SWEEP[vib_n]}
     assert got == expected, f"dvandva viBakti_{vib_n}: {got} != {expected}"
 

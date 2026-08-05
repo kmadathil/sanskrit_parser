@@ -4,7 +4,8 @@
 (2026-08-05).** A live-derived `[brAhmaRa, strI_abs]`
 pūrva now takes 6.3.43's hrasva — the mechanism the whole migration rests on — and all five
 X2 pūrva rules have moved to the main-scan member window. §3 step C records the levers.
-Step D is done too: 6.3.61 is un-scoped, two stems are gone, and §3 step D records the two
+Step D is done too: 6.3.61 is un-scoped and **ten stored feminine stems are gone**; the
+tooling blocks (dvandva / kāraka drivers) came down with it. §3 step D records the two real
 boundaries that stop the migration going further. Written
 2026-08-03 from an exploration pass; findings below are measured against the tree at commit
 `f524e44` unless marked as inference or dated 2026-08-05.
@@ -81,10 +82,13 @@ implemented (`sutras_antaranga.yaml:6045`), and `vibhaktis_list.py:2602` **alrea
 `prAtipadika["rohiNI"] = [rohita, strI_abs]`. Its त्-final base — the one non-a-stem case in
 the whole inventory, which is why the original entry flagged it — is the case already solved.
 
-**Bucket 2 — base plausibly addable** (an ordinary a-stem the language attests, the base is
-just not in `pratipadika.py` yet): गङ्गा ← गङ्ग · सेना ← सेन · इष्टका ← इष्टक · वडवा ← वडव ·
+**Bucket 2 — base addable.** ~~गङ्गा ← गङ्ग · सेना ← सेन · इष्टका ← इष्टक · वडवा ← वडव ·
 यूका ← यूक · राक्षसी ← राक्षस · रेवती ← रेवत · पञ्चमी ← पञ्चम · नाडी ← नाड · स्थाली ← स्थाल ·
-दुह्यमाना ← दुह्यमान (śānac participle + ṭāp) · नासिका ← नासिक.
+दुह्यमाना ← दुह्यमान · नासिका ← नासिक~~ — **resolved in step D.** DONE: `izwakA`, `izIkA`,
+`revatI`, `yUkA`, `duhyamAnA` (+ `ramA`, `jawA`, `niSA`, which this bucket had missed).
+Still held, and by rules rather than by a missing base: गङ्गा, सेना, वडवा, राक्षसी, पञ्चमी,
+नाडी, स्थाली, नासिका — all uttara-position (some also standalone). **`रेवती ← रेवत` was
+wrong**: the base is the ugit रेवत्, since an a-stem gives *रेवता (see step D).
 
 **Bucket 3 — lexical, keep the stored stem.** The six the plan named — `nadI`, `strI`,
 `lakzmI`, `SrI`, `tantrI`, `pfTivI` — plus प्रवाणी / प्रमाणी, which are kṛt/nipātana formations
@@ -379,7 +383,7 @@ own `update:`; it rides the pūrva's sup-luk with `?NI`; 6.3.61 skips it. Two of
 sources were **not** in the original damage list and only surfaced when the suite ran, which
 is the argument for the marker over an enumerated guard list.
 
-**2. Five stems deleted in all, six cases now live-derived.** `gOrI` and `ekA` are gone —
+**2. Ten stems deleted in all** (five in the first pass, five more once the tooling blocks came down — see below), **and eleven cases now live-derived.** `gOrI` and `ekA` are gone —
 `[gaura, strI_abs]` (ङीष् 4.1.41 गौरादि) and `[eka, strI_abs]` (ṭāp 4.1.4) — and X2's
 अजक्षीरम् moved to `[aja, strI_abs]`, which proves **`?Ap` rides the sup-luk exactly as `?NI`
 does**. The गौरीपुत्रः negative is now a stronger अङ्यः-किम् than it was: the `?NI` that blocks
@@ -418,10 +422,24 @@ every a-final prātipadika.
   later. `brAhmaRI` is held here (ब्राह्मणीभार्यः, 6.3.41 जातेश्च), as are `kalyARI` (also a
   standalone kāraka word) and `dattA`/`pAcikA`/`sukeSI`.
 
-A third, smaller one is **tooling**, not grammar: the dvandva driver and `karaka_list` have no
-way to express a multi-element word, which is the only thing holding `yUkA` and `duhyamAnA`.
-Neither of the two real boundaries is a tagging gap — both are rules that must run before the
-affix is chosen.
+**The tooling block is REMOVED (2026-08-05).** It was the third, smaller boundary — the
+dvandva driver and `karaka_list` could not express a multi-element word. Both now can:
+`_build_member` / `_build_word` return a LIST of elements and take `strI_abs: True`, the same
+shape as the X2 driver's `purva_strI_abs`. Four more stems fell out:
+
+| stem | now | what had held it |
+|---|---|---|
+| `yUkA` | `[yUka, strI_abs]` | dvandva driver (first member of यूकालिक्षम्) |
+| `duhyamAnA` | `[duhyamAna, strI_abs]` | kāraka driver (standalone word, गोषु दुह्यमानासु गतः) |
+| `ramA` | `[rama, strI_abs]` | kāraka driver + a `vibhaktis_list` paradigm |
+| `jawA` | `[jawa, strI_abs]` | kāraka driver (जटाभिस्तापसः) |
+| `niSA` | `[niSa, strI_abs]` | nothing but inertia — a `vibhaktis_list` paradigm, which has taken element lists all along |
+
+Neither of the two REAL boundaries is a tagging gap — both are rules that must run before the
+affix is chosen, and no driver change reaches them. Note in particular that **ekaśeṣa is not
+a tooling block either**: 1.2.67 पुमान् स्त्रिया / 1.2.73 ग्राम्यपशु have to *identify* the
+feminine member at −1, where a live member is still the masculine base — so `haMsI` and `ajA`
+stay stored for the same reason the puṁvadbhāva family's stems do.
 That is the honest end state of the migration: the **pūrva-hrasva family is fully live**, the
 samāsānta-selection and puṁvadbhāva families are not, and the pre-formed stems that remain are
 the ones those two families need.

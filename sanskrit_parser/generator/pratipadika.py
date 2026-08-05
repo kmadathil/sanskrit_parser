@@ -190,8 +190,8 @@ kARa   = Pratipadika("kARa",   "pum")   # काण — अक्ष्णा �
 #  - parArDa: परार्ध — उप परार्धे हरेर्गुणाः (SK645 upa adhika → kp_saptamī)
 #  - sTAlI  : स्थाली (ī-stem strī, NI) — स्थाल्यां पचति (SK633 aupaśleṣika ādhāra)
 #  - pAwaliputraka / mATura : SK639 पञ्चमी विभक्ते — माथुराः पाटलिपुत्रकेभ्यः
-#  - duhyamAnA : दुह्यमाना (passive participle, ā-stem strī) — गोषु दुह्यमानासु गतः
-#                (SK634 sati-saptamī partner; loc. pl. दुह्यमानासु)
+#  - duhyamAna : दुह्यमान (passive participle) — गोषु दुह्यमानासु गतः (SK634 sati-saptamī
+#                partner; loc. pl. दुह्यमानासु). The feminine is DERIVED: [duhyamAna, strI_abs]
 #  - rudat  : रुदत् (śatṛ pum, √rud class 2, no vikaraṇa) — रुदति/रुदतो (SK635 anādara)
 mokza   = Pratipadika("mokza",   "pum")
 parArDa = Pratipadika("parArDa", "pum")
@@ -211,7 +211,9 @@ Ayukta  = Pratipadika("Ayukta",  "pum")   # आयुक्त — आयुक�
 kuSala  = Pratipadika("kuSala",  "pum")   # कुशल — कुशलः … (SK637/640)
 sADu    = Pratipadika("sADu",    "pum")   # साधु — मातरि साधुः (SK640)
 nipuRa  = Pratipadika("nipuRa",  "pum")   # निपुण — निपुणो वा (SK640)
-duhyamAnA = Pratipadika("duhyamAnA", "strI", other_tags=["Ap"])
+# दुह्यमाना is DERIVED: [duhyamAna, strI_abs] → ṭāp 4.1.4 (step D). The kāraka driver takes a
+# multi-element word now, which is what used to hold the stored ā-stem in place.
+duhyamAna = Pratipadika("duhyamAna", "pum")   # दुह्यमान — the śānac participle stem
 rudat   = Pratipadika("rudat",   "pum", its=["f"], other_tags=["Satf"])
 # Kāraka Phase K4 sentence stems (sampradāna + caturthī; SK569–585).
 grAma = Pratipadika("grAma", "pum")   # ग्राम — ग्रामं/ग्रामाय गच्छति (SK585 2.3.12 vibhāṣā)
@@ -772,8 +774,8 @@ duhitf = Pratipadika("duhitf", "strI", other_tags=["svasrAdi"])
 yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
 
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
-ramA = Pratipadika("ramA", "strI", other_tags=["Ap"])
-jawA = Pratipadika("jawA", "strI", other_tags=["Ap"])   # जटा — जटाभिस्तापसः (SK566; inst. pl. जटाभिः)
+rama = Pratipadika("rama", "pum")   # रम — base of रमा (ṭāp 4.1.4); the stored रमा is gone (step D)
+jawa = Pratipadika("jawa", "pum")   # जट — base of जटा (ṭāp 4.1.4) — जटाभिस्तापसः (SK566; inst. pl. जटाभिः)
 gaNgA = Pratipadika("gaNgA", "strI", other_tags=["Ap"])   # गङ्गा — हिमवतो गङ्गा प्रभवति (SK594 1.4.31; प्रथमा गङ्गा)
 # SK293 (7.3.115): dvitīyā and tṛtīyā optionally get syāw (like sarvanāma āp) before ṅ-marked suffixes.
 # Used as [dvitIya, Ap] / [tftIya, Ap] in test fixtures (same pattern as [sarva, Ap] for sarva_A).
@@ -781,7 +783,7 @@ dvitIya = Pratipadika("dvitIya", "pum", other_tags=["dvitIyAdi"])
 tftIya  = Pratipadika("tftIya",  "pum", other_tags=["dvitIyAdi"])
 nadI = Pratipadika("nadI", "strI", other_tags=["NI"])
 kalyARI = Pratipadika("kalyARI", "strI", other_tags=["NI"])  # कल्याणी — मासं कल्याणी (SK558; ī-stem like nadI)
-niSA = Pratipadika("niSA", "strI", other_tags=["pAdAdi", "Ap"])
+niSa = Pratipadika("niSa", "pum", other_tags=["pAdAdi"])
 nAsikA = Pratipadika("nAsikA", "strI", other_tags=["pAdAdi", "Ap"])
 tuNga = Pratipadika("tuNga", "pum")   # adj. "prominent/high"; pūrva-pada for SK511 tuNgakarRA
 karRa = Pratipadika("karRa", "napum")  # "ear" (svāṅga a-stem); SK511 uttara-pada
@@ -1221,7 +1223,9 @@ plakza   = Pratipadika("plakza",   "pum")   # प्लक्ष m. (wave-leaved
 nyagroDa = Pratipadika("nyagroDa", "pum")   # न्यग्रोध m. (banyan) — प्लक्षन्यग्रोधम्/प्लक्षन्यग्रोधाः
 vAc  = Pratipadika("vAc",  "strI", other_tags=["cudazaha_anta"])  # वाच् f. "speech" (च-final) — वाक्त्वचम् (SK930/5.4.106)
 tvac = Pratipadika("tvac", "strI", other_tags=["cudazaha_anta"])  # त्वच् f. "skin" (च-final) — वाक्त्वचम्
-yUkA   = Pratipadika("yUkA",   "strI", other_tags=["Ap"])   # यूका f. "louse" (kṣudrajantu) — यूकालिक्षम् (SK912/2.4.8)
+# यूका is DERIVED: [yUka, strI_abs] → ṭāp 4.1.4 (step D). लिक्षा below stays stored — it is
+# the LAST dvandva member, and a live UTTARA is out of reach (its ī/ā does not exist at −1).
+yUka   = Pratipadika("yUka",   "pum")   # यूक — base of यूका "louse" (kṣudrajantu), यूकालिक्षम् (SK912/2.4.8)
 likzA  = Pratipadika("likzA",  "strI", other_tags=["Ap"])   # लिक्षा f. "nit" (kṣudrajantu) — यूकालिक्षम्
 nakula = Pratipadika("nakula", "pum")   # नकुल m. "mongoose" (śāśvatika-virodha with अहि) — अहिनकुलम् (SK913/2.4.9)
 
@@ -1433,7 +1437,7 @@ ikzu   = Pratipadika("ikzu",   "pum")   # इक्षु "sugarcane" — इक
 kArzya = Pratipadika("kArzya", "napum")  # कार्ष्य — कार्ष्यवणम् (SK's इह षात्परत्वाण्णत्वम्: the ष् is the cause)
 
 # ── 8.4.6 विभाषौषधिवनस्पतिभ्यः — optional after an ओषधि / वनस्पति word.
-dUrvA    = Pratipadika("dUrvA",    "strI", other_tags=["Ap", "ozaDi"])   # दूर्वा — दूर्वावणम् / दूर्वावनम्
+dUrvA    = Pratipadika("dUrvA",    "strI", other_tags=["ozaDi"])   # दूर्वा — दूर्वावणम् / दूर्वावनम्
 devadAru = Pratipadika("devadAru", "napum", other_tags=["vanaspati"])    # देवदारु — the द्व्यच्त्र्यच् vārtika NEGATIVE
 
 # ── 8.4.8 वाहनमाहितात् · 8.4.9/8.4.10 पानं देशे / वा भावकरणयोः

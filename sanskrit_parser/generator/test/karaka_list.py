@@ -391,7 +391,8 @@ karaka_tests = [
         "sutras": ["1.4.54", "2.3.46", "1.4.49", "2.3.2"],
         "sentence": [
             {"stem": "rAma", "vacana": 1, "sem": ["semantic_svatantra"]},
-            {"stem": "ramA", "vacana": 1, "sem": ["semantic_Ipsitatama"]},
+            {"stem": "rama", "vacana": 1, "strI_abs": True,   # LIVE-DERIVED रमा
+             "sem": ["semantic_Ipsitatama"]},
             {"verb": "Bajati"},
         ],
         "expect": [
@@ -1012,7 +1013,8 @@ karaka_tests = [
         "label": "SK566-jatabhis-tapasah",
         "sutras": ["2.3.21", "2.3.46"],
         "sentence": [
-            {"stem": "jawA", "vacana": 3, "sem": ["semantic_itTamBUtalakzaRa"]},
+            {"stem": "jawa", "vacana": 3, "strI_abs": True,   # LIVE-DERIVED जटा
+             "sem": ["semantic_itTamBUtalakzaRa"]},
             {"stem": "tApasa", "vacana": 1, "sem": ["semantic_prAtipadikArTa"]},
         ],
         "expect": [
@@ -2332,7 +2334,10 @@ karaka_tests = [
         "sutras": ["2.3.37"],
         "sentence": [
             {"stem": "go", "vacana": 3, "sem": ["semantic_BAvalakzaRa"]},
-            {"stem": "duhyamAnA", "vacana": 3, "sem": ["semantic_BAvalakzaRa"]},
+            # LIVE-DERIVED feminine ([दुह्यमान, strI_abs] → ṭāp 4.1.4): the stored
+            # दुह्यमाना is gone (ni_ap_derivation_plan.md step D).
+            {"stem": "duhyamAna", "vacana": 3, "strI_abs": True,
+             "sem": ["semantic_BAvalakzaRa"]},
             {"verb": "gataH"},
         ],
         "expect": [

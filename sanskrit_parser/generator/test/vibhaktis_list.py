@@ -297,7 +297,7 @@ viBakti["nadI"] = [
      ["नदि", "नद्यौ", "नद्यः"],
 ]
 
-prAtipadika["ramA"] = ramA   # noqa: F405
+prAtipadika["ramA"] = [rama, strI_abs]   # noqa: F405  (ṭāp 4.1.4 — stored रमा deleted)
 viBakti["ramA"] = [
      ["रमा", "रमे", "रमाः"],
      ["रमाम्", "रमे", "रमाः"],
@@ -460,7 +460,7 @@ viBakti["nAsikA"] = [
     ['नासिके', 'नासिके', 'नासिकाः'],
 ]
 
-prAtipadika["niSA"] = niSA    # noqa: F405
+prAtipadika["niSA"] = [niSa, strI_abs]    # noqa: F405  (ṭāp 4.1.4 — stored निशा deleted)
 viBakti["niSA"] = [
     ['निशा', 'निशे', 'निशाः'],
     ['निशाम्', 'निशे', ['निशः', 'निशाः']],

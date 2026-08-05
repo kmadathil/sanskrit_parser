@@ -1776,7 +1776,10 @@ samasa_dv_tests = [
     {
         # यूका च लिक्षा च → यूकालिक्षम् (kṣudrajantu, 2.4.8 → samāhāra napum sg).
         "label": "D1-yUkAlikzam-SK912-2.4.8",
-        "members": [{"stem": "yUkA", "tags": ["kzudrajantu"]},
+        # यूका is LIVE-DERIVED ([यूक, strI_abs] → ṭāp 4.1.4): the dvandva driver now takes a
+        # multi-element member, which is what used to hold this stem back (step D). लिक्षा
+        # stays stored — it is the LAST member, and a live uttara is out of reach.
+        "members": [{"stem": "yUka", "tags": ["kzudrajantu"], "strI_abs": True},
                     {"stem": "likzA", "tags": ["kzudrajantu"]}],
         "fired": ["2.2.29", "2.4.8", "2.4.17", "1.2.43"],
         "surface": "यूकालिक्षम्",
