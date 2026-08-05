@@ -4354,6 +4354,12 @@
     rp: "?samAsa"
   xform:
     l: dirgha(l)
+  update:
+    # ?vihita_dIrGa: this pūrva's final vowel was SUPPLIED by a rule, and supplying it is the
+    # whole point of that rule — so SK999/6.3.61's optional hrasva must not undo it
+    # (unscoped, 6.3.61 turned केशाकेशि back into केशाकेशि/केशिकेशि). Rides the pūrva's
+    # sup-luk with ?NI. Same marker on SK923/6.3.27.
+    olp: [+vihita_dIrGa]
 
 # 417: चौ (6-3-138)
 # Before añc reduced to 'c' (ñ and a both elided), lengthen the preceding member's final vowel.
@@ -11069,9 +11075,14 @@
   update:
     olp: [+puMvadBAva_niziDDa]
 
-# SK839/6.3.38: संज्ञापूरण्योश्च — a feminine that is a NAME (?saMjYA) or an ORDINAL
+# SK839/6.3.38: संज्ञापूरण्योश्च — a feminine that is a NAME (?strI_saMjYA) or an ORDINAL
 # (?pUraRI) does NOT take the masculine: दत्ताभार्यः (दत्ता, name), पञ्चमीभार्यः (पञ्चमी,
 # ordinal). Apavāda to 6.3.34.
+# The gate is ?strI_saMjYA, not bare ?saMjYA (2026-08-05): this sūtra's संज्ञा is a property
+# of the WORD (दत्ता is a name), whereas the bare ?saMjYA tag means the COMPOUND is a name —
+# the sense SK1001/6.3.63 ङ्यापोः संज्ञाछन्दसोर्बहुलम् and SK857/8.4.3 पूर्वपदात्संज्ञायामगः read.
+# The overload was latent until दत्ता was given its (correct) ?Ap, at which point 6.3.63 saw a
+# ?Ap + ?saMjYA pūrva and forked दत्ताभार्यः into a spurious *दत्तभार्यः.
 - sutra: संज्ञापूरण्योश्च
   id: 6.3.38
   domain: saMjYA
@@ -11083,7 +11094,7 @@
       - "?samAsaPurva"
       - "?puMvat"
       - - or
-        - "?saMjYA"
+        - "?strI_saMjYA"
         - "?pUraRI"
     rp:
       - and
@@ -12847,6 +12858,8 @@
         - "=varuRa"
   xform:
     l: str("I")
+  update:
+    olp: [+vihita_dIrGa]   # see 6.3.137: protects अग्नीवरुणौ from 6.3.61's optional hrasva
 
 # 926/6.3.29: दिवो द्यावा — दिव् (heaven) → द्यावा in a devatā-dvandva before the
 # uttarapada: दिव्+पृथिवी = द्यावापृथिव्यौ. Whole-stem substitution (like महत्→महा). The
@@ -14013,9 +14026,17 @@
 # the hrasva defeats puṁvadbhāva by paratva. The two can only collide in a bahuvrīhi with a
 # feminine uttara (6.3.34's own context); in the ṣaṣṭhī-tatpuruṣa the tests use, 6.3.34
 # cannot fire at all, so the override is a correctness declaration rather than a tested path.
+#
+# MAIN-SCAN rule (relocated 2026-08-05, was `bahiranga: -1`). The pre-pass window sees the
+# pūrva BEFORE the ṭāp/ṅīp selection at bahiranga 2, so a live-derived `[brAhmaRa, strI_abs]`
+# member is still the bare base there — there is no ī to shorten, which is exactly why the
+# pre-tagged stems existed. At the main scan the (pūrva-pada | uttara-pada) member window —
+# the same one X6's cross-member ṇatva uses — has the ī on both paths. Two levers make it
+# reachable: `?NI`/`?puMvat` ride through the pūrva's sup-LUK (join_objects, `?samAsaPurva` +
+# `?sup_luk`), and the uttara list is read as the stem class tag `?GarUpAdi` (tier 2) because
+# by then गोत्र has merged with its sup and `=gotra` can no longer match — the X4/X5 lesson.
 - sutra: घरूपकल्पचेलड्ब्रुवगोत्रमतहतेषु ङ्योऽनेकाचो ह्रस्वः
   id: 6.3.43
-  bahiranga: -1
   overrides: 6.3.34
   condition:
     lp:
@@ -14027,12 +14048,7 @@
     rp:
       - and
       - "?samAsa"
-      - - or
-        - "=celI"
-        - "=bruva"
-        - "=gotra"
-        - "=mata"
-        - "=hata"
+      - "?GarUpAdi"
   xform:
     l: hrasva(l)
 
@@ -14047,33 +14063,37 @@
 # vibhāṣā fork the derivation on every i/u-final pūrva in the language (हरि, गिरि, अङ्गुलि …)
 # with no change in surface; and the sūtra's own vārtika इयङुवङ्भाविनामव्ययानां च न exempts the
 # monosyllabic iyaṅ/uvaṅ stems (श्रीमदः, भ्रूभङ्गः), which अनेकाच् expresses.
-# SCOPED, deliberately, to a composer marker `?gAlava_hrasva` — the same treatment 6.3.137
-# अन्येषामपि दृश्यते gets a few hundred lines above, and for the same reason. Turned loose on
-# every इगन्त अङ्यन्त pūrva this rule is *destructive*, because a long ī/ū in a compound pūrva
-# is very often one another rule has just supplied on purpose:
-#   · SK846/2.2.27's reciprocity compound is LENGTHENED by 6.3.137 precisely to give
-#     केशाकेशि / मुष्टीमुष्टि / बाहूबाहवि — 6.3.61 shortened it straight back;
-#   · SK923/6.3.27 ईदग्नेः substitutes अग्नि → अग्नी for अग्नीवरुणौ — likewise undone;
-#   · ऊरीकृतम् also came out as ऊरिकृतम्, against the sūtra's own vārtika
-#     इयङुवङ्भाविनामव्ययानां च न (ऊरी is an ऊर्यādi avyaya);
-#   · सुकेशीभार्यः also came out as सुकेशिभार्यः, because `?NI` tagging is INCOMPLETE across
-#     pratipadika.py — सुकेशी carries only ?svAnga_I, and ब्राह्मणी was missing ?NI until this
-#     phase added it — so `?!NI` cannot be trusted to express अङ्यः lexicon-wide.
-# The suppressed forms are not merely extra: they defeat rules whose whole purpose is that
-# vowel. And the sūtra earns little generality in exchange — it is a वा attributed to ONE
-# grammarian (गालवस्य, which SK notes is पूजार्थम्) with a single example. So the marker is
-# opt-in, `$$ik_dIrGa_anekAc` still enforces the vowel/syllable conditions, and the general
-# इगन्त form is recorded as the deferral (see generator_status.md).
+# UN-SCOPED 2026-08-05 (step D of ni_ap_derivation_plan.md). It ran for a while behind an
+# opt-in `?gAlava_hrasva` marker because turned loose it was *destructive* — a long ī/ū in a
+# compound pūrva is very often one another rule has just supplied on purpose. All four causes
+# are now addressed at their root rather than by suppressing the sūtra:
+#   · SK846/2.2.27's reciprocity compound (केशाकेशि / मुष्टीमुष्टि / बाहूबाहवि) is LENGTHENED by
+#     6.3.137, and SK923/6.3.27 ईदग्नेः substitutes अग्नि → अग्नी for अग्नीवरुणौ — both now set
+#     `?vihita_dIrGa` on the pūrva, and this rule skips it. A rule-supplied vowel is not a
+#     candidate for an optional shortening whose only effect would be to undo it;
+#   · ऊरीकृतम् — the `?!avyaya` guard, which is the sūtra's OWN vārtika
+#     इयङुवङ्भाविनाम्**अव्ययानां** च न, and should have been there from the start;
+#   · सुकेशीभार्यः — was damage from INCOMPLETE `?NI` tagging (सुकेशी carried only ?svAnga_I),
+#     fixed in step 1 of the plan: सुकेशी is now `?NI`, so `?!NI` excludes it correctly.
+# `$$ik_dIrGa_anekAc` still enforces the vowel/syllable conditions (LONG इक् + अनेकाच्), so a
+# short-इक् pūrva does not fork the derivation for no change in surface, and the monosyllabic
+# iyaṅ/uvaṅ stems (श्रीमदः, भ्रूभङ्गः) stay out per the same vārtika's other half.
+# MAIN-SCAN rule (relocated 2026-08-05 with 6.3.43; was `bahiranga: -1`) — at the pre-pass
+# window a live-derived `[base, strI_abs]` pūrva is still the bare base, since the ṭāp/ṅīp
+# choice happens at bahiranga 2. See 6.3.43 above for the three levers.
+# The `?!NI` guard is what the relocation most improves: अङ्यः is now decided by a tag that
+# survives to this window on BOTH paths, live and pre-formed — which is half of why the scoping
+# below could be lifted.
 - sutra: इको ह्रस्वोऽङ्यो गालवस्य
   id: 6.3.61
-  bahiranga: -1
   optional: true
   condition:
     lp:
       - and
       - "?samAsaPurva"
-      - "?gAlava_hrasva"
-      - "?!NI"
+      - "?!NI"              # अङ्यः
+      - "?!avyaya"          # the vārtika's अव्ययानां च न — ऊरीकृतम्
+      - "?!vihita_dIrGa"    # do not undo a vowel 6.3.137 / 6.3.27 supplied on purpose
       - $$ik_dIrGa_anekAc
     rp: "?samAsa"
   xform:
@@ -14082,9 +14102,13 @@
 # SK1000/6.3.62: एक तद्धिते च — एका shortens to एक before a taddhita AND before an
 # uttarapada: एकस्या आगतम् = एकरूप्यम् (taddhita, not modelled), एकक्षीरम् (uttarapada).
 # Nitya — no अन्यतरस्याम् here.
+# MAIN-SCAN rule (relocated 2026-08-05 with 6.3.43; was `bahiranga: -1`) — at the pre-pass
+# window a live-derived `[base, strI_abs]` pūrva is still the bare base, since the ṭāp/ṅīp
+# choice happens at bahiranga 2. See 6.3.43 above for the three levers.
+# No uttara marker needed: this rule tests the PŪRVA's own content (`=ekA`), and a pūrva's
+# content is exactly what the sup-luk leaves untouched.
 - sutra: एक तद्धिते च
   id: 6.3.62
-  bahiranga: -1
   condition:
     lp:
       - and
@@ -14098,9 +14122,13 @@
 # ("variously", modelled as `optional: true`) in a SAṀJÑĀ or in CHANDAS: रेवती + पुत्र =
 # रेवतिपुत्रः (a name), अजा + क्षीर = अजक्षीरम्. Two arms so each gate pairs with its own
 # vowel class; `?saMjYA` / `?Candas` are composer-supplied as elsewhere.
+# MAIN-SCAN rule (relocated 2026-08-05 with 6.3.43; was `bahiranga: -1`) — at the pre-pass
+# window a live-derived `[base, strI_abs]` pūrva is still the bare base, since the ṭāp/ṅīp
+# choice happens at bahiranga 2. See 6.3.43 above for the three levers.
+# `?saMjYA`/`?Candas` sit on the pūrva and reach this window through the tier-1 propagation
+# list (`?Candas` was added there for this move — it had no other consumer past a merge).
 - sutra: ङ्यापोः संज्ञाछन्दसोर्बहुलम्
   id: 6.3.63
-  bahiranga: -1
   optional: true
   condition:
     - lp:
@@ -14151,9 +14179,15 @@
 # per ordered pair — a single `or` over both lists would wrongly license इष्टकतूलम्.
 # तदन्तानां च (पक्वेष्टकचितम्, मुञ्जेषीकतूलम्, उत्पलमालभारि — pūrvas ENDING in these words) is a
 # tadanta-vidhi and is not modelled; the literal `=` gates the bare stems.
+# MAIN-SCAN rule (relocated 2026-08-05 with 6.3.43; was `bahiranga: -1`) — at the pre-pass
+# window a live-derived `[base, strI_abs]` pūrva is still the bare base, since the ṭāp/ṅīp
+# choice happens at bahiranga 2. See 6.3.43 above for the three levers.
+# The three UTTARAS need tags: चित/तूल/भारिन् have merged with their sups by this window, so
+# `=cita` cannot match चितम्. Self-named stem tags `?cita`/`?tUla`/`?BArin` (tier 2, exactly as
+# `?vana` is done) keep the three arms PAIRED — इष्टका↔चित, इषीका↔तूल, माला↔भारिन् — which a
+# single shared class tag would destroy (it would license *इष्टकतूलम्).
 - sutra: इष्टकेषीकामालानां चिततूलभारिषु
   id: 6.3.65
-  bahiranga: -1
   condition:
     - lp:
         - and
@@ -14162,7 +14196,7 @@
       rp:
         - and
         - "?samAsa"
-        - "=cita"
+        - "?cita"
     - lp:
         - and
         - "=izIkA"
@@ -14170,7 +14204,7 @@
       rp:
         - and
         - "?samAsa"
-        - "=tUla"
+        - "?tUla"
     - lp:
         - and
         - "=mAlA"
@@ -14178,7 +14212,7 @@
       rp:
         - and
         - "?samAsa"
-        - "=BArin"
+        - "?BArin"
   xform:
     l: hrasva(l)
 
@@ -14365,6 +14399,8 @@
       - "=vaha"
   xform:
     l: dirgha(l)
+  update:
+    olp: [+vihita_dIrGa]   # see 6.3.137: 6.3.61's optional hrasva must not undo ऋषीवहम्
 
 # SK1044/6.3.122: उपसर्गस्य घञ्यमनुष्ये बहुलम् — an UPASARGA lengthens BAHULAM (→
 # `optional: true`) before a घञ्-formation, but not when a human is denoted: परि + पाक =
@@ -15299,8 +15335,11 @@
 # substitution is expressed on the pūrva's last two characters and `-Ap` clears the ā-stem tag.
 #
 # SK1004's note व्यवस्थितविभाषया ह्रस्वो न records that the ङ्यापोः hrasva rules must NOT
-# re-shorten this fresh ī — and here they cannot: X2's 6.3.61 is scoped to `?gAlava_hrasva`, and
-# 6.3.43 / 6.3.63 need `?NI` / `?Ap`, neither of which survives on the saṁprasāraṇa residue.
+# re-shorten this fresh ī. 6.3.43 / 6.3.63 need `?NI` / `?Ap`, neither of which survives on the
+# saṁprasāraṇa residue. 6.3.61 used to be held off by its `?gAlava_hrasva` scoping; since that
+# scoping was lifted (2026-08-05) the protection is explicit and local — 6.1.13/6.1.14 set
+# `?vihita_dIrGa` in their `update:`, which 6.3.61 skips. This is exactly SK1004's note,
+# modelled rather than inherited from an unrelated deferral.
 # ════════════════════════════════════════════════════════════════════════════
 
 # SK1003/6.1.13: ष्यङः सम्प्रसारणं पुत्रपत्योस्तत्पुरुषे — in a TATPURUṢA, before पुत्र or पति.
@@ -15326,7 +15365,11 @@
     lc: lc[:-1]
     l: str("i")
   update:
-    olp: [+samprasAraRa, -Ap]
+    # ?vihita_dIrGa: the ī of कारीषगन्धी is this saṁprasāraṇa's own product (+ 6.4.2's dīrgha),
+    # so SK999/6.3.61 must not optionally shorten it back — कारीषगन्धीपुत्रः is SK's form. The
+    # ?NI-based अङ्यः guard cannot do this job: ष्यङ् is not ङी, and no ?NI survives on the
+    # saṁprasāraṇa residue anyway (see the note at the head of this block).
+    olp: [+samprasAraRa, -Ap, +vihita_dIrGa]
 
 # SK1005/6.1.14: बन्धुनि बहुव्रीहौ — the same saṁprasāraṇa before बन्धु, in a BAHUVRĪHI.
 # बहुव्रीहाविति किम् — कारीषगन्ध्याया बन्धुः = कारीषगन्ध्याबन्धुः (a ṣaṣṭhī-tatpuruṣa keeps the
@@ -15348,7 +15391,11 @@
     lc: lc[:-1]
     l: str("i")
   update:
-    olp: [+samprasAraRa, -Ap]
+    # ?vihita_dIrGa: the ī of कारीषगन्धी is this saṁprasāraṇa's own product (+ 6.4.2's dīrgha),
+    # so SK999/6.3.61 must not optionally shorten it back — कारीषगन्धीपुत्रः is SK's form. The
+    # ?NI-based अङ्यः guard cannot do this job: ष्यङ् is not ङी, and no ?NI survives on the
+    # saṁprasāraṇa residue anyway (see the note at the head of this block).
+    olp: [+samprasAraRa, -Ap, +vihita_dIrGa]
 
 # SK1004/6.3.139: सम्प्रसारणस्य (दीर्घः, by the 6.3.111 अधिकार) — a saṁprasāraṇa vowel is
 # lengthened before an uttarapada: कारीषगन्धि → कारीषगन्धी. Keyed on the `?samprasAraRa` marker

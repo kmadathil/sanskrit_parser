@@ -201,8 +201,10 @@ strI_abs = Pratyaya("", its=[], other_tags=["strI_abs", "strI"])
 # path SK478 (4.1.20). Verify at implementation time.
 ti_t = Pratyaya("ti", other_tags=["svAdi", "tadDita"])
 
-# Sup Luk
-luk_sup = Pratyaya("", its=[], other_tags=["sup"])
+# Sup Luk. ?sup_luk (not ?luk — 1.1.63 न लुमताङ्गस्य reads ?luk and would strip every tag
+# off the merge) marks the sup as ELIDED, so join_objects can let the pūrva's stem-identity
+# tags (?NI/?Ap/…) ride onto a pada whose final vowel the sup did not change.
+luk_sup = Pratyaya("", its=[], other_tags=["sup", "sup_luk"])
 luk = Pratyaya("", its=[], other_tags=[""])
 
 # Taddhita Luk — empty pratyaya standing in for an elided taddhita affix.

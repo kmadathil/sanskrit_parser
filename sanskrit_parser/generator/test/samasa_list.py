@@ -1186,7 +1186,7 @@ samasa_bv_tests = [
         # SK832/5.4.116 अप्पूरणीप्रमाण्योः — प्रमाणी arm: स्त्री प्रमाणी यस्य = स्त्रीप्रमाणः
         # (प्रमाणी + अप् → प्रमाण; masc referent). स्त्री has no bhāṣitapuṁska so no puṁvadbhāva.
         "label": "B3-strIpramARaH-SK832-5.4.116",
-        "purva": {"stem": "strI_pUrva", "vibhakti": 1},
+        "purva": {"stem": "strI", "vibhakti": 1},
         "uttara": {"stem": "pramARI", "vacana": 1, "vibhakti": 1},
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.116", "1.2.43"],

@@ -258,7 +258,11 @@ class PaninianObject(SanskritObject):
                            # ?jyotis entering that merge and coming out dropped — the same
                            # failure as ?Ahita above, not the window-reachability problem an
                            # earlier comment guessed at.
-                           "jyotis", "Ayus"])
+                           "jyotis", "Ayus",
+                           # ?Candas joins ?saMjYA (already here) for the relocated
+                           # SK1001/6.3.63: both are composer senses the rule now reads at a
+                           # main-scan window, i.e. after each member met its own sup.
+                           "Candas"])
         # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
         # through every merge so a kṛt/taddhita/strī-derived noun keeps its
         # semantic/kāraka/vibhakti view until its sup attaches. The guard tags
@@ -275,6 +279,20 @@ class PaninianObject(SanskritObject):
         # samasta_pada merge below so they never outlive the compound.
         if first.hasTag("samAsaPurva"):
             _propagate(first, ["saMKyA", "avyaya"])
+            # ṅī/āp identity across the pūrva's sup-LUK (2.4.71). Same channel as the
+            # two tags above, but additionally gated on ?sup_luk, because the claim
+            # "this pada ends in a ṅī/āp vowel" is only true while the sup contributed
+            # nothing: with an ALUK pūrva (6.3.1 ff., स्तोकान्मुक्तः, आत्मनेपदम्) the
+            # retained sup IS the pada's final, and ?NI would be a lie about it.
+            # Lets the ṅyanta/ābanta pūrva rules (6.3.43 …) run at the MAIN-SCAN member
+            # window, where a LIVE-derived [base, strI_abs] pūrva has its ī — at
+            # bahiranga −1 the affix is not chosen yet and the member is the bare base.
+            # ?puMvat rides along for 6.3.43's भाषितपुंस्कात्. Consumed at samasta_pada.
+            if last.hasTag("sup_luk"):
+                # ?vihita_dIrGa — SK999/6.3.61 must not undo a long vowel another rule
+                # supplied on purpose (6.3.137, 6.3.27, 6.3.121, 6.1.13, 6.1.14). Set by those
+                # rules on the pūrva, so it has to reach the same relocated window ?NI does.
+                _propagate(first, ["NI", "Ap", "nadI", "puMvat", "vihita_dIrGa"])
 
         # Tier 2 (aṅga-gated): stem-identity tags that should not propagate at
         # pada-pada boundaries
@@ -283,8 +301,15 @@ class PaninianObject(SanskritObject):
             # SK1051/8.4.6 identify the वन uttarapada at a MAIN-SCAN window, by which point
             # वन has merged with its own sup (वनम्), so a `=vana` content match is no longer
             # possible — the self-named stem tag has to ride through that merge instead.
+            # ?GarUpAdi = 6.3.43's uttara list (घ/रूप/कल्प/चेलट्/ब्रुव/गोत्र/मत/हत), same
+            # treatment as ?vana: the rule now runs at a main-scan window where गोत्र has
+            # merged with its sup (गोत्रम्), so `=gotra` cannot match and the stem class
+            # tag has to ride through that merge.
             _propagate(first, ["viSva", "vana", "pAna", "vAhana", "sTAna", "stoma",
-                               "kaRva", "candra", "carya"])
+                               "kaRva", "candra", "carya", "GarUpAdi",
+                               # SK1006/6.3.65's three uttaras, kept as three separate tags
+                               # so the sūtra's क्रमात् pairing survives.
+                               "cita", "tUla", "BArin"])
 
         # Tier 3 (tadDita-gated): compound-type tags and SK480/481/482 semantic
         # class tags ride forward only when the next element is a tadDita affix
@@ -374,6 +399,13 @@ class PaninianObject(SanskritObject):
                 so.setTag(t)
                 for tt in first.tags:
                     so.setTag(tt)
+                # भाषितपुंस्क, derived rather than declared: a feminine formed by ङी/आप् on a
+                # MASCULINE stem has a masculine counterpart by construction — that stem. The
+                # pre-formed feminines state this with a lexical ?puMvat (ब्राह्मणी); a live
+                # [brAhmaRa, strI_abs] derivation earns it here, which is what lets 6.3.43
+                # (भाषितपुंस्कात्) fire on both paths. Set BEFORE pum is dropped.
+                if first.hasTag("pum"):
+                    so.setTag("puMvat")
                 _delete_if_present(["pum", "napum"])
 
         # --- pum_abs on last: restore pum, drop strī-markers, flag pUrvastrI ---

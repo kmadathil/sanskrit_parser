@@ -527,9 +527,25 @@ samasa_asraya_tests = [
     {
         # ब्राह्मणी + गोत्र = ब्राह्मणिगोत्रम्. Three conditions all hold: ब्राह्मणी is ङी-final
         # (?NI), भाषितपुंस्क (?puMvat — it has the masc ब्राह्मण), and अनेकाच्.
+        # 6.3.43 moved to the MAIN SCAN (2026-08-05); the driver's `fired` check now covers
+        # the main-scan trace too (_main_scan_fired), so the attribution stays asserted.
+        # The live-derived twin case is immediately after.
         "label": "X2-brAhmaRigotram-SK985-6.3.43",
         "type": "zazWI",
         "purva": {"stem": "brAhmaRI"},
+        "uttara": {"stem": "gotra", "vacana": 1},
+        "fired": ["2.2.8", "6.3.43"],
+        "surface": "ब्राह्मणिगोत्रम्",
+    },
+    {
+        # THE POINT OF THE RELOCATION: the same form from a LIVE-DERIVED pūrva —
+        # [ब्राह्मण, strI_abs] instead of the pre-formed ब्राह्मणी. Both `?NI` (via the pūrva's
+        # sup-LUK) and `?puMvat` (earned at the ṅīp merge, since the base is masculine) are
+        # derived, not declared, so nothing about this case is pre-tagged.
+        "label": "X2-brAhmaRigotram-live-derived-SK985-6.3.43",
+        "type": "zazWI",
+        "purva": {"stem": "brAhmaRa"},
+        "purva_strI_abs": True,
         "uttara": {"stem": "gotra", "vacana": 1},
         "fired": ["2.2.8", "6.3.43"],
         "surface": "ब्राह्मणिगोत्रम्",
@@ -566,11 +582,12 @@ samasa_asraya_tests = [
         "surface": "ब्राह्मणीपुत्रः",
     },
     {
-        # अन्यतरस्याम् — ग्रामणिपुत्रः / ग्रामणीपुत्रः. ग्रामणी is इक्-final (ī) but NOT
+        # अन्यतरस्याम् — ग्रामणिपुत्रः / ग्रामणीपुत्रः. UN-SCOPED 2026-08-05: the case no longer
+        # passes ?gAlava_hrasva — 6.3.61 fires on its own condition now. ग्रामणी is इक्-final (ī) but NOT
         # ङी-formed — it is a क्विप् derivation (ग्रामं नयति), so 6.3.61 reaches it.
         "label": "X2-grAmaRiputraH-SK999-6.3.61",
         "type": "zazWI",
-        "purva": {"stem": "grAmaRI", "tags": ["gAlava_hrasva"]},
+        "purva": {"stem": "grAmaRI"},
         "uttara": {"stem": "putra", "vacana": 1},
         "fired": ["2.2.8", "6.3.61"],
         "surfaces": ["ग्रामणिपुत्रः", "ग्रामणीपुत्रः"],
@@ -578,9 +595,13 @@ samasa_asraya_tests = [
     {
         # अङ्यः किम् — गौरी IS ङी-formed, so 6.3.61 is blocked: गौरीपुत्रः stays long.
         # (SK's own example is गौरीपतिः.)
+        # LIVE-DERIVED (2026-08-05): [गौर, strI_abs] → ङीष् by 4.1.41 (गौरादि). The ?NI that
+        # blocks 6.3.61 is therefore DERIVED and reaches this window through the pūrva's
+        # sup-luk — a stronger अङ्यः-किम् than the stored tag was. Stem `gOrI` deleted.
         "label": "X2-gOrIputraH-negative-SK999-6.3.61",
         "type": "zazWI",
-        "purva": {"stem": "gOrI", "tags": ["gAlava_hrasva"]},
+        "purva": {"stem": "gaura"},
+        "purva_strI_abs": True,
         "uttara": {"stem": "putra", "vacana": 1},
         "fired": ["2.2.8"],
         "not_fired": ["6.3.61"],
@@ -592,7 +613,7 @@ samasa_asraya_tests = [
         # This is what `$$ik_dIrGa_anekAc` guards (see paribhasha.py).
         "label": "X2-hariputraH-negative-SK999-6.3.61-hrasva",
         "type": "zazWI",
-        "purva": {"stem": "hari", "tags": ["gAlava_hrasva"]},
+        "purva": {"stem": "hari"},
         "uttara": {"stem": "putra", "vacana": 1},
         "fired": ["2.2.8"],
         "not_fired": ["6.3.61"],
@@ -603,7 +624,7 @@ samasa_asraya_tests = [
         # it keeps its ī: श्रीपुत्रः (SK's example is श्रीमदः). The अनेकाच् half of the helper.
         "label": "X2-SrIputraH-negative-SK999-6.3.61-ekAc",
         "type": "zazWI",
-        "purva": {"stem": "SrI", "tags": ["gAlava_hrasva"]},
+        "purva": {"stem": "SrI"},
         "uttara": {"stem": "putra", "vacana": 1},
         "fired": ["2.2.8"],
         "not_fired": ["6.3.61"],
@@ -614,7 +635,8 @@ samasa_asraya_tests = [
         # single surface. The taddhita arm (एकरूप्यम्) is not modelled.
         "label": "X2-ekakzIram-SK1000-6.3.62",
         "type": "zazWI",
-        "purva": {"stem": "ekA"},
+        "purva": {"stem": "eka"},          # LIVE-DERIVED: [एक, strI_abs] → ṭāp → एका.
+        "purva_strI_abs": True,            # Stem `ekA` deleted 2026-08-05.
         "uttara": {"stem": "kzIra", "vacana": 1},
         "fired": ["2.2.8", "6.3.62"],
         "surface": "एकक्षीरम्",
@@ -624,7 +646,10 @@ samasa_asraya_tests = [
         # The ङी arm of 6.3.63.
         "label": "X2-revatiputraH-SK1001-6.3.63",
         "type": "zazWI",
-        "purva": {"stem": "revatI", "tags": ["saMjYA"]},
+        # LIVE-DERIVED (step D): [रेवत्, strI_abs] → ङीप् by 4.1.6 उगितश्च (रेवत् is a
+        # मतुप्-formation, hence ugit). An a-stem base would give *रेवता. Stem `revatI` deleted.
+        "purva": {"stem": "revat", "tags": ["saMjYA"]},
+        "purva_strI_abs": True,
         "uttara": {"stem": "putra", "vacana": 1},
         "fired": ["2.2.8", "6.3.63"],
         "surfaces": ["रेवतिपुत्रः", "रेवतीपुत्रः"],
@@ -633,7 +658,10 @@ samasa_asraya_tests = [
         # The आप् arm of 6.3.63: अजा + क्षीर = अजक्षीरम् / अजाक्षीरम्.
         "label": "X2-ajakzIram-SK1001-6.3.63",
         "type": "zazWI",
-        "purva": {"stem": "ajA", "tags": ["saMjYA"]},
+        # LIVE-DERIVED, and the ?Ap counterpart of the ब्राह्मणी case: [अज, strI_abs] → ṭāp
+        # (4.1.4, अजादि). Proves ?Ap rides the pūrva's sup-luk exactly as ?NI does.
+        "purva": {"stem": "aja", "tags": ["saMjYA"]},
+        "purva_strI_abs": True,
         "uttara": {"stem": "kzIra", "vacana": 1},
         "fired": ["2.2.8", "6.3.63"],
         "surfaces": ["अजक्षीरम्", "अजाक्षीरम्"],
@@ -677,7 +705,8 @@ samasa_asraya_tests = [
         # 6.3.65's first ordered pair (क्रमात्): इष्टका–चित → इष्टकचितम्.
         "label": "X2-izwakacitam-SK1006-6.3.65",
         "type": "zazWI",
-        "purva": {"stem": "izwakA"},
+        "purva": {"stem": "izwaka"},   # LIVE-DERIVED: [इष्टक, strI_abs] → ṭāp 4.1.4
+        "purva_strI_abs": True,
         "uttara": {"stem": "cita", "vacana": 1},
         "fired": ["2.2.8", "6.3.65"],
         "surface": "इष्टकचितम्",
@@ -686,7 +715,8 @@ samasa_asraya_tests = [
         # Second pair: इषीका–तूल → इषीकतूलम्.
         "label": "X2-izIkatUlam-SK1006-6.3.65",
         "type": "zazWI",
-        "purva": {"stem": "izIkA"},
+        "purva": {"stem": "izIka"},    # LIVE-DERIVED: [इषीक, strI_abs] → ṭāp 4.1.4
+        "purva_strI_abs": True,
         "uttara": {"stem": "tUla", "vacana": 1},
         "fired": ["2.2.8", "6.3.65"],
         "surface": "इषीकतूलम्",
@@ -706,7 +736,8 @@ samasa_asraya_tests = [
         # which is why 6.3.65 is written as three separate arms.
         "label": "X2-izwakAtUlam-negative-SK1006-6.3.65",
         "type": "zazWI",
-        "purva": {"stem": "izwakA"},
+        "purva": {"stem": "izwaka"},   # LIVE-DERIVED: [इष्टक, strI_abs] → ṭāp 4.1.4
+        "purva_strI_abs": True,
         "uttara": {"stem": "tUla", "vacana": 1},
         "fired": ["2.2.8"],
         "not_fired": ["6.3.65"],

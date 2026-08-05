@@ -106,6 +106,15 @@ def _build_members(case):
     purva = _build_one(case["purva"], ptags,
                        vibhakti=_PURVA_VIBHAKTI[case["type"]])
     out = [purva]
+    if case.get("purva_strI_abs"):
+        # A LIVE-DERIVED feminine pūrva: [base, strI_abs] instead of a pre-formed ṅī/āp
+        # stem (ब्राह्मण + ṅīp instead of the stored ब्राह्मणी). The affix sits between the
+        # two members, which the pre-pass tolerates — its member windows are computed over
+        # member INDICES (`_samasa_prepass_after_reorder`), so intervening pratyayas do not
+        # break the (pūrva | uttara) pair. The rules that need the resulting ī, though, must
+        # run at the MAIN SCAN: at bahiranga −1 the ṭāp/ṅīp choice has not been made yet and
+        # this member is still the bare base. See ni_ap_derivation_plan.md.
+        out.append(deepcopy(_pratyaya.strI_abs))
     if "uttara" in case:
         out.append(_build_one(case["uttara"], utags, referent_linga=ref))
     if case.get("uttara_affix"):
@@ -131,6 +140,32 @@ def _to_slp1(deva):
     return sanscript.transliterate(deva, sanscript.DEVANAGARI, sanscript.SLP1)
 
 
+def _main_scan_fired(p):
+    """Every sūtra id that fired in the MAIN SCAN, including inside the nested
+    sub-prakriyās the samāsa pre-pass builds (_nest_samasa_members).
+
+    `karaka_log` covers only the `bahiranga: -1` pre-pass. Several X2 rules
+    (6.3.43, 6.3.61, 6.3.62, 6.3.63, 6.3.65) were relocated to the main scan on
+    2026-08-05 so they can see a LIVE-derived feminine member's ī, which does not
+    exist yet at −1 — without this helper their `fired` assertions would have had to
+    be deleted, and every `not_fired` guard on them would have gone vacuously true."""
+    out = set()
+
+    def _walk(pr):
+        tree = getattr(pr, "tree", None)
+        if tree is not None:
+            for node in list(tree.children) + list(tree.leaves):
+                s = getattr(node, "sutra", None)
+                aps = getattr(s, "aps", None)
+                if aps:
+                    out.add(aps)
+        for hp in getattr(pr, "hier_prakriyas", []):
+            _walk(hp)
+
+    _walk(p)
+    return out
+
+
 @pytest.mark.parametrize("case", samasa_asraya_tests,
                          ids=[c["label"] for c in samasa_asraya_tests])
 def test_samasa_asraya(case):
@@ -152,17 +187,18 @@ def test_samasa_asraya(case):
         assert members[1].hasTag("samAsa"), \
             f"{case['label']}: uttara {members[1]} missing ?samAsa ({sorted(members[1].tags)})"
 
-    # ── Level 2: fired-sutra trace (pre-pass rules) ──
-    fired = {aps for e in p.karaka_log for aps in e["fired"]}
+    # ── Level 2: fired-sutra trace (pre-pass + main scan) ──
+    # The main-scan half needs the prakriyā to have run, so execute first.
+    p.execute()
+    fired = {aps for e in p.karaka_log for aps in e["fired"]} | _main_scan_fired(p)
     for aps in case["fired"]:
         assert aps in fired, \
-            f"{case['label']}: {aps} missing from pre-pass trace {sorted(fired)}"
+            f"{case['label']}: {aps} missing from trace {sorted(fired)}"
     for aps in case.get("not_fired", []):
         assert aps not in fired, \
             f"{case['label']}: {aps} wrongly fired (trace {sorted(fired)})"
 
     # ── Level 3: surface (full pipeline) ──
-    p.execute()
     got = {"".join(x.canonical() for x in o).rstrip(avasAna.canonical())
            for o in p.output()}
     want = case["surfaces"] if "surfaces" in case else [case["surface"]]

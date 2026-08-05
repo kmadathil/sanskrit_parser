@@ -73,7 +73,7 @@ kfta    = Pratipadika("kfta",    "napum", other_tags=["kta"])  # कृत — �
 rUQa    = Pratipadika("rUQa",    "pum",   other_tags=["kta"])  # रूढ — खट्वारूढः (2.1.26 kṣepa)
 pramita = Pratipadika("pramita", "pum",   other_tags=["kta"])  # प्रमित — मासप्रमितः (2.1.28 kāla)
 suKa    = Pratipadika("suKa",    "napum")                       # सुख — मुहूर्तसुखम् (2.1.29, non-kta)
-KawvA   = Pratipadika("KawvA",   "strI")                        # खट्वा — खट्वारूढः (2.1.26, dvitīyā pūrva)
+KawvA   = Pratipadika("KawvA",   "strI", other_tags=["Ap"])     # खट्वा — खट्वारूढः (2.1.26, dvitīyā pūrva)
 muhUrta = Pratipadika("muhUrta", "pum",   other_tags=["kAlavAcaka"])   # मुहूर्त — मुहूर्तसुखम् (2.1.29)
 # (मास is defined below at the SK539 site — ?kAlavAcaka added there for 2.1.28)
 # ── Tatpuruṣa T1: the remaining five vibhakti-tatpuruṣas (2.1.30–48, 2.2.1–11).
@@ -88,7 +88,7 @@ kAya_ed = Pratipadika("kAya",    "pum",   other_tags=["ekadeSin"])       # क�
 # T1 extension-rule test stems (2.1.30/32/38/39/41):
 guqa    = Pratipadika("guqa",    "pum")                                  # गुड — गुडस्वादुः (2.1.30 tṛtīyā guṇavacana pūrva)
 ahi     = Pratipadika("ahi",     "pum")                                  # अहि — अहिहतः (2.1.32 kartṛ/karaṇa pūrva; i-stem)
-hata    = Pratipadika("hata",    "pum",   other_tags=["kta"])            # हत — अहिहतः (2.1.32 kṛta uttara)
+hata    = Pratipadika("hata",    "pum",   other_tags=["kta", "GarUpAdi"])            # हत — अहिहतः (2.1.32 kṛta uttara)
 apeta   = Pratipadika("apeta",   "pum",   other_tags=["apeta_gaRa"])     # अपेत — सुखापेतः (pañcamī 2.1.38)
 mukta   = Pratipadika("mukta",   "pum",   other_tags=["kta"])            # मुक्त — स्तोकमुक्तः (pañcamī 2.1.39 kṛta uttara)
 sidDa   = Pratipadika("sidDa",   "pum",   other_tags=["siDDa_gaRa"])     # सिद्ध — स्वर्गसिद्धः (saptamī 2.1.41)
@@ -129,9 +129,14 @@ BArya    = Pratipadika("BArya",   "pum")     # भार्य- base of भा�
 # ब्राह्मणी (ब्राह्मण + ङीप् by 4.1.15) — 6.3.41 jāti. ?NI is SK985/6.3.43's own ङ्यः
 # condition; the tag was missing until phase X2 needed it (see samasa_asraya_plan.md).
 brAhmaRI = Pratipadika("brAhmaRI", "strI", other_tags=["NI", "puMvat", "jAti"])
-dattA    = Pratipadika("dattA",   "strI", other_tags=["puMvat", "saMjYA"])    # दत्ता (name) — 6.3.38
-pAcikA   = Pratipadika("pAcikA",  "strI", other_tags=["puMvat", "kopaDa"])    # पाचिका (k-penult) — 6.3.37
-sukeSI   = Pratipadika("sukeSI",  "strI", other_tags=["puMvat", "svAnga_I"])  # सुकेशी (svāṅga ī) — 6.3.40
+dattA    = Pratipadika("dattA",   "strI", other_tags=["Ap", "puMvat", "strI_saMjYA"])   # दत्ता — 6.3.38;
+#          ?Ap: दत्ता is ṭāp-formed — SK's own ङ्यः-किम् for 6.3.43 (दत्तातरा, no hrasva).
+#          ?strI_saMjYA, NOT bare ?saMjYA: 6.3.38's संज्ञा is the word-level "this feminine
+#          is a proper name"; bare ?saMjYA is the COMPOUND-level tag 6.3.63/8.4.3 read, and
+#          with ?Ap added the overload forked दत्ताभार्यः into a spurious *दत्तभार्यः
+pAcikA   = Pratipadika("pAcikA",  "strI", other_tags=["Ap", "puMvat", "kopaDa"])   # पाचिका (k-penult) — 6.3.37
+sukeSI   = Pratipadika("sukeSI",  "strI", other_tags=["NI", "puMvat", "svAnga_I"])  # सुकेशी — ङीष् by 4.1.54
+#          (svāṅga upasarjana), 6.3.40. ?NI was missing: it is what broke X2 (सुकेशिभार्यः)
 # Avyayībhāva-samāsa S1B uttara/pūrva nouns (avyayībhāva samāsa plan)
 jIva = Pratipadika("jIva", "pum")     # जीव — यावज्जीवम् (2.1.8, a-stem → am)
 SAka = Pratipadika("SAka", "pum")     # शाक — शाकप्रति (2.1.9 mātrārtha, noun pūrva)
@@ -242,14 +247,14 @@ Uru   = Pratipadika("Uru",   "pum", other_tags=["Uru_uttara"])  # SK525 ūru utt
 garga = Pratipadika("garga", "pum")
 # vidyA: SK472 negative test base — विद्या + अण् → वैद्य (the 'ya' is base-internal,
 # NOT a taddhita ya), so ṅīp gives वैद्यी (no ya-lopa), cf. SC Vasu.
-vidyA = Pratipadika("vidyA", "strI")
+vidyA = Pratipadika("vidyA", "strI", other_tags=["Ap"])
 # kuru + car: SK470 ṭiṭ (टित्) test — कुरुचर + ṅīp → कुरुचरी. The ṭit affix is modelled
 # with wac (टच्, the available ṭ-it samāsānta affix); strictly कुरुचर is चरेष्टः (3.2.16) ट.
 kuru = Pratipadika("kuru", "pum", other_tags=["manuzya_jAti_u"])  # ?manuzya_jAti_u: SK521 (4.1.66) → kurūḥ
 car  = Pratipadika("car",  "pum")
 # suparRA: SK470 ḍha (ḍhak) test base — सुपर्णा + ढक् → (7.1.2 ḍh→eya) सुपर्णेय → सुपर्णेयी.
 # PARTIAL: ādivṛddhi सु→सौ pending (needs 7.2.118 किति च), so not yet साौपर्णेयी.
-suparRA = Pratipadika("suparRA", "strI")
+suparRA = Pratipadika("suparRA", "strI", other_tags=["Ap"])
 # SK470 ṭhak/ṭhañ test bases: akṣa+ṭhak → akṣika → akṣikī (PARTIAL, vṛddhi pending →
 # ākṣikī); lavaṇa+ṭhañ → lāvaṇika → लावणिकी (complete, vṛddhi via 7.2.117 ñit).
 akza   = Pratipadika("akza",   "pum")
@@ -526,7 +531,9 @@ sUkara    = Pratipadika("sUkara",   "pum", other_tags=["jAti_ayopaDa"])   # sūk
 # (4.1.4.1/4.1.4.2 override 4.1.64).
 pAka  = Pratipadika("pAka",  "napum", other_tags=["pAkAdi"])  # pāka uttara (SK519, "cooking" sense)
 # pūrva-pada pieces for the SK519 jāti compounds (odana/go/sam/tri exist elsewhere):
-dAsI  = Pratipadika("dAsI",  "strI")   # dāsī- pūrva (dāsīphalī)
+dAsI  = Pratipadika("dAsI",  "strI", other_tags=["NI"])   # dāsī- pūrva (dāsīphalī); ?NI on
+#        surface evidence — दासी declines as a nadī (दासी, not *दासीः, by 6.1.68). WHICH sūtra
+#        supplies the ङीष् (गौरादि 4.1.41?) is still unchecked — दास is not in the gaṇa list here
 SaNku = Pratipadika("SaNku", "pum")    # śaṅku- pūrva (śaṅkukarṇī)
 SAla  = Pratipadika("SAla",  "pum")    # śāla- pūrva (śālaparṇī)
 SaNKa = Pratipadika("SaNKa", "pum")    # śaṅkha- pūrva (śaṅkhapuṣpī)
@@ -827,7 +834,10 @@ daRqin = Pratipadika("daRqin", "pum",  other_tags=["in_anta"])        # दण�
 pravARI = Pratipadika("pravARI", "strI", other_tags=["NI"])
 
 # ── ap 5.4.116 + gandha 5.4.136/137 (bahuvrihi_plan.md B3 tail) ───────────────────
-strI_pUrva = Pratipadika("strI", "strI")                     # स्त्री (pūrva; no bhāṣitapuṁska → no 6.3.34) — SK832/5.4.116 (स्त्रीप्रमाणः)
+# स्त्री as a pūrva uses the ordinary `strI` stem (`:811`): a tag-stripped clone guarded
+# nothing — 6.3.34 needs composer-supplied ?puMvat, 1.2.48 targets the compound-final (its
+# pūrva arms need ?pum_abs), and ?NI/?strI_p are inert in pūrva position once the pūrva's sup
+# luks by 2.4.71. See ni_ap_derivation_plan.md §2.
 pramARI = Pratipadika("pramARI", "strI", other_tags=["NI"])   # प्रमाणी "authority/measure" — SK832/5.4.116 (स्त्रीप्रमाणः)
 paYcamI = Pratipadika("paYcamI", "strI", other_tags=["NI", "pUraRI"])  # पञ्चमी "fifth" (fem ordinal) — SK832/5.4.116 (कल्याणीपञ्चमा)
 suraBi  = Pratipadika("suraBi",  "pum")                       # सुरभि "fragrant" — SK874/5.4.135 pūrva (सुरभिगन्धिः)
@@ -1187,7 +1197,7 @@ Ayuzya = Pratipadika("Ayuzya", "napum")            # आयुष्य n. "long
 kfti   = Pratipadika("kfti",   "strI", other_tags=["kft"])              # कृति f. (ktin) "the doing" — SK623 हरेः कृतिः
 pAcaka = Pratipadika("pAcaka", "pum",  other_tags=["kft"])              # पाचक m. (ṇvul, aka) "cook" — SK623 ओदनस्य पाचकः
 kartf  = Pratipadika("kartf",  "pum",  other_tags=["kft"])              # कर्तृ m. (tṛc) "doer" — SK623 हरेः कर्ता (tṛc ≠ tṛn → ṣaṣṭhī allowed)
-mata   = Pratipadika("mata",   "pum",  other_tags=["kta_vartamAna"])   # मत m. (kta, vartamāna) "esteemed" — SK625 राज्ञां मतः (kta is niṣṭhā → NOT kft; 2.3.67 re-permits the present-sense ṣaṣṭhī)
+mata   = Pratipadika("mata",   "pum",  other_tags=["kta_vartamAna", "GarUpAdi"])   # मत m. (kta, vartamāna) "esteemed" — SK625 राज्ञां मतः (kta is niṣṭhā → NOT kft; 2.3.67 re-permits the present-sense ṣaṣṭhī)
 Asita  = Pratipadika("Asita",  "napum", other_tags=["kta_aDikaraRa"])  # आसित n. (kta, adhikaraṇa/bhāva) "sitting" — SK626 एतेषामासितम् (2.3.68 owns it, not 2.3.65)
 GAtuka = Pratipadika("GAtuka", "pum",  other_tags=["kft", "kft_aSazWI"])  # घातुक m. (ukañ, bhaviṣyat) "slayer" — SK627/628 prohibition
 gAmin  = Pratipadika("gAmin",  "pum",  other_tags=["kft", "kft_aSazWI"])  # गामिन् m. (ṇini, future/ādhamarṇya) "goer" — SK628 prohibition व्रजं गामी
@@ -1227,11 +1237,15 @@ keSava = Pratipadika("keSava", "pum")   # केशव m. (Viṣṇu) — शि
 # पोतृ (already defined) get ?vidyAyoni from the test for 6.3.25.
 mitra = Pratipadika("mitra", "pum")   # मित्र m. (the deity Mitra) — मित्रावरुणौ (SK922/6.3.26)
 soma  = Pratipadika("soma",  "pum")   # सोम m. (the deity Soma) — अग्नीषोमौ (SK923/6.3.27 + SK924/8.3.82)
-pfTivI = Pratipadika("pfTivI", "strI", other_tags=["nadI"])   # पृथिवी f. "earth" (ī-stem/nadī) — द्यावापृथिव्यौ (SK926/6.3.29)
+pfTivI = Pratipadika("pfTivI", "strI", other_tags=["NI"])   # पृथिवी f. "earth" — द्यावापृथिव्यौ
+#        (SK926/6.3.29). ङीष् by the vārtika पृथिव्यां ङीष्, so ?NI (which 6.1.68 needs → पृथिवी,
+#        not *पृथिवीः). The old lexical ?nadI did NOT do that job and is derived by 1.4.3 anyway
 
 # ── Ekaśeṣa E1 (samasa_completion_plan.md): heterogeneous pairs where ONE member survives.
 haMsa = Pratipadika("haMsa", "pum")                    # हंस m. "goose" — हंसौ (SK933/1.2.67, masc survives)
-haMsI = Pratipadika("haMsI", "strI", other_tags=["NIp"])  # हंसी f. "goose" (हंस + ṅīp) — elided by 1.2.67
+haMsI = Pratipadika("haMsI", "strI", other_tags=["NI"])  # हंसी f. "goose" (हंस + ṅīp) — elided by
+#       1.2.67. ?NIp was a DEAD tag no rule reads (the affix-side ?NIp_taddhita is different),
+#       so 6.1.68 did not elide su → *हंसीः
 ajA   = Pratipadika("ajA",   "strI", other_tags=["Ap"])   # अजा f. "she-goat" — अजाः (SK939/1.2.73, fem survives in a herd)
 
 # ── Sarvasamāsānta S0 (samasa_completion_plan.md): compounds taking the अच् samāsānta.
@@ -1310,21 +1324,31 @@ rAga = Pratipadika("rAga", "pum")   # राग m. "passion" — अन्यद
 # rule shortens; mAlA, kzIra, putra, mata, hata, ajA, gotra already exist above.
 # ════════════════════════════════════════════════════════════════════════════
 
-bruva = Pratipadika("bruva", "pum")     # ब्रुव m. "so-called" (ब्रू + अच्) — ब्राह्मणिब्रुवा (SK985/6.3.43)
-gotra = Pratipadika("gotra", "napum")   # गोत्र n. "lineage" — ब्राह्मणिगोत्रम् (SK985/6.3.43); also in SK1013/6.3.85's twelve
+bruva = Pratipadika("bruva", "pum", other_tags=["GarUpAdi"])   # ब्रुव m. "so-called" (ब्रू + अच्) — ब्राह्मणिब्रुवा (SK985/6.3.43)
+gotra = Pratipadika("gotra", "napum", other_tags=["GarUpAdi"])   # गोत्र n. "lineage" — ब्राह्मणिगोत्रम् (SK985/6.3.43); also in SK1013/6.3.85's twelve
 # ग्रामणी m. "village headman" (ग्रामं नयति, क्विप्-formed ī-final) — the इक्-final NON-ङी
 # pūrva of SK999/6.3.61; modelled exactly like senAnI above.
 grAmaRI = Pratipadika("grAmaRI", "pum", other_tags=["DAtu", "kvip"])
-gOrI = Pratipadika("gOrI", "strI", other_tags=["NI"])   # गौरी f. — the अङ्यः NEGATIVE of 6.3.61 (गौरीपतिः)
-ekA = Pratipadika("ekA", "strI", other_tags=["Ap"])     # एका f. "one" — एकक्षीरम् (SK1000/6.3.62)
-revatI = Pratipadika("revatI", "strI", other_tags=["NI"])   # रेवती f. (a name) — रेवतिपुत्रः (SK1001/6.3.63)
+# गौरी and एका are DERIVED, not stored (ni_ap_derivation_plan.md step D, 2026-08-05):
+# [gaura, strI_abs] → ङीष् by 4.1.41 (गौरादि) and [eka, strI_abs] → ṭāp by 4.1.4. Their ?NI /
+# ?Ap now reach the samāsa rules through the pūrva's sup-luk instead of being pre-tagged —
+# which is the point of the migration. Used by X2's 6.3.61 अङ्यः negative and 6.3.62.
+# रेवती is DERIVED: [revat, strI_abs] → ङीप् by 4.1.6 उगितश्च, because रेवत् is UGIT (it is a
+# मतुप्-formation, and मतुप् is u-it) — hence its=["u"], the same device nartaka uses for its
+# ṣ-it. NOT an a-stem base: [revata, strI_abs] gives *रेवता (ṭāp), which is how this was
+# settled. Used as the saṁjñā pūrva of रेवतिपुत्रः (SK1001/6.3.63).
+revat = Pratipadika("revat", "pum", its=["u"])   # रेवत् — base of रेवती
 rohiRI = Pratipadika("rohiRI", "strI", other_tags=["NI"])   # रोहिणी f. — रोहिणित्वम् / रोहिणीत्वम् (SK1002/6.3.64)
 # 6.3.65's three ordered pairs (क्रमात्): इष्टका–चित, इषीका–तूल, माला–भारिन्.
-izwakA = Pratipadika("izwakA", "strI", other_tags=["Ap"])   # इष्टका f. "brick" — इष्टकचितम्
-izIkA  = Pratipadika("izIkA",  "strI", other_tags=["Ap"])   # इषीका f. "reed" — इषीकतूलम्
-cita   = Pratipadika("cita",   "napum")   # चित n. "pile" — इष्टकचितम्
-tUla   = Pratipadika("tUla",   "napum")   # तूल n. "tuft" — इषीकतूलम्
-BArin  = Pratipadika("BArin",  "napum")   # भारिन् n. "bearing" (in-stem) — मालभारि
+# इष्टका / इषीका are DERIVED (ni_ap_derivation_plan.md step D): [izwaka|izIka, strI_abs] → ṭāp
+# by 4.1.4 अजाद्यतष्टाप्. The base need not be an independently attested WORD — a prātipadika
+# is a grammatical object, and इष्टका IS इष्टक + टाप् for Pāṇini (cf. खट्वा ← खट्व).
+izwaka = Pratipadika("izwaka", "pum")   # इष्टक — base of इष्टका (SK1006/6.3.65 इष्टकचितम्)
+izIka  = Pratipadika("izIka",  "pum")   # इषीक — base of इषीका (SK1006/6.3.65 इषीकतूलम्)
+cita   = Pratipadika("cita",   "napum", other_tags=["cita"])   # चित n. "pile" — इष्टकचितम् (SK1006/6.3.65;
+#          self-named tag: the rule is main-scan now, where चित has merged with its sup)
+tUla   = Pratipadika("tUla",   "napum", other_tags=["tUla"])   # तूल n. "tuft" — इषीकतूलम् (SK1006/6.3.65)
+BArin  = Pratipadika("BArin",  "napum", other_tags=["BArin"])   # भारिन् n. "bearing" (in-stem) — मालभारि (SK1006/6.3.65)
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासाश्रयविधिप्रकरणम्, Phase X3: the मुम् augment (6.3.70, 6.3.72). कार and रात्रि
