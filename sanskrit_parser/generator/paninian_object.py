@@ -246,7 +246,19 @@ class PaninianObject(SanskritObject):
         # position survived — which is why कोटरावणम् worked and इक्षुवाहणम् did not.
         _propagate(first, ["samAsa", "samAsaPurva", "adas", "vasupada", "karaNa", "dik",
                            "nas_AdeSa", "saMjYA",
-                           "Ahita", "deSa", "BAvakaraRa", "ozaDi", "vanaspati"])
+                           "Ahita", "deSa", "BAvakaraRa", "ozaDi", "vanaspati",
+                           # SK1062/6.1.147 आश्चर्यमनित्ये and SK1067/6.1.153 प्रस्कण्व… ऋषी gate on
+                           # these pūrva senses, and once those rules moved to the main scan (so
+                           # `insert:` is reachable and 8.4.40 can supply the श्) the tags have to
+                           # outlive the pūrva's own saṁhitā merge, exactly as ?Ahita does above.
+                           "anitya", "fzi_saMjYA",
+                           # SK1021/8.3.83 ज्योतिरायुषः स्तोमः identifies its PŪRVA by tag, and a
+                           # pūrva tag dies at the pūrva's own saṁhitā merge unless it is here.
+                           # This is what made 8.3.83 look unrefactorable: a trace showed
+                           # ?jyotis entering that merge and coming out dropped — the same
+                           # failure as ?Ahita above, not the window-reachability problem an
+                           # earlier comment guessed at.
+                           "jyotis", "Ayus"])
         # Kāraka-layer families (karaka_plan.md §2): sentence-level tags ride
         # through every merge so a kṛt/taddhita/strī-derived noun keeps its
         # semantic/kāraka/vibhakti view until its sup attaches. The guard tags
@@ -271,7 +283,8 @@ class PaninianObject(SanskritObject):
             # SK1051/8.4.6 identify the वन uttarapada at a MAIN-SCAN window, by which point
             # वन has merged with its own sup (वनम्), so a `=vana` content match is no longer
             # possible — the self-named stem tag has to ride through that merge instead.
-            _propagate(first, ["viSva", "vana", "pAna", "vAhana", "sTAna", "stoma"])
+            _propagate(first, ["viSva", "vana", "pAna", "vAhana", "sTAna", "stoma",
+                               "kaRva", "candra", "carya"])
 
         # Tier 3 (tadDita-gated): compound-type tags and SK480/481/482 semantic
         # class tags ride forward only when the next element is a tadDita affix

@@ -1103,16 +1103,18 @@ samasa_asraya_tests = [
         "surface": "भीरुष्ठानम्",
     },
     {
-        # ज्योतिस् + स्तोम → the ṣatva + folded ṣṭutov give ष्टोम. SK's form is
-        # ज्योति**ष्टो**मः with ONE ष्; the generator keeps the pūrva's own final sibilant as
-        # well (ज्योतिःष्टोमः / ज्योतिष्ष्टोमः) because the visarga-LOPA before शर् + stop is a
-        # vārtika on 8.3.36 that is not implemented — a PRE-EXISTING gap, not something
-        # 8.3.83 introduces. The ṣatva under test is visible in the ष्ट either way.
+        # ज्योतिस् + स्तोम → ष्टोम. The ṭ is **8.4.41.1's**, not folded into 8.3.83: the rule is
+        # main-scan and insert-based, so the ष् becomes a separate nested element and 8.4.41.1
+        # acts on the resulting junction (trace: `Prakriya: ztomas` → `8.4.41.1`). Hence 8.3.83
+        # is absent from the PRE-PASS trace. SK's form is ज्योति**ष्टो**मः with ONE ष्; the
+        # generator keeps the pūrva's own sibilant too (ज्योतिःष्टोमः / ज्योतिष्ष्टोमः) because the
+        # visarga-LOPA before शर् + stop is a vārtika on 8.3.36 that is unimplemented — a
+        # PRE-EXISTING gap, untouched by the refactor.
         "label": "X5-jyotizwomaH-SK1021-8.3.83",
         "type": "zazWI",
         "purva": {"stem": "jyotis"},
         "uttara": {"stem": "stoma", "vacana": 1},
-        "fired": ["2.2.8", "8.3.83"],
+        "fired": ["2.2.8"],
         "surfaces": ["ज्योतिःष्टोमः", "ज्योतिष्ष्टोमः"],
     },
     {
@@ -1121,7 +1123,7 @@ samasa_asraya_tests = [
         "type": "zazWI",
         "purva": {"stem": "Ayus"},
         "uttara": {"stem": "stoma", "vacana": 1},
-        "fired": ["2.2.8", "8.3.83"],
+        "fired": ["2.2.8"],
         "surfaces": ["आयुःष्टोमः", "आयुष्ष्टोमः"],
     },
     {
@@ -1407,14 +1409,16 @@ samasa_asraya_tests = [
         "surface": "आस्पदम्",
     },
     {
-        # आश्चर्यं यदि स भुञ्जीत (अनित्य = wonderful). The श् is the सुट् स् after 8.4.40 श्चुत्व
-        # before च् — folded into the rule, since 8.4.40 is a junction rule and the prepended
-        # सुट् lands inside the uttara element (see the rule comment).
+        # आश्चर्यं यदि स भुञ्जीत (अनित्य = wonderful). The श् is supplied by **8.4.40 श्चुत्व**,
+        # not written by the rule: 6.1.147 inserts a plain सुट् स् as a separate nested element,
+        # which spawns a sub-prakriya, and 8.4.40 acts on the resulting (स् | चर्यम्) junction.
+        # The trace shows the delegation — `Prakriya: scaryam` → `8.4.40 … स् → श्`.
         "label": "X7-AScaryam-SK1062-6.1.147",
         "type": "zazWI",
         "purva": {"stem": "A_pUrva", "tags": ["anitya"]},
         "uttara": {"stem": "carya", "vacana": 1},
-        "fired": ["2.2.18", "6.1.147"],
+        # MAIN-SCAN since the fold was removed, so absent from the pre-pass trace.
+        "fired": ["2.2.18"],
         "surface": "आश्चर्यम्",
     },
     {
@@ -1460,18 +1464,19 @@ samasa_asraya_tests = [
         "type": "zazWI",
         "purva": {"stem": "pra", "tags": ["fzi_saMjYA"]},
         "uttara": {"stem": "kaRva", "vacana": 1},
-        "fired": ["2.2.18", "6.1.153"],
+        "fired": ["2.2.18"],
         "surface": "प्रस्कण्वः",
     },
     {
-        # हरिश्चन्द्रः — the other ṛṣi of the same sūtra, SPLIT into rule 6.1.153.1 because its
-        # सुट् surfaces as श् (श्चुत्व before च्) where प्रस्कण्व's stays स्, and one xform block
-        # cannot branch. ऋषीति किम् — हरिचन्द्रो माणवकः.
+        # हरिश्चन्द्रः — the other ṛṣi of the same sūtra. It was briefly a separate rule
+        # (6.1.153.1) because its सुट् surfaces as श् where प्रस्कण्व's stays स्; **removing the fold
+        # removed the need for the split**, since both arms now insert a plain स् and 8.4.40
+        # differentiates them. ऋषीति किम् — हरिचन्द्रो माणवकः.
         "label": "X7-hariScandraH-SK1067-6.1.153",
         "type": "zazWI",
         "purva": {"stem": "hari", "tags": ["fzi_saMjYA"]},
         "uttara": {"stem": "candra", "vacana": 1},
-        "fired": ["2.2.8", "6.1.153.1"],
+        "fired": ["2.2.8"],
         "surface": "हरिश्चन्द्रः",
     },
     {

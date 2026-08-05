@@ -14539,35 +14539,37 @@
 # iṇ-koḥ member's substitute — hence the `l:` check is satisfied via the ru/ṣ route.
 - sutra: ज्योतिरायुषः स्तोमः
   id: 8.3.83
-  bahiranga: -1
   condition:
     lp:
       - or
-      - "=jyotis"
-      - "=Ayus"
+      - "?jyotis"
+      - "?Ayus"
     rp:
       - and
       - "?samAsa"
-      - "=stoma"
+      - "?pada"
+      - "?stoma"
     r: s
-  # THIS ONE KEEPS THE FOLDED ṢṬUTVA, unlike its neighbour 8.3.81, and the reason is NOT yet
-  # established — recorded here so the next attempt does not repeat the same two experiments.
-  # The refactor needs a MAIN-SCAN window (so `insert:` is called, giving 8.4.41 a real
-  # junction). Both gates were tried there and both failed, differently:
-  #   · `=jyotis` (content): matched in only ONE branch, because by then 8.2.66 ससजुषो रुः and
-  #     8.3.15 खरवसानयोर्विसर्जनीयः have turned ज्योतिस् into ज्योतिः / ज्योतिष् — so ज्योतिःस्तोमः
-  #     escaped the ṣatva entirely.
-  #   · `?jyotis` (a self-named stem tag): matched in NO branch. Note this is NOT tag loss —
-  #     `Sutra.operate` deepcopies the object and only `.update()`s its string, so tags DO
-  #     survive an xform. A debug trace shows 8.3.83 is never EVALUATED at any main-scan window
-  #     at all, so the obstacle is window reachability, not the condition. Unexplained.
-  # 8.3.81, whose pūrva भीरु is u-final and untouched by the visarga rules, refactors cleanly —
-  # which is consistent with the s-final pūrva being what makes this one different. So 8.3.83
-  # stays in the pre-pass, where ज्योतिस् is pristine, and calls 8.4.41's own `zwutva` helper for
-  # the ट् it cannot otherwise reach.
+  # ṢṬUTVA NOT FOLDED — 8.4.41.1 supplies the ट्, as it should. Same refactor as 8.3.81:
+  # main scan (so `insert:` is reachable), uttara identified by the self-named `?stoma` tag,
+  # and `xform: r: null` + `insert: r: str("z")` so the ष् becomes a SEPARATE nested element,
+  # which `need_hierarchy_at` turns into a sub-prakriya where 8.4.41.1 sees a real (ष् | तोमस्)
+  # junction. The trace shows the delegation: `Prakriya: ztomas` → `8.4.41.1 ष्टुना ष्टुः`.
+  #
+  # This one resisted the refactor for a while, and the cause was mundane rather than
+  # architectural: `?jyotis` was being DROPPED at the pūrva's own saṁhitā merge, because a
+  # pūrva-side tag has to be in join_objects' Tier-1 propagate list and it was not. An earlier
+  # comment here guessed at "window reachability" and was wrong — a tag trace shows the
+  # (ज्योतिस् | स्तोमस्) window exists and the rule is reachable; only the lp gate was failing.
+  # Adding ?jyotis/?Ayus to that list fixed it, exactly as ?Ahita needed in X6.
+  #
+  # The surface is still ज्योतिःष्टोमः / ज्योतिष्ष्टोमः rather than SK's ज्योतिष्टोमः, because the
+  # visarga-LOPA before शर् + stop (a vārtika on 8.3.36) is unimplemented — a separate,
+  # pre-existing gap that this refactor does not touch and does not pretend to.
   xform:
+    r: null
+  insert:
     r: str("z")
-    rc: zwutva(rc[0])+rc[1:]
 
 # SK1022/8.3.98: सुषामादिषु च — the सुषामादि list takes mūrdhanya: शोभनं साम यस्य = सुषामा,
 # सुषन्धिः. An आकृतिगण in SK; the two members it names are gated literally here.
@@ -14638,7 +14640,7 @@
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासाश्रयविधिप्रकरणम् — Phase X6 (samasa_asraya_plan.md): cross-member ṆATVA
-# (SK1039, SK1050–1057 / 8.4.4–13, 8.4.38).
+# (SK1039, SK1050–1056 / 8.4.4–13). SK1057/8.4.38 पदव्यवायेऽपि needs NO rule — see below.
 #
 # THE LEVER, unchanged from SK307/8.4.12 एकाजुत्तरपदे णः (`:1074`): cross-compound ṇatva is
 # BLOCKED by default, because the merged compound is `?merged_pada` and arm A of 8.4.1/8.4.2
@@ -14897,28 +14899,19 @@
   update:
     orp: +samasta_Ratva
 
-# SK1057/8.4.38: पदव्यवायेऽपि — a PROHIBITION, continuing the निषेध of 8.4.37 पदान्तस्य:
-# "पदेन व्यवधानेऽपि णत्वं न स्यात्" — the ṇatva does NOT apply even when a whole PADA
-# intervenes between the nimitta and the न्: माषकुम्भवापेन (माष's ष् is separated from वाप's
-# ending by the pada कुम्भ), चतुरङ्गयोगेन.
-#
-# Modelled as an `overrides:` with a null xform — the engine's idiom for a niṣedha, exactly as
-# SK/8.4.22 हन्तेरत्पूर्वस्य does. It suppresses the marker rules above rather than 8.4.1/8.4.2
-# themselves, since in this compound the marker is what would have enabled arm B.
-# `?pada_vyavAya` marks a compound with an intervening third member (composer-supplied: the
-# member count is not visible at this window). The अतद्धित vārtika — आर्द्रगोमयेण, शुष्कगोमयेण,
-# where a taddhita DOES take the ṇatva — is not modelled (Skipped row).
-- sutra: पदव्यवायेऽपि
-  id: 8.4.38
-  overrides: [8.4.11, 8.4.13]
-  condition:
-    lp: $$lp_has_ratva_cause
-    rp:
-      - and
-      - "?samAsa"
-      - "?pada"
-      - "?pada_vyavAya"
-  xform: null
+# SK1057/8.4.38 पदव्यवायेऽपि — NO RULE, and none is possible to need. The sūtra prohibits
+# ṇatva when a whole PADA separates the nimitta from the न् (माषकुम्भवापेन, चतुरङ्गयोगेन), and
+# the engine already cannot produce it: every setter above reads the cause from `lp` or (for
+# 8.4.11) from `llp`, and `llp = _l[ix-1]` reaches EXACTLY ONE element back. A trace of
+# माष+कुम्भ+वाप in the instrumental shows the (वाप | सुप्) window with context
+# `माष │ कुम्भ «वाप | आ»` — माष and कुम्भ still separate, so llp is कुम्भ, which has no r/ṣ/ṛ.
+# The padas only join AFTER वापेन is complete (right-to-left, steps 15–17), so माष is never
+# adjacent to वाप at any window. Confirmed empirically: with the former 8.4.38 rule deleted the
+# output is unchanged, माषकुम्भवापेन, and 8.4.11/8.4.13 are never even EVALUATED.
+# The rule that used to sit here was dead code — its `?pada_vyavAya` marker was composer-
+# supplied and nothing ever set it. Recorded as a "Natural" Skipped row in generator_status.md,
+# the same category as 2.1.11 विभाषा and 5.4.68 समासान्ताः.
+# (The अतद्धित vārtika — आर्द्रगोमयेण, where a taddhita DOES take the ṇatva — stays unmodelled.)
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासाश्रयविधिप्रकरणम् — Phase X7 (samasa_asraya_plan.md): the सुट्-NIPĀTANA compounds
@@ -15017,11 +15010,16 @@
     r: str("s")+r
 
 # SK1062/6.1.147: आश्चर्यमनित्ये — सुट् in the ANITYA (wonderful, not-常) sense: आश्चर्यं यदि स
-# भुञ्जीत. अनित्ये किम् — आचर्यं कर्म शोभनम्. The श् is 8.4.40 श्चुत्व on the सुट् स् before च्,
-# supplied for free.
+# भुञ्जीत. अनित्ये किम् — आचर्यं कर्म शोभनम्.
+#
+# The श् is NOT written here — 8.4.40 स्तोः श्चुना श्चुः supplies it. Same refactor as 6.1.153
+# above and for the same reasons: MAIN SCAN so `insert:` is reachable, `insert: r: str("s")` with
+# no xform (a सुट् is an āgama, so there is nothing to delete — `xform: r: null` would have
+# removed चर्य's च्), and the uttara identified by the self-named `?carya` tag because at a
+# main-scan window it has already merged with its sup. The pūrva sense `?anitya` is in the
+# join_objects Tier-1 allowlist so it survives the pūrva's own saṁhitā merge.
 - sutra: आश्चर्यमनित्ये
   id: 6.1.147
-  bahiranga: -1
   condition:
     lp:
       - and
@@ -15031,18 +15029,10 @@
     rp:
       - and
       - "?samAsa"
-      - "=carya"
-  # ŚCUTVA IS FOLDED IN (श् written directly instead of स्), and for the SAME reason the X5
-  # ṣṭutva fold exists: 8.4.40 स्तोः श्चुना श्चुः is a JUNCTION rule, but prepending the सुट् to
-  # the uttara puts the स् and the following च् INSIDE one element (चर्य → स्चर्य), where no
-  # junction exists. Appending to the PŪRVA instead would give a real junction — but the pūrva
-  # is a pada, so its final स् would then become a visarga by 8.3.15 खरवसानयोर्विसर्जनीयः, which
-  # is what breaks अवस्करः / कारस्करः. The clean fix is 8.3.81's: move to the main scan and use
-  # `xform: r: null` + `insert:`, so the सुट् becomes a separate nested element and 8.4.40 fires
-  # on its own. Not done here — it needs a self-named tag per uttara — and recorded in
-  # samasa_asraya_plan.md as the follow-up.
-  xform:
-    r: str("S")+r
+      - "?pada"
+      - "?carya"
+  insert:
+    r: str("s")
 
 # SK1063/6.1.148: वर्चस्केऽवस्करः — सुट् when VARCASKA (excrement) is meant: अवकीर्यत इति
 # अवस्करः. वर्चस्के किम् — अवकरः (sweepings).
@@ -15120,43 +15110,51 @@
 
 # SK1067/6.1.153: प्रस्कण्वहरिश्चन्द्रावृषी — सुट् in both, when the two ṚṢIS are meant:
 # प्रस्कण्वः, हरिश्चन्द्रः (the हरिश्चन्द्र-grahaṇa is अमन्त्रार्थम्). ऋषीति किम् — प्रकण्वो देशः,
-# हरिचन्द्रो माणवकः. हरिश्चन्द्र's श् is again 8.4.40 श्चुत्व on the सुट् before च्.
+# हरिचन्द्रो माणवकः.
+#
+# ONE RULE, TWO ARMS — it was briefly split into 6.1.153 + 6.1.153.1 because प्रस्कण्व's सुट्
+# surfaces as स् while हरिश्चन्द्र's surfaces as श्, and a single xform block cannot produce two
+# different literals. **Removing the fold removes the need for the split**: both arms now insert
+# a plain सुट् स्, and 8.4.40 स्तोः श्चुना श्चुः supplies the श् of हरिश्चन्द्रः by itself.
+#
+# HOW THE FOLD WAS REMOVED (the 8.3.81 recipe, adapted for an ĀGAMA rather than a substitution):
+#   · MAIN SCAN, not the pre-pass — `insert:` is only called from the main scan (`_exec` and the
+#     two `_nitya` simulations); on a `bahiranga: -1` rule an `insert:` clause is silently
+#     ignored, which is why this rule had to fold in the first place.
+#   · `insert: r: str("s")` and NO xform. 8.3.81 needs `xform: r: null` too because it REPLACES
+#     स्थान's स् with ष्; a सुट् is an ĀGAMA, so there is nothing to delete — `xform: r: null`
+#     would have removed कण्व's क्. The insert alone puts the स् in a nested list
+#     (`sutra.py:246`), `need_hierarchy_at` (`prakriya.py:44`) spawns a sub-prakriya, and the
+#     resulting (स् | कण्व) / (स् | चन्द्र) junction is a real one that 8.4.40 can act on.
+#   · the uttara is identified by the self-named `?kaRva` / `?candra` tags, not by content: at a
+#     main-scan window it has already merged with its sup (the X4/X5 lesson).
+# The pūrva sense `?fzi_saMjYA` had to join the join_objects Tier-1 allowlist for the same reason
+# `?Ahita` did in X6 — it is dropped at the pūrva's own saṁhitā merge otherwise.
 - sutra: प्रस्कण्वहरिश्चन्द्रावृषी
   id: 6.1.153
-  bahiranga: -1
   condition:
-    lp:
-      - and
-      - "=pra"
-      - "?samAsaPurva"
-      - "?fzi_saMjYA"
-    rp:
-      - and
-      - "?samAsa"
-      - "=kaRva"
-  xform:
-    r: str("s")+r
-
-# SK1067/6.1.153 (the हरिश्चन्द्र arm) — SPLIT into its own rule because the two names need
-# different surface substitutes and one xform block cannot branch: प्रस्कण्व keeps the सुट् as स्
-# (before क्), while हरिश्चन्द्र shows it as श् by 8.4.40 श्चुत्व before च्. That ścutva is folded in
-# here for the reason given at 6.1.147 above — 8.4.40 is a junction rule and the prepended सुट्
-# lands inside the uttara element. The हरिश्चन्द्र-grahaṇa is अमन्त्रार्थम् (SK).
-- sutra: प्रस्कण्वहरिश्चन्द्रावृषी
-  id: 6.1.153.1
-  bahiranga: -1
-  condition:
-    lp:
-      - and
-      - "=hari"
-      - "?samAsaPurva"
-      - "?fzi_saMjYA"
-    rp:
-      - and
-      - "?samAsa"
-      - "=candra"
-  xform:
-    r: str("S")+r
+    - lp:
+        - and
+        - "=pra"
+        - "?samAsaPurva"
+        - "?fzi_saMjYA"
+      rp:
+        - and
+        - "?samAsa"
+        - "?pada"
+        - "?kaRva"
+    - lp:
+        - and
+        - "=hari"
+        - "?samAsaPurva"
+        - "?fzi_saMjYA"
+      rp:
+        - and
+        - "?samAsa"
+        - "?pada"
+        - "?candra"
+  insert:
+    r: str("s")
 
 # SK1069/6.1.155: कास्तीराजस्तुन्दे नगरे — सुट् in both, when a NAGARA (city) is named:
 # ईषत्तीरमस्यास्तीति कास्तीरम्, अजस्येव तुन्दमस्येति अजस्तुन्दम्. नगरे किम् — कातीरम्, अजतुन्दम्.

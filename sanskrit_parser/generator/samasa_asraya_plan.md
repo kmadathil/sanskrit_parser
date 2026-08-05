@@ -58,7 +58,7 @@ the plan does not out-claim the code.)*
 | **X3** मुम् | 2 | **DONE** — 2 implemented | 5 cases; no new machinery beyond the append xform |
 | **X4** pūrva dīrgha + `matup` | 14 | **DONE** — 12 implemented, 2 Skipped | 26 cases; adds `matup` + 8.2.9 |
 | **X5** samāsa ṣatva | 6 | **DONE** — 6 implemented | 10 cases; N2 needed no engine work |
-| **X6** samāsa ṇatva | 9 | **DONE** — 8 implemented, 8.4.38 untested | 13 cases; **closes the चोरभयेण deferral**; 3 engine touches |
+| **X6** samāsa ṇatva | 9 | **DONE** — 8 implemented, 8.4.38 Natural (no rule needed) | 13 cases; **closes the चोरभयेण deferral**; 3 engine touches |
 | **X7** पृषोदरादि + suṭ nipātanas | 15 | **DONE** — 15 implemented | 18 cases; 15 rules, not 2 gaṇa rules |
 | **X8** ष्यङ् सम्प्रसारणम् | 3 | **DONE** — 3 implemented | 4 cases; two-step marker, no new machinery |
 | **X9** prakaraṇa audit + status | — | **DONE** — 0 unaccounted | `prakarana_audit.py`; found 2 real defects |
@@ -83,6 +83,46 @@ rule is implemented but scoped to an opt-in `?gAlava_hrasva`, because unscoped i
 other rules' deliberate dīrghas (6.3.137's केशाकेशि, 6.3.27's अग्नीवरुणौ), breaks its own
 अव्ययानाम् vārtika on ऊरीकृतम्, and reaches ङीष्-feminines because `?NI` tagging is
 incomplete lexicon-wide. X3 — 6.3.70's vārtika tail (अस्तुङ्कारः, तिमिङ्गिलः, …).
+
+---
+
+## Addendum — 2026-08-04: the junction-sandhi fold repaid, and 8.4.38 deleted
+
+Three follow-ups from the X5–X7 debt, all landing behaviour-neutral (suite 8457 either way).
+
+**1. SK1057/8.4.38 पदव्यवायेऽपि needed NO rule.** The prohibition is architectural: every ṇatva
+setter reads the cause from `lp`, or for 8.4.11 from `llp`, and `llp = _l[ix-1]` reaches exactly
+ONE element back. A full trace of माष+कुम्भ+वाप in the instrumental shows the (वाप | सुप्) window
+with context `माष │ कुम्भ «वाप | आ»` — माष and कुम्भ still separate, so `llp` is कुम्भ, which has no
+r/ṣ/ṛ; the padas join only after वापेन is complete, right-to-left. Deleting the rule leaves the
+output unchanged, and 8.4.11/8.4.13 are never even evaluated. Its `?pada_vyavAya` marker was
+composer-supplied and nothing ever set it — dead code. Now a "Natural" Skipped row.
+
+*This also dissolves the "8.4.38 is untested" debt*: there is nothing to test, because there is
+no rule. What is still worth adding is the POSITIVE control — that माषकुम्भवापेन keeps its न् — as a
+regression guard on the architecture. That needs a `members: [...]` path in the X-phase driver,
+copying the dvandva driver's shape.
+
+**2. The fold is gone from all three remaining rules**, so every ṣṭutva/ścutva in the prakaraṇa
+is now attributable to 8.4.40/8.4.41 in the trace rather than produced silently.
+- **6.1.147 and 6.1.153**: an important difference from 8.3.81 — a सुट् is an ĀGAMA, so these need
+  `insert:` **alone**, with no `xform: r: null`; 8.3.81 needs the xform only because it REPLACES
+  स्थान's स्. `xform: r: null` here would have deleted चर्य's च्.
+- **6.1.153 + 6.1.153.1 merged back into ONE rule.** The split existed only because प्रस्कण्व needed
+  a literal स् and हरिश्चन्द्र a literal श्; both now insert a plain स् and 8.4.40 differentiates.
+  **Removing a fold removed a rule.**
+
+**3. 8.3.83's resistance was mundane, and this file said otherwise.** The earlier note here (and
+in the rule comment) blamed "window reachability" and the s-final pūrva. Both wrong. A tag trace
+shows Step 5, the pūrva's own saṁhitā merge, taking `?jyotis` in and dropping it: a PŪRVA-side tag
+must be in the Tier-1 propagate list, and it was not. The (ज्योतिस् | स्तोमस्) window exists and the
+rule is reachable — only the `lp` gate was failing. One list entry fixed it, exactly as `?Ahita`
+needed in X6.
+
+**The standing lesson, now four confirmations and one confidently wrong inference:** a tag is
+dropped at a merge unless it is in the right `join_objects` list. **Reach for a tag trace before
+reasoning about why a rule does not fire.** Twice a trace found in one pass what several rounds of
+inference had missed; once inference produced an answer that was clearly stated and simply false.
 
 ---
 

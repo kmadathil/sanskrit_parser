@@ -798,7 +798,7 @@ aBra   = Pratipadika("aBra",   "napum", other_tags=["karaNa"])  # cloud
 # gOra (exists), tAmra (SK514 counter), vidyamAna (SK513). The SK515 dik pūrva-pada
 # प्राच् is NOT pre-formed — derived live in the test as
 # [pra, luk_sup, in_context(aYc_u,"dik"), kvin, luk_sup] (the prAc añc-paradigm).
-candra = Pratipadika("candra", "pum")    # moon (SK510 चन्द्रमुखी pūrva)
+candra = Pratipadika("candra", "pum", other_tags=["candra"])   # moon (SK510 चन्द्रमुखी pūrva); ?candra for 6.1.153
 sa_pUrva = Pratipadika("sa", "pum")      # saha→sa (SK513 सकेशा pūrva; SK492 सपत्नी pūrva)
 eka_pUrva = Pratipadika("eka", "pum")    # SK492 एकपत्नी pūrva (eka+pati)
 vIra_pUrva = Pratipadika("vIra", "pum")  # SK492 वीरपत्नी pūrva (vīra+pati)
@@ -1429,10 +1429,10 @@ BaginI  = Pratipadika("BaginI",  "strI", other_tags=["NI"])   # भगिनी 
 # kAra, aja, vi, prati, candra, hari, udara already exist above.
 # ════════════════════════════════════════════════════════════════════════════
 kara   = Pratipadika("kara",   "pum")     # कर — अवस्करः, अपस्करः, कारस्करः, पारस्करः
-carya  = Pratipadika("carya",  "napum")   # चर्य — आश्चर्यम् (SK1062/6.1.147)
+carya  = Pratipadika("carya",  "napum", other_tags=["carya"])   # चर्य — आश्चर्यम् (?carya: main-scan id, 6.1.147)
 kira   = Pratipadika("kira",   "pum")     # किर — विष्किरः / विकिरः (SK1065/6.1.150)
 kaSa   = Pratipadika("kaSa",   "pum")     # कश — प्रतिष्कशः (SK1066/6.1.152)
-kaRva  = Pratipadika("kaRva",  "pum")     # कण्व — प्रस्कण्वः (SK1067/6.1.153)
+kaRva  = Pratipadika("kaRva",  "pum", other_tags=["kaRva"])   # कण्व — प्रस्कण्वः (?kaRva: main-scan id)
 tIra   = Pratipadika("tIra",   "napum")   # तीर — कास्तीरम् (SK1069/6.1.155)
 tunda  = Pratipadika("tunda",  "napum")   # तुन्द — अजस्तुन्दम् (SK1069/6.1.155)
 tumburu = Pratipadika("tumburu", "napum") # तुम्बुरु — कुस्तुम्बुरूणि (SK1058/6.1.143)
