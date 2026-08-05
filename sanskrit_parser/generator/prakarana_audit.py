@@ -12,7 +12,7 @@ phase was written, and an Implemented row whose SK cell was a RANGE that over-cl
 
     python -m sanskrit_parser.generator.prakarana_audit 985 1071
 
-Three checks, and the middle one is the one that catches real omissions:
+Four checks, and the second is the one that catches real omissions:
 
   * rule present  — the sūtra's Ashtadhyayi id appears in one of the three YAMLs. A suffixed
     variant counts (6.1.153.1 satisfies 6.1.153), since splitting one sūtra across two rule
@@ -22,6 +22,8 @@ Three checks, and the middle one is the one that catches real omissions:
   * no rule AND no Skipped row — an adhikāra or a natural realization needs an explicit
     "Natural" Skipped row (the convention 2.1.11 विभाषा and 5.4.68 समासान्ताः follow), not
     silence.
+  * unreadable SK cell — a row whose SK cell holds a number this file cannot parse is dropped
+    in SILENCE, so it is reported whatever range it sits in. See `unparseable_rows`.
 
 Appearing in BOTH tables is normal and reported for information only: it means the sūtra is
 implemented but an arm or vārtika of it is deferred (6.3.61's general form, 6.1.157's vārtika
@@ -31,6 +33,17 @@ Note on status-doc formatting, learned the hard way: the SK cell may be **bolded
 ~~struck through~~, and may hold several numbers separated by `/` or a `1058–1071` range. A
 range is convenient but DANGEROUS — it silently claims every number inside it. Prefer an
 explicit list when the row does not cover the whole span.
+
+Two further traps, both found on 2026-08-04 while closing the tatpuruṣa follow-up:
+
+  * An annotated cell like `966–984 (part)` does not parse AT ALL — the `(` ends the cell
+    match — and the row is then invisible. Three such rows hid 29 sūtras. Qualify the row in
+    its reason column, never in the SK cell; the fourth check above now catches it.
+  * This file accounts by SK number in the FIRST cell, but a row's SECOND cell names
+    Aṣṭādhyāyī ids, and the two can disagree. The 2026-07-10 tatpuruṣa audit accounted by id
+    and found 0; this one accounted by SK and found 17 — the same rows, with SK cells that
+    named the wrong number (`| 694 | 2.1.33–35 |`, where 2.1.33–35 is SK695–697). Neither key
+    is wrong, but only the SK one is machine-checked, so keep the SK cell honest.
 """
 import os
 import re
@@ -86,6 +99,26 @@ def _sk_numbers(chunk):
     return found
 
 
+def unparseable_rows():
+    """Table rows that LOOK like sūtra rows but whose SK cell no number could be read from.
+
+    Such a row contributes nothing and is dropped in silence — the failure mode that hid 29
+    sūtras behind three `966–984 (part)` cells, since the `(` ends the _SK_CELL match. Any
+    annotation belongs in the reason column, not the SK cell.
+    """
+    bad = []
+    for n, line in enumerate(open(_path("generator_status.md"), encoding="utf-8"), 1):
+        # a sūtra row is recognisable by its second cell holding an Ashtadhyayi id
+        if not re.match(r"\|[^|]*\|\s*[*~]*\s*\d+\.\d+\.\d+", line) or _SK_CELL.match(line):
+            continue
+        # legitimately SK-less rows (`—`, or the Ashtadhyayi id repeated) are not defects;
+        # a cell holding a BARE integer it could not read is.
+        cell = line.split("|")[1].strip()
+        if re.search(r"(?<![\d.])\d+(?![\d.])", re.sub(r"\d+\.\d+\.\d+", "", cell)):
+            bad.append((n, cell))
+    return bad
+
+
 def status_tables():
     """(implemented SK numbers, skipped SK numbers) from generator_status.md."""
     text = open(_path("generator_status.md"), encoding="utf-8").read()
@@ -131,6 +164,12 @@ def audit(lo, hi, out=sys.stdout):
     p(f"in BOTH tables (partials, ok)  : {len(both)}")
     for n, aps in both:
         p(f"    SK{n:<6d} {aps}")
+    bad = unparseable_rows()
+    if bad:
+        p("")
+        p(f"UNREADABLE SK CELLS (row silently ignored, whatever range it is in) : {len(bad)}")
+        for n, cell in bad:
+            p(f"    generator_status.md:{n}  SK cell {cell!r}")
     return len(unaccounted)
 
 
