@@ -19,6 +19,7 @@ from indic_transliteration import sanscript
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna
+from sanskrit_parser.generator import pratyaya as _pratyaya
 from sanskrit_parser.generator import pratipadika as _pratipadika
 from sanskrit_parser.generator import avyaya as _avyaya
 
@@ -45,7 +46,12 @@ def _build_member(spec):
         p.setTag("has_viBakti")
     for t in spec.get("tags", []):
         p.setTag(t)
-    return p
+    if spec.get("strI_abs"):
+        # LIVE-DERIVED feminine — [base, strI_abs], the ṭāp/ṅīp as a separate element
+        # instead of a stored stem (ni_ap_derivation_plan.md step D). Same hook as the
+        # X2 / dvandva / kāraka drivers.
+        return [p, deepcopy(_pratyaya.strI_abs)]
+    return [p]
 
 
 def _to_slp1(deva):
@@ -57,7 +63,7 @@ def test_samasa_tatpurusha(case):
     purva = _build_member(case["purva"])
     uttara = _build_member(case["uttara"])
     # Members ADJACENT (no avasAna between) → one compound.
-    pl = [Adya, purva, uttara, avasAna]
+    pl = [Adya, *purva, *uttara, avasAna]
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
     # ── Level 1: structure (pre-pass member tags, before the main-scan merge) ──

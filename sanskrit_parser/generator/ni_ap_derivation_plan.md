@@ -409,18 +409,61 @@ live derivation cannot serve". **That was wrong, and probing each candidate disp
 *class* is the whole question; for an ā-stem it never is, because 4.1.4 अजाद्यतष्टाप् catches
 every a-final prātipadika.
 
-**The two boundaries of the migration** — what is left is held by these, not by tagging:
+**The remaining blocks, measured (2026-08-05).** They are THREE kinds, not two, and not the
+same in severity — probing each is what showed it:
 
-- **Uttara position.** 5.4.153 / 5.4.110 read `?NI` on the uttara at −1 and are samāsānta
-  *selection* rules, so they cannot move; the uttara's ī does not exist at −1 either.
-  `kumArI` (बहुकुमारीकः), `mAlA` (बहुमालाकः), `kuSA`/`karRI` (अयस्कुशा/अयस्कर्णी) are held
-  here.
-- **The B1 puṁvadbhāva family (6.3.34–41).** These are pre-pass rules keyed on *lexical*
-  properties of the feminine — `?puMvat`, `?jAti`, `?kopaDa`, `?svAnga_I`, `?strI_saMjYA` —
-  read on the raw member at −1, where a live-derived pūrva is still the masculine base with
-  none of them. `?puMvat` being earned at the merge (step C) does not help: the merge happens
-  later. `brAhmaRI` is held here (ब्राह्मणीभार्यः, 6.3.41 जातेश्च), as are `kalyARI` (also a
-  standalone kāraka word) and `dattA`/`pAcikA`/`sukeSI`.
+| | probe | pre-formed | live-derived |
+|---|---|---|---|
+| **A. samāsānta SELECTION** (5.4.153 नद्यृतश्च) | बहुकुमारीकः | `bahukumArIkaH` ✅ 5.4.153 fires | **`bahukumAriH` ❌ WRONG FORM** — no `?NI` at −1 → कप् never added → 1.2.48 then shortens the ī |
+| **A′. compound FORMATION naming the feminine** (2.1.26 खट्वा क्षेपे, `lp: =KawvA`) | खट्वारूढः | `KawvArUQaH` ✅ | **no compound at all** — the pūrva never gets `?samAsaPurva`, since at −1 it is still खट्व |
+| **B. B1 puṁvadbhāva** (6.3.41 जातेश्च) | ब्राह्मणीभार्यः | `brAhmaRIBAryaH` ✅ 6.3.41 fires | `brAhmaRIBAryaH` ✅ **right form, but 6.3.41 does NOT fire** |
+
+A′ was found by building the tatpuruṣa driver's `strI_abs` hook and trying खट्वा through it —
+the hook works, the sūtra does not. It is the sharpest form of the −1 problem: not a rule that
+needs a TAG the live member lacks, but one that names the feminine's SURFACE. No propagation
+channel can help, because the string itself does not exist yet.
+
+**A is a wrong form; B is a lost attribution.** In B the surface survives only because 6.3.41
+is a *prohibition* — it blocks puṁvadbhāva — and puṁvadbhāva (6.3.34) cannot fire on a live
+pūrva either, since `?puMvat` is not on the raw base at −1. So the feminine survives by
+default and the compound comes out right **for the wrong reason**: the sūtra that ought to be
+responsible has dropped out of the derivation. Converting these stems would keep the suite
+green on surface and silently gut the `fired` assertions — which is exactly what those
+assertions exist to catch.
+
+Why neither can be fixed the way the pūrva-hrasva family was:
+
+- **A cannot be relocated.** 5.4.153 / 5.4.110 do not transform anything — they *select a
+  samāsānta affix*, and the affix is inserted in the pre-pass (`_insert_samasanta`) because
+  the compound then declines with it. A main-scan version would decide कप् after the
+  declension it is supposed to feed. **A′ even less so**: 2.1.26 *is* the compound formation.
+- **B's rules read LEXICAL properties of the feminine** — `?jAti`, `?kopaDa`, `?svAnga_I`,
+  `?strI_saMjYA`, `?puMvat` — on the raw member at −1. `?puMvat` is now derivable (step C),
+  and `?jAti` could sit on the base; but the rules would still be marking a member that has
+  not yet become feminine, so the puṁvadbhāva they govern has nothing to act on.
+
+Both need the ṭāp/ṅīp choice moved *before* bahiranga −1, which is a bahiranga-ordering
+change, not a tag or a driver hook.
+
+**Census of the 36 stems still carrying `?NI`/`?Ap`** (classified by their actual use, not by
+family resemblance):
+
+| why it stays | stems |
+|---|---|
+| **A. uttara position** — a −1 rule reads `?NI`/`?Ap` on the uttara (samāsānta selection and friends) | `kumArI` `nAqI` `pravARI` `pramARI` `paYcamI` `prajA` `meDA` `jAyA` `rAkzasI` `senA` `BaginI` `gaNgA` `sTAlI` `nAsikA` `mAlA` (pūrva use too, but the uttara one pins it) `vaqavA` `likzA` |
+| **A′. formation names the feminine's surface** | `KawvA` (2.1.26) |
+| **A″. ekaśeṣa must IDENTIFY the feminine at −1** (1.2.67 पुमान् स्त्रिया, 1.2.73 ग्राम्यपशु) | `haMsI` `ajA` |
+| **B. B1 puṁvadbhāva** — surface survives, attribution lost | `brAhmaRI` `kalyARI` `dattA` `pAcikA` `sukeSI` |
+| **not a rule at all: the base is a HOMOGRAPH** — `[base, strI_abs]` derives a different word | `kuSA` (कुश → *कुशी, ङीष् 4.1.42 jānapada) `karRI` (→ *कर्णा) `naKI` (→ *नखा) |
+| **optional-rule FORK** — 4.1.39 is a वा, so the live form is रोहिणी/रोहिता | `rohiRI` |
+| **the ī is not a strī-pratyaya** | `nadI` `strI` `pfTivI` |
+| **derivation not modelled** — ṣyaṅ / kṛt / nipātana / taddhita bases | `kArIzaganDyA` `vidyA` `suparRA` |
+| **open question** | `dAsI` — which sūtra supplies its ङीष् (गौरादि 4.1.41?) is still unchecked |
+
+Only the last three rows are candidates for further work, and none of them is about `?NI`
+propagation. `vidyA` / `suparRA` are the interesting pair: they are taddhita BASES
+(`[vidyA, aR_t, strI_abs]` → वैद्यी), so a live version would be a feminine inside a feminine —
+untested, and the one place left where a probe might still surprise.
 
 **The tooling block is REMOVED (2026-08-05).** It was the third, smaller boundary — the
 dvandva driver and `karaka_list` could not express a multi-element word. Both now can:

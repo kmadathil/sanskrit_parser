@@ -246,6 +246,8 @@ samasa_tp_tests = [
     },
     {
         "label": "T0-KawvArUQaH-SK688-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
+        # NOT live-derivable: 2.1.26 खट्वा क्षेपे names the pūrva by CONTENT (`lp: =KawvA`) in
+        # the pre-pass, and a live [खट्व, strI_abs] member is still खट्व there — no compound.
         "purva": {"stem": "KawvA", "vacana": 1, "vibhakti": 2, "sem": "semantic_kzepa"},
         "uttara": {"stem": "rUQa", "vacana": 1},
         "fired": ["2.1.26", "1.2.43", "2.4.26"],

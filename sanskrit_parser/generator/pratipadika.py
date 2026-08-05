@@ -73,7 +73,10 @@ kfta    = Pratipadika("kfta",    "napum", other_tags=["kta"])  # कृत — �
 rUQa    = Pratipadika("rUQa",    "pum",   other_tags=["kta"])  # रूढ — खट्वारूढः (2.1.26 kṣepa)
 pramita = Pratipadika("pramita", "pum",   other_tags=["kta"])  # प्रमित — मासप्रमितः (2.1.28 kāla)
 suKa    = Pratipadika("suKa",    "napum")                       # सुख — मुहूर्तसुखम् (2.1.29, non-kta)
-KawvA   = Pratipadika("KawvA",   "strI", other_tags=["Ap"])     # खट्वा — खट्वारूढः (2.1.26, dvitīyā pūrva)
+KawvA   = Pratipadika("KawvA",   "strI", other_tags=["Ap"])     # खट्वा — खट्वारूढः (2.1.26,
+#         dvitīyā pūrva). NOT convertible to [खट्व, strI_abs]: SK688/2.1.26 खट्वा क्षेपे names
+#         the feminine by CONTENT (`lp: =KawvA`) at bahiranga −1, where a live member is
+#         still खट्व — so the compound would never form at all. See ni_ap_derivation_plan.md.
 muhUrta = Pratipadika("muhUrta", "pum",   other_tags=["kAlavAcaka"])   # मुहूर्त — मुहूर्तसुखम् (2.1.29)
 # (मास is defined below at the SK539 site — ?kAlavAcaka added there for 2.1.28)
 # ── Tatpuruṣa T1: the remaining five vibhakti-tatpuruṣas (2.1.30–48, 2.2.1–11).
