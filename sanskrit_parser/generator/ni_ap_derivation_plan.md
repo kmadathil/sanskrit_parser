@@ -433,10 +433,10 @@ assertions exist to catch.
 
 Why neither can be fixed the way the pūrva-hrasva family was:
 
-- **A cannot be relocated.** 5.4.153 / 5.4.110 do not transform anything — they *select a
-  samāsānta affix*, and the affix is inserted in the pre-pass (`_insert_samasanta`) because
-  the compound then declines with it. A main-scan version would decide कप् after the
-  declension it is supposed to feed. **A′ even less so**: 2.1.26 *is* the compound formation.
+- **A is relocatable only with a rule-level `insert:` and a resolved ordering race**
+  (softened 2026-08-05 — "cannot be relocated" was too strong; see the peek analysis below).
+  **A′ genuinely is not**: 2.1.26 *is* the compound formation, and it names the feminine's
+  surface.
 - **B's rules read LEXICAL properties of the feminine** — `?jAti`, `?kopaDa`, `?svAnga_I`,
   `?strI_saMjYA`, `?puMvat` — on the raw member at −1. `?puMvat` is now derivable (step C),
   and `?jAti` could sit on the base; but the rules would still be marking a member that has
@@ -444,6 +444,63 @@ Why neither can be fixed the way the pūrva-hrasva family was:
 
 Both need the ṭāp/ṅīp choice moved *before* bahiranga −1, which is a bahiranga-ordering
 change, not a tag or a driver hook.
+
+**Superseded in part by `word_formation_ordering_plan.md`** (2026-08-05): the peek analysis below is
+what led to it. Early strī SELECTION + the peek TOGETHER dissolve blocks A, A′, A″ and B; neither
+does alone, because selection substitutes the affix element without merging it.
+
+### Can the −1 pre-pass PEEK at context, the way the main scan uses llp/rrp? (2026-08-05)
+
+**Yes — the channel is already wired at −1, and it points at exactly the right element.**
+`_samasa_window_fixpoint` builds `ctx = (inputs[a-1], inputs[b+1])` and passes it to
+`isTriggered`, and its own docstring says "llp/rrp context = the physical neighbours just
+outside the window". No bahiranga −1 rule uses it today; 30+ rules at **−2** do (2.3.4/16/19/
+29/39 …), as do the bahiranga-1/2 strī rules (4.1.26 `llp: ?saMKyA`, 4.1.60 `llp: ?dik`).
+
+Because `ctx` takes **physical neighbours by index**, a live-derived uttara
+`[… bahu(a), kumAra(b), strI_abs(b+1), sup …]` puts `strI_abs` *precisely* at `rrp`.
+
+**It still does not decide A.** `strI_abs` carries only `["strI_abs", "strI"]` — "a feminine
+affix is coming", not WHICH one. 5.4.153's arm A and 5.4.110 need ङी specifically, and
+deciding that at −1 means re-running the ~55-rule bahiranga-2 machine inside a −1 condition —
+the pre-tagging in another form. The peek closes the **visibility** gap, not the **timing**
+one.
+
+**What it does buy is the −1 half of a two-step**, and a trace of the live बहुकुमारिः shows
+the other half is closer than this plan claimed:
+
+```
+[4.1.20] ['bahu','kumAra','','s'] -> ['bahu','kumAra','I','s']   ← ṅīp chosen, INSIDE the nest
+[1.4.3]  ['bahu','kumArI','s']                                   ← nadī
+[1.2.48] ['bahu','kumArI','s']   -> ['bahu','kumAri','s']        ← level-1 hrasva, AFTER level 2
+```
+
+Two corrections fall out of that trace:
+
+1. The affix IS chosen while the compound is still un-merged, inside the nested sub-prakriyā —
+   there is a real window `['bahu','kumArI','s']` where the uttara carries `?NI` and its sup has
+   not merged.
+2. `1.2.48` (bahiranga **1**) fires AFTER `4.1.20` (bahiranga **2**) — the engine re-scans
+   lower levels once new tags appear. So the "the decision must precede level 1, but its
+   condition is not known until after level 2" circularity **does not exist**.
+
+The actual cause of बहुकुमारिः is plainer: 5.4.153 never fired, so no कप् marker → no कप्
+element → 1.2.48's `?!ka_pratyaya` guard passes → hrasva.
+
+**The binding constraints are therefore not the peek but:**
+
+- **Insertion.** `_insert_samasanta` is a pre-pass sweep (`ix+1`, after the uttara, before its
+  sup). A later decision needs the rule to insert कप् itself. That mechanism exists —
+  `sutra.insert` (`sutra.py:226`) supports `l`/`m`/`r`, and a **middle** insert lands between
+  the two window operands, structurally the same slot. UNVERIFIED: whether the resulting
+  hier-nesting merges कप् onto the stem correctly.
+- **The race with 1.2.48**, which becomes eligible the instant `?NI` appears. A relocated
+  5.4.153 must fire first, so the `?!ka_pratyaya` guard sees कप् and blocks the hrasva — which
+  is exactly what protects बहुकुमारीकः today. Whether bahiranga/para-kāryam priority can
+  guarantee that is the open question and the next thing to probe.
+
+Neither helps **A′** (2.1.26 needs the feminine's SURFACE) or **A″** (ekaśeṣa needs its
+gender): `rrp` reveals only that *some* feminine affix follows.
 
 **Census of the 36 stems still carrying `?NI`/`?Ap`** (classified by their actual use, not by
 family resemblance):
