@@ -29,5 +29,5 @@ def test_every_stri_rule_is_classified():
     stri, _ = classify(_rules())
     assert stri, "audit found no strI-window rules at all — the scan is broken"
     buckets = {"DEPENDENT (tag)", "DEPENDENT (position)", "DEPENDENT (derived)",
-               "INDEPENDENT"}
+               "MIXED (some arms independent)", "INDEPENDENT"}
     assert all(r["bucket"] in buckets for r in stri)

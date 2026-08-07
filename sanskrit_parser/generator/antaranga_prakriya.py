@@ -19,6 +19,7 @@ from sanskrit_parser.generator.paninian_object import PaninianObject, _SLP1_VOWE
 from sanskrit_parser.generator.prakriya import PrakriyaVakya, PrakriyaBase, PrakriyaNode, PrakriyaTree, _isScalar
 from sanskrit_parser.generator.pratyaya import Pratyaya, sups, wac, kap, Sac, ap_s, ic_s, asic, qac, ac_s
 from sanskrit_parser.generator.sutra import Sutra
+from sanskrit_parser.generator.stri_rule_audit import is_advisable
 
 from copy import deepcopy, copy
 import logging
@@ -188,6 +189,11 @@ def _compose_abhiya(snapshot_str, current_str, target_str):
 _sutra_split_cache = {}
 
 
+# Vibhāṣā forks explored by the advisory sandbox before it gives up (a guard against a
+# pathological rule set; two optional rules on one window is already unheard of).
+_ADVISORY_FORK_LIMIT = 4
+
+
 def _split_sutras(sutra_list):
     cached = _sutra_split_cache.get(id(sutra_list))
     if cached is not None and cached[0] is sutra_list:
@@ -205,6 +211,12 @@ def _split_sutras(sutra_list):
                           and getattr(s, "purvanipata", False)]
     main_sutras = [s for s in sutra_list
                    if getattr(s, "bahiranga", 9) > -1]
+    # W1 (word_formation_ordering_plan.md): the strī rules whose verdict does NOT depend on
+    # the compound, so it can be computed before the compound exists. Classified from the
+    # rule's own retained `_cond_dict` by the SAME predicate the W0 audit uses
+    # (stri_rule_audit.is_advisable), so the two cannot drift.
+    stri_advisory_sutras = [s for s in sutra_list
+                            if is_advisable(getattr(s, "_cond_dict", None))]
     purvapara_aps = [s.aps for s in sutra_list
                      if getattr(s, "purvapara", False)]
     ekadesha_block_aps = list(purvapara_aps)
@@ -215,7 +227,7 @@ def _split_sutras(sutra_list):
             ekadesha_block_aps.append(s.aps)
             _seen.add(s.aps)
     split = (karaka_sutras, samasa_sutras, purvanipata_sutras, main_sutras,
-             purvapara_aps, ekadesha_block_aps)
+             purvapara_aps, ekadesha_block_aps, stri_advisory_sutras)
     _sutra_split_cache[id(sutra_list)] = (sutra_list, split)
     return split
 
@@ -273,7 +285,8 @@ class AntarangaPrakriya(PrakriyaBase):
         # which cannot match the vowel substitute anyway.
         (self._karaka_sutras, self._samasa_sutras, self._purvanipata_sutras,
          self._main_sutras, self._purvapara_aps,
-         self._ekadesha_block_aps) = _split_sutras(sutra_list)
+         self._ekadesha_block_aps,
+         self._stri_advisory_sutras) = _split_sutras(sutra_list)
         # Apply initially-disabled sutras AFTER PrakriyaVakya's deepcopy so they
         # are visible inside this prakriya.  Used by insert hier prakriyas to honour
         # the triggering sutra's `overrides:` list (the outer disabled_sutras update
@@ -287,6 +300,12 @@ class AntarangaPrakriya(PrakriyaBase):
         # semantic_* tags can never re-enter), and only when some element
         # carries semantic_*/prayoga tags (skip-guard inside). MUST precede
         # the hierarchical scan below so it sees the post-insertion inputs.
+        # strī ADVISORY pre-pass (W1, word_formation_ordering_plan.md): records which
+        # feminine affix each member WOULD take, before the sentence/compound pre-passes that
+        # need to know. Runs first because it is the most antaraṅga thing here — word
+        # formation — and because both passes below are its consumers.
+        if karaka and self._stri_advisory_sutras:
+            self._stri_advisory_prepass()
         self.karaka_log = []
         if karaka and self._karaka_sutras:
             self._karaka_prepass()
@@ -363,6 +382,73 @@ class AntarangaPrakriya(PrakriyaBase):
 
     # ── Kāraka layer (karaka_plan.md §2) ────────────────────────────────────
     _PRAYOGA_TAGS = ("kartari", "karmaRi", "BAve")
+
+    # ── strī advisory pre-pass (W1) ──────────────────────────────────────────────
+    # The bahiranga ladder runs word-level affixation (ṭāp/ṅīp, level 2) THREE LEVELS AFTER
+    # the kāraka (-2) and samāsa (-1) pre-passes that depend on it, so a member written live
+    # as [base, strI_abs] is still the bare masculine base when every samāsa rule looks at it.
+    # That inversion is why `pratipadika.py` stores pre-tagged feminines at all.
+    #
+    # This pass does NOT fix the ordering — it computes the VERDICT early and records it:
+    # for each `(stem | strI_abs)` pair it runs the compound-independent strī rules in a
+    # SANDBOX (deep copies; the real elements are never touched) and tags the stem with
+    # ?NI_adv / ?Ap_adv / ?UN_adv. The placeholder stays a placeholder, so level 2 selects the
+    # affix exactly as before — which is what keeps त्रिलोकी (compound-level ṅīp by
+    # SK479/4.1.21 over an a-stem member that would advise ?Ap_adv) correct.
+    #
+    # Deliberately DISTINCT tag names, not ?NI/?Ap: fifteen rules — 6.1.68 हल्ङ्याब्भ्यो,
+    # 7.1.18, 7.1.54, 7.3.105/106/113/114/115/116, 7.4.15, 1.2.48, 6.3.43/61/63/64 — read
+    # ?NI/?Ap on their LEFT operand, and they are the declension family that must see the tag
+    # only on the MERGED stem. An advisory verdict is about the member, may legitimately
+    # differ from what the compound finally takes, and must never reach them.
+    _ADVISORY_AFFIX_TAGS = ("NI", "Ap", "UN")
+
+    def _stri_advisory_prepass(self):
+        """Tag every prātipadika followed by a `?strI_abs` with the affix it WOULD take."""
+        inputs = self.inputs
+        for ix in range(len(inputs) - 1):
+            stem, nxt = inputs[ix], inputs[ix + 1]
+            if not (_isScalar(stem) and _isScalar(nxt)):
+                continue
+            if not nxt.hasTag("strI_abs") or not stem.hasTag("prAtipadika"):
+                continue
+            for t in self._advise_stri(stem, nxt):
+                stem.setTag(t + "_adv")
+
+    def _advise_stri(self, stem, affix):
+        """Which affix tag(s) the sandboxed (stem | strI_abs) window resolves to.
+
+        A set, not a single value: an OPTIONAL rule (SK496/4.1.39 वा — रोहिणी / रोहिता) makes
+        the verdict genuinely two-valued, and the honest encoding is to record both and let
+        each consumer decide whether an ambiguous verdict is enough to act on."""
+        out = set()
+        self._advise_fixpoint(deepcopy(stem), deepcopy(affix), out)
+        return sorted(out)
+
+    def _advise_fixpoint(self, lp, rp, out, depth=0):
+        """Run the advisable rules to fixpoint on a sandbox window, forking on vibhāṣā.
+
+        Uses the real rule objects and the real `sutra_priority`, never a re-implementation of
+        the selection logic — a second, drifting copy of the ṭāp/ṅīp machine is precisely the
+        failure mode the pre-tagged stems already are."""
+        while True:
+            triggered = [s for s in self._stri_advisory_sutras
+                         if s.aps not in lp.disabled_sutras and s.isTriggered(lp, rp)]
+            if not triggered:
+                break
+            s = self.sutra_priority(triggered, [lp, rp])
+            if s.optional and depth < _ADVISORY_FORK_LIMIT:
+                skip_lp, skip_rp = deepcopy(lp), deepcopy(rp)
+                skip_lp.disabled_sutras.append(s.aps)
+                self._advise_fixpoint(skip_lp, skip_rp, out, depth + 1)
+            r = s.update(lp, rp, *s.operate(lp, rp))
+            lp, rp = r[0], r[1]
+            lp.disabled_sutras.append(s.aps)
+            for o in (s.overrides or []):
+                lp.disabled_sutras.append(o)
+        for t in self._ADVISORY_AFFIX_TAGS:
+            if rp.hasTag(t):
+                out.add(t)
 
     def _karaka_prepass(self):
         """Sentence-level kāraka/vibhakti tagging pre-pass + sup insertion.

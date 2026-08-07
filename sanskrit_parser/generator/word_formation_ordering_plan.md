@@ -1,6 +1,6 @@
 # Running word-formation before the sentence pre-passes — ordering plan
 
-**Status: NOT STARTED.** Written 2026-08-05 against commit `189d679`. Every number below is
+**Status: W0 + W1 DONE; W2–W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
 measured on that tree (a script over the 773 rules in `sutras_antaranga.yaml`, plus prakriyā
 traces); inferences are marked as such.
 
@@ -46,28 +46,36 @@ formation. The fix has to come from the other end.
 
 ## 2. The finding that makes a fix possible
 
-**The strī block is not one block.** Of the 69 rules whose condition mentions `?strI_abs`:
+**The strī block is not one block.** Of the 69 rules whose condition mentions `?strI_abs`
+(**measured per ARM by `stri_rule_audit.py` — phase W0, DONE 2026-08-05**):
 
-| | count | where they sit now | examples |
+| bucket | count | where they sit | why |
 |---|---|---|---|
-| **compound-INDEPENDENT** | **46** | 38 @ 2, 6 @ 1, 2 @ main | SK454/4.1.4 ṭāp · 4.1.5 · SK/4.1.6 उगितश्च · 4.1.15 · SK478/4.1.20 · SK496/4.1.39 · 4.1.40 · SK498/4.1.41 · 4.1.63 · 4.1.73 |
-| **compound-DEPENDENT** | **23** | 19 @ 2, 4 @ 1 | SK479/4.1.21 दिगोः · 4.1.22–24 · 4.1.25–29 · 4.1.12/13 · 4.1.54–58 · 4.1.8 · 4.1.33/34 · 4.1.64 · 4.1.4.1, 4.1.4.2 (ajādi prabalatva) · 5.4.131 |
+| **DEPENDENT (tag)** | **21** | 17 @ 2, 4 @ 1 | names a compound saṁjñā — SK479/4.1.21 दिगोः · 4.1.22–24 · 4.1.25–29 · 4.1.12/13 · 4.1.54–58 · 4.1.8 · 4.1.33/34 · 4.1.64 · 4.1.4.1/4.1.4.2 · 5.4.131 |
+| **DEPENDENT (position)** | **7** | 6 @ 2, 1 @ 1 | reads `llp` — SK/4.1.35 (सपत्नी) · 4.1.36 (पूतक्रतु) · 4.1.50/51 · 4.1.57 · 4.1.60 (`?dik`) · 4.1.70 |
+| **DEPENDENT (derived)** | **0** | — | reads a tag the −1 pre-pass writes. **Zero — the load-bearing number** |
+| **MIXED (some arms independent)** | **2** | 2 @ 2 | 4.1.4.1, 4.1.13 — some arms independent, some not; **advisable**, since a dependent arm cannot match in the sandbox |
+| **INDEPENDENT** | **39** | 32 @ 2, 5 @ 1, 2 @ main | SK454/4.1.4 ṭāp · 4.1.5 · 4.1.6 उगितश्च · 4.1.15 · SK478/4.1.20 · SK496/4.1.39 · 4.1.40 · SK498/4.1.41 · 4.1.63 · 4.1.73 |
+
+**41 advisable early / 28 compound-dependent** (per-ARM classification; a per-rule count gives 39/30 and is wrong — see W1). The derived bucket is the check no hand count
+can do: it cross-references each advisable rule against the 46 tags the samāsa pre-pass
+actually emits, so it does not rely on a tag *looking* like a compound tag. It is empty — no
+advisable rule reads anything the pre-pass produces, which is precisely the licence the
+advisory phase needs. `test/test_stri_rule_audit.py` guards that it stays empty.
 
 The split is not arbitrary — it falls exactly along **whose femininity it is**:
 
-- the **46** decide a *member's own* feminine affix (कुमारी as a word);
-- the **23** decide the *compound's* feminine affix (बहुकुमारी, पञ्चखट्वी — anyapadārtha and
+- the **41** decide a *member's own* feminine affix (कुमारी as a word);
+- the **28** decide the *compound's* feminine affix (बहुकुमारी, त्रिलोकी — anyapadārtha and
   dvigu femininity).
 
 They act on **different objects**, so a member's affix can be settled before the compound
 exists. There is no circular dependency to break — which is what makes the whole plan viable
 rather than a rewrite.
 
-**The 46/23 counts are an upper bound on independence, not the answer.** 7 of the "46" read
-`llp` and are compound rules that identify the pūrva **by position rather than by tag** —
-SK/4.1.35 (`=sa/=eka/=vIra`, सपत्नी), 4.1.36 (`=pUta`), 4.1.50/51 (`?karaNa`), 4.1.57,
-4.1.60 (`?dik`), 4.1.70. The real split is nearer **39 / 30**, and phase W0 exists to settle
-it exactly.
+**The first hand count (46/23) was wrong**, which is why W0 is a script and not a grep: it
+missed the 7 positional rules entirely, because they name no compound tag at all. Any future
+hand count will make the same mistake.
 
 ### 2a. But moving selection earlier is NOT sufficient on its own
 
@@ -198,15 +206,41 @@ already in the list before the affix is even chosen.
 
 ## 4. Phases
 
-**W0 — the audit (do this first, it is cheap and it will move the numbers).** A checked-in
-script that classifies every strī rule by compound-dependence. *The 46/23 split in §2 is
-already known to be wrong*: **7 of the "46" read `llp`** — SK/4.1.35 (`=sa/=eka/=vIra`,
-सपत्नी), 4.1.36 (`=pUta`, पूतक्रतु), 4.1.50/51 (`?karaNa`), 4.1.57, 4.1.60 (`?dik`), 4.1.70 —
-i.e. they are compound rules that identify the pūrva **by position instead of by tag**. The
-real split is nearer **39 / 30**, and only the audit will say exactly.
+**W0 — the audit. DONE 2026-08-05.** `stri_rule_audit.py`
+(`python -m sanskrit_parser.generator.stri_rule_audit [--verbose]`) classifies every strī rule
+into §2's four buckets and additionally reports what each does to the placeholder (45
+substitute / 9 xform / 8 tag-only / 7 block / **0 insert**) and the 15 rules reading
+`?NI`/`?Ap` on their left operand. Result **39 / 30**, derived bucket **0**.
+`test/test_stri_rule_audit.py` guards the invariant; it deliberately does not pin 39/30.
 
-**W1 — `?NI_adv`/`?Ap_adv` and the sandbox.** Compute the verdict, write the tag, touch
-nothing else. Surface-neutral by construction: no rule reads the new tags yet.
+**W1 — the advisory pre-pass. DONE 2026-08-05.** `_stri_advisory_prepass` in
+`antaranga_prakriya.py`, running before the kāraka pre-pass. For each `(stem | strI_abs)` pair
+it runs the advisable rules in a SANDBOX (deep copies; the real elements are never touched) and
+tags the stem `?NI_adv` / `?Ap_adv` / `?UN_adv`. Surface-neutral by construction — nothing
+reads the tags yet.
+
+* The advisable set is selected at runtime by the SAME predicate the W0 audit uses
+  (`stri_rule_audit.is_advisable`, applied to each rule's retained `_cond_dict`), so the two
+  cannot drift.
+* The sandbox runs the real rule objects through the real `sutra_priority`, never a
+  re-implementation — risk 2 below.
+* An optional rule forks the sandbox and BOTH verdicts are recorded (रोहित → `?NI_adv` **and**
+  `?Ap_adv`), which is risk 3's honest encoding.
+* `test/test_stri_advisory.py` checks the property that matters: for nine stems covering every
+  path — plain ṭāp, ajādi-prabalatva, gaurādi ṅīṣ, ugit ṅīp, ūṅ, and the 4.1.39 vibhāṣā — the
+  advice **matches the affix the real derivation lands on**, read off its final vowel. Plus:
+  no verdict without a placeholder, and the placeholder survives unconsumed.
+
+**W1 corrected W0's granularity.** The first run advised अज `?NI_adv` while its derivation
+gives अजा. Cause: SK454+/4.1.4.1 अजाद्यतष्टाप् has TWO arms — `lp: ?ajAdi` (the plain-word
+ajādi-prabalatva) and `lp: [?samAsa, $$ajAdi_samasta]`. Classifying per RULE let arm 2's
+`?samAsa` disqualify arm 1, the sandbox dropped the rule, and 4.1.63 जातेः ṅīṣ won unopposed.
+The audit now classifies **per arm**, with a `MIXED (some arms independent)` bucket that counts
+as advisable — the dependent arms cannot match in the sandbox anyway, since they need a
+compound tag the bare member lacks or an `llp` the sandbox does not supply. Split is now
+**41 advisable / 28 dependent** (2 mixed: 4.1.4.1, 4.1.13). *Caveat worth re-checking if it
+ever changes: no strī arm reads a NEGATED `llp`, which is the one shape that could match
+against an absent neighbour.*
 
 **W2 — `_insert_samasanta` skips the strī affix.** Independently testable against a live
 `[kumAra, strI_abs]` uttara.

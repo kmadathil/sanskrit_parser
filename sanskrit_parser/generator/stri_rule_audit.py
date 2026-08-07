@@ -15,12 +15,15 @@ and it was WRONG. Seven "independent" rules identify the pūrva by POSITION (`ll
 `llp: =pUta` …) instead of by a compound tag, so a tag-name scan silently under-counts the
 dependent set. Any future hand count will make the same mistake; this one will not.
 
-Result on 2026-08-05 (`sutras_antaranga.yaml`, 773 rules): **39 advisable early / 30
-compound-dependent** — 23 by tag, 7 by position, **0 by derived tag**. That last zero is the
-load-bearing one: no rule in the advisable set reads anything the samāsa pre-pass produces, so
-the set can be evaluated before the pre-pass runs at all.
+Result on 2026-08-05 (`sutras_antaranga.yaml`, 773 rules): **41 advisable early / 28
+compound-dependent** — 21 by tag, 7 by position, **0 by derived tag**, 2 mixed. That zero is
+the load-bearing one: no rule in the advisable set reads anything the samāsa pre-pass produces,
+so the set can be evaluated before the pre-pass runs at all.
 
-Four buckets, and the two middle ones are the reason this exists:
+Classification is **per ARM**. Judging whole rules gave 39/30 and was WRONG in a way that
+produced a wrong verdict: see `arms()` below and W1's अज case.
+
+Five buckets, and the middle three are the reason this exists:
 
   * DEPENDENT (tag)      — names a compound saṁjñā: ?samAsa, ?bahuvrIhi, ?dvigu, …
   * DEPENDENT (position) — names no compound tag but reads `llp`/`rrp`, i.e. it identifies a
@@ -28,7 +31,10 @@ Four buckets, and the two middle ones are the reason this exists:
   * DEPENDENT (derived)  — reads a tag that some `bahiranga: -1` rule WRITES. This is the check
                            no hand count can do: it does not depend on knowing which tag names
                            "look like" compound tags, only on what the pre-pass actually emits.
-  * INDEPENDENT          — none of the above. Only these can be advised early.
+  * MIXED                — some arms independent, some not. ADVISABLE: a dependent arm cannot
+                           match in the advisory sandbox anyway (no compound tag on a bare
+                           member, no `llp` in the sandbox window).
+  * INDEPENDENT          — none of the above.
 
 It also reports what each rule DOES (substitute the placeholder / block a competitor / reshape
 the stem), because that is the other half of the design: **nothing inserts a strī pratyaya** —
@@ -108,6 +114,71 @@ def _prepass_written_tags(rules):
     return written
 
 
+def arms(condition):
+    """A rule's condition as a list of ALTERNATIVE arms.
+
+    Classification is PER ARM, not per rule — SK454+/4.1.4.1 अजाद्यतष्टाप् is why. Its first
+    arm (`lp: ?ajAdi`) is the plain-word ajādi-prabalatva that gives अजा; its second names
+    `?samAsa` for the compound case. Judging the rule as a whole let arm 2 disqualify arm 1,
+    the advisory sandbox then dropped the rule, 4.1.63 जातेः ṅīṣ won unopposed, and अज was
+    advised `?NI_adv` while the real derivation gives अजा. Found by probing W1, 2026-08-05."""
+    if isinstance(condition, list):
+        return [a for a in condition if isinstance(a, dict)] or [condition]
+    return [condition]
+
+
+def _arm_bucket(arm, written_tags=()):
+    pairs = _pairs(arm)
+    blob = " ".join(v for _, v in pairs)
+    if "strI_abs" not in blob:
+        return None
+    if any(t in blob for t in COMPOUND_TAGS):
+        return "DEPENDENT (tag)"
+    if any(k in POSITIONAL_KEYS for k, _ in pairs):
+        return "DEPENDENT (position)"
+    if written_tags and ({v.lstrip("?!") for _, v in pairs if v.startswith("?")}
+                         & set(written_tags)):
+        return "DEPENDENT (derived)"
+    return "INDEPENDENT"
+
+
+def bucket_for(condition, written_tags=()):
+    """The bucket a rule falls in, or None if it is not a strī-window rule.
+
+    A rule with BOTH independent and dependent arms is "MIXED", and counts as advisable: the
+    dependent arms cannot match in the advisory sandbox anyway, since they require a compound
+    tag the bare member does not carry, or an `llp` the sandbox window does not supply.
+    (Caveat, true today and worth re-checking if it changes: no strī arm reads a NEGATED
+    `llp`, which is the one shape that could match against an absent neighbour.)
+
+    Shared with the ENGINE (antaranga_prakriya._split_sutras), which classifies live Sutra
+    objects from their retained `_cond_dict` so the advisory pre-pass and this audit can never
+    drift apart. The engine passes no `written_tags`: the DEPENDENT (derived) check needs the
+    -1 rules' update dicts, which Sutra objects do not retain, and it is the audit's guard test
+    that keeps that bucket empty.
+    """
+    if condition is None:
+        return None
+    buckets = [b for b in (_arm_bucket(a, written_tags) for a in arms(condition))
+               if b is not None]
+    if not buckets:
+        return None
+    if all(b == "INDEPENDENT" for b in buckets):
+        return "INDEPENDENT"
+    if any(b == "INDEPENDENT" for b in buckets):
+        return "MIXED (some arms independent)"
+    # All dependent — report the most specific reason, in the order checked.
+    for b in ("DEPENDENT (tag)", "DEPENDENT (position)", "DEPENDENT (derived)"):
+        if b in buckets:
+            return b
+    return buckets[0]
+
+
+def is_advisable(condition):
+    """True if ANY arm's verdict can be computed before the compound exists."""
+    return bucket_for(condition) in ("INDEPENDENT", "MIXED (some arms independent)")
+
+
 def classify(rules):
     written = _prepass_written_tags(rules)
     stri, decl = [], []
@@ -124,19 +195,13 @@ def classify(rules):
         if left:
             decl.append((r.get("id"), r.get("bahiranga"), left))
 
-        if "strI_abs" not in blob:
+        bucket = bucket_for(r["condition"], written)
+        if bucket is None:
             continue
         tags = sorted({t for t in COMPOUND_TAGS if t in blob})
         pos = sorted({k for k, _ in pairs if k in POSITIONAL_KEYS})
         derived = sorted({v.lstrip("?!") for _, v in pairs if v.startswith("?")} & written)
-        if tags:
-            bucket, why = "DEPENDENT (tag)", tags
-        elif pos:
-            bucket, why = "DEPENDENT (position)", pos
-        elif derived:
-            bucket, why = "DEPENDENT (derived)", derived
-        else:
-            bucket, why = "INDEPENDENT", []
+        why = tags or pos or derived or []
         stri.append({
             "id": r.get("id"), "sutra": r.get("sutra", ""),
             "bahiranga": r.get("bahiranga"), "bucket": bucket,
@@ -155,7 +220,7 @@ def main():
     rules, path = load_rules(args.yaml_file)
     stri, decl = classify(rules)
     order = ("DEPENDENT (tag)", "DEPENDENT (position)", "DEPENDENT (derived)",
-             "INDEPENDENT")
+             "MIXED (some arms independent)", "INDEPENDENT")
 
     print(f"strī-pratyaya rule audit — {os.path.basename(path)} "
           f"({len(rules)} rules, {len(stri)} of them strī-window)\n")
@@ -167,7 +232,7 @@ def main():
         spread = ", ".join(f"{n}@{b if b is not None else 'main'}"
                            for b, n in sorted(by_bah.items(), key=lambda kv: str(kv[0])))
         print(f"── {bucket}: {len(rows)}   ({spread})")
-        if args.verbose or bucket != "INDEPENDENT":
+        if args.verbose or bucket != "INDEPENDENT":  # MIXED is always listed
             for r in sorted(rows, key=lambda r: str(r["id"])):
                 bah = r["bahiranga"] if r["bahiranga"] is not None else "main"
                 why = ",".join(r["why"]) if r["why"] else "-"
@@ -175,7 +240,7 @@ def main():
         print()
 
     dep = sum(1 for r in stri if r["bucket"].startswith("DEPENDENT"))
-    ind = len(stri) - dep
+    ind = len(stri) - dep   # INDEPENDENT + MIXED — both are advisable
     print(f"SPLIT: {ind} advisable early / {dep} compound-dependent "
           f"(of {len(stri)} strī-window rules)\n")
 
