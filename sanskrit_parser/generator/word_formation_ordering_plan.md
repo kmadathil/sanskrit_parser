@@ -4,6 +4,11 @@
 measured on that tree (a script over the 773 rules in `sutras_antaranga.yaml`, plus prakriyā
 traces); inferences are marked as such.
 
+**The design is ADVISORY TAGGING (§3), not a level move.** W computes which strī affix a member
+*would* take and records the verdict as a tag; it does not substitute the affix, move a rule, or
+reorder anything. The level-move version is kept as §2/§7's fallback because it is what the
+analysis started from — and because त्रिलोकी shows why it fails.
+
 ## 1. The problem: the ladder is inverted
 
 | bahiranga | contents |
@@ -54,8 +59,15 @@ The split is not arbitrary — it falls exactly along **whose femininity it is**
 - the **23** decide the *compound's* feminine affix (बहुकुमारी, पञ्चखट्वी — anyapadārtha and
   dvigu femininity).
 
-They act on **different objects**, so they can sit at different levels. There is no circular
-dependency to break — which is what makes the whole plan viable rather than a rewrite.
+They act on **different objects**, so a member's affix can be settled before the compound
+exists. There is no circular dependency to break — which is what makes the whole plan viable
+rather than a rewrite.
+
+**The 46/23 counts are an upper bound on independence, not the answer.** 7 of the "46" read
+`llp` and are compound rules that identify the pūrva **by position rather than by tag** —
+SK/4.1.35 (`=sa/=eka/=vIra`, सपत्नी), 4.1.36 (`=pUta`), 4.1.50/51 (`?karaNa`), 4.1.57,
+4.1.60 (`?dik`), 4.1.70. The real split is nearer **39 / 30**, and phase W0 exists to settle
+it exactly.
 
 ### 2a. But moving selection earlier is NOT sufficient on its own
 
@@ -91,72 +103,153 @@ is visible to neither.
 
 > **early selection + the peek = sufficient. Neither alone is.**
 
+**Superseded by §3.** That conclusion is sound but it describes the *level-move* design. The
+advisory design below needs neither: it never touches the placeholder, so the affix keeps its
+`?strI_abs` identity for the level-2 rules, and the −1 rules read a tag on the member rather
+than peeking at a neighbour. The peek analysis is kept because it is what led here, and
+because the between-slot accessor remains the fallback if advisory tagging proves too weak.
+
 ---
 
-## 3. Design
+## 3. Design — ADVISORY tagging, not a level move
 
-1. **A word-formation phase (W) before the sentence pre-passes.** Run kṛt / taddhita / strī
-   selection to fixpoint at a level below −2. *Inferred, not yet proven:* a single phase run
-   to fixpoint is sounder than three ordered levels, because 4.1.22–24 read `?tadDita` **and**
-   `?dvigu` together, and a taddhita-derived stem must exist before strī selection runs on it
-   (विद्या + अण् + ङीप् = वैद्यी).
-2. **The 23 compound-dependent strī rules stay where they are** (bahiranga 1/2). They need the
-   samāsa saṁjñā, which is still assigned at −1.
-3. **SK650/2.4.71 सुपो धातुप्रातिपदिकयोः stays at 2.** It lives at the same level as the strī
-   block but is not part of it — it needs `?samAsaPurva` from −1. This is why the move is a
-   per-rule reclassification, not a level shift.
-4. **New context slot** on the −1 window: the element immediately after `lp` (the between-slot).
-   Contained change — `ctx` tuple + the condition env.
-5. **Convert the four blocked families** to read the affix through context instead of through a
-   tag on the member.
+Revised 2026-08-05 after checking how the strī rules actually operate. **Nothing inserts a
+strī pratyaya.** All 69 expect a composer-supplied `strI_abs` placeholder and either
+substitute it (`orp: =NIp` / `=NIz` / `=Ap` / `=DAp`, 16 rules), block a competitor
+(`overrides:` + `update: null`, falling through to 4.1.4's ṭāp, 6 rules), or reshape the stem
+(`xform`, 5.4.131 ऊधस्→ऊधन्). `strI_abs` is an *input* — the declaration "a feminine is wanted
+here".
 
-| block | conversion |
+That kills the naive "move the 46 earlier", because member-level and compound-level femininity
+**share one placeholder slot** and are the same object:
+
+- बहुकुमारीकः — the ī is the **uttara's own** (कुमारी is a word);
+- **त्रिलोकी** — the ī is the **compound's** (SK479/4.1.21 दिगोः reads `lp: ?dvigu` on the
+  *merged* stem त्रिलोक).
+
+Run the 46 early and they consume the placeholder for त्रिलोक's member `loka` by 4.1.4 ṭāp →
+लोका, and 4.1.21's ṅīp never gets its turn → ***त्रिलोका**. `vibhaktis_list.py:1903` asserts
+त्रिलोकी, so **त्रिलोकी is the case that discriminates the two designs.**
+
+### The design that works: advise, do not consume
+
+**Phase W runs the compound-independent strī rules in a sandbox to decide which affix a member
+WOULD take, writes that verdict as a tag on the member, and leaves the `strI_abs` element
+untouched.** Nothing is substituted, nothing is reordered, and level 2 proceeds exactly as it
+does today.
+
+1. **Distinct tag names — `?NI_adv` / `?Ap_adv`, not `?NI` / `?Ap`.** *Measured, and this is
+   what forces it:* no strī-window rule reads `?NI`/`?Ap` on its **lp**, so an advisory tag
+   cannot feed back into affix selection — but **15 other rules do** read them on the left
+   operand, and they are the declension family that must see the tag only on the *merged*
+   stem: SK/6.1.68 हल्ङ्याब्भ्यो, 7.1.18, 7.1.54, 7.3.105/106/113/114/115/116, 7.4.15,
+   SK656/1.2.48, and the relocated 6.3.43/61/63/64. Reusing the names would leak a **stale**
+   verdict onto the merged stem in exactly the त्रिलोक case (advisory `?Ap`, actual ṅīp), where
+   7.3.105/113 would then see a spurious `?Ap` on a nadī stem.
+2. **The −1 consumers read both.** `5.4.153` becomes `[or, ?NI, ?NI_adv]`, and likewise
+   5.4.110, 6.3.63, 2.1.26 (via content + `?Ap_adv`), 1.2.67/1.2.73. Pre-formed stems keep
+   working unchanged — which is what lets the migration proceed stem-by-stem instead of in one
+   jump.
+3. **The 23 compound-dependent rules do not move**, and the placeholder is still live when
+   they run, so त्रिलोकी survives untouched.
+4. **`_insert_samasanta` must skip the member's strī affix.** *Measured:* it inserts at
+   `ix + 1`, "just after the uttara (before its sup)". With a live member the element at
+   `ix + 1` is the `strI_abs`, so कप् would land as कुमार+**क**+ī — wrong; it belongs to the
+   compound stem बहुकुमारी, i.e. कुमार+ī+**क**. The fix is to advance past a following
+   `?strI_abs` before inserting. (Today the pre-formed कुमारी *is* the member, so `ix+1` is
+   already correct — which is why this has never bitten.)
+
+### Does the order work for a PLAIN (non-samāsa) derivation?
+
+Yes, and provably so with distinct tag names — **no rule reads `?NI_adv`/`?Ap_adv` except the
+−1 consumers, and a non-samāsa derivation never reaches them.** Walking `[brAhmaRa, strI_abs,
+su]`:
+
+| step | state |
 |---|---|
-| A (5.4.153, 5.4.110) | `rrp: ?NI` — uttara side, reachable **today** |
-| A′ (2.1.26) | `lp: =Kawva` + between-slot `?Ap` |
-| A″ (1.2.67, 1.2.73) | between-slot `?strI` — reachable **today**, even before W |
-| B (6.3.34 ff.) | `?jAti`/`?kopaDa`/`?svAnga_I` already sit on the base; `?puMvat` is derived at the merge (`ni_ap_derivation_plan.md` step C) |
+| W | `brAhmaRa` gains `?NI_adv`; the placeholder is untouched |
+| −2 kāraka | sup already present / inserted **after** the affix → `stem \| strI \| sup` |
+| −1 samāsa | skipped (no compound) |
+| 0–2 | 4.1.15 substitutes `strI_abs` → `NIp`, exactly as today |
+| main | merge → ब्राह्मणी carrying the affix's real `?NI`; the declension family fires on that |
 
----
+The base never meets a sup while holding the advisory tag (the affix element is always between
+them), so 6.1.68 and the 7.3.x family cannot see it early. The one thing to verify by test
+rather than by argument is `?TAp_added` vs a pre-baked `?Ap`: 4.1.4's comment records that
+SK/7.2.102 must still fire for a stem carrying a *pre-baked* `?Ap` (दवि → दव) but not after a
+freshly added ṭāp — advisory tags must not disturb that distinction, which is a second reason
+they need their own names.
+
+### Does it work for a SAMĀSA derivation?
+
+Yes, with fix (4). Walking बहु + `[kumAra, strI_abs]`:
+
+| step | state |
+|---|---|
+| W | `kumAra` gains `?NI_adv` |
+| −1 | 2.2.24 forms the bahuvrīhi; **5.4.153 now fires** on `[or ?NI ?NI_adv]` → `?samasanta_kap` |
+| −1 post | `_insert_samasanta` skips the `strI_abs` and inserts कप् after it → `[bahu, kumAra, strI_abs, kap, sup]` |
+| 2 | 4.1.20 substitutes `strI_abs` → `NIp` (कप् sits beyond it and does not interfere) |
+| 1 (re-scan) | 1.2.48 arm 4 needs `rp: ?sup`; at the (कुमारी \| कप्) window rp is कप्, so it does **not** fire — the ī is preserved, which is 7.4.14 न कपि's effect, already folded in as the `?!ka_pratyaya` guard |
+| main | कुमारी+कप् → कुमारीक, बहु+कुमारीक → **बहुकुमारीकः** |
+
+The ordering race with 1.2.48 that the `insert:` route had to win **does not arise**: कप् is
+already in the list before the affix is even chosen.
 
 ## 4. Phases
 
-**W0 — the between-slot accessor.** Add the third context element and expose it in conditions.
-Independently testable and independently useful: it unblocks **A″ (ekaśeṣa) with no reordering
-at all**, since `?strI` is on `strI_abs` from the start. Ship this first and convert
-1.2.67/1.2.73 as its proof.
+**W0 — the audit (do this first, it is cheap and it will move the numbers).** A checked-in
+script that classifies every strī rule by compound-dependence. *The 46/23 split in §2 is
+already known to be wrong*: **7 of the "46" read `llp`** — SK/4.1.35 (`=sa/=eka/=vIra`,
+सपत्नी), 4.1.36 (`=pUta`, पूतक्रतु), 4.1.50/51 (`?karaNa`), 4.1.57, 4.1.60 (`?dik`), 4.1.70 —
+i.e. they are compound rules that identify the pūrva **by position instead of by tag**. The
+real split is nearer **39 / 30**, and only the audit will say exactly.
 
-**W1 — classify the 69 (audit only, no move).** Turn §2's script into a checked-in audit that
-prints each strī rule's compound-dependence, so the classification is reproducible and the
-next person can see why a rule is where it is. Expect surprises: the 46/23 split was computed
-by tag-name matching, and a rule could depend on the compound *implicitly* (via a tag another
-rule sets at −1) without naming a compound tag.
+**W1 — `?NI_adv`/`?Ap_adv` and the sandbox.** Compute the verdict, write the tag, touch
+nothing else. Surface-neutral by construction: no rule reads the new tags yet.
 
-**W2 — move the 46.** The risky step. Do it in sub-batches by gaṇa/family, running the full
-suite between batches; the ~8,000 vibhakti tests are both the safety net and the blast radius.
+**W2 — `_insert_samasanta` skips the strī affix.** Independently testable against a live
+`[kumAra, strI_abs]` uttara.
 
-**W3 — convert A and A′, then delete what that frees.** With W0+W2 in place, take the census in
-`ni_ap_derivation_plan.md` §3 step D and delete the uttara-position stems (17) plus `KawvA`.
+**W3 — teach the −1 consumers `[or ?NI ?NI_adv]`**: 5.4.153, 5.4.110, 6.3.63, 2.1.26,
+1.2.67/1.2.73, and the B1 puṁvadbhāva family. Each conversion is provable by a single test —
+the live twin of a case that already passes with the pre-formed stem.
 
-**W4 — taddhita (SK1072+) enters the W phase by construction**, instead of arriving after the
-pre-passes and generating a second generation of pre-tagged stems for the same reason `?NI`
-was pre-tagged. Today taddhita conditions sit at 15 main-scan / 3 at −1 / 3 at 2.
+**W4 — delete what that frees.** The census in `ni_ap_derivation_plan.md` §3 step D: the 17
+uttara-position stems, `KawvA`, `haMsI`/`ajA`, and the five puṁvadbhāva pūrvas.
 
----
+**W5 — taddhita (SK1072+) inherits the same mechanism.** A taddhita-derived stem feeding the
+strī machine (विद्या + अण् + ङीप् = वैद्यी) is the same shape: advise on the derived stem,
+leave the placeholder for the real substitution.
+
+**The level move stays available as a fallback** if advisory tagging proves too weak — but it
+must then solve त्रिलोकी, which advisory tagging solves for free.
 
 ## 5. Risks
 
-1. **It is a 69-rule reclassification, not a level move** — the 46 are spread across bahiranga
-   1, 2 and the main scan.
-2. **Fork and priority interactions.** Several of the 46 are optional (SK496/4.1.39 वा) and
-   interact by para-kāryam with the compound-dependent set (4.1.4.1's prabalatva reads
-   `?samAsa`). Moving one set changes which fires first, and the engine re-scans lower levels
-   when new tags appear — *measured*: 1.2.48 (level 1) fires **after** 4.1.20 (level 2).
-3. **Sup insertion order.** The kāraka pre-pass inserts sups at −2. With W before −2 the list
-   is `[stem, affix]` when the sup arrives, so the order comes out `stem | strī | sup` —
-   *inferred from the existing live-derivation traces, which already produce that order.*
-4. **1.4.3 nadī (bahiranga 0) assigns the saṁjñā post-merge** (*measured* — it fires on
-   `kumArI` inside the nest), so it is unaffected by W. Do not "helpfully" move it.
+1. **The advisory verdict can be WRONG for the compound** — and by design. In त्रिलोक the
+   member advice is `?Ap_adv` while the compound actually takes ṅīp. That is tolerable only
+   because the advisory tag is consumed exclusively by the −1 rules, which run before the
+   compound-level choice is made. It is the same staleness today's pre-tagged `KawvA` carries;
+   the distinct tag names keep it from reaching the declension family. **This is the property
+   to watch in review** — the moment something outside the −1 pre-pass reads `?NI_adv`, the
+   design has a leak.
+2. **The sandbox has to be a real evaluation, not a re-implementation.** W must run the actual
+   rule objects (priority, `overrides`, optional forks) against a `(member | strI_abs)` window,
+   or it becomes a second, drifting copy of the ṭāp/ṅīp machine — the exact failure mode the
+   pre-tagged stems are.
+3. **Optional rules make the verdict multi-valued.** SK496/4.1.39 वा gives रोहिणी *or* रोहिता.
+   The advisory phase then has two verdicts and no basis for choosing; the honest encoding is
+   to set *both* `?NI_adv` and `?Ap_adv`, and let the −1 consumer decide whether an ambiguous
+   verdict is enough (5.4.153 arguably should not fire on one). `rohiRI` is the test case, and
+   it is already flagged in `ni_ap_derivation_plan.md` as fork-blocked.
+4. **`?TAp_added` vs a pre-baked `?Ap`.** 4.1.4's own comment records that SK/7.2.102 must
+   still fire for a stem carrying a pre-baked `?Ap` (दवि → दव) but not after a freshly added
+   ṭāp. A third tag in that space needs its behaviour under 7.2.102/103 pinned by test.
+5. **Scope of the sandbox.** Which elements get advised? "Every prātipadika followed by
+   `?strI_abs`" is the obvious rule, but a taddhita chain (`[vidyA, aR_t, strI_abs]`) has the
+   affix two elements away — W5's problem, and a reason to define the scope now rather than
+   discover it later.
 
 ## 6. Verification
 
@@ -164,10 +257,19 @@ was pre-tagged. Today taddhita conditions sit at 15 main-scan / 3 at −1 / 3 at
 cd sanskrit_parser/generator/test && PYTHONPATH=<repo root> /Users/karthik/venvs/sanskrit/bin/pytest -n 8 --dist worksteal
 ```
 
-Baseline at `189d679`: **8458 passed**. W0 and W1 must be surface-neutral. W2 must be
-surface-neutral too — any changed vibhakti table means a rule's level was load-bearing in a way
-the audit missed, and that is the finding worth having. W3 changes only which rules appear in
-the `fired` traces (they should *gain* 5.4.153 / 2.1.26 on live-derived members).
+Baseline at `189d679`: **8458 passed**. W0–W2 must be **surface-neutral** — W1 writes tags
+nothing reads yet, and W2 only changes an insertion index that no current derivation exercises.
+W3 changes which rules appear in the `fired` traces (live members should *gain* 5.4.153 /
+2.1.26) and nothing else.
+
+Two cases discriminate the whole design and should be asserted at every step:
+
+- **त्रिलोकी** (`vibhaktis_list.py:1903`) — compound-level ṅīp over an a-stem member. Goes to
+  *त्रिलोका the moment W consumes a placeholder it should not have.
+- **बहुकुमारीकः** with a LIVE `[kumAra, strI_abs]` uttara — the target of the whole exercise.
+  Its failure modes are distinct and diagnostic: *बहुकुमारिः = 5.4.153 never fired;
+  *बहुकुमारकी = `_insert_samasanta` inserted कप् before the strī affix; *बहुकुमारिकः = कप्
+  landed but 1.2.48 shortened anyway.
 
 ## 7. What this does not solve
 
