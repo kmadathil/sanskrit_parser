@@ -12647,6 +12647,11 @@
     # declension (अश्ववडवे) despite the pum lock (the same ?Ap trap the bahuvrīhi
     # ādeśas hit). Cleared → the a-stem masc dual अश्ववडवौ.
     orp: [-Ap, -strI]
+    # NOT live-derivable (W3/W4, measured 2026-08-05): with a live [vaqava, strI_abs]
+    # uttara there is no ?Ap to strip — the ṭāp arrives later, and locking the gender is
+    # not enough, because 7.1.18 औङ आपः reads ?Ap rather than the gender and still gives
+    # *अश्ववडवे. पूर्ववत् here has to CANCEL the member's ṭāp, which is a third mechanism
+    # (affix suppression) the advisory design does not have. वडवा stays a stored stem.
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासप्रकरणम् — द्वन्द्वसमासः, Phase D2 (samasa_completion_plan.md): PŪRVA-NIPĀTA

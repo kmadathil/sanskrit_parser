@@ -395,7 +395,15 @@ class PaninianObject(SanskritObject):
         # added alongside NI/Ap so that the merge (kuru | UN) sets strI correctly.
         for t in ["NI", "Ap", "UN", "strI_abs"]:
             if last.hasTag(t):
-                so.setTag("strI")
+                # …but not over a samāsa-ASSIGNED gender. `?samasa_liNga_locked` is set by
+                # 2.4.17 स नपुंसकम् (a samāhāra dvandva is neuter), 2.4.27 पूर्ववत्, and the
+                # bahuvrīhi referent liṅga — all of which outrank a MEMBER's own femininity.
+                # यूका + लिक्षा is यूकालिक्षम्, neuter, though both members are feminine; with a
+                # live [लिक्ष, strI_abs] member the ṭāp merge used to re-feminise the locked
+                # compound and give *यूकालिक्षा. The lock is already honoured by the gender
+                # block above; this makes the strī block agree with it.
+                if not so.hasTag("samasa_liNga_locked"):
+                    so.setTag("strI")
                 so.setTag(t)
                 for tt in first.tags:
                     so.setTag(tt)
@@ -413,7 +421,12 @@ class PaninianObject(SanskritObject):
                 # produced — बहु + [कुमार, strI_abs] + कप् came out *बहुकुमास्कः, because कप्
                 # is consonant-initial and never licensed bha at all. 1.4.18 re-derives the
                 # saṁjñā per window, so dropping it here loses nothing.
-                _delete_if_present(["pum", "napum", "Ba"])
+                # ?Ba always goes (see above). The gender only goes if the samāsa has not
+                # already assigned one — a locked napuṁsaka (यूकालिक्षम्) or referent liṅga
+                # outranks the member's own femininity, and must survive this merge.
+                _delete_if_present(["Ba"])
+                if not so.hasTag("samasa_liNga_locked"):
+                    _delete_if_present(["pum", "napum"])
 
         # --- pum_abs on last: restore pum, drop strī-markers, flag pUrvastrI ---
         if last.hasTag("pum_abs"):

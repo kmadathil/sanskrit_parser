@@ -1814,7 +1814,7 @@ samasa_dv_tests = [
         # multi-element member, which is what used to hold this stem back (step D). लिक्षा
         # stays stored — it is the LAST member, and a live uttara is out of reach.
         "members": [{"stem": "yUka", "tags": ["kzudrajantu"], "strI_abs": True},
-                    {"stem": "likzA", "tags": ["kzudrajantu"]}],
+                    {"stem": "likza", "tags": ["kzudrajantu"], "strI_abs": True}],
         "fired": ["2.2.29", "2.4.8", "2.4.17", "1.2.43"],
         "surface": "यूकालिक्षम्",
     },
@@ -1850,6 +1850,8 @@ samasa_dv_tests = [
         # a-stem masc dual, not the fem ā-stem अश्ववडवे.
         "label": "D1-aSvavaqavO-SK813-2.4.27",
         "members": [{"stem": "aSva", "tags": ["aSvavaqava"]},
+                    # NOT live-derivable: 2.4.27 must CANCEL vaqavA's Tap,
+                    # which a live member has not applied yet - see the rule.
                     {"stem": "vaqavA", "tags": ["aSvavaqava"]}],
         "fired": ["2.2.29", "2.4.27", "1.4.22", "1.2.43"],
         "not_fired": ["2.4.17"],

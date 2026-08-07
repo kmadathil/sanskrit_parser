@@ -1237,7 +1237,9 @@ tvac = Pratipadika("tvac", "strI", other_tags=["cudazaha_anta"])  # त्वच
 # यूका is DERIVED: [yUka, strI_abs] → ṭāp 4.1.4 (step D). लिक्षा below stays stored — it is
 # the LAST dvandva member, and a live UTTARA is out of reach (its ī/ā does not exist at −1).
 yUka   = Pratipadika("yUka",   "pum")   # यूक — base of यूका "louse" (kṣudrajantu), यूकालिक्षम् (SK912/2.4.8)
-likzA  = Pratipadika("likzA",  "strI", other_tags=["Ap"])   # लिक्षा f. "nit" (kṣudrajantu) — यूकालिक्षम्
+likza  = Pratipadika("likza",  "pum")   # likza - base of likzA (Tap 4.1.4);
+#          yUkAlikzam is a samahara dvandva, NEUTER by 2.4.17 though both members are
+#          feminine - join_objects now honours that lock over a member's own Tap (W3)   # लिक्षा f. "nit" (kṣudrajantu) — यूकालिक्षम्
 nakula = Pratipadika("nakula", "pum")   # नकुल m. "mongoose" (śāśvatika-virodha with अहि) — अहिनकुलम् (SK913/2.4.9)
 
 # ── Dvandva-samāsa D2 (samasa_completion_plan.md): pūrva-nipāta (2.2.32/33/34) — the

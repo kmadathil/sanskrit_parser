@@ -291,31 +291,36 @@ conversion — it is the marker model, where the composer supplies the masculine
 
 **W4 — delete what W3 freed. PARTIAL, and the limit is now measured 2026-08-05.**
 `KawvA` (A′), `haMsI` and `ajA` (A″) are gone; with `yUka`/`duhyamAna`/`rama`/`jawa`/`niSa`
-and the earlier five that is **thirteen** stored feminines removed.
+and the earlier five that is **fourteen** stored feminines removed (`likzA` is the newest).
 
 Kept deliberately: `kumArI` and `brAhmaRI`, as the pre-formed twins of the live बहुकुमारीकः and
 ब्राह्मणीभार्यः cases — they are what keeps proving the `[or ?NI ?NI_adv]` /
 `[or ?puMvat ?puMvat_adv]` disjunctions still serve stored stems.
 
-**The rest is blocked, and NOT for the reason the plan assumed.** Probing every candidate base
-separates two groups cleanly:
+**Pushing further found a THIRD limit, and it is the real one.** Probing every candidate base
+splits them cleanly:
 
 * **ā-stems derive perfectly** — `[सेन|गङ्ग|प्रज|मेध|जाय|नासिक|वडव|लिक्ष|माल, strI_abs]` all give
-  their feminine by 4.1.4 ṭāp. The base needing no independent attestation is settled (§2).
+  their feminine by 4.1.4 ṭāp. §2's "the base needs no independent attestation" is settled.
 * **ī-stems do not**, from a plain a-stem base: `paYcamI` `rAkzasI` `sTAlI` `BaginI` `nAqI` come
-  out *पञ्चमा, *राक्षसा, *स्थाला, *भगिना, *नाडा. For an ī-stem the base's CLASS is the whole
-  question — as `revat` needed its ugit. `kalyARI` forks (कल्याणा/कल्याणी) on an optional rule.
+  out *पञ्चमा, *राक्षसा, *स्थाला, *भगिना, *नाडा — for an ī-stem the base's CLASS is the whole
+  question, as `revat` needed its ugit. `kalyARI` forks on an optional rule.
 
-But deriving the stem is not enough, and this is the finding: **converting सेना, वडवा and लिक्षा
-anyway made four tests fail**, because all three are UTTARA-position members and their consumer
-rules (SK1023/8.3.99 ṣatva, SK912/2.4.8, SK813/2.4.27) still read the feminine's surface or
-saṁjñā at a window where a live member has not become feminine yet. The conversions were
-reverted.
+But a derivable stem is not a convertible one. Converting the ā-stems anyway, and reading each
+failure, separates three cases — and only the first is a missing W3 conversion:
 
-**So there is no blanket "uttaras work now".** 5.4.153 works because W3 taught *that rule* the
-advisory verdict; every other uttara consumer needs the same one-rule conversion first. W4's
-remaining deletions are therefore gated on W3 work, not on stems — which is the honest shape of
-what is left.
+| case | what happens live | verdict |
+|---|---|---|
+| यूकालिक्षम् (2.4.8 + 2.4.17) | ṭāp re-feminised a compound the pre-pass had locked NEUTER → *यूकालिक्षा | **FIXED** — `join_objects`' strī block now honours `?samasa_liNga_locked`. `likzA` deleted |
+| अश्ववडवौ (2.4.27 पूर्ववत्) | *अश्ववडवे | **BLOCKED, third mechanism.** The rule's job is `orp: [-Ap, -strI]` — it CANCELS the member's ṭāp. A live member has not applied it yet, and locking the gender does not help: 7.1.18 औङ आपः reads `?Ap`, not the gender. Affix *suppression* is not something the advisory design has |
+| हरिषेणः (8.3.99 ṣatva) | 8.3.99 never fires | **BLOCKED, and not worth converting**: the rule reads `=senA` at the member junction, so it needs the same treatment 2.1.26 got — but the compound is masculine, so सेना's trailing placeholder would then feminise it, i.e. the अश्ववडवौ problem again |
+
+**The general limit, stated properly:** a live member works when its own affix and the
+compound's are *separable* — because the member is non-final (a pūrva), or because a samāsānta
+sits between them (बहुकुमारीकः), or because the compound's gender is locked and the member's
+ṭāp merely has to not override it (यूकालिक्षम्). It does NOT work when the compound needs the
+member's affix **cancelled** or needs to read its **surface** before it exists. That is a
+sharper statement than "uttara position" and it is what W5 should design against.
 
 **W5 — taddhita (SK1072+) inherits the same mechanism.** A taddhita-derived stem feeding the
 strī machine (विद्या + अण् + ङीप् = वैद्यी) is the same shape: advise on the derived stem,
