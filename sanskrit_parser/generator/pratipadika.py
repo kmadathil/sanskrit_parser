@@ -73,10 +73,10 @@ kfta    = Pratipadika("kfta",    "napum", other_tags=["kta"])  # कृत — �
 rUQa    = Pratipadika("rUQa",    "pum",   other_tags=["kta"])  # रूढ — खट्वारूढः (2.1.26 kṣepa)
 pramita = Pratipadika("pramita", "pum",   other_tags=["kta"])  # प्रमित — मासप्रमितः (2.1.28 kāla)
 suKa    = Pratipadika("suKa",    "napum")                       # सुख — मुहूर्तसुखम् (2.1.29, non-kta)
-KawvA   = Pratipadika("KawvA",   "strI", other_tags=["Ap"])     # खट्वा — खट्वारूढः (2.1.26,
-#         dvitīyā pūrva). NOT convertible to [खट्व, strI_abs]: SK688/2.1.26 खट्वा क्षेपे names
-#         the feminine by CONTENT (`lp: =KawvA`) at bahiranga −1, where a live member is
-#         still खट्व — so the compound would never form at all. See ni_ap_derivation_plan.md.
+Kawva   = Pratipadika("Kawva",   "pum")   # खट्व — base of खट्वा (ṭāp 4.1.4). The stored
+#         खट्वा is gone: SK688/2.1.26 खट्वा क्षेपे used to name the feminine by CONTENT
+#         (`lp: =KawvA`) at bahiranga −1, where a live member is still खट्व — W3 gave the rule
+#         a second arm reading the advisory verdict `?Ap_adv` instead.
 muhUrta = Pratipadika("muhUrta", "pum",   other_tags=["kAlavAcaka"])   # मुहूर्त — मुहूर्तसुखम् (2.1.29)
 # (मास is defined below at the SK539 site — ?kAlavAcaka added there for 2.1.28)
 # ── Tatpuruṣa T1: the remaining five vibhakti-tatpuruṣas (2.1.30–48, 2.2.1–11).
@@ -1226,6 +1226,11 @@ plakza   = Pratipadika("plakza",   "pum")   # प्लक्ष m. (wave-leaved
 nyagroDa = Pratipadika("nyagroDa", "pum")   # न्यग्रोध m. (banyan) — प्लक्षन्यग्रोधम्/प्लक्षन्यग्रोधाः
 vAc  = Pratipadika("vAc",  "strI", other_tags=["cudazaha_anta"])  # वाच् f. "speech" (च-final) — वाक्त्वचम् (SK930/5.4.106)
 tvac = Pratipadika("tvac", "strI", other_tags=["cudazaha_anta"])  # त्वच् f. "skin" (च-final) — वाक्त्वचम्
+# हंसी and अजा are DERIVED too (W4, word_formation_ordering_plan.md): [हंस|अज, strI_abs].
+# Their ekaśeṣa rules (SK933/1.2.67 पुमान् स्त्रिया, SK939/1.2.73 ग्राम्यपशु) run at
+# bahiranga -1, where a live member is still the masculine base — they now read the W1
+# advisory verdict ?strI_adv, with ?!strI_adv on the opposite arm so the two identical
+# members cannot swap roles.
 # यूका is DERIVED: [yUka, strI_abs] → ṭāp 4.1.4 (step D). लिक्षा below stays stored — it is
 # the LAST dvandva member, and a live UTTARA is out of reach (its ī/ā does not exist at −1).
 yUka   = Pratipadika("yUka",   "pum")   # यूक — base of यूका "louse" (kṣudrajantu), यूकालिक्षम् (SK912/2.4.8)
@@ -1250,10 +1255,8 @@ pfTivI = Pratipadika("pfTivI", "strI", other_tags=["NI"])   # पृथिवी
 
 # ── Ekaśeṣa E1 (samasa_completion_plan.md): heterogeneous pairs where ONE member survives.
 haMsa = Pratipadika("haMsa", "pum")                    # हंस m. "goose" — हंसौ (SK933/1.2.67, masc survives)
-haMsI = Pratipadika("haMsI", "strI", other_tags=["NI"])  # हंसी f. "goose" (हंस + ṅīp) — elided by
 #       1.2.67. ?NIp was a DEAD tag no rule reads (the affix-side ?NIp_taddhita is different),
 #       so 6.1.68 did not elide su → *हंसीः
-ajA   = Pratipadika("ajA",   "strI", other_tags=["Ap"])   # अजा f. "she-goat" — अजाः (SK939/1.2.73, fem survives in a herd)
 
 # ── Sarvasamāsānta S0 (samasa_completion_plan.md): compounds taking the अच् samāsānta.
 brahman = Pratipadika("brahman", "napum")   # ब्रह्मन् n. — ब्रह्मवर्चसम् (SK946/5.4.78)

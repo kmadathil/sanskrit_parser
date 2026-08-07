@@ -246,9 +246,11 @@ samasa_tp_tests = [
     },
     {
         "label": "T0-KawvArUQaH-SK688-2.1.26",          # खट्वा (dvitīyā, kṣepa) + रूढ → खट्वारूढः
-        # NOT live-derivable: 2.1.26 खट्वा क्षेपे names the pūrva by CONTENT (`lp: =KawvA`) in
-        # the pre-pass, and a live [खट्व, strI_abs] member is still खट्व there — no compound.
-        "purva": {"stem": "KawvA", "vacana": 1, "vibhakti": 2, "sem": "semantic_kzepa"},
+        # LIVE-DERIVED (W3): [खट्व, strI_abs] → ṭāp 4.1.4. 2.1.26 names the pūrva by CONTENT,
+        # which a live member does not have at -1, so the rule now also reads the advisory
+        # `?Ap_adv`. The stored खट्वा is deleted.
+        "purva": {"stem": "Kawva", "vacana": 1, "vibhakti": 2, "strI_abs": True,
+                  "sem": "semantic_kzepa"},
         "uttara": {"stem": "rUQa", "vacana": 1},
         "fired": ["2.1.26", "1.2.43", "2.4.26"],
         "surface": "खट्वारूढः",
@@ -916,6 +918,22 @@ samasa_bv_tests = [
         "label": "B3-bahukumArIkaH-SK833-5.4.153",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
         "uttara": {"stem": "kumArI", "vacana": 1, "vibhakti": 1},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "5.4.153", "1.2.43"],
+        "surface": "बहुकुमारीकः",
+    },
+    {
+        # THE W3 CASE (word_formation_ordering_plan.md): the same form from a LIVE-DERIVED
+        # uttara — [कुमार, strI_abs] instead of the pre-formed कुमारी. 5.4.153 runs at
+        # bahiranga -1, three levels before the ṅīp is chosen, so it matches on the ?NI_adv
+        # verdict the W1 advisory pre-pass computed. Two things then have to hold, and each
+        # has its own failure surface: कप् must be inserted AFTER the strī placeholder (W2 —
+        # otherwise कुमार+क+ī → *बहुकुमारकी), and the bha-saṁjñā the strī merge conditioned
+        # must not survive it (otherwise 6.4.148 eats the fresh ī → *बहुकुमास्कः).
+        "label": "B3-bahukumArIkaH-live-derived-SK833-5.4.153",
+        "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
+        "uttara": {"stem": "kumAra", "vacana": 1, "vibhakti": 1},
+        "uttara_strI_abs": True,
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.153", "1.2.43"],
         "surface": "बहुकुमारीकः",
@@ -1956,7 +1974,11 @@ ekasesa_tests = [
         # हंसी + हंस → हंसौ. SK933/1.2.67 पुमान् स्त्रिया: the MASCULINE survives over its
         # same-base feminine (?tallakzaRa — हंसी = हंस+ṅīp). The fem is elided.
         "label": "E1-haMsO-SK933-1.2.67",
-        "members": [{"stem": "haMsI", "tags": ["tallakzaRa"]},
+        # LIVE-DERIVED feminine member (W3): [हंस, strI_abs]. 1.2.67 runs at bahiranga -1,
+        # where a live member is still the masculine base, so the sūtra's स्त्रिया reads the
+        # W1 advisory verdict ?strI_adv — and its पुमान् arm carries ?!strI_adv so the two
+        # हंस members cannot swap roles and elide the wrong one.
+        "members": [{"stem": "haMsa", "tags": ["tallakzaRa"], "strI_abs": True},
                     {"stem": "haMsa", "tags": ["tallakzaRa"]}],
         "fired": ["1.2.67", "1.4.22"],
         "surface": "हंसौ",
@@ -1997,8 +2019,12 @@ ekasesa_tests = [
         # अज + अजा → अजे (fem). SK939/1.2.73 ग्राम्यपशुसङ्घेषु स्त्री: for domestic animals the
         # FEMININE survives (apavāda to 1.2.67, which it overrides even when both tags apply).
         "label": "E1-aje-SK939-1.2.73",
+        # Both members LIVE-DERIVED (W3): the feminine is [अज, strI_abs], advised ?strI_adv,
+        # which is what 1.2.73's स्त्री arm now reads. Its masculine arm carries ?!strI_adv so
+        # the two identical अज members cannot swap roles.
         "members": [{"stem": "aja", "tags": ["grAmyapaSu", "tallakzaRa"]},
-                    {"stem": "ajA", "tags": ["grAmyapaSu", "tallakzaRa"]}],
+                    {"stem": "aja", "tags": ["grAmyapaSu", "tallakzaRa"],
+                     "strI_abs": True}],
         "fired": ["1.2.73", "1.4.22"],
         "not_fired": ["1.2.67"],
         "surface": "अजे",

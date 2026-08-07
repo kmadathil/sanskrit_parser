@@ -46,11 +46,18 @@ _CASES = [
 _VOWEL_TO_AFFIX = {"A": "Ap", "I": "NI", "U": "UN"}
 
 
+_AFFIX_ADV = ("NI_adv", "Ap_adv", "UN_adv")
+
+
 def _advisory_tags(stem):
-    """The verdict the pre-pass records on the stem, from a [stem, strI_abs] input."""
+    """The AFFIX verdict recorded on the stem, from a [stem, strI_abs] input.
+
+    `?strI_adv` — the verdict's gender, which the ekaśeṣa and puṁvadbhāva consumers read — is
+    excluded here on purpose: this checks which affix was advised, and it is covered by its
+    own assertion below."""
     pl = [Adya, deepcopy(stem), deepcopy(strI_abs), avasAna]
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
-    return sorted(t[:-4] for t in p.inputs[1].tags if t.endswith("_adv"))
+    return sorted(t[:-4] for t in p.inputs[1].tags if t in _AFFIX_ADV)
 
 
 def _derived_affixes(stem):
@@ -73,6 +80,15 @@ def test_advisory_matches_the_real_derivation(name, want):
     derived = _derived_affixes(stem)
     assert derived == want, f"{name}: derivation gives {derived}, expected {want}"
     assert advised == want, f"{name}: advised {advised}, but derivation gives {derived}"
+
+
+@pytest.mark.parametrize("name,_want", _CASES, ids=[c[0] for c in _CASES])
+def test_a_verdict_also_records_its_gender(name, _want):
+    """?strI_adv accompanies every affix verdict — SK933/1.2.67 पुमान् स्त्रिया and the
+    puṁvadbhāva family need to know the member WILL be feminine, not which affix makes it."""
+    pl = [Adya, deepcopy(getattr(_pratipadika, name)), deepcopy(strI_abs), avasAna]
+    p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
+    assert p.inputs[1].hasTag("strI_adv")
 
 
 def test_advisory_is_not_written_without_a_stri_abs():

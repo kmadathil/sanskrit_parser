@@ -412,8 +412,22 @@ class AntarangaPrakriya(PrakriyaBase):
                 continue
             if not nxt.hasTag("strI_abs") or not stem.hasTag("prAtipadika"):
                 continue
-            for t in self._advise_stri(stem, nxt):
+            # ?referent_strI says the composer declared the COMPOUND feminine (anyapadārtha),
+            # so the placeholder after this member is the compound's ṭāp, not the member's own
+            # affix — there is nothing here to advise. Advising it anyway is actively wrong:
+            # दण्डिन् in बहुदण्डिका would be advised ?NI_adv (दण्डिनी is a word), and SK833/
+            # 5.4.153 नद्यृतश्च would then outrank SK890/5.4.152 इनः स्त्रियाम् and give a कप्
+            # for the wrong reason. The tag must mean "this MEMBER's own feminine affix".
+            if stem.hasTag("referent_strI"):
+                continue
+            verdict = self._advise_stri(stem, nxt)
+            for t in verdict:
                 stem.setTag(t + "_adv")
+            if verdict:
+                # ?strI_adv — the verdict's gender, for the consumers that need to know the
+                # member WILL be feminine rather than which affix makes it so: SK933/1.2.67
+                # पुमान् स्त्रिया and the puṁvadbhāva family read femininity, not ङी vs टाप्.
+                stem.setTag("strI_adv")
 
     def _advise_stri(self, stem, affix):
         """Which affix tag(s) the sandboxed (stem | strI_abs) window resolves to.
@@ -1053,8 +1067,25 @@ class AntarangaPrakriya(PrakriyaBase):
             if marker is None:
                 continue
             o.deleteTag(marker)
-            # Insert the affix just after this uttara (before its sup, if present).
-            inputs.insert_at(ix + 1, deepcopy(self._SAMASANTA_AFFIXES[marker]))
+            # Insert the affix just after this uttara — but AFTER the uttara's own strī
+            # affix, if it has one, and before its sup. W2 (word_formation_ordering_plan.md):
+            # a samāsānta belongs to the COMPOUND STEM, so for a live-derived member
+            # [kumAra, strI_abs] it must land as कुमार+ī+**क** (बहुकुमारीकः), not
+            # कुमार+**क**+ī. With a pre-formed कुमारी the member IS the stem and ix+1 was
+            # already right, which is why this never bit before members could be live.
+            # The two placeholders are the SAME object in the SAME slot and mean opposite
+            # things, so the composer's declared referent gender is what decides:
+            #   MEMBER's own femininity (कुमारी is a word; the compound is masc) — the affix
+            #     belongs to the compound stem बहुकुमारी → कुमार+ī+**क** → बहुकुमारीकः.
+            #   COMPOUND's own femininity (?referent_strI, the anyapadārtha ṭāp of a feminine
+            #     bahuvrīhi) — the samāsānta is part of the stem that ṭāp then feminises →
+            #     दण्डिन्+**क**+ā → बहुदण्डिका, so the placeholder must stay last.
+            at = ix + 1
+            if not o.hasTag("referent_strI"):
+                while (at < len(inputs) and _isScalar(inputs[at])
+                       and inputs[at].hasTag("strI_abs")):
+                    at += 1
+            inputs.insert_at(at, deepcopy(self._SAMASANTA_AFFIXES[marker]))
             # Re-scan from scratch: indices shifted; another member may qualify.
             return self._insert_samasanta(inputs)
 

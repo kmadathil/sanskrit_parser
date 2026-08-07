@@ -25,6 +25,7 @@ from indic_transliteration import sanscript
 from sanskrit_parser.generator.prakriya import PrakriyaVakya
 from sanskrit_parser.generator.antaranga_prakriya import AntarangaPrakriya
 from sanskrit_parser.generator.pratyaya import Adya, avasAna
+from sanskrit_parser.generator import pratyaya as _pratyaya
 from sanskrit_parser.generator import pratipadika as _pratipadika
 
 from conftest import sutra_list
@@ -41,7 +42,11 @@ def _build_member(spec):
     p.setTag("ekaSeza_vivakza")
     for t in spec.get("tags", []):
         p.setTag(t)
-    return p
+    if spec.get("strI_abs"):
+        # A LIVE-DERIVED feminine member — [हंस, strI_abs] instead of the stored हंसी. The
+        # same hook the X2 / tatpuruṣa / dvandva / kāraka drivers have.
+        return [p, deepcopy(_pratyaya.strI_abs)]
+    return [p]
 
 
 def _to_slp1(deva):
@@ -57,7 +62,7 @@ def _surface(pl):
 
 @pytest.mark.parametrize("case", ekasesa_tests, ids=[c["label"] for c in ekasesa_tests])
 def test_ekasesa(case):
-    members = [_build_member(m) for m in case["members"]]
+    members = [e for m in case["members"] for e in _build_member(m)]
     pl = [Adya, *members, avasAna]
     p = AntarangaPrakriya(sutra_list, PrakriyaVakya(pl))
 
@@ -99,7 +104,7 @@ _VACANA_SWEEP = [
 
 @pytest.mark.parametrize("n,want", _VACANA_SWEEP, ids=[f"rama-x{n}" for n, _ in _VACANA_SWEEP])
 def test_ekasesa_vacana_sweep(n, want):
-    members = [_build_member({"stem": "rAma"}) for _ in range(n)]
+    members = [e for _ in range(n) for e in _build_member({"stem": "rAma"})]
     got = _surface([Adya, *members, avasAna])
     assert got == {_to_slp1(s) for s in want}, \
         f"ekaśeṣa राम×{n}: {got} != {want}"
@@ -115,7 +120,8 @@ _VIBHAKTI_SWEEP = {
 
 @pytest.mark.parametrize("vib_n", sorted(_VIBHAKTI_SWEEP))
 def test_ekasesa_vibhakti_sweep(vib_n):
-    members = [_build_member({"stem": "rAma", "vibhakti": vib_n}) for _ in range(2)]
+    members = [e for _ in range(2)
+               for e in _build_member({"stem": "rAma", "vibhakti": vib_n})]
     got = _surface([Adya, *members, avasAna])
     expected = {_to_slp1(s) for s in _VIBHAKTI_SWEEP[vib_n]}
     assert got == expected, f"ekaśeṣa viBakti_{vib_n}: {got} != {expected}"

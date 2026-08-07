@@ -1,6 +1,6 @@
 # Running word-formation before the sentence pre-passes — ordering plan
 
-**Status: W0 + W1 DONE; W2–W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
+**Status: W0, W1, W2 DONE; W3 done for A/A′/A″ (B open); W4 partial; W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
 measured on that tree (a script over the 773 rules in `sutras_antaranga.yaml`, plus prakriyā
 traces); inferences are marked as such.
 
@@ -242,15 +242,51 @@ compound tag the bare member lacks or an `llp` the sandbox does not supply. Spli
 ever changes: no strī arm reads a NEGATED `llp`, which is the one shape that could match
 against an absent neighbour.*
 
-**W2 — `_insert_samasanta` skips the strī affix.** Independently testable against a live
-`[kumAra, strI_abs]` uttara.
+**W2 — `_insert_samasanta` skips the member's strī affix. DONE 2026-08-05.** A samāsānta
+belongs to the compound STEM, so with a live member it must land after that member's own affix:
+कुमार+ī+**क** → बहुकुमारीकः, not कुमार+**क**+ī. **But the skip is conditional**, which the
+first attempt got wrong and बहुदण्डिका caught: when the composer declared the COMPOUND feminine
+(`?referent_strI`), the trailing placeholder is the anyapadārtha ṭāp and the samāsānta belongs
+*inside* it — दण्डिन्+**क**+ā → बहुदण्डिका. Same slot, same object, opposite meanings; the
+declared referent gender is what separates them.
 
-**W3 — teach the −1 consumers `[or ?NI ?NI_adv]`**: 5.4.153, 5.4.110, 6.3.63, 2.1.26,
-1.2.67/1.2.73, and the B1 puṁvadbhāva family. Each conversion is provable by a single test —
-the live twin of a case that already passes with the pre-formed stem.
+**W3 — the −1 consumers read the advisory verdict. DONE for A, A′, A″ 2026-08-05.**
 
-**W4 — delete what that frees.** The census in `ni_ap_derivation_plan.md` §3 step D: the 17
-uttara-position stems, `KawvA`, `haMsI`/`ajA`, and the five puṁvadbhāva pūrvas.
+| block | rule | conversion | live case now passing |
+|---|---|---|---|
+| **A** | SK833/5.4.153 नद्यृतश्च | arm A → `[or, ?NI, ?NI_adv]` | **बहुकुमारीकः** from `[कुमार, strI_abs]` |
+| **A′** | SK688/2.1.26 खट्वा क्षेपे | `=KawvA` → `[or, =KawvA, [and, =Kawva, ?Ap_adv]]` | **खट्वारूढः** from `[खट्व, strI_abs]` |
+| **A″** | SK933/1.2.67, SK939/1.2.73 | `?strI` → `[or, ?strI, ?strI_adv]`, plus `?!strI_adv` on the opposite arm | **हंसौ**, **अजे** from `[हंस\|अज, strI_abs]` |
+
+Three things W3 forced, each found by a failing case rather than by reading:
+
+1. **`?strI_adv`** — a companion tag recording the verdict's GENDER. A″ and B need "this member
+   will be feminine", not which affix does it.
+2. **W1 must not advise a `?referent_strI` member.** दण्डिन् in बहुदण्डिका was advised `?NI_adv`
+   (दण्डिनी is a word), and 5.4.153 then outranked SK890/5.4.152 इनः स्त्रियाम्. The placeholder
+   there is the compound's, so there is no member verdict to give. Fixed at the source, in W1,
+   rather than with a `?!referent_strI` guard on each consumer.
+3. **The strī merge must drop `?Ba`.** With a live uttara, बहुकुमारीकः came out **\*बहुकुमास्कः**:
+   1.4.18 यचि भम् had set bha for the strī affix, `join_objects` copied it onto the merged stem,
+   and 6.4.148 यस्येति च then re-fired before कप् and ate the fresh ī — though कप् is
+   consonant-initial and never licensed bha at all. Same hygiene 2.4.71 already applies to the
+   luk'd sup (`olp: [-Ba]`); 1.4.18 re-derives the saṁjñā per window, so nothing is lost.
+4. **1.2.67/1.2.73 now `overrides: 1.2.64`.** With a live feminine member the two ekaśeṣa
+   members are the SAME STRING at −1 (हंस + हंस), so the general सरूपाणामेकशेषः grabbed the pair
+   first and हंसौ came out right for the wrong reason. The specific rule, which also names the
+   survivor, must win.
+
+**Still open in W3: block B, the puṁvadbhāva family (6.3.34–41).** Unlike A/A′/A″ it needs the
+*lexical* properties (`?jAti`, `?kopaDa`, `?svAnga_I`, `?puMvat`) to sit on the BASE, which is
+stem work rather than a rule-condition widening, and its payoff is attribution only — the
+surfaces are already right (`ni_ap_derivation_plan.md` §3 step D measured that).
+
+**W4 — delete what W3 freed. PARTIAL 2026-08-05.** `KawvA` (A′), `haMsI` and `ajA` (A″) are
+gone; with `yUka`/`duhyamAna`/`rama`/`jawa`/`niSa` and the earlier five that is **thirteen**
+stored feminines removed. NOT deleted, deliberately: `kumArI` stays as the pre-formed twin of
+the live बहुकुमारीकः case, so the `[or ?NI ?NI_adv]` disjunction keeps proving it still serves
+stored stems. The remaining uttara-position stems (सेना, गङ्गा, नाडी, पञ्चमी …) are freed *in
+principle* by the 5.4.153 conversion but each needs its own live case first.
 
 **W5 — taddhita (SK1072+) inherits the same mechanism.** A taddhita-derived stem feeding the
 strī machine (विद्या + अण् + ङीप् = वैद्यी) is the same shape: advise on the derived stem,

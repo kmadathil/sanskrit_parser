@@ -10062,7 +10062,14 @@
   condition:
     lp:
       - and
-      - "=KawvA"
+      # W3 (word_formation_ordering_plan.md): the sūtra names खट्वा by its SURFACE, which a
+      # live-derived member does not have at bahiranga -1 — it is still खट्व, with only the
+      # advisory verdict the W1 pre-pass computed. Both spellings of the same condition.
+      - - or
+        - "=KawvA"
+        - - and
+          - "=Kawva"
+          - "?Ap_adv"
       - "?viBakti_2"
       - "?semantic_kzepa"
       - "?!samAsaPurva"
@@ -12181,10 +12188,17 @@
   bahiranga: -1
   condition:
     # Arm A — नदी: a ?NI (ṅīp/ṅīṣ) uttara. बहुकुमारीकः.
+    # `?NI_adv` (W3, word_formation_ordering_plan.md) is the SAME condition reached one step
+    # earlier: this rule runs at bahiranga -1, three levels before the ṭāp/ṅīp choice, so a
+    # LIVE-derived uttara [कुमार, strI_abs] has no ?NI yet — only the advisory verdict the W1
+    # pre-pass computed for it. A pre-formed कुमारी still matches on ?NI, so both paths work
+    # and the migration can proceed stem by stem.
     - rp:
         - and
         - "?bahuvrIhi"
-        - "?NI"
+        - - or
+          - "?NI"
+          - "?NI_adv"
         - "?!samasanta_kap"
     # Arm B — ऋतः: ANY ṛ-final uttara, tested on the final char. The rule previously used
     # ?svasrAdi as a proxy, but स्वस्रादि is the FEMININE ṛ-kinship gaṇa (मातृ/स्वसृ/दुहितृ…),
@@ -12932,17 +12946,32 @@
 - sutra: पुमान् स्त्रिया
   id: 1.2.67
   bahiranga: -1
+  # `overrides: 1.2.64` — SK188/1.2.64 सरूपाणामेकशेषः is the GENERAL ekaśeṣa; this is the
+  # specific one that also names WHICH member survives. They can only collide when the two
+  # members are homophonous and differ just in gender, which is precisely what a LIVE feminine
+  # member looks like at bahiranga -1 (हंस + [हंस, strI_abs] — the same string twice). Without
+  # this, 1.2.64 grabbed the pair first and हंसौ came out right for the wrong reason.
+  overrides: 1.2.64
   condition:
     lp:
       - and
       - "?ekaSeza_vivakza"
-      - "?strI"
+      # W3 (word_formation_ordering_plan.md): a LIVE feminine member [हंस, strI_abs] is still
+      # the masculine base at bahiranga -1 and carries only the W1 advisory verdict, so the
+      # sūtra's स्त्रिया is read as "declared feminine OR advised feminine".
+      - - or
+        - "?strI"
+        - "?strI_adv"
       - "?tallakzaRa"
       - "?!ekaSeza_lupta"
     rp:
       - and
       - "?ekaSeza_vivakza"
       - "?pum"
+      # …and the surviving पुमान् must NOT be the advised-feminine member: a live member is
+      # ?pum too (it IS the base), so without this the two roles could swap and the wrong
+      # member would be elided.
+      - "?!strI_adv"
       - "?tallakzaRa"
   update:
     olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]
@@ -13016,18 +13045,21 @@
 - sutra: ग्राम्यपशुसङ्घेष्वतरुणेषु स्त्री
   id: 1.2.73
   bahiranga: -1
-  overrides: 1.2.67
+  overrides: [1.2.67, 1.2.64]   # see 1.2.67 on the 1.2.64 half
   condition:
     lp:
       - and
       - "?ekaSeza_vivakza"
       - "?pum"
+      - "?!strI_adv"        # the elided masculine is not an advised-feminine member (W3)
       - "?grAmyapaSu"
       - "?!ekaSeza_lupta"
     rp:
       - and
       - "?ekaSeza_vivakza"
-      - "?strI"
+      - - or                # the SURVIVOR here is the feminine — declared or advised
+        - "?strI"
+        - "?strI_adv"
       - "?grAmyapaSu"
   update:
     olp: [+ekaSeza_lupta, -ekaSeza_Sizyate]

@@ -670,7 +670,8 @@ samasa_asraya_tests = [
         # संज्ञाछन्दसोः किम् — without ?saMjYA or ?Candas, 6.3.63 is silent: अजाक्षीरम्.
         "label": "X2-ajAkzIram-negative-SK1001-6.3.63",
         "type": "zazWI",
-        "purva": {"stem": "ajA"},
+        "purva": {"stem": "aja"},
+        "purva_strI_abs": True,
         "uttara": {"stem": "kzIra", "vacana": 1},
         "fired": ["2.2.8"],
         "not_fired": ["6.3.63"],
@@ -685,7 +686,8 @@ samasa_asraya_tests = [
         # त्व-derivative is neuter whatever it is built on.
         "label": "X2-ajatvam-SK1002-6.3.64",
         "type": "affix",
-        "purva": {"stem": "ajA"},
+        "purva": {"stem": "aja"},
+        "purva_strI_abs": True,
         "uttara_affix": "tva_t",
         "sup": [1, 1],
         "fired": [],

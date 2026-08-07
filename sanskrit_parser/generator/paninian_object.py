@@ -406,7 +406,14 @@ class PaninianObject(SanskritObject):
                 # (भाषितपुंस्कात्) fire on both paths. Set BEFORE pum is dropped.
                 if first.hasTag("pum"):
                     so.setTag("puMvat")
-                _delete_if_present(["pum", "napum"])
+                # 1.1.63-style hygiene, the same point 2.4.71 makes for the luk'd sup: the
+                # bha-saṁjñā 1.4.18 यचि भम् conditioned on the strī affix is relative to THAT
+                # affix, which this merge consumes. Carrying it onto the merged stem let
+                # 6.4.148 यस्येति च re-fire at the next window and eat the ī it had just
+                # produced — बहु + [कुमार, strI_abs] + कप् came out *बहुकुमास्कः, because कप्
+                # is consonant-initial and never licensed bha at all. 1.4.18 re-derives the
+                # saṁjñā per window, so dropping it here loses nothing.
+                _delete_if_present(["pum", "napum", "Ba"])
 
         # --- pum_abs on last: restore pum, drop strī-markers, flag pUrvastrI ---
         if last.hasTag("pum_abs"):
