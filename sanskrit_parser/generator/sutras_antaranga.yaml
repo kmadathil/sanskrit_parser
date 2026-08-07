@@ -10525,7 +10525,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - "?!puMvadBAva"
     rp: "?karmaDAraya"
   update:
@@ -11047,7 +11049,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - "?!priyAdi"
       - "?!puMvadBAva"
     rp:
@@ -11073,7 +11077,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - "?kopaDa"
     rp:
       - and
@@ -11099,7 +11105,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - - or
         - "?strI_saMjYA"
         - "?pUraRI"
@@ -11121,7 +11129,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - "?svAnga_I"
     rp:
       - and
@@ -11141,7 +11151,9 @@
     lp:
       - and
       - "?samAsaPurva"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - "?jAti"
     rp:
       - and
@@ -14075,7 +14087,9 @@
       - and
       - "?samAsaPurva"
       - "?NI"
-      - "?puMvat"
+      - - or
+        - "?puMvat"
+        - "?puMvat_adv"   # W3 block B: bhāṣitapuṁska derived for a live member
       - $$anekAc_asaMyogapUrva
     rp:
       - and

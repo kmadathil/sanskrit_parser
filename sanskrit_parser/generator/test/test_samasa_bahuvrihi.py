@@ -61,6 +61,16 @@ def _build_member(spec, *, referent_linga=None):
     return p
 
 
+def _purva_elements(case):
+    """The pūrva, plus its own `strI_abs` when the case asks for a LIVE-DERIVED feminine
+    member (`purva_strI_abs`) — [ब्राह्मण, strI_abs] instead of the stored ब्राह्मणी. Distinct
+    from `uttara_strI_abs`, which is the COMPOUND's anyapadārtha ṭāp."""
+    out = [_build_member(case["purva"])]
+    if case.get("purva_strI_abs"):
+        out.append(deepcopy(strI_abs))
+    return out
+
+
 def _to_slp1(deva):
     return sanscript.transliterate(deva, sanscript.DEVANAGARI, sanscript.SLP1)
 
@@ -74,9 +84,8 @@ def _surface(pl):
 
 @pytest.mark.parametrize("case", samasa_bv_tests, ids=[c["label"] for c in samasa_bv_tests])
 def test_samasa_bahuvrihi(case):
-    purva = _build_member(case["purva"])
     uttara = _build_member(case["uttara"], referent_linga=case.get("referent_linga"))
-    pl = [Adya, purva, uttara, avasAna]
+    pl = [Adya, *_purva_elements(case), uttara, avasAna]
     if case.get("uttara_strI_abs"):
         # a fem-referent bahuvrīhi whose uttara is an a-stem base takes ṭāp: the
         # strI_abs element at the (uttara | strī) window (e.g. जङ्घ → जङ्घा → दीर्घजङ्घा).

@@ -523,7 +523,10 @@ aziSvI = Pratipadika("aziSvI", "pum", other_tags=["sakhyAdi"])
 # SK518 (4.1.63 जातेरस्त्रीविषयादयोपधात्): jāti words (genus/species) that are
 # (a) not exclusively stree-only and (b) not y-upadhā → ṅīṣ. Restrictions are
 # encoded by NOT tagging ineligible stems. Representative a-final jāti pum stems:
-brAhmaRa = Pratipadika("brAhmaRa", "pum", other_tags=["jAti_ayopaDa"])
+brAhmaRa = Pratipadika("brAhmaRa", "pum", other_tags=["jAti_ayopaDa", "jAti"])
+#          ?jAti: the property SK842/6.3.41 जातेश्च reads. It was on the pre-formed
+#          ब्राह्मणी only, so a LIVE [ब्राह्मण, strI_abs] pūrva could not be recognised
+#          as a jāti-feminine. It belongs on the base — ब्राह्मण is the jāti.
 kukkuwa   = Pratipadika("kukkuwa",  "pum", other_tags=["jAti_ayopaDa"])   # kukkuṭa (hen/cock)
 sUkara    = Pratipadika("sUkara",   "pum", other_tags=["jAti_ayopaDa"])   # sūkara (pig)
 

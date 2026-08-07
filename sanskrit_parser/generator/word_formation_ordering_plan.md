@@ -1,6 +1,6 @@
 # Running word-formation before the sentence pre-passes — ordering plan
 
-**Status: W0, W1, W2 DONE; W3 done for A/A′/A″ (B open); W4 partial; W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
+**Status: W0, W1, W2 DONE; W3 done for A/A′/A″/B; W4 partial (13 stems gone, the rest gated on more W3); W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
 measured on that tree (a script over the 773 rules in `sutras_antaranga.yaml`, plus prakriyā
 traces); inferences are marked as such.
 
@@ -276,17 +276,46 @@ Three things W3 forced, each found by a failing case rather than by reading:
    first and हंसौ came out right for the wrong reason. The specific rule, which also names the
    survivor, must win.
 
-**Still open in W3: block B, the puṁvadbhāva family (6.3.34–41).** Unlike A/A′/A″ it needs the
-*lexical* properties (`?jAti`, `?kopaDa`, `?svAnga_I`, `?puMvat`) to sit on the BASE, which is
-stem work rather than a rule-condition widening, and its payoff is attribution only — the
-surfaces are already right (`ni_ap_derivation_plan.md` §3 step D measured that).
+**Block B — the puṁvadbhāva family (6.3.34–41). DONE for 6.3.41 2026-08-05.** Two pieces:
+`?puMvat_adv` (W1 derives bhāṣitapuṁska-ness — a feminine formed by ङी/आप् on a MASCULINE stem
+has a masculine counterpart by construction, that stem), and the lexical property moved to
+where it belongs: **`?jAti` now sits on `brAhmaRa`**, not only on the pre-formed ब्राह्मणी —
+ब्राह्मण *is* the jāti. All seven `?puMvat` arms in the family read
+`[or, ?puMvat, ?puMvat_adv]`. Live case: **ब्राह्मणीभार्यः** from `[ब्राह्मण, strI_abs]`, with
+6.3.41 जातेश्च firing — the attribution the pre-tagged stem used to buy.
 
-**W4 — delete what W3 freed. PARTIAL 2026-08-05.** `KawvA` (A′), `haMsI` and `ajA` (A″) are
-gone; with `yUka`/`duhyamAna`/`rama`/`jawa`/`niSa` and the earlier five that is **thirteen**
-stored feminines removed. NOT deleted, deliberately: `kumArI` stays as the pre-formed twin of
-the live बहुकुमारीकः case, so the `[or ?NI ?NI_adv]` disjunction keeps proving it still serves
-stored stems. The remaining uttara-position stems (सेना, गङ्गा, नाडी, पञ्चमी …) are freed *in
-principle* by the 5.4.153 conversion but each needs its own live case first.
+The other three prohibitions (6.3.37 पाचिका, 6.3.38 दत्ता, 6.3.40 सुकेशी) are not blocked by
+the mechanism but by their STEMS: no base exists, and सुकेशी's would need 4.1.54, which is
+itself compound-dependent (सुकेश is a bahuvrīhi). 6.3.34's own positive case needs no
+conversion — it is the marker model, where the composer supplies the masculine form outright.
+
+**W4 — delete what W3 freed. PARTIAL, and the limit is now measured 2026-08-05.**
+`KawvA` (A′), `haMsI` and `ajA` (A″) are gone; with `yUka`/`duhyamAna`/`rama`/`jawa`/`niSa`
+and the earlier five that is **thirteen** stored feminines removed.
+
+Kept deliberately: `kumArI` and `brAhmaRI`, as the pre-formed twins of the live बहुकुमारीकः and
+ब्राह्मणीभार्यः cases — they are what keeps proving the `[or ?NI ?NI_adv]` /
+`[or ?puMvat ?puMvat_adv]` disjunctions still serve stored stems.
+
+**The rest is blocked, and NOT for the reason the plan assumed.** Probing every candidate base
+separates two groups cleanly:
+
+* **ā-stems derive perfectly** — `[सेन|गङ्ग|प्रज|मेध|जाय|नासिक|वडव|लिक्ष|माल, strI_abs]` all give
+  their feminine by 4.1.4 ṭāp. The base needing no independent attestation is settled (§2).
+* **ī-stems do not**, from a plain a-stem base: `paYcamI` `rAkzasI` `sTAlI` `BaginI` `nAqI` come
+  out *पञ्चमा, *राक्षसा, *स्थाला, *भगिना, *नाडा. For an ī-stem the base's CLASS is the whole
+  question — as `revat` needed its ugit. `kalyARI` forks (कल्याणा/कल्याणी) on an optional rule.
+
+But deriving the stem is not enough, and this is the finding: **converting सेना, वडवा and लिक्षा
+anyway made four tests fail**, because all three are UTTARA-position members and their consumer
+rules (SK1023/8.3.99 ṣatva, SK912/2.4.8, SK813/2.4.27) still read the feminine's surface or
+saṁjñā at a window where a live member has not become feminine yet. The conversions were
+reverted.
+
+**So there is no blanket "uttaras work now".** 5.4.153 works because W3 taught *that rule* the
+advisory verdict; every other uttara consumer needs the same one-rule conversion first. W4's
+remaining deletions are therefore gated on W3 work, not on stems — which is the honest shape of
+what is left.
 
 **W5 — taddhita (SK1072+) inherits the same mechanism.** A taddhita-derived stem feeding the
 strī machine (विद्या + अण् + ङीप् = वैद्यी) is the same shape: advise on the derived stem,

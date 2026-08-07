@@ -761,6 +761,20 @@ samasa_bv_tests = [
         "surface": "ब्राह्मणीभार्यः",
     },
     {
+        # BLOCK B LIVE (word_formation_ordering_plan.md W3): the same prohibition from a
+        # live-derived pūrva [ब्राह्मण, strI_abs]. 6.3.41 जातेश्च runs at bahiranga -1, where
+        # the member is still the masculine base, so it reads ?jAti off the BASE (where the
+        # property belongs — ब्राह्मण is the jāti) and the bhāṣitapuṁska-ness off the W1
+        # verdict ?puMvat_adv, which is derived rather than composer-declared.
+        "label": "B1-brAhmaRIBAryaH-live-derived-SK842-6.3.41",
+        "purva": {"stem": "brAhmaRa", "vacana": 1, "vibhakti": 1},
+        "purva_strI_abs": True,
+        "uttara": {"stem": "BArya", "vacana": 1, "vibhakti": 1, "tags": ["uttara_strI"]},
+        "referent_linga": "pum",
+        "fired": ["2.2.24", "6.3.41", "1.2.43"],
+        "surface": "ब्राह्मणीभार्यः",
+    },
+    {
         # SK839/6.3.38 संज्ञापूरण्योश्च — दत्ता (name) stays fem: दत्ताभार्यः.
         "label": "B1-dattABAryaH-SK839-6.3.38",
         "purva": {"stem": "dattA", "vacana": 1, "vibhakti": 1},

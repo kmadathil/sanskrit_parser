@@ -428,6 +428,12 @@ class AntarangaPrakriya(PrakriyaBase):
                 # member WILL be feminine rather than which affix makes it so: SK933/1.2.67
                 # पुमान् स्त्रिया and the puṁvadbhāva family read femininity, not ङी vs टाप्.
                 stem.setTag("strI_adv")
+                # ?puMvat_adv — भाषितपुंस्क, derived rather than declared. A feminine formed
+                # by ङी/आप् on a MASCULINE stem has a masculine counterpart by construction:
+                # that stem. join_objects earns the same tag at the merge (ni_ap_derivation_
+                # plan.md step C), but SK831/6.3.34 ff. run at -1, long before it.
+                if stem.hasTag("pum"):
+                    stem.setTag("puMvat_adv")
 
     def _advise_stri(self, stem, affix):
         """Which affix tag(s) the sandboxed (stem | strI_abs) window resolves to.
