@@ -426,3 +426,98 @@ Two cases discriminate the whole design and should be asserted at every step:
 - **The `insert:` route for 5.4.153** (deciding कप् late and inserting it mid-scan) becomes
   unnecessary if W lands, but it stays the fallback if W2 proves too costly. Its open
   questions are recorded in the same section.
+
+---
+
+## 8. Final stem status — derived vs pre-formed, and why (2026-08-05)
+
+The scoreboard for `ni_ap_derivation_plan.md` + all W phases. The population reconciles like
+this: **38** stems carried a strī-affix tag when the migration started, **+9** gained one in
+step 1 (they were feminines all along, just untagged — the missing tag was a wrong nom sg),
+**−14** deleted, = **33 today**. `atistri` is in that count but is not a feminine derivation at
+all: it is the compound अतिस्त्रि, carrying `?strI_p` for 6.4.79's iyaṅ.
+
+### DERIVED — the stem is gone, `[base, strI_abs]` is the only form (14)
+
+| stem | base | affix | what unblocked it |
+|---|---|---|---|
+| `gOrI` | `gaura` | ङीष् 4.1.41 गौरादि | base already existed |
+| `ekA` | `eka` | ṭāp 4.1.4 | base already existed |
+| `haMsI` | `haMsa` | ṅīp | W3 A″ — 1.2.67 reads `?strI_adv` |
+| `ajA` | `aja` | ṭāp (ajādi) | W3 A″ — 1.2.73 reads `?strI_adv` |
+| `KawvA` | `Kawva` **(new)** | ṭāp 4.1.4 | W3 A′ — 2.1.26 reads `?Ap_adv` beside its `=KawvA` |
+| `likzA` | `likza` **(new)** | ṭāp 4.1.4 | W3 — the strī merge honours `?samasa_liNga_locked` |
+| `izwakA` | `izwaka` **(new)** | ṭāp 4.1.4 | pūrva-position; nothing blocked it |
+| `izIkA` | `izIka` **(new)** | ṭāp 4.1.4 | pūrva-position |
+| `revatI` | `revat` **(new, ugit)** | ङीप् 4.1.6 उगितश्च | pūrva-position. NOT an a-stem base — `revata` gives *रेवता |
+| `yUkA` | `yUka` **(new)** | ṭāp 4.1.4 | dvandva driver hook |
+| `duhyamAnA` | `duhyamAna` **(new)** | ṭāp 4.1.4 | kāraka driver hook |
+| `ramA` | `rama` **(new)** | ṭāp 4.1.4 | kāraka driver hook |
+| `jawA` | `jawa` **(new)** | ṭāp 4.1.4 | kāraka driver hook |
+| `niSA` | `niSa` **(new)** | ṭāp 4.1.4 | nothing — a vibhakti paradigm, which has taken element lists all along |
+
+Also deleted: **`strI_pUrva`**, a tag-stripped clone of `strI` that guarded nothing.
+
+### PRE-FORMED — and the reason, one per stem (33)
+
+**Kept ON PURPOSE as controls (2).** Their live twins pass beside them; deleting them would
+stop proving that the disjunctions still serve stored stems.
+
+| `brAhmaRI` | live twin: ब्राह्मणिगोत्रम् (6.3.43), ब्राह्मणीभार्यः (6.3.41) |
+| `kumArI` | live twin: बहुकुमारीकः (5.4.153) |
+|---|---|
+
+**Lexical — the ī is not a ṅī on a base (4).** Absence or presence of the tag is correct here;
+see `ni_ap_derivation_plan.md` §2.
+
+`nadI` · `strI` (ī IS ङीष्, hence 1.4.4's अस्त्री) · `pfTivI` (ङीष् by the vārtika
+पृथिव्यां ङीष्, not modelled) · `kArIzaganDyA` (ī is ष्यङ् + saṁprasāraṇa, 6.1.13)
+
+**Base is a HOMOGRAPH — `[base, strI_abs]` derives a DIFFERENT word (3).**
+
+`kuSA` (कुश is ?jAnapadAdi → *कुशी) · `karRI` (→ *कर्णा) · `naKI` (→ *नखा)
+
+**ī-stem whose base CLASS is not modelled — a plain a-stem base gives ṭāp (6).**
+
+`paYcamI` *पञ्चमा · `rAkzasI` *राक्षसा · `sTAlI` *स्थाला · `BaginI` *भगिना · `nAqI` *नाडा ·
+`dAsI` (surface says ङीष्, but WHICH sūtra — गौरादि? — is still unchecked)
+
+**Optional-rule fork — the verdict is genuinely two-valued (2).**
+
+`rohiRI` (4.1.39 वा → रोहिणी/रोहिता) · `kalyARI` (→ कल्याणा/कल्याणी)
+
+**UTTARA position, consumer rule not yet converted (7).** These are the W3 backlog: the base
+derives fine, but the rule that reads the member at −1 still needs its own `?…_adv` arm, the
+way 5.4.153 got one.
+
+`senA` (8.3.99 ṣatva reads `=senA`) · `gaNgA` · `nAsikA` · `prajA` · `meDA` (5.4.122 असिच्) ·
+`jAyA` (5.4.134 निङ्) · `mAlA` (pūrva use convertible; the बहुमालाकः uttara use pins it)
+
+**Affix CANCELLATION needed — a mechanism the design does not have (1).**
+
+`vaqavA` — 2.4.27 पूर्ववत् must *cancel* the ṭāp (`orp: [-Ap, -strI]`). Locking the gender is
+not enough: 7.1.18 औङ आपः reads `?Ap`, so a live member still gives *अश्ववडवे.
+
+**puṁvadbhāva prohibition with no base stem (3).**
+
+`dattA` (6.3.38) · `pAcikA` (6.3.37) · `sukeSI` (6.3.40 — and its base would need 4.1.54,
+itself compound-dependent, since सुकेश is a bahuvrīhi)
+
+**kṛt / nipātana formation — not base + ङी at all (2).**
+
+`pravARI` (प्र+वे+ल्युट्, cf. 5.4.160 निष्प्रवाणिः) · `pramARI`
+
+**TADDHITA base — converting them means a double chain (2).**
+
+`vidyA` (`[vidyA, aR_t, strI_abs]` → वैद्यी) · `suparRA` (`[suparRA, Qhak, strI_abs]`). A live
+version is `[vidya, strI_abs, aR_t, strI_abs]` — two placeholders in one chain, untested.
+
+**Not a feminine derivation (1).** `atistri` — the compound अतिस्त्रि; `?strI_p` is the
+word-identity tag 6.4.79 iyaṅ and 1.4.4 read.
+
+### What the table says about where to go next
+
+The only group whose blocker is *bookkeeping rather than grammar* is the **7 uttara-position
+stems**. Each needs one rule taught one `?…_adv` arm — the W3 recipe, already applied five
+times. Everything else is blocked by a real property of the word (homograph, lexical ī,
+optional rule) or by a missing mechanism (affix cancellation, surface-before-it-exists).

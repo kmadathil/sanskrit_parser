@@ -9,9 +9,9 @@ and the complete tatpuruṣa prakaraṇa (SK 684–828, T0–T5 + T-liṅga + T-
 completeness audit) — are recorded in the Implemented-Sutras tables below, in
 `karaka_plan.md` / `tatpuruza_plan.md`, and in git history._
 
-**Last implemented:** **`ni_ap_derivation_plan.md` steps 0/1/A/B — the `?NI`/`?Ap` tagging gap is closed, and step C is unblocked.** Nine stems (सुकेशी, हंसी, पृथिवी, दासी, खट्वा, दत्ता, पाचिका, सुपर्णा, विद्या) were missing the tag 6.1.68 हल्ङ्याब्भ्यो needs, so each declined with a spurious nom-sg visarga (*सुकेशीः, *खट्वाः); `strI_pUrva` was deleted as a no-op clone. Step B's trace: `?NI` survives the ṅīp merge fine but dies at the aṅga+sup merge — identically for pre-formed and live stems — because no `join_objects` propagation list carries it (the fifth instance of that lesson). Fallout fix: `?saMjYA` was overloaded (word-is-a-name for 6.3.38 vs compound-is-a-name for 6.3.63/8.4.3) → the word-level sense is now `?strI_saMjYA`. **Then step C: all five X2 pūrva rules (6.3.43, 6.3.61, 6.3.62, 6.3.63, 6.3.65) moved from the pre-pass to the MAIN-SCAN member window**, so `[brAhmaRa, strI_abs] + गोत्र → ब्राह्मणिगोत्रम्` — a live-derived feminine pūrva — with `?NI` riding the pūrva's sup-LUK (`?sup_luk`-gated, so an ALUK pūrva is excluded) and `?puMvat` EARNED at the ṅī/āp merge from the masculine base rather than declared. Each uttara content check became a stem-class tag on tier 2 (`?GarUpAdi`; `?cita`/`?tUla`/`?BArin` kept separate for 6.3.65's क्रमात्). The X2 driver now checks the **main-scan trace** as well as the pre-pass one, so no relocated rule lost its `fired` assertion and no `not_fired` guard went vacuous. **Then step D, the payoff: SK999/6.3.61 is UN-SCOPED** — `?gAlava_hrasva` dropped, the rule fires on its own condition, suite unchanged. The lever is **`?vihita_dIrGa`**, a general "another rule supplied this vowel on purpose" marker (6.3.137 केशाकेशि, 6.3.27 अग्नीवरुणौ, 6.3.121 ऋषीवहम्, 6.1.13/14 कारीषगन्धीपुत्रः — the last two were not in the known damage list and only the suite found them), plus the sūtra's own `?!avyaya` vārtika. **Ten stems DELETED** — `gOrI`, `ekA` (live `[gaura, strI_abs]` / `[eka, strI_abs]`) and, with bases added, `izwakA`, `izIkA`, `revatI`; X2's अजक्षीरम् went live too, proving `?Ap` rides the sup-luk as `?NI` does. रेवती is the instructive one: its base is the **ugit** रेवत् (`its=["u"]`, मतुप्-derived) so 4.1.6 उगितश्च gives ङीप् — an a-stem रेवत would give *रेवता, and the plan's inventory had it wrong. The last block was TOOLING, not grammar: the dvandva and kāraka drivers could not express a multi-element word. Both now take `strI_abs: True` (`_build_member`/`_build_word` return a LIST), which freed `yUkA`, `duhyamAnA`, `ramA`, `jawA`, `niSA`. Ekaśeṣa is NOT a tooling block — 1.2.67/1.2.73 must IDENTIFY the feminine member at −1, where a live member is still the masculine base, so `haMsI`/`ajA` stay for the same reason the puṁvadbhāva stems do.
+**Last implemented:** **Word-formation ordering, phases W0–W5b** — the bahiranga ladder ran word-level affixation three levels AFTER the pre-passes that need it, which is why `pratipadika.py` stored pre-tagged feminines. An ADVISORY pre-pass now records which strī affix a member *would* take without consuming the placeholder, and the −1 rules read it: **14 stored feminines deleted**, and बहुकुमारीकः / खट्वारूढः / हंसौ / अजे / ब्राह्मणीभार्यः / यूकालिक्षम् all derive from live `[base, strI_abs]` members. See the **Word-formation ordering** section below for the phase table, the four engine fixes, and where it stops.
 
-**Next to be implemented:** **`word_formation_ordering_plan.md` — W0–W2 DONE, W3 done for blocks A/A′/A″/B, W4 partial.** W1's advisory pre-pass records which strī affix a member WOULD take (`?NI_adv`/`?Ap_adv`/`?UN_adv` + `?strI_adv` + `?puMvat_adv`) WITHOUT consuming the `strI_abs` placeholder; the −1 rules now read it, so **बहुकुमारीकः / खट्वारूढः / हंसौ / अजे / ब्राह्मणीभार्यः all derive from live `[base, strI_abs]` members** — the last with 6.3.41 जातेश्च actually firing, which is the attribution the pre-tagged stem used to buy. 13 stored feminines deleted. **Pushing W3 further found the real limit, and it is sharper than "uttara position":** a live member works when its own affix and the compound's are SEPARABLE — the member is non-final, or a samāsānta sits between them (बहुकुमारीकः), or the compound's gender is locked and the member's ṭāp merely must not override it (**यूकालिक्षम्**, fixed by making `join_objects`' strī block honour `?samasa_liNga_locked`; `likzA` deleted, 14 stems gone). It does NOT work when the compound must **cancel** the member's affix (अश्ववडवौ — 2.4.27's `orp: [-Ap, -strI]`; locking the gender does not help, since 7.1.18 औङ आपः reads `?Ap`) or must read its **surface** before it exists (हरिषेणः/8.3.99). ā-stem bases all derive; ī-stem bases additionally need the right ङी rule per class (*पञ्चमा, *नाडा). **W5b DONE:** the advisory scan now admits a TADDHITA element before the placeholder, so a chain like `[vidyA, aR_t, strI_abs]` (वैद्यी) gets a verdict where it previously got none — the affix's own `?NIp_taddhita` is what 4.1.15 reads. `test_stri_advisory_taddhita.py` sweeps all 32 such paradigms in `vibhaktis_list` (found by walking the dict, not a hand list) and asserts the verdict is RIGHT OR ABSENT: 17 advised, 15 silent, 0 wrong. The silent ones are the dvigu chains (द्विबिस्ता, द्विकाण्डी, पञ्चाश्वी — their feminine is the COMPOUND's, by 4.1.21–24, which are compound-dependent) and affixes not yet in final shape (ढक्→एय) — i.e. the त्रिलोकी hazard one level deeper does NOT materialise. **The rest of W5 is left open deliberately, as an architecture question:** taddhita affixes are composer-supplied and ALREADY RESOLVED (39 objects, no rule inserts one), so there is no selection step to advise; whether SK1072+ models selection decides that, and if it does, the samāsānta machinery (marker at −1 + structural insertion) is the model to copy rather than a placeholder. Also open: re-auditing the earlier prakaraṇas with `prakarana_audit.py`, and a `members: [...]` path in the X-phase driver (the dvandva driver's shape) so a three-member compound like माषकुम्भवापेन can be asserted as a positive regression guard on the architecture. Then SK1072 onward — the taddhita section. **The engine lesson, now confirmed FOUR times and once mis-diagnosed:** a tag is dropped at a merge unless it is in the right `join_objects` propagation list — `?Ahita`/`?deSa`/`?BAvakaraRa`/`?ozaDi`/`?vanaspati` (X6), `?anitya`/`?fzi_saMjYA` and `?jyotis`/`?Ayus` (this round). **Reach for a tag trace before reasoning about why a rule does not fire**; twice in this prakaraṇa a trace found in one pass what several rounds of inference had missed, and once inference produced a confidently wrong answer ("8.3.83 is never evaluated") that the trace disproved. Still open from the bahuvrīhi work: the SK898/2.2.35 vārtikas, B1 6.3.35/36/39, 1.2.48's `?pum_abs` FIXME, and 5.4.153's नदी arm. (`?NI`/`?Ap` tagging: the nine known gaps are closed — see Last implemented.)
+**Next to be implemented:** the rest of **W5** is an architecture question, not a coding task — taddhita affixes are composer-supplied and already resolved, so there is no selection step to advise; whether SK1072+ models selection decides it (see the W-phase section). Before that, the cheapest wins are the remaining W3 rule conversions, each of which frees stems: every uttara consumer needs its own `?…_adv` arm, exactly as 5.4.153 got one. Also open: re-auditing the earlier prakaraṇas with `prakarana_audit.py`, and a `members: [...]` path in the X-phase driver (the dvandva driver's shape) so a three-member compound like माषकुम्भवापेन can be asserted as a positive regression guard on the architecture. Then SK1072 onward — the taddhita section. **The engine lesson, now confirmed FOUR times and once mis-diagnosed:** a tag is dropped at a merge unless it is in the right `join_objects` propagation list — `?Ahita`/`?deSa`/`?BAvakaraRa`/`?ozaDi`/`?vanaspati` (X6), `?anitya`/`?fzi_saMjYA` and `?jyotis`/`?Ayus` (this round). **Reach for a tag trace before reasoning about why a rule does not fire**; twice in this prakaraṇa a trace found in one pass what several rounds of inference had missed, and once inference produced a confidently wrong answer ("8.3.83 is never evaluated") that the trace disproved. Still open from the bahuvrīhi work: the SK898/2.2.35 vārtikas, B1 6.3.35/36/39, 1.2.48's `?pum_abs` FIXME, and 5.4.153's नदी arm. (`?NI`/`?Ap` tagging: the nine known gaps are closed — see Last implemented.)
 
 ---
 
@@ -973,6 +973,61 @@ SK numbers ≤ 452 absent from both the implemented and skipped/deferred tables,
 | 328 | 1.1.45 | |
 
 ---
+
+## Word-formation ordering — phases W0–W5b (`word_formation_ordering_plan.md`)
+
+**The problem.** The bahiranga ladder is inverted: word-level affixation (ṭāp/ṅīp, level 2)
+runs three levels AFTER the kāraka (−2) and samāsa (−1) pre-passes that depend on it. Every
+pre-tagged feminine in `pratipadika.py` was a level-2 outcome smuggled into a level-−1
+condition. **38 stems carried a strī-affix tag at the start, +9 gained one in step 1 (a
+missing tag was a wrong nom sg), −14 deleted = 33 today — each with a stated reason**
+(`word_formation_ordering_plan.md` §8 has the per-stem table).
+
+**The design: ADVISORY tagging, not a level move.** W1 computes which strī affix a member
+*would* take and records it (`?NI_adv`/`?Ap_adv`/`?UN_adv`, plus `?strI_adv` for gender and
+`?puMvat_adv` for bhāṣitapuṁska-ness) **without consuming the `strI_abs` placeholder**, so
+level 2 still selects the affix. Moving selection earlier instead would have consumed the
+placeholder that belongs to the COMPOUND — **त्रिलोकी → \*त्रिलोका** is the case that
+discriminates the two designs.
+
+| phase | what it did |
+|---|---|
+| **W0** | `stri_rule_audit.py` — classifies every strī rule PER ARM by compound-dependence: **41 advisable early / 28 dependent** (21 tag, 7 position, **0 derived**, 2 mixed). The zero is the licence for the whole phase. `test_stri_rule_audit.py` guards it |
+| **W1** | `_stri_advisory_prepass` — sandbox-runs the advisable rules (real rule objects, real `sutra_priority`; optional rules fork and record BOTH verdicts) before the kāraka pass |
+| **W2** | `_insert_samasanta` skips the member's strī affix — but NOT the compound's; `?referent_strI` separates them (बहुकुमारीकः vs बहुदण्डिका) |
+| **W3** | the −1 consumers read the verdict: 5.4.153 `[or ?NI ?NI_adv]`, 2.1.26 `[and =Kawva ?Ap_adv]`, 1.2.67/1.2.73 `[or ?strI ?strI_adv]` + `?!strI_adv` on the opposite arm, the puṁvadbhāva family `[or ?puMvat ?puMvat_adv]` |
+| **W4** | 14 stems deleted; `kumArI`/`brAhmaRI` KEPT as pre-formed controls for the disjunctions |
+| **W5b** | the advisory scan admits a TADDHITA element before the placeholder (`[vidyA, aR_t, strI_abs]` → वैद्यी). Sweep over all 32 such paradigms: **17 advised, 15 silent, 0 wrong** |
+
+**Now derived from `[base, strI_abs]`:** बहुकुमारीकः · खट्वारूढः · हंसौ · अजे · ब्राह्मणीभार्यः ·
+यूकालिक्षम् · ब्राह्मणिगोत्रम् — the last with 6.3.41 जातेश्च actually firing, which is the
+attribution a pre-tagged stem used to buy.
+
+**Four engine fixes fell out, each found by a failing case, not by reading:**
+
+1. `?NI`/`?Ap`/`?nadI`/`?puMvat` propagate through the pūrva's sup-LUK (`?samAsaPurva` +
+   `?sup_luk`). The luk gate matters: an ALUK pūrva's retained sup IS the pada's final.
+2. `?puMvat` is EARNED at the ṅī/āp merge when the base is masculine.
+3. The strī merge must drop `?Ba` — 1.4.18's bha was set for the strī affix, and carrying it
+   let 6.4.148 re-fire before कप् and eat the fresh ī (\*बहुकुमास्कः).
+4. The strī merge must honour `?samasa_liNga_locked` — a samāhāra dvandva is NEUTER though
+   both members are feminine (\*यूकालिक्षा).
+
+Plus: 1.2.67/1.2.73 gained `overrides: 1.2.64`, because with a live feminine member the two
+ekaśeṣa members are the SAME STRING at −1 and the general सरूपाणामेकशेषः grabbed the pair.
+
+**Where it stops, measured.** A live member works when its own affix and the compound's are
+**separable** — the member is non-final, a samāsānta sits between them, or the compound's
+gender is locked and the member's ṭāp merely must not override it. It fails when the compound
+must **CANCEL** the affix (अश्ववडवौ — 2.4.27's `orp: [-Ap, -strI]`; locking the gender does not
+help, since 7.1.18 औङ आपः reads `?Ap`) or must read its **SURFACE** before it exists
+(हरिषेणः/8.3.99). Separately, ā-stem bases all derive by 4.1.4, while ī-stem bases need the
+right ङी rule per class (\*पञ्चमा, \*नाडा from plain a-stems).
+
+**Open, deliberately:** the rest of W5. Taddhita affixes are composer-supplied and ALREADY
+RESOLVED (39 objects; no rule inserts one), so there is no selection step to advise. Whether
+SK1072+ models selection is an architecture question — and if it does, the samāsānta machinery
+(marker at −1 + structural insertion by the engine) is the model to copy, not a placeholder.
 
 ## Test Coverage
 
