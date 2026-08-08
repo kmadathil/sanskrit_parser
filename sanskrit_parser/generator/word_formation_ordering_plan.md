@@ -1,6 +1,7 @@
 # Running word-formation before the sentence pre-passes — ordering plan
 
-**Status: W0, W1, W2 DONE; W3 done for A/A′/A″/B; W4 partial (13 stems gone, the rest gated on more W3); W5 not started.** Written 2026-08-05 against commit `189d679`. Every number below is
+**Status: W0, W1, W2 DONE; W3 done for A/A′/A″/B; W4 partial (14 stems gone, the rest gated on more W3);
+W5b DONE, the rest of W5 deliberately open (it is an architecture question, see §4).** Written 2026-08-05 against commit `189d679`. Every number below is
 measured on that tree (a script over the 773 rules in `sutras_antaranga.yaml`, plus prakriyā
 traces); inferences are marked as such.
 
@@ -322,12 +323,52 @@ sits between them (बहुकुमारीकः), or because the compound's
 member's affix **cancelled** or needs to read its **surface** before it exists. That is a
 sharper statement than "uttara position" and it is what W5 should design against.
 
-**W5 — taddhita (SK1072+) inherits the same mechanism.** A taddhita-derived stem feeding the
-strī machine (विद्या + अण् + ङीप् = वैद्यी) is the same shape: advise on the derived stem,
-leave the placeholder for the real substitution.
+**W5 — taddhita. W5b DONE 2026-08-05; the rest deliberately NOT done.**
 
-**The level move stays available as a fallback** if advisory tagging proves too weak — but it
-must then solve त्रिलोकी, which advisory tagging solves for free.
+The plan used to say "taddhita inherits the same mechanism". **Measuring it says otherwise, and
+the difference matters:**
+
+* Taddhita affixes are composer-supplied **and already resolved** — 39 affix objects in
+  `pratyaya.py`, named individually in the input (`[vidyA, aR_t, strI_abs]`), and **no rule
+  inserts one** (`update:` never mentions `tadDita` in any of the 773 rules). Unlike
+  `strI_abs`, which is an *abstract* placeholder resolved by 41 selection rules, a taddhita
+  arrives already chosen. **There is no selection step today, so there is nothing to advise.**
+* The exception is the model to copy if selection is ever wanted: **samāsānta taddhitas already
+  work marker-first** — a −1 rule sets `?samasanta_*` and the ENGINE inserts the affix
+  (`_insert_samasanta`). "Decide by rule, insert structurally" sidesteps the
+  placeholder-ownership problem that cost W2 and W3 most of their effort.
+* 21 rules read `?tadDita` in a condition; **3 sit at −1** (5.4.92, 6.3.87 सतीर्थ्ये,
+  6.3.88 विभाषोदरे), all on `rp`. They work because the affix is *physically present but
+  unresolved* at −1 — which is how 6.3.87/88's यादौ प्रत्यये विवक्षिते is modelled, and a third
+  solution style already in the tree.
+
+**Whether SK1072+ models taddhita SELECTION is an open architecture question, not a coding
+task**, and it decides whether any of this is needed. It is deliberately left open here.
+
+### W5b — the chain gap (the part that WAS worth doing)
+
+W1 scanned for "a prātipadika followed by `strI_abs`". In a chain the element before the
+placeholder is the AFFIX, so `[vidyA, aR_t, strI_abs]` got **no verdict at all** (measured).
+The scan now admits a `?tadDita` element there too; the advisable rules read the affix's own
+class tags (`?NIp_taddhita` on aṇ/añ/matup/dvayasac/…), which is how SK470/4.1.15 already
+decides these forms.
+
+`test/test_stri_advisory_taddhita.py` sweeps **every** paradigm in `vibhaktis_list` shaped
+`[…, <taddhita>, strI_abs]` — 32 today, found by walking the dict rather than by a hand-picked
+list — and asserts the verdict is **right or absent**. Result: **17 advised correctly, 15
+silent, 0 wrong.**
+
+The 15 silences are the interesting half, and both groups should be silent:
+
+* **dvigu chains** (द्विबिस्ता, द्विकाण्डी, द्व्याढकी, पञ्चाश्वी …) — their feminine is the
+  COMPOUND's, decided by 4.1.21–24, which are compound-dependent and excluded from the
+  advisory set. **This is the त्रिलोकी hazard one level deeper, and it does not materialise:
+  the sandbox declines rather than guesses.**
+* **affixes not yet in final shape** — ढक् becomes एय by 7.1.2 (सुपर्णेयी), so nothing matches
+  yet.
+
+Silence is safe because nothing reads an absent verdict; a wrong verdict would not be, which
+is why the sweep asserts that property rather than a fixed expected list.
 
 ## 5. Risks
 

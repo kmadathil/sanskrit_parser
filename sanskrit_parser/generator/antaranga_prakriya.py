@@ -410,7 +410,14 @@ class AntarangaPrakriya(PrakriyaBase):
             stem, nxt = inputs[ix], inputs[ix + 1]
             if not (_isScalar(stem) and _isScalar(nxt)):
                 continue
-            if not nxt.hasTag("strI_abs") or not stem.hasTag("prAtipadika"):
+            # The element the placeholder attaches to: a prātipadika, or a TADDHITA affix in
+            # a chain like [vidyA, aR_t, strI_abs] → वैद्यी (W5b). Without the taddhita arm
+            # such a chain got no verdict at all, since the element before the placeholder is
+            # the affix, not a stem. The advisable rules read the affix's own class tags
+            # (?NIp_taddhita on aṇ/añ/matup/…), which is how 4.1.15 already decides these.
+            if not nxt.hasTag("strI_abs"):
+                continue
+            if not (stem.hasTag("prAtipadika") or stem.hasTag("tadDita")):
                 continue
             # ?referent_strI says the composer declared the COMPOUND feminine (anyapadārtha),
             # so the placeholder after this member is the compound's ṭāp, not the member's own
