@@ -107,7 +107,7 @@ samasa_tests = [
     {
         "label": "S2-anugaNgam-SK670-2.1.16",           # anu (āyāma) + gaṅgā, ā-stem → napum → hrasva → am
         "purva": {"avyaya": "anu_avyaya", "sem": "semantic_AyAma", "vivakza": True},
-        "uttara": {"stem": "gaNgA", "vacana": 1, "vivakza": True},
+        "uttara": {"stem": "gaNga", "vacana": 1, "vivakza": True, "strI_abs": True},
         "fired": ["2.1.16", "1.2.43"],
         "surface": "अनुगङ्गम्",
     },
@@ -121,7 +121,8 @@ samasa_tests = [
     {
         "label": "S2-dvigaNgam-SK674-2.1.20",           # dvi + gaṅgā (nadī), ā-stem → hrasva → am
         "purva": {"stem": "dvi", "vivakza": True},   # dvi: nityadvivacana — no forced vacana
-        "uttara": {"stem": "gaNgA", "vacana": 1, "vivakza": True, "tags": ["nadI_saMjYA"]},
+        "uttara": {"stem": "gaNga", "vacana": 1, "vivakza": True, "strI_abs": True,
+                   "tags": ["nadI_saMjYA"]},
         "fired": ["2.1.20", "1.2.43"],
         "surface": "द्विगङ्गम्",
     },
@@ -1080,7 +1081,8 @@ samasa_bv_tests = [
         # बहुमालाकः / बहुमालकः. The only member of the 7.4.13–15 trio with a surface effect.
         "label": "B3-bahumAlAkaH-SK892-7.4.15",
         "purva": {"stem": "bahu", "vacana": 1, "vibhakti": 1},
-        "uttara": {"stem": "mAlA", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
+        "uttara": {"stem": "mAla", "vacana": 1, "vibhakti": 1, "tags": ["kap_vivakzA"]},
+        "uttara_strI_abs": True,   # LIVE [माल, strI_abs] → ṭāp 4.1.4
         "referent_linga": "pum",
         "fired": ["2.2.24", "5.4.154", "1.2.43"],
         "surfaces": ["बहुमालाकः", "बहुमालकः"],

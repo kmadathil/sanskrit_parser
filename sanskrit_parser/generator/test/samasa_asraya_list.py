@@ -727,7 +727,8 @@ samasa_asraya_tests = [
         # Third pair: माला–भारिन् → मालभारि (भारिन् is an in-stem, napuṁsaka nom sg).
         "label": "X2-mAlaBAri-SK1006-6.3.65",
         "type": "zazWI",
-        "purva": {"stem": "mAlA"},
+        "purva": {"stem": "mAla"},   # LIVE [माल, strI_abs] → ṭāp 4.1.4
+        "purva_strI_abs": True,
         "uttara": {"stem": "BArin", "vacana": 1},
         "fired": ["2.2.8", "6.3.65"],
         "surface": "मालभारि",
@@ -1190,7 +1191,8 @@ samasa_asraya_tests = [
         "label": "X5-harizeRA-SK1023-8.3.99",
         "type": "zazWI",
         "purva": {"stem": "hari", "tags": ["saMjYA"]},
-        "uttara": {"stem": "senA", "vacana": 1},
+        "uttara": {"stem": "sena", "vacana": 1},   # LIVE [sena, strI_abs]
+        "strI_abs": True,
         "fired": ["2.2.8", "8.3.99"],
         "surface": "हरिषेणा",
     },
@@ -1199,7 +1201,8 @@ samasa_asraya_tests = [
         "label": "X5-pfTusenA-negative-SK1023-8.3.99",
         "type": "zazWI",
         "purva": {"stem": "pfTu"},
-        "uttara": {"stem": "senA", "vacana": 1},
+        "uttara": {"stem": "sena", "vacana": 1},   # LIVE [sena, strI_abs]
+        "strI_abs": True,
         "fired": ["2.2.8"],
         "not_fired": ["8.3.99"],
         "surface": "पृथुसेना",
@@ -1210,7 +1213,8 @@ samasa_asraya_tests = [
         "label": "X5-sarvasenA-negative-SK1023-8.3.99-iRkoH",
         "type": "zazWI",
         "purva": {"stem": "sarva", "tags": ["saMjYA"]},
-        "uttara": {"stem": "senA", "vacana": 1},
+        "uttara": {"stem": "sena", "vacana": 1},   # LIVE [sena, strI_abs]
+        "strI_abs": True,
         "fired": ["2.2.8"],
         "not_fired": ["8.3.99"],
         "surface": "सर्वसेना",
@@ -1223,7 +1227,8 @@ samasa_asraya_tests = [
         "label": "X5-rohiRIzeRA-SK1024-8.3.100",
         "type": "zazWI",
         "purva": {"stem": "rohiRI", "tags": ["saMjYA", "nakzatra"]},
-        "uttara": {"stem": "senA", "vacana": 1},
+        "uttara": {"stem": "sena", "vacana": 1},   # LIVE [sena, strI_abs]
+        "strI_abs": True,
         "fired": ["2.2.8", "8.3.100"],
         "surfaces": ["रोहिणीषेणा", "रोहिणीसेना", "रोहिणिषेणा", "रोहिणिसेना"],
     },

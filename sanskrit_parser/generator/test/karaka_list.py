@@ -1430,7 +1430,8 @@ karaka_tests = [
         "sutras": ["1.4.31", "2.3.28", "1.4.54", "2.3.46"],
         "sentence": [
             {"stem": "himavat", "vacana": 1, "sem": ["semantic_praBava"]},
-            {"stem": "gaNgA", "vacana": 1, "sem": ["semantic_svatantra"]},
+            {"stem": "gaNga", "vacana": 1, "strI_abs": True,   # LIVE गङ्गा
+             "sem": ["semantic_svatantra"]},
             {"verb": "praBavati"},
         ],
         "expect": [

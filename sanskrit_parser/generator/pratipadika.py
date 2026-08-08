@@ -782,7 +782,7 @@ yAtf = Pratipadika("yAtf", "strI", other_tags=["svasrAdi"])
 BrU = Pratipadika("BrU", "strI", other_tags=["BrU"])
 rama = Pratipadika("rama", "pum")   # रम — base of रमा (ṭāp 4.1.4); the stored रमा is gone (step D)
 jawa = Pratipadika("jawa", "pum")   # जट — base of जटा (ṭāp 4.1.4) — जटाभिस्तापसः (SK566; inst. pl. जटाभिः)
-gaNgA = Pratipadika("gaNgA", "strI", other_tags=["Ap"])   # गङ्गा — हिमवतो गङ्गा प्रभवति (SK594 1.4.31; प्रथमा गङ्गा)
+gaNga = Pratipadika("gaNga", "pum")   # गङ्गा — हिमवतो गङ्गा प्रभवति (SK594 1.4.31; प्रथमा गङ्गा)
 # SK293 (7.3.115): dvitīyā and tṛtīyā optionally get syāw (like sarvanāma āp) before ṅ-marked suffixes.
 # Used as [dvitIya, Ap] / [tftIya, Ap] in test fixtures (same pattern as [sarva, Ap] for sarva_A).
 dvitIya = Pratipadika("dvitIya", "pum", other_tags=["dvitIyAdi"])
@@ -828,7 +828,10 @@ SrI = Pratipadika("SrI", "strI", other_tags=["DAtu", "kvip"])
 kumArI =  Pratipadika("kumArI", "strI", other_tags=["NI"])
 
 # ── Minor कप् cluster (bahuvrihi_plan.md B3 tail: SK890/894–897, SK892) ────────────
-mAlA   = Pratipadika("mAlA",   "strI", other_tags=["Ap"])    # माला — SK892/7.4.15 optional ā-hrasva before कप् (बहुमालाकः/बहुमालकः)
+# माला is DERIVED (W3/W4): [mAla, strI_abs] → ṭāp 4.1.4. Both its uses went live —
+# मालभारि (6.3.65, pūrva, via the ?Ap_adv arm) and बहुमालाकः (SK892/7.4.15 optional
+# ā-hrasva before कप्, uttara, which reads ?Ap on the MERGED aṅga and so needed nothing).
+# `mAla` (माल m., अतिमालः) already existed as the base.
 BrAtf  = Pratipadika("BrAtf",  "pum")                        # भ्रातृ (masc ṛ-stem, like पितृ) — SK895/5.4.157 वन्दिते
 mUrKa  = Pratipadika("mUrKa",  "pum")                        # मूर्ख "foolish" — the non-वन्दित pūrva (मूर्खभ्रातृकः)
 nAqI   = Pratipadika("nAqI",   "strI", other_tags=["NI"])   # नाडी (ṅīp after jāti) — SK896/5.4.159
@@ -1427,7 +1430,7 @@ Ayus  = Pratipadika("Ayus",  "napum", other_tags=["AdeSa_s", "Ayus"])  # आय�
 stoma = Pratipadika("stoma", "pum", other_tags=["stoma"])     # स्तोम m. — ज्योतिष्टोमः (?stoma: main-scan id, see 8.3.83)
 sAman = Pratipadika("sAman", "napum")   # सामन् n. "chant" — सुषामा (SK1022/8.3.98)
 sanDi = Pratipadika("sanDi", "pum")     # सन्धि m. — सुषन्धिः (SK1022/8.3.98)
-senA  = Pratipadika("senA",  "strI", other_tags=["Ap"])  # सेना f. "army" — हरिषेणः (SK1023/8.3.99)
+sena  = Pratipadika("sena",  "pum")   # sena - base of senA (Tap 4.1.4); harizeRA (SK1023/8.3.99)  # सेना f. "army" — हरिषेणः (SK1023/8.3.99)
 
 # ════════════════════════════════════════════════════════════════════════════
 # समासाश्रयविधिप्रकरणम्, Phase X6 (samasa_asraya_plan.md): cross-member ṆATVA

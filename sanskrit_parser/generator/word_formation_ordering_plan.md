@@ -434,7 +434,7 @@ Two cases discriminate the whole design and should be asserted at every step:
 The scoreboard for `ni_ap_derivation_plan.md` + all W phases. The population reconciles like
 this: **38** stems carried a strī-affix tag when the migration started, **+9** gained one in
 step 1 (they were feminines all along, just untagged — the missing tag was a wrong nom sg),
-**−14** deleted, = **33 today**. `atistri` is in that count but is not a feminine derivation at
+**−17** deleted, = **30 today**. `atistri` is in that count but is not a feminine derivation at
 all: it is the compound अतिस्त्रि, carrying `?strI_p` for 6.4.79's iyaṅ.
 
 ### DERIVED — the stem is gone, `[base, strI_abs]` is the only form (14)
@@ -455,10 +455,13 @@ all: it is the compound अतिस्त्रि, carrying `?strI_p` for 6.4.
 | `ramA` | `rama` **(new)** | ṭāp 4.1.4 | kāraka driver hook |
 | `jawA` | `jawa` **(new)** | ṭāp 4.1.4 | kāraka driver hook |
 | `niSA` | `niSa` **(new)** | ṭāp 4.1.4 | nothing — a vibhakti paradigm, which has taken element lists all along |
+| `senA` | `sena` **(new)** | ṭāp 4.1.4 | 8.3.99 + 8.3.100 given an `?Ap_adv` arm beside `=senA` |
+| `gaNgA` | `gaNga` **(new)** | ṭāp 4.1.4 | **no rule change at all** — 2.1.16/2.1.20 never named the feminine (`rp: ?prAtipadika`, `?nadI_saMjYA`); it needed only the avyayībhāva driver's hook |
+| `mAlA` | `mAla` | ṭāp 4.1.4 | 6.3.65 given an `?Ap_adv` arm (pūrva). Its UTTARA use (7.4.15 बहुमालाकः) needed NOTHING — 7.4.15 reads `?Ap` on the MERGED aṅga at the main scan |
 
 Also deleted: **`strI_pUrva`**, a tag-stripped clone of `strI` that guarded nothing.
 
-### PRE-FORMED — and the reason, one per stem (33)
+### PRE-FORMED — and the reason, one per stem (30)
 
 **Kept ON PURPOSE as controls (2).** Their live twins pass beside them; deleting them would
 stop proving that the disjunctions still serve stored stems.
@@ -486,17 +489,17 @@ see `ni_ap_derivation_plan.md` §2.
 
 `rohiRI` (4.1.39 वा → रोहिणी/रोहिता) · `kalyARI` (→ कल्याणा/कल्याणी)
 
-**UTTARA position, consumer rule not yet converted (7).** These are the W3 backlog: the base
-derives fine, but the rule that reads the member at −1 still needs its own `?…_adv` arm, the
-way 5.4.153 got one.
+**UTTARA position, consumer rule not yet converted — NOW EMPTY (0).** This group held 7 and
+was the plan's "only bookkeeping" bucket. Three converted (`senA`, `gaNgA`, `mAlA`, above);
+**the other four were misclassified.** Checking each consumer rule for an `orp: [-Ap, -strI]`
+is what showed it — and that check should have come before the grouping.
 
-`senA` (8.3.99 ṣatva reads `=senA`) · `gaNgA` · `nAsikA` · `prajA` · `meDA` (5.4.122 असिच्) ·
-`jAyA` (5.4.134 निङ्) · `mAlA` (pūrva use convertible; the बहुमालाकः uttara use pins it)
+**Affix CANCELLATION needed — a mechanism the design does not have (5).** The rule's job is to
+*undo* the member's ṭāp, and a live member has not applied it yet. Locking the gender is no
+substitute: 7.1.18 औङ आपः reads `?Ap`, not the gender.
 
-**Affix CANCELLATION needed — a mechanism the design does not have (1).**
-
-`vaqavA` — 2.4.27 पूर्ववत् must *cancel* the ṭāp (`orp: [-Ap, -strI]`). Locking the gender is
-not enough: 7.1.18 औङ आपः reads `?Ap`, so a live member still gives *अश्ववडवे.
+`vaqavA` (2.4.27 पूर्ववत्) · `nAsikA` (5.4.119 नासिका→नस) · `prajA`, `meDA` (5.4.122 असिच्) ·
+`jAyA` (5.4.134 निङ्, जाया→जानि) — all five carry `orp: [-Ap, -strI]`.
 
 **puṁvadbhāva prohibition with no base stem (3).**
 
@@ -517,7 +520,12 @@ word-identity tag 6.4.79 iyaṅ and 1.4.4 read.
 
 ### What the table says about where to go next
 
-The only group whose blocker is *bookkeeping rather than grammar* is the **7 uttara-position
-stems**. Each needs one rule taught one `?…_adv` arm — the W3 recipe, already applied five
-times. Everything else is blocked by a real property of the word (homograph, lexical ī,
-optional rule) or by a missing mechanism (affix cancellation, surface-before-it-exists).
+**Nothing merely-bookkeeping is left.** The 7-stem "uttara position" group is gone: 3
+converted, 4 were misclassified as bookkeeping when they are affix-cancellation cases. Each of
+the remaining 30 is blocked by a property of the word (homograph, lexical ī, optional rule,
+kṛt/nipātana), by a missing mechanism — **affix cancellation is now the largest group at 5, and
+the obvious next thing to build** — or is kept on purpose as a control.
+
+The lesson for the next such table: **group by the rule's `update:`, not by the member's
+position.** Position predicted 7 convertible; the `orp: [-Ap, -strI]` signature predicted 3,
+and was right.

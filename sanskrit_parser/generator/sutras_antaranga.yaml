@@ -14258,7 +14258,11 @@
         - "?tUla"
     - lp:
         - and
-        - "=mAlA"
+        - - or
+          - "=mAlA"
+          - - and          # W3: LIVE [माल, strI_abs] pūrva
+            - "=mAla"
+            - "?Ap_adv"
         - "?samAsaPurva"
       rp:
         - and
@@ -14736,7 +14740,13 @@
     rp:
       - and
       - "?samAsa"
-      - "=senA"
+      # W3: a LIVE [sena, strI_abs] uttara is still सेन at this window and carries only
+      # the W1 advisory verdict — two spellings of one condition, as in 2.1.26.
+      - - or
+        - "=senA"
+        - - and
+          - "=sena"
+          - "?Ap_adv"
     r: s
   xform:
     r: str("z")
@@ -14757,7 +14767,13 @@
     rp:
       - and
       - "?samAsa"
-      - "=senA"
+      # W3: a LIVE [sena, strI_abs] uttara is still सेन at this window and carries only
+      # the W1 advisory verdict — two spellings of one condition, as in 2.1.26.
+      - - or
+        - "=senA"
+        - - and
+          - "=sena"
+          - "?Ap_adv"
     r: s
   xform:
     r: str("z")

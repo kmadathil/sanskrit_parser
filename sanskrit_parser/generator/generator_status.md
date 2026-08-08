@@ -980,7 +980,7 @@ SK numbers ≤ 452 absent from both the implemented and skipped/deferred tables,
 runs three levels AFTER the kāraka (−2) and samāsa (−1) pre-passes that depend on it. Every
 pre-tagged feminine in `pratipadika.py` was a level-2 outcome smuggled into a level-−1
 condition. **38 stems carried a strī-affix tag at the start, +9 gained one in step 1 (a
-missing tag was a wrong nom sg), −14 deleted = 33 today — each with a stated reason**
+missing tag was a wrong nom sg), −17 deleted = 30 today — each with a stated reason**
 (`word_formation_ordering_plan.md` §8 has the per-stem table).
 
 **The design: ADVISORY tagging, not a level move.** W1 computes which strī affix a member
@@ -996,7 +996,7 @@ discriminates the two designs.
 | **W1** | `_stri_advisory_prepass` — sandbox-runs the advisable rules (real rule objects, real `sutra_priority`; optional rules fork and record BOTH verdicts) before the kāraka pass |
 | **W2** | `_insert_samasanta` skips the member's strī affix — but NOT the compound's; `?referent_strI` separates them (बहुकुमारीकः vs बहुदण्डिका) |
 | **W3** | the −1 consumers read the verdict: 5.4.153 `[or ?NI ?NI_adv]`, 2.1.26 `[and =Kawva ?Ap_adv]`, 1.2.67/1.2.73 `[or ?strI ?strI_adv]` + `?!strI_adv` on the opposite arm, the puṁvadbhāva family `[or ?puMvat ?puMvat_adv]` |
-| **W4** | 14 stems deleted; `kumArI`/`brAhmaRI` KEPT as pre-formed controls for the disjunctions |
+| **W4** | **17 stems deleted**; `kumArI`/`brAhmaRI` KEPT as pre-formed controls for the disjunctions. The last three: `senA` (8.3.99/8.3.100 given an `?Ap_adv` arm), `gaNgA` (**no rule change** — 2.1.16/2.1.20 never named the feminine), `mAlA` (6.3.65 pūrva arm; its 7.4.15 uttara use needed nothing, that rule reading `?Ap` on the MERGED aṅga) |
 | **W5b** | the advisory scan admits a TADDHITA element before the placeholder (`[vidyA, aR_t, strI_abs]` → वैद्यी). Sweep over all 32 such paradigms: **17 advised, 15 silent, 0 wrong** |
 
 **Now derived from `[base, strI_abs]`:** बहुकुमारीकः · खट्वारूढः · हंसौ · अजे · ब्राह्मणीभार्यः ·
@@ -1023,6 +1023,12 @@ must **CANCEL** the affix (अश्ववडवौ — 2.4.27's `orp: [-Ap, -st
 help, since 7.1.18 औङ आपः reads `?Ap`) or must read its **SURFACE** before it exists
 (हरिषेणः/8.3.99). Separately, ā-stem bases all derive by 4.1.4, while ī-stem bases need the
 right ङी rule per class (\*पञ्चमा, \*नाडा from plain a-stems).
+
+**The "uttara position" backlog is closed, and it was 3 stems, not 7.** Grouping the blocked stems by member
+POSITION predicted 7 convertible; grouping them by the consumer rule's `update:` predicted 3, and was right.
+Four of the seven (`nAsikA`, `prajA`, `meDA`, `jAyA`) carry `orp: [-Ap, -strI]` — they must CANCEL the
+member's ṭāp, which a live member has not applied yet. **Affix cancellation is now the largest blocked group
+(5, with `vaqavA`) and the obvious next mechanism to build.** Nothing merely-bookkeeping remains.
 
 **Open, deliberately:** the rest of W5. Taddhita affixes are composer-supplied and ALREADY
 RESOLVED (39 objects; no rule inserts one), so there is no selection step to advise. Whether
